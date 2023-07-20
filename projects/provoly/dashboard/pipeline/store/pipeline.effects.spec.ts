@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { PrySnackbarService } from '@provoly/dashboard';
 import { hot } from 'jest-marbles';
 import { Observable, of } from 'rxjs';
-import { ExecutionState } from '../components/pipeline-editor/pipeline.interface';
+import { ExecutionState, PryTransfo } from '../components/pipeline-editor/pipeline.interface';
 import { PipelineActions } from '../store/pipeline.actions';
 import { PipelineEffects } from './pipeline.effects';
 import { initialState } from './pipeline.selectors.spec';

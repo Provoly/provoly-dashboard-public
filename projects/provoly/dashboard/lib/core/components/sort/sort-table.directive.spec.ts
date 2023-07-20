@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { MockPryIconComponent } from '../../../../mock/components/mock-pry-icon.component';
+import { PrySortHeaderDirective } from './sort-header.directive';
+import { PrySortHeaderComponent } from './sort-header/sort-header.component';
+import { PrySortTableDirective } from './sort-table.directive';
 
 @Component({
   template: ` <table prySortTable prySortActive="toto1" prySortDirection="asc">

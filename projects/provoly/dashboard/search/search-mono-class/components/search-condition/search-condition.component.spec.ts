@@ -2,10 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
 import { Class, ClassSelectors, Field, FieldSelectors, MonoClassConditions } from '@provoly/dashboard';
+import { MockPryIconComponent } from '../../../../mock/components/mock-pry-icon.component';
+import { MockPrySelectComponent } from '../../../../mock/components/mock-pry-select.component';
 import { MockNgModelDirective } from '../../../../mock/directive/mock-ng-model.directive';
 import { MockI18nPipe } from '../../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../../mock/pipe/mock-translate.pipe';
 import { SearchMonoClassSelectors } from '../../store/search-mono-class.selectors';
+import { PrySearchConditionComponent } from './search-condition.component';
 
 const fields = {
   fieldStringId: {

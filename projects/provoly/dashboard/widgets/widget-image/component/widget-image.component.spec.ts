@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { MockPryWidgetImageCssComponent } from '../../../mock/style/mock-pry-widget-image-css';
 
 import { WidgetImageComponent } from './widget-image.component';
 

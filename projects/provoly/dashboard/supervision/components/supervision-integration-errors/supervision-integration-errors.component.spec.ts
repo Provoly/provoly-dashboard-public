@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { MockPryCheckboxComponent } from '../../../mock/components/mock-pry-checkbox.component';
+import { MockPryIconComponent } from '../../../mock/components/mock-pry-icon.component';
+import { MockPrySelectComponent } from '../../../mock/components/mock-pry-select.component';
 import { MockNgModelDirective } from '../../../mock/directive/mock-ng-model.directive';
 import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockSortPipe } from '../../../mock/pipe/mock-sort.pipe';
@@ -42,7 +45,7 @@ describe('SupervisionIntegrationErrorsComponent', () => {
         MockTranslateIdPipe,
         MockPryIconComponent,
         MockI18nPipe,
-        PryCheckboxComponent
+        MockPryCheckboxComponent
       ],
       providers: [
         provideMockStore({

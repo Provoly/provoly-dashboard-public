@@ -2,18 +2,23 @@ name: Tests
 
 on:
   push:
-    tags-ignore:
+    branches:
       - '**'
 
 jobs:
   test:
+    runs-on: ubuntu-latest
     container: node:18-bullseye
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
       - name: Manage Dependencies
         run: npm ci
       - name: Running Tests & coverage
         run: npm run test:lib:ci
+      - name: Upload coverage
+        uses: actions/upload-artifact@v3
         with:
-          name: coverage
-          path: coverage/
+          name: code-coverage-report
+          path: coverage/**
 

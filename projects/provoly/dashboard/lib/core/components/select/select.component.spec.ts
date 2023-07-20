@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockNgModelDirective } from '../../../../mock/directive/mock-ng-model.directive';
+import { PrySelectComponent } from './select.component';
 
 @Component({
   selector: 'ng-select',

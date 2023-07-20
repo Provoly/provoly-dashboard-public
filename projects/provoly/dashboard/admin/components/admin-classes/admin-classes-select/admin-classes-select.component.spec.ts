@@ -1,6 +1,7 @@
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { MockPryIconComponent } from '../../../../mock/components/mock-pry-icon.component';
 import { classes } from '../../../../mock/data/mockItemAdmin';
 import { MockI18nPipe } from '../../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslateIdPipe } from '../../../../mock/pipe/mock-translate-id.pipe';

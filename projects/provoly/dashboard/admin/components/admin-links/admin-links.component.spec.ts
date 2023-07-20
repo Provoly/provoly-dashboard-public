@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { PRY_ACCESS_GUARD, PryDefaultAccessGuard } from '@provoly/dashboard';
 import { links } from '../../../mock/data/mockItemAdmin';
 import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockSortPipe } from '../../../mock/pipe/mock-sort.pipe';

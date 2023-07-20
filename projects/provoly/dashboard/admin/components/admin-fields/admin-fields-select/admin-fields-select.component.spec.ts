@@ -2,6 +2,8 @@ import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { PRY_ACCESS_GUARD, PryDefaultAccessGuard } from '@provoly/dashboard';
+import { MockPryIconComponent } from '../../../../mock/components/mock-pry-icon.component';
 import { field } from '../../../../mock/data/mockItemAdmin';
 import { MockI18nPipe } from '../../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../../mock/pipe/mock-translate.pipe';

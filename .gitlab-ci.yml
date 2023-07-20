@@ -28,26 +28,6 @@ npm_dependency_check:
       # Save the JSON report artifact
       - "./npm_audit_report.json"
 
-test-front:
-  tags: # Tag has been set on the runner to ensure job run on pry cluster
-    - yap
-  stage: test
-  variables:
-    KUBERNETES_CPU_REQUEST: "1"
-    KUBERNETES_CPU_LIMIT: "4"
-    KUBERNETES_MEMORY_REQUEST: "4Gi"
-    KUBERNETES_MEMORY_LIMIT: "6Gi"
-  image: dh2wltsh.gra7.container-registry.ovh.net/docker-mirror/library/node:18-bullseye
-  except:
-    - tags
-  script:
-    - npm ci
-    - npm run test:lib:ci
-  artifacts:
-    expire_in: 1 hrs
-    paths:
-      - coverage/
-
 sonar:
   tags: # Tag has been set on the runner to ensure job run on pry cluster
     - yap

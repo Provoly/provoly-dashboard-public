@@ -2,7 +2,10 @@ import { Overlay } from '@angular/cdk/overlay';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
+import { MockPryIconComponent } from '../../../mock/components/mock-pry-icon.component';
+import { MockPrySelectComponent } from '../../../mock/components/mock-pry-select.component';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
+import { MockPrySelectGridLayoutCssComponent } from '../../../mock/style/mock-pry-select-grid-layout-css';
 
 import { SelectGridLayoutComponent } from './select-grid-layout.component';
 
