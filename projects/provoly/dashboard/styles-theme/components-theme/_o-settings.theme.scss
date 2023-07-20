@@ -1,0 +1,64 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - settings (table, map, etc...) */
+
+.o-settings {
+  &__popup {
+    background-color: themed($theme-map, 'color', 'primary', 50);
+    border: 1px themed($theme-map, 'color', 'primary', 400) solid;
+    box-shadow: themed($theme-map, 'decoration', 'shadow', 'notification');
+
+    &__header {
+      .a-h2 {
+        color: themed($theme-map, 'color', 'primary', 700);
+        font-size: toRem(18);
+      }
+
+      .a-btn.a-btn--icon-only.-close .a-icon {
+        color: themed($theme-map, 'color', 'primary', 500);
+
+        &:hover,
+        &:active {
+          color: themed($theme-map, 'color', 'accent', 500);
+        }
+      }
+    }
+
+    &__content {
+      border-bottom-color: themed($theme-map, 'color', 'primary', 100);
+
+      .a-btn.a-btn--icon-text.-link-like {
+        color: themed($theme-map, 'color', 'primary', 500);
+        font-size: toRem(15);
+
+        &:hover,
+        &:active {
+          color: themed($theme-map, 'color', 'accent', 500);
+        }
+
+        &[data-func='delete'] {
+          font-size: toRem(13);
+        }
+      }
+
+      &__actions {
+        &.-has-separator {
+          border-top-color: themed($theme-map, 'color', 'primary', 100);
+        }
+      }
+
+      &__fields {
+        border-bottom-color: themed($theme-map, 'color', 'primary', 100);
+
+        .m-form-label-field.-has-separator {
+          border-bottom-color: themed($theme-map, 'color', 'primary', 100);
+        }
+      }
+    }
+
+    &__footer {
+      background-color: themed($theme-map, 'color', 'primary', 50);
+    }
+  }
+}

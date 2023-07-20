@@ -1,0 +1,38 @@
+<div class="o-multi-class-field-selection" id="popin">
+  <div class="o-multi-class-field-selection__header" data-toggle="popin">
+    <div class="o-multi-class-field-selection__header__top">
+      <div class="o-multi-class-field-selection__header__top__title">
+        <h2 class="a-h2" id="dialog_title">
+          {{ '@pry.search.multi.selectField' | i18n }}
+        </h2>
+      </div>
+      <div class="o-multi-class-field-selection__header__top__close">
+        <button class="a-btn a-btn--icon-only" (click)="closeModal.emit()">
+          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.action.close' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+    <ng-container *ngIf="availableFields$ | async as list">
+      <ng-container *ngIf="list.length > 7">
+        <div class="o-multi-class-field-selection__header__search">
+          <input class="a-form-field" type="text" [(ngModel)]="fieldSearch" placeholder="Filtrer" />
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+  <div class="o-multi-class-field-selection__legend">{{ '@pry.search.multi.legend' | i18n }}</div>
+  <ul class="o-multi-class-field-selection__fields">
+    <ng-container *ngFor="let field of availableFields$ | async | pryFilter: 'name' : fieldSearch">
+      <li class="o-multi-class-field-selection__fields__select" (click)="selectFieldChange.emit(field.id)">
+        <button class="a-btn -link-like">
+          {{ field.name }}
+          <span class="o-multi-class-field-selection__fields__select__inside"
+            >{{ '@pry.search.multi.in' | i18n }}
+            <ng-container> {{ field.classes.join(', ') }} </ng-container>
+          </span>
+        </button>
+      </li>
+    </ng-container>
+  </ul>
+</div>

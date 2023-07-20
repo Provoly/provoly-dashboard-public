@@ -1,0 +1,40 @@
+// Fonts
+$fonts-path: '../../assets/fonts';
+
+$theme-fonts: (
+  'default-font-family': Ubuntu,
+  'default-font-weight': 400,
+  'font-family-alternative': sans-serif,
+  'fonts-path': '../../assets/fonts',
+  'default': (
+    'family': Ubuntu,
+    'filepath': $fonts-path,
+    'filename': ubuntu-latin-regular,
+    'weight': 400,
+    'style': normal,
+    'display': swap
+  ),
+  'medium': (
+    'family': Ubuntu,
+    'filepath': $fonts-path,
+    'filename': ubuntu-latin-medium,
+    'weight': 500,
+    'style': normal,
+    'display': swap
+  ),
+  'bold': (
+    'family': Ubuntu,
+    'filepath': $fonts-path,
+    'filename': ubuntu-latin-bold,
+    'weight': 700,
+    'style': normal,
+    'display': swap
+  )
+);
+
+///// DO NOT EDIT FROM HERE /////
+$theme-map-fonts: (
+  'font': (
+    $theme-fonts
+  )
+);

@@ -1,0 +1,42 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Molecule - snackbar */
+
+.m-snackbar {
+  &__action {
+    color: white;
+  }
+
+  &.-info {
+    color: themed($theme-map, 'color', 'primary', 500);
+    background-color: white;
+  }
+
+  &.-success {
+    color: themed($theme-map, 'color', 'grey', 1000);
+    background-color: themed($theme-map, 'color', 'status', 'ok');
+
+    .m-snackbar__action {
+      color: themed($theme-map, 'color', 'grey', 1000);
+    }
+  }
+
+  &.-warning {
+    color: themed($theme-map, 'color', 'grey', 1000);
+    background-color: themed($theme-map, 'color', 'status', 'warning');
+
+    .m-snackbar__action {
+      color: themed($theme-map, 'color', 'grey', 1000);
+    }
+  }
+
+  &.-error {
+    color: themed($theme-map, 'color', 'grey', 1000);
+    background-color: themed($theme-map, 'color', 'status', 'error');
+
+    .m-snackbar__action {
+      color: themed($theme-map, 'color', 'grey', 1000);
+    }
+  }
+}

@@ -1,0 +1,5 @@
+<input type="file" (change)="onFileSelect($event)" #fileInput hidden [accept]="accept" />
+<button class="a-btn a-btn--secondary -size-sm" type="button" (click)="fileInput.click()">
+  <pry-icon [height]="20" [width]="20" iconSvg="upload"></pry-icon>
+  <span>{{ labelTranslate | i18n }}</span>
+</button>

@@ -1,0 +1,10 @@
+=== Base toolbox (pry-base-toolbox)
+
+Le composant `+Base toolbox+` permet d’afficher une barre de menu
+horizontale avec différentes actions.
+
+Les paramètres d’entrée du composant sont les suivants :
+
+- baseToolboxTranslation: Début de la classe de traduction (ex: '`@pry.admin.`')
+- actions$: Actions du menu principal
+- subActions$: Actions du menu secondaire

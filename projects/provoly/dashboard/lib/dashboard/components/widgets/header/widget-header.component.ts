@@ -1,0 +1,530 @@
+import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import { Store } from '@ngrx/store';
+import { BehaviorSubject, combineLatest, map, Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { v4 } from 'uuid';
+import { UNKNOWN_DATASOURCE } from '../../../../core/components/translate-id/translate-id.pipe';
+import { DashboardGridLayout, DashboardManifest, WidgetManifest } from '../../../../core/model/manifest.interface';
+import { Widget } from '../../../../core/model/widget.interface';
+import { ConfigActions } from '../../../../core/store/config/config.actions';
+import { DataSource, NamedQuery } from '../../../../core/store/data-source/data-source.model';
+import { DataSourceSelectors } from '../../../../core/store/data-source/data-source.selectors';
+import { LibraryTypes } from '../../../../core/store/image/image.service';
+import { ToolboxMenuService } from '../../../../core/toolbox/toolbox-menu.service';
+import { DashboardActions } from '../../../store/dashboard.actions';
+import { DashboardSelectors } from '../../../store/dashboard.selectors';
+import { SubscriptionnerDirective } from '../../subscriptionner.directive';
+import { WidgetPlacementUtils } from '../widget-placement/widget-placement.utils';
+
+export const WIDGET_HEADER_HEIGHT = 60;
+
+export type HeaderAction = {
+  icon: string;
+  action: (that: PryWidgetHeaderComponent) => void;
+  label: string;
+  disabled?: (that: PryWidgetHeaderComponent) => boolean;
+};
+
+@Component({
+  selector: 'pry-widget-header',
+  templateUrl: './widget-header.component.html'
+})
+export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
+  @ViewChild('template', { read: TemplateRef }) template!: TemplateRef<any>;
+  @ViewChild('templateModal', { read: TemplateRef }) templateModal!: TemplateRef<any>;
+  @ViewChild('toggle', { read: TemplateRef }) toggle!: TemplateRef<any>;
+  @ViewChild('overlayMenu', { read: TemplateRef }) overlayMenu!: TemplateRef<any>;
+  @ViewChild('overlayCatalog', { read: TemplateRef }) overlayCatalog!: TemplateRef<any>;
+  @ViewChild('overlaySpot', { read: TemplateRef }) overlaySpot!: TemplateRef<any>;
+  @ViewChild('togglePanel') togglePanel!: ElementRef<HTMLButtonElement>;
+  @ViewChild('cross') cross!: ElementRef<HTMLButtonElement>;
+  @ViewChild('validate') validate!: ElementRef<HTMLButtonElement>;
+  @ViewChild('validateCatalog') validateCatalog!: ElementRef<HTMLButtonElement>;
+  @ViewChild('cancel') cancel!: ElementRef<HTMLButtonElement>;
+  @ViewChild('crossCatalog') crossCatalog!: ElementRef<HTMLButtonElement>;
+  @ViewChild('inputCatalog') inputCatalog!: ElementRef<HTMLInputElement>;
+  @ViewChild('menuList') menuList!: ElementRef;
+  manifest$ = new BehaviorSubject<WidgetManifest | null>(null);
+  subscription?: Subscription;
+  places: WidgetManifest[] = [];
+  selectedItem?: Element | null;
+
+  @Input() set manifest(manifest: WidgetManifest | null) {
+    this.manifest$.next(manifest);
+  }
+
+  @Input() additionalOptions: HeaderAction[] | null = [];
+  @Input() headerOptions: { [key: string]: boolean } | {} | undefined;
+  @Input() displayCount = true;
+
+  @Output() manifestModified = new EventEmitter<{ widgetIndex: number; manifest: WidgetManifest }>();
+
+  isEdit = false;
+  catalogInfo: Widget = {
+    id: v4(),
+    image: '',
+    name: '',
+    description: '',
+    content: '',
+    datasource: [],
+    modificationDate: ''
+  };
+
+  get title() {
+    return this.manifest?.title;
+  }
+
+  get manifest() {
+    return this.manifest$.getValue();
+  }
+
+  @Input() set datasourceIds$(datasourceIds$: Observable<string[]>) {
+    this.usedDatasources$ = combineLatest([datasourceIds$, this.store.select(DataSourceSelectors.getDataSources)]).pipe(
+      map(
+        ([ids, datasources]) =>
+          ids
+            .map((id) => datasources.find((ds) => ds.id === id) ?? id)
+            .map((nq) => (typeof nq !== 'string' ? nq : UNKNOWN_DATASOURCE(nq))) as NamedQuery[]
+      )
+    );
+    this.subscriptions.add(this.usedDatasources$.subscribe((unq) => (this.usedNameQueryIds = unq.map((nq) => nq.id))));
+    this.subscription?.unsubscribe();
+    this.subscription = datasourceIds$.subscribe(
+      (dsIds) => (this.selectedDataSource = JSON.parse(JSON.stringify(dsIds)))
+    );
+  }
+
+  @Input() set widgetIndex(widgetIndex: number) {
+    this._widgetIndex$.next(widgetIndex);
+    this._widgetIndex = widgetIndex;
+  }
+
+  search$ = new BehaviorSubject('');
+  lockedView$: Observable<boolean>;
+  targetIndexes$: Observable<number[]>;
+  usedDatasources$!: Observable<DataSource[]>;
+  allDataSources$: Observable<DataSource[]>;
+  usedNameQueryIds!: string[];
+  choiceUsed = {} as { [is: string]: boolean };
+  _widgetIndex$ = new BehaviorSubject<number>(0);
+  _widgetIndex!: number;
+  open = false;
+  selectedDataSource: string[] = [];
+  idToNameDatasource: { [id: string]: string } = {};
+
+  windowManifest: DashboardManifest | null = null;
+  private windowManifest$: Observable<DashboardManifest>;
+  private menuRef?: OverlayRef;
+  private comboRef?: OverlayRef;
+  private confirmRemoveRef?: OverlayRef;
+  private catalogRef?: OverlayRef;
+  private spotRef?: OverlayRef;
+  menu: boolean = false;
+  type: LibraryTypes = LibraryTypes.ILLUSTRATION;
+
+  constructor(
+    private store: Store,
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef,
+    public toolboxMenuService: ToolboxMenuService
+  ) {
+    super();
+    this.windowManifest$ = this.store
+      .select(DashboardSelectors.windowManifest)
+      .pipe(distinctUntilChanged((p, c) => JSON.stringify(p) === JSON.stringify(c)));
+
+    this.allDataSources$ = combineLatest([
+      this.manifest$,
+      this.store.select(DataSourceSelectors.getDataSourcesSorted),
+      this.search$
+    ]).pipe(
+      map(([manifest, allNamedQueries, searchValue]) => {
+        let nqs = [...allNamedQueries];
+        if (!!manifest) {
+          const manifestNamedQueries = Array.isArray(manifest.datasource) ? manifest.datasource : [manifest.datasource];
+          manifestNamedQueries.forEach((manifestNamedQuery) => {
+            const alreadyPresent = !!allNamedQueries.find((nq) => nq.id === manifestNamedQuery);
+            if (!alreadyPresent) {
+              nqs.push(UNKNOWN_DATASOURCE(manifestNamedQuery ?? ''));
+            }
+          });
+        }
+        return nqs.filter((nq) => nq.name.toLowerCase().includes(searchValue.toLowerCase()));
+      })
+    );
+    this.targetIndexes$ = this.store.select(DashboardSelectors.targetTenantsIndexes);
+    this.subscriptions.add(
+      this.allDataSources$.subscribe((allNqs) => allNqs.forEach((nq) => (this.choiceUsed[nq.id] = false)))
+    );
+    this.subscriptions.add(
+      this.windowManifest$.subscribe((manifest) => {
+        this.windowManifest = manifest;
+      })
+    );
+    this.lockedView$ = this.store
+      .select(DashboardSelectors.globalManifest)
+      .pipe(map((m) => !!m.locked || !!this.manifest?.locked));
+
+    this.subscriptions.add(
+      this.allDataSources$.subscribe((allDs) => allDs.forEach((ds) => (this.idToNameDatasource[ds.id] = ds.name)))
+    );
+  }
+
+  onArrowUp() {
+    const lastElement = this.menuList.nativeElement.lastElementChild;
+    if (this.selectedItem?.previousElementSibling) {
+      this.selectedItem = this.selectedItem.previousElementSibling;
+    } else {
+      this.selectedItem = lastElement;
+    }
+    const focusElement = this.selectedItem?.children[0] as HTMLButtonElement;
+    const focusChildrenElement = this.selectedItem?.children[0].children[0] as HTMLButtonElement;
+    if (focusChildrenElement) {
+      focusChildrenElement.focus();
+    }
+    focusElement.focus();
+  }
+
+  onArrowDown() {
+    const firstElement = this.menuList.nativeElement.firstElementChild;
+    if (this.selectedItem?.nextElementSibling) {
+      this.selectedItem = this.selectedItem.nextElementSibling;
+    } else {
+      this.selectedItem = firstElement;
+    }
+    const focusElement = this.selectedItem?.children[0] as HTMLButtonElement;
+    const focusChildrenElement = this.selectedItem?.children[0].children[0] as HTMLButtonElement;
+    if (focusChildrenElement) {
+      focusChildrenElement.focus();
+    }
+    focusElement.focus();
+  }
+
+  get currentLayout() {
+    return this.windowManifest?.grid?.layout ?? DashboardGridLayout.MANUAL;
+  }
+
+  get hasGrid() {
+    return this.currentLayout !== DashboardGridLayout.MANUAL;
+  }
+
+  get currentPlacementIndex() {
+    return this.places.findIndex(
+      (place) =>
+        this.manifest?.layout.x === place.layout.x &&
+        this.manifest.layout.y === place.layout.y &&
+        this.manifest.layout.width === place.layout.width &&
+        this.manifest.layout.height === place.layout.height
+    );
+  }
+
+  toogleDataSource(id: string) {
+    if (!this.selectedDataSource.includes(id)) {
+      this.selectedDataSource.push(id);
+    } else {
+      this.selectedDataSource = this.selectedDataSource.filter((dataSourceId) => dataSourceId !== id);
+    }
+  }
+
+  menuOpen($event?: MouseEvent, forceOpen?: boolean) {
+    this.menu = !this.menu;
+    const mustOpen = forceOpen !== undefined ? forceOpen : !this.menuRef;
+    if (mustOpen) {
+      this.menuRef = this.overlay.create(
+        new OverlayConfig({
+          hasBackdrop: true,
+          panelClass: ['m-context-menu-wrapper'],
+          backdropClass: 'backdrop',
+          positionStrategy: this.overlay
+            .position()
+            .flexibleConnectedTo(this.togglePanel)
+            .withPositions([
+              {
+                originX: 'start',
+                originY: 'bottom',
+                overlayX: 'start',
+                overlayY: 'top'
+              }
+            ])
+        })
+      );
+      this.store.dispatch(ConfigActions.addingOverlay({ id: this.constructor.name + '-menu' }));
+      this.menuRef.backdropClick().subscribe((_) => this.menuOpen());
+      this.menuRef.attach(new TemplatePortal(this.overlayMenu, this.viewContainerRef));
+      setTimeout(() => {
+        this.selectedItem = this.menuList?.nativeElement?.firstElementChild;
+        if (this.selectedItem) {
+          const focus = this.selectedItem?.children[0] as HTMLButtonElement;
+          const focusChildrenElement = this.selectedItem?.children[0]?.children[0] as HTMLButtonElement;
+          focus ? focus.focus() : focusChildrenElement?.focus();
+        }
+      }, 10);
+    } else {
+      this.menuRef?.dispose();
+      this.menuRef = undefined;
+      this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name + '-menu' }));
+      this.togglePanel?.nativeElement?.focus();
+    }
+  }
+
+  toggleCombo() {
+    if (!this.comboRef) {
+      this.usedNameQueryIds.forEach((unq) => (this.choiceUsed[unq] = true));
+      this.comboRef = this.overlay.create(
+        new OverlayConfig({
+          hasBackdrop: true,
+          panelClass: ['o-widget__choose-resultset'],
+          backdropClass: 'backdrop'
+        })
+      );
+      this.store.dispatch(ConfigActions.addingOverlay({ id: this.constructor.name + '-combo' }));
+      this.comboRef.backdropClick().subscribe((_) => this.toggleCombo());
+      this.comboRef.attach(new TemplatePortal(this.template, this.viewContainerRef));
+      setTimeout(() => {
+        this.inputCatalog?.nativeElement?.focus();
+      }, 10);
+    } else {
+      this.comboRef.dispose();
+      this.comboRef = undefined;
+      this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name + '-combo' }));
+      this.menuOpen();
+    }
+  }
+
+  moveInNewWindow(widgetIndex: number, targetIndex: number) {
+    this.store.dispatch(DashboardActions.moveWidget({ widgetIndex, targetIndex }));
+    this.store.dispatch(DashboardActions.toggleEditionMode({ force: false }));
+    this.menuOpen();
+  }
+
+  maximize(widgetIndex: number) {
+    this.store.dispatch(DashboardActions.maximizeWidget({ widgetIndex }));
+    this.menuOpen();
+  }
+
+  emitManifest() {
+    this.manifestModified.emit({
+      widgetIndex: this._widgetIndex,
+      manifest: {
+        ...this.manifest,
+        datasource: this.selectedDataSource
+      } as unknown as WidgetManifest
+    });
+    this.toggleCombo();
+  }
+
+  toggleRemoveConfirm($event?: MouseEvent) {
+    if (!this.confirmRemoveRef) {
+      this.confirmRemoveRef = this.overlay.create(
+        new OverlayConfig({
+          hasBackdrop: true,
+          panelClass: ['o-modal-wrapper'],
+          backdropClass: 'backdrop'
+        })
+      );
+      this.store.dispatch(ConfigActions.addingOverlay({ id: this.constructor.name + '-modal' }));
+      this.confirmRemoveRef.backdropClick().subscribe((_) => this.toggleRemoveConfirm());
+      this.confirmRemoveRef.attach(new TemplatePortal(this.templateModal, this.viewContainerRef));
+      if ($event) {
+        const panel = document.querySelector('div.o-modal-wrapper') as HTMLDivElement;
+        if (!!panel) {
+          panel.style.left = Math.max(0, Math.min(window.innerWidth - panel.clientWidth, $event.clientX - 30)) + 'px';
+          panel.style.top = Math.max(0, Math.min(window.innerHeight - panel.clientHeight, $event.clientY - 10)) + 'px';
+        }
+      }
+      setTimeout(() => {
+        this.cross?.nativeElement?.focus();
+      }, 10);
+    } else {
+      this.confirmRemoveRef.dispose();
+      this.confirmRemoveRef = undefined;
+      this.togglePanel?.nativeElement?.focus();
+      this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name + '-modal' }));
+      this.menuOpen();
+    }
+  }
+
+  confirmRemove() {
+    this.remove();
+    this.cancelRemoveConfirm();
+  }
+
+  remove() {
+    const listWidgetManifests = [...(this.windowManifest || { widgets: [] }).widgets];
+    listWidgetManifests.splice(this._widgetIndex, 1);
+
+    this.store.dispatch(
+      DashboardActions.updateDashboardManifest({
+        manifest: {
+          ...this.windowManifest,
+          widgets: listWidgetManifests
+        }
+      })
+    );
+  }
+
+  cancelRemoveConfirm() {
+    this.isEdit = false;
+    this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name }));
+    this.confirmRemoveRef?.backdropClick().subscribe(() => this.toggleRemoveConfirm());
+    this.confirmRemoveRef?.dispose();
+    this.confirmRemoveRef = undefined;
+    this.menuRef?.dispose();
+    this.menuRef = undefined;
+    this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name + '-menu' }));
+  }
+
+  toggleCatalog() {
+    if (!this.catalogRef) {
+      this.catalogInfo = {
+        id: v4(),
+        image: '',
+        name: '',
+        description: '',
+        content: '',
+        datasource: [],
+        modificationDate: ''
+      };
+      this.catalogRef = this.overlay.create(
+        new OverlayConfig({
+          hasBackdrop: true,
+          panelClass: ['o-modal-wrapper'],
+          backdropClass: 'backdrop'
+        })
+      );
+      this.store.dispatch(ConfigActions.addingOverlay({ id: this.constructor.name + '-catalog' }));
+      this.catalogRef.backdropClick().subscribe((_) => this.toggleCatalog());
+      this.catalogRef.attach(new TemplatePortal(this.overlayCatalog, this.viewContainerRef));
+      setTimeout(() => {
+        this.crossCatalog?.nativeElement?.focus();
+      }, 10);
+    } else {
+      this.catalogRef.dispose();
+      this.catalogRef = undefined;
+      this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name + '-catalog' }));
+      this.menuOpen();
+    }
+  }
+
+  confirmCatalog() {
+    if (this.toolboxMenuService.isValidForCatalog(this.catalogInfo.name)) {
+      this.toolboxMenuService.addToCatalog(
+        {
+          ...this.catalogInfo,
+          content: JSON.stringify({ ...this.manifest, title: this.catalogInfo.name })
+        },
+        this._widgetIndex
+      );
+    }
+    this.toggleCatalog();
+  }
+
+  executeAction(options: HeaderAction) {
+    options.action(this);
+    this.menuOpen();
+  }
+
+  isActionDisabled(option: HeaderAction) {
+    return !!option?.disabled ? option?.disabled(this) : false;
+  }
+
+  displayOption(headerOptions: any, parameters: string) {
+    return (
+      headerOptions === undefined ||
+      headerOptions === true ||
+      headerOptions[parameters] === undefined ||
+      headerOptions[parameters] === true
+    );
+  }
+
+  displaySettings(headerOptions: { [p: string]: boolean } | {} | undefined) {
+    return headerOptions === undefined || headerOptions === true || Object.keys(headerOptions).length > 0;
+  }
+
+  toggleChangeSpot() {
+    if (!this.spotRef) {
+      this.places = WidgetPlacementUtils.placementOptions({ type: 'icon' } as WidgetManifest, this.currentLayout, {
+        ...this.windowManifest?.grid
+      });
+
+      this.spotRef = this.overlay.create(
+        new OverlayConfig({
+          hasBackdrop: true,
+          panelClass: ['o-modal-wrapper'],
+          backdropClass: 'backdrop'
+        })
+      );
+      this.store.dispatch(ConfigActions.addingOverlay({ id: this.constructor.name + '-spot' }));
+      this.spotRef.backdropClick().subscribe(() => this.toggleChangeSpot());
+      this.spotRef.attach(new TemplatePortal(this.overlaySpot, this.viewContainerRef));
+    } else {
+      this.spotRef.dispose();
+      this.spotRef = undefined;
+      this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name + '-spot' }));
+      this.menuOpen();
+    }
+  }
+
+  moveToPlace(place: WidgetManifest) {
+    const startLayout = this.manifest!.layout;
+    const targetLayout = place.layout;
+    const newWindowManifest = JSON.parse(JSON.stringify(this.windowManifest)) as DashboardManifest;
+
+    const targetWidgetIndex = newWindowManifest.widgets.findIndex(
+      (w) =>
+        w.layout.x === targetLayout.x &&
+        w.layout.y === targetLayout.y &&
+        w.layout.width === targetLayout.width &&
+        w.layout.height === targetLayout.height
+    );
+    const startWidgetIndex = newWindowManifest.widgets.findIndex(
+      (w) =>
+        w.layout.x === startLayout.x &&
+        w.layout.y === startLayout.y &&
+        w.layout.width === startLayout.width &&
+        w.layout.height === startLayout.height
+    );
+    if (targetWidgetIndex !== -1) {
+      newWindowManifest.widgets[targetWidgetIndex].layout = startLayout;
+    }
+    newWindowManifest.widgets[startWidgetIndex].layout = targetLayout;
+
+    this.store.dispatch(DashboardActions.updateDashboardManifest({ manifest: newWindowManifest }));
+
+    this.toggleChangeSpot();
+  }
+
+  focusCrossElement() {
+    this.cross?.nativeElement?.focus();
+    this.crossCatalog?.nativeElement?.focus();
+  }
+
+  focusValidation() {
+    this.validateCatalog?.nativeElement?.focus();
+    if (!this.toolboxMenuService.isValidForCatalog(this.catalogInfo?.name)) {
+      this.cancel?.nativeElement?.focus();
+    }
+    this.validate?.nativeElement?.focus();
+  }
+
+  focusInputCatalog() {
+    this.inputCatalog?.nativeElement?.focus();
+  }
+
+  disableValidation() {
+    if (!this.toolboxMenuService.isValidForCatalog(this.catalogInfo?.name)) {
+      this.crossCatalog?.nativeElement?.focus();
+    }
+  }
+}

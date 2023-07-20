@@ -1,0 +1,38 @@
+<div class="m-form-label-field">
+  <label class="a-label" for="filter">{{ '@pry.pipeline.filter.filter' | i18n }}</label>
+  <pry-select
+    [itemsAsOption]="true"
+    [items]="model?.attributes ?? null"
+    [ngModel]="node.properties['attributeName']"
+    (ngModelChange)="changeAttribute($event)"
+    [disabled]="disabled"
+    bindLabel="name"
+    bindValue="name"
+    class="a-pry-select"
+    id="filter"
+  ></pry-select>
+</div>
+
+<div class="m-form-label-field">
+  <label class="a-label" for="operator">{{ '@pry.pipeline.filter.operator' | i18n }}</label>
+  <pry-select
+    [items]="operators"
+    [ngModel]="node.properties['operator']"
+    (ngModelChange)="changeOperator($event)"
+    [disabled]="disabled"
+    class="a-pry-select"
+    id="operator"
+  ></pry-select>
+</div>
+
+<div class="m-form-label-field">
+  <label class="a-label" for="value">{{ '@pry.pipeline.filter.value' | i18n }}</label>
+  <input
+    [type]="inputType"
+    [disabled]="disabled"
+    id="value"
+    class="a-form-field"
+    [ngModel]="node.properties['value']"
+    (ngModelChange)="changeValue($event)"
+  />
+</div>

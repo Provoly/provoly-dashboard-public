@@ -1,0 +1,221 @@
+<pry-restitution-css></pry-restitution-css>
+<div class="o-manifest-layout o-restitution-catalog">
+  <ng-template [ngIf]="selectedMode === mode.CATALOG">
+    <div class="o-manifest-layout__toolbox">
+      <button
+        type="button"
+        (click)="selectMode(mode.CREATION)"
+        [pryTooltip]="infoTooltipCreateRestitution"
+        class="a-btn a-btn--primary"
+        *pryAccess="{ module: 'dashboard', page: 'restitution', action: 'create' }"
+      >
+        {{ '@pry.restitution.create_title' | i18n }}
+      </button>
+      <div>
+        <div class="o-catalog__search">
+          <label id="catalog-search-label" for="catalog-search" class="u-visually-hidden">
+            <span>{{ '@pry.toolbox.catalog.filter.name' | i18n }}</span>
+          </label>
+          <input
+            id="catalog-search"
+            type="text"
+            class="a-form-field"
+            [placeholder]="'@pry.restitution.search' | i18n"
+            [ngModel]="search$ | async"
+            (ngModelChange)="this.search$.next($event)"
+          />
+
+          <pry-icon iconSvg="search" [width]="17" [height]="17"></pry-icon>
+        </div>
+      </div>
+    </div>
+    <div class="o-manifest-layout__content">
+      <h1 class="a-h1">{{ '@pry.restitution.catalog' | i18n }}</h1>
+
+      <div class="o-presentation-wrapper">
+        <ul class="o-presentation">
+          <li class="o-presentation__item" *ngFor="let restitution of filteredRestitution$ | async">
+            <div class="o-presentation__item__header">
+              <ng-container *ngIf="restitution.visibility?.type === PryVisibilityType.PRIVATE">
+                <pry-icon
+                  iconSvg="private"
+                  [pryTooltip]="private"
+                  class="is-private"
+                  [height]="17"
+                  [width]="17"
+                ></pry-icon>
+              </ng-container>
+              <img
+                alt=""
+                [height]="restitution.cover ? 600 : 128"
+                [width]="restitution.cover ? 600 : 128"
+                [class.is-full-width]="restitution.cover"
+                [src]="restitution.image | getSecuredImage: [600, 600] | async"
+                class="pointer"
+                (click)="selectRestitution(restitution)"
+                [pryTooltip]="infoTooltipEye"
+              />
+            </div>
+
+            <div class="o-presentation__item__txt">
+              <h3 class="a-h3">{{ restitution.name }}</h3>
+              <p class="a-p -date">{{ restitution.modificationDate | sinceDate }}</p>
+            </div>
+
+            <div class="o-presentation__item__footer">
+              <ul class="m-actions-list">
+                <li>
+                  <button
+                    type="button"
+                    class="a-btn a-btn icon-only"
+                    (click)="selectRestitution(restitution)"
+                    *pryAccess="{ module: 'dashboard', page: 'restitution', action: 'consult' }"
+                  >
+                    <pry-icon iconSvg="eye" [pryTooltip]="infoTooltipEye"></pry-icon>
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    class="a-btn a-btn&#45;&#45;icon-only"
+                    (click)="editRestitution(restitution)"
+                    [disabled]="!restitution.owner"
+                    *pryAccess="{ module: 'dashboard', page: 'restitution', action: 'edit' }"
+                  >
+                    <pry-icon iconSvg="edit" [pryTooltip]="infoTooltipUpdate"></pry-icon>
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    class="a-btn a-btn&#45;&#45;icon-only"
+                    (click)="toggleRemoveConfirm($event, restitution)"
+                    [disabled]="!restitution.owner"
+                    *pryAccess="{ module: 'dashboard', page: 'restitution', action: 'delete' }"
+                  >
+                    <pry-icon iconSvg="delete" [pryTooltip]="infoTooltipDelete"></pry-icon>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template [ngIf]="selectedMode === mode.CONSULT">
+    <div class="o-manifest-layout__toolbox">
+      <button type="button" (click)="selectMode(mode.CATALOG)" class="a-btn a-btn--primary">
+        {{ '@pry.restitution.backToCatalog' | i18n }}
+      </button>
+    </div>
+    <div class="o-manifest-layout__content">
+      <pry-restitution
+        [selectedRestitution]="selectedRestitution"
+        [edit]="false"
+        (restitutionCreated)="closeRestitution($event)"
+        class="restitution"
+      ></pry-restitution>
+    </div>
+  </ng-template>
+  <ng-template [ngIf]="selectedMode === mode.CREATION">
+    <div class="o-manifest-layout__toolbox">
+      <button type="button" (click)="selectMode(mode.CATALOG)" class="a-btn a-btn--primary">
+        {{ '@pry.restitution.backToCatalog' | i18n }}
+      </button>
+    </div>
+    <div class="o-manifest-layout__content">
+      <pry-restitution (restitutionCreated)="closeRestitution($event)" class="restitution"></pry-restitution>
+    </div>
+  </ng-template>
+  <ng-template [ngIf]="selectedMode === mode.EDITION">
+    <div class="o-manifest-layout__toolbox">
+      <button type="button" (click)="selectMode(mode.CATALOG)" class="a-btn a-btn--primary">
+        {{ '@pry.restitution.backToCatalog' | i18n }}
+      </button>
+    </div>
+    <div class="o-manifest-layout__content">
+      <pry-restitution
+        (restitutionCreated)="closeRestitution($event)"
+        [selectedRestitution]="selectedRestitution"
+        class="restitution"
+      ></pry-restitution>
+    </div>
+  </ng-template>
+</div>
+
+<ng-template #templateModal>
+  <div
+    class="o-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dialog confirm delete presentation"
+    tabindex="0"
+    #deleteModal
+    *ngIf="restitution"
+    (keydown.escape)="toggleRemoveConfirm($event, restitution)"
+  >
+    <div class="o-modal__top">
+      <div class="o-modal__top__title">
+        <h2 class="a-h2">
+          {{ '@pry.widget.modalTitle' | i18n }}
+        </h2>
+      </div>
+      <div class="o-modal__top__close">
+        <button
+          class="a-btn a-btn--icon-only"
+          #cross
+          (keydown.shift.tab)="focusValidation()"
+          (click)="cancelRemoveConfirm()"
+        >
+          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+    <div class="m-btn-group">
+      <button type="button" #cancelRemove (click)="cancelRemoveConfirm()" class="a-btn a-btn--secondary">
+        {{ '@pry.toolbox.manifest.close' | i18n }}
+      </button>
+      <button
+        type="submit"
+        class="a-btn a-btn--primary"
+        #confirm
+        (click)="deleteRestitution(restitution)"
+        (keydown.tab)="focusCrossElement()"
+      >
+        {{ '@pry.toolbox.manifest.validate' | i18n }}
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #infoTooltipEye>
+  <div class="card-title-tooltip__wrapper">
+    <span class="card-title-tooltip__name">{{ '@pry.restitution.consult' | i18n }}</span>
+  </div>
+</ng-template>
+
+<ng-template #infoTooltipUpdate>
+  <div class="card-title-tooltip__wrapper">
+    <span class="card-title-tooltip__name">{{ '@pry.restitution.update' | i18n }}</span>
+  </div>
+</ng-template>
+
+<ng-template #infoTooltipDelete>
+  <div class="card-title-tooltip__wrapper">
+    <span class="card-title-tooltip__name">{{ '@pry.restitution.delete' | i18n }}</span>
+  </div>
+</ng-template>
+
+<ng-template #infoTooltipCreateRestitution>
+  <div class="card-title-tooltip__wrapper">
+    <span class="card-title-tooltip__name">{{ '@pry.restitution.create_title' | i18n }}</span>
+  </div>
+</ng-template>
+<ng-template #private>
+  <div class="m-tooltip" role="tooltip">
+    <span class="m-tooltip__text">{{ '@pry.restitution.lock' | i18n }}</span>
+  </div>
+</ng-template>

@@ -1,0 +1,22 @@
+@use 'projects/provoly/dashboard/styles/main';
+@use 'projects/provoly/dashboard/styles-theme/main-theme';
+
+// Base html-body
+@use './styles/base/html-body';
+@use './styles/base/app-header';
+
+@import '@angular/cdk/overlay-prebuilt.css';
+
+.o-workspace__dashboard.scrollable-dashboard {
+  overflow: auto;
+}
+
+.o-container {
+  display: flex;
+  flex-direction: column;
+
+  pry-dashboard {
+    flex: 1 1;
+    max-height: calc(100% - 100px);
+  }
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+    "name": "default"
+  },
+  {
+    "id": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+    "name": "categorie 1"
+  },
+  {
+    "name": "test",
+    "id": "102a06e4-21aa-4a10-bc88-e126d028564e"
+  },
+  {
+    "name": "test 2",
+    "id": "1fbb7398-a3ca-4d32-87cf-1ad888ee9d9e"
+  },
+  {
+    "name": "autre",
+    "id": "02b892dc-43f5-4fb0-8d11-6af9e172a77f"
+  }
+]

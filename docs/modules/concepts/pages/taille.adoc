@@ -1,0 +1,12 @@
+= Taille du dashboard
+
+== Taille fixe
+
+Le composant `pry-dashboard` est prévu pour s'adapter à son container. Cependant, pendant les déplacements ou redimensionnements de widgets, il est critique que la taille du dashboard ne se modifie pas (à vos risques et périls), et que le nombre de lignes/colonnes n'évolue plus (hors résolution de collisions).
+
+En effet, cela implique une modification de la taille des cellules et donc du calcul en nombre de cellules du déplacement, ce qui peut amener à des boucles.
+
+Si jamais il est impossible de fixer la taille du composant au global, une surcharge devrait permettre d'obtenir un état "drag en cours" de cette manière, pour fixer la taille spécifiquement pendant cette période-là.
+
+On surchargera alors les fonctions `dropping`, `droppingInWidget`, `dragLeave`, `dragMove`, `dragEnter`, `dragStart`, ...
+

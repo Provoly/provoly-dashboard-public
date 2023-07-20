@@ -1,0 +1,24 @@
+@use '../abstracts' as *;
+
+/* Organism - accordion */
+
+.o-accordion {
+  &__title {
+    display: flex;
+    align-items: center;
+    min-height: toRem(55);
+    padding: toRem(15) toRem(15);
+    margin-bottom: toRem(0);
+
+    &__btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: toRem(10);
+      font-size: 14px;
+      line-height: 18px;
+      font-weight: 700;
+      border: 0 solid transparent;
+    }
+  }
+}

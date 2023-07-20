@@ -1,0 +1,35 @@
+=== Select (pry-select)
+
+Le composant `+Select+` permet d’afficher une liste déroulante améliorée
+et est personnalisable pour chaque utilisation. Le composant hérite du
+"`ControlValueAccessor`" qui nous permet d’utiliser les propriétés de
+formulaires Angular.
+
+Les paramètres d’entrée du composant sont les suivants :
+
+- labelTranslate (défaut=false): Défini si les labels seront traduits ou non
+- baseTranslate: Base de la clé de traduction (ex: '`@pry.admin.`')
+- translationFn: Fonction de traduction pour les cas particuliers
+- translationFnArgs
+- clearable: Permet de supprimer la sélection de la liste déroulante
+- multiple: Permet d’autoriser la multiple sélection des éléments de la liste
+- multipleClearRight: Permet de mettre l’action de suppression à droite des éléments sélectionnés
+- placeholder: Texte à afficher lorsqu’aucune valeur n’est sélectionnée
+- required: Permet de rendre le champ requis
+- name: Nom du champ dans le formulaire
+- readonly: Permet de rendre le champ modifiable
+- disabled: Désactive la liste
+- items: Tableau de données
+- itemsAsOption: Permet de définir si on utilise la select par défaut ou le select de la librairie
+- bindData: Permet de transmettre les données naturellement au select
+- bindValue: Valeur utilisée dans la liste
+- bindLabel: Label utilisé dans la liste
+- bindIcon: Afficher un icon dans la liste
+- iconSize: Taille des icons
+- templateLabel: Permet de créer un template spécifique pour l’affichage des élements sélectionnés
+- templateOption: Permet de créer un template spécifique pour l’affichage des élements dans la liste
+- autocomplete: Permet de rechercher une valeur dans la liste
+
+Le paramètre de sortie du composant est le suivant :
+
+- ngModelChange: Permet de récupérer la valeur du composant

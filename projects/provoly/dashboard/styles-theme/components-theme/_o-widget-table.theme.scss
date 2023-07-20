@@ -1,0 +1,18 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - widget table */
+
+.o-widget--table {
+  background-color: white;
+
+  .a-table {
+    tbody {
+      tr {
+        &.context-menu-selected {
+          background-color: themed($theme-map, 'color', 'accent', 100);
+        }
+      }
+    }
+  }
+}

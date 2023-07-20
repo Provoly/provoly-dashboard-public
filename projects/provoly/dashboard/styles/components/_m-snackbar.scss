@@ -1,0 +1,52 @@
+@use '../abstracts' as *;
+
+/* Molecule - snackbar */
+
+.m-snackbar {
+  position: fixed;
+  z-index: 402;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: toRem(24);
+  padding: toRem(14) toRem(16);
+  opacity: 1;
+  border-radius: toRem(4);
+  box-shadow: 2px 3px 10px 2px rgba(0, 0, 0, 0.2);
+
+  &.-bottom {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 50%;
+    min-width: 10%;
+    min-height: toRem(48);
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: toRem(5);
+
+    .a-p {
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  &__action {
+    @extend %buttonUnstyled;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: 0;
+    margin-left: toRem(10);
+    padding: toRem(3) toRem(7);
+    border-radius: toRem(4);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

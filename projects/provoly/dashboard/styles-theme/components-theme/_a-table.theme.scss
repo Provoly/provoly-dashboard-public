@@ -1,0 +1,49 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Atom - table */
+
+.a-table {
+  background-color: white;
+  color: themed($theme-map, 'color', 'primary', 600);
+
+  thead {
+    tr {
+      border-bottom-color: themed($theme-map, 'color', 'primary', 700);
+
+      th {
+        color: themed($theme-map, 'color', 'primary', 600);
+
+        /*&:hover {
+          background-color: themed($theme-map, 'color', 'primary', 50);
+        }*/
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom-color: themed($theme-map, 'color', 'primary', 300);
+
+      &.is-selected,
+      &:hover {
+        td {
+          color: themed($theme-map, 'color', 'primary', 700);
+          background-color: themed($theme-map, 'color', 'primary', 200);
+
+          &.view-details {
+            .a-icon {
+              color: themed($theme-map, 'color', 'accent', 700);
+            }
+          }
+        }
+      }
+
+      &.is-selected {
+        td {
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}

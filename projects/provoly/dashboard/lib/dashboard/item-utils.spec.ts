@@ -1,0 +1,89 @@
+import { FieldType } from '@provoly/dashboard';
+import { Item } from '../core/model/item.interface';
+import { Attribute } from '../core/store/class/class.interface';
+import { ItemUtils } from './item-utils';
+
+const item: Item = {
+  id: 'a',
+  oClass: 'aaa',
+  attributes: {
+    integer: { value: 5, type: 'VALUE', visible: true },
+    decimal: { value: 3.4, type: 'VALUE', visible: true },
+    string: { value: 'a', type: 'VALUE', visible: true },
+    lat: { value: 44.5, type: 'VALUE', visible: true },
+    lng: { value: -0.88, type: 'VALUE', visible: true },
+    location: {
+      type: 'VALUE',
+      value: {
+        type: FieldType.POINT,
+        coordinates: [44.6, -0.89]
+      },
+      visible: true
+    },
+    multi: {
+      type: 'MULTI',
+      values: [
+        { value: 44.6, type: 'VALUE', visible: true },
+        { value: -0.89, type: 'VALUE', visible: true }
+      ]
+    }
+  }
+};
+
+describe('ItemUtils functions', () => {
+  describe('getAttributeCalculatedValue', () => {
+    it('should allow to correctly read values in item', () => {
+      expect(
+        ItemUtils.getAttributeCalculatedValue(item, {
+          id: 'sxxx',
+          name: 'string',
+          field: 'a',
+          multiValued: false
+        })
+      ).toEqual('a');
+      expect(
+        ItemUtils.getAttributeCalculatedValue(item, {
+          id: 'sxxx',
+          name: 'integer',
+          field: 'b',
+          multiValued: false
+        })
+      ).toEqual(5);
+    });
+    it('should allow to correctly read multivalued values in item', () => {
+      expect(
+        ItemUtils.getAttributeCalculatedValue(item, {
+          id: 'sxxx',
+          name: 'string',
+          field: 'a',
+          multiValued: false
+        })
+      ).toEqual('a');
+      expect(
+        ItemUtils.getAttributeCalculatedValue(item, {
+          id: 'sxxx',
+          name: 'multi',
+          field: 'b',
+          multiValued: true
+        })
+      ).toEqual([44.6, -0.89]);
+    });
+  });
+  describe('readGeometry', () => {
+    it('should give [0,0] if unknown property', () => {
+      expect(ItemUtils.readGeometry(item, 'point', undefined as unknown as Attribute)).toEqual(null);
+    });
+    it('should read from a single value', () => {
+      expect(
+        ItemUtils.readGeometry(item, 'point', {
+          id: 'sxxx',
+          name: 'location',
+          field: 'b',
+          multiValued: true
+        })
+          // @ts-ignore
+          .getCoordinates()
+      ).toEqual([4964849.289380002, -99078.33127925375]);
+    });
+  });
+});

@@ -1,0 +1,31 @@
+@use '../../styles/abstracts/index' as *;
+
+/* Organism - pry-dataset */
+
+.o-pry-dataset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: toRem(60);
+  padding-left: toRem(30);
+
+  &__search {
+    margin-left: auto;
+    position: relative;
+
+    .a-form-field {
+      padding-left: toRem(40);
+    }
+
+    pry-icon {
+      position: absolute;
+      left: 0.6875rem;
+      bottom: 0.5625rem;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
+  pry-dataset-card {
+    min-width: toRem(360);
+  }
+}

@@ -1,0 +1,202 @@
+<ng-container *ngIf="mode === 'directSave'">
+  <div
+    [pryTooltip]="infoTooltipDirectSave"
+    pryTooltipPosition="bottom"
+    [attr.aria-expanded]="saveTypeOpened"
+    aria-controls="directiveSave"
+    aria-describedby="infoTooltip_directSave"
+  >
+    <button
+      type="button"
+      #directiveSave
+      class="a-btn a-btn--secondary -size-md"
+      (click)="directSave()"
+      [disabled]="!(savePresentationActive$ | async)"
+    >
+      <ng-container *ngIf="label">{{ '@pry.toolbox.save' | i18n }} ({{ nbPages }})</ng-container>
+    </button>
+  </div>
+</ng-container>
+<ng-container *ngIf="mode === 'saveAs'">
+  <div
+    class="save-manifest-container"
+    [pryTooltip]="infoTooltipSaveAs"
+    pryTooltipPosition="bottom"
+    [attr.aria-expanded]="saveAsOpened"
+    aria-controls="saveModal"
+    aria-describedby="infoTooltip_saveAs"
+  >
+    <button
+      type="button"
+      #saveAs
+      class="a-btn a-btn--secondary -size-md"
+      (click)="toggleSaveAs()"
+      aria-haspopup="dialog"
+    >
+      <ng-container *ngIf="label">{{ '@pry.toolbox.saveView' | i18n }} ({{ nbPages }})</ng-container>
+    </button>
+  </div>
+</ng-container>
+
+<ng-template #templateSaveAs>
+  <div
+    class="o-modal"
+    (click)="$event.stopPropagation()"
+    id="saveModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dialog_saveModal"
+    (keydown.escape)="closeModals()"
+  >
+    <div class="o-modal__top">
+      <div class="o-modal__top__title">
+        <h2 class="a-h2" id="dialog_title">{{ '@pry.toolbox.rename' | i18n }}</h2>
+      </div>
+      <div class="o-modal__top__close">
+        <button class="a-btn a-btn--icon-only" #cross (keydown.shift.tab)="focusValidation()" (click)="toggleSaveAs()">
+          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+    <pry-stepper #stepper>
+      <pry-step>
+        <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.presentation.add.info' | i18n }}</h4>
+        <form>
+          <div class="m-form-label-field">
+            <label class="a-label" id="label-name" for="input-name">{{ '@pry.toolbox.manifest.name' | i18n }}</label>
+            <input
+              type="text"
+              id="input-name"
+              name="input-name"
+              class="a-form-field"
+              placeholder="{{ '@pry.toolbox.manifest.name' | i18n }}"
+              [ngModel]="currentManifest!.name"
+              (ngModelChange)="changeValue($event)"
+              aria-labelledby="label-name"
+              maxlength="30"
+              #input
+            />
+          </div>
+          <div class="m-form-label-field">
+            <label class="a-label" id="label-descr" for="input-descr">{{
+              '@pry.toolbox.manifest.description' | i18n
+            }}</label>
+            <input
+              type="text"
+              id="input-descr"
+              name="input-descr"
+              class="a-form-field"
+              placeholder="{{ '@pry.toolbox.manifest.description' | i18n }}"
+              [ngModel]="currentManifest!.description"
+              (ngModelChange)="changeDescr($event)"
+              aria-labelledby="label-name"
+              maxlength="200"
+            />
+          </div>
+          <div class="m-form-label-field">
+            <label class="a-label" for="presentation_image">{{ '@pry.presentation.form.image' | i18n }}</label>
+            <div class="o-file-input">
+              <pry-select-image
+                id="presentation_image"
+                (changed)="currentManifest!.image = $event"
+                [iconUrl]="currentManifest!.image"
+                [mode]="type"
+              ></pry-select-image>
+              <pry-checkbox [(ngModel)]="currentManifest!.cover" name="cover">
+                {{ '@pry.presentation.form.cover' | i18n }}
+              </pry-checkbox>
+            </div>
+          </div>
+
+          <div class="m-btn-group">
+            <button
+              type="button"
+              class="a-btn a-btn--secondary"
+              #cancel
+              (click)="toggleSaveAs()"
+              (keydown.tab)="disableNextStep()"
+            >
+              {{ '@pry.toolbox.manifest.close' | i18n }}
+            </button>
+            <button
+              type="submit"
+              class="a-btn a-btn--primary"
+              (click)="stepper.next()"
+              [disabled]="!isValid()"
+              (keydown.tab)="focusCrossElement()"
+            >
+              {{ '@pry.action.next' | i18n }}
+            </button>
+          </div>
+        </form>
+      </pry-step>
+      <pry-step>
+        <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.broadcast' | i18n }}</h4>
+        <pry-share [(ngModel)]="visibility" (ngModelChange)="changeVisibility($event)"></pry-share>
+        <div class="m-btn-group">
+          <button type="button" class="a-btn a-btn--secondary" (click)="stepper.prev()">
+            {{ '@pry.action.back' | i18n }}
+          </button>
+          <button
+            type="submit"
+            class="a-btn a-btn--primary"
+            #confirm
+            (click)="save()"
+            (keydown.tab)="focusCrossElement()"
+          >
+            {{ '@pry.restitution.broadcast' | i18n }}
+          </button>
+        </div>
+      </pry-step>
+    </pry-stepper>
+  </div>
+</ng-template>
+
+<ng-template #infoTooltipSaveAs>
+  <div class="m-tooltip" role="tooltip" id="infoTooltip_saveAs">
+    <span class="m-tooltip__text">{{ '@pry.toolbox.rename' | i18n }}</span>
+  </div>
+</ng-template>
+<ng-template #infoTooltipDirectSave>
+  <div class="m-tooltip" role="tooltip" id="infoTooltip_directSave">
+    <span class="m-tooltip__text">{{ '@pry.toolbox.save' | i18n }}</span>
+  </div>
+</ng-template>
+
+<ng-template #templateDirectSaveType>
+  <div
+    class="o-modal"
+    (click)="$event.stopPropagation()"
+    id="directiveSave"
+    role="dialog"
+    aria-labelledby="dialog_title"
+    (keydown.escape)="closeModals()"
+  >
+    <div class="o-modal__top">
+      <div class="o-modal__top__title">
+        <h2 class="a-h2" id="dialog_title_">{{ '@pry.toolbox.save' | i18n }}</h2>
+      </div>
+      <div class="o-modal__top__close">
+        <button class="a-btn a-btn--icon-only" #firstFocusdirective (click)="toggleDirectSaveType()">
+          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+    <div>
+      <h3>{{ '@pry.snack.pagesChanged' | i18n }}</h3>
+    </div>
+    <div class="m-btn-group">
+      <button class="a-btn a-btn--primary" (click)="save()">
+        {{ '@pry.toolbox.save' | i18n }}
+      </button>
+      <button class="a-btn a-btn--primary" (click)="rename()">
+        {{ '@pry.toolbox.rename' | i18n }}
+      </button>
+      <button class="a-btn a-btn--primary" (click)="restore()" (keydown.tab)="closeModals()">
+        {{ '@pry.toolbox.restore' | i18n }}
+      </button>
+    </div>
+  </div>
+</ng-template>

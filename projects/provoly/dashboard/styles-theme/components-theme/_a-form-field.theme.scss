@@ -1,0 +1,63 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Them Atom - form field */
+
+%a-form-field-text-theme {
+  @include typography-level(themed($theme-map, 'typography', 'form-field'));
+  border-color: themed($theme-map, 'color', 'primary', 400);
+  border-radius: toRem(4);
+  color: themed($theme-map, 'color', 'primary', 700);
+  background-color: themed($theme-map, 'color', 'primary', 'contrast', 700);
+
+  &[aria-invalid='true'] {
+    border-color: themed($theme-map, 'color', 'status', 'error');
+  }
+
+  &:focus {
+    border-color: themed($theme-map, 'color', 'accent', 600);
+  }
+
+  &:read-only,
+  &:disabled {
+    color: themed($theme-map, 'color', 'primary', 500);
+    background-color: themed($theme-map, 'color', 'primary', 200);
+  }
+
+  &::placeholder,
+  &::-webkit-input-placeholder {
+    color: themed($theme-map, 'color', 'primary', 500);
+  }
+}
+
+textarea.a-form-field {
+  @extend %a-form-field-text-theme;
+}
+
+.a-form-field {
+  &[type='text'],
+  &[type='date'],
+  &[type='number'] {
+    @extend %a-form-field-text-theme;
+  }
+
+  &[type='radio'] {
+    border-color: themed($theme-map, 'color', 'primary', 400);
+
+    &::before {
+      box-shadow: inset 1em 1em themed($theme-map, 'color', 'accent', 600);
+    }
+
+    &:disabled {
+      border-color: themed($theme-map, 'color', 'primary', 300);
+
+      &::before {
+        box-shadow: inset 1em 1em themed($theme-map, 'color', 'accent', 400);
+      }
+    }
+  }
+
+  &[aria-invalid='true'] {
+    border-color: themed($theme-map, 'color', 'status', 'error');
+  }
+}

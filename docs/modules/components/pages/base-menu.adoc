@@ -1,0 +1,32 @@
+=== Base menu (pry-base-menu)
+
+Le composant `+Base menu+` permet d’afficher une barre de menu
+verticale. C’est une classe template, c'est-à-dire qu’il faut créer son
+propre menu qui héritera de ce composant. Il sera ainsi possible de
+surcharger les méthodes `+init+` et `+select+` avec le comportement
+souhaité.
+
+* La méthode `+init+` permet de charger les données du menu.
+* La méthode `+select+` permet de faire une action au clic sur un lien
+du menu.
+
+[source,js]
+----
+export class SupervisionMenuComponent extends BaseMenuComponent {
+    constructor(store: Store, private router: Router, private route:ActivatedRoute) {
+        super(store);
+        this.baseMenuTranslation = '@pry.supervision.menus.';
+    }
+
+    override init() {
+        this.menus$ = this.store.select(SupervisionSelectors.menus);
+        this.highlightedMenu$ = this.store.select(SupervisionSelectors.highlightedMenu);
+    }
+
+    override select(menu: string): void {
+        const path = this.router.createUrlTree([menu], { relativeTo: this.route });
+        this.store.dispatch(SupervisionActions.routeTo({ path: path.toString() }));
+    }
+}
+----
+

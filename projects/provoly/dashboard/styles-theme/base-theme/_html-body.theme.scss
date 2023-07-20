@@ -1,0 +1,6 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+body {
+  background-color: themed($theme-map, 'color', 'primary', 200);
+}

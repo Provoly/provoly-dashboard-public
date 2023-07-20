@@ -1,0 +1,38 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme' as *;
+
+/**
+  Theme organism- Datas sources
+ */
+
+.o-datasources {
+  &__list {
+    &--selected {
+      .a-btn--icon-text {
+        color: themed($theme-map, 'color', 'primary', 600);
+        background-color: themed($theme-map, 'color', 'accent', 'contrast', 600);
+        box-shadow: themed($theme-map, 'decoration', 'shadow', 'default');
+        font-size: toRem(14);
+        font-weight: 500;
+
+        pry-icon {
+          background-color: themed($theme-map, 'color', 'accent', 600);
+          color: themed($theme-map, 'color', 'accent', 'contrast', 600);
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+
+  &__card,
+  .o-pry-card {
+    @extend %card-with-hover;
+
+    .a-p {
+      color: themed($theme-map, 'color', 'primary', 600);
+      font-size: toRem(14);
+      line-height: toRem(18);
+      font-weight: 700;
+    }
+  }
+}

@@ -1,0 +1,54 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Atom - range slider */
+
+/* Input Thumb */
+.a-range-slider[type='range']::-webkit-slider-thumb {
+  border-color: themed($theme-map, 'color', 'accent', 600);
+  background-color: themed($theme-map, 'color', 'accent', 500);
+  box-shadow: 0 0 2px 0 #555;
+}
+
+.a-range-slider[type='range']::-moz-range-thumb {
+  border-color: themed($theme-map, 'color', 'accent', 600);
+  background-color: themed($theme-map, 'color', 'accent', 500);
+  box-shadow: 0 0 2px 0 #555;
+}
+
+.a-range-slider[type='range']::-ms-thumb {
+  border-color: themed($theme-map, 'color', 'accent', 600);
+  background-color: themed($theme-map, 'color', 'accent', 500);
+  box-shadow: 0 0 2px 0 #555;
+}
+
+.a-range-slider[type='range']::-webkit-slider-thumb:hover {
+  border-color: themed($theme-map, 'color', 'accent', 700);
+  background: themed($theme-map, 'color', 'accent', 600);
+}
+
+.a-range-slider[type='range']::-moz-range-thumb:hover {
+  border-color: themed($theme-map, 'color', 'accent', 700);
+  background: themed($theme-map, 'color', 'accent', 600);
+}
+
+.a-range-slider[type='range']::-ms-thumb:hover {
+  border-color: themed($theme-map, 'color', 'accent', 700);
+  background: themed($theme-map, 'color', 'accent', 600);
+}
+
+.a-range-slider {
+  &__min,
+  &__max {
+    color: themed($theme-map, 'color', 'accent', 500);
+    opacity: 0.7;
+
+    &:before {
+      background-color: themed($theme-map, 'color', 'accent', 500);
+    }
+  }
+
+  &__selected-value {
+    color: themed($theme-map, 'color', 'accent', 500);
+  }
+}

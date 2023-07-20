@@ -1,0 +1,8 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: toRem(themed($theme-map, 'decoration', 'border-radius', 'scrollbar-thumb'));
+  background: themed($theme-map, 'color', 'primary', 400);
+}

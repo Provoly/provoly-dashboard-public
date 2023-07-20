@@ -1,0 +1,11 @@
+* Widgets fournis
+** xref:install.adoc[Installation]
+** xref:chart.adoc[Graphiques]
+** xref:detail.adoc[Détail]
+** xref:graph.adoc[Relations]
+** xref:iframe.adoc[Iframe]
+** xref:image.adoc[Image]
+** xref:tile.adoc[Tuiles]
+** xref:map.adoc[Carte]
+** xref:table.adoc[Tableau]
+** xref:template.adoc[Template]

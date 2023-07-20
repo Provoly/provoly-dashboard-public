@@ -1,0 +1,16 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Atom - form label */
+.a-label {
+  @include typography-level(themed($theme-map, 'typography', 'label'));
+
+  &--help {
+    color: themed($theme-map, 'color', 'primary', 700);
+    font-size: toRem(13);
+  }
+
+  &.-error {
+    color: themed($theme-map, 'color', 'status', 'error');
+  }
+}

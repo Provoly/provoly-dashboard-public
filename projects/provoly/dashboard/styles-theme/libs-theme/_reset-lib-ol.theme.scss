@@ -1,0 +1,38 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Reset lib ol */
+
+.ol-control button {
+  border-color: themed($theme-map, 'color', 'primary', 400);
+  background-color: themed($theme-map, 'color', 'grey', 50);
+}
+
+.ol-zoom {
+  .ol-zoom-in,
+  .ol-zoom-out {
+    color: themed($theme-map, 'color', 'primary', 500);
+    background-color: themed($theme-map, 'color', 'grey', 50);
+
+    &:hover,
+    &:focus {
+      background-color: themed($theme-map, 'color', 'grey', 200);
+    }
+  }
+}
+
+.ol-searchbar button,
+.layer-switcher button {
+  border-color: themed($theme-map, 'color', 'primary', 400) !important;
+  background-color: themed($theme-map, 'color', 'grey', 50) !important;
+}
+
+.ol-control button:hover,
+.ol-control button:focus {
+  background-color: themed($theme-map, 'color', 'grey', 200) !important;
+}
+
+.ol-searchbar,
+.layer-switcher {
+  border-color: themed($theme-map, 'color', 'primary', 400);
+}

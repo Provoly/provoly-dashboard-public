@@ -1,0 +1,113 @@
+@use '../abstracts' as *;
+
+/* Organism - Base layout */
+
+.o-base-layout {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: minmax(200px, 320px) 1fr;
+  grid-template-areas:
+    'title toolbox'
+    'content content';
+  width: 100%;
+  height: 100%;
+  text-align: start;
+
+  &.is-menu-open {
+    grid-template-areas:
+      'title toolbox'
+      'menu content';
+  }
+
+  &__title {
+    grid-area: title;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: toRem(20) toRem(15) toRem(20) toRem(20);
+
+    [class*='a-h'] {
+      padding-bottom: 0;
+    }
+
+    .a-btn {
+      @extend %stretched-link;
+
+      &[aria-pressed='true'] .a-icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &__toolbox {
+    grid-area: toolbox;
+    display: flex;
+    border-bottom-width: toRem(1);
+    border-bottom-style: solid;
+
+    &__actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 toRem(25);
+
+      .m-actions-list {
+        gap: toRem(20);
+      }
+    }
+  }
+
+  &__menu {
+    grid-area: menu;
+    overflow-y: auto;
+  }
+
+  &__contentwrapper {
+    grid-area: content;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+
+    &.-simple-layout {
+      display: block;
+    }
+  }
+
+  &__content {
+    position: relative;
+    flex: 1;
+    overflow: auto;
+    height: 100%;
+    padding: toRem(25) toRem(24) toRem(15) toRem(24);
+  }
+
+  .o-base-layout__panel {
+    position: relative;
+    overflow: auto;
+    width: 0%;
+    height: 100%;
+
+    &__content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      display: none;
+      width: toRem(320);
+      height: 100%;
+    }
+
+    &.is-open {
+      overflow: hidden;
+      width: toRem(320);
+      -webkit-transition: width ease-in-out 0.6s;
+      transition: width ease-in-out 0.6s;
+
+      .o-base-layout__panel__content {
+        display: block;
+      }
+    }
+  }
+}

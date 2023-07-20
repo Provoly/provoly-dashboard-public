@@ -1,0 +1,23 @@
+<pry-notification-css></pry-notification-css>
+<div
+  class="m-notifications"
+  *ngIf="notifications$ | async as notifications"
+  [class.has-unread]="notifications.length > 0"
+>
+  <button
+    type="button"
+    class="a-btn a-btn--icon-only"
+    aria-controls="notifications_list"
+    [attr.aria-expanded]="isOpened"
+    aria-haspopup="true"
+    id="read_notifications"
+    #ref
+    (click)="toggle()"
+    [title]="'@pry.notif.notifications' | i18n: { count: notifications.length }"
+  >
+    <pry-icon iconSvg="notifications"></pry-icon>
+    <span *ngIf="notifications.length > 0" class="a-pastille -unread"
+      >{{ notifications.length }} <span class="u-visually-hidden">{{ '@pry.notif.label' | i18n | lowercase }}</span>
+    </span>
+  </button>
+</div>

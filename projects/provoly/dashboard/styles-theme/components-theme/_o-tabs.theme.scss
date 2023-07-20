@@ -1,0 +1,37 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - tabs */
+
+.o-tabs {
+  &__list {
+    &__btn[role='tab'] {
+      color: themed($theme-map, 'color', 'primary', 600);
+
+      &[aria-selected='true'] {
+        &:before {
+          border-color: themed($theme-map, 'color', 'accent', 600);
+        }
+      }
+
+      &[aria-selected='false'] {
+        &:before {
+          border-color: themed($theme-map, 'color', 'primary', 300);
+        }
+      }
+    }
+  }
+
+  &__panels {
+    &__item {
+      &__content__actions {
+        &:hover {
+          &:before {
+            border-radius: toRem(4);
+            background-color: themed($theme-map, 'color', 'primary', 100);
+          }
+        }
+      }
+    }
+  }
+}

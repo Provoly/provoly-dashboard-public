@@ -1,0 +1,60 @@
+@use '../../../styles/abstracts/index' as *;
+
+/* Organism - widget detail */
+/* Extends o-widget */
+
+.o-widget--detail {
+  position: relative;
+  overflow: auto;
+  height: 100%;
+
+  .is-empty {
+    padding: toRem(30);
+  }
+
+  &__content {
+    padding: toRem(30);
+
+    .o-properties__list {
+      padding: 0;
+    }
+  }
+
+  &__datas {
+    padding: 0 toRem(15);
+  }
+
+  &__header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: toRem(15);
+    padding: toRem(10);
+    border-radius: toRem(5) toRem(5) 0 0;
+    cursor: pointer;
+
+    &__title {
+      font-size: toRem(15);
+    }
+  }
+
+  &__category {
+    display: flex;
+    align-items: center;
+    gap: toRem(10);
+    margin-top: toRem(20);
+    padding: toRem(10) 0;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  &__header,
+  &__category {
+    p {
+      margin-bottom: 0;
+    }
+  }
+}

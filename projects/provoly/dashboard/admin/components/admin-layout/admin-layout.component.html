@@ -1,0 +1,22 @@
+<div class="o-base-layout" [ngClass]="{ 'is-menu-open': menuOpen$ | async }">
+  <pry-admin-title class="o-base-layout__title"></pry-admin-title>
+  <pry-admin-menu *ngIf="menuOpen$ | async" class="o-base-layout__menu"></pry-admin-menu>
+  <pry-base-toolbox
+    class="o-base-layout__toolbox"
+    [baseToolboxTranslation]="baseToolboxTranslation"
+    [actions$]="actions$"
+    [subActions$]="subActions$"
+  ></pry-base-toolbox>
+
+  <div class="o-base-layout__contentwrapper">
+    <div class="o-base-layout__content">
+      <router-outlet></router-outlet>
+    </div>
+
+    <div class="o-base-layout__panel" [class.is-open]="panelOpen$ | async">
+      <div class="o-base-layout__panel__content">
+        <ng-template #adminPanel></ng-template>
+      </div>
+    </div>
+  </div>
+</div>

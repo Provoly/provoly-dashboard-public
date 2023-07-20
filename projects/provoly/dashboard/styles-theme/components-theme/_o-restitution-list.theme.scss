@@ -1,0 +1,27 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+.o-catalog {
+  &__list {
+    &__item {
+      &__libelle {
+        font-size: toRem(14);
+        line-height: toRem(18);
+        font-weight: 500;
+      }
+
+      .is-private {
+        color: themed($theme-map, 'color', 'primary', 500);
+      }
+
+      &__action {
+        border-top: 1px themed($theme-map, 'color', 'primary', 300) solid;
+
+        .a-btn--ghost {
+          font-size: toRem(14);
+          line-height: toRem(18);
+        }
+      }
+    }
+  }
+}

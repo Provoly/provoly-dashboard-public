@@ -1,0 +1,105 @@
+@use '../abstracts' as *;
+
+/* Atom - range slider */
+.a-range-slider-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  height: 60px;
+  padding-bottom: 7px;
+}
+
+.a-range-slider {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  transform: translateY(-20px);
+
+  &[type='range'] {
+    width: 100%;
+    height: 7px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.6);
+    background-image: linear-gradient(#569a9c, #569a9c);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    box-shadow: 0 0 2px 2px rgba(23, 129, 132, 0.2);
+    -webkit-appearance: none;
+  }
+
+  /* Input Thumb */
+  &[type='range']::-webkit-slider-thumb {
+    @include rangeThumbStyle();
+  }
+
+  &[type='range']::-moz-range-thumb {
+    @include rangeThumbStyle();
+  }
+
+  &[type='range']::-ms-thumb {
+    @include rangeThumbStyle();
+  }
+
+  /* Input Track */
+  &[type='range']::-webkit-slider-runnable-track {
+    @include rangeTrackStyle();
+  }
+
+  &[type='range']::-moz-range-track {
+    @include rangeTrackStyle();
+  }
+
+  &[type='range']::-ms-track {
+    @include rangeTrackStyle();
+  }
+
+  // Min & max value display under slide track
+  &__min,
+  &__max {
+    position: absolute;
+    z-index: 0;
+    bottom: -6px;
+    width: 20px;
+    color: #178184;
+    opacity: 0.7;
+    font-size: 12px;
+    text-align: center;
+
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: -11px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 10px;
+      background-color: #178184;
+      border-radius: 2px;
+    }
+  }
+
+  &__min {
+    left: 1px;
+  }
+
+  &__max {
+    right: 1px;
+  }
+
+  // Selected value
+  &__selected-value {
+    position: absolute;
+    top: -3px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    height: 22px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+}

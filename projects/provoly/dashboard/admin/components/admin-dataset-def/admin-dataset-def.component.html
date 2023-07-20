@@ -1,0 +1,72 @@
+<div class="o-base-container">
+  <h1 class="a-h1">{{ '@pry.admin.dataset-def.title' | i18n }}</h1>
+  <ng-container *ngIf="datasetDefList$ | async as datasetDefList">
+    <table
+      class="a-table"
+      prySortTable
+      prySortActive="name"
+      prySortDirection="asc"
+      (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
+    >
+      <caption>
+        {{
+          '@pry.admin.dataset-def.title' | i18n
+        }},
+        {{
+          '@pry.action.sortableColumnHeader' | i18n
+        }}
+      </caption>
+      <thead>
+        <tr>
+          <th></th>
+          <th *ngFor="let conf of configHeader" [prySortHeader]="conf.label">{{ conf.label }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let datasetDef of datasetDefList | prySortData: sortActive : sortDirection"
+          (click)="selectDataset(datasetDef)"
+          [class.is-selected]="(selectedDatasetDef$ | async) === datasetDef.id"
+        >
+          <td class="view-details">
+            <button
+              [id]="'button-dataset-def-' + datasetDef.id"
+              type="button"
+              class="a-btn a-btn--icon-only"
+              title="{{ '@pry.action.viewDetails' | i18n }}"
+              [attr.aria-expanded]="(selectedDatasetDef$ | async) === datasetDef.id"
+              aria-haspopup
+              [attr.aria-controls]="'panel-dataset-def-' + datasetDef.id"
+            >
+              <span class="u-visually-hidden">{{ datasetDef.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
+              <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
+            </button>
+          </td>
+          <td>{{ datasetDef.name }}</td>
+          <td>{{ datasetDef.oClass | translateId: { type: 'class', output: 'name' } | async }}</td>
+          <td>{{ '@pry.admin.dataset-def.' + datasetDef.type | i18n }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</div>
+
+<pry-modal
+  [titleModal]="'@pry.toolbox.rename' | i18n"
+  [validateLabel]="'@pry.toolbox.manifest.check' | i18n"
+  [validateAction]="validateAction"
+  [cancelLabel]="'@pry.toolbox.manifest.close' | i18n"
+  [cancelAction]="cancelAction"
+  [opened]="this.editOpened"
+>
+  <div class="field__input">
+    <span>{{ '@pry.toolbox.manifest.name' | i18n }}</span>
+    <input
+      type="text"
+      (keyup.enter)="validateName(input.value)"
+      [ngModel]="labelDatasetSelected"
+      (ngModelChange)="changeValue($event)"
+      #input
+    />
+  </div>
+</pry-modal>

@@ -1,0 +1,35 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Organism - component pry stepper */
+.o-pry-stepper {
+  .m-stepper-item {
+    &__count {
+      background-color: #c2d1d9;
+
+      &.-active {
+        // background-color: #424B5A;
+        background-color: themed($theme-map, 'color', 'accent', 700);
+      }
+
+      &.-complete {
+        // background-color: #6C7784;
+        background-color: themed($theme-map, 'color', 'accent', 400);
+      }
+    }
+  }
+
+  .m-stepper-line {
+    background: themed($theme-map, 'color', 'accent', 100);
+
+    &__percent {
+      &.-active {
+        background-color: themed($theme-map, 'color', 'accent', 800);
+      }
+
+      &.-complete {
+        background-color: themed($theme-map, 'color', 'accent', 600);
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+=== Problèmes de compilation
+
+Il faut probablement ajouter un `"skipLibCheck": true` à votre
+`tsConfig`.
+
+=== global is not defined or buffer is not supported on this platform
+
+Cette erreur arrive à cause de la dépendance shpjs qui utilise arrayBuffer.
+Il faut ajouter dans le `polyfill.ts`:
+
+[source,typescript]
+----
+import { Buffer } from 'buffer';
+(window as any)['global'] = window;
+(window as any)['Buffer'] = (window as any)['Buffer'] || Buffer;
+----
+
+=== Problématique avec le router
+
+Dans la librairie, nous nous efforçons de rajouter des fonctionnalités multi-écran, le routage étant inclus dans celui-ci.
+En conséquence, c’est généralement une mauvaise idée de charger un manifest sur une route particulière, car cette action a de fortes chances d’interférer avec la construction des manifests.
+Utiliser le chargement de manifests prévu dans la lib est une meilleure idée.

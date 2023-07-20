@@ -1,0 +1,150 @@
+<form class="o-form" [formGroup]="attrForm" (ngSubmit)="addAttribute()">
+  <div class="m-form-label-field -width-sm">
+    <label class="a-label" for="attr_name">{{ '@pry.admin.classes.attributes.name' | i18n }}</label>
+    <input id="attr_name" type="text" class="a-form-field" formControlName="name" required />
+    <label class="a-label a-label--help -error" *ngIf="nameAlreadyExists$ | async">{{
+      '@pry.admin.exists' | i18n
+    }}</label>
+    <div *ngIf="attrForm.get('name')?.invalid">
+      <div *ngIf="attrForm.get('name')?.hasError('required')">
+        <label class="a-label a-label--help -error" for="attr_name">{{ '@pry.admin.required' | i18n }}</label>
+      </div>
+      <div *ngIf="attrForm.get('name')?.hasError('minlength')">
+        <label class="a-label a-label--help -error" for="attr_name">{{
+          '@pry.admin.minLength' | i18n: { len: 3 }
+        }}</label>
+      </div>
+      <div *ngIf="attrForm.get('name')?.hasError('maxlength')">
+        <label class="a-label a-label--help -error" for="attr_name">{{
+          '@pry.admin.maxLength' | i18n: { len: 100 }
+        }}</label>
+      </div>
+      <div *ngIf="attrForm.get('name')?.hasError('whitespace') && !attrForm.get('name')?.hasError('minlength')">
+        <label class="a-label a-label--help -error" for="attr_name">{{ '@pry.admin.noWhitespace' | i18n }}</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="m-form-label-field -width-sm">
+    <label class="a-label" for="type">{{ '@pry.admin.classes.attributes.field' | i18n }}</label>
+    <pry-select
+      id="type"
+      class="a-pry-select"
+      formControlName="field"
+      [labelTranslate]="true"
+      [items]="fields$ | async"
+      bindValue="id"
+      bindLabel="name"
+      [isForm]="true"
+      required="true"
+    ></pry-select>
+    <div *ngIf="attrForm.get('field')?.invalid">
+      <div *ngIf="attrForm.get('field')?.hasError('required')">
+        <label class="a-label a-label--help -error">{{ '@pry.admin.required' | i18n }}</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="m-form-label-field -width-sm">
+    <label class="a-label" for="category">{{ '@pry.admin.classes.attributes.category' | i18n }}</label>
+    <pry-select
+      id="category"
+      class="form-control"
+      formControlName="category"
+      [labelTranslate]="true"
+      [items]="categories$ | async"
+      (click)="showCategory()"
+      bindValue="id"
+      bindLabel="name"
+      [isForm]="true"
+      [readonly]="true"
+    ></pry-select>
+  </div>
+
+  <div class="m-form-label-field -width-sm">
+    <pry-checkbox formControlName="multiValued" ngDefaultControl>{{
+      '@pry.admin.classes.attributes.multiValued' | i18n
+    }}</pry-checkbox>
+  </div>
+
+  <div class="m-btn-group -width-sm">
+    <button
+      type="button"
+      class="a-btn a-btn--secondary"
+      (click)="goBack()"
+      [innerHTML]="'@pry.admin.cancel' | i18n"
+    ></button>
+    <button
+      *pryAccess="{ module: 'admin', page: 'classes', action: 'add_attribute' }"
+      class="a-btn a-btn--primary"
+      type="submit"
+      [disabled]="attrForm.invalid || nameAlreadyExists"
+      [innerHTML]="(selectedAttribute ? '@pry.admin.edit' : '@pry.admin.create') | i18n"
+    ></button>
+  </div>
+</form>
+
+<ng-template #template>
+  <div class="o-modal o-modal--selector">
+    <div class="o-modal__top">
+      <div class="o-modal__top__title">
+        <h2 class="a-h2" id="dialog_title">
+          {{ '@pry.admin.classes.category.select' | i18n }}
+        </h2>
+      </div>
+      <div class="o-modal__top__close">
+        <button class="a-btn a-btn--icon-only" (click)="closeCategory()">
+          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+    <form (ngSubmit)="addCategory()">
+      <div class="m-form-label-field selector">
+        <label class="a-label" for="name-search">{{ '@pry.admin.classes.category.searchOrCreate' | i18n }}</label>
+        <input
+          type="text"
+          class="a-form-field"
+          (input)="search($event)"
+          [(ngModel)]="catToAdd.name"
+          name="name"
+          id="name-search"
+        />
+      </div>
+
+      <table class="a-table">
+        <caption>
+          {{
+            '@pry.admin.classes.category.name' | i18n
+          }}
+        </caption>
+        <thead>
+          <tr>
+            <th scole="col">{{ '@pry.admin.classes.category.name' | i18n }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cat of categories$ | async">
+            <td>
+              <button type="button" class="a-btn a-btn--ghost select-it" (click)="setCategory(cat)">
+                <span class="u-visually-hidden">{{ '@pry.admin.classes.category.selectIt' | i18n }}</span>
+                {{ cat.name }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-container *ngIf="(categories$ | async)?.length === 0">
+        <p class="a-p a-p--create">
+          <strong>{{ catToAdd.name }} </strong>
+          <span [innerHTML]="'@pry.admin.classes.category.add' | i18n"></span>
+        </p>
+        <button
+          type="submit"
+          class="a-btn a-btn--primary"
+          [innerHTML]="'@pry.admin.classes.category.create' | i18n"
+        ></button>
+      </ng-container>
+    </form>
+  </div>
+</ng-template>

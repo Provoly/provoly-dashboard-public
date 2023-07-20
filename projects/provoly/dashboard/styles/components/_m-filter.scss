@@ -1,0 +1,7 @@
+@use '../abstracts' as *;
+
+pry-filter-instanciator {
+  display: flex;
+  justify-content: space-around;
+  padding: toRem(10);
+}

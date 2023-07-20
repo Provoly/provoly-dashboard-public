@@ -1,0 +1,90 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Molecule - notifications */
+.m-notifications {
+  .a-btn {
+    color: themed($theme-map, 'color', 'accent', 600);
+
+    &:before {
+      background-color: themed($theme-map, 'color', 'accent', 50);
+    }
+
+    &:hover {
+      transition: none;
+      color: themed($theme-map, 'color', 'accent', 'contrast', 600);
+
+      &:before {
+        background-color: themed($theme-map, 'color', 'accent', 600);
+      }
+    }
+  }
+
+  &.has-unread {
+    .a-btn {
+      color: themed($theme-map, 'color', 'status', 'error');
+
+      &:before {
+        background: themed($theme-map, 'color', 'status', 'error');
+        opacity: 0.1;
+      }
+
+      &:hover,
+      &[aria-expanded='true'] {
+        transition: none;
+        color: white;
+
+        &:before {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+.m-notifications-list {
+  background-color: white;
+  box-shadow: themed($theme-map, 'decoration', 'shadow', 'notification');
+
+  &__header {
+    .a-p.none {
+      color: themed($theme-map, 'color', 'primary', 600);
+    }
+  }
+
+  &__items {
+    &__li {
+      &__txt {
+        .a-h3 {
+          font-size: toRem(16);
+        }
+
+        .a-p,
+        a {
+          @include typography-level(themed($theme-map, 'typography', 'notification'));
+        }
+
+        .a-p {
+          &.date {
+            color: themed($theme-map, 'color', 'primary', 500);
+          }
+        }
+
+        a {
+          text-decoration: underline;
+        }
+      }
+
+      // Separator line
+      border-top: 1px themed($theme-map, 'color', 'primary', 300) solid;
+
+      .a-btn.a-btn--deletenotification {
+        color: themed($theme-map, 'color', 'primary', 500);
+
+        &:hover {
+          color: themed($theme-map, 'color', 'primary', 600);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+[
+  {
+    "id": "334c1229-61e7-4807-aeaa-edaf16ec2273",
+    "relationType": {
+      "id": "2f021992-5fb0-42d3-9646-0affccb98105",
+      "name": "est accidentée"
+    },
+    "attributeSource": {
+      "id": "5b9d6408-ec70-461d-921f-88ef6ebb6cf6",
+      "name": "id_mutation",
+      "field": "619c7c3c-070d-41d3-b61e-60ed854c39e2",
+      "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+      "multiValued": false,
+      "oclass": "06406e7e-37cd-41ce-b5fc-36d233e5ae5c"
+    },
+    "attributeDestination": {
+      "id": "3010e2c4-ef24-40fb-a72b-6757df8017f0",
+      "name": "latitude",
+      "field": "59853619-9773-418a-ace5-70b80fd4dc74",
+      "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+      "multiValued": false,
+      "oclass": "17b90da3-f448-4cc3-bfd8-74c8b8481590"
+    }
+  }
+]

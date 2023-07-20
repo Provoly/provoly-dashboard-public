@@ -1,0 +1,6 @@
+=== Images `+image.service.ts+`
+
+Gestion des images, autant en récupération qu’en upload, avec un backend
+pry, gérant éventuellement l’authentification. À surcharger si on
+utilise un backend autre que pry, et changer la façon d’accéder à ces
+données.

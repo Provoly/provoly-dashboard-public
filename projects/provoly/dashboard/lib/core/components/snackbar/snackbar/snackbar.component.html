@@ -1,0 +1,13 @@
+<div
+  class="m-snackbar -bottom"
+  [ngClass]="typeClass"
+  [@panelState]="{ value: 'visible', params: { transform: transformOptions, transition: transitionOptions } }"
+  *ngIf="!hiddenFromAction"
+  [style.bottom.px]="listIndex * 60"
+>
+  <div class="m-snackbar__content">
+    <pry-icon [iconSvg]="icon"></pry-icon>
+    <p class="a-p">{{ data.message }}</p>
+    <button class="m-snackbar__action" *ngIf="!!data.action" (click)="actionClick()">{{ data.action }}</button>
+  </div>
+</div>

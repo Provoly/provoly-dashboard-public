@@ -1,0 +1,150 @@
+@use '../../styles/abstracts/index' as *;
+
+/* Organism - pry search tools */
+.o-pry-search-tools-wrapper {
+  display: block;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  transition: all 300ms ease-in-out;
+
+  &.is-close {
+    width: 50px;
+
+    .o-pry-search-tools__content,
+    .o-pry-search-tools__footer {
+      opacity: 0;
+    }
+  }
+
+  &.is-mono:not(.is-close) {
+    width: 700px;
+  }
+}
+
+.o-pry-search-tools {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  transition: all 300ms ease-in-out;
+
+  &.is-close {
+    width: 50px;
+    border-right-width: 1px;
+    border-right-style: solid;
+  }
+
+  &.is-mono:not(.is-close) {
+    width: 700px;
+  }
+
+  &__header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: toRem(64);
+    padding: toRem(22) toRem(15);
+    border-bottom-width: toRem(1);
+    border-bottom-style: solid;
+
+    &__title {
+      display: flex;
+      gap: toRem(20);
+      align-items: center;
+
+      .a-h2,
+      .a-h3 {
+        padding-bottom: 0;
+      }
+    }
+
+    button#hide_search {
+      position: absolute;
+      right: toRem(14);
+      top: auto;
+      left: auto;
+
+      &[aria-pressed='true'] {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: toRem(20) toRem(8) toRem(8) toRem(8);
+
+    &__full {
+      flex: 1;
+      width: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    &__button-search {
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+
+      pry-choose-widget {
+        height: auto;
+      }
+    }
+
+    #btn_reset {
+      @include outlineOnFocus($border-radius: 8px);
+      margin-right: toRem(10);
+      margin-bottom: toRem(30);
+      padding: 0 toRem(8);
+    }
+
+    pry-share {
+      padding: 0 toRem(10);
+    }
+  }
+
+  &__footer {
+    &__close {
+      opacity: 0;
+    }
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: toRem(16) auto 0 auto;
+    padding: 0 toRem(15);
+    border-top-width: toRem(1);
+    border-top-style: solid;
+
+    &__params {
+      cursor: pointer;
+    }
+
+    .save-query-button {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin: 0;
+      padding-left: 0;
+
+      &:disabled {
+        opacity: 0.5;
+      }
+
+      &__text {
+        padding-left: toRem(4);
+        font-size: toRem(14);
+      }
+    }
+  }
+}

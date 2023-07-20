@@ -1,0 +1,185 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "932c8ea9-4378-43c2-96da-fd6fcc0a9f79"
+  },
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "provoly-dashboard": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "allowedCommonJsDependencies": [
+              "base64-js",
+              "js-sha256",
+              "jszip",
+              "shpjs",
+              "dagre",
+              "webcola",
+              "mapbox-to-css-font",
+              "webfont-matcher/lib/fonts/google.js",
+              "fast-deep-equal/es6",
+              "xml-utils/find-tags-by-name.js",
+              "xml-utils/get-attribute.js",
+              "lru-cache",
+              "web-worker",
+              "pbf",
+              "rbush",
+              "json-stringify-pretty-compact",
+              "clone",
+              "fast-deep-equal",
+              "fast-json-stable-stringify",
+              "litegraph.js",
+              "ol-layerswitcher",
+              "earcut"
+            ],
+            "outputPath": "dist/provoly-dashboard",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "manifests",
+                "output": "/manifests"
+              },
+              {
+                "glob": "**/*",
+                "input": "data",
+                "output": "/data"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/provoly/dashboard/assets",
+                "output": "/assets/"
+              }
+            ],
+            "styles": [
+              "src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "4mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "5.5kb",
+                  "maximumError": "8kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "namedChunks": true,
+              "sourceMap": true,
+              "commonChunk": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "provoly-dashboard:build:production"
+            },
+            "development": {
+              "browserTarget": "provoly-dashboard:build:development",
+              "port": 4201
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "provoly-dashboard:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-builders/jest:run",
+          "options": {
+            "polyfills": [
+              "src/polyfills.ts"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": [
+              "scss"
+            ],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    },
+    "@provoly/dashboard": {
+      "projectType": "library",
+      "root": "projects/provoly/dashboard",
+      "sourceRoot": "projects/provoly/dashboard",
+      "prefix": "pry",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/provoly/dashboard/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/provoly/dashboard/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/provoly/dashboard/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-builders/jest:run",
+          "options": {
+            "tsConfig": "projects/provoly/dashboard/tsconfig.spec.json"
+          }
+        }
+      }
+    }
+  }
+}

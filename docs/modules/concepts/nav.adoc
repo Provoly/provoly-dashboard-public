@@ -1,0 +1,7 @@
+* Concepts
+** xref:taille.adoc[Taille du dashboard]
+** xref:jdd.adoc[Jeux de données]
+** xref:roles.adoc[Rôles et accès]
+** xref:css-atobem.adoc[Methodologie CSS ATOBEM]
+** xref:css-architecture.adoc[Architecture CSS de la lib]
+** xref:collisions.adoc[Algorithme de résolution de collisions entre widgets]

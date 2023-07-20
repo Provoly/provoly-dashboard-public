@@ -1,0 +1,147 @@
+=== Utiliser une version de NodeJS compatible
+
+Version 16+
+
+=== Ajouter le css
+
+Import du CSS de la lib, ajouter dans le style.scss de votre application :
+
+[source,scss]
+----
+@use 'node_modules/@provoly/dashboard/styles/main';
+@use 'node_modules/@provoly/dashboard/styles-theme/main-theme';
+----
+
+Import avec gestion du theming, voir détails ici : ** xref:howtos:css-theming.adoc[Theming : architecture et surcharge du thème css de la librairie ]
+
+
+=== Ajouter NGRX, ngx-translate, @angular/cdk et @ng-select/ng-select
+
+Ajouter les librairies, ainsi que les initialisations (Module.forRoot…),
+dont notamment Overlay.
+
+=== Installer en tant que dépendance
+
+`+npm install --save @provoly/dashboard+`
+
+=== Ajouter les dépendances transitives
+
+Selon les parties de la librairie que vous souhaitez utiliser, ajouter
+les dépendances décrites ci-dessous:
+
+* pour charts: vega, vega-embed, vega-lite
+* pour graph: @swimlane/ngx-graph
+* pour map: ol, ol-mapbox-style, shpjs, geojson-to-kml, buffer
+* pour le moteur de transformation: litegraph.js
+
+NOTE: Vous devez vous adapter aux versions proposées dans le package.json de la version utilisée.
+
+=== Récupérer les assets
+
+À ajouter dans la partie `+assets+` du build angular.json:
+
+[source,json]
+----
+{ "glob": "**/*", "input": "./node_modules/@provoly/dashboard/assets", "output": "/assets/" }
+----
+
+=== Ajouter la librairie à un projet
+
+Il faut ajouter le module en question à l’application. Il faut aussi lui
+donner le set de widgets à utiliser. Si on veut les lazy loader, il
+faudra alors un peu plus de code, comme on peut le voir ci-dessous (en
+mode "`load`", par opposition au mode "`component`"), ou alors utiliser
+la fonction `+widgetLoader+` fournie par la librairie.
+
+Il est aussi possible de paramétrer les tooltips. Il existe un tooltip
+par défaut que l’on importe comme l’exemple ci-dessous grâce à la
+fonction `+tooltipLoader+`.
+
+De la même façon, il est possible de paramétrer des types de filtres.
+La librairie fournit 3 types: Texte, Liste et Date importable avec la fonction `+filterLoader+`
+de la même façon que les tooltips. Ces types de filtres permettront ensuite de pouvoir
+ajouter des filtres sur ses présentations.
+
+[source,js]
+----
+const loadWidgetMap = async (injector: Injector) => {
+    const { WidgetMapModule } = await import('@provoly/dashboard/widgets/widget-map');
+    const moduleRef = createNgModuleRef(WidgetMapModule, injector);
+    return moduleRef.instance.getComponent();
+};
+
+PryDashboardModule.forRoot(
+    {
+        image: { name: 'image', component: WidgetImageComponent },
+        map: { name: 'map', load: loadWidgetMap },
+        detail: {
+            name: 'detail',
+            load: () =>
+                import('@provoly/dashboard/widgets/widget-detail').then((module) =>
+                    widgetLoader(module, 'WidgetDetailModule')
+                )
+        },
+    },
+    {
+        path: 'dashboard',
+        mapUrl: '<url server OpenMapTiles>',
+        pryUrl: 'http://localhost:8080'
+    },
+    {
+        attribute: {
+            name: 'attribute',
+            load: () =>
+                import('@provoly/dashboard/tooltips/attribute').then((module) =>
+                    tooltipLoader(module, 'PryAttributeTooltipModule'))
+        }
+    },
+    {
+        list: {
+        name: 'list',
+        load: () =>
+          import('@provoly/dashboard/filters/list').then((module) => filterLoader(module, 'PryListFilterModule'));
+        }
+    }
+),
+----
+
+=== Ajouter la snackbar
+
+Pour profiter de la snackbar pry, il convient de l’initialiser de cette
+manière, depuis le composant racine par exemple:
+
+[source,js]
+----
+constructor(snackbarService: PrySnackbarService, viewContainerRef: ViewContainerRef) {
+    snackbarService.setRootViewContainerRef(viewContainerRef);
+}
+----
+
+=== Utiliser l’éditeur du moteur de transformation
+
+Afin d’utiliser l’éditeur de transformation, il faudra ajouter les
+modules qui sont requis sur chaque type de nœud pour les rendre
+disponibles. Par exemple:
+
+[source,js]
+----
+PryPipelineModule,
+PryPipelineInputDatasetDefinitionModule,
+PryPipelineOutputDatasetDefinitionModule,
+PryPipelineFilterModule
+----
+
+Il suffira ensuite de rajouter l’éditeur (composant
+PryPipelineEditorComponent ou pry-pipeline-editor).
+
+=== Vue par défaut / manifest par défaut
+
+Afin d’avoir le comportement "`si j’ai un manifest par défaut, alors je
+l’active. Sinon je charge telle route`", il suffit d’utiliser le
+DefaultViewGuard, sur la route sur laquelle on veut avoir ce
+comportement:
+
+[source,js]
+----
+{ path: '', canActivate: [DefaultViewGuard] }
+----

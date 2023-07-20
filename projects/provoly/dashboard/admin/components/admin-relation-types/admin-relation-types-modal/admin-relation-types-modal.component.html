@@ -1,0 +1,53 @@
+<ng-template #template>
+  <div class="o-modal">
+    <div class="o-modal__top">
+      <div class="o-modal__top__title">
+        <h2
+          class="a-h2"
+          id="dialog_title"
+          [innerHTML]="(selectedRelationType ? '@pry.admin.relationTypes.edit' : '@pry.admin.relationTypes.add') | i18n"
+        >
+          {{ '@pry.toolbox.rename' | i18n }}
+        </h2>
+      </div>
+      <div class="o-modal__top__close">
+        <button class="a-btn a-btn--icon-only" (click)="closeModal()">
+          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+
+    <form [formGroup]="relationTypeForm" (ngSubmit)="addRelationType()">
+      <div class="m-form-label-field">
+        <label class="a-label" for="name"></label>
+        <input type="text" class="a-form-field" id="name" formControlName="name" required />
+        <label
+          *ngIf="isSubmitted && (relationTypeForm.get('name')?.invalid || nameAlreadyExists)"
+          id="name-error"
+          for="name"
+          class="a-label a-label--help -error"
+        >
+          <span *ngIf="nameAlreadyExists">{{ '@pry.admin.exists' | i18n }}</span>
+          <span *ngIf="relationTypeForm.get('name')?.hasError('required')">
+            {{ '@pry.admin.required' | i18n }}
+          </span>
+          <span *ngIf="relationTypeForm.get('name')?.hasError('maxlength')">
+            {{ '@pry.admin.maxLength' | i18n: { len: '30' } }}
+          </span>
+        </label>
+      </div>
+
+      <div class="m-btn-group">
+        <button type="button" class="a-btn a-btn--secondary" (click)="closeModal()">
+          {{ '@pry.context.cancel' | i18n }}
+        </button>
+        <button
+          type="submit"
+          class="a-btn a-btn--primary"
+          [innerHTML]="(selectedRelationType ? '@pry.admin.edit' : '@pry.admin.create') | i18n"
+        ></button>
+      </div>
+    </form>
+  </div>
+</ng-template>

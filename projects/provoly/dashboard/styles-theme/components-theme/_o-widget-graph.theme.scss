@@ -1,0 +1,32 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - widget graph */
+.o-widget--graph {
+  .selected-node {
+    stroke: themed($theme-map, 'color', 'accent', 500);
+  }
+
+  .line {
+    &.short-path-line {
+      stroke: themed($theme-map, 'color', 'primary', 500);
+    }
+  }
+
+  .arrow-selected {
+    stroke: themed($theme-map, 'color', 'primary', 500);
+    fill: themed($theme-map, 'color', 'primary', 500);
+  }
+
+  .graph-selection-choice {
+    border-color: themed($theme-map, 'color', 'primary', 500);
+
+    .graph-selection-choice-item {
+      color: themed($theme-map, 'color', 'primary', 500);
+
+      &.graph-selection-selected {
+        color: themed($theme-map, 'color', 'accent', 500);
+      }
+    }
+  }
+}

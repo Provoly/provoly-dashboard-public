@@ -1,0 +1,28 @@
+[
+  {
+    "oClass": "06406e7e-37cd-41ce-b5fc-36d233e5ae5c",
+    "errors": [
+      {
+        "label": "import error",
+        "count": 4
+      },
+      {
+        "label": "loading error",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "oClass": "17b90da3-f448-4cc3-bfd8-74c8b8481590",
+    "errors": [
+      {
+        "label": "import error",
+        "count": 4
+      },
+      {
+        "label": "unknown error",
+        "count": 76
+      }
+    ]
+  }
+]

@@ -1,0 +1,939 @@
+const http = require('http');
+const axios = require('axios');
+const url = require('url');
+const formidable = require('formidable');
+
+const router = require('find-my-way')({
+  defaultRoute: (req, res) => {
+    res.statusCode = 404;
+    res.end();
+  },
+  onBadUrl: (path, req, res) => {
+    res.statusCode = 400;
+    res.end(`Bad path: ${path}`);
+  },
+  ignoreTrailingSlash: true
+});
+
+const dataModule = require('./data');
+const errorModule = require('./errors');
+const manifestModule = require('./manifest');
+const fieldGeneratorModule = require('./field-generator');
+const pipelineCheck = require('./pipeline');
+const casual = require('casual');
+const fs = require('fs');
+
+const port = 8081;
+const host = 'localhost';
+
+function readPayload(req) {
+  return new Promise((resolve) => {
+    if (req.method === 'POST' || req.method === 'PUT') {
+      let body = '';
+      req.on('data', function (data) {
+        body += data.toString();
+        if (body.length > 1e6) req.connection.destroy();
+      });
+      req.on('end', function () {
+        try {
+          resolve(JSON.parse(body));
+        } catch (e) {
+          resolve(body);
+        }
+      });
+    } else {
+      resolve(null);
+    }
+  });
+}
+
+function readQuery(req) {
+  const splitted = (req.url.split('?')[1] || '').split('&');
+  const query = {};
+  splitted.forEach((split) => {
+    const [key, value] = split.split('=');
+    query[key] = value;
+  });
+  return query;
+}
+
+const makeResponseOk = (res, toBeSent, code) => {
+  const sendCode = !!code ? code : 200;
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Authorization, File-Content-Type'
+  );
+  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  res.writeHead(sendCode);
+  return res.end(JSON.stringify(toBeSent));
+};
+
+const makeResponseImageOk = (res, toBeSent, code) => {
+  const sendCode = !!code ? code : 200;
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  res.setHeader('Content-type', 'image/png');
+  res.writeHead(sendCode);
+  return res.end(toBeSent, 'binary');
+};
+
+router.on(['OPTIONS', 'GET'], '/ref/model/class', (req, res, params) => {
+  makeResponseOk(res, dataModule.classes);
+});
+
+router.on(['OPTIONS', 'PUT'], '/ref/model/class/id/:id/attribute', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    if (payload) {
+      let classIndex = dataModule.classes.findIndex((obj) => obj.id === params.id);
+      if (classIndex !== -1) {
+        let attributeIndex =
+          dataModule.classes[classIndex].attributes.length > 0
+            ? dataModule.classes[classIndex].attributes.findIndex((obj) => obj.id === payload.id)
+            : -1;
+        if (attributeIndex !== -1) {
+          dataModule.classes[classIndex].attributes[attributeIndex].id = payload.id;
+          dataModule.classes[classIndex].attributes[attributeIndex].name = payload.name;
+          dataModule.classes[classIndex].attributes[attributeIndex].field = payload.field;
+          dataModule.classes[classIndex].attributes[attributeIndex].category = payload.category;
+        } else {
+          dataModule.classes[classIndex].attributes.push(payload);
+        }
+        fs.writeFileSync('./data/classes.json', JSON.stringify(dataModule.classes, null, 2));
+      }
+    }
+    makeResponseOk(res);
+  });
+});
+router.on('POST', '/ref/model/class', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    let classIndex = dataModule.classes.findIndex((obj) => obj.id === payload.id);
+    if (classIndex !== -1) {
+      dataModule.classes[classIndex].id = payload.id;
+      dataModule.classes[classIndex].name = payload.name;
+      dataModule.classes[classIndex].attributes = payload.attributes;
+    } else {
+      JSON.stringify(dataModule.classes.push(payload));
+    }
+    fs.writeFileSync('./data/classes.json', JSON.stringify(dataModule.classes, null, 2));
+    makeResponseOk(res);
+  });
+});
+
+router.on(['OPTIONS', 'DELETE'], '/ref/model/class/id/:id/attribute/:attrId', (req, res, params) => {
+  let classIndex = dataModule.classes.findIndex((obj) => obj.id === params.id);
+  if (classIndex !== -1) {
+    let attributeIndex =
+      dataModule.classes[classIndex].attributes.length > 0
+        ? dataModule.classes[classIndex].attributes.findIndex((obj) => obj.id === params.attrId)
+        : -1;
+    if (attributeIndex !== -1) {
+      dataModule.classes[classIndex].attributes.splice(attributeIndex, 1);
+    }
+    fs.writeFileSync('./data/classes.json', JSON.stringify(dataModule.classes, null, 2));
+  }
+  makeResponseOk(res);
+});
+
+router.on(['OPTIONS', 'DELETE'], '/ref/model/class/id/:id', (req, res, params) => {
+  let classIndex = dataModule.classes.findIndex((obj) => obj.id === params.id);
+  if (classIndex !== -1) {
+    dataModule.classes.splice(classIndex, 1);
+    fs.writeFileSync('./data/classes.json', JSON.stringify(dataModule.classes, null, 2));
+  }
+  makeResponseOk(res);
+});
+
+router.on(['OPTIONS', 'GET'], '/ref/model/fields', (req, res, params) => {
+  makeResponseOk(res, dataModule.fields.get());
+});
+
+router.on(['OPTIONS', 'POST'], '/ref/model/field', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    if (payload) {
+      let fieldIndex = dataModule.fields.get().findIndex((obj) => obj.id === payload.id);
+      if (fieldIndex !== -1) {
+        dataModule.fields.get()[fieldIndex].id = payload.id;
+        dataModule.fields.get()[fieldIndex].name = payload.name;
+        dataModule.fields.get()[fieldIndex].type = payload.type;
+      } else {
+        JSON.stringify(dataModule.fields.push(payload));
+      }
+      fs.writeFileSync('./data/fields.json', JSON.stringify(dataModule.fields.get(), null, 2));
+    }
+    makeResponseOk(res);
+  });
+});
+
+router.on(['OPTIONS', 'DELETE'], '/ref/model/fields/:id', (req, res, params) => {
+  dataModule.fields.delete(params.id);
+  makeResponseOk(res);
+});
+
+router.on(['OPTIONS', 'GET'], '/ref/model/categories', (req, res, params) => {
+  makeResponseOk(res, dataModule.categories);
+});
+
+router.on(['PUT'], '/ref/model/categories', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    if (payload) {
+      let categoryIndex = dataModule.categories.findIndex((obj) => obj.id === payload.id);
+      if (categoryIndex !== -1) {
+        dataModule.categories[categoryIndex].id = payload.id;
+        dataModule.categories[categoryIndex].name = payload.name;
+      } else {
+        JSON.stringify(dataModule.categories.push(payload));
+      }
+      fs.writeFileSync('./data/categories.json', JSON.stringify(dataModule.categories, null, 2));
+    }
+    makeResponseOk(res);
+  });
+});
+
+router.on(['OPTIONS', 'GET'], '/ref/relation-types', (req, res, params) => {
+  makeResponseOk(res, dataModule.relationTypes);
+});
+
+router.on('POST', '/ref/relation-types', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    let linkIndex = dataModule.relationTypes.findIndex((obj) => obj.id === payload.id);
+    if (linkIndex !== -1) {
+      dataModule.relationTypes[linkIndex].name = payload.name;
+    } else {
+      JSON.stringify(dataModule.relationTypes.push(payload));
+    }
+    fs.writeFileSync('./data/relationTypes.json', JSON.stringify(dataModule.relationTypes, null, 2));
+    makeResponseOk(res);
+  });
+});
+
+router.on(['OPTIONS', 'DELETE'], '/ref/relation-types/id/:id', (req, res, params) => {
+  let linkIndex = dataModule.relationTypes.findIndex((obj) => obj.id === params['id']);
+  if (linkIndex !== -1) {
+    dataModule.relationTypes.splice(linkIndex, 1);
+    fs.writeFileSync('./data/relationTypes.json', JSON.stringify(dataModule.relationTypes, null, 2));
+  }
+  makeResponseOk(res);
+});
+
+router.on(['OPTIONS', 'GET'], '/ref/links', (req, res, params) => {
+  makeResponseOk(res, dataModule.links);
+});
+
+router.on('POST', '/ref/links', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    if (payload) {
+      JSON.stringify(dataModule.links.push(payload));
+    }
+    fs.writeFileSync('./data/links.json', JSON.stringify(dataModule.links, null, 2));
+    makeResponseOk(res);
+  });
+});
+
+router.on(['OPTIONS', 'GET'], '/ref/predicates', (req, res, params) => {
+  makeResponseOk(res, dataModule.predicates);
+});
+router.on('POST', '/ref/predicates', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    let predicateIndex = dataModule.predicates.findIndex((obj) => obj.id === payload.id);
+    if (predicateIndex !== -1) {
+      dataModule.predicates[predicateIndex].name = payload.name;
+      dataModule.predicates[predicateIndex].value = payload.value;
+    } else {
+      JSON.stringify(dataModule.predicates.push(payload));
+    }
+    fs.writeFileSync('./data/predicates.json', JSON.stringify(dataModule.predicates, null, 2));
+    makeResponseOk(res);
+  });
+});
+router.on(['OPTIONS', 'GET'], '/ref/predicates/id/:id', (req, res, params) => {
+  makeResponseOk(
+    res,
+    dataModule.predicates.find((pred) => pred.id === params.id)
+  );
+});
+
+router.on(['OPTIONS', 'GET'], '/ref/users', (req, res, params) => {
+  makeResponseOk(res, dataModule.users);
+});
+
+router.on(['OPTIONS', 'GET'], '/ref/users/id/:userId/metadata', (req, res, params) => {
+  let userProfile = dataModule.users.find((user) => user.id === params['userId']).metadata || [];
+  makeResponseOk(res, userProfile);
+});
+
+router.on(['OPTIONS', 'PUT'], '/ref/users/id/:userId/metadata/id/:metadataId', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    if (payload) {
+      let userIndex = dataModule.users.findIndex((obj) => obj.id === params['userId']);
+      if (userIndex !== -1) {
+        let metaUserIndex = dataModule.users[userIndex].metadata.findIndex(
+          (obj) => obj.userProfile.id === params['metadataId']
+        );
+        if (metaUserIndex !== -1) {
+          dataModule.users[userIndex].metadata[metaUserIndex].value = payload.value;
+        } else {
+          let meta = dataModule.userMetadatas.find((x) => x.id === params['metadataId']);
+          dataModule.users[userIndex].metadata.push({ userProfile: meta, value: payload.value });
+        }
+      }
+      fs.writeFileSync('./data/users.json', JSON.stringify(dataModule.users, null, 2));
+    }
+    makeResponseOk(res);
+  });
+});
+
+router.on(['DELETE'], '/ref/users/id/:userId/metadata/id/:metadataId', (req, res, params) => {
+  let userIndex = dataModule.users.findIndex((obj) => obj.id === params['userId']);
+  if (userIndex !== -1) {
+    dataModule.users[userIndex].metadata = dataModule.users[userIndex].metadata.filter(
+      (meta) => meta.userProfile.id !== params['metadataId']
+    );
+    fs.writeFileSync('./data/users.json', JSON.stringify(dataModule.users, null, 2));
+  }
+  makeResponseOk(res);
+});
+
+router.on(['OPTIONS', 'GET'], '/ref/users/metadata', (req, res, params) => {
+  makeResponseOk(res, dataModule.userMetadatas);
+});
+router.on(['OPTIONS', 'GET'], '/ref/users/metadata/:uuid', (req, res, params) => {
+  makeResponseOk(
+    res,
+    dataModule.userMetadatas.find((x) => x.id === params.uuid)
+  );
+});
+router.on(
+  'POST',
+  '/ref/users/metadata',
+  (req, res, params) => {
+    readPayload(req).then((payload) => {
+      let metadataIndex = dataModule.userMetadatas.findIndex((obj) => obj.id === payload.id);
+      if (metadataIndex !== -1) {
+        dataModule.userMetadatas[metadataIndex].name = payload.name;
+        dataModule.userMetadatas[metadataIndex].type = payload.type;
+        dataModule.userMetadatas[metadataIndex].allowedValues = payload.allowedValues;
+        dataModule.userMetadatas[metadataIndex].description = payload.description;
+      } else {
+        JSON.stringify(dataModule.userMetadatas.push(payload));
+      }
+      fs.writeFileSync('./data/userMetadata.json', JSON.stringify(dataModule.userMetadatas, null, 2));
+      makeResponseOk(res);
+    });
+  },
+  '/ref/user/metadata'
+);
+router.on(['OPTIONS', 'GET'], '/ref/metadata', (req, res, params) => {
+  makeResponseOk(res, dataModule.metadatas);
+});
+
+router.on(['OPTIONS', 'GET'], '/ref/metadata/id/:uuid', (req, res, params) => {
+  makeResponseOk(
+    res,
+    dataModule.metadatas.find((x) => x.id === params.uuid)
+  );
+});
+
+router.on(
+  'POST',
+  '/ref/metadata',
+  (req, res, params) => {
+    readPayload(req).then((payload) => {
+      let metadataIndex = dataModule.metadatas.findIndex((obj) => obj.id === payload.id);
+      if (metadataIndex !== -1) {
+        dataModule.metadatas[metadataIndex].name = payload.name;
+        dataModule.metadatas[metadataIndex].type = payload.type;
+        dataModule.metadatas[metadataIndex].allowedValues = payload.allowedValues;
+        dataModule.metadatas[metadataIndex].description = payload.description;
+      } else {
+        JSON.stringify(dataModule.metadatas.push(payload));
+      }
+      fs.writeFileSync('./data/metadatas.json', JSON.stringify(dataModule.metadatas, null, 2));
+      makeResponseOk(res);
+    });
+  },
+  '/ref/metadata'
+);
+
+router.on(['OPTIONS', 'GET'], '/ref/meta-provisionning', (req, res, params) => {
+  makeResponseOk(res, dataModule.rulesMetadatas);
+});
+
+router.on(['OPTIONS', 'GET'], '/ref/meta-provisionning/id/:uuid', (req, res, params) => {
+  makeResponseOk(
+    res,
+    dataModule.rulesMetadatas.find((x) => x.id === params.uuid)
+  );
+});
+
+router.on(
+  'POST',
+  '/ref/meta-provisionning',
+  (req, res, params) => {
+    readPayload(req).then((payload) => {
+      let metadataIndex = dataModule.rulesMetadatas.findIndex((obj) => obj.id === payload.id);
+      if (metadataIndex !== -1) {
+        dataModule.rulesMetadatas[metadataIndex].name = payload.name;
+        dataModule.rulesMetadatas[metadataIndex].userProfile = payload.userProfile;
+        dataModule.rulesMetadatas[metadataIndex].metadata = payload.metadata;
+      } else {
+        const userProfile = dataModule.userMetadatas.find((obj) => obj.id === payload.userProfile);
+        const metadata = dataModule.metadatas.find((obj) => obj.id === payload.metadata);
+        const rulesMetadata = {
+          id: payload.id,
+          name: payload.name,
+          userProfile,
+          metadata
+        };
+        JSON.stringify(dataModule.rulesMetadatas.push(rulesMetadata));
+      }
+      fs.writeFileSync('./data/rulesMetadata.json', JSON.stringify(dataModule.rulesMetadatas, null, 2));
+      makeResponseOk(res);
+    });
+  },
+  '/ref/meta-provisionning'
+);
+
+router.on(['DELETE'], '/ref/meta-provisionning/id/:id', (req, res, params) => {
+  const toDeleteIndex = dataModule.rulesMetadatas.findIndex((nq) => nq.id === params.id);
+  if (toDeleteIndex >= 0) {
+    dataModule.rulesMetadatas.splice(toDeleteIndex, 1);
+  }
+  makeResponseOk(res);
+});
+
+router.on(['OPTIONS', 'GET'], '/ref/abac/rules/id/:id', (req, res, params) => {
+  const rules = dataModule.rules;
+  const rule = rules.find((rule) => rule.id === params.id);
+  makeResponseOk(res, rule);
+});
+router.on(['OPTIONS', 'GET'], '/ref/abac/rules', (req, res, params) => {
+  makeResponseOk(res, dataModule.rules);
+});
+
+router.on(
+  'POST',
+  '/ref/abac/rules',
+  (req, res, params) => {
+    readPayload(req).then((payload) => {
+      let ruleIndex = dataModule.rules.findIndex((obj) => obj.id === payload.id);
+      if (ruleIndex !== -1) {
+        dataModule.rules[ruleIndex] = payload;
+      } else {
+        JSON.stringify(dataModule.rules.push(payload));
+      }
+      fs.writeFileSync('./data/rules.json', JSON.stringify(dataModule.rules, null, 2));
+      makeResponseOk(res);
+    });
+  },
+  '/ref/abac/rules'
+);
+router.on(['OPTIONS', 'GET'], '/ref/abac/context', (req, res, params) => {
+  makeResponseOk(res, dataModule.environments);
+});
+router.on('PUT', '/ref/abac/context', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    let envIndex = dataModule.environments.findIndex((obj) => obj.name === payload.name);
+    if (envIndex !== -1) {
+      dataModule.environments[envIndex].type = payload.type;
+      dataModule.environments[envIndex].value = payload.value;
+    } else {
+      JSON.stringify(dataModule.environments.push(payload));
+    }
+    fs.writeFileSync('./data/environments.json', JSON.stringify(dataModule.environments, null, 2));
+    makeResponseOk(res);
+  });
+});
+router.on(['OPTIONS', 'GET'], '/ref/abac/context/:name', (req, res, params) => {
+  for (let env of dataModule.environments) {
+    if (env.name === params.name) {
+      makeResponseOk(res, env);
+    }
+  }
+});
+
+router.on(['DELETE'], '/ref/abac/context/:name', (req, res, params) => {
+  let envIndex = dataModule.environments.findIndex((obj) => obj.name === params.name);
+  if (envIndex !== -1) {
+    dataModule.environments.splice(envIndex, 1);
+    fs.writeFileSync('./data/environments.json', JSON.stringify(dataModule.environments, null, 2));
+    makeResponseOk(res);
+  }
+});
+
+router.on(['OPTIONS', 'GET'], '/monitor/supervision/nifi/monitoringInputFlow', (req, res, params) => {
+  makeResponseOk(res, dataModule.inputFlows);
+});
+router.on(['OPTIONS', 'GET'], '/monitor/status', (req, res, params) => {
+  makeResponseOk(res, dataModule.infrastructures);
+});
+router.on(['OPTIONS', 'GET'], '/monitor/businessdata', (req, res, params) => {
+  makeResponseOk(res, dataModule.businessData());
+});
+router.on(['OPTIONS', 'GET'], '/ref/model/class/datasets/count', (req, res, params) => {
+  makeResponseOk(res, dataModule.datasetCount());
+});
+router.on(['OPTIONS', 'GET'], '/ref/dataset-versions', (req, res, params) =>
+  makeResponseOk(res, dataModule.datasetVersions)
+);
+router.on(['OPTIONS', 'GET'], '/replay/integrations/errors', (req, res, params) => {
+  makeResponseOk(res, dataModule.integrationErrors);
+});
+router.on(['OPTIONS', 'POST'], '/replay/integrations/errors/replay/class', (req, res, params) => {
+  makeResponseOk(res);
+});
+router.on(['OPTIONS', 'POST'], '/replay/integrations/errors/acknowledge', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    if (payload) {
+      payload.forEach((payloadValue) => {
+        let classIndex = dataModule.integrationErrors.findIndex((obj) => obj.oClass === payloadValue);
+        if (classIndex !== -1) {
+          dataModule.integrationErrors.splice(classIndex, 1);
+          fs.writeFileSync('./data/integrationErrors.json', JSON.stringify(dataModule.integrationErrors, null, 2));
+        }
+      });
+    }
+    makeResponseOk(res);
+  });
+});
+
+router.on('POST', '/data/items/search', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    const number = fieldGeneratorModule.generateNumberOfItems();
+    if (payload.type === 'MONO_CLASS') {
+      const { oClass } = payload;
+      const tableOfClasses = new Array(number).fill(oClass, 0, number);
+      makeResponseOk(res, dataModule.itemsAsResultSet(fieldGeneratorModule.generateItems(tableOfClasses)));
+    } else {
+      const tableOfClasses = [...new Array(number)].map(
+        () => dataModule.classesIds[Math.round(Math.random() * 100) % dataModule.classesIds.length]
+      );
+      makeResponseOk(res, dataModule.itemsAsResultSet(fieldGeneratorModule.generateItems(tableOfClasses)));
+    }
+  });
+});
+
+router.on(['OPTIONS', 'POST'], '/data/relations', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    // relations are generated
+    makeResponseOk(res);
+  });
+});
+
+router.on(['OPTIONS', 'POST'], '/data/items', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    // items are generated
+    const tableOfClasses = [0].map(
+      () => dataModule.classesIds[Math.round(Math.random() * 100) % dataModule.classesIds.length]
+    );
+    makeResponseOk(
+      res,
+      payload && payload.length > 0 ? [payload[0]] : [fieldGeneratorModule.generateItems(tableOfClasses)[0]]
+    );
+  });
+});
+
+router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items', (req, res, params) => {
+  if (params.id === '007') {
+    makeResponseOk(res, null, 404);
+  } else {
+    setTimeout(() => {
+      const fixedResponse = dataModule.queryResponses[params.id];
+      if (fixedResponse) {
+        makeResponseOk(res, fixedResponse);
+      } else {
+        const responseTypesLimited = dataModule.queryResponseTypes[params.id]?.classes || dataModule.classesIds;
+        const number = dataModule.queryResponseTypes[params.id]?.number ?? fieldGeneratorModule.generateNumberOfItems();
+        const tableOfClasses = [...new Array(number)].map(
+          () => responseTypesLimited[Math.round(Math.random() * 100) % responseTypesLimited.length]
+        );
+        const result = dataModule.itemsAsResultSet(fieldGeneratorModule.generateItems(tableOfClasses));
+        makeResponseOk(res, result);
+      }
+    }, fieldGeneratorModule.generateDelay());
+  }
+});
+
+router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items/aggregate', (req, res, params) => {
+  const query = readQuery(req);
+  if (params.id === '007') {
+    makeResponseOk(res, null, 404);
+  } else {
+    setTimeout(() => {
+      const abscissaAttr = dataModule.classes
+        .map((clazz) => clazz.attributes.find((attr) => attr.id === query.aggregatedBy))
+        .find((attr) => !!attr);
+      const abscissaField = dataModule.fields.get().find((field) => field.id === abscissaAttr?.field);
+      const ordinateAttr = dataModule.classes
+        .map((clazz) => clazz.attributes.find((attr) => attr.id === query.valueField))
+        .find((attr) => !!attr);
+      const ordinateField = dataModule.fields.get().find((field) => field.id === ordinateAttr?.field);
+
+      let series = [];
+      if (query.groupBy) {
+        const nbSeries = casual.integer((from = 3), (to = 7));
+        for (let i = 0; i < nbSeries; i++) {
+          series[i] = casual.word;
+        }
+      }
+
+      const result = {
+        type: query.operation,
+        values: []
+      };
+      if (!!abscissaField && (!!ordinateField || query.operation === 'count' || query.operation === 'cardinality')) {
+        for (let i = 0; i < casual.integer((from = 10), (to = 40)); i++) {
+          if (query.groupBy) {
+            result.values[i] = {
+              key: fieldGeneratorModule.generateFieldValue(abscissaField),
+              groupBy: []
+            };
+            for (let j = 0; j < series.length; j++) {
+              result.values[i].groupBy[j] = {
+                key: series[j],
+                value:
+                  query.operation === 'count' || query.operation === 'cardinality'
+                    ? casual.integer((from = 10), (to = 40))
+                    : fieldGeneratorModule.generateFieldValue(ordinateField)
+              };
+            }
+          } else {
+            result.values[i] = {
+              key: fieldGeneratorModule.generateFieldValue(abscissaField),
+              value:
+                query.operation === 'count' || query.operation === 'cardinality'
+                  ? casual.integer((from = 10), (to = 40))
+                  : fieldGeneratorModule.generateFieldValue(ordinateField)
+            };
+          }
+        }
+      } else {
+        console.warn('absissa or ordinate not found', query);
+      }
+
+      makeResponseOk(res, result);
+    }, fieldGeneratorModule.generateDelay());
+  }
+});
+
+router.on(['OPTIONS', 'GET'], '/ref/users/me/namedquery', (req, res, params) => {
+  makeResponseOk(res, dataModule.namedQueries);
+});
+
+router.on(['DELETE'], '/ref/users/me/namedquery/:id/favorite', (req, res, params) => {
+  const isPresent = dataModule.namedQueries.find((name) => name.id === params.id);
+  if (isPresent) {
+    isPresent.favorite = false;
+  }
+  makeResponseOk(res);
+});
+
+router.on(['OPTIONS', 'POST'], '/ref/users/me/namedquery/:id/favorite', (req, res, params) => {
+  const isPresent = dataModule.namedQueries.find((name) => name.id === params.id);
+  if (isPresent) {
+    isPresent.favorite = true;
+  }
+  makeResponseOk(res);
+});
+
+router.on('POST', '/ref/users/me/namedquery', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    const { name, id, request, color, favorite, description } = payload;
+    const namedQuery = {
+      name,
+      description,
+      id,
+      request,
+      color,
+      favorite,
+      owner: true,
+      lastExecutionDate: new Date().getTime()
+    };
+    const isPresent = dataModule.namedQueries.find((name) => name.id === id);
+    if (isPresent) {
+      isPresent.name = namedQuery.name;
+      isPresent.description = namedQuery.description;
+      isPresent.request = namedQuery.request;
+      isPresent.color = namedQuery.color;
+      isPresent.favorite = namedQuery.favorite;
+      isPresent.owner = true;
+    } else {
+      dataModule.namedQueries.push(namedQuery);
+    }
+    makeResponseOk(res);
+  });
+});
+
+router.on(['DELETE'], '/ref/users/me/namedquery/:id', (req, res, params) => {
+  const toDeleteIndex = dataModule.namedQueries.findIndex((nq) => nq.id === params.id);
+  if (toDeleteIndex >= 0) {
+    dataModule.namedQueries.splice(toDeleteIndex, 1);
+  }
+  makeResponseOk(res);
+});
+router.on(['OPTIONS'], '/ref/users/me/namedquery/:id', (req, res, params) => {
+  makeResponseOk(res);
+});
+
+router.on(['OPTIONS', 'GET'], '/data/items/named/:rs', (req, res, params) => {
+  const number = fieldGeneratorModule.generateNumberOfItems();
+  const tableOfClasses = [...new Array(number)].map(
+    () => dataModule.classesIds[Math.round(Math.random() * 100) % dataModule.classesIds.length]
+  );
+  const isPresent = dataModule.namedQueries.find((name) => name.id === params.rs);
+  if (isPresent) {
+    isPresent.lastExecutionDate = new Date().getTime();
+  }
+  makeResponseOk(res, dataModule.itemsAsResultSet(fieldGeneratorModule.generateItems(tableOfClasses)));
+});
+
+router.on(['OPTIONS', 'GET'], '/data/items/:id', (req, res, params) => {
+  const randomClass = dataModule.classesIds[Math.round(Math.random() * 100) % dataModule.classesIds.length];
+  const item = fieldGeneratorModule.generateItems([randomClass]);
+  item[0].id = params.id;
+  makeResponseOk(res, item[0]);
+});
+
+router.on(['OPTIONS', 'GET'], '/data/items/id/:id/relations', (req, res, params) => {
+  const tableOfClasses = [...new Array(casual.integer((from = 1), (to = 5)))].map(
+    () => dataModule.classesIds[Math.round(Math.random() * 100) % dataModule.classesIds.length]
+  );
+  makeResponseOk(
+    res,
+    dataModule.itemsAsResultSetWithRelationsTo(fieldGeneratorModule.generateItems(tableOfClasses), params.id)
+  );
+});
+
+router.on(['OPTIONS', 'GET'], '/ref/users/me/dashboards', (req, res, params) => {
+  makeResponseOk(res, manifestModule.list());
+});
+router.on(['OPTIONS', 'GET'], '/ref/users/me/dashboards/id/:id/manifest', (req, res, params) => {
+  makeResponseOk(res, manifestModule.get(params.id));
+});
+router.on('OPTIONS', '/ref/users/me/dashboards/id/:id/default', (req, res, params) => {
+  makeResponseOk(res);
+});
+router.on('PUT', '/ref/users/me/dashboards/id/:id/default', (req, res, params) => {
+  manifestModule.default(params.id);
+  makeResponseOk(res, { name: params.id });
+});
+router.on('POST', '/ref/users/me/dashboards', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    const { id, name, description, creationDate, modificationDate, manifest, image, visibility } = payload;
+    manifestModule.save(id, name, description, creationDate, modificationDate, manifest, image, visibility);
+    makeResponseOk(res, undefined, 204);
+  });
+});
+router.on(['OPTIONS', 'DELETE'], '/ref/users/me/dashboards/default', (req, res, params) => {
+  manifestModule.default();
+  makeResponseOk(res, { name: params.id });
+});
+
+router.on('OPTIONS', '/ref/users/me/dashboards/id/:id', (req, res, params) => {
+  makeResponseOk(res);
+});
+router.on('DELETE', '/ref/users/me/dashboards/id/:id', (req, res, params) => {
+  manifestModule.delete(params.id);
+  makeResponseOk(res);
+});
+
+router.on(['OPTIONS', 'POST'], '/monitor/replicas/:any?', (req, res, params) => {
+  makeResponseOk(res);
+});
+router.on(['OPTIONS', 'PUT'], '/monitor/supervision/nifi/flow/:any?', (req, res, params) => {
+  makeResponseOk(res);
+});
+router.on(['OPTIONS', 'GET'], '/geocoding/reverse/', (req, res, params) => {
+  const query = url.parse(req.url, true).search;
+  const withTextAsQParameter = query.replace('?text=', '?q=');
+  axios
+    .get(`https://api-adresse.data.gouv.fr/reverse/${withTextAsQParameter}`, { data: params })
+    .then((response) => {
+      makeResponseOk(res, response.data);
+    })
+    .catch((error) => {
+      console.log('Error when calling data gouv address service');
+    });
+});
+router.on(['OPTIONS', 'GET'], '/geocoding/search/', (req, res, params) => {
+  const query = url.parse(req.url, true).search;
+  const withTextAsQParameter = query.replace('?text=', '?q=');
+  axios
+    .get(`https://api-adresse.data.gouv.fr/search/${withTextAsQParameter}`, { data: params })
+    .then((response) => {
+      makeResponseOk(res, response.data);
+    })
+    .catch((error) => {
+      console.log('Error when calling data gouv address service');
+    });
+});
+
+router.on(['OPTIONS', 'GET'], '/data/file/icons', (req, res, params) => {
+  makeResponseOk(res, dataModule.imagesData());
+});
+
+router.on(['OPTIONS', 'GET'], '/data/file/icons/:id', (req, res, params) => {
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Authorization, File-Content-Type'
+  );
+  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  makeResponseImageOk(res, dataModule.imageData(params.id));
+});
+
+router.on(['OPTIONS', 'GET'], '/data/file/id/:idAndAttribute', (req, res, params) => {
+  const toSend = dataModule.docData(params.idAndAttribute);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  res.setHeader('Content-Type', toSend.type);
+  return res.end(toSend.data, 'binary');
+});
+
+router.on(['POST'], '/data/file/icons', (req, res, params) => {
+  // Does not really store file right now
+  const form = new formidable.IncomingForm();
+  form.parse(req, (err, fields, file) => {
+    if (err) {
+      console.error(err.message);
+      return;
+    }
+    fs.copyFile(file.file.filepath, './images/' + file.file.originalFilename, (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
+    const newImageName = file.file.originalFilename;
+    makeResponseOk(res, newImageName);
+  });
+});
+
+router.on(['OPTIONS', 'GET'], '/data/file/tasksDetailed', (req, res, params) => {
+  makeResponseOk(res, dataModule.tasksDetailed);
+});
+
+router.on(['OPTIONS', 'GET'], '/json/tasksDetailed.json', (req, res, params) => {
+  makeResponseOk(res, dataModule.tasksDetailed);
+});
+
+router.on(['OPTIONS', 'GET'], '/data/file/procedures', (req, res, params) => {
+  makeResponseOk(res, dataModule.procedures);
+});
+
+router.on(['OPTIONS', 'GET'], '/ref/customclass/all/param', (req, res, params) => {
+  makeResponseOk(res, dataModule.customClassParams());
+});
+
+router.on(['OPTIONS', 'PUT'], '/ref/customclass/id/:class/param/:domain', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    makeResponseOk(res, dataModule.updateCustomClassParams(params.class, params.domain, payload));
+  });
+});
+
+router.on(['OPTIONS', 'GET'], '/ref/widget/catalog', (req, res, params) => {
+  makeResponseOk(res, dataModule.widgets.get());
+});
+
+router.on('POST', '/ref/widget/catalog', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    dataModule.widgets.save(payload);
+    makeResponseOk(res, undefined, 204);
+  });
+});
+router.on(['PUT'], '/transfo/transfos', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    dataModule.transformations.save(payload);
+    makeResponseOk(res, pipelineCheck.pipelineCheck(payload));
+  });
+});
+router.on(['OPTIONS', 'GET'], '/transfo/transfos', (req, res, params) => {
+  makeResponseOk(res, dataModule.transformations.get());
+});
+router.on(['OPTIONS', 'GET'], '/transfo/transfos/id/:id', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    dataModule.transformations.get(payload.id);
+    makeResponseOk(res, undefined, 200);
+  });
+});
+router.on(['OPTIONS', 'POST'], '/transfo/transfos/id/:id/activation', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    dataModule.transformations.activate(params.id);
+    makeResponseOk(res, undefined, 200);
+  });
+});
+router.on(['DELETE'], '/transfo/transfos/id/:id/activation', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    dataModule.transformations.deactivate(params.id);
+    makeResponseOk(res, undefined, 200);
+  });
+});
+router.on(['OPTIONS', 'PUT'], '/exec/job/instances/id/:id/start', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    makeResponseOk(res, undefined, 200);
+  });
+});
+router.on(['GET'], '/ref/error/id/:id', (req, res, params) => {
+  makeResponseOk(res, errorModule.generateErrors());
+});
+router.on(['OPTIONS', 'GET'], '/ref/datasets', (req, res, params) => {
+  makeResponseOk(res, dataModule.dataset.get());
+});
+router.on('POST', '/ref/datasets', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    dataModule.dataset.save(payload);
+    makeResponseOk(res, undefined, 204);
+  });
+});
+router.on('PUT', '/ref/datasets', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    dataModule.dataset.update(payload);
+    makeResponseOk(res, undefined, 204);
+  });
+});
+router.on(['DELETE'], '/ref/datasets/id/:id', (req, res, params) => {
+  dataModule.dataset.delete(params.id);
+  makeResponseOk(res, undefined, 204);
+});
+router.on(['OPTIONS', 'GET'], '/ref/datasets/id/:id', (req, res, params) => {
+  makeResponseOk(res, dataModule.dataset.getById(params.id));
+});
+router.on(['OPTIONS', 'PUT'], '/ref/datasets/id/:datasetId/metadata/id/:metadataId', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    dataModule.dataset.addMetadata(params['datasetId'], params['metadataId'], payload);
+    makeResponseOk(res);
+  });
+});
+router.on(['POST'], '/ref/dataset-versions/id/:datasetVersionId/deactivate', (req, res, params) => {
+  makeResponseOk(res);
+});
+router.on(['POST'], '/ref/dataset-versions/id/:datasetVersionId/activate', (req, res, params) => {
+  makeResponseOk(res);
+});
+router.on(['DELETE'], '/ref/datasets/id/:datasetId/metadata/id/:metadataId', (req, res, params) => {
+  dataModule.dataset.deleteMetadata(params['datasetId'], params['metadataId']);
+  makeResponseOk(res);
+});
+router.on(['OPTIONS', 'DELETE'], '/ref/notification/me/id/:id', (req, res, params) => {
+  makeResponseOk(res, {}, 204);
+});
+router.on(['OPTIONS', 'DELETE'], '/ref/notification/me', (req, res, params) => {
+  makeResponseOk(res, {}, 204);
+});
+router.on(['OPTIONS'], '/data/imports/csv/datasets/id/:id', (req, res, params) => {
+  makeResponseOk(res, {}, 204);
+});
+router.on(['POST'], '/data/imports/csv/datasets/id/:id', (req, res, params) => {
+  const code = casual.coin_flip ? 200 : 400;
+  makeResponseOk(res, dataModule.importData(params.file, params.dataset, code), code);
+});
+const server = http.createServer((req, res) => {
+  router.lookup(req, res);
+});
+server.listen(port, host, (err) => {
+  if (err) throw err;
+  console.log(`Server is running on http://${host}:${port}`);
+});
+
+module.exports = { server, router };

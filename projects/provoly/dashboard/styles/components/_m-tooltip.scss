@@ -1,0 +1,91 @@
+@use '../abstracts' as *;
+
+/* Molecule tooltip */
+.m-tooltip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: toRem(3) toRem(5);
+
+  &__text,
+  &__description {
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  &--popup,
+  &--example,
+  &--address {
+    position: absolute;
+    z-index: 999;
+    overflow: auto;
+    justify-content: flex-start;
+    width: 300px;
+    max-height: 500px;
+    min-height: 30px;
+    padding: toRem(10) toRem(15);
+    background-color: #ecedf4;
+    box-shadow: 2px 3px 10px 2px rgba(0, 0, 0, 0.2);
+    border-radius: toRem(5);
+
+    &.noevent {
+      pointer-events: none;
+
+      *::selection {
+        background: transparent;
+      }
+
+      *::-moz-selection {
+        background: transparent;
+      }
+    }
+  }
+
+  &--example {
+    position: static;
+
+    &.-hidden {
+      display: none;
+    }
+  }
+
+  &__item {
+    &__content {
+      margin-bottom: 0;
+
+      .a-h3.-attribute {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: toRem(7);
+        margin-bottom: 0;
+        padding-bottom: toRem(5);
+
+        img {
+          max-width: toRem(28);
+          height: auto;
+        }
+      }
+
+      > p {
+        display: block;
+        margin-bottom: toRem(3);
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+
+        > span {
+          display: inline-block;
+          margin-right: toRem(5);
+          font-weight: 600;
+          font-size: toRem(13);
+        }
+      }
+    }
+  }
+}

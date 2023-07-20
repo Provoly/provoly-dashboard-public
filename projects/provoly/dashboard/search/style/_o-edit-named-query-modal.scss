@@ -1,0 +1,9 @@
+@use '../../styles/abstracts/index' as *;
+
+/* Organism - edit named query modal */
+
+.o-edit-named-query-modal {
+  top: toRem(35);
+  bottom: 0;
+  width: 320px;
+}

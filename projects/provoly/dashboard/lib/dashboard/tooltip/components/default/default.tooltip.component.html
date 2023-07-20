@@ -1,0 +1,22 @@
+<div class="m-tooltip__item__content" *ngIf="data.item.properties; else defaultTooltip">
+  <p *ngFor="let property of data.item.properties">
+    <span>{{ property.key | titlecase }} :</span> {{ property.value }}
+  </p>
+</div>
+<ng-template #defaultTooltip>
+  <p>
+    <span>{{ '@pry.widget.itemId' | i18n }} :</span> {{ data.item?.id }}
+  </p>
+  <p>
+    <span>{{ '@pry.widget.class' | i18n }} :</span>
+    {{
+      data.item?.oClass
+        | translateId
+          : {
+              type: 'class',
+              output: 'name'
+            }
+        | async
+    }}
+  </p>
+</ng-template>

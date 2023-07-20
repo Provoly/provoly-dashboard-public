@@ -1,0 +1,85 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "paths": {
+      "@provoly/dashboard": [
+        "projects/provoly/dashboard"
+      ],
+      "@provoly/dashboard/admin": [
+        "projects/provoly/dashboard/admin"
+      ],
+      "@provoly/dashboard/catalog": [
+        "projects/provoly/dashboard/catalog"
+      ],
+      "@provoly/dashboard/notification": [
+        "projects/provoly/dashboard/notification"
+      ],
+      "@provoly/dashboard/presentation": [
+        "projects/provoly/dashboard/presentation"
+      ],
+      "@provoly/dashboard/search": [
+        "projects/provoly/dashboard/search"
+      ],
+      "@provoly/dashboard/supervision": [
+        "projects/provoly/dashboard/supervision"
+      ],
+      "@provoly/dashboard/toolbox": [
+        "projects/provoly/dashboard/toolbox"
+      ],
+      "@provoly/dashboard/pipeline": [
+        "projects/provoly/dashboard/pipeline"
+      ],
+      "@provoly/dashboard/import": [
+        "projects/provoly/dashboard/import"
+      ],
+      "@provoly/dashboard/components/*": [
+        "projects/provoly/dashboard/components/*"
+      ],
+      "@provoly/dashboard/widgets/*": [
+        "projects/provoly/dashboard/widgets/*"
+      ],
+      "@provoly/dashboard/tooltips/*": [
+        "projects/provoly/dashboard/tooltips/*"
+      ],
+      "@provoly/dashboard/filters/*": [
+        "projects/provoly/dashboard/filters/*"
+      ],
+      "@provoly/dashboard/mock/*": [
+        "projects/provoly/dashboard/mock/*"
+      ],
+      "@provoly/dashboard/pipeline-components/*": [
+        "projects/provoly/dashboard/pipeline-components/*"
+      ]
+    },
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "esModuleInterop": true,
+    "target": "ES2022",
+    "module": "esnext",
+    "lib": [
+      "es2020",
+      "dom"
+    ],
+    "useDefineForClassFields": false
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
+}

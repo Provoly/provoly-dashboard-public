@@ -1,0 +1,45 @@
+[
+  {
+    "id": "9d9aba2c-fc3a-44d7-a508-287ad2d8cbb0",
+    "name": "_class",
+    "type": "UUID",
+    "allowedValues": []
+  },
+  {
+    "id": "e1e55abd-2fb7-4e3b-9372-92c7c9d6c5c4",
+    "name": "_date_modification",
+    "type": "DATE"
+  },
+  {
+    "id": "ba681f33-fe70-42f8-a277-05c607ba29cf",
+    "name": "vigipirate",
+    "type": "INTEGER",
+    "allowedValues": []
+  },
+  {
+    "id": "8ca1f298-d412-421c-8f46-6f425bfe2cda",
+    "name": "zzz",
+    "type": "DOUBLE",
+    "description": null,
+    "allowedValues": []
+  },
+  {
+    "id": "b8c01013-fba1-4e96-874a-9ce5e1d0f5ab",
+    "name": "NIVEAU_HABILITATION",
+    "type": "LIST",
+    "description": "Niveau d'habilitation de l'utilisateur pour l'accès aux données confidentielles",
+    "allowedValues": [
+      "TSD",
+      "SD",
+      "DS",
+      "OUVERT"
+    ]
+  },
+  {
+    "id": "33f51131-6e67-438a-9aa1-8d9a50215326",
+    "name": "toto",
+    "type": "INTEGER",
+    "description": null,
+    "allowedValues": []
+  }
+]

@@ -1,0 +1,50 @@
+<div class="o-edit-named-query">
+  <ng-container *ngIf="currentEditType$ | async as currentEditType">
+    <div class="o-edit-named-query__content">
+      <ng-container [ngSwitch]="currentEditType">
+        <ng-container *ngSwitchCase="FULL_TEXT">
+          <pry-search-fulltext
+            mode="vertical"
+            [launchButton]="false"
+            (searchChange)="onSearchFulltextChange($event)"
+            [currentEdit]="currentEdit$ | async"
+          ></pry-search-fulltext>
+        </ng-container>
+        <ng-container *ngSwitchCase="MONO_CLASS">
+          <pry-search-mono-class></pry-search-mono-class>
+        </ng-container>
+        <ng-container *ngSwitchCase="MULTI_CLASS">
+          <pry-search-multi-class></pry-search-multi-class>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="o-edit-named-query__buttons">
+      <ng-container *ngIf="currentEditType !== FULL_TEXT">
+        <pry-choose-widget (selected)="select($event)"></pry-choose-widget>
+      </ng-container>
+      <div class="m-btn-group">
+        <button type="button" class="a-btn a-btn--primary" (click)="cancel()" *ngIf="currentEditType === FULL_TEXT">
+          {{ '@pry.search.button.cancel' | i18n }}
+        </button>
+        <button
+          [disabled]="
+            (currentEditType === MULTI_CLASS && !(searchMultiClassValid$ | async)) ||
+            (currentEditType === MONO_CLASS && !(searchMonoClassValid$ | async)) ||
+            !(currentEdit$ | async)?.owner
+          "
+          type="button"
+          class="a-btn a-btn--primary a-btn--icon-text"
+          (click)="search()"
+        >
+          <pry-icon iconSvg="search-line"></pry-icon>
+          {{
+            ((currentEdit$ | async)?.id === DEFAULT_NAMED_QUERY_ID
+              ? '@pry.search.button.search'
+              : '@pry.search.button.update'
+            ) | i18n
+          }}
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</div>

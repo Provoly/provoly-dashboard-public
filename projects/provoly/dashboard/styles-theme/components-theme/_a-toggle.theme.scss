@@ -1,0 +1,62 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Atom a-toggle */
+
+.a-toggle {
+  $this: &;
+
+  &__display {
+    border-color: themed($theme-map, 'color', 'primary', 400);
+    // background-color: themed($theme-map, 'color', 'accent', 600);
+
+    &:before {
+      background-color: themed($theme-map, 'color', 'primary', 400);
+    }
+  }
+
+  /* MODIFIERS */
+
+  // Force background color
+  &.-always-active {
+    #{$this}__display {
+      border-color: themed($theme-map, 'color', 'accent', 600);
+      background-color: themed($theme-map, 'color', 'accent', 600);
+
+      &:before {
+        background-color: themed($theme-map, 'color', 'primary', 'contrast', 600);
+      }
+    }
+  }
+
+  // Ex: ET/OU
+  &.-txt-inside {
+    #{$this}__display {
+      color: themed($theme-map, 'color', 'accent', 'contrast', 400);
+    }
+  }
+}
+
+/* STATES */
+
+// pressed/checked
+.a-toggle[aria-pressed='true'] .a-toggle__display,
+.a-toggle__input:checked + .a-toggle__display {
+  border-color: themed($theme-map, 'color', 'accent', 600);
+  background-color: themed($theme-map, 'color', 'accent', 600);
+
+  &:before {
+    background-color: themed($theme-map, 'color', 'accent', 'contrast', 600);
+  }
+}
+
+// Disabled
+.a-toggle.-disabled,
+.a-toggle:disabled,
+.a-toggle__input:disabled {
+  .a-toggle__display,
+  & + .a-toggle__display {
+    border-color: themed($theme-map, 'color', 'primary', 400);
+    background-color: themed($theme-map, 'color', 'primary', 400);
+  }
+}

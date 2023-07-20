@@ -1,0 +1,17 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme molecule - metadata tag */
+.m-metadata-tag {
+  $this: &;
+
+  .a-btn.a-btn--icon-text {
+    color: themed($theme-map, 'color', 'accent', 400);
+  }
+
+  &__list__item {
+    #{$this}__chip__label {
+      color: themed($theme-map, 'color', 'primary', 600);
+    }
+  }
+}

@@ -1,0 +1,36 @@
+@use '../abstracts' as *;
+
+/* Organism - component pry-expand-panel */
+.o-pry-expand-panel {
+  &__toggler {
+    display: flex;
+    align-items: center;
+    margin-bottom: toRem(15);
+    padding: toRem(20) 0;
+
+    // Toggler indicator state
+    &:before {
+      content: '';
+      margin-right: toRem(8);
+      border-width: 0 5px 5px 5px;
+      border-style: solid;
+      border-left-color: transparent;
+      border-right-color: transparent;
+    }
+
+    &[aria-expanded='false'] {
+      &:before {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &__content-wrapper {
+    overflow: auto;
+  }
+
+  &__content {
+    overflow: hidden;
+    max-height: toRem(540);
+  }
+}

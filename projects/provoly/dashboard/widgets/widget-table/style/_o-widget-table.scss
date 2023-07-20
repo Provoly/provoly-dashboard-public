@@ -1,0 +1,64 @@
+@use '../../../styles/abstracts/index' as *;
+
+/* Organism - widget table */
+/* Extends o-widget */
+
+.o-widget--table {
+  display: flex;
+  flex-direction: column;
+
+  .no-result {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    &__search {
+      width: 40%;
+      margin-bottom: toRem(40);
+    }
+
+    &__text {
+      max-width: toRem(294);
+      line-height: toRem(20);
+      text-align: center;
+    }
+  }
+
+  // [resizable ??]
+  .a-table {
+    &:last-child .bar {
+      display: none;
+    }
+
+    .wrapper {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .content {
+      flex: 1;
+    }
+
+    .bar {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      justify-self: flex-end;
+      width: 2px;
+      margin: 0 toRem(-12) 0 toRem(12);
+      border-left: 2px solid transparent;
+      border-right: 2px solid transparent;
+      background-clip: content-box;
+      opacity: 0;
+      cursor: ew-resize;
+      transition: opacity 0.3s;
+
+      &:hover,
+      &:active {
+        opacity: 1;
+      }
+    }
+  }
+}

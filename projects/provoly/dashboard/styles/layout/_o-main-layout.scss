@@ -1,0 +1,38 @@
+/* Organism - main layout  */
+
+.general-wrapper {
+  flex-direction: column;
+  display: flex;
+  overflow: hidden;
+  height: 100%;
+}
+
+.o-main-layout {
+  flex: 1;
+  display: grid;
+  grid-auto-columns: auto 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: 'panel content';
+  overflow: hidden;
+
+  &.-no-sidebar {
+    grid-auto-columns: auto;
+    grid-template-areas: 'content content';
+  }
+
+  &__panel {
+    grid-area: panel;
+    overflow: hidden;
+    height: 100%;
+
+    &.-panel-none {
+      display: none;
+    }
+  }
+
+  &__workspace {
+    grid-area: content;
+    overflow: hidden;
+    height: 100%;
+  }
+}

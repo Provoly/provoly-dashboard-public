@@ -1,0 +1,13 @@
+=== Nq color selector (pry-nq-color-selector)
+
+Le composant `+Nq color selector+` permet d’afficher et de modifier la
+couleur d’une recherche (named query)
+
+Les paramètres d’entrée du composant sont les suivants :
+
+- disabled (défaut=false): Désactive la modification de la couleur
+- namedQuery: Recherche utilisé pour afficher et modifier la couleur
+
+Le paramètre de sortie du composant est le suivant :
+
+- colorChanged: Evenement déclenché lors du changement de la couleur

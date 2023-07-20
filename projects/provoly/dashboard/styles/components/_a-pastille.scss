@@ -1,0 +1,14 @@
+@use '../abstracts' as *;
+
+/* Atom - pastille.  Ex: nombre de notifications */
+
+.a-pastille {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: toRem(20);
+  height: toRem(20);
+  border-radius: toRem(10);
+}

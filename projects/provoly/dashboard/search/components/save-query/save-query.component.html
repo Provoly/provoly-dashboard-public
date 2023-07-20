@@ -1,0 +1,50 @@
+<div
+  class="o-modal-wrapper"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="dialog_rename"
+  (keydown.escape)="onClose()"
+>
+  <div class="o-modal">
+    <div class="o-modal__top">
+      <div class="o-modal__top__title">
+        <h2 class="a-h2" id="dialog_title">
+          {{ '@pry.search.namedQuery.' + (modalSave ? 'saveTitle' : 'renameTitle') | i18n }}
+        </h2>
+      </div>
+      <div class="o-modal__top__close">
+        <button class="a-btn a-btn--icon-only" #cross (keydown.shift.tab)="focusValidation()" (click)="onClose()">
+          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="m-form-label-field">
+      <label class="a-label" for="name">{{ '@pry.search.namedQuery.name' | i18n }}</label>
+      <input [(ngModel)]="name" id="name" type="text" class="a-form-field" required maxlength="30" />
+    </div>
+    <div class="m-form-label-field">
+      <label class="a-label" for="description">{{ '@pry.search.namedQuery.description' | i18n }}</label>
+      <input [(ngModel)]="description" id="description" type="text" class="a-form-field" required maxlength="200" />
+    </div>
+
+    <pry-share [(ngModel)]="visibility"></pry-share>
+
+    <div class="m-btn-group">
+      <button type="button" (click)="onClose()" class="a-btn a-btn--secondary">
+        {{ '@pry.toolbox.manifest.close' | i18n }}
+      </button>
+      <button
+        type="button"
+        #save
+        (click)="onSave()"
+        class="a-btn a-btn--primary"
+        [disabled]="saveDisabled"
+        (keydown.tab)="focusCrossElement()"
+      >
+        {{ '@pry.toolbox.manifest.check' | i18n }}
+      </button>
+    </div>
+  </div>
+</div>

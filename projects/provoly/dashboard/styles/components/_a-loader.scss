@@ -1,0 +1,30 @@
+@use '../abstracts' as *;
+
+/* Atom - loader */
+
+.a-loader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  &__shape {
+    display: inline-block;
+    width: toRem(60);
+    height: toRem(60);
+    border: 5px solid #ecedf4;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    animation: rotation 1s linear infinite;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}

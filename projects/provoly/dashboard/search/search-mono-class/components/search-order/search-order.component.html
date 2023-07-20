@@ -1,0 +1,20 @@
+<div class="o-pry-search-order">
+  <pry-select
+    (ngModelChange)="changeProperty($event)"
+    [itemsAsOption]="true"
+    [items]="variableAttributes$ | async"
+    [ngModel]="(order$ | async)?.attribute ?? 'null'"
+    bindLabel="name"
+    bindValue="id"
+    class="a-pry-select"
+  ></pry-select>
+  <pry-toggle
+    *ngIf="(order$ | async)?.attribute"
+    [ngModel]="(order$ | async)?.asc === 'asc'"
+    (ngModelChange)="changeProperty(undefined, $event ? 'asc' : 'desc')"
+    [alwaysActive]="true"
+    dir="ltr"
+  >
+    {{ ((order$ | async)?.asc === 'asc' ? '@pry.search.composed.orderA' : '@pry.search.composed.orderD') | i18n }}
+  </pry-toggle>
+</div>

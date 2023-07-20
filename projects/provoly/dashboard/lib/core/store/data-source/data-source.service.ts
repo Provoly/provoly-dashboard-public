@@ -1,0 +1,180 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { map, mergeMap, Observable, of, switchMap } from 'rxjs';
+import { PryI18nService } from '../../i18n/i18n.service';
+import { DatasetMetadata } from '../../model/admin-api.model';
+import { Dataset, DatasetError } from '../../model/dataset.interface';
+import { ConfigState } from '../config/config.reducer';
+import { ConfigSelectors } from '../config/config.selectors';
+import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from '../search/search.constants';
+import { DatasetVersion, NamedQuery } from './data-source.model';
+import { DataSourceState } from './data-source.reducer';
+
+export interface ResponseRequest {
+  data: {
+    success: boolean;
+  };
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DataSourceService {
+  constructor(
+    private store: Store<ConfigState | DataSourceState>,
+    private httpClient: HttpClient,
+    private translateService: PryI18nService
+  ) {}
+
+  get(): Observable<NamedQuery[]> {
+    return this.store.select(ConfigSelectors.refUrl).pipe(
+      mergeMap((url) => this.httpClient.get<NamedQuery[]>(encodeURI(`${url}/users/me/namedquery`))),
+      map((nqs) => [
+        ...nqs,
+        {
+          id: DEFAULT_NAMED_QUERY_ID,
+          name: this.translateService.instant('@pry.widget.namedQuery.defaultRs'),
+          color: '#84eac5',
+          lastExecutionDate: 100,
+          request: null
+        } as unknown as NamedQuery,
+        {
+          id: EXPLORE_NAMED_QUERY_ID,
+          name: this.translateService.instant('@pry.search.namedQuery.explore'),
+          color: '#6a2974',
+          lastExecutionDate: 50,
+          request: null
+        } as unknown as NamedQuery
+      ]),
+      map((nqs) => nqs.map((nq) => ({ ...nq, sourceType: 'namedQuery' })))
+    );
+  }
+
+  post(namedQuery?: NamedQuery): Observable<ResponseRequest> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(
+        mergeMap((url) =>
+          namedQuery?.id !== DEFAULT_NAMED_QUERY_ID
+            ? this.httpClient.post<ResponseRequest>(encodeURI(`${url}/users/me/namedquery`), namedQuery)
+            : of({ data: { success: true } })
+        )
+      );
+  }
+
+  delete(id: string): Observable<ResponseRequest> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(mergeMap((url) => this.httpClient.delete<ResponseRequest>(encodeURI(`${url}/users/me/namedquery/${id}`))));
+  }
+
+  addFavorite(id: string): Observable<ResponseRequest> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(
+        mergeMap((url) =>
+          this.httpClient.post<ResponseRequest>(encodeURI(`${url}/users/me/namedquery/${id}/favorite`), null)
+        )
+      );
+  }
+
+  deleteFavorite(id: string): Observable<ResponseRequest> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(
+        mergeMap((url) =>
+          this.httpClient.delete<ResponseRequest>(encodeURI(`${url}/users/me/namedquery/${id}/favorite`))
+        )
+      );
+  }
+
+  getDatasets(): Observable<Dataset[]> {
+    return this.store.select(ConfigSelectors.refUrl).pipe(
+      mergeMap((url) => this.httpClient.get<Dataset[]>(encodeURI(`${url}/datasets`))),
+      map((dsds) => dsds.map((dsd) => ({ ...dsd, sourceType: 'dataset' })))
+    );
+  }
+
+  addDataset(dataset: Dataset): Observable<void> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(mergeMap((url) => this.httpClient.post<void>(encodeURI(`${url}/datasets`), dataset)));
+  }
+
+  updateDataset(dataset: Dataset): Observable<void> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(mergeMap((url) => this.httpClient.put<void>(encodeURI(`${url}/datasets`), dataset)));
+  }
+
+  deleteDataset(id: string) {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(mergeMap((url) => this.httpClient.delete<void>(`${url}/datasets/id/${id}`)));
+  }
+
+  getDatasetById(id: string) {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(mergeMap((url) => this.httpClient.get<Dataset>(`${url}/datasets/id/${id}`)));
+  }
+
+  getDatasetMetadata(id: string): Observable<DatasetMetadata[]> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(mergeMap((url) => this.httpClient.get<DatasetMetadata[]>(`${url}/datasets/id/${id}/metadata`)));
+  }
+
+  addDatasetMetadata(datasetId: string, metadataId: string, value: any): Observable<void> {
+    return this.store.select(ConfigSelectors.refUrl).pipe(
+      mergeMap((url) =>
+        this.httpClient.put<void>(encodeURI(`${url}/datasets/id/${datasetId}/metadata/id/${metadataId}`), {
+          value: value
+        })
+      )
+    );
+  }
+
+  deleteDatasetMetadata(datasetId: string, metadataId: string): Observable<void> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(
+        mergeMap((url) =>
+          this.httpClient.delete<void>(encodeURI(`${url}/datasets/id/${datasetId}/metadata/id/${metadataId}`))
+        )
+      );
+  }
+
+  getDatasetVersions() {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(switchMap((url) => this.httpClient.get<DatasetVersion[]>(encodeURI(`${url}/dataset-versions`))));
+  }
+
+  retrieveErrors(id: string) {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(mergeMap((url) => this.httpClient.get<DatasetError[]>(encodeURI(`${url}/error/id/${id}`))));
+  }
+
+  deactivateDatasetVersion(versionId: string) {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(
+        switchMap((url) =>
+          this.httpClient.post<DatasetVersion>(encodeURI(`${url}/dataset-versions/id/${versionId}/deactivate`), null)
+        )
+      );
+  }
+
+  activateDatasetVersion(versionId: string) {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(
+        switchMap((url) =>
+          this.httpClient.post<DatasetVersion>(encodeURI(`${url}/dataset-versions/id/${versionId}/activate`), null)
+        )
+      );
+  }
+}

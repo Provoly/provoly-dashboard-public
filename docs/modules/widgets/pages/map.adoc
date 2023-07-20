@@ -1,0 +1,89 @@
+==== Widget Map (cartographie)
+
+===== Généralités
+
+Permet l’affichage des données sur une carte selon plusieurs choix :
+
+- Fréquentation :
+- Bulles
+- Marqueurs
+
+Le parametrage permet :
+
+- le changement du fond
+- l’ajout de plusieurs couches
+
+L'affichage se base sur les types géographiques (point, line, polygon, ...)
+
+===== Exemple de manifest
+[source,js]
+----
+{
+    type: 'map',
+    layout: {
+      x: 1,
+      y: 1,
+      height: 10,
+      width: 12
+    },
+    options: {
+      layers: [
+        {
+          type: 'marker',
+          classes: [],
+          attribute: 'loc',
+        },
+        {
+          active: true,
+          type: 'heatmap',
+          attribute: 'loc',
+          intensityAttribute: 'temperature_en_degre_c',
+          intensityAsc: true,
+          classes: ['17b90da3-f448-4cc3-bfd8-74c8b8481590']
+        },
+        {
+          active: true,
+          type: 'bubble',
+          classes: ['06406e7e-37cd-41ce-b5fc-36d233e5ae5c'],
+          attribute: 'loc',
+          intensityAttribute: 'latitude',
+          intensityAsc: true,
+          opacity: 50
+        },
+        {
+          type: 'relation',
+          active: false
+        },
+        {
+          type: 'wmts',
+          active: true,
+          url: 'https://....',
+          paramLayer: 'CADASTRALPARCELS.PARCELLAIRE_EXPRESS',
+          style: 'PCI vecteur',
+          matrixSet: 'PM'
+        }
+      ],
+      fit: true
+    },
+    datasource: ['29061554-298f-4f56-8cd2-51ccec998303']
+}
+----
+
+===== Attributions
+
+Il est possible d'ajouter des attributions à une carte, en ajoutant dans les options `"attributions": true`. Si vous souhaitez ajouter une attribution pour une couche, vous pouvez le faire dans les options de la couche: `"attribution": "<layer attribution>"`
+
+===== Fit
+
+Cette option permet à la carte de s'adapter aux données lors du chargement ou des changements de sélection. Si vous souhaitez garder un affichage d'un endroit particulier, à un zoom particulier, il faut désactiver cette option.
+
+===== Transformation pour obtenir un type géographique à partir de champs numériques
+
+Si vous disposez de champs latitude/longitude séparés, vous pouvez demander au front de gérer la transformation de données automatiquement, pour peu que vous ayez créé le champ géographique cible, en utilisant la fonction suivante:
+
+[source,js]
+----
+this.searchService.addTransformation(
+  latLonToGeographicFieldTransformation('latitude', 'longitude', 'location-auto')
+);
+----

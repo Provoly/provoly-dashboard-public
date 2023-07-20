@@ -1,0 +1,160 @@
+<pry-widget-table-css></pry-widget-table-css>
+<div class="o-widget o-widget--table">
+  <pry-widget-header
+    [datasourceIds$]="datasourceIds$"
+    *ngIf="displayHeader$ | async"
+    [widgetIndex]="widgetIndex"
+    [manifest]="manifest"
+    (manifestModified)="manifestModified.emit($event)"
+    #header
+    [headerOptions]="(displayHeader$ | async) ?? {}"
+  >
+    <pry-settings
+      (saveTriggered)="emitManifest()"
+      [headerPresent]="displayHeader$ | async"
+      [widgetIndex]="widgetIndex"
+      [header]="header"
+      [open$]="open$"
+      class="o-settings"
+    >
+      <div class="o-settings__popup__content__actions">
+        <button type="button" class="a-btn a-btn--icon-text -link-like" (click)="addColumn()">
+          <pry-icon iconSvg="post_add"></pry-icon>
+          {{ '@pry.widget.table.addColumn' | i18n }}
+        </button>
+      </div>
+
+      <div *ngFor="let columnDef of optionsCopy?.columns; let i = index" class="o-settings__popup__content__fields">
+        <div class="o-settings__popup__content__fields__head">
+          <div class="m-btn-group">
+            <button type="button" class="a-btn a-btn--icon-only" (click)="invertLayers(i, i - 1)" *ngIf="i > 0">
+              <pry-icon iconSvg="fleche_haut"></pry-icon>
+              <span class="u-visually-hidden">{{ '@pry.action.moveUp' | i18n }}</span>
+            </button>
+            <button
+              type="button"
+              class="a-btn a-btn--icon-only"
+              (click)="invertLayers(i, i + 1)"
+              *ngIf="i < (optionsCopy?.columns?.length ?? 0) - 1"
+            >
+              <pry-icon iconSvg="fleche_bas"></pry-icon>
+              <span class="u-visually-hidden">{{ '@pry.action.moveDown' | i18n }}</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="o-settings__popup__content__fields__content">
+          <div class="m-form-label-field">
+            <label class="a-label" for="table_property">{{ '@pry.widget.table.property' | i18n }}</label>
+            <pry-select
+              (ngModelChange)="changePropertyName($event, columnDef)"
+              [itemsAsOption]="false"
+              [items]="properties$ | async"
+              [ngModel]="columnDef.property"
+              class="a-pry-select"
+              id="table_property"
+            ></pry-select>
+          </div>
+
+          <div class="m-form-label-field">
+            <label class="a-label" for="table_label">{{ '@pry.widget.table.label' | i18n }}</label>
+            <input
+              id="table_label"
+              class="a-form-field"
+              type="text"
+              (input)="changeLabel($event, columnDef)"
+              [value]="columnDef.label"
+            />
+          </div>
+        </div>
+        <button
+          (click)="deleteColumn(i)"
+          aria-label="delete"
+          type="button"
+          class="a-btn a-btn--icon-text -link-like"
+          data-func="delete"
+        >
+          <pry-icon iconSvg="delete" [width]="19" [height]="19"></pry-icon>
+          <span>{{ '@pry.widget.table.deleteColumn' | i18n }}</span>
+        </button>
+      </div>
+    </pry-settings>
+  </pry-widget-header>
+
+  <div class="a-table-wrapper">
+    <div class="a-table-loading" *ngIf="isLoading$ | async; else noLoading">
+      <span class="a-table-loading__loader"></span>
+    </div>
+    <ng-template #noLoading>
+      <ng-container *ngIf="(allItems$ | async) ?? [] as allObjects">
+        <div class="no-result" *ngIf="allObjects.length === 0">
+          <img
+            class="no-result__search"
+            src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
+            alt="{{ '@pry.widget.table.empty' | i18n }}"
+            aria-hidden="true"
+          />
+          <span class="no-result__text">{{ '@pry.widget.table.empty' | i18n }}</span>
+        </div>
+
+        <ng-container *ngIf="(selectedIds$ | async) ?? [] as selectedIds">
+          <ng-container *ngIf="(columns$ | async) ?? [] as columns">
+            <table class="a-table" [attr.aria-label]="'@pry.widget.table.description' | i18n">
+              <thead>
+                <tr>
+                  <th *ngIf="allObjects?.length ?? 0 > 0">
+                    <pry-checkbox [ngModel]="areAllSelected" (ngModelChange)="selectAll($event)"></pry-checkbox>
+                  </th>
+                  <th *ngFor="let column of columns; let i = index" resizable (click)="setOrder(column)">
+                    <span>{{ column.label }}</span>
+                    <ng-container *ngIf="quickOrder$ | async as quickOrder">
+                      <ng-container *ngIf="quickOrder.attribute === column.attributeId">
+                        <pry-icon
+                          [iconSvg]="quickOrder.asc ? 'chevron_top' : 'chevron_bottom'"
+                          [height]="12"
+                          [width]="12"
+                        ></pry-icon>
+                      </ng-container>
+                    </ng-container>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let item of allObjects; trackBy: trackObjects"
+                  [class.is-selected]="selectedIds.includes(item.id)"
+                  [class.context-menu-selected]="contextMenuClickedId === item.id && (isContextMenuOpened$ | async)"
+                  (contextmenu)="contextMenu($event, item)"
+                  detachRow
+                  (selectedValue)="selection($event, item)"
+                >
+                  <td class="checkbox-wrapper">
+                    <pry-checkbox [ngModel]="selectedIds.includes(item.id)"></pry-checkbox>
+                  </td>
+                  <td *ngFor="let column of columns" class="u-ellipsis">
+                    <ng-container *ngIf="column.property === 'metadata'">
+                      <pry-metadata [item]="item"></pry-metadata>
+                    </ng-container>
+                    <ng-container *ngIf="column.property === 'oClass'">
+                      <p class="content-img">
+                        <img
+                          [height]="25"
+                          [width]="25"
+                          [src]="item | translateItemToSymbol | async"
+                          [alt]="item.oClass | translateId: { type: 'class', output: 'name' } | async"
+                        />
+                      </p>
+                    </ng-container>
+                    <ng-container *ngIf="!['metadata', 'oClass'].includes(column.property)">
+                      <pry-expand-value [value]="item | getValue: column.property | async"></pry-expand-value>
+                    </ng-container>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-template>
+  </div>
+</div>

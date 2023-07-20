@@ -1,0 +1,56 @@
+==== Widget Aggregated Chart (histogrammes, …)
+
+Permet la restitution des données suivant plusieurs types de graphique :
+
+* Histogramme
+* Courbe
+* Point
+* Aire
+* Circulaire
+
+Les agrégations sont gérées par un service spécifique, qui peut être PryBackendAggregationService (utilisant le backend Provoly), PryFrontendAggregationService (agrégeant les données présentes sur le frontend comme vega le faisait auparavant) ou alors une implémentation personnalisée de PryAggregationService.
+
+Pour indiquer la version choisie, il suffit d'instancier le service choisi:
+
+[source,js]
+----
+providers: [
+    ...,
+    { provide: PryAggregationService, useClass: PryBackendAggregationService },
+    ...
+  ],
+----
+
+Exemple de manifest :
+
+[source,js]
+----
+{
+    type: 'chart',
+    layout: { x: 1, y: 1, height: 12, width: 12 },
+    options: {
+      title: 'test',
+      ordinate: {
+        attribute: 'da314951-82cb-4e93-9955-4654993f231c',
+        operation: 'none',
+        label: 'Température'
+      },
+      abscissa: {
+        attribute: 'eothr951-82cb-4e93-9955-4654993f231c',
+        label: 'Date'
+      },
+      graph: {
+        offset: true,
+        stacked: true
+      },
+      groupBy: {
+        attribute: 'eothr951-82cb-4e93-9955-4654993f231c'
+      }
+    },
+    datasource: 'graphspe-cifi-cdat-acd2-51ccec998307'
+    }
+----
+
+NOTE: Le service d'agrégation backend ne peut gérer qu'une seule datasource, et ne peut pas non plus gérer les recherches courante ni exploratoire.
+
+NOTE: Ce widget remplace logiquement le précédent `@provoly/dashboard/widgets/widget-chart`, mais est conservé, car permettant des choses différentes de son prédécesseur. Bien que possible, il vaut mieux en choisir uniquement un seul selon votre besoin.

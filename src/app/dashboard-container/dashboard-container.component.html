@@ -1,0 +1,9 @@
+<div class="o-container">
+  <div class="o-container__filters">
+    <pry-filter-instanciator
+      *ngFor="let filter of (globalManifest$ | async)?.filters"
+      [filter]="filter"
+    ></pry-filter-instanciator>
+  </div>
+  <pry-dashboard #dashboard></pry-dashboard>
+</div>

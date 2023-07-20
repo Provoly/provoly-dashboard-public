@@ -1,0 +1,30 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - widget iframe */
+
+.o-widget--iframe {
+  &__settings {
+    .a-btn.a-btn--icon-text.-settings {
+      border: 2px solid themed($theme-map, 'color', 'accent', 400);
+      color: themed($theme-map, 'color', 'accent', 400);
+      background-color: transparent;
+
+      &:hover {
+        color: themed($theme-map, 'color', 'accent', 'contrast', 500);
+        background-color: themed($theme-map, 'color', 'accent', 500);
+      }
+
+      &:focus,
+      &:active {
+        color: themed($theme-map, 'color', 'accent', 'contrast', 500);
+        background-color: themed($theme-map, 'color', 'accent', 600);
+      }
+
+      &.-disabled,
+      &:disabled {
+        background-color: themed($theme-map, 'color', 'accent', 100);
+      }
+    }
+  }
+}

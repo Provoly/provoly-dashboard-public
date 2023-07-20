@@ -1,0 +1,70 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - widget */
+
+.o-widget {
+  &__header {
+    background-color: white;
+    border-bottom: 1px themed($theme-map, 'color', 'primary', 300) solid;
+
+    &__content {
+      &__title {
+        color: themed($theme-map, 'color', 'primary', 800);
+      }
+    }
+  }
+
+  &__choose-resultset,
+  &__menu {
+    @extend %overlay-panel-fixed-right;
+    @include typography-level(themed($theme-map, 'typography', 'panel'));
+  }
+
+  &__choose-form {
+    @extend %overlay-panel-fixed-right;
+    @include typography-level(themed($theme-map, 'typography', 'panel'));
+  }
+
+  .m-btn-group.-selection-choice {
+    border-color: themed($theme-map, 'color', 'primary', 400);
+
+    .a-btn {
+      color: #000;
+      background-color: transparent;
+
+      &.-selected {
+        color: themed($theme-map, 'color', 'accent', 500);
+        background-color: themed($theme-map, 'color', 'primary', 'contrast', 500);
+      }
+    }
+  }
+
+  .node-label {
+    display: grid;
+    place-items: center;
+    font-size: 8px;
+
+    > span {
+      overflow: hidden;
+      max-width: 100px;
+      margin: 0 5px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: themed($theme-map, 'color', 'primary', 300);
+    }
+
+    &.node-label-selected > span {
+      border-radius: toRem(5);
+      padding: 0 5px;
+      color: #ffffff;
+      background-color: themed($theme-map, 'color', 'accent', 400);
+      font-weight: 700;
+    }
+
+    &.node-label-hover > span {
+      color: themed($theme-map, 'color', 'accent', 500);
+    }
+  }
+}

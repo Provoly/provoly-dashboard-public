@@ -1,0 +1,47 @@
+@use '../abstracts' as *;
+
+/* Molecule - form group of radio buttons */
+
+.m-form-radio-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: toRem(15);
+
+  legend.a-label {
+    margin-bottom: toRem(11);
+  }
+
+  &__item {
+    display: flex;
+    gap: toRem(6);
+    align-items: center;
+    margin-bottom: toRem(10);
+    margin-right: toRem(18);
+
+    .a-label {
+      margin-bottom: 0;
+    }
+  }
+
+  /* MODIFIERS */
+  &.-width-sm {
+    width: 288px;
+  }
+
+  &.-width-md {
+    width: 385px;
+  }
+
+  &.-width-lg {
+    width: 450px;
+  }
+
+  &.-width-xl {
+    width: 600px;
+  }
+
+  &.-width-full {
+    width: 100%;
+  }
+}

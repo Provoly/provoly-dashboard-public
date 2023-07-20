@@ -1,0 +1,25 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - pry search home */
+
+.o-pry-search-home {
+  #btn_view_more {
+    margin-right: toRem(15);
+    font-weight: 300;
+    font-size: toRem(13);
+    text-decoration: underline;
+
+    &:hover,
+    &:active {
+      font-weight: 300;
+    }
+  }
+
+  &__search {
+    .a-h3 {
+      font-size: toRem(14);
+      font-weight: 400;
+    }
+  }
+}

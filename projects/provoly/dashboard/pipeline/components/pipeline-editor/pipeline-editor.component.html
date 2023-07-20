@@ -1,0 +1,126 @@
+<pry-pipeline-css></pry-pipeline-css>
+<div class="o-pipeline">
+  <div class="o-pipeline__menu">
+    <div class="o-accordion" role="tablist" aria-multiselectable="false">
+      <ng-container *ngFor="let category of categories$ | async">
+        <h2
+          class="o-accordion__title"
+          [class.is-active]="categoryOpened === category"
+          [style.--border-color]="(types$ | async)![category][0].color"
+        >
+          <button
+            type="button"
+            class="o-accordion__title__btn"
+            [id]="'button_' + category"
+            role="tab"
+            [attr.aria-controls]="'panel_' + category"
+            [attr.aria-selected]="categoryOpened === category"
+            [attr.aria-expanded]="categoryOpened === category"
+            (click)="toggle(category)"
+          >
+            <span>{{ '@pry.pipeline.' + category | i18n }}</span>
+            <pry-icon
+              [width]="15"
+              [height]="15"
+              [iconSvg]="categoryOpened === category ? 'chevron_top_rounded' : 'chevron_bottom_rounded'"
+            ></pry-icon>
+          </button>
+        </h2>
+        <div
+          class="o-accordion__panel"
+          role="tabpanel"
+          [attr.aria-labelledby]="'button_' + category"
+          [id]="'panel_' + category"
+          [attr.aria-hidden]="categoryOpened !== category"
+          [style.--border-color]="(types$ | async)![category][0].color"
+        >
+          <ng-container *ngIf="categoryOpened === category">
+            <div class="o-accordion__panel__head">
+              <input
+                type="text"
+                class="a-form-field"
+                [placeholder]="'@pry.toolbox.catalog.filter.name' | i18n"
+                [ngModel]="(search$ | async)[category]"
+                (ngModelChange)="search(category, $event)"
+              />
+              <pry-icon iconSvg="search" [width]="17" [height]="17"></pry-icon>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="categoryOpened === category">
+            <ul class="o-pipeline__components">
+              <ng-container *ngFor="let type of (types$ | async)![category]">
+                <li [draggable]="!this.disableEditing" (dragstart)="onDragStart($event, type)">
+                  <p class="a-p">{{ type.label }}</p>
+                  <pry-icon [width]="2" [height]="20" iconSvg="info"></pry-icon>
+                </li>
+              </ng-container>
+            </ul>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="o-pipeline__workspace">
+    <div class="o-pipeline-layout__toolbox">
+      <button class="a-btn a-btn--secondary --size-md" type="button" (click)="goBack()">
+        {{ '@pry.pipeline.backToDescription' | i18n }}
+      </button>
+      <ng-container *ngFor="let action of actions">
+        <button type="button" (click)="clickedAction(action)" class="a-btn a-btn--secondary --size-md">
+          {{ '@pry.pipeline.' + action.type | i18n }}
+          <pry-icon [iconSvg]="action.icon"></pry-icon>
+        </button>
+      </ng-container>
+    </div>
+    <div>
+      <h1 class="a-h1">{{ this.pipeline?.title }}</h1>
+    </div>
+    <div class="o-pipeline-editor">
+      <div (drop)="onDrop($event)" class="o-pipeline-editor__grid" #canvasParent>
+        <canvas #canvas class="canvas"></canvas>
+      </div>
+      <div class="o-pipeline-editor__properties">
+        <div
+          class="o-pipeline-editor__properties__node"
+          *ngIf="selectedNode$ | async as node"
+          [title]="node.properties['id']"
+        >
+          <h3 class="a-h3">{{ '@pry.pipeline.selectedTask' | i18n }}</h3>
+          <h4 class="a-h4">{{ '@pry.pipeline.type' | i18n }}</h4>
+          <p class="a-p a-p--type">{{ node.type }}</p>
+          <div class="m-form-label-field">
+            <label class="a-label" for="{{ node.id }}">{{ '@pry.pipeline.title' | i18n }}</label>
+            <input
+              class="a-form-field"
+              id="{{ node.id }}"
+              type="text"
+              [value]="node.title"
+              [disabled]="disableEditing"
+              (change)="changeTitle(node, $event)"
+            />
+          </div>
+        </div>
+        <div class="o-pipeline-editor__properties__detail" [class.is-empty]="!selectedNode">
+          <div>
+            <div #specific></div>
+          </div>
+        </div>
+        <div *ngIf="((errors$ | async)?.length ?? 0) > 0" class="o-pipeline-editor__properties__errors">
+          <div class="o-pipeline-editor__properties__errors__title">
+            <pry-icon iconSvg="warning-triangle"></pry-icon>
+            <p class="a-p">{{ '@pry.pipeline.errors' | i18n }}:</p>
+          </div>
+          <ul>
+            <li *ngFor="let error of errors$ | async">
+              <span class="type">{{
+                (error?.nodeId === '-' ? '@pry.pipeline.global' : '@pry.pipeline.node') | i18n
+              }}</span>
+              {{ error.translated }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

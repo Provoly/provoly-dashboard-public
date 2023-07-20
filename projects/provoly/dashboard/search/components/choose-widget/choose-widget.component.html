@@ -1,0 +1,46 @@
+<div cdkOverlayOrigin #originSearch="cdkOverlayOrigin" class="m-choose-widget">
+  <button
+    type="button"
+    title="{{ '@pry.widget.buttonChoice' | i18n }}"
+    class="a-btn a-btn--primary a-btn--icon-text m-choose-widget__buttons-widget"
+    (click)="togglePopup()"
+    *ngIf="mode === 'button'"
+  >
+    <img
+      [alt]="widgetSelected?.label"
+      [src]="widgetSelected?.icon | getSecuredImage | async"
+      [width]="22"
+      [height]="22"
+    />
+    <span>{{ widgetSelected ? (widgetSelected.label | i18n) : ('@pry.toolbox.table' | i18n) }}</span>
+  </button>
+</div>
+
+<div class="m-choose-widget__input" [class.choose-widget__input__inline]="mode === 'inline'" *ngIf="mode !== 'button'">
+  <ng-content></ng-content>
+</div>
+
+<ng-template
+  cdkConnectedOverlay
+  cdkConnectedOverlayLockPosition
+  [cdkConnectedOverlayOrigin]="originSearch"
+  [cdkConnectedOverlayOpen]="panelOpen"
+  [cdkConnectedOverlayPositions]="[BOTTOM_POSITION, TOP_POSITION]"
+>
+  <div class="m-choose-widget__widget_overlay" (keydown.escape)="togglePopup()" [style.width.px]="width">
+    <div class="m-choose-widget__widget_overlay__content">
+      <div *ngFor="let widget of widgets$ | async">
+        <button
+          #chooseWidgets
+          type="button"
+          class="m-choose-widget__widget_overlay__content__item"
+          [class.choose-widget__widget_overlay__content__item__selected]="widget.type === widgetSelected?.type"
+          (click)="onSelectWidget(widget)"
+        >
+          <img [alt]="widget.label | i18n" [height]="22" [width]="22" [src]="widget.icon | getSecuredImage | async" />
+          <span class="m-choose-widget__widget_overlay__content__item__label">{{ widget.label | i18n }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,274 @@
+@use '../../styles/abstracts/index' as *;
+
+.o-pipeline-layout {
+  height: 100%;
+
+  &__toolbox {
+    display: flex;
+    align-items: center;
+    gap: toRem(20);
+    padding: toRem(13) toRem(20) toRem(13) toRem(20);
+    margin-bottom: toRem(20);
+
+    &:first-of-type {
+      padding-top: toRem(20);
+      min-height: toRem(74);
+    }
+
+    .a-label {
+      margin: 0;
+    }
+  }
+
+  &__details {
+    padding: toRem(20);
+
+    .row {
+      gap: toRem(45);
+    }
+
+    :first-child {
+      flex: 0 1 50%;
+    }
+
+    .a-form-field {
+      margin-bottom: toRem(15);
+    }
+
+    .property-value {
+      font-weight: 400;
+      font-size: toRem(16);
+    }
+  }
+
+  .a-h1 {
+    margin: 0 toRem(20);
+  }
+
+  .a-table {
+    margin-left: 20px;
+    width: calc(100% - 40px);
+  }
+
+  .a-table,
+  .a-table td {
+    cursor: default;
+
+    .a-btn--secondary.-size-sm {
+      font-size: toRem(14);
+    }
+  }
+
+  .canvas {
+    flex: 1 1 auto;
+  }
+
+  .litegraph.dialog {
+    display: none;
+  }
+}
+
+%panelBorderLeftColored {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+}
+
+.o-pipeline {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+
+  &__menu {
+    min-width: toRem(270);
+    overflow-y: auto;
+
+    .o-accordion {
+      min-width: toRem(270);
+
+      &__title {
+        position: relative;
+
+        // Border left colored
+        &:before {
+          @extend %panelBorderLeftColored;
+          background-color: var(--border-color);
+        }
+
+        border-bottom-style: solid;
+        border-bottom-width: toRem(1);
+
+        &__btn {
+          width: 100%;
+          height: 70%;
+          padding: 0;
+          text-transform: uppercase;
+          text-align: left;
+        }
+
+        // On active item, remove border-bottom, replaced by border-bottom on active panel
+        &.is-active {
+          border-bottom: none;
+        }
+      }
+
+      &__panel {
+        position: relative;
+
+        // Border-bottom on active panel
+        &[aria-hidden='false'] {
+          border-bottom-style: solid;
+          border-bottom-width: toRem(1);
+        }
+
+        // Head (input field)
+        &__head {
+          position: relative;
+          padding: toRem(2) toRem(10) toRem(20) toRem(10);
+
+          // Border left colored
+          &:before {
+            @extend %panelBorderLeftColored;
+            background-color: var(--border-color);
+          }
+
+          pry-icon {
+            position: absolute;
+            top: toRem(12);
+            left: toRem(23);
+          }
+
+          .a-form-field {
+            padding-left: toRem(40);
+          }
+        }
+
+        // Components list
+        .o-pipeline__components {
+          @extend %list-unstyled;
+          position: relative;
+          z-index: 1;
+
+          li {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 40px;
+            padding: 0 toRem(15);
+            border-top-width: 1px;
+            border-top-style: solid;
+            cursor: grab;
+
+            // Border left colored
+            &:before {
+              @extend %panelBorderLeftColored;
+              background-color: var(--border-color);
+            }
+
+            &:hover {
+              background-color: white;
+            }
+
+            &:active {
+              cursor: grabbing;
+            }
+
+            .a-p {
+              margin-bottom: 0;
+            }
+
+            .a-icon {
+              transform: scale(2.2);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &__workspace {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  .o-pipeline-editor {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    margin: 0 toRem(20);
+    background-color: white;
+
+    &__grid {
+      flex: 1;
+    }
+
+    &__properties {
+      display: flex;
+      flex-direction: column;
+      width: toRem(270);
+      padding: toRem(25) toRem(20);
+
+      &__node {
+        .a-h3 {
+          margin-bottom: toRem(15);
+        }
+
+        .a-h4 {
+          margin-bottom: 0;
+          padding-bottom: toRem(5);
+          text-transform: uppercase;
+          font-size: toRem(14);
+          line-height: toRem(18);
+        }
+
+        .a-p--type {
+          padding-bottom: toRem(10);
+          font-size: toRem(14);
+          line-height: toRem(18);
+          overflow-wrap: break-word;
+        }
+      }
+
+      .a-label {
+        font-weight: 700;
+        overflow-wrap: break-word;
+      }
+
+      &__detail {
+        display: flex;
+        flex-direction: column;
+      }
+
+      &__errors {
+        &__title {
+          display: flex;
+          align-items: flex-end;
+          gap: toRem(10);
+          margin-bottom: toRem(15);
+
+          .a-p {
+            margin-bottom: 0;
+            font-weight: 700;
+            text-transform: uppercase;
+          }
+        }
+
+        ul {
+          li {
+            .type {
+              display: inline-block;
+              padding: toRem(1) toRem(5);
+              border-radius: toRem(5);
+            }
+          }
+        }
+      }
+    }
+  }
+}

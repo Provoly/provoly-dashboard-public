@@ -1,0 +1,58 @@
+@use '../abstracts' as *;
+
+/* Molecule - buttons group */
+
+.m-btn-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: toRem(15);
+
+  // List of action buttons displayed close to an form input field
+  &--input-actions {
+    justify-content: flex-start;
+    gap: toRem(8);
+  }
+
+  &.-vertical {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  &.-start {
+    justify-content: flex-start;
+    gap: toRem(25);
+  }
+
+  &.-end {
+    justify-content: flex-end;
+  }
+
+  &.-space-around {
+    justify-content: space-around;
+  }
+
+  &.-space-evenly {
+    justify-content: space-evenly;
+  }
+
+  &.-align-center {
+    margin: 0 auto;
+  }
+
+  &.-width-sm {
+    width: 288px;
+  }
+
+  &.-width-md {
+    width: 385px;
+  }
+
+  &.-width-lg {
+    width: 500px;
+  }
+
+  &.-width-full {
+    width: 100%;
+  }
+}

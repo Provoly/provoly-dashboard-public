@@ -1,0 +1,37 @@
+<div class="o-base-container">
+  <h1 class="a-h1">{{ '@pry.admin.links.list' | i18n }}</h1>
+  <table
+    class="a-table"
+    prySortTable
+    prySortActive="name"
+    prySortDirection="asc"
+    (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
+  >
+    <caption>
+      {{
+        '@pry.admin.links.list' | i18n
+      }},
+      {{
+        '@pry.action.sortableColumnHeader' | i18n
+      }}
+    </caption>
+    <thead>
+      <tr>
+        <th prySortHeader="name">{{ '@pry.admin.links.classSource' | i18n }}</th>
+        <th prySortHeader="name">{{ '@pry.admin.links.attributeSource' | i18n }}</th>
+        <th prySortHeader="name">{{ '@pry.admin.links.classDestination' | i18n }}</th>
+        <th prySortHeader="name">{{ '@pry.admin.links.attributeDestination' | i18n }}</th>
+        <th prySortHeader="name">{{ '@pry.admin.links.relationType' | i18n }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let link of linksExtended$ | async | prySortData: sortActive : sortDirection">
+        <td>{{ link.classSource }}</td>
+        <td>{{ link.attributeSource }}</td>
+        <td>{{ link.classDestination }}</td>
+        <td>{{ link.attributeDestination }}</td>
+        <td>{{ link.relationType }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

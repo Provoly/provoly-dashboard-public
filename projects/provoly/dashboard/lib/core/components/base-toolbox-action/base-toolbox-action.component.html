@@ -1,0 +1,40 @@
+<ng-container *ngIf="action">
+  <ul>
+    <li class="m-actions-list__item" (click)="select(action)" cdkOverlayOrigin #origin="cdkOverlayOrigin">
+      <button class="a-btn a-btn--secondary" [class.is-active]="panelOpen" [disabled]="action.disabled">
+        <ng-container *ngIf="!iconAction; else iconActionTpl">
+          <pry-icon *ngIf="action.icon" [iconSvg]="action.icon"></pry-icon>
+          {{ baseToolboxTranslation + action.label | i18n }}
+          <pry-icon *ngIf="action.actions" iconSvg="fleche_bas"></pry-icon>
+        </ng-container>
+        <ng-template #iconActionTpl>
+          <pry-icon
+            *ngIf="action.icon"
+            [iconSvg]="action.icon"
+            [title]="baseToolboxTranslation + action.label | i18n"
+          ></pry-icon>
+        </ng-template>
+      </button>
+    </li>
+  </ul>
+  <ng-template
+    cdkConnectedOverlay
+    cdkConnectedOverlayHasBackdrop
+    cdkConnectedOverlayLockPosition
+    cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+    [cdkConnectedOverlayOrigin]="origin"
+    [cdkConnectedOverlayOpen]="panelOpen"
+    [cdkConnectedOverlayPositions]="connectedPositions"
+    (backdropClick)="onClosePanel()"
+  >
+    <div class="m-pry-overlay-panel-wrapper">
+      <div class="m-pry-overlay-panel">
+        <ng-container *ngFor="let act of action.actions">
+          <button class="m-pry-overlay-panel-item" (click)="select(act)">
+            {{ baseToolboxTranslation + act.label | i18n }}
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>

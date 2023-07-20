@@ -1,0 +1,12 @@
+<label class="a-checkbox" [class.a-checkbox--circle]="circle">
+  <input
+    class="a-checkbox__input"
+    type="checkbox"
+    [ngModel]="checked"
+    (ngModelChange)="writeValue($event)"
+    [disabled]="disabled"
+  />
+  <span class="a-checkbox__text">
+    <ng-content></ng-content>
+  </span>
+</label>

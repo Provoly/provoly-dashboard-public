@@ -1,0 +1,15 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme molecule - toolbox */
+
+.m-toolbox {
+  .a-btn {
+    @include typography-level(themed($theme-map, 'typography', 'panel'));
+
+    &:hover,
+    &:active {
+      color: themed($theme-map, 'color', 'accent', 500);
+    }
+  }
+}

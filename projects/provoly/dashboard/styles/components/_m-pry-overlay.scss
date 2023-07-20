@@ -1,0 +1,56 @@
+@use '../abstracts' as *;
+
+/* Molecule - pry-overlay-panel */
+
+.m-pry-overlay-panel-wrapper {
+  width: inherit;
+  height: inherit;
+}
+
+.m-pry-overlay-panel {
+  width: 100%;
+  overflow: auto;
+  max-height: 200px;
+  color: #242a47;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow:
+    0 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0 4px 5px rgba(0, 0, 0, 0.14),
+    0 1px 10px rgba(0, 0, 0, 0.12);
+}
+
+.m-pry-overlay-panel-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.pry-condition-delete {
+  padding: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.m-pry-overlay-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.m-pry-overlay-item {
+  padding: 0.5rem;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+}

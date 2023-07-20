@@ -1,0 +1,61 @@
+@use '../abstracts' as *;
+
+/* Organism - Workspace */
+
+.o-workspace {
+  $this: &;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 64px 1fr;
+  grid-template-areas:
+    'tools'
+    'dash';
+  height: 100%;
+  text-align: left;
+
+  .o-container {
+    height: 100%;
+    padding: toRem(20);
+
+    &__filters {
+      display: flex;
+      justify-content: flex-start;
+      padding: toRem(10);
+    }
+  }
+
+  &__toolbox {
+    grid-area: tools;
+    display: flex;
+    align-items: center;
+    overflow-y: hidden;
+    padding: toRem(20);
+  }
+
+  &__dashboard {
+    grid-area: dash;
+    overflow: hidden;
+    height: 100%;
+  }
+
+  #{$this}__toolbox {
+    border-bottom-width: toRem(1);
+    border-bottom-style: solid;
+
+    .m-actions-list {
+      gap: toRem(15);
+
+      &__item {
+        &.is-screen-size-select {
+          width: 157px;
+          padding-left: toRem(15);
+        }
+      }
+
+      .a-toggle {
+        width: toRem(230);
+      }
+    }
+  }
+}

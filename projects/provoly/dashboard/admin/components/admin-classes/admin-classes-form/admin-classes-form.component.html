@@ -1,0 +1,44 @@
+<form class="o-form" [formGroup]="classForm" (ngSubmit)="addClass()">
+  <div class="m-form-label-field -width-sm">
+    <label class="a-label" id="name-label" for="name">
+      {{ '@pry.admin.classes.name' | i18n }} *
+      <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+    </label>
+    <input
+      [attr.aria-labelledby]="isSubmitted && classForm.get('name')?.invalid ? 'name-label name-error' : 'name-label'"
+      class="a-form-field"
+      formControlName="name"
+      id="name"
+      required
+      type="text"
+      [attr.aria-invalid]="isSubmitted && classForm.get('name')?.invalid"
+    />
+    <label
+      *ngIf="isSubmitted && classForm.get('name')?.invalid"
+      id="name-error"
+      for="name"
+      class="a-label a-label--help -error"
+    >
+      <span *ngIf="classForm.get('name')?.hasError('same-name')">{{ '@pry.admin.exists' | i18n }}</span>
+      <span *ngIf="classForm.get('name')?.hasError('required')">{{ '@pry.admin.required' | i18n }}</span>
+      <span *ngIf="classForm.get('name')?.hasError('minlength')">{{ '@pry.admin.minLength' | i18n: { len: 3 } }}</span>
+      <span *ngIf="classForm.get('name')?.hasError('maxlength')">{{
+        '@pry.admin.maxLength' | i18n: { len: 100 }
+      }}</span>
+      <span *ngIf="classForm.get('name')?.hasError('whitespace')">{{ '@pry.admin.noWhitespace' | i18n }}</span>
+    </label>
+  </div>
+  <div class="m-btn-group -width-sm">
+    <button
+      type="button"
+      class="a-btn a-btn--secondary"
+      (click)="goBack()"
+      [innerHTML]="'@pry.admin.cancel' | i18n"
+    ></button>
+    <button
+      class="a-btn a-btn--primary"
+      type="submit"
+      [innerHTML]="(_currentClass ? '@pry.admin.edit' : '@pry.admin.next') | i18n"
+    ></button>
+  </div>
+</form>

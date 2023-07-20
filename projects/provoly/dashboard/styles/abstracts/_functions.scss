@@ -1,0 +1,229 @@
+@use 'sass:math';
+@use 'sass:map';
+
+/*
+ * Convert font-size from px to rem
+ *
+ * @param $value - the value in pixel you want to convert
+ *
+ * e.g. div { width: toRem(400);}
+ *
+ */
+@function toRem($value) {
+  $remValue: math.div(strip-unit($value), 16) + rem;
+
+  @return $remValue;
+}
+
+/*
+ * Remove the unit of a length
+ * @param {Number} $number - Number to remove unit from
+ * @return {Number} - Unitless number
+ */
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return math.div($number, ($number * 0 + 1));
+  }
+
+  @return $number;
+}
+
+/*
+* Check if var is a sass map
+*/
+@function is-map($var) {
+  @return type-of($var) == 'map';
+}
+
+// testing for empty values
+// In Sass "", 0, () evaluate to true...
+
+@function empty($value) {
+  @if not $value or $value == '' or $value == 0 or $value == () or length($value) == 0 {
+    @return true;
+  }
+  @return false;
+}
+
+// Theming functions ---------------------------------------------------------------------------------
+
+// Get deep value in a theme map
+// themed(), fork of map-deep-get function
+@function themed($map, $keys...) {
+  // Check of
+  @if type-of($map) != 'map' {
+    @error 'The argument $map: `#{$map}` is of incorrect type: `#{type-of($map)}`. Type of `Map` is required!';
+  }
+
+  @each $key in $keys {
+    // Check if map has $key
+    @if not map-has-key($map, $key) {
+      @error 'The argument $map doesn\'t have some of the $keys: `#{$keys}`!';
+      @return false;
+    } @else {
+      $map: map-get($map, $key);
+    }
+  }
+
+  @return $map;
+}
+
+@function define-palette($base-palette) {
+  $result: $base-palette;
+
+  @each $hue, $color in $base-palette {
+    $result: map.merge(
+      $result,
+      (
+        '#{$hue}-contrast': get-contrast-color-from-palette($base-palette, $hue)
+      )
+    );
+  }
+
+  @return $result;
+}
+
+@function get-contrast-color-from-palette($palette, $hue) {
+  $return: map.get(map.get($palette, contrast), $hue);
+
+  @if $return != null {
+    @return $return;
+  }
+
+  @return map.get(map.get($palette, contrast), $hue);
+}
+
+// END Theming functions ---------------------------------------------------------------------------------
+
+// map functions ---------------------------------------------------------------------------------
+
+/*
+  Map Collect function
+  Since the builtin map-merge function in Sass only take 2 arguments, it can only merge 2 maps at a time.
+  The map-collect function below allows you to combine multiple maps together in a cleaner way.
+
+  Usage
+    . Set up some maps
+    $reds: ( red: #CE2F3F, maroon: #931638, pink: #E28190 );
+    $blues: ( blue: #1381B3, navy: #2c3e50, robin: #B9D9DB );
+    $greens: ( green: #87A03C, lime: #D4D848, teal: #00818B );
+
+    . DO
+    $colors: map-collect($reds, $blues, $greens);
+ */
+
+@function map-collect($maps...) {
+  $collection: ();
+
+  @each $map in $maps {
+    $collection: map-merge($collection, $map);
+  }
+  @return $collection;
+}
+
+/// Update a key deeply nested
+/// @author Hugo Giraudel
+/// @param {Map} $map - Map to update
+/// @param {Arglist} $keys - Keys to access to value to update
+/// @param {*} $value - New value (last member of `$keys`)
+/// @return {Map} - Updated map
+@function map-deep-set($map, $keys... /*, $value */) {
+  $map-list: ($map);
+  $result: null;
+
+  @if length($keys) == 2 {
+    @return map-merge(
+      $map,
+      (
+        nth($keys, 1): nth($keys, -1)
+      )
+    );
+  }
+
+  @for $i from 1 through length($keys) - 2 {
+    $map-list: append($map-list, map-get(nth($map-list, -1), nth($keys, $i)));
+  }
+
+  @for $i from length($map-list) through 1 {
+    $result: map-merge(
+      nth($map-list, $i),
+      (
+        nth($keys, $i): if($i == length($map-list), nth($keys, -1), $result)
+      )
+    );
+  }
+
+  @return $result;
+}
+
+/// jQuery-style extend function
+/// About `map-merge()`:
+/// * only takes 2 arguments
+/// * is not recursive
+/// @param {Map} $map - first map
+/// @param {ArgList} $maps - other maps
+/// @param {Bool} $deep - recursive mode
+/// @return {Map}
+@function map-extend($map, $maps... /*, $deep */) {
+  $last: nth($maps, -1);
+  $deep: $last == true;
+  $max: if($deep, length($maps) - 1, length($maps));
+
+  // Loop through all maps in $maps...
+  @for $i from 1 through $max {
+    // Store current map
+    $current: nth($maps, $i);
+
+    // If not in deep mode, simply merge current map with map
+    @if not $deep {
+      $map: map-merge($map, $current);
+    } @else {
+      // If in deep mode, loop through all tuples in current map
+      @each $key, $value in $current {
+        // If value is a nested map and same key from map is a nested map as well
+        @if type-of($value) == 'map' and type-of(map-get($map, $key)) == 'map' {
+          // Recursive extend
+          $value: map-extend(map-get($map, $key), $value, true);
+        }
+
+        // Merge current tuple with map
+        $map: map-merge(
+          $map,
+          (
+            $key: $value
+          )
+        );
+      }
+    }
+  }
+
+  @return $map;
+}
+
+// map-deep-get
+@function map-deep-get($map, $keys...) {
+  @if type-of($map) != 'map' {
+    @error 'The argument $map: `#{$map}` is of incorrect type: `#{type-of($map)}`. Type of `Map` is required!';
+  }
+
+  @each $key in $keys {
+    $map: map-get($map, $key);
+  }
+  @return $map;
+}
+
+/// Test if map got all `$keys` nested with each others
+/// @author Hugo Giraudel
+/// @param {Map} $map - Map
+/// @param {Arglist} $keys - Keys to test
+/// @return {Bool}
+@function map-has-nested-keys($map, $keys...) {
+  @each $key in $keys {
+    @if not map-has-key($map, $key) {
+      @return false;
+    }
+    $map: map-get($map, $key);
+  }
+
+  @return true;
+}

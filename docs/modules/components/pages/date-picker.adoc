@@ -1,0 +1,19 @@
+=== Date picker (pry-date-picker)
+
+Le composant `+Date picker+` est un composant permettant de sélectionner
+une date dans un calendrier Le composant hérite du
+"`ControlValueAccessor`" qui nous permet d’utiliser les propriétés de
+formulaires Angular.
+
+Les paramètres d’entrée du composant sont les suivants :
+
+- ngModel: Permet de donner la valeur par défaut du composant
+- rangePicker (défaut=false): Sélection d’une valeur de début et de fin
+- timePicker (défaut=false): Sélection de l’heure
+- maxYear (défaut=__année_courante__+10): Année maximale de la sélection
+- minYear (défaut=__année_courante__-40): Année minimale de sélection
+- roundSelection (défaut=false): Permet d’arrondir le style de la sélection
+
+Le paramètre de sortie du composant est le suivant :
+
+- ngModelChange: Permet de récupérer la valeur du composant

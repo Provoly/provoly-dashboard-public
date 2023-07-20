@@ -1,0 +1,89 @@
+@use '../../styles/abstracts/index' as *;
+
+/* Organism - pry search composed */
+.o-pry-search-composed-wrapper {
+  max-width: max-content;
+  margin-bottom: toRem(14);
+  border-radius: toRem(5);
+}
+
+.o-pry-search-composed {
+  display: flex;
+  max-width: 84%;
+  min-width: 94%;
+  padding: toRem(10) toRem(10);
+
+  &__condition {
+    display: flex;
+    align-items: center;
+    max-width: fit-content;
+
+    &:first-of-type {
+      margin-top: 0;
+      margin-bottom: 0;
+      background: transparent;
+    }
+
+    &__type {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+
+      .a-toggle {
+        gap: 0;
+        margin-top: 3px;
+      }
+
+      &.-vertical-bar {
+        &:before {
+          content: '';
+          position: absolute;
+          left: calc(50% - 1px);
+          top: -3px;
+          bottom: -3px;
+          display: block;
+          width: 2px;
+        }
+      }
+    }
+
+    &__content {
+      display: flex;
+      align-items: stretch;
+      flex-direction: column;
+      width: max-content;
+      margin-left: toRem(16);
+      border-radius: toRem(4);
+
+      &__footer {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: toRem(8);
+        margin-bottom: toRem(5);
+
+        .a-btn {
+          margin-top: 0;
+
+          &:nth-of-type(2) {
+            margin-right: 0;
+          }
+        }
+
+        &__remove {
+          &.a-btn.-circle {
+            width: toRem(25);
+            height: toRem(25);
+            padding: toRem(3);
+          }
+        }
+      }
+    }
+  }
+}
+
+pry-search-select-attribute {
+  width: toRem(156);
+}

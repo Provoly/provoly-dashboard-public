@@ -1,0 +1,7 @@
+@use '../../../styles/abstracts/index' as *;
+
+.m-form-label-field {
+  &.-list {
+    margin-bottom: 0;
+  }
+}

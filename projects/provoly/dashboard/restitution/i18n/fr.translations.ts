@@ -1,0 +1,43 @@
+export const frTranslations = {
+  '@pry': {
+    restitution: {
+      restitution_type: 'Type de restitution',
+      data_type: 'Type de données',
+      graph_title: 'Titre de la restitution',
+      description: 'Description',
+      image: 'Image',
+      close: 'Annuler',
+      validate: 'Valider',
+      broadcast: 'Diffuser',
+      view: 'Consulter',
+      create: 'Créer une restitution',
+      cancel: 'Annuler',
+      configure: 'Configurer',
+      visualize: 'Visualiser',
+      access: 'Vous souhaitez donner accès / inviter des utilisateurs ?',
+      public: 'Rendre accessible cette restitution à tous les utilisateurs',
+      private: 'Rendre accessible à certains utilisateurs de votre choix cette restitution',
+      choice: 'Vous pouvez :',
+      or: 'Ou',
+      create_title: 'Créer une restitution',
+      consult_title: 'Consulter une restitution',
+      search: 'Rechercher',
+      backToCatalog: 'Retour au catalogue',
+      consult: 'Consulter',
+      catalog: 'Catalogue des restitutions',
+      add_icon: 'Ajouter cette restitution sur la présentation',
+      selection: 'Source(s) de données sélectionnées:',
+      select: 'Sélectionner une ou plusieurs source(s) de données :',
+      selectDataSource: 'Sélectionner la source de données',
+      unselectDataSource: 'Désélectionner la source de données',
+      dataSource: 'Donnée(s)',
+      noDataSource: 'Aucunes donnée disponible',
+      delete: 'Supprimer la restitution',
+      next: 'Suivant',
+      lock: 'Restitution privée',
+      update: 'Modifier les informations',
+      cover: "L'image doit couvrir la carte de la restitution",
+      noDataSourceSelected: 'Aucune source de données sélectionnée'
+    }
+  }
+};

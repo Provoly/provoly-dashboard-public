@@ -1,0 +1,7 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - Restitution */
+.o-catalog {
+  border-right-color: themed($theme-map, 'color', 'primary', 300);
+}

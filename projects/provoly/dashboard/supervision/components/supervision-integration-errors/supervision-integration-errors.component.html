@@ -1,0 +1,75 @@
+<div class="o-base-container">
+  <h1 class="a-h1">{{ '@pry.supervision.importErrors.title' | i18n }}</h1>
+
+  <div class="m-form-label-field m-form-label-field--inline">
+    <label class="a-label" for="interval_time">Rafraichir chaque</label>
+    <pry-select
+      [ngModel]="refreshInterval$ | async"
+      (ngModelChange)="setRefreshInterval($event)"
+      [items]="possibleIntervals"
+      id="interval_time"
+      class="a-pry-select"
+    ></pry-select>
+    <label class="a-label">secondes</label>
+  </div>
+
+  <table
+    class="a-table"
+    prySortTable
+    prySortActive="name"
+    prySortDirection="asc"
+    (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
+  >
+    <caption>
+      {{
+        '@pry.supervision.importErrors.title' | i18n
+      }},
+      {{
+        '@pry.action.sortableColumnHeader' | i18n
+      }}
+    </caption>
+    <thead>
+      <tr>
+        <th></th>
+        <th prySortHeader="name">{{ '@pry.supervision.importErrors.name' | i18n }}</th>
+        <th prySortHeader="count">{{ '@pry.supervision.importErrors.totalErrorCount' | i18n }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let e of integrationErrors$ | async | prySortData: sortActive : sortDirection"
+        (click)="toggleErrorDetails(e)"
+        [class.is-selected]="(currentIntegrationError | async)?.oClass === e.oClass"
+      >
+        <td class="view-details" (click)="stopPropagation($event)">
+          <button
+            [id]="'button-attr-' + (e.oClass | translateId: { type: 'class', output: 'name' } | async)"
+            type="button"
+            class="a-btn a-btn--icon-only"
+            title="{{ '@pry.action.viewDetails' | i18n }}"
+            [attr.aria-expanded]="(currentIntegrationError | async)?.oClass === e.oClass"
+            aria-haspopup
+            [attr.aria-controls]="'panel-attr-' + (e.oClass | translateId: { type: 'class', output: 'name' } | async)"
+          >
+            <span class="u-visually-hidden">{{ e.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
+            <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
+          </button>
+        </td>
+        <td>
+          {{ e.oClass | translateId: { type: 'class', output: 'name' } | async }}
+        </td>
+        <td>
+          {{ getTotalErrorCount(e) }}
+        </td>
+        <td (click)="stopPropagation($event)">
+          <pry-checkbox
+            id="selectClass"
+            [ngModel]="isClassSelected(e.oClass)"
+            (ngModelChange)="onCheckChange(e.oClass)"
+          ></pry-checkbox>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

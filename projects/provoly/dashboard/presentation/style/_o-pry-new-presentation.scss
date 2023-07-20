@@ -1,0 +1,78 @@
+@use '../../styles/abstracts/functions' as *;
+@use '../../styles/abstracts/mixins' as *;
+
+pry-add-edit-presentation {
+  height: 100%;
+}
+
+.o-manifest-layout__content {
+  padding: 20px 20px;
+  text-align: left;
+}
+
+.o-manifest-layout__toolbox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: toRem(15);
+
+  .a-btn {
+    border-radius: 22px;
+  }
+}
+
+.o-presentation-form-wrapper {
+  padding-bottom: toRem(5);
+
+  .a-h1 {
+    line-height: 38px;
+    font-size: 28px;
+    text-align: left;
+  }
+}
+
+.o-presentation-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .a-presentation-form-input {
+    padding: 0.25rem 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .o-file-input {
+    border: 1px dashed black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: toRem(40) 0;
+    gap: 15px;
+  }
+
+  pry-select {
+    width: 100%;
+  }
+
+  .a-btn[type='submit'] {
+    margin-top: 20px;
+  }
+}
+
+.a-presentation-title {
+  padding: 15px;
+}
+
+.a-presentation__search {
+  position: relative;
+
+  .a-icon {
+    position: absolute;
+    right: 0.6875rem;
+    bottom: 0.5625rem;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}

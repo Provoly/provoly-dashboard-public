@@ -1,0 +1,11 @@
+@use '../abstracts' as *;
+
+/* Molecule - image selector */
+
+.m-image-selector {
+  padding: toRem(10) 0;
+
+  .a-btn {
+    height: auto;
+  }
+}

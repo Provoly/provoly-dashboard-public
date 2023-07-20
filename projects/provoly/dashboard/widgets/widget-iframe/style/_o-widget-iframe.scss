@@ -1,0 +1,19 @@
+@use '../../../styles/abstracts/index' as *;
+
+/* Organism - widget iframe */
+
+.o-widget--iframe {
+  &__settings {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+  }
+
+  iframe {
+    height: 100%;
+    width: 100%;
+    min-height: toRem(400);
+  }
+}

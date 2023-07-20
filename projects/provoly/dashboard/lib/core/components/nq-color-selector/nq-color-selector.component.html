@@ -1,0 +1,24 @@
+<button (click)="toggleColorChoice($event)" class="a-btn a-btn--icon-text o-pry-card-menu__nav__item" role="button">
+  <div
+    aria-hidden="true"
+    [style.background-color]="dsColor ?? '#FFFFFF'"
+    [class]="disabled ? 'm-color-selector__point__disabled' : 'm-color-selector__point'"
+  ></div>
+  <ng-container *ngIf="!disabled">
+    <span>{{ '@pry.search.namedQuery.color' | i18n }}</span>
+    <pry-icon class="container__point__icon" iconSvg="chevron_right"></pry-icon>
+  </ng-container>
+</button>
+
+<ng-template #template>
+  <div class="m-color-selector-overlay">
+    <div
+      *ngFor="let color of possibleColors$ | async"
+      [style.background-color]="color"
+      class="m-color-selector-overlay__point"
+      (click)="changeForColor(color)"
+    >
+      <pry-icon *ngIf="dsColor === color" class="m-color-selector-overlay__point__check" iconSvg="check"></pry-icon>
+    </div>
+  </div>
+</ng-template>

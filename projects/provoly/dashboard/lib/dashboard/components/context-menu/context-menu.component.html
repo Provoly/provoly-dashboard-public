@@ -1,0 +1,81 @@
+<ng-template #template>
+  <ul class="m-context-menu__list">
+    <ng-container *ngIf="!!itemId">
+      <li class="m-context-menu__list__item">
+        <button type="button" class="a-btn -link-like" (click)="selectionAddOrRemove()">
+          {{ ((isSelected$ | async) ? '@pry.context.remove' : '@pry.context.add') | i18n }}
+        </button>
+      </li>
+      <li class="m-context-menu__list__item">
+        <button type="button" class="a-btn -link-like" (click)="selectionInvert()">
+          {{ '@pry.context.invert' | i18n }}
+        </button>
+      </li>
+      <li class="m-context-menu__list__item" *ngIf="!!resultSet">
+        <button type="button" class="a-btn -link-like" (click)="proximity()" *ngIf="!!resultSet">
+          {{ '@pry.context.proximity' | i18n }}
+        </button>
+      </li>
+      <ng-container *ngIf="isModuleLoaded['graph']">
+        <li class="m-context-menu__list__item">
+          <button type="button" class="a-btn -link-like" (click)="explore()">
+            {{ '@pry.context.explore' | i18n }}
+          </button>
+        </li>
+      </ng-container>
+      <ng-container *ngIf="isModuleLoaded['detail']">
+        <li class="m-context-menu__list__item">
+          <button type="button" class="a-btn -link-like" (click)="detail()">
+            {{ '@pry.context.detail' | i18n }}
+          </button>
+        </li>
+        <li class="m-context-menu__list__item">
+          <button type="button" class="a-btn -link-like" (click)="flyingDetail()">
+            {{ '@pry.context.flyingDetail' | i18n }}
+          </button>
+        </li>
+      </ng-container>
+      <ng-container *pryAccess="{ module: 'dashboard', page: 'dashboard', action: 'edit_object' }">
+        <li class="m-context-menu__list__item">
+          <pry-object-creation
+            (closed)="hide()"
+            [link]="true"
+            [object]="false"
+            [menu]="true"
+            *ngIf="(selectedItemsIds?.length ?? 0) > 0"
+          ></pry-object-creation>
+          <pry-object-creation (closed)="hide()" [link]="true" [object]="true" [menu]="true"></pry-object-creation>
+        </li>
+      </ng-container>
+    </ng-container>
+    <ng-container *pryAccess="{ module: 'dashboard', page: 'dashboard', action: 'edit_object' }">
+      <li class="m-context-menu__list__item">
+        <pry-object-creation (closed)="hide()" [object]="true" [menu]="true"></pry-object-creation>
+      </li>
+    </ng-container>
+    <ng-container *ngIf="from === 'map'">
+      <li class="m-context-menu__list__item">
+        <button type="button" class="a-btn -link-like" (click)="addressFromLoc()">
+          {{ '@pry.context.addressFromLoc' | i18n }}
+        </button>
+      </li>
+    </ng-container>
+  </ul>
+</ng-template>
+<ng-template #detailTemplate>
+  <div class="o-settings__popup__header">
+    <h2 class="a-h2">{{ '@pry.context.flyingDetail' | i18n }}</h2>
+    <button type="button" (click)="hideDetail()" class="a-btn a-btn--icon-only -close">
+      <pry-icon iconSvg="close"></pry-icon>
+      <span class="u-visually-hidden">{{ '@pry.action.close' | i18n }}</span>
+    </button>
+  </div>
+  <div class="o-settings__popup__content">
+    <pry-widget-instanciator [staticManifest]="detailManifest"></pry-widget-instanciator>
+  </div>
+  <div class="o-settings__popup__footer">
+    <button (click)="hideDetail()" class="a-btn a-btn--primary">
+      {{ '@pry.action.close' | i18n }}
+    </button>
+  </div>
+</ng-template>

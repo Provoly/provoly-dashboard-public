@@ -1,0 +1,16 @@
+/* Atom icon */
+
+.a-icon {
+  display: inline-block;
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  background-color: currentColor;
+
+  &.-scale-animated:hover {
+    transform: scale(1.1);
+  }
+}

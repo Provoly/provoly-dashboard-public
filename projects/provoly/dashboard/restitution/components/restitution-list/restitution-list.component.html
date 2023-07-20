@@ -1,0 +1,131 @@
+<pry-restitution-css></pry-restitution-css>
+<div class="o-catalog">
+  <ng-template [ngIf]="selectedMode === mode.CATALOG">
+    <h2 class="a-h2">{{ '@pry.restitution.catalog' | i18n }}</h2>
+    <div class="o-catalog__filters">
+      <div class="o-catalog__filters__by-name">
+        <label id="catalog-search-label" for="catalog-search" class="a-label u-visually-hidden">
+          <span>{{ '@pry.toolbox.catalog.filter.name' | i18n }}</span>
+        </label>
+        <pry-icon iconSvg="search" [width]="17" [height]="17"></pry-icon>
+        <input
+          id="catalog-search"
+          type="text"
+          class="a-form-field"
+          [placeholder]="'@pry.action.search' | i18n"
+          [ngModel]="search$ | async"
+          (ngModelChange)="this.search$.next($event)"
+        />
+      </div>
+      <label class="a-label">{{ '@pry.action.filterByType' | i18n }}</label>
+      <div class="o-catalog__filters__by-type">
+        <ul class="o-catalog__filters__by-type__list">
+          <li *ngFor="let typeOpt of types$ | async">
+            <input
+              type="radio"
+              class="a-form-field u-sr-only"
+              name="catalog-filter"
+              id="catalog-button-{{ typeOpt.type }}"
+              [checked]="typeOpt.type === (type$ | async)"
+              (change)="type$.next(typeOpt.type)"
+            />
+            <label
+              class="a-label"
+              id="catalog-button-label-{{ typeOpt.type }}"
+              for="catalog-button-{{ typeOpt.type }}"
+              [title]="typeOpt.label | i18n"
+            >
+              <span class="u-sr-only">{{ typeOpt.label | i18n }} </span>
+              <pry-icon [width]="18" [height]="18" [iconSvg]="typeOpt.icon"></pry-icon>
+            </label>
+          </li>
+        </ul>
+        <button
+          type="button"
+          class="a-btn a-btn--icon-text -link-like"
+          (click)="type$.next(undefined)"
+          [disabled]="!type$.getValue()"
+          [class.u-visually-hidden]="!type$.getValue()"
+        >
+          <pry-icon [width]="15" [height]="15" iconSvg="delete"></pry-icon>
+          {{ '@pry.toolbox.catalog.filter.delete' | i18n }}
+        </button>
+      </div>
+    </div>
+    <ul class="o-catalog__list" role="list" aria-live="polite">
+      <li
+        *ngFor="let widget of filteredWidgets$ | async"
+        class="o-catalog__list__item"
+        [class.is-point]="automaticGridMode$ | async"
+        [draggable]="!(automaticGridMode$ | async)"
+        role="listitem"
+        aria-grabbed="false"
+        aria-haspopup="true"
+        tabindex="-1"
+        [title]="widget.description ?? widget.label | i18n"
+        (dragstart)="dragStart($event, widget.type)"
+      >
+        <ng-container *ngIf="automaticGridMode$ | async">
+          <button
+            type="button"
+            class="a-btn a-btn--icon-only"
+            (click)="viewInDashboard(widget)"
+            [title]="'@pry.restitution.add_icon' | i18n"
+          >
+            <pry-icon [width]="25" [height]="25" iconSvg="add_column" class="o-catalog__list__icon"></pry-icon>
+            <span class="u-visually-hidden">{{ '@pry.restitution.add_icon' | i18n }}</span>
+          </button>
+        </ng-container>
+        <img
+          [alt]="widget.label"
+          [src]="widget.icon | getSecuredImage: [600, 600] | async"
+          [height]="widget.cover ? 600 : 53"
+          [width]="widget.cover ? 600 : 53"
+          [class.is-full-width]="widget.cover"
+        />
+        <p class="o-catalog__list__item__libelle" *ngIf="widget.isCustom; else translate">{{ widget.label }}</p>
+        <ng-template #translate>
+          <p class="o-catalog__list__item__libelle">{{ widget.label | i18n }}</p>
+        </ng-template>
+        <ng-container *ngIf="widget.visibility?.type === PryVisibilityType.PRIVATE">
+          <pry-icon iconSvg="private" [pryTooltip]="private" class="is-private" [height]="17" [width]="17"></pry-icon>
+        </ng-container>
+        <div class="o-catalog__list__item__action" *ngIf="widget.isCustom">
+          <button type="button" class="a-btn a-btn--ghost" (click)="selectRestitution(widget)">
+            {{ '@pry.restitution.view' | i18n }}
+          </button>
+        </div>
+      </li>
+    </ul>
+  </ng-template>
+
+  <ng-template [ngIf]="selectedMode === mode.CONSULT">
+    <div class="o-catalog__create">
+      <button class="a-btn a-btn--secondary" (click)="closeRestitution()">
+        {{ '@pry.restitution.cancel' | i18n }}
+      </button>
+    </div>
+
+    <pry-restitution
+      [selectedRestitution]="selectedRestitution"
+      [edit]="false"
+      (restitutionCreated)="closeRestitution($event)"
+    ></pry-restitution>
+  </ng-template>
+
+  <ng-template [ngIf]="selectedMode === mode.CREATION">
+    <div class="o-catalog__create">
+      <button class="a-btn a-btn--ghost" (click)="selectMode(mode.CATALOG)">
+        {{ '@pry.restitution.cancel' | i18n }}
+      </button>
+    </div>
+
+    <pry-restitution (restitutionCreated)="closeRestitution($event)"></pry-restitution>
+  </ng-template>
+</div>
+
+<ng-template #private>
+  <div class="m-tooltip" role="tooltip">
+    <span class="m-tooltip__text">{{ '@pry.restitution.lock' | i18n }}</span>
+  </div>
+</ng-template>

@@ -1,0 +1,67 @@
+@use '../abstracts' as *;
+
+.u-ellipsis,
+.ellipsis {
+  width: 200px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.text-error {
+  margin: 0;
+  font-size: small;
+  color: hsla(0, 87%, 55%, 1);
+}
+
+.u-hidden {
+  display: none;
+}
+
+.u-sr-only {
+  @extend %screenReaderOnly;
+}
+
+.u-visually-hidden {
+  @extend %visuallyHidden;
+}
+
+.u-floating,
+[class].u-floating {
+  position: absolute;
+  z-index: 995;
+
+  &--bottom-right {
+    right: toRem(16);
+    bottom: toRem(10);
+  }
+}
+
+.u-txt-center {
+  text-align: center;
+}
+
+.u-display-flex {
+  display: flex;
+  gap: toRem(5);
+
+  /* MODIFIERS */
+  &.-align-center {
+    align-items: center;
+  }
+
+  &.-column {
+    flex-direction: column;
+  }
+
+  &.-row {
+    flex-direction: row;
+  }
+}
+
+.u-self-center {
+  align-self: center;
+}
+
+.u-self-end {
+  align-self: flex-end;
+}

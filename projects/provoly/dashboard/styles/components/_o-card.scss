@@ -1,0 +1,131 @@
+@use '../abstracts' as *;
+
+/* Organism - card */
+
+.o-card {
+  $this: &;
+  display: flex;
+
+  /***** Card infrastructure *****/
+  &--infra {
+    flex-direction: column;
+    overflow: hidden;
+    width: toRem(296);
+    height: toRem(187);
+
+    .a-h4 {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .a-p {
+      margin-bottom: 0;
+    }
+
+    #{$this}__header {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: toRem(8);
+      padding: toRem(10);
+
+      &__logo {
+        width: toRem(44);
+        height: toRem(44);
+        border-radius: 100%;
+      }
+
+      &__title {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        flex: 1;
+        padding-right: 5px;
+      }
+
+      &__status {
+        width: toRem(24);
+        height: toRem(24);
+        border-radius: 100%;
+      }
+    }
+
+    #{$this}__content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      flex: 1;
+      padding: toRem(10);
+
+      .a-p {
+        margin-bottom: toRem(5);
+        font-size: toRem(14);
+      }
+
+      &__info {
+        margin-bottom: toRem(5);
+        font-size: toRem(10);
+      }
+    }
+
+    #{$this}__footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: toRem(4) toRem(10) toRem(10) toRem(10);
+
+      &__message {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: toRem(5);
+
+        span {
+          font-size: toRem(12);
+        }
+      }
+    }
+  }
+
+  /** Card manifest */
+  &--manifest {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: toRem(24);
+    padding: toRem(17);
+    border-width: toRem(1);
+    border-style: solid;
+    border-radius: toRem(10);
+
+    &__content {
+      display: flex;
+      flex: 1;
+
+      .a-p {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: toRem(13);
+
+        &__title {
+          margin-bottom: toRem(4);
+          text-transform: uppercase;
+          font-size: toRem(12);
+        }
+      }
+    }
+
+    .m-btn-group {
+      gap: toRem(10);
+      padding-left: toRem(25);
+      padding-top: 0;
+
+      .a-btn--icon-only {
+        @include outlineOnFocus($border-radius: 3px);
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - pry search composed */
+
+.o-pry-search-condition {
+  .a-btn.delete {
+    color: themed($theme-map, 'color', 'primary', 400);
+  }
+}

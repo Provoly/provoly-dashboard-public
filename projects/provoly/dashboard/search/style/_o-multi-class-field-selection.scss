@@ -1,0 +1,64 @@
+@use '../../styles/abstracts/index' as *;
+
+/* Organism - multi class field selection */
+
+.o-multi-class-field-selection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: toRem(550);
+  min-width: toRem(350);
+  max-height: toRem(900);
+  height: 100%;
+  border-radius: toRem(8);
+  background-color: white;
+  box-shadow: 2px 3px 10px 2px rgba(0, 0, 0, 0.2);
+
+  &__header {
+    padding: toRem(24);
+    border-radius: toRem(8) toRem(8) 0 0;
+
+    &__top {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &__search {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &__legend {
+    padding: toRem(15) toRem(24);
+    font-style: italic;
+  }
+
+  &__fields {
+    @extend %list-unstyled;
+    overflow: auto;
+    margin: 0 0 toRem(8) 0;
+
+    &__select {
+      padding: toRem(8) toRem(24);
+      cursor: pointer;
+
+      .a-btn {
+        gap: 6px;
+        max-width: 100%;
+        font-weight: 500;
+        transition: none;
+        height: 4rem;
+      }
+
+      &__inside {
+        font-weight: 300;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}

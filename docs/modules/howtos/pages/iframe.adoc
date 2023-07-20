@@ -1,0 +1,59 @@
+=== Communication avec une application dans un widget iframe
+
+Pour intégrer une application externe dans pry, on peut utiliser un
+widget de type iframe (par ajout via la barre ou via manifest
+directement). Dans la configuration de celle-ci, on ajoute simplement
+l’url de l’application en question et l’application externe s’affichera
+dans pry (tant est que les headers corrects soient présents/absents,
+notamment `+X-Frame-Options: DENY/SAMEORIGIN+`…)
+
+Afin d’intégrer des actions avec une application tierce avec Pry, il
+faut utiliser les mécanismes de communication avec celle-ci. On
+disposera ainsi d’un service `+iframeMessagingService+` qui nous
+permettra d’écouter les messages reçus par pry et d’en poster afin
+d’exécuter une action particulière, comme avec l’exemple ci-après:
+
+[source,js]
+----
+/* Adding behavior for iframe messaging */
+iframeMessagingService.message$.subscribe((msg) => {
+    switch (msg.data.request) {
+        case 'me':
+            this.iframeMessagingService.post(msg.relatedWindow, mymessage));
+            break;
+        case 'profile':
+            this.iframeMessagingService.post(msg.relatedWindow, myothermessage));
+            break;
+    }
+});
+----
+
+Dans l’application cliente, bien sûr cela dépendra de l’application en
+question et de sa stack, mais en général, il conviendra d’écouter les
+évènements de la fenêtre en question avec `+window.addEventListener+`
+afin de répondre aux sollicitations et d’envoyer des messages, en
+utilisant `+window.postMessage+`, comme on peut en voir un exemple en JS
+classique ci-dessous:
+
+[source,js]
+----
+const messages = [];
+window.addEventListener('message', (evt) => {
+    /* use response */
+    document.getElementById('me').innerText = JSON.stringify(evt.data);
+}, false);
+
+setTimeout(() => {
+    /* sending request */
+    const msg = { request: 'me', target: '@pry' };
+    parent.postMessage(msg, '*');
+}, 1000);
+----
+
+Pour les mécanismes de drag’n’drop, il faudra bien évidemment utiliser
+les mécanismes classiques de drag’n’drop, entre les widget personnalisé
+(décrits ci-dessous) de destination/départ et l’application.
+
+Attention, les communications avec les iframes étant souvent perturbées
+par la sécurité navigateur, il vaut peut-être mieux éviter de combiner
+drag’n’drop et intégration iframe.

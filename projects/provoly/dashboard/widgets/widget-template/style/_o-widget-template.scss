@@ -1,0 +1,8 @@
+@use '../../../styles/abstracts/index' as *;
+
+/* Organism - widget template */
+/* Extends o-widget */
+
+.o-widget--template {
+  padding: toRem(20);
+}

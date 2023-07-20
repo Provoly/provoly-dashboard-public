@@ -1,0 +1,82 @@
+<ng-container *ngIf="(selectedclass$ | async) || (interClass$ | async) as selectedClass">
+  <div class="o-base-container">
+    <h1 class="a-h1">
+      {{ '@pry.admin.classes.title' | i18n: { class: selectedClass.name } }}
+    </h1>
+    <table
+      class="a-table"
+      prySortTable
+      prySortActive="name"
+      prySortDirection="asc"
+      (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
+    >
+      <caption>
+        {{
+          '@pry.admin.classes.title' | i18n
+        }},
+        {{
+          '@pry.action.sortableColumnHeader' | i18n
+        }}
+      </caption>
+      <thead>
+        <tr>
+          <th></th>
+          <th prySortHeader="name">{{ '@pry.admin.classes.attributes.name' | i18n }}</th>
+          <th prySortHeader="field">{{ '@pry.admin.classes.attributes.field' | i18n }}</th>
+          <th prySortHeader="category">{{ '@pry.admin.classes.attributes.category' | i18n }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let attr of attributesExtended$ | async | prySortData: sortActive : sortDirection"
+          (click)="selectAttr(attr)"
+          [class.is-selected]="(selectedAttributeId$ | async) === attr.id"
+        >
+          <td class="view-details">
+            <button
+              [id]="'button-attr-' + attr.id"
+              type="button"
+              class="a-btn a-btn--icon-only"
+              title="{{ '@pry.action.viewDetails' | i18n }}"
+              [attr.aria-expanded]="(selectedAttributeId$ | async) === attr.id"
+              aria-haspopup
+              [attr.aria-controls]="'panel-attr-' + attr.id"
+            >
+              <span class="u-visually-hidden">{{ attr.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
+              <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
+            </button>
+          </td>
+          <td>{{ attr.name }}</td>
+          <td>{{ attr.fieldName }}</td>
+          <td>{{ attr.categoryName }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-container>
+
+<ng-template #confirmationModal>
+  <div class="o-modal">
+    <div class="o-modal__top">
+      <div class="o-modal__top__title">
+        <h2 class="a-h2" id="dialog_title">
+          {{ '@pry.admin.classes.createClassConfirmMessage' | i18n }}
+        </h2>
+      </div>
+      <div class="o-modal__top__close">
+        <button class="a-btn a-btn--icon-only" (click)="dispatchCloseModal()">
+          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+    <div class="m-btn-group">
+      <button type="button" class="a-btn a-btn--primary" (click)="saveClass()">
+        {{ '@pry.toolbox.manifest.validate' | i18n }}
+      </button>
+      <button type="button" class="a-btn a-btn--secondary" (click)="dispatchCloseModal()">
+        {{ '@pry.toolbox.manifest.close' | i18n }}
+      </button>
+    </div>
+  </div>
+</ng-template>

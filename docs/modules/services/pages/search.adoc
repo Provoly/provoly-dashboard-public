@@ -1,0 +1,6 @@
+=== Recherches `+search-multi-class.service.ts+` `+search-mono-class.service.ts+` `+search-fulltext.service.ts+` `+search.service.ts+` `+refresh.service.ts+`
+
+Ces services permettant d’accéder via le backend pry, aux différents
+types de recherche. Utilisé uniquement par le module search. Le refresh
+service sert aux actualisations de données automatiques. À surcharger si
+le système backend n’est pas pry.

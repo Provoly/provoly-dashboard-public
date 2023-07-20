@@ -1,0 +1,54 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - pry search tools */
+
+.o-pry-search-tools {
+  // color: themed($theme-map, 'color', 'primary', 'contrast', 500);
+  border-right: 1px themed($theme-map, 'color', 'primary', 300) solid;
+  // background-color: themed($theme-map, 'color', 'primary', 500);
+
+  /*.a-btn.-back{
+    color: themed($theme-map, 'color', 'primary', 'contrast', 600);
+  }*/
+
+  &.is-close {
+    border-right-color: themed($theme-map, 'color', 'primary', 400);
+  }
+
+  &__header {
+    border-bottom-color: themed($theme-map, 'color', 'primary', 400);
+
+    [class*='a-h'] {
+      color: themed($theme-map, 'color', 'primary', 'contrast', 600);
+    }
+
+    .a-btn {
+      color: themed($theme-map, 'color', 'primary', 'contrast', 600);
+    }
+  }
+
+  &__content {
+    #btn_reset {
+      // color: themed($theme-map, 'color', 'primary', 'contrast', 600);
+      font-weight: 300;
+    }
+
+    /*.a-toggle {
+      color: themed($theme-map, 'color', 'primary', 'contrast', 600);
+    }*/
+  }
+
+  &__footer {
+    border-color: themed($theme-map, 'color', 'primary', 300);
+
+    .a-btn.save-query-button {
+      font-size: 14px;
+      color: themed($theme-map, 'color', 'primary', 600);
+
+      &:disabled {
+        background-color: transparent;
+      }
+    }
+  }
+}

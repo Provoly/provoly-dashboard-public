@@ -1,0 +1,16 @@
+@use '../abstracts' as *;
+
+.select-image {
+  display: flex;
+  align-items: center;
+
+  &__select {
+    display: flex;
+    justify-content: center;
+    min-width: 50px;
+  }
+
+  &__add {
+    padding-left: toRem(50);
+  }
+}

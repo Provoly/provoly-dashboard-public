@@ -1,0 +1,103 @@
+@use '../abstracts' as *;
+
+/* Organism - component pry stepper */
+.o-pry-stepper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+
+  &__header {
+    display: flex;
+    width: 100%;
+    max-height: toRem(70);
+  }
+
+  .m-stepper-item-wrapper {
+    display: flex;
+    align-items: center;
+
+    &.has-step-line {
+      flex: 1;
+    }
+  }
+
+  .m-stepper-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &.-pointer {
+      cursor: pointer;
+    }
+
+    &__count {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      color: white;
+      background-color: #c2d1d9;
+      font-size: toRem(13);
+      font-weight: 500;
+    }
+
+    &__title {
+      margin: 0;
+      padding-top: toRem(3);
+      font-size: toRem(13);
+      font-weight: 500;
+    }
+  }
+
+  .m-stepper-line {
+    flex: 1;
+    height: toRem(4);
+    border-radius: toRem(10);
+    transform: translateY(-17px);
+
+    &__percent {
+      width: 0;
+      height: inherit;
+
+      &.-active {
+        width: 50%;
+      }
+
+      &.-complete {
+        width: 100%;
+      }
+    }
+  }
+
+  &__content {
+    position: relative;
+    height: calc(100% - 70px);
+    width: 100%;
+    padding-bottom: toRem(90);
+
+    pry-step {
+      display: none;
+      padding: 10px;
+
+      &.active-step {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 20px 0;
+      }
+    }
+
+    .m-btn-group.actions {
+      position: fixed;
+      bottom: 0;
+      width: calc(100% - 40px);
+      padding-top: toRem(25);
+      padding-bottom: toRem(20);
+      background-color: #f5f7f9;
+      transform: translateX(-3px);
+    }
+  }
+}

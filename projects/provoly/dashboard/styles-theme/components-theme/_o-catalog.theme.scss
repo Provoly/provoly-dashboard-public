@@ -1,0 +1,74 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/abstracts-cards.theme' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - catalog */
+.o-catalog {
+  border-right: 1px themed($theme-map, 'color', 'primary', 400) solid;
+
+  &__filters {
+    &__by-name {
+      .a-icon {
+        color: themed($theme-map, 'color', 'primary', 600);
+      }
+    }
+
+    &__by-type {
+      &__list {
+        li {
+          .a-label {
+            border-color: themed($theme-map, 'color', 'primary', 400);
+
+            .a-icon {
+              color: themed($theme-map, 'color', 'primary', 500);
+            }
+          }
+
+          &:hover,
+          &:active {
+            .a-label {
+              border-color: themed($theme-map, 'color', 'primary', 600);
+              background-color: themed($theme-map, 'color', 'primary', 600);
+
+              .a-icon {
+                color: white;
+              }
+            }
+          }
+
+          input[type='radio']:focus + .a-label,
+          input[type='radio']:checked + .a-label {
+            background-color: themed($theme-map, 'color', 'primary', 600);
+
+            .a-icon {
+              color: themed($theme-map, 'color', 'primary', 'contrast', 600);
+            }
+          }
+        }
+      }
+
+      .a-btn.a-btn--icon-text.-link-like {
+        color: themed($theme-map, 'color', 'primary', 600);
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  &__list {
+    &__item {
+      @extend %card-with-hover;
+      color: themed($theme-map, 'color', 'primary', 600);
+
+      .a-btn--icon-only {
+        color: themed($theme-map, 'color', 'primary', 600);
+
+        &:hover {
+          color: themed($theme-map, 'color', 'accent', 500);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+<div class="o-modal-wrapper">
+  <div>
+    <h2>{{ '@pry.dataset.error.title' | i18n }}</h2>
+  </div>
+  <div></div>
+  <table class="a-table">
+    <thead>
+      <tr>
+        <th>{{ '@pry.dataset.error.code' | i18n }}</th>
+        <th>{{ '@pry.dataset.error.elements' | i18n }} << TOFIX</th>
+        <th>{{ '@pry.dataset.error.message' | i18n }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let error of datasetErrors$ | async">
+        <td>
+          {{ error.code }}
+        </td>
+        <td>
+          {{ error.line }}
+        </td>
+        <td>
+          {{ error.message }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="m-btn-group">
+    <button>
+      <pry-icon [height]="15" [width]="15" iconSvg="download" class="download"></pry-icon>
+      <span>{{ '@pry.dataset.export' | i18n }}</span>
+    </button>
+    <button class="a-btn a-btn--primary" (click)="goBack()">
+      <span>{{ '@pry.dataset.error.close' | i18n }}</span>
+    </button>
+  </div>
+</div>

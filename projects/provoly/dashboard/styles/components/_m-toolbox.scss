@@ -1,0 +1,21 @@
+@use '../abstracts' as *;
+
+/* Molecule - toolbox */
+
+.m-toolbox {
+  display: flex;
+  flex-direction: column;
+  padding: toRem(15) toRem(20);
+
+  .a-btn {
+    @include outlineOnFocus($border-radius: 5px);
+    justify-content: flex-start;
+    height: toRem(35);
+    padding: toRem(4) 0;
+    text-align: left;
+
+    &:not(:last-child) {
+      margin-bottom: toRem(5);
+    }
+  }
+}

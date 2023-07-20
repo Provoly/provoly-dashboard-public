@@ -1,0 +1,309 @@
+@use 'sass:map';
+@use 'sass:list';
+@use 'sass:math';
+@use 'variables' as *;
+@use 'functions' as *;
+@use '../../styles-theme/abstracts-theme/variables.theme' as *; // Required by linkOutlineFocus() mixin, to access variables
+
+@mixin font-face($font-family, $font-filename, $font-path, $font-weight) {
+  font-family: '#{$font-family}';
+  src: url('#{$font-path}/#{$font-filename}.woff2') format('woff2');
+  font-weight: $weight;
+  font-style: normal;
+  font-display: swap;
+}
+
+/**
+  Set size of a property (ex: font-size) :
+  If unit is "px": convert to "rem"
+  If unit is "em": keep "em"
+  If unit is "rem" OR no unit and is number : set it to "rem" (ex: 1.5)
+  If no unit AND is not a number: display as is (ex: 'inherit')
+
+  @param : $size value, $property type
+ */
+
+@mixin setPropertySize($size, $property: 'font-size') {
+  @if (type-of($size) == 'number') {
+    // If has a unit
+    @if math.is-unitless($size) == false {
+      // Get current font-size unit
+      $unit: math.unit($size);
+
+      @if $unit == 'px' {
+        // First, display font-size in px
+        // #{$property}: $size;
+
+        // Convert and display font-size in rem
+        $sizeVal: strip-unit($size);
+        #{$property}: toRem($sizeVal);
+      } @else if $unit == 'em' {
+        // em
+        #{$property}: $size;
+      } @else {
+        // rem
+        #{$property}: $size;
+      }
+    } @else {
+      // No unit: rem
+      #{$property}: $size;
+    }
+  } @else {
+    // String: inherit / initial / ...
+    #{$property}: $size;
+  }
+}
+
+/*
+ Define typography level:
+    font-family
+    font-variation-settings
+    font-size
+    line-height
+    font-weight
+    font-style
+    letter-spacing
+    @param $level : level defined in theme "xxx-typography" map
+*/
+@mixin typography-level($level) {
+  $font-family: map.get($level, 'font-family');
+  $font-variation: map.get($level, 'font-variation');
+  $font-size: map-get($level, 'font-size');
+  $line-height: map-get($level, 'line-height');
+  $font-weight: map-get($level, 'font-weight');
+  $font-style: map-get($level, 'font-style');
+  $letter-spacing: map-get($level, 'letter-spacing');
+
+  @if not(empty($font-family)) {
+    font-family:
+      #{$font-family},
+      #{themed($theme-map, 'font', 'font-family-alternative')};
+  } @else {
+    font-family:
+      #{themed($theme-map, 'font', 'default-font-family')},
+      #{themed($theme-map, 'font', 'font-family-alternative')};
+  }
+  @if not(empty($font-variation)) {
+    font-variation: $font-variation;
+  }
+  @if not(empty($font-size)) {
+    @include setPropertySize($font-size, 'font-size');
+  }
+  @if not(empty($line-height)) {
+    @include setPropertySize($line-height, 'line-height');
+  }
+  @if not(empty($font-weight)) {
+    font-weight: $font-weight;
+  } @else {
+    font-weight: themed($theme-map, 'font', 'default-font-weight');
+  }
+  @if not(empty($font-style)) {
+    font-style: #{$font-style};
+  } @else {
+    font-style: normal;
+  }
+  @if not(empty($letter-spacing)) {
+    @include setPropertySize($letter-spacing, 'letter-spacing');
+  }
+}
+
+///**
+// * Convert font-size from px to rem with px fallback
+// *
+// * e.g. p { @include px-to-rem(32);}
+// */
+// Rem-converter mixin to convert px to rem
+// @mixin px-to-rem($pxValue, $property: 'font-size', $standard-size: 16) {
+//  // #{$property}: $pxValue + px;
+//  #{$property}: $pxValue/$standard-size + rem;
+//}
+
+/**
+ * Background Gradient
+ *
+ * e.g. .gradient {@include gradient(#07c, #06f, vertical);}
+ *
+ */
+
+// Linear gradients mixin
+@mixin gradient($start-color, $end-color, $orientation) {
+  background: $start-color;
+  @if $orientation == 'vertical' {
+    background: -webkit-linear-gradient(top, $start-color, $end-color);
+    background: linear-gradient(to bottom, $start-color, $end-color);
+  } @else if $orientation == 'horizontal' {
+    background: -webkit-linear-gradient(left, $start-color, $end-color);
+    background: linear-gradient(to right, $start-color, $end-color);
+  } @else {
+    background: -webkit-radial-gradient(center, ellipse cover, $start-color, $end-color);
+    background: radial-gradient(ellipse at center, $start-color, $end-color);
+  }
+}
+
+/**
+ * CSS Opacity with fallback for IE8+.
+ *
+ * e.g. .fade {@include opacity(.4);}
+ *
+ */
+
+// Opacity mixin
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  $opacity-ie: $opacity * 100;
+  filter: alpha(opacity=$opacity-ie); //IE8
+}
+
+/**
+ * Positioning CSS
+ *
+ * You should only use absolute(), relative(), and fixed() functions to add the respective positioning to the elements.
+ * Parameters are optional and can be given as demonstrated below :
+ * e.g. p {@include relative;}
+ * e.g. p {@include absolute(top 100% left 0);}
+ * e.g. p {@include fixed(top 0 left 0);}
+ *
+ */
+
+// Positioning mixin
+@mixin position($position, $args) {
+  @each $o in top right bottom left {
+    $i: index($args, $o);
+    @if $i and $i + 1 <= length($args) and type-of(nth($args, $i + 1)) == number {
+      #{$o}: nth($args, $i + 1);
+    }
+  }
+  position: $position;
+}
+
+// Positioning helpers
+@mixin absolute($args: '') {
+  @include position(absolute, $args);
+}
+
+@mixin fixed($args: '') {
+  @include position(fixed, $args);
+}
+
+@mixin relative($args: '') {
+  @include position(relative, $args);
+}
+
+@mixin visually-hidden() {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important; // Fix for https://github.com/twbs/bootstrap/issues/25686
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// Use to only display content when it's focused, or one of its child elements is focused
+// (i.e. when focus is within the element/container that the class was applied to)
+//
+// Useful for "Skip to main content" links; see https://www.w3.org/TR/2013/NOTE-WCAG20-TECHS-20130905/G1
+
+@mixin visually-hidden-focusable() {
+  &:not(:focus):not(:focus-within) {
+    @include visually-hidden();
+  }
+}
+
+/**
+ * Accessibility
+ *
+ * Set focus:visible styles when element get focused with keyboard tab
+ *
+ */
+@mixin outlineOnFocus(
+  $color1: themed($theme-map, 'decoration', 'focus-visible', 'border-color-light'),
+  $color2: themed($theme-map, 'decoration', 'focus-visible', 'border-color-dark'),
+  $border-radius: themed($theme-map, 'decoration', 'focus-visible', 'border-radius')
+) {
+  &:focus {
+    outline: 2px solid $color2;
+  }
+  &:focus:not(:focus-visible) {
+    outline: 0;
+  }
+  &:focus-visible {
+    @include eltFocusVisible($color1: $color1, $color2: $color2, $border-radius: $border-radius);
+  }
+}
+
+@mixin eltFocusVisible(
+  $color1: themed($theme-map, 'decoration', 'focus-visible', 'border-color-light'),
+  $color2: themed($theme-map, 'decoration', 'focus-visible', 'border-color-dark'),
+  $border-radius: themed($theme-map, 'decoration', 'focus-visible', 'border-radius')
+) {
+  outline: 0;
+  border-radius: toRem($border-radius);
+  box-shadow:
+    0 0 0 2px $color1,
+    0 0 0 4px $color2;
+}
+
+/**
+  Range slider thumb style
+ */
+@mixin rangeThumbStyle() {
+  -webkit-appearance: none;
+  height: 22px;
+  width: 22px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 50%;
+  cursor: ew-resize;
+  transition: background 0.3s ease-in-out;
+}
+
+/**
+  Range slider track style
+ */
+@mixin rangeTrackStyle() {
+  -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}
+
+@mixin drawChevron($size: 8px, $border-width: 2px, $direction: down) {
+  content: '';
+  position: relative;
+  //top: toRem(-$size/2);
+  left: toRem(math.div($size, 2));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: toRem($size);
+  height: toRem($size);
+  border-style: solid;
+  border-width: toRem($border-width) toRem($border-width) 0 0;
+
+  @if $direction == up {
+    // top: 0;
+    top: toRem($border-width);
+    transform: rotate(-45deg);
+  } @else if $direction == down {
+    // top: 0;
+    $calcTop: toRem(math.div($size, 2));
+    top: -#{$calcTop};
+    transform: rotate(135deg);
+  } @else if $direction == left {
+    left: toRem(math.div($size, 2));
+    transform: rotate(-135deg);
+  } @else if $direction == right {
+    left: 0;
+    transform: rotate(45deg);
+  } @else {
+    @error "Unknown direction #{$direction}. in mixin 'drawChevronInBefore'";
+  }
+}
+
+/*
+*  Effects
+*
+*/

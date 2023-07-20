@@ -1,0 +1,12 @@
+=== Toolbox
+
+Le module `+Toolbox+` affiche une barre d’actions
+
+Les actions disponibles sont:
+
+- Activer le mode édition
+- Ouvrir une nouvelle page
+- Catalogue de widget avec la possibilité de les placer dans une presentation
+- Enregistrer une nouvelle présentation
+- Remettre à zéro la présentation
+- Changer le format de la présentation (plein écran, 1/2 écran, …)

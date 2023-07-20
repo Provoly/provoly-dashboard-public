@@ -1,0 +1,84 @@
+<div
+  *ngIf="metadataRulesSelected$ | async as metadataRules"
+  [id]="'panel-meta-rule-' + metadataRules.id"
+  [attr.aria-labelledby]="'button-meta-rule-' + metadataRules.id"
+  class="o-panel"
+>
+  <div>
+    <div class="o-panel__header">
+      <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
+        <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
+        <pry-icon iconSvg="close"></pry-icon>
+      </button>
+
+      <h3 [id]="'tab-title-' + compId" class="a-h3">
+        {{ '@pry.admin.metadata.details' | i18n }}
+      </h3>
+    </div>
+
+    <div class="o-tabs">
+      <div class="o-tabs__list" role="tablist" [attr.aria-labelledby]="'tab-title-' + compId">
+        <button
+          type="button"
+          class="o-tabs__list__btn"
+          role="tab"
+          [id]="'tab-' + compId + '-0'"
+          [attr.aria-selected]="tab === 0"
+          [attr.tabindex]="tab === 0 ? 0 : -1"
+          [attr.aria-controls]="'tabpanel-' + compId + '-0'"
+        >
+          {{ '@pry.admin.details' | i18n }}
+        </button>
+      </div>
+
+      <div class="o-tabs__panels">
+        <div
+          class="o-tabs__panels__item"
+          [class.is-hidden]="tab !== 0"
+          [id]="'tabpanel-' + compId + '-0'"
+          role="tabpanel"
+          [attr.aria-labelledby]="'tab-' + compId + '-0'"
+          tabindex="0"
+        >
+          <div class="o-tabs__panels__item__content">
+            <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
+            <p class="a-p">
+              {{ '@pry.admin.metadata-rules.label' | i18n }} :
+              <strong>{{ metadataRules.name }}</strong>
+            </p>
+            <p class="a-p">
+              {{ '@pry.admin.metadata-rules.metadata-item.name' | i18n }} :
+              <strong>{{ metadataRules.metadata.name }}</strong>
+            </p>
+            <p class="a-p" *ngIf="metadataRules.metadata.description">
+              {{ '@pry.admin.metadata-rules.metadata-item.description' | i18n }} :
+              <strong>{{ metadataRules.metadata.description }}</strong>
+            </p>
+            <p class="a-p">
+              {{ '@pry.admin.metadata-rules.metadata-item.type' | i18n }} :
+              <strong>{{ metadataRules.metadata.type }}</strong>
+            </p>
+            <ng-container *ngIf="metadataRules.metadata.allowedValues">
+              <p class="a-p" *ngFor="let item of metadataRules.metadata.allowedValues">{{ item }}</p>
+            </ng-container>
+            <p class="a-p">
+              {{ '@pry.admin.metadata-rules.metadata-user.name' | i18n }} :
+              <strong>{{ metadataRules.userProfile.name }}</strong>
+            </p>
+            <p class="a-p" *ngIf="metadataRules.userProfile.description">
+              {{ '@pry.admin.metadata-rules.metadata-user.description' | i18n }} :
+              <strong>{{ metadataRules.userProfile.description }}</strong>
+            </p>
+            <p class="a-p">
+              {{ '@pry.admin.metadata-rules.metadata-user.type' | i18n }} :
+              <strong>{{ metadataRules.userProfile.type }}</strong>
+            </p>
+            <ng-container *ngIf="metadataRules.userProfile.allowedValues">
+              <p class="a-p" *ngFor="let item of metadataRules.userProfile.allowedValues">{{ item }}</p>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

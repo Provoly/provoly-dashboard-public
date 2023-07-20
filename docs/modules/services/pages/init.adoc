@@ -1,0 +1,4 @@
+
+=== Initialisation `+dashboard-init.service.ts+`
+
+Sert à l’initialisation de la librairie. Interne.

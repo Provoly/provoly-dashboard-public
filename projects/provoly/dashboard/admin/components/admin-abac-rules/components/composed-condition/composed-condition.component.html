@@ -1,0 +1,91 @@
+<ng-container *ngIf="condition$ | async as condition">
+  <ng-container *ngIf="condition.type === OR || condition.type === AND; else metaOrAttributeCondition">
+    <div class="o-pry-composed-condition-wrapper" [class.root-element]="rootElement">
+      <div class="o-pry-composed-condition">
+        <div class="o-pry-composed-condition__type -vertical-bar">
+          <div class="o-pry-composed-condition__type__content">
+            <pry-toggle
+              leftword="ET"
+              rightword="OU"
+              [ngModel]="condition.type === AND"
+              (ngModelChange)="onChangeConditionType($event ? AND : OR, condition.id)"
+              [alwaysActive]="true"
+              [disabled]="readonly"
+            ></pry-toggle>
+          </div>
+        </div>
+
+        <div class="o-pry-composed-condition__content">
+          <ng-container *ngFor="let id of condition.composed">
+            <pry-composed-condition [readonly]="readonly" [id]="id"></pry-composed-condition>
+          </ng-container>
+
+          <ng-container *ngIf="!readonly">
+            <ng-container *ngIf="editAbacRuleType$ | async as ruleType">
+              <div>
+                <button
+                  type="button"
+                  aria-pressed="false"
+                  class="a-btn a-btn--iconcircle-text"
+                  (click)="panelOpen = true"
+                  [pryOverlay]="selectOverlay"
+                  [(overlayOpen)]="panelOpen"
+                  pryOverlayPosition="start-bottom"
+                >
+                  <span class="a-btn--iconcircle-text__icon-wrapper">
+                    <pry-icon iconSvg="add" [height]="14" [width]="14"></pry-icon>
+                  </span>
+                  <span>
+                    {{
+                      '@pry.admin.abac-rules.form.' + (ruleType === ATTRIBUTE ? 'addAttribute' : 'addMetadata') | i18n
+                    }}
+                  </span>
+                </button>
+              </div>
+
+              <ng-template #selectOverlay>
+                <ng-container *ngIf="ruleType === ATTRIBUTE; else metadataType">
+                  <pry-abac-select-attribute
+                    (attributeSelected)="onAddNewAttribute($event, condition.id)"
+                  ></pry-abac-select-attribute>
+                </ng-container>
+                <ng-template #metadataType>
+                  <pry-abac-select-metadata
+                    (metadataSelected)="onAddNewMetadata($event, condition.id)"
+                  ></pry-abac-select-metadata>
+                </ng-template>
+              </ng-template>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+
+      <ng-container *ngIf="!readonly">
+        <div class="o-pry-composed-condition__add-item">
+          <button
+            type="button"
+            aria-pressed="false"
+            class="a-btn a-btn--iconcircle-text"
+            (click)="onAddNewNestedCondition(condition.id)"
+          >
+            <span class="a-btn--iconcircle-text__icon-wrapper">
+              <pry-icon iconSvg="add" [height]="14" [width]="14"></pry-icon>
+            </span>
+            <span>
+              {{ '@pry.admin.abac-rules.form.addGroup' | i18n }}
+            </span>
+          </button>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <ng-template #metaOrAttributeCondition>
+    <ng-container *ngIf="condition.type === METADATA">
+      <pry-metadata-condition [readonly]="readonly" [id]="condition.id"></pry-metadata-condition>
+    </ng-container>
+    <ng-container *ngIf="condition.type === ATTRIBUTE">
+      <pry-attribute-condition [readonly]="readonly" [id]="condition.id"></pry-attribute-condition>
+    </ng-container>
+  </ng-template>
+</ng-container>

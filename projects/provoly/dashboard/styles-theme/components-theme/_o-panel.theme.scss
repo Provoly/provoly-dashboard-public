@@ -1,0 +1,18 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - Panel */
+.o-panel {
+  @include typography-level(themed($theme-map, 'typography', 'panel'));
+  border-left: 1px themed($theme-map, 'color', 'primary', 300) solid;
+
+  &__header {
+    .a-btn {
+      color: themed($theme-map, 'color', 'primary', 500);
+
+      &:hover {
+        color: themed($theme-map, 'color', 'primary', 600);
+      }
+    }
+  }
+}

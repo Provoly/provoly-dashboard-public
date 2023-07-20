@@ -1,0 +1,96 @@
+@use '../../styles/abstracts/index' as *;
+@use '../../styles/abstracts/functions' as *;
+@use '../../styles/abstracts/mixins' as *;
+
+.o-select-grid-layout-wrapper {
+  overflow-y: auto;
+  max-height: 80%;
+}
+
+.o-select-grid-layout-modal-wrapper {
+  max-width: 60%;
+  padding: toRem(30) toRem(40);
+}
+
+.backdrop {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.o-filters {
+  width: 100%;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: toRem(30);
+    border-bottom: 1px solid #dfe5ec;
+
+    h2 {
+      padding: 0;
+    }
+
+    .back-button {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    padding-top: toRem(20);
+
+    > .a-btn {
+      margin-top: toRem(20);
+      align-self: center;
+    }
+  }
+
+  &__filter {
+    td:first-child {
+      min-width: 20%;
+      max-width: 30%;
+    }
+
+    td:nth-child(2) {
+      min-width: 50%;
+      max-width: 60%;
+    }
+
+    td:nth-child(3) {
+      width: 8%;
+    }
+
+    td:nth-child(4) {
+      width: 8%;
+    }
+
+    td:last-child {
+      width: 4%;
+    }
+
+    &.cdk-drag-preview {
+      background-color: white;
+
+      td {
+        padding: 0.75rem 0.5rem;
+      }
+    }
+
+    .cdk-drag-handle {
+      pointer-events: auto;
+
+      &:hover {
+        cursor: grab;
+      }
+    }
+  }
+
+  tr.o-filters__filter {
+    cursor: default;
+  }
+
+  &__no-filters {
+    padding-bottom: toRem(30);
+  }
+}

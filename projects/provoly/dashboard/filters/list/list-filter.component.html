@@ -1,0 +1,14 @@
+<pry-list-filter-css></pry-list-filter-css>
+<div class="m-form-label-field -width-sm -list" *ngIf="filter">
+  <label class="a-label" for="{{ filter.name }}">{{ filter.name }}</label>
+  <pry-select
+    class="a-pry-select"
+    [id]="filter.name"
+    [items]="possibleValues"
+    [ngModel]="filter.value"
+    (ngModelChange)="setFilter($event)"
+    [clearable]="true"
+    [autocomplete]="true"
+    aria-labelledby="item-label"
+  ></pry-select>
+</div>

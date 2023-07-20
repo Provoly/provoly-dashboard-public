@@ -1,0 +1,75 @@
+@use '../abstracts' as *;
+@use './a-btn' as *;
+
+/* Molecule button to sort table rows */
+.m-btn-sorttable {
+  @extend %a-btn;
+  justify-content: flex-start;
+  width: 100%;
+  height: toRem(25);
+  padding: 0;
+  border-radius: 0;
+  text-align: left;
+  font-weight: 700;
+
+  // No focus-visible on button but on button__content
+  @include eltFocusVisible($color1: transparent, $color2: transparent, $border-radius: 0);
+
+  &__content {
+    display: grid;
+    grid-template-columns: minmax(2em, max-content) 0.35em auto;
+    grid-template-areas: 'title asc x' 'title desc x';
+    padding-right: toRem(10);
+  }
+
+  &__title {
+    grid-area: title;
+    align-self: center;
+    padding-right: toRem(15);
+  }
+
+  &__icnmark {
+    max-width: toRem(12);
+    max-height: toRem(12);
+    opacity: 0.25;
+    transform: translateY(-3px);
+
+    .a-icon {
+      max-width: toRem(12);
+      max-height: toRem(12);
+    }
+
+    &.-asc {
+      grid-area: asc;
+      align-self: center;
+    }
+
+    &.-desc {
+      grid-area: desc;
+      align-self: center;
+    }
+
+    &:hover,
+    &:active {
+      opacity: 1;
+    }
+  }
+
+  &:after {
+    content: '';
+    grid-area: x;
+  }
+}
+
+// States button to sort table rows
+[aria-sort='ascending'] > .m-btn-sorttable {
+  .m-btn-sorttable__icnmark.-asc {
+    opacity: 1;
+  }
+}
+
+[aria-sort='descending'] > .m-btn-sorttable {
+  .m-btn-sorttable__icnmark.-desc {
+    opacity: 1;
+  }
+}

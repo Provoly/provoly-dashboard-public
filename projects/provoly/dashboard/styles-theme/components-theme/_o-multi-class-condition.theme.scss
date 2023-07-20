@@ -1,0 +1,22 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - multi class condition */
+.o-multi-class-condition {
+  border-left-color: themed($theme-map, 'color', 'accent', 500);
+  background-color: #ffffff;
+
+  &__delete-content {
+    background-color: themed($theme-map, 'color', 'status', 'error');
+
+    .a-icon {
+      color: themed($theme-map, 'color', 'status', 'contrast', 'error');
+    }
+
+    .a-btn:disabled {
+      .a-icon {
+        color: themed($theme-map, 'color', 'grey', 400);
+      }
+    }
+  }
+}

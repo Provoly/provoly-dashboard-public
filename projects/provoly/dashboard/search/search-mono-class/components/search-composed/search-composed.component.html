@@ -1,0 +1,67 @@
+<div class="o-pry-search-composed" [ngClass]="{ 'pry-search-composed-hover': hover }">
+  <ng-container *ngIf="condition$ | async as cond">
+    <ng-container *ngIf="cond.type === 'ATTRIBUTE'; else composedBlock">
+      <ng-container *ngIf="cond.attribute">
+        <pry-search-condition [attributeId]="cond.attribute" [id]="cond.id"></pry-search-condition>
+      </ng-container>
+    </ng-container>
+    <ng-template #composedBlock>
+      <div class="o-pry-search-composed__condition">
+        <div class="o-pry-search-composed__condition__type -vertical-bar">
+          <div class="o-pry-search-composed__condition__type__content">
+            <pry-toggle
+              [leftword]="'@pry.search.type.or' | i18n"
+              [rightword]="'@pry.search.type.and' | i18n"
+              [alwaysActive]="true"
+              [ngModel]="cond.type === 'OR'"
+              (ngModelChange)="onSelectType(cond.id, cond.type === 'OR' ? 'AND' : 'OR')"
+            ></pry-toggle>
+          </div>
+        </div>
+        <div class="o-pry-search-composed__condition__content">
+          <ng-container *ngFor="let composedId of cond.composed">
+            <pry-search-composed [id]="composedId"></pry-search-composed>
+          </ng-container>
+
+          <div class="o-pry-search-composed__condition__content__footer">
+            <button
+              type="button"
+              class="a-btn a-btn--select -size-sm"
+              (click)="onOpenPanel()"
+              [pryOverlay]="selectAttribute"
+              [overlayOpen]="panelNewAttributeOpen"
+              (overlayOpenChange)="onClosePanel()"
+              pryOverlayPosition="start-bottom"
+              [pryOverlayNoPadding]="true"
+            >
+              <pry-icon iconSvg="add" [width]="15" [height]="15"></pry-icon>
+              <span>{{ '@pry.search.composed.addCondition' | i18n }}</span>
+            </button>
+            <button type="button" class="a-btn a-btn--secondary -size-sm" (click)="onAddNestedCondition(cond.id)">
+              <pry-icon iconSvg="picture-in-picture" [width]="16" [height]="16"></pry-icon>
+              <span>{{ '@pry.search.composed.addGroup' | i18n }}</span>
+            </button>
+            <ng-container *ngIf="masterId$ | async as masterId">
+              <button
+                type="button"
+                class="a-btn a-btn--icon-only -circle -size-sm o-pry-search-composed__condition__content__footer__remove"
+                *ngIf="masterId !== cond.id"
+                (click)="onDeleteNestedCondition(cond.id)"
+              >
+                <pry-icon iconSvg="close" [width]="16" [height]="16"></pry-icon>
+                <span class="u-visually-hidden">{{ '@pry.search.composed.remove' | i18n }}</span>
+              </button>
+            </ng-container>
+          </div>
+
+          <ng-template #selectAttribute>
+            <pry-search-select-attribute
+              [id]="cond.id"
+              (selectAttributeChange)="onAddAttributeCondition($event, cond.id)"
+            ></pry-search-select-attribute>
+          </ng-template>
+        </div>
+      </div>
+    </ng-template>
+  </ng-container>
+</div>

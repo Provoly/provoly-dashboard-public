@@ -1,0 +1,51 @@
+@use '../abstracts' as *;
+
+/* Atom expandable value */
+
+.a-expandable-value {
+  $this: &;
+  position: relative;
+
+  &__initial {
+    position: relative;
+    z-index: 0;
+  }
+
+  &.-right {
+    text-align: right;
+  }
+
+  &__expanded {
+    display: block;
+    position: absolute;
+    z-index: 2;
+    bottom: toRem(27);
+    right: toRem(-8);
+    max-width: fit-content;
+    min-width: toRem(40);
+    padding: toRem(5);
+    opacity: 0;
+    border-radius: toRem(4);
+    box-shadow: 1px 1px 5px 1px rgb(0, 0, 0, 0.2);
+    text-align: center;
+    pointer-events: none;
+    transition: opacity 70ms linear;
+
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: toRem(-7);
+      width: 0;
+      height: 0;
+      transform: translate(-45%, 10%) rotate(180deg);
+      border-style: solid;
+      border-width: 0 toRem(5) toRem(8.7) toRem(5);
+    }
+  }
+
+  &:hover {
+    #{$this}__expanded {
+      opacity: 1;
+    }
+  }
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "0e7937b8-7027-1f3f-0ca8-615976ebbf13",
+    "name": "Lien",
+    "userProfile": "33f51131-6e67-438a-9aa1-8d9a50215326",
+    "metadata": "7ce12610-e031-403c-a6e0-b8147979f657"
+  },
+  {
+    "id": "59853619-9773-418a-ace5-70b80fd4dc74",
+    "name": "Test",
+    "userProfile": {
+      "id": "b8c01013-fba1-4e96-874a-9ce5e1d0f5ab",
+      "name": "NIVEAU_HABILITATION",
+      "type": "LIST",
+      "description": "Niveau d'habilitation de l'utilisateur pour l'accès aux données confidentielles",
+      "allowedValues": ["TSD", "SD", "DS", "OUVERT"]
+    },
+    "metadata": {
+      "id": "c63a3431-6fe8-43de-afab-38752ef40ed9",
+      "name": "scroll",
+      "type": "LIST",
+      "description": null,
+      "allowedValues": ["1", "1", "1", "1", "1", "1", "1", "1"]
+    }
+  }
+]

@@ -1,0 +1,22 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+// Cards styles
+%card {
+  background-color: white;
+  box-shadow: themed($theme-map, 'decoration', 'shadow', 'card');
+  transition: box-shadow 225ms ease-in-out;
+}
+
+%card-hover {
+  background-color: white;
+  box-shadow: themed($theme-map, 'decoration', 'shadow', 'card-hover');
+}
+
+%card-with-hover {
+  @extend %card;
+
+  &:hover {
+    @extend %card-hover;
+  }
+}

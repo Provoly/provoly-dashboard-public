@@ -1,0 +1,15 @@
+<div class="o-base-container">
+  <h1 class="a-h1">{{ '@pry.admin.metadata.title' | i18n }}</h1>
+  <pry-list-metadata
+    [metadata]="metadata$ | async"
+    [selectedMetadata]="selectedMetadataId$ | async"
+    [configHeader]="configHeader"
+    [sortActive]="sortActive"
+    [labelMetadataSelected]="value"
+    [sortDirection]="sortDirection"
+    (cancelAction$)="cancelEdition()"
+    (rowClicked$)="rowClicked($event)"
+    [editable]="false"
+  >
+  </pry-list-metadata>
+</div>

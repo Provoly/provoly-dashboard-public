@@ -1,0 +1,34 @@
+@use '../abstracts' as *;
+
+/* Molecule - base menu */
+
+.m-nav-links {
+  height: 100%;
+  overflow: auto;
+
+  &__list {
+    @extend %list-unstyled;
+    margin: toRem(18) toRem(20);
+
+    &__item {
+      margin-bottom: toRem(12);
+
+      [class*='a-btn--'] {
+        justify-content: flex-start;
+        // height: toRem(55);
+        // padding: 0.5rem 1rem;
+        // border-radius: toRem(28);
+        text-align: left;
+      }
+    }
+  }
+
+  &__subMenu {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: center;
+    justify-content: space-around;
+  }
+}

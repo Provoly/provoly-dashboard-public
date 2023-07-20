@@ -1,0 +1,23 @@
+=== Websocket `+websocket.service.ts+`
+
+Ce service propose, à partir du moment où une url de websocket server a
+été fourni en configuration, de se connecter eet de maintenir la
+connection correspondante. On disposera alors d’une fonction
+`+sendMessage+` pour en envoyer sur ce média, ou on pourra souscrire à
+`+message$+` pour recevoir les messages du type correspondant. Un buffer
+est prévu pour ne pas perdre de messages dans le cas de modules
+lazy-loadés ou autre.
+
+Le type `+notification+` par exemple est utilisé par le module de
+notifications afin de les stocker dans le store correspondant.
+
+Dans le cas où une authentification serait nécessaire (pour identifier
+l’utilisateur connecté par exemple), on utilisera logiquement le
+mécanisme des cookies et votre service d’authentification créera donc
+celui-ci par exemple de cette façon :
+
+[source,js]
+----
+// This cookie is used for websocket
+document.cookie = `token=${this.oauthService.getAccessToken()}; SameSite=Strict`;
+----

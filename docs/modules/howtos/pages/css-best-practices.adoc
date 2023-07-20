@@ -1,0 +1,79 @@
+== CSS : bonnes pratiques
+
+=== Ordonner les déclarations CSS par type
+
+[source, css]
+----
+.selecteur {
+    /* Extends */
+    @extend %placeholder-name;
+    @include mixin-name();
+
+    /* Position */
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(-20px); /* When used with left, right, bottom or top */
+
+    /* Display */M-NOI
+    grid-area: toolbox;
+    display: inline-flex;
+    align-items: center;
+    gap: toRem(10);
+    flex: 1;
+    float: right;
+    clear: both;
+    overflow: hidden;
+    vertical-align: top;
+
+    /* Size */
+    width: 100%;
+    max-width: toRem(250);
+    min-width: toRem(250);
+    height: toRem(100);
+    min-height: toRem(100);
+    max-height: toRem(100);
+
+    /* Margins */
+    margin: 0;
+    padding: 0;
+
+    /* Borders & shadow */
+    border-radius: toRem(10);
+    border: toRem(2) #0c6b6e solid;
+    box-shadow: 0 0 0 4px themed($theme-map, 'decoration', 'focus-visible');
+
+    /* Colors */
+    color: white;
+    background-color: #0c6b6e;
+    opacity: 0;
+
+    /* Text */
+    font-family: Inter;
+    font-size: toRem(20);
+    line-height: toRem(25);
+    font-weight: 400;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+    letter-spacing: 0;
+    word-break: keep-all;
+    white-space: normal;
+
+    /* Others */
+    cursor: pointer;
+    pointer-events: none;
+    -webkit-appearance: none;
+
+    /* Transform / Transition / animation */
+    transform: translateY(-20px);
+    will-change: transform;
+    transition: all 0.24s ease-in-out;
+
+}
+----
+

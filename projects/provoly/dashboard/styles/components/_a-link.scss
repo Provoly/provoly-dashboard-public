@@ -1,0 +1,17 @@
+@use '../abstracts' as *;
+
+/* Atom - link */
+.a-link {
+  color: inherit;
+}
+
+.a-link-skip {
+  @include visually-hidden-focusable();
+  position: absolute;
+  z-index: 3;
+  right: toRem(8);
+  top: toRem(6);
+  padding: toRem(5) toRem(7);
+  text-decoration: none;
+  outline: 0;
+}

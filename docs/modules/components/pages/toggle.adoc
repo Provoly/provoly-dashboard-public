@@ -1,0 +1,19 @@
+=== Toggle (pry-toggle)
+
+Le composant `+Toggle+` permet d’afficher un bouton on/off Le composant
+hérite du `+ControlValueAccessor+` qui nous permet d’utiliser les
+propriétés de formulaires Angular.
+
+Les paramètres d’entrée du composant sont les suivants :
+
+- ngModel: Permet de donner la valeur par défaut du composant
+- alwaysActive (défaut=false): Active le bouton par défaut
+- disabled (défaut=false): Désactive le clic sur le bouton - mode (défaut='`input`', disponibles='`input | action`'): Mode du toggle, input ou bouton
+- size (défaut='`normal`', disponibles='`normal | sm`'): taille de l’input
+- dir (défaut='`rtl`', disponibles='`rtl | ltr`'): sens d’écrire du texte
+- leftword: texte à gauche du bouton - rightword: texte à droite du
+bouton
+
+Le paramètre de sortie du composant est le suivant :
+
+- ngModelChange: Permet de récupérer la valeur du composant

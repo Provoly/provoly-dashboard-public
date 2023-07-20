@@ -1,0 +1,82 @@
+stages:
+  - dependency-cve-check
+  - test
+  - sonar
+  - deploy
+
+npm_dependency_check:
+  tags: # Tag has been set on the runner to ensure job run on pry cluster
+    - yap
+  stage: dependency-cve-check
+  variables:
+    KUBERNETES_CPU_REQUEST: "2"
+    KUBERNETES_CPU_LIMIT: "4"
+    KUBERNETES_MEMORY_REQUEST: "4Gi"
+    KUBERNETES_MEMORY_LIMIT: "6Gi"
+  image: dh2wltsh.gra7.container-registry.ovh.net/docker-mirror/library/node:16-stretch
+  script:
+    - npm ci
+    - npm audit --json > ./npm_audit_report.json || true
+  allow_failure: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: always
+      allow_failure: false
+  artifacts:
+    when: always
+    paths:
+      # Save the JSON report artifact
+      - "./npm_audit_report.json"
+
+test-front:
+  tags: # Tag has been set on the runner to ensure job run on pry cluster
+    - yap
+  stage: test
+  variables:
+    KUBERNETES_CPU_REQUEST: "1"
+    KUBERNETES_CPU_LIMIT: "4"
+    KUBERNETES_MEMORY_REQUEST: "4Gi"
+    KUBERNETES_MEMORY_LIMIT: "6Gi"
+  image: dh2wltsh.gra7.container-registry.ovh.net/docker-mirror/library/node:18-bullseye
+  except:
+    - tags
+  script:
+    - npm ci
+    - npm run test:lib:ci
+  artifacts:
+    expire_in: 1 hrs
+    paths:
+      - coverage/
+
+sonar:
+  tags: # Tag has been set on the runner to ensure job run on pry cluster
+    - yap
+  stage: sonar
+  image: dh2wltsh.gra7.container-registry.ovh.net/docker-mirror/sonarsource/sonar-scanner-cli
+  script:
+    - export SONAR_HOST_URL=$SONAR_URL
+    - sonar-scanner -Dsonar.login=$SONAR_ADMIN_TOKEN
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: always
+      allow_failure: true
+
+publish:
+  tags: # Tag has been set on the runner to ensure job run on pry cluster
+    - yap
+  variables:
+    KUBERNETES_CPU_REQUEST: "2"
+    KUBERNETES_CPU_LIMIT: "4"
+    KUBERNETES_MEMORY_REQUEST: "4Gi"
+    KUBERNETES_MEMORY_LIMIT: "6Gi"
+  stage: deploy
+  image: dh2wltsh.gra7.container-registry.ovh.net/docker-mirror/library/node:16-stretch
+  only:
+    - tags
+  script:
+    - npm config set @provoly:registry https://registry.npmjs.org
+    - npm config set '//registry.npmjs.org/:_authToken' "${NPM_AUTH_TOKEN}"
+    - npm ci
+    - npm run version:from-tag
+    - npm run build:lib:prod
+    - npm run pub

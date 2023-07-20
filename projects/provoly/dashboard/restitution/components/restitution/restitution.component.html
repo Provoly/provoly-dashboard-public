@@ -1,0 +1,207 @@
+<pry-restitution-css></pry-restitution-css>
+<div class="o-restitution">
+  <h3 class="a-h2 o-restitution__title">
+    {{ (consultMode ? '@pry.restitution.consult_title' : '@pry.restitution.create_title') | i18n }}
+  </h3>
+  <pry-stepper #stepper [isConsultMode]="consultMode || edit" (lastStepCompleted)="lastStepCompleted()">
+    <pry-step>
+      <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.configure' | i18n }}</h4>
+      <div>
+        <div class="m-form-label-field">
+          <label for="restitution" class="a-label">{{ '@pry.restitution.restitution_type' | i18n }}</label>
+          <pry-select
+            id="restitution"
+            class="a-pry-select"
+            [itemsAsOption]="true"
+            [items]="types$ | async"
+            [labelTranslate]="true"
+            [(ngModel)]="form.selectedWidget"
+            [disabled]="consultMode"
+            bindIcon="icon"
+            bindLabel="label"
+            bindValue="type"
+          >
+          </pry-select>
+        </div>
+        <div *ngIf="form.selectedWidget !== ''">
+          <div class="m-form-label-field">
+            <label for="graphTitle" class="a-label">{{ '@pry.restitution.graph_title' | i18n }}</label>
+            <input
+              name="title"
+              id="graphTitle"
+              class="a-form-field"
+              [(ngModel)]="form.title"
+              type="text"
+              [disabled]="consultMode"
+              maxlength="30"
+              ngDefaultControl
+            />
+          </div>
+          <div class="m-form-label-field">
+            <label for="description" class="a-label">{{ '@pry.restitution.description' | i18n }}</label>
+            <textarea
+              name="description"
+              id="description"
+              class="a-form-field"
+              [(ngModel)]="form.description"
+              style="resize: none"
+              [disabled]="consultMode"
+              maxlength="255"
+              ngDefaultControl
+            >
+            </textarea>
+          </div>
+          <div class="m-form-label-field -width-full">
+            <label class="a-label">{{ '@pry.presentation.form.image' | i18n }}</label>
+            <div class="o-file-input">
+              <pry-select-image (changed)="image = $event" [iconUrl]="image" [mode]="type"></pry-select-image>
+              <pry-checkbox [(ngModel)]="form.cover" name="cover"> {{ '@pry.restitution.cover' | i18n }}</pry-checkbox>
+            </div>
+          </div>
+          <div class="m-btn-group -space-evenly actions">
+            <button (click)="cancel(stepper)" type="button" class="a-btn a-btn--secondary">
+              {{ '@pry.restitution.close' | i18n }}
+            </button>
+            <button (click)="goNext(stepper)" [disabled]="isSubmitDisabled()" class="a-btn a-btn--primary">
+              {{ '@pry.restitution.validate' | i18n }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </pry-step>
+    <pry-step>
+      <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.dataSource' | i18n }}</h4>
+      <div class="overflow">
+        <div class="o-catalog__search">
+          <input
+            id="catalog-search"
+            type="text"
+            class="a-form-field"
+            name="search"
+            [placeholder]="'Recherchez une donnée'"
+            [ngModel]="search$ | async"
+            (ngModelChange)="this.search$.next($event)"
+            ngDefaultControl
+          />
+          <pry-icon iconSvg="search" [width]="17" [height]="17"></pry-icon>
+        </div>
+
+        <div class="o-datasources">
+          <div *ngIf="form.selectedDataSource.length > 0">
+            <h4 class="a-h4">{{ '@pry.restitution.selection' | i18n }}</h4>
+            <ul class="o-datasources__list o-datasources__list--selected">
+              <li class="o-datasources__item" *ngFor="let id of form.selectedDataSource">
+                <button (click)="toggleDatasource(id)" type="button" class="a-btn a-btn--icon-text">
+                  <span class="u-visually-hidden">{{ '@pry.restitution.unselectDataSource' | i18n }}</span>
+                  {{ idToNameDatasource[id] }}
+                  <pry-icon [iconSvg]="'close'" [width]="18" [height]="18"></pry-icon>
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <ng-container *ngIf="filteredDataSource$ | async as datasource">
+            <h4 class="a-h4">{{ '@pry.restitution.select' | i18n }}</h4>
+            <ul *ngIf="datasource.length > 0; else noDatasource" class="o-datasources__list">
+              <li class="o-datasources__item" *ngFor="let ds of datasource" (click)="toggleDatasource(ds.id)">
+                <div class="o-datasources__card">
+                  <div class="o-datasources__card__name">
+                    <pry-checkbox
+                      [ngModel]="form.selectedDataSource.includes(ds.id)"
+                      (click)="$event.preventDefault()"
+                    ></pry-checkbox>
+                    <span class="u-visually-hidden">{{ '@pry.restitution.selectDataSource' | i18n }}</span>
+                    <p class="a-p">
+                      {{ ds.id | translateId: { type: 'datasource', output: 'name' } | async }}
+                      <pry-icon *ngIf="isGeo(ds)" iconSvg="globe"></pry-icon>
+                    </p>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </ng-container>
+        </div>
+
+        <div class="m-btn-group -space-evenly actions">
+          <button (click)="prev(stepper)" type="button" class="a-btn a-btn--secondary">
+            {{ '@pry.restitution.close' | i18n }}
+          </button>
+          <button (click)="submit(stepper)" [disabled]="noDataSourceSelected()" class="a-btn a-btn--primary">
+            {{ '@pry.restitution.validate' | i18n }}
+          </button>
+        </div>
+      </div>
+    </pry-step>
+    <pry-step>
+      <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.visualize' | i18n }}</h4>
+      <div class="widget-instanciator">
+        <pry-widget-instanciator
+          [standalone]="true"
+          [staticManifest]="customManifest"
+          [open$]="openSettings$"
+          (manifestModified)="updateManifest($event)"
+        ></pry-widget-instanciator>
+      </div>
+      <div class="m-btn-group -space-evenly actions" *ngIf="!consultMode; else consult">
+        <button (click)="prev(stepper)" type="button" class="a-btn a-btn--secondary">
+          {{ '@pry.restitution.close' | i18n }}
+        </button>
+        <button (click)="goNext(stepper)" type="button" class="a-btn a-btn--primary">
+          {{ '@pry.restitution.validate' | i18n }}
+        </button>
+      </div>
+    </pry-step>
+    <pry-step>
+      <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.broadcast' | i18n }}</h4>
+      <div class="">
+        <h3>{{ '@pry.restitution.access' | i18n }}</h3>
+        {{ '@pry.restitution.choice' | i18n }}
+        <ul>
+          <li>
+            {{ '@pry.restitution.public' | i18n }}
+          </li>
+        </ul>
+        {{ '@pry.restitution.or' | i18n }}
+        <ul>
+          <li>
+            {{ '@pry.restitution.private' | i18n }}
+          </li>
+        </ul>
+      </div>
+      <pry-share
+        [(ngModel)]="visibility"
+        [users$]="users$"
+        labelProperty="name"
+        valueProperty="id"
+        [disabled]="consultMode"
+      ></pry-share>
+      <div class="m-btn-group -space-evenly actions" *ngIf="!consultMode; else consult">
+        <button (click)="prev(stepper)" type="button" class="a-btn a-btn--secondary">
+          {{ '@pry.restitution.close' | i18n }}
+        </button>
+        <button
+          (click)="goNext(stepper)"
+          [disabled]="noDataSourceSelected() || isSubmitDisabled()"
+          type="button"
+          class="a-btn a-btn--primary"
+        >
+          {{ '@pry.restitution.broadcast' | i18n }}
+        </button>
+      </div>
+    </pry-step>
+  </pry-stepper>
+</div>
+
+<ng-template #consult>
+  <div class="m-btn-group -space-evenly actions">
+    <button (click)="prev(stepper)" type="button" class="a-btn a-btn--secondary">
+      {{ '@pry.restitution.close' | i18n }}
+    </button>
+    <button (click)="goNext(stepper)" type="button" class="a-btn a-btn--primary">
+      {{ '@pry.restitution.next' | i18n }}
+    </button>
+  </div>
+</ng-template>
+<ng-template #noDatasource>
+  <p class="search-home__container-search">{{ '@pry.restitution.noDataSource' | i18n }}</p>
+</ng-template>

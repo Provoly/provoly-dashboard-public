@@ -1,0 +1,681 @@
+[
+  {
+    "id": "string",
+    "title": "premiertest",
+    "description": "premiertest description",
+    "version": "1.0",
+    "active": true,
+    "lastJobExecution": {
+      "uuid": "another string",
+      "status": "started",
+      "executionDate": "2022-10-06T09:07:39.689962Z"
+    },
+    "creationDate": "2022-05-06T09:07:39.689962Z",
+    "jobInstanceId": "id1",
+    "links": [
+      {
+        "start": {
+          "id": "31c18f09-9ef3-461e-8069-393d40df89f1",
+          "slot": 0
+        },
+        "end": {
+          "id": "05f59a34-c014-49aa-89bc-37d1bb6c7a46",
+          "slot": 0
+        }
+      },
+      {
+        "start": {
+          "id": "05f59a34-c014-49aa-89bc-37d1bb6c7a46",
+          "slot": 0
+        },
+        "end": {
+          "id": "c4196599-58ef-4ee9-bb2a-5df0b04c095f",
+          "slot": 0
+        }
+      },
+      {
+        "start": {
+          "id": "c4196599-58ef-4ee9-bb2a-5df0b04c095f",
+          "slot": 0
+        },
+        "end": {
+          "id": "a80c2f7c-b691-40d6-9488-881595194aad",
+          "slot": 0
+        }
+      },
+      {
+        "start": {
+          "id": "a80c2f7c-b691-40d6-9488-881595194aad",
+          "slot": 0
+        },
+        "end": {
+          "id": "00be5806-98a2-4e91-a403-8ade9f0738c3",
+          "slot": 0
+        }
+      }
+    ],
+    "nodes": [
+      {
+        "id": "31c18f09-9ef3-461e-8069-393d40df89f1",
+        "type": "com.onepoint.pry.common.transfo.InputDatasource",
+        "title": "InputDatasource",
+        "spec": {},
+        "gui": {
+          "pos": [
+            65,
+            95
+          ],
+          "size": [
+            184.8000030517578,
+            29
+          ]
+        }
+      },
+      {
+        "id": "05f59a34-c014-49aa-89bc-37d1bb6c7a46",
+        "type": "com.onepoint.pry.common.transfo.Filter",
+        "title": "Filter",
+        "spec": {
+          "attributeName": "nb_spots",
+          "operation": "EQUALS",
+          "value": "4"
+        },
+        "gui": {
+          "pos": [
+            336,
+            237
+          ],
+          "size": [
+            140,
+            26
+          ]
+        }
+      },
+      {
+        "id": "c4196599-58ef-4ee9-bb2a-5df0b04c095f",
+        "type": "SubGraphNode",
+        "title": "SubGraphNode",
+        "spec": {
+          "inputs": 1,
+          "outputs": 1
+        },
+        "gui": {
+          "pos": [
+            180,
+            394
+          ],
+          "size": [
+            236.8000030517578,
+            82
+          ]
+        },
+        "subgraph": {
+          "nodes": [
+            {
+              "id": "a06f17d7-b5c3-422f-88d1-9b9f5fcc28ec",
+              "type": "SubGraphOutput",
+              "title": "output-items-0",
+              "spec": {},
+              "gui": {
+                "pos": [
+                  630,
+                  258
+                ],
+                "size": [
+                  140,
+                  26
+                ]
+              }
+            },
+            {
+              "id": "2bd87fea-1ebb-4fe1-a13a-aa5e15b6ae36",
+              "type": "SubGraphInput",
+              "title": "input-items-0",
+              "spec": {},
+              "gui": {
+                "pos": [
+                  81.75570678710938,
+                  67.37364196777344
+                ],
+                "size": [
+                  140,
+                  26
+                ]
+              }
+            },
+            {
+              "id": "ddead076-e614-4126-a383-e54b0b78a0e8",
+              "type": "com.onepoint.pry.common.transfo.Filter",
+              "title": "Filter",
+              "spec": {
+                "value": "texte"
+              },
+              "gui": {
+                "pos": [
+                  397,
+                  181
+                ],
+                "size": [
+                  140,
+                  26
+                ]
+              }
+            }
+          ],
+          "links": [
+            {
+              "start": {
+                "id": "2bd87fea-1ebb-4fe1-a13a-aa5e15b6ae36",
+                "slot": 0
+              },
+              "end": {
+                "id": "ddead076-e614-4126-a383-e54b0b78a0e8",
+                "slot": 0
+              }
+            },
+            {
+              "start": {
+                "id": "ddead076-e614-4126-a383-e54b0b78a0e8",
+                "slot": 0
+              },
+              "end": {
+                "id": "a06f17d7-b5c3-422f-88d1-9b9f5fcc28ec",
+                "slot": 0
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "00be5806-98a2-4e91-a403-8ade9f0738c3",
+        "type": "com.onepoint.pry.common.transfo.OutputDataset",
+        "title": "OutputDataset",
+        "spec": {
+          "datasetId": "11111111-603f-476e-ab17-2ab497cdbbaf"
+        },
+        "gui": {
+          "pos": [
+            725,
+            389
+          ],
+          "size": [
+            193.1999969482422,
+            58
+          ]
+        }
+      },
+      {
+        "id": "a80c2f7c-b691-40d6-9488-881595194aad",
+        "type": "com.onepoint.pry.common.transfo.Filter",
+        "title": "Filter",
+        "spec": {
+          "attributeName": "nb_illegal_parking",
+          "operation": "EQUALS"
+        },
+        "gui": {
+          "pos": [
+            539,
+            422
+          ],
+          "size": [
+            140,
+            26
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "string2",
+    "title": "secondTest",
+    "description": "secondTest description",
+    "version": "1.0",
+    "active": false,
+    "lastJobExecution": {
+      "uuid": "another string",
+      "status": "terminated",
+      "executionDate": "2022-10-06T09:07:39.689962Z"
+    },
+    "creationDate": "2022-09-06T09:07:55.689962Z",
+    "jobInstanceId": null,
+    "links": [
+      {
+        "start": {
+          "id": "31c18f09-9ef3-461e-8069-393d40df89f1",
+          "slot": 0
+        },
+        "end": {
+          "id": "05f59a34-c014-49aa-89bc-37d1bb6c7a46",
+          "slot": 0
+        }
+      },
+      {
+        "start": {
+          "id": "05f59a34-c014-49aa-89bc-37d1bb6c7a46",
+          "slot": 0
+        },
+        "end": {
+          "id": "c4196599-58ef-4ee9-bb2a-5df0b04c095f",
+          "slot": 0
+        }
+      },
+      {
+        "start": {
+          "id": "c4196599-58ef-4ee9-bb2a-5df0b04c095f",
+          "slot": 0
+        },
+        "end": {
+          "id": "a80c2f7c-b691-40d6-9488-881595194aad",
+          "slot": 0
+        }
+      },
+      {
+        "start": {
+          "id": "a80c2f7c-b691-40d6-9488-881595194aad",
+          "slot": 0
+        },
+        "end": {
+          "id": "00be5806-98a2-4e91-a403-8ade9f0738c3",
+          "slot": 0
+        }
+      }
+    ],
+    "nodes": [
+      {
+        "id": "31c18f09-9ef3-461e-8069-393d40df89f1",
+        "type": "com.onepoint.pry.common.transfo.InputDatasource",
+        "title": "InputDatasource",
+        "spec": {},
+        "gui": {
+          "pos": [
+            65,
+            95
+          ],
+          "size": [
+            184.8000030517578,
+            29
+          ]
+        }
+      },
+      {
+        "id": "05f59a34-c014-49aa-89bc-37d1bb6c7a46",
+        "type": "com.onepoint.pry.common.transfo.Filter",
+        "title": "Filter",
+        "spec": {
+          "attributeName": "nb_spots",
+          "operation": "EQUALS",
+          "value": "4"
+        },
+        "gui": {
+          "pos": [
+            336,
+            237
+          ],
+          "size": [
+            140,
+            26
+          ]
+        }
+      },
+      {
+        "id": "c4196599-58ef-4ee9-bb2a-5df0b04c095f",
+        "type": "SubGraphNode",
+        "title": "SubGraphNode",
+        "spec": {
+          "inputs": 1,
+          "outputs": 1
+        },
+        "gui": {
+          "pos": [
+            180,
+            394
+          ],
+          "size": [
+            236.8000030517578,
+            82
+          ]
+        },
+        "subgraph": {
+          "nodes": [
+            {
+              "id": "a06f17d7-b5c3-422f-88d1-9b9f5fcc28ec",
+              "type": "SubGraphOutput",
+              "title": "output-items-0",
+              "spec": {},
+              "gui": {
+                "pos": [
+                  630,
+                  258
+                ],
+                "size": [
+                  140,
+                  26
+                ]
+              }
+            },
+            {
+              "id": "2bd87fea-1ebb-4fe1-a13a-aa5e15b6ae36",
+              "type": "SubGraphInput",
+              "title": "input-items-0",
+              "spec": {},
+              "gui": {
+                "pos": [
+                  81.75570678710938,
+                  67.37364196777344
+                ],
+                "size": [
+                  140,
+                  26
+                ]
+              }
+            },
+            {
+              "id": "ddead076-e614-4126-a383-e54b0b78a0e8",
+              "type": "com.onepoint.pry.common.transfo.Filter",
+              "title": "Filter",
+              "spec": {
+                "value": "texte"
+              },
+              "gui": {
+                "pos": [
+                  397,
+                  181
+                ],
+                "size": [
+                  140,
+                  26
+                ]
+              }
+            }
+          ],
+          "links": [
+            {
+              "start": {
+                "id": "2bd87fea-1ebb-4fe1-a13a-aa5e15b6ae36",
+                "slot": 0
+              },
+              "end": {
+                "id": "ddead076-e614-4126-a383-e54b0b78a0e8",
+                "slot": 0
+              }
+            },
+            {
+              "start": {
+                "id": "ddead076-e614-4126-a383-e54b0b78a0e8",
+                "slot": 0
+              },
+              "end": {
+                "id": "a06f17d7-b5c3-422f-88d1-9b9f5fcc28ec",
+                "slot": 0
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "00be5806-98a2-4e91-a403-8ade9f0738c3",
+        "type": "com.onepoint.pry.common.transfo.OutputDataset",
+        "title": "OutputDataset",
+        "spec": {
+          "datasetId": "11111111-603f-476e-ab17-2ab497cdbbaf"
+        },
+        "gui": {
+          "pos": [
+            725,
+            389
+          ],
+          "size": [
+            193.1999969482422,
+            58
+          ]
+        }
+      },
+      {
+        "id": "a80c2f7c-b691-40d6-9488-881595194aad",
+        "type": "com.onepoint.pry.common.transfo.Filter",
+        "title": "Filter",
+        "spec": {
+          "attributeName": "nb_illegal_parking",
+          "operation": "EQUALS"
+        },
+        "gui": {
+          "pos": [
+            539,
+            422
+          ],
+          "size": [
+            140,
+            26
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "string3",
+    "title": "troisiemeTest",
+    "description": "troisiemeTest description",
+    "version": "1.0",
+    "active": true,
+    "lastJobExecution": {
+      "uuid": "another string",
+      "status": "error",
+      "executionDate": "2022-10-10T09:07:39.689962Z"
+    },
+    "creationDate": "2022-08-06T09:07:50.689962Z",
+    "executionDate": "2022-11-06T09:07:01.689962Z",
+    "jobInstanceId": "id3",
+    "links": [
+      {
+        "start": {
+          "id": "31c18f09-9ef3-461e-8069-393d40df89f1",
+          "slot": 0
+        },
+        "end": {
+          "id": "05f59a34-c014-49aa-89bc-37d1bb6c7a46",
+          "slot": 0
+        }
+      },
+      {
+        "start": {
+          "id": "05f59a34-c014-49aa-89bc-37d1bb6c7a46",
+          "slot": 0
+        },
+        "end": {
+          "id": "c4196599-58ef-4ee9-bb2a-5df0b04c095f",
+          "slot": 0
+        }
+      },
+      {
+        "start": {
+          "id": "c4196599-58ef-4ee9-bb2a-5df0b04c095f",
+          "slot": 0
+        },
+        "end": {
+          "id": "a80c2f7c-b691-40d6-9488-881595194aad",
+          "slot": 0
+        }
+      },
+      {
+        "start": {
+          "id": "a80c2f7c-b691-40d6-9488-881595194aad",
+          "slot": 0
+        },
+        "end": {
+          "id": "00be5806-98a2-4e91-a403-8ade9f0738c3",
+          "slot": 0
+        }
+      }
+    ],
+    "nodes": [
+      {
+        "id": "31c18f09-9ef3-461e-8069-393d40df89f1",
+        "type": "com.onepoint.pry.common.transfo.InputDatasource",
+        "title": "InputDatasource",
+        "spec": {},
+        "gui": {
+          "pos": [
+            65,
+            95
+          ],
+          "size": [
+            184.8000030517578,
+            29
+          ]
+        }
+      },
+      {
+        "id": "05f59a34-c014-49aa-89bc-37d1bb6c7a46",
+        "type": "com.onepoint.pry.common.transfo.Filter",
+        "title": "Filter",
+        "spec": {
+          "attributeName": "nb_spots",
+          "operation": "EQUALS",
+          "value": "4"
+        },
+        "gui": {
+          "pos": [
+            336,
+            237
+          ],
+          "size": [
+            140,
+            26
+          ]
+        }
+      },
+      {
+        "id": "c4196599-58ef-4ee9-bb2a-5df0b04c095f",
+        "type": "SubGraphNode",
+        "title": "SubGraphNode",
+        "spec": {
+          "inputs": 1,
+          "outputs": 1
+        },
+        "gui": {
+          "pos": [
+            180,
+            394
+          ],
+          "size": [
+            236.8000030517578,
+            82
+          ]
+        },
+        "subgraph": {
+          "nodes": [
+            {
+              "id": "a06f17d7-b5c3-422f-88d1-9b9f5fcc28ec",
+              "type": "SubGraphOutput",
+              "title": "output-items-0",
+              "spec": {},
+              "gui": {
+                "pos": [
+                  630,
+                  258
+                ],
+                "size": [
+                  140,
+                  26
+                ]
+              }
+            },
+            {
+              "id": "2bd87fea-1ebb-4fe1-a13a-aa5e15b6ae36",
+              "type": "SubGraphInput",
+              "title": "input-items-0",
+              "spec": {},
+              "gui": {
+                "pos": [
+                  81.75570678710938,
+                  67.37364196777344
+                ],
+                "size": [
+                  140,
+                  26
+                ]
+              }
+            },
+            {
+              "id": "ddead076-e614-4126-a383-e54b0b78a0e8",
+              "type": "com.onepoint.pry.common.transfo.Filter",
+              "title": "Filter",
+              "spec": {
+                "value": "texte"
+              },
+              "gui": {
+                "pos": [
+                  397,
+                  181
+                ],
+                "size": [
+                  140,
+                  26
+                ]
+              }
+            }
+          ],
+          "links": [
+            {
+              "start": {
+                "id": "2bd87fea-1ebb-4fe1-a13a-aa5e15b6ae36",
+                "slot": 0
+              },
+              "end": {
+                "id": "ddead076-e614-4126-a383-e54b0b78a0e8",
+                "slot": 0
+              }
+            },
+            {
+              "start": {
+                "id": "ddead076-e614-4126-a383-e54b0b78a0e8",
+                "slot": 0
+              },
+              "end": {
+                "id": "a06f17d7-b5c3-422f-88d1-9b9f5fcc28ec",
+                "slot": 0
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "00be5806-98a2-4e91-a403-8ade9f0738c3",
+        "type": "com.onepoint.pry.common.transfo.OutputDataset",
+        "title": "OutputDataset",
+        "spec": {
+          "datasetId": "11111111-603f-476e-ab17-2ab497cdbbaf"
+        },
+        "gui": {
+          "pos": [
+            725,
+            389
+          ],
+          "size": [
+            193.1999969482422,
+            58
+          ]
+        }
+      },
+      {
+        "id": "a80c2f7c-b691-40d6-9488-881595194aad",
+        "type": "com.onepoint.pry.common.transfo.Filter",
+        "title": "Filter",
+        "spec": {
+          "attributeName": "nb_illegal_parking",
+          "operation": "EQUALS"
+        },
+        "gui": {
+          "pos": [
+            539,
+            422
+          ],
+          "size": [
+            140,
+            26
+          ]
+        }
+      }
+    ]
+  }
+]

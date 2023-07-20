@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="details" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 718.92 393.41">
+  <defs>
+    <style>.cls-1 {
+      fill: #f9f9f9;
+    }
+
+    .cls-2 {
+      fill: #afdac6;
+    }
+
+    .cls-3 {
+      fill: #88c8a9;
+    }</style>
+  </defs>
+  <rect class="cls-1" x="-10.82" y="-3.35" width="738.82" height="400.29" />
+  <circle class="cls-3" cx="242.55" cy="198.1" r="10.36" />
+  <circle class="cls-3" cx="242.55" cy="231.55" r="10.36" />
+  <circle class="cls-3" cx="242.55" cy="265.05" r="10.36" />
+  <rect class="cls-2" x="265.37" y="189.28" width="221.37" height="17.63" rx="4.35" ry="4.35" />
+  <rect class="cls-2" x="265.37" y="222.74" width="221.37" height="17.63" rx="4.35" ry="4.35" />
+  <circle class="cls-3" cx="242.55" cy="131.2" r="10.36" />
+  <circle class="cls-3" cx="242.55" cy="164.65" r="10.36" />
+  <rect class="cls-2" x="265.37" y="122.38" width="221.37" height="17.63" rx="4.35" ry="4.35" />
+  <rect class="cls-2" x="265.37" y="155.83" width="221.37" height="17.63" rx="4.35" ry="4.35" />
+  <rect class="cls-2" x="265.37" y="256.23" width="193.05" height="17.63" rx="4.35" ry="4.35" />
+</svg>

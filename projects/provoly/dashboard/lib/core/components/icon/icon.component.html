@@ -1,0 +1,18 @@
+<ng-container *ngIf="iconSvgUrl">
+  <span
+    class="a-icon"
+    [ngClass]="color!"
+    [ngClass]="classes"
+    [ngStyle]="{
+      'width.px': width,
+      'height.px': height,
+      'mask-image': 'url(' + iconSvgUrl + ')',
+      '-webkit-mask-image': 'url(' + iconSvgUrl + ')'
+    }"
+    aria-hidden="true"
+    focusable="false"
+  ></span>
+</ng-container>
+<ng-container *ngIf="iconImageUrl">
+  <img class="a-icon-img" [src]="iconImageUrl" [style.height.px]="height" [style.width.px]="width" [alt]="alt" />
+</ng-container>

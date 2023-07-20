@@ -1,0 +1,55 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - component pry-card-menu */
+
+.o-pry-card-menu-wrapper {
+  /* color: themed($theme-map, 'color', 'primary', 'contrast', 50);
+   background-color: themed($theme-map, 'color', 'primary', 50);*/
+  border: 1px themed($theme-map, 'color', 'primary', 400) solid;
+  border-radius: themed($theme-map, 'decoration', 'border-radius', 'contextual');
+  background-color: white;
+  box-shadow: themed($theme-map, 'decoration', 'shadow', 'default');
+}
+
+.o-pry-card-menu {
+  &__nav {
+    &__item {
+      color: themed($theme-map, 'color', 'primary', 600);
+      font-size: toRem(13);
+      font-weight: 400;
+
+      &:hover,
+      &:active {
+        color: themed($theme-map, 'color', 'primary', 700);
+        background-color: themed($theme-map, 'color', 'primary', 200);
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.spot-rs,
+.refresh-rs {
+  border-left-color: themed($theme-map, 'color', 'primary', 100);
+  background-color: themed($theme-map, 'color', 'primary', 50);
+  box-shadow: 2px 3px 10px 2px rgba(0, 0, 0, 0.2);
+}
+
+.refresh-line {
+  color: themed($theme-map, 'color', 'primary', 600);
+}
+
+.search-home__named-query__card {
+  background: themed($theme-map, 'color', 'primary', 500);
+}
+
+.card-menu__container-menu {
+  background-color: themed($theme-map, 'color', 'primary', 50);
+
+  > * {
+    &:hover {
+      background-color: themed($theme-map, 'color', 'primary', 100);
+    }
+  }
+}

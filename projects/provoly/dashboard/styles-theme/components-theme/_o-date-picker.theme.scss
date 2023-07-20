@@ -1,0 +1,37 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Atom - date picker */
+.o-date-picker {
+  background: themed($theme-map, 'color', 'primary', 'contrast', 600);
+
+  &__header__dropdown {
+    color: themed($theme-map, 'color', 'primary', 600);
+    background-color: themed($theme-map, 'color', 'primary', 'contrast', 600);
+  }
+
+  .a-icon {
+    color: themed($theme-map, 'color', 'primary', 600);
+  }
+
+  &__days-grid__item {
+    &.-selected,
+    &.-start,
+    &.-in-range,
+    &.-end {
+      background-color: themed($theme-map, 'color', 'accent', 600);
+    }
+
+    .a-time {
+      color: themed($theme-map, 'color', 'primary', 700);
+    }
+  }
+
+  .a-arrow {
+    &:disabled {
+      pry-icon {
+        color: themed($theme-map, 'color', 'primary', 100);
+      }
+    }
+  }
+}

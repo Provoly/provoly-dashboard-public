@@ -1,0 +1,120 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { combineLatest, map, mergeMap, Observable, of } from 'rxjs';
+import { DashboardSelectors } from '../../../dashboard/store/dashboard.selectors';
+import { FilterContext } from '../../model/filter.interface';
+import { ResultOrder } from '../../model/result-order.interface';
+import { ResultSet } from '../../model/result-set.interface';
+import { MonoClassSearchPayload } from '../../model/search-mono-class.model';
+import { FullTextSearchPayload, MultiClassSearchPayload } from '../../model/search-multi-class.model';
+import { ConfigState } from '../config/config.reducer';
+import { ConfigSelectors } from '../config/config.selectors';
+import { DEFAULT_NAMED_QUERY_ID } from './search.constants';
+import { SearchState } from './search.reducer';
+
+export type ResultsetTransformation = (id: string, result: ResultSet) => ResultSet;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SearchService {
+  transformations: ResultsetTransformation[] = [];
+  filters: { [datasource: string]: FilterContext[] } = {};
+
+  constructor(
+    private httpClient: HttpClient,
+    private store: Store<ConfigState | SearchState>
+  ) {
+    store.select(DashboardSelectors.datasourceFilters).subscribe((filters) => {
+      this.filters = filters;
+    });
+  }
+
+  /**
+   * Request the result of a named query by its id
+   * @param id of the data source to fetch
+   * @param quickOrder if it has to be applied
+   */
+  getItems(id: string, quickOrder?: ResultOrder): Observable<ResultSet> {
+    const params = this.getItemsParams(quickOrder);
+    let filterFormed = this.getItemsFilter(id);
+
+    if (!id) {
+      console.warn('Not sending items request with no datasource attached.');
+      return of({ items: {}, relations: [] } as ResultSet);
+    }
+
+    return this.store.select(ConfigSelectors.dataUrl).pipe(
+      mergeMap((url) =>
+        this.httpClient.get<ResultSet>(encodeURI(`${url}/data-sources/id/${id}/items${filterFormed}`), { params })
+      ),
+      map((rs) => this.applyTransformations('current', rs))
+    );
+  }
+
+  getItemsSerializedParams(id: string, quickOrder: any): string {
+    return JSON.stringify(this.getItemsParams(quickOrder[id])) + this.getItemsFilter(id);
+  }
+
+  getItemsFilter(id: string): string {
+    let filterFormed: any = '';
+    if (this.filters[id]) {
+      filterFormed = [];
+      this.filters[id].forEach((filter) => {
+        filterFormed.push('filter=' + filter.attribute + ',' + filter.operator + ',' + filter.value);
+      });
+      filterFormed = '?' + filterFormed.join('&');
+    }
+    return filterFormed;
+  }
+
+  getItemsParams(quickOrder: ResultOrder | undefined) {
+    const params = {} as { [key: string]: string };
+    if (quickOrder) {
+      params['order'] = `${quickOrder.attribute},${quickOrder.asc ?? ''}`;
+    }
+    return params;
+  }
+
+  /**
+   * Launch a search request (and saves it as current search)
+   * @param condition
+   */
+  search(condition: MonoClassSearchPayload | MultiClassSearchPayload | FullTextSearchPayload): Observable<ResultSet> {
+    return combineLatest([
+      this.store.select(ConfigSelectors.dataUrl),
+      this.store.select(DashboardSelectors.quickOrder)
+    ]).pipe(
+      mergeMap(([url, quickOrder]) => {
+        const params = {} as { [key: string]: string };
+        if (quickOrder[DEFAULT_NAMED_QUERY_ID]) {
+          params['order'] = `${quickOrder[DEFAULT_NAMED_QUERY_ID]?.attribute},${
+            quickOrder[DEFAULT_NAMED_QUERY_ID]?.asc ?? ''
+          }`;
+        }
+        return this.httpClient.post<ResultSet>(encodeURI(`${url}/items/search`), condition, { params });
+      }),
+      map((rs) => this.applyTransformations(DEFAULT_NAMED_QUERY_ID, rs))
+    );
+  }
+
+  /**
+   * Allows to add a transformation function when getting results from backend
+   * @param func
+   */
+  addTransformation(func: ResultsetTransformation) {
+    this.transformations.push(func);
+  }
+
+  /**
+   * Apply all transformation functions
+   * @param id
+   * @param rs
+   */
+  applyTransformations(id: string, rs: ResultSet) {
+    let transformed = rs;
+    this.transformations.forEach((func) => (transformed = func(id, transformed)));
+    return transformed;
+  }
+}

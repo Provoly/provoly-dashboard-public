@@ -1,0 +1,25 @@
+<div class="o-pry-expand-panel">
+  <button
+    type="button"
+    class="a-btn -link-like o-pry-expand-panel__toggler"
+    (click)="_toggle()"
+    aria-controls="o-pry-expand-panel-search-content"
+    [attr.aria-expanded]="_open"
+    id="o-pry-expand-panel-search-toggler"
+  >
+    <span class="o-pry-expand-panel__toggler__text">
+      <ng-content select="pry-expand-panel-title"></ng-content>
+    </span>
+  </button>
+
+  <div
+    id="o-pry-expand-panel-search-content"
+    class="o-pry-expand-panel__content-wrapper"
+    [@bodyExpansion]="_getExpandedState()"
+    aria-labelledby="o-pry-expand-panel-search-toggler"
+  >
+    <div class="o-pry-expand-panel__content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

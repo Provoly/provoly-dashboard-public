@@ -1,0 +1,4 @@
+=== Popup de confirmation `+dialog.service.ts+`
+
+Service proposant des dialogs. Utilisable par les applications utilisant
+pry.

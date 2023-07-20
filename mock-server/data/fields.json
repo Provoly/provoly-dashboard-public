@@ -1,0 +1,286 @@
+[
+  {
+    "id": "178c19cf-702c-4a0a-a218-cca5c0eef7d7",
+    "name": "Num_Acc",
+    "type": "keyword"
+  },
+  {
+    "id": "59853619-9773-418a-ace5-70b80fd4dc74",
+    "name": "location",
+    "type": "Point"
+  },{
+    "id": "59853619-9773-418a-ace5-70b80fd4dc75",
+    "name": "latitude",
+    "type": "decimal"
+  },
+  {
+    "id": "7be854d6-706c-4784-af44-f8c1d071e512",
+    "name": "longitude",
+    "type": "decimal"
+  },
+  {
+    "id": "9fc993db-ab5f-403d-883d-1bb3970692af",
+    "name": "humidite",
+    "type": "decimal"
+  },
+  {
+    "id": "ea1f6255-9e67-41e6-89a2-1c1bd5a0a5ce",
+    "name": "temperature_en_degre_c",
+    "type": "decimal"
+  },
+  {
+    "id": "eothr255-9e67-41e6-89a2-1c1bd5a0a5ce",
+    "name": "département",
+    "type": "keyword"
+  },
+  {
+    "id": "fezhr255-9e67-41e6-89a2-1c1bd5a0a5ce",
+    "name": "seriesName",
+    "type": "keyword"
+  },
+  {
+    "id": "d31a3850-0ec3-4ce1-b005-8b5fca5029cb",
+    "name": "voie",
+    "type": "string"
+  },
+  {
+    "id": "b1633f47-53f6-46ed-b197-0d0a7fb79ece",
+    "name": "an_nais",
+    "type": "integer"
+  },
+  {
+    "id": "49156155-1e56-451b-b455-477cd9008959",
+    "name": "sexe",
+    "type": "integer"
+  },
+  {
+    "id": "9a27ad6c-94da-4176-b50d-3ec8f109a913",
+    "name": "id_vehicule",
+    "type": "keyword"
+  },
+  {
+    "id": "619c7c3c-070d-41d3-b61e-60ed854c39e2",
+    "name": "id_mutation",
+    "type": "integer"
+  },
+  {
+    "id": "abbac2de-0ff4-4d3d-b6e8-cd8f7ebdf5af",
+    "name": "valeur_fonciere",
+    "type": "integer"
+  },
+  {
+    "id": "97a3f75e-d488-49e8-85bd-42487c0d40d7",
+    "name": "catv",
+    "type": "string"
+  },
+  {
+    "id": "d19f45cf-e932-4bfa-8f87-0b723e2f4354",
+    "name": "choc",
+    "type": "integer"
+  },
+  {
+    "id": "e374bef3-dd45-4130-8668-7ecf77a00000",
+    "name": "origin",
+    "type": "keyword"
+  },
+  {
+    "id": "azerbef3-dd45-4130-8668-7ecf77a00001",
+    "name": "timestamp",
+    "type": "instant"
+  },
+  {
+    "id": "qsdf622e-d44f-426b-bfdd-9b19e83f44da",
+    "name": "heure_utc",
+    "type": "instant"
+  },
+  {
+    "id": "wxcvbef3-dd45-4130-8668-7ecf77a00002",
+    "name": "source",
+    "type": "keyword"
+  },
+  {
+    "id": "ertybef3-dd45-4130-8668-7ecf77a00003",
+    "name": "type",
+    "type": "keyword"
+  },
+  {
+    "id": "zertbef3-dd45-4130-8668-7ecf77a00004",
+    "name": "direction",
+    "type": "keyword"
+  },
+  {
+    "id": "sdfgbef3-dd45-4130-8668-7ecf77a00005",
+    "name": "station",
+    "type": "keyword"
+  },
+  {
+    "id": "ghjkbef3-dd45-4130-8668-7ecf77a00006",
+    "name": "local",
+    "type": "integer"
+  },
+  {
+    "id": "yuiobef3-dd45-4130-8668-7ecf77a00007",
+    "name": "remote",
+    "type": "integer"
+  },
+  {
+    "id": "gtrfbef3-dd45-4130-8668-7ecf77a00008",
+    "name": "duration",
+    "type": "integer"
+  },
+  {
+    "id": "edsqbef3-dd45-4130-8668-7ecf77a00009",
+    "name": "message",
+    "type": "string"
+  },
+  {
+    "id": "aaaaaaaa-dd45-4130-8668-7ecf77a00009",
+    "name": "image_raw",
+    "type": "raw"
+  },
+  {
+    "id": "4a641178-dca2-40ad-8ee4-063c69d5111d",
+    "name": "denomination",
+    "type": "string"
+  },
+  {
+    "id": "14a97d0c-d81c-4927-aaa4-38710775633d",
+    "name": "reference",
+    "type": "keyword"
+  },
+  {
+    "id": "AAA97d0c-d81c-4927-aaa4-38710775633d",
+    "name": "id_long",
+    "type": "long"
+  },
+  {
+    "id": "4a641178-dca2-40ad-8ee4-063c69d5111d",
+    "name": "denomination",
+    "type": "string"
+  },
+  {
+    "id": "79f91495-02e9-4208-8166-149a7a28e610",
+    "name": "quantite",
+    "type": "integer"
+  },
+  {
+    "id": "79f91495-02e9-4208-8166-149a7a28e611",
+    "name": "nb_spots",
+    "type": "integer"
+  },
+  {
+    "id": "7503974-02e9-4208-8166-149a7a28e611",
+    "name": "nb_illegal_parking",
+    "type": "integer"
+  },
+  {
+    "id": "79f91495-02e9-4208-8166-149a7a28e612",
+    "name": "parked_cars",
+    "type": "integer"
+  },
+  {
+    "id": "79f91495-02e9-4208-8166-149a7a28e613",
+    "name": "uuid",
+    "type": "string"
+  },
+  {
+    "id": "29f91495-02e9-4208-8166-149a7a28e612",
+    "name": "type",
+    "type": "string"
+  },
+  {
+    "id": "29f91495-02e9-4208-8166-149a7a28e613",
+    "name": "count",
+    "type": "string"
+  },
+  {
+    "id": "12341495-02e9-4208-8166-149a7a28e612",
+    "name": "is_broken",
+    "type": "integer"
+  },
+  {
+    "id": "49f91495-02e9-4208-8166-149a7a28e612",
+    "name": "good",
+    "type": "integer"
+  },
+  {
+    "id": "49f91495-02e9-4208-8166-149a7a28e613",
+    "name": "status",
+    "type": "string"
+  },
+  {
+    "id": "49f91495-02e9-4208-8166-149a7a28e614",
+    "name": "broken",
+    "type": "integer"
+  },
+  {
+    "id": "d7f1e296-65d7-4db5-b1cd-96873e1bab16",
+    "name": "zerzer zer zerzer",
+    "type": "integer"
+  },
+  {
+    "id": "e374bef3-dd45-4130-8668-7ecf77a00001",
+    "name": "creation",
+    "type": "integer"
+  },
+  {
+    "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08-station_longitude",
+    "name": "station_longitude",
+    "type": "decimal"
+  },
+  {
+    "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08-station_location",
+    "name": "station_location",
+    "type": "Point"
+  },
+  {
+    "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08-geo_point_2d",
+    "name": "geo_point_2d",
+    "type": "string"
+  },
+  {
+    "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08-station_nom",
+    "name": "station_nom",
+    "type": "string"
+  },
+  {
+    "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-accroches_libres",
+    "name": "accroches_libres",
+    "type": "integer"
+  },
+  {
+    "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-velos_disponibles",
+    "name": "velos_disponibles",
+    "type": "integer"
+  },
+  {
+    "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-nombre_emplacements",
+    "name": "nombre_emplacements",
+    "type": "integer"
+  },
+  {
+    "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-point",
+    "name": "position",
+    "type": "Point"
+  },
+  {
+    "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-trajet",
+    "name": "trajet",
+    "type": "LineString"
+  },
+  {
+    "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-trajetM",
+    "name": "multi-trajet",
+    "type": "MultiLineString"
+  },
+  {
+    "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-zone",
+    "name": "zone",
+    "type": "Polygon"
+  },
+  {
+    "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-zoneM",
+    "name": "multi-zone",
+    "type": "MultiPolygon"
+  }
+]

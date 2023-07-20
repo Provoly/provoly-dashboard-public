@@ -1,0 +1,47 @@
+=== Personnaliser les icones utilisées dans la map/recherche/relations
+
+Le premier exemple montre l’utilisation d’une icone simple. Cette image
+est stockée dans le backend pry, ce qu’on indique en utilisant le
+préfixe '`internal:`'. Le 2e montre l’utilisation de règles.
+
+[source,js]
+----
+this.store.dispatch(
+    ConfigActions.updateIcons({
+        "default": [
+          {
+            "iconSize": [
+              35,
+              35
+            ],
+            "iconUrl": "/assets/svgs/tool.svg"
+          }
+        ],
+        "6b9fa342-df2f-44cb-830c-a3ed248ef6a2": [
+            {
+                "iconSize": [
+                  35,
+                  35
+                ],
+                "iconUrl": "/assets/svgs/map/parking-default.svg"
+            },
+            {
+                "iconSize": [
+                  35,
+                  35
+                ],
+                "iconUrl": "/assets/svgs/map/parking-available.svg",
+                "position": "FULL",
+                "rule": {
+                  "attributeName": "state",
+                  "value": "disponible",
+                  "operation": "EQUALS"
+                }
+            },
+    })
+);
+----
+
+Il est aussi possible voire souhaitable d’utiliser plutôt le service
+`+config.service.ts+` pour répondre à cette problématique, soit en
+utilisant le backend pry, soit en surchargeant le service.

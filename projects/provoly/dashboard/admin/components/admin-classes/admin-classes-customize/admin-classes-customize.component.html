@@ -1,0 +1,196 @@
+<div class="o-pry-admin-classes-customize">
+  <h1 class="a-h1" id="tab-custo">{{ '@pry.admin.customize.title' | i18n }}</h1>
+
+  <div class="o-tabs">
+    <div class="o-tabs__list" role="tablist" [attr.aria-labelledby]="'tab-custo'">
+      <button
+        type="button"
+        class="o-tabs__list__btn"
+        role="tab"
+        [id]="'tab-custo-btn-0'"
+        [attr.aria-selected]="tab === 0"
+        [attr.tabindex]="tab === 0 ? 0 : -1"
+        [attr.aria-controls]="'tab-custo-pnl-0'"
+        (click)="tab = 0"
+      >
+        {{ '@pry.admin.customize.template' | i18n }}
+      </button>
+      <button
+        type="button"
+        class="o-tabs__list__btn"
+        role="tab"
+        [id]="'tab-custo-btn-1'"
+        [attr.aria-selected]="tab === 1"
+        [attr.tabindex]="tab === 1 ? 0 : -1"
+        [attr.aria-controls]="'tab-custo-pnl-1'"
+        (click)="tab = 1"
+      >
+        {{ '@pry.admin.customize.table' | i18n }}
+      </button>
+      <button
+        type="button"
+        class="o-tabs__list__btn"
+        role="tab"
+        [id]="'tab-custo-btn-2'"
+        [attr.aria-selected]="tab === 2"
+        [attr.tabindex]="tab === 2 ? 0 : -1"
+        [attr.aria-controls]="'tab-custo-pnl-2'"
+        (click)="tab = 2"
+      >
+        {{ '@pry.admin.classes.rules' | i18n }}
+      </button>
+      <button
+        type="button"
+        class="o-tabs__list__btn"
+        role="tab"
+        [id]="'tab-custo-btn-3'"
+        [attr.aria-selected]="tab === 3"
+        [attr.tabindex]="tab === 3 ? 0 : -1"
+        [attr.aria-controls]="'tab-custo-pnl-3'"
+        (click)="tab = 3"
+      >
+        {{ '@pry.admin.customize.tile' | i18n }}
+      </button>
+    </div>
+
+    <div class="o-tabs__panels">
+      <div
+        class="o-tabs__panels__item"
+        [class.is-hidden]="tab !== 0"
+        [id]="'tab-custo-pnl-0'"
+        role="tabpanel"
+        [attr.aria-labelledby]="'tab-custo-btn-0'"
+        tabindex="0"
+      >
+        <pry-admin-classes-customize-tooltip
+          (backPressed)="goBack()"
+          [currentClass]="currentClass$ | async"
+        ></pry-admin-classes-customize-tooltip>
+      </div>
+      <div
+        class="o-tabs__panels__item"
+        [class.is-hidden]="tab !== 1"
+        [id]="'tab-custo-pnl-1'"
+        role="tabpanel"
+        [attr.aria-labelledby]="'tab-custo-btn-1'"
+        tabindex="0"
+      >
+        <div class="container">
+          <h2>{{ '@pry.admin.customize.tableAttrs' | i18n }}</h2>
+
+          <div
+            cdkDropList
+            #defaultList="cdkDropList"
+            [cdkDropListData]="defaultAttributes"
+            [cdkDropListConnectedTo]="[notDefaultList]"
+            class="list"
+            (cdkDropListDropped)="drop($event)"
+          >
+            <div class="item" *ngFor="let item of defaultAttributes" cdkDrag>{{ item }}</div>
+          </div>
+        </div>
+
+        <div class="container">
+          <h2>{{ '@pry.admin.customize.noTableAttrs' | i18n }}</h2>
+
+          <div
+            cdkDropList
+            #notDefaultList="cdkDropList"
+            [cdkDropListData]="otherAttributes"
+            [cdkDropListConnectedTo]="[defaultList]"
+            class="list"
+            (cdkDropListDropped)="drop($event)"
+          >
+            <div class="item" *ngFor="let item of otherAttributes" cdkDrag>{{ item }}</div>
+          </div>
+        </div>
+
+        <div class="m-btn-group -width-lg">
+          <button
+            type="button"
+            class="a-btn a-btn--secondary"
+            (click)="goBack()"
+            [innerHTML]="'@pry.admin.cancel' | i18n"
+          ></button>
+          <button class="a-btn a-btn--primary" type="submit" (click)="updateTableAttrs()">
+            {{ '@pry.admin.customize.updateTable' | i18n }}
+          </button>
+        </div>
+      </div>
+      <div
+        class="o-tabs__panels__item"
+        [class.is-hidden]="tab !== 2"
+        [id]="'tab-custo-pnl-2'"
+        role="tabpanel"
+        [attr.aria-labelledby]="'tab-custo-btn-2'"
+        tabindex="0"
+      >
+        <pry-admin-classes-customize-symbol
+          (backPressed)="goBack()"
+          [currentClass]="currentClass$ | async"
+        ></pry-admin-classes-customize-symbol>
+      </div>
+      <div
+        class="o-tabs__panels__item"
+        [class.is-hidden]="tab !== 3"
+        [id]="'tab-custo-pnl-3'"
+        role="tabpanel"
+        [attr.aria-labelledby]="'tab-custo-btn-3'"
+        tabindex="0"
+      >
+        <div class="container">
+          <h2>{{ '@pry.admin.customize.tile' | i18n }}</h2>
+
+          <div
+            cdkDropList
+            #defaultTilesList="cdkDropList"
+            [cdkDropListData]="defaultTileAttributes"
+            [cdkDropListConnectedTo]="[notDefaultTilesList]"
+            class="list"
+            (cdkDropListDropped)="drop($event)"
+          >
+            <div class="item" *ngFor="let item of defaultTileAttributes" cdkDrag>{{ item }}</div>
+          </div>
+        </div>
+
+        <div class="container">
+          <h2>{{ '@pry.admin.customize.noTileAttrs' | i18n }}</h2>
+
+          <div
+            cdkDropList
+            #notDefaultTilesList="cdkDropList"
+            [cdkDropListData]="otherTileAttributes"
+            [cdkDropListConnectedTo]="[defaultTilesList]"
+            class="list"
+            (cdkDropListDropped)="drop($event)"
+          >
+            <div class="item" *ngFor="let item of otherTileAttributes" cdkDrag>{{ item }}</div>
+          </div>
+        </div>
+
+        <div>
+          <ng-container *ngIf="!isTileConfValid()">
+            <p>{{ '@pry.admin.customize.tileHint' | i18n: { max: maxTilesAttributes } }}</p>
+          </ng-container>
+        </div>
+
+        <div class="m-btn-group -width-lg">
+          <button
+            type="button"
+            class="a-btn a-btn--secondary"
+            (click)="goBack()"
+            [innerHTML]="'@pry.admin.cancel' | i18n"
+          ></button>
+          <button
+            class="a-btn a-btn--primary"
+            type="submit"
+            (click)="updateTileAttrs()"
+            [disabled]="!isTileConfValid()"
+          >
+            {{ '@pry.admin.customize.updateTile' | i18n }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

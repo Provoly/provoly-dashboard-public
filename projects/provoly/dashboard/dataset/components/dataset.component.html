@@ -1,0 +1,39 @@
+<pry-dataset-css></pry-dataset-css>
+<div class="o-manifest-layout" [ngSwitch]="selectedMode">
+  <ng-container *ngSwitchCase="ViewMode.CATALOG">
+    <div class="o-manifest-layout__toolbox">
+      <div class="o-pry-dataset__search">
+        <label id="catalog-search-label" for="catalog-search" class="u-visually-hidden">
+          <span>{{ '@pry.toolbox.catalog.filter.name' | i18n }}</span>
+        </label>
+        <input
+          id="catalog-search"
+          type="text"
+          class="a-form-field"
+          [placeholder]="'@pry.dataset.search' | i18n"
+          [ngModel]="search$ | async"
+          (ngModelChange)="this.search$.next($event)"
+        />
+        <pry-icon iconSvg="search" [width]="17" [height]="17"></pry-icon>
+      </div>
+    </div>
+    <div class="o-manifest-layout__content">
+      <h1 class="a-h1">{{ '@pry.dataset.title' | i18n }}</h1>
+      <div class="o-pry-dataset">
+        <pry-dataset-card
+          *ngFor="let dataset of filteredDatasets$ | async"
+          [dataset]="dataset"
+          (consult)="consult($event)"
+        ></pry-dataset-card>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="ViewMode.CONSULT">
+    <ng-template [ngIf]="selectedDataset">
+      <pry-dataset-detail
+        [dataset]="selectedDataset"
+        (goToCatalog)="selectedMode = ViewMode.CATALOG"
+      ></pry-dataset-detail>
+    </ng-template>
+  </ng-container>
+</div>

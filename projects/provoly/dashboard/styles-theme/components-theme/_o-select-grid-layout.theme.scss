@@ -1,0 +1,33 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme' as *;
+
+.o-select-grid-layout {
+  &__item {
+    @extend %card-with-hover;
+
+    .a-btn {
+      border: 1px themed($theme-map, 'color', 'primary', 300) solid;
+
+      &[aria-pressed='true'] {
+        background-color: themed($theme-map, 'color', 'accent', 50);
+      }
+    }
+  }
+}
+
+/*.o-select-grid-layout{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+
+  padding: toRem(10);
+  text-align: center;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1),
+  0 4px 8px rgba(0, 0, 0, 0.1);
+
+
+  &.selected {
+    border: 2px solid black;
+  }
+}*/

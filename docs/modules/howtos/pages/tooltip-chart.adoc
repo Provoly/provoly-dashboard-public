@@ -1,0 +1,17 @@
+=== Personnaliser les tooltips du widget chart
+
+Dans les options du widget, on peut rajouter un attribut tooltip. Il a 2
+valeurs possibles :
+
+* true : Affichage par défaut dans vega
+* un json custom qui peut prendre toutes les valeurs souhaitées. Toutes
+les données disponibles sont dans l’objet ” datum”
+
+[source,json]
+----
+{
+    "tooltip": {
+      "signal": "{'Statut': datum['attributes.state.value'], 'Nombre': datum['__count']}"
+    }
+}
+----

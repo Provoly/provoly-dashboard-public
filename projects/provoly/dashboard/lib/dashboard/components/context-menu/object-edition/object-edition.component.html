@@ -1,0 +1,195 @@
+<button type="button" class="a-btn -link-like" (click)="openCreateObjectPanel($event)" *ngIf="menu">
+  {{ '@pry.context.createObject.title.' + (link && object ? 'linkedObject' : link ? 'link' : 'object') | i18n }}
+</button>
+<button
+  id="object_creator_link"
+  type="button"
+  (click)="openCreateObjectPanel($event)"
+  *ngIf="!menu"
+  class="a-btn a-btn--ghost -circle u-floating u-floating--bottom-right"
+  [title]="'@pry.context.createObject.title.object' | i18n"
+>
+  <span class="u-visually-hidden">{{ '@pry.context.createObject.title.object' | i18n }}</span>
+  <pry-icon iconSvg="add_column" [width]="24" [height]="24" aria-hidden="true"></pry-icon>
+</button>
+
+<ng-template #template>
+  <div class="o-settings__popup">
+    <div class="o-settings__popup__content">
+      <ng-container *ngIf="link">
+        <div class="m-form-label-field">
+          <label class="a-label" for="createobject_link">{{ '@pry.context.createObject.title.link' | i18n }}</label>
+          <pry-select
+            [(ngModel)]="relation.typeId"
+            [items]="relations$ | async"
+            [itemsAsOption]="true"
+            bindLabel="label"
+            bindValue="id"
+            class="a-pry-select"
+            id="createobject_link"
+          ></pry-select>
+        </div>
+        <div class="m-form-label-field">
+          <label class="a-label" for="createobject_inversion">{{
+            '@pry.context.createObject.title.inversion' | i18n
+          }}</label>
+          <pry-checkbox
+            id="createobject_inversion"
+            [ngModel]="inversion"
+            (ngModelChange)="toggleInversion()"
+          ></pry-checkbox>
+        </div>
+      </ng-container>
+
+      <div class="o-object-panel" *ngIf="object">
+        <div class="m-form-label-field">
+          <label class="a-label" for="createobject_class">{{ '@pry.context.createObject.class' | i18n }}</label>
+          <pry-select
+            [ngModel]="tmpObject.oClass"
+            (ngModelChange)="changeClass($event)"
+            [items]="classes"
+            [itemsAsOption]="true"
+            bindValue="id"
+            bindLabel="name"
+            class="a-pry-select"
+            id="createobject_class"
+          ></pry-select>
+        </div>
+
+        <ng-container *ngFor="let attribute of attributes" [class.multi-value]="attribute.multiValued">
+          <div class="m-form-label-field">
+            <label class="a-label">{{ attribute.name }}</label>
+            <ng-container *ngIf="!attribute.multiValued">
+              <ng-container [ngSwitch]="fieldType(attribute)">
+                <ng-container *ngSwitchCase="FieldType.INSTANT">
+                  <div class="a-date-input" tabindex="-1" (blur)="closeDatePicker($event)">
+                    <input
+                      type="datetime-local"
+                      class="a-form-field"
+                      [ngModel]="value(attribute)"
+                      (ngModelChange)="assignValue(attribute, $event)"
+                    />
+                    <div class="a-open-date-picker" (mousedown)="toggleDatePicker($event, attribute.id)"></div>
+                    <div class="date-picker-container" *ngIf="selectedDatePicker === attribute.id">
+                      <pry-date-picker
+                        [ngModel]="value(attribute)"
+                        (ngModelChange)="assignValue(attribute, $event)"
+                        [roundSelection]="true"
+                        [timePicker]="true"
+                      ></pry-date-picker>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngSwitchCase="FieldType.DECIMAL">
+                  <input
+                    type="number"
+                    step="any"
+                    class="a-form-field"
+                    [ngModel]="value(attribute)"
+                    (ngModelChange)="assignValue(attribute, $event)"
+                  />
+                </ng-container>
+                <ng-container *ngSwitchCase="FieldType.INTEGER">
+                  <input
+                    type="number"
+                    class="a-form-field"
+                    [ngModel]="value(attribute)"
+                    (ngModelChange)="assignValue(attribute, $event)"
+                  />
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                  <input
+                    type="text"
+                    class="a-form-field"
+                    [ngModel]="value(attribute)"
+                    (ngModelChange)="assignValue(attribute, $event)"
+                  />
+                </ng-container>
+                <ng-container *ngSwitchCase="FieldType.RAW">
+                  <pry-select
+                    [ngModel]="method"
+                    (ngModelChange)="setRawMethod(attribute, $event)"
+                    [items]="rawMethods"
+                    [itemsAsOption]="true"
+                    bindValue="id"
+                    bindLabel="name"
+                    [labelTranslate]="true"
+                    class="a-pry-select"
+                  ></pry-select>
+                  <input
+                    type="text"
+                    class="a-form-field"
+                    *ngIf="method === HTTP_ORIGIN_METHOD"
+                    [ngModel]="valueMetadata(attribute, HTTP_ORIGIN_METADATA)"
+                    (ngModelChange)="assignMetadata(attribute, $event, HTTP_ORIGIN_METADATA)"
+                  />
+                  <ng-container *ngIf="method === UPLOAD_METHOD">
+                    <pry-upload
+                      mode="doc"
+                      accept="image/*,video/*"
+                      (uploaded)="assignValue(attribute, $event)"
+                    ></pry-upload>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </div>
+
+          <div class="multi-value-container" *ngIf="attribute.multiValued">
+            <button
+              class="button-add a-btn a-btn--secondary a-btn--icon-text -size-sm"
+              (click)="addMultiValued(attribute)"
+            >
+              <pry-icon iconSvg="add"></pry-icon>
+              <span>{{ '@pry.context.createObject.addMultiField' | i18n: { name: attribute.name } }}</span>
+            </button>
+            <div class="multi-value" *ngFor="let multiValue of multiValues(attribute); let i = index">
+              <ng-container [ngSwitch]="fieldType(attribute)">
+                <ng-container *ngSwitchCase="FieldType.INSTANT">
+                  <input
+                    type="datetime-local"
+                    [ngModel]="valueMulti(attribute, i)"
+                    (focusout)="assignValueMulti(attribute, $event, i)"
+                  />
+                </ng-container>
+                <ng-container *ngSwitchCase="FieldType.DECIMAL">
+                  <input
+                    type="number"
+                    step="any"
+                    [ngModel]="valueMulti(attribute, i)"
+                    (ngModelChange)="assignValueMulti(attribute, $event, i)"
+                  />
+                </ng-container>
+                <ng-container *ngSwitchCase="FieldType.INTEGER">
+                  <input
+                    type="number"
+                    [ngModel]="valueMulti(attribute, i)"
+                    (ngModelChange)="assignValueMulti(attribute, $event, i)"
+                  />
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                  <input
+                    type="text"
+                    [ngModel]="valueMulti(attribute, i)"
+                    (ngModelChange)="assignValueMulti(attribute, $event, i)"
+                  />
+                </ng-container>
+                <button (click)="removeMultiValued(attribute, i)">
+                  <pry-icon iconSvg="delete"></pry-icon>
+                </button>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="m-btn-group">
+      <button type="button" class="a-btn a-btn--secondary" (click)="hide()">
+        {{ '@pry.context.cancel' | i18n }}
+      </button>
+      <button type="button" class="a-btn a-btn--primary" (click)="createObjects()" [disabled]="!valid">
+        {{ '@pry.context.create' | i18n }}
+      </button>
+    </div>
+  </div>
+</ng-template>

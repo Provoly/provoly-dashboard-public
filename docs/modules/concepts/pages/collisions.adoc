@@ -1,0 +1,22 @@
+= Résolutions des collisions
+
+== Général
+
+Lorsque la librairie résoud l'emplacement supposé des widgets, un algorithme est appliqué:
+
+* Tout d'abord, afin d'améliorer la résilience, les widgets sont ramenés dans l'espace logique visible (coordonnées positives et pas trop grandes par rapport à la taille de la grille).
+
+* Celui-ci prends ensuite par ordre de priorité : le widget en cours de modification, puis les autres widgets classés de haut en bas (et de droite à gauche parmi ceux à la même hauteur).
+
+* Les widgets sont ensuite décalés vers le bas afin de ne plus se superposer aux autres.
+
+* Le nombre de lignes global est ensuite recalculé en fonction de ce qui est nécessaire, mais sans diminution pour éviter une boucle infinie.
+
+== Mode gravité inversée
+
+Après cet algorithme de placement, si l'option de gravité est activée (via `solvingCollisionOptions.invertedGravity = true;`), alors tous les widgets pouvant être remontés sans déclencher de superposition le seront. Cela permet un fonctionnement plus proche de celui de Kibana, par exemple.
+
+Le nombre de lignes global est ensuite recalculé en fonction de ce qui est nécessaire.
+
+Il est possible de définir un nombre de ligne minimal via `solvingCollisionOptions.minRows` (exemple pour 12 lignes minimum, `solvingCollisionOptions.minRows = 12;`, par défaut le minimum sera de 0)
+

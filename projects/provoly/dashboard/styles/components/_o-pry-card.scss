@@ -1,0 +1,97 @@
+@use '../abstracts' as *;
+
+/* Organism - component pry card */
+
+// pry-card-wrapper === o-pry-card
+
+.o-pry-card {
+  display: block;
+  overflow-x: hidden;
+
+  .o-pry-card-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-bottom: toRem(10);
+    padding: 3px 0;
+
+    &__marker {
+      position: absolute;
+      width: toRem(6);
+      height: toRem(4);
+      border-radius: toRem(50);
+    }
+
+    &__title-wrapper {
+      flex: 1;
+      padding-left: toRem(8);
+
+      .o-pry-card-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: toRem(2);
+
+        .a-btn.a-btn--secondary {
+          padding-left: 5px;
+          padding-right: 5px;
+          font-size: toRem(12);
+          border-width: 1px;
+          border-radius: toRem(15);
+        }
+
+        &__text {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          width: 151px;
+
+          .a-p {
+            flex: 1;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+
+        &__pin {
+          margin-right: toRem(4);
+        }
+      }
+    }
+
+    &__icon-wrapper {
+      .o-pry-card-icon {
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .a-btn.o-pry-card-menu-trigger {
+      max-width: 40px;
+      margin-left: toRem(2);
+      margin-right: toRem(2);
+    }
+  }
+}
+
+.pry-card-selected {
+  .pry-card-header__marker {
+    opacity: 1;
+  }
+}
+
+%beforeMoreBtn {
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: toRem(-7);
+    right: toRem(-7);
+    width: toRem(36);
+    height: toRem(36);
+    border-radius: toRem(50);
+  }
+}

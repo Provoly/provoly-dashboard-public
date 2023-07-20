@@ -1,0 +1,83 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Organism - Search full text */
+.o-search-fulltext {
+  &__classes {
+    color: themed($theme-map, 'color', 'primary', 700);
+    background-color: themed($theme-map, 'color', 'primary', 'contrast', 700);
+
+    &__content {
+      color: themed($theme-map, 'color', 'primary', 700);
+      background-color: themed($theme-map, 'color', 'primary', 300);
+    }
+
+    &__inline__arrow {
+      border-left-color: themed($theme-map, 'color', 'primary', 400);
+    }
+  }
+}
+
+.o-search-fulltext,
+.m-choose-widget {
+  &__classes-overlay {
+    &__item {
+      &:hover {
+        color: themed($theme-map, 'color', 'primary', 700);
+        background-color: themed($theme-map, 'color', 'primary', 300);
+      }
+
+      &__selected {
+        color: themed($theme-map, 'color', 'primary', 'contrast', 200);
+        background-color: themed($theme-map, 'color', 'primary', 200);
+      }
+    }
+  }
+
+  &__widget_overlay {
+    &__content {
+      background-color: #ffffff;
+      box-shadow: 1px 0 5px -2px rgba(0, 0, 0, 0.2);
+
+      &__item {
+        color: themed($theme-map, 'color', 'primary', 700);
+        background-color: themed($theme-map, 'color', 'primary', 50);
+
+        &:hover {
+          border-color: themed($theme-map, 'color', 'primary', 700);
+        }
+
+        .pry-icon {
+          background-color: themed($theme-map, 'color', 'primary', 400);
+        }
+
+        &__selected {
+          border-color: themed($theme-map, 'color', 'primary', 700);
+          background-color: themed($theme-map, 'color', 'primary', 50);
+          font-weight: 700;
+
+          .pry-icon {
+            background-color: themed($theme-map, 'color', 'primary', 700);
+          }
+        }
+      }
+    }
+  }
+}
+
+.o-search-fulltext__classes__arrow {
+  color: white;
+  background-color: themed($theme-map, 'color', 'primary', 300);
+}
+
+.o-search-fulltext__input,
+.m-choose-widget__input {
+  border-left-color: themed($theme-map, 'color', 'primary', 400);
+
+  &__clear {
+    &__wrapper {
+      color: themed($theme-map, 'color', 'primary', 300);
+      background-color: themed($theme-map, 'color', 'primary', 100);
+    }
+  }
+}

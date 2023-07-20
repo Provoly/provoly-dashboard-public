@@ -1,0 +1,138 @@
+// Theme typography variables (elements font-family, font-size, line-height, font-weight, font-style)
+
+// font-family (optionnal) - default set in font map ($default-font-family)
+// font-variation-settings (optionnal)
+// font-size (required) (px are automatically converted to rem) (use 'em' unit to force 'em')
+// line-height (required) (px are automatically converted to rem) (use 'em' unit to force 'em')
+// font-weight (recommanded) - default set in font map ($default-font-weight)
+// letter-spacing (optionnal) == 'normal' when ommited - (use 'em' unit to force 'em')
+// font-style (optionnal) - default 'normal'
+
+$typography-default-font-family: Ubuntu;
+
+$theme-typography: (
+  'body': (
+    'font-family': '',
+    'font-variation': '',
+    'font-size': 16px,
+    'line-height': 20px,
+    'letter-spacing': '',
+    'font-weight': 400,
+    'font-style': ''
+  ),
+  'title-1': (
+    'font-family': '',
+    'font-variation': '',
+    'font-size': 24px,
+    'line-height': 30px,
+    'letter-spacing': '',
+    'font-weight': 700,
+    'font-style': ''
+  ),
+  'title-2': (
+    'font-family': '',
+    'font-variation': '',
+    'font-size': 20px,
+    'line-height': 26px,
+    'letter-spacing': '',
+    'font-weight': 700,
+    'font-style': ''
+  ),
+  'title-3': (
+    'font-family': '',
+    'font-variation': '',
+    'font-size': 18px,
+    'line-height': 24px,
+    'letter-spacing': '',
+    'font-weight': 700,
+    'font-style': ''
+  ),
+  'title-4': (
+    'font-family': '',
+    'font-variation': '',
+    'font-size': 17px,
+    'line-height': 21px,
+    'letter-spacing': '',
+    'font-weight': 700,
+    'font-style': ''
+  ),
+  'button': (
+    'font-family': '',
+    'font-variation': '',
+    'font-size': 16px,
+    'line-height': 18px,
+    'letter-spacing': '',
+    'font-weight': 400,
+    'font-style': ''
+  ),
+  'form-field': (
+    'font-family': '',
+    'font-variation': '',
+    'font-size': 14px,
+    'line-height': 19px,
+    'letter-spacing': '',
+    'font-weight': 400,
+    'font-style': ''
+  ),
+  'label': (
+    'font-family': '',
+    'font-variation': '',
+    'font-size': 14px,
+    'line-height': 18px,
+    'letter-spacing': '',
+    'font-weight': 400,
+    'font-style': ''
+  ),
+  'link': (
+    'font-family': '',
+    'font-variation': '',
+    'font-size': 14px,
+    'line-height': 16px,
+    'letter-spacing': '',
+    'font-weight': 400,
+    'font-style': ''
+  ),
+  'panel': (
+    'font-family': '',
+    'font-variation': '',
+    'font-size': 13px,
+    'line-height': 17px,
+    'letter-spacing': '',
+    'font-weight': 400,
+    'font-style': ''
+  ),
+  'contextual-menu': (
+    'font-family': '',
+    'font-variation': '',
+    'font-size': 14px,
+    'line-height': 17px,
+    'letter-spacing': '',
+    'font-weight': 400,
+    'font-style': ''
+  ),
+  'notification': (
+    'font-family': '',
+    'font-variation': '',
+    'font-size': 14px,
+    'line-height': 18px,
+    'letter-spacing': '',
+    'font-weight': 400,
+    'font-style': ''
+  ),
+  'pastille': (
+    'font-family': '',
+    'font-variation': '',
+    'font-size': 13px,
+    'line-height': 13px,
+    'letter-spacing': -1px,
+    'font-weight': 700,
+    'font-style': ''
+  )
+);
+
+///// DO NOT EDIT FROM HERE /////
+$theme-map-typography: (
+  'typography': (
+    $theme-typography
+  )
+);

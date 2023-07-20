@@ -1,0 +1,84 @@
+@use '../abstracts' as *;
+
+/* Organism - component pry-composed condition */
+
+.o-pry-composed-condition-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 0.25rem 0;
+  padding: toRem(20) toRem(10);
+  border-radius: toRem(10);
+  background-image: unset;
+
+  > .o-pry-composed-condition__add-item {
+    padding-left: toRem(12);
+  }
+}
+
+.o-pry-composed-condition {
+  display: flex;
+  margin-bottom: toRem(7);
+
+  &__type {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+
+    &.-vertical-bar {
+      &:before {
+        content: '';
+        position: absolute;
+        left: calc(50% - 1px);
+        top: 0;
+        bottom: 30px;
+        display: block;
+        width: 2px;
+      }
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: auto;
+        bottom: -6px;
+        left: calc(50% - 1px);
+        display: block;
+        width: 1px;
+        height: 30px;
+      }
+    }
+
+    &__content {
+      display: flex;
+      flex: 1;
+
+      .a-toggle {
+        position: relative;
+        z-index: 1;
+        gap: 0;
+        margin: 0.5rem 0;
+      }
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+    padding: 0 0 toRem(20) 0;
+  }
+
+  .o-pry-metadata-condition,
+  .o-pry-attribute-condition {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: toRem(10);
+
+    .m-form-label-field {
+      margin-bottom: 0;
+    }
+  }
+}

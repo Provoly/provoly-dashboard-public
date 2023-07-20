@@ -1,0 +1,29 @@
+@use '../../styles/abstracts/index' as *;
+
+/* Organism - edit named query */
+
+.o-edit-named-query-wrapper {
+  height: 100%;
+}
+
+.o-edit-named-query {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+
+  &__content {
+    overflow: auto;
+  }
+
+  &__buttons {
+    display: flex;
+    gap: toRem(20);
+
+    pry-choose-widget,
+    .m-choose-widget {
+      height: auto;
+    }
+  }
+}

@@ -1,0 +1,14 @@
+<div class="m-form-label-field">
+  <label class="a-label" for="dataset">{{ '@pry.pipeline.dataset.input' | i18n }}</label>
+  <pry-select
+    [itemsAsOption]="true"
+    [items]="dataSources$ | async"
+    [ngModel]="node.properties['datasetId']"
+    (ngModelChange)="change($event)"
+    [disabled]="disabled"
+    bindLabel="name"
+    bindValue="id"
+    class="a-pry-select"
+    id="dataset"
+  ></pry-select>
+</div>

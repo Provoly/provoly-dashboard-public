@@ -1,0 +1,45 @@
+=== Rôles et accès
+
+Il est possible de conditionner les boutons etc de l’interface à des
+rôles. De base, Pry utilise une version de ces rôles qui permet
+d’accéder à tout, mais il est parfois nécessaire de le surcharger pour
+remplir les fonctionnalités souhaitées.
+
+Pour cela on va créer une classe héritant de `+PryBaseAccess+`:
+
+[source,js]
+----
+export class MyAccessService extends PryBaseAccess {
+    constructor(private store: Store<AuthState>, private router: Router) {
+        super();
+    }
+
+    override hasRole(
+        authRoles?: string[],
+        module?: string,
+        page?: string,
+        action?: string
+    ): Observable<boolean | UrlTree> { ... }
+----
+
+Vous devrez greffer votre authentification à l’intérieur pour accéder à
+votre système de rôles si c’est par cela que vous souhaitez conditionner
+les accès.
+
+De la même manière, pour définir les pages accessibles, on peut définir
+un guard en héritant de `+PryBaseAccessGuard+`:
+
+[source,js]
+----
+export class MyAccessGuard extends PryBaseAccessGuard {
+    constructor(
+        @Optional() @Inject(PRY_ACCESS_TOKEN) private access: PryBaseAccess,
+        private snackbar: PrySnackbarService,
+        private router: Router
+    ) {
+        super();
+    }
+
+    override canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) { ... }
+}
+----

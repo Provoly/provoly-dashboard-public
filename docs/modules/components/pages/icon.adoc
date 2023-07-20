@@ -1,0 +1,14 @@
+=== Icon (pry-icon)
+
+Le composant `+Icon+` permet d’afficher facilement les icones présentes
+dans l’application. Il y a 2 formats d’icones, les icones au format
+"`svg`" présents dans le dossier "`assets/svgs`" et les icones aux
+autres formats présents dans le dossier "`assets/images`"
+
+Les paramètres du composant sont les suivants :
+
+- iconImage: Nom de l’icone dans les autres formats (ex: home.png)
+- iconSvg: Nom de l’icone au format "`.svg`" (ex: home), ne sera pas prit en compte si iconImage a été renseigné
+- width:
+- height:
+- classes: Les classes css à appliquer

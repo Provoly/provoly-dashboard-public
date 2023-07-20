@@ -1,0 +1,105 @@
+<div class="o-base-container">
+  <form class="o-form" [formGroup]="envForm" (ngSubmit)="addEnvironment()">
+    <div class="m-form-label-field -width-sm">
+      <label for="environment_name" id="name-label" class="a-label">
+        {{ '@pry.admin.environment.name' | i18n }} *
+        <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+      </label>
+      <input
+        id="environment_name"
+        type="text"
+        class="a-form-field"
+        formControlName="name"
+        [required]="!_currentEnv"
+        [attr.aria-labelledby]="isSubmitted && envForm.get('name')?.invalid ? 'name-label name-error' : 'name-label'"
+        [attr.aria-invalid]="isSubmitted && envForm.get('name')?.invalid"
+      />
+      <label
+        *ngIf="isSubmitted && envForm.get('name')?.invalid"
+        id="name-error"
+        for="environment_name"
+        class="a-label a-label--help -error"
+      >
+        <span *ngIf="envForm.get('name')?.hasError('same-name')">{{ '@pry.admin.exists' | i18n }}</span>
+        <span *ngIf="envForm.get('name')?.hasError('required')">{{ '@pry.admin.required' | i18n }}</span>
+        <span *ngIf="envForm.get('name')?.hasError('pattern')">{{ '@pry.admin.environment.formatName' | i18n }}</span>
+      </label>
+    </div>
+
+    <div class="m-form-label-field -width-sm">
+      <label class="a-label" for="environment-type">{{ '@pry.admin.environment.type' | i18n }}</label>
+      <pry-select
+        id="environment-type"
+        class="a-pry-select"
+        formControlName="type"
+        [labelTranslate]="true"
+        [items]="envOptions"
+        [itemsAsOption]="true"
+        bindValue="varType"
+        bindLabel="translation"
+        (ngModelChange)="onTypeChange($event)"
+        [readonly]="!!_currentEnv"
+        [isForm]="true"
+      ></pry-select>
+    </div>
+
+    <div class="m-form-label-field -width-sm">
+      <ng-container *ngIf="envForm.value.type === 'DATE'; else inputText">
+        <label class="a-label" for="value_date">
+          {{ '@pry.admin.environment.value' | i18n }} *
+          <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+        </label>
+        <input type="date" id="value_date" class="a-form-field" formControlName="value" required />
+        <label
+          *ngIf="isSubmitted && envForm.get('value')?.invalid && envForm.get('value')?.hasError('required')"
+          id="value_date_error"
+          for="value_date"
+          class="a-label a-label--help -error"
+        >
+          {{ '@pry.admin.required' | i18n }}
+        </label>
+      </ng-container>
+
+      <ng-template #inputText>
+        <label id="value-label" class="a-label">{{ '@pry.admin.environment.value' | i18n }}</label>
+        <input
+          id="environment_value"
+          type="text"
+          class="a-form-field"
+          formControlName="value"
+          [attr.aria-labelledby]="
+            isSubmitted && envForm.get('value')?.invalid ? 'value-label value-error' : 'value-label'
+          "
+          [attr.aria-invalid]="isSubmitted && envForm.get('value')?.invalid"
+          required
+        />
+        <label
+          *ngIf="isSubmitted && envForm.get('value')?.invalid"
+          id="value-error"
+          for="environment_value"
+          class="a-label a-label--help -error"
+        >
+          <span *ngIf="envForm.get('value')?.hasError('required')">{{ '@pry.admin.required' | i18n }}</span>
+          <ng-container *ngIf="envForm.get('value')?.hasError('pattern')">
+            <span *ngIf="envForm.value.type === 'DOUBLE'">{{ '@pry.admin.environment.formatDouble' | i18n }}</span>
+            <span *ngIf="envForm.value.type === 'INTEGER'">{{ '@pry.admin.environment.formatInt' | i18n }}</span>
+          </ng-container>
+        </label>
+      </ng-template>
+    </div>
+
+    <div class="m-btn-group -width-sm">
+      <button
+        type="button"
+        class="a-btn a-btn--secondary"
+        (click)="goBack()"
+        [innerHTML]="'@pry.admin.cancel' | i18n"
+      ></button>
+      <button
+        class="predicate-create a-btn a-btn--primary"
+        type="submit"
+        [innerHTML]="(_currentEnv ? '@pry.admin.edit' : '@pry.admin.create') | i18n"
+      ></button>
+    </div>
+  </form>
+</div>

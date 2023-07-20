@@ -1,0 +1,7 @@
+=== Changer le dataset par défaut (pour que les widget nouvellement draggés du menu pointent dessus)
+
+[source,js]
+----
+/* Set current result set to default on this one when dragging a new component into the menu */
+this.store.dispatch(MultiWindowActions.setCurrentResultSet({ name: 'search' }));
+----

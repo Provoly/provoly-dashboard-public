@@ -1,0 +1,55 @@
+@use '../abstracts' as *;
+
+/* Molecule - metadata tag */
+.m-metadata-tag {
+  $this: &;
+
+  .a-btn.a-btn--icon-text {
+    &:after {
+      @include drawChevron($border-width: 1.5px);
+      top: toRem(-2);
+      margin-right: toRem(5);
+    }
+
+    display: inline-flex;
+    margin: toRem(5) 0 toRem(3) 0;
+    padding: toRem(12) 0;
+    font-weight: 400;
+
+    &[aria-expanded='true'] {
+      &:after {
+        @include drawChevron($border-width: 1.5px, $direction: up);
+        top: toRem(2);
+      }
+
+      & ~ #{$this}__list {
+        display: flex;
+      }
+    }
+  }
+
+  &__list {
+    display: none;
+    flex-direction: column;
+    gap: toRem(5);
+    margin-bottom: toRem(10);
+    padding-left: toRem(28);
+
+    &__item {
+      margin-bottom: toRem(5);
+
+      p {
+        margin-bottom: 0;
+      }
+
+      #{$this}__chip {
+        font-weight: 500;
+
+        &__label {
+          margin-right: toRem(10);
+          font-weight: 400;
+        }
+      }
+    }
+  }
+}

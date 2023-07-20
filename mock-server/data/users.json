@@ -1,0 +1,99 @@
+[
+  {
+    "id": "idBuffy",
+    "claim": "clame",
+    "name": "Buffy",
+    "familyName": "Summers",
+    "email": "buffy.summers@sunnydale.fr",
+    "roles": [
+      "ref-writer",
+      "pry-admin"
+    ],
+    "metadata": [
+      {
+        "metadataUserDef": {
+          "id": "9d9aba2c-fc3a-44d7-a508-287ad2d8cbb0",
+          "name": "_class",
+          "type": "UUID"
+        },
+        "value": "fdfdf"
+      },
+      {
+        "metadataUserDef": {
+          "id": "8ca1f298-d412-421c-8f46-6f425bfe2cda",
+          "name": "zzz",
+          "type": "DOUBLE",
+          "description": null,
+          "allowedValues": []
+        },
+        "value": "3.1"
+      },
+      {
+        "metadataUserDef": {
+          "id": "b8c01013-fba1-4e96-874a-9ce5e1d0f5ab",
+          "name": "NIVEAU_HABILITATION",
+          "type": "LIST",
+          "description": "Niveau d'habilitation de l'utilisateur pour l'accès aux données confidentielles",
+          "allowedValues": [
+            "TSD",
+            "SD",
+            "DS",
+            "OUVERT"
+          ]
+        },
+        "value": "SD"
+      }
+    ]
+  },
+  {
+    "id": "idWilow",
+    "claim": "clame",
+    "name": "Wilow",
+    "familyName": "Rosenberg",
+    "email": "wilow.rosenberg@sunnydale.fr",
+    "roles": [
+      "ref-reader"
+    ],
+    "metadata": [
+      {
+        "metadataUserDef": {
+          "id": "9d9aba2c-fc3a-44d7-a508-287ad2d8cbb0",
+          "name": "_class",
+          "type": "UUID"
+        },
+        "value": "\"z'(\"'z"
+      },
+      {
+        "metadataUserDef": {
+          "id": "8ca1f298-d412-421c-8f46-6f425bfe2cda",
+          "name": "zzz",
+          "type": "DOUBLE",
+          "description": null,
+          "allowedValues": []
+        },
+        "value": "12"
+      }
+    ]
+  },
+  {
+    "id": "idCordelia",
+    "claim": "clame",
+    "name": "Cordelia",
+    "familyName": "Chase",
+    "email": "cordelia.chase@sunnydale.fr",
+    "roles": [
+      "pry-admin"
+    ],
+    "metadata": [
+      {
+        "metadataUserDef": {
+          "id": "9d9aba2c-fc3a-44d7-a508-287ad2d8cbb0",
+          "name": "_class",
+          "type": "UUID",
+          "allowedValues": []
+        },
+        "value": "test"
+      }
+    ]
+  }
+]

@@ -1,0 +1,233 @@
+<ng-container *ngIf="editAbacRule$ | async as rule">
+  <form class="o-form" #abacRuleForm="ngForm">
+    <div class="row">
+      <div class="col">
+        <div class="m-form-label-field">
+          <label class="a-label" id="name-label" for="inputName">
+            {{ '@pry.admin.abac-rules.form.name' | i18n }} *
+            <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+          </label>
+          <input
+            id="inputName"
+            type="text"
+            [ngModel]="rule.name"
+            (ngModelChange)="onChangeAbacRuleProperty('name', $event)"
+            class="a-form-field"
+            name="name"
+            #name="ngModel"
+            maxlength="50"
+            required
+            [readonly]="readonly"
+            [attr.aria-labelledby]="isSubmitted && name?.invalid ? 'name-label name-error' : 'name-label'"
+            [attr.aria-invalid]="isSubmitted && name?.invalid"
+          />
+          <label
+            class="a-label a-label--help -error"
+            id="name-error"
+            for="inputName"
+            *ngIf="isSubmitted && name.invalid"
+            >{{ '@pry.admin.required' | i18n }}</label
+          >
+        </div>
+
+        <fieldset class="m-form-radio-group-wrapper" [disabled]="readonly">
+          <legend class="a-label">
+            {{ '@pry.admin.abac-rules.form.status' | i18n }} *
+            <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+          </legend>
+          <div class="m-form-radio-group">
+            <div class="m-form-radio-group__item">
+              <input
+                class="a-form-field"
+                type="radio"
+                id="newRuleTrue"
+                name="active"
+                [ngModel]="rule.active"
+                (ngModelChange)="!readonly && onChangeAbacRuleProperty('active', $event)"
+                [value]="true"
+              />
+              <label for="newRuleTrue" class="a-label">
+                {{ '@pry.admin.abac-rules.form.statusActive' | i18n }}
+              </label>
+            </div>
+            <div class="m-form-radio-group__item">
+              <input
+                class="a-form-field"
+                type="radio"
+                id="newRuleFalse"
+                name="active"
+                [ngModel]="rule.active"
+                (ngModelChange)="!readonly && onChangeAbacRuleProperty('active', $event)"
+                [value]="false"
+              />
+              <label for="newRuleFalse" class="a-label">
+                {{ '@pry.admin.abac-rules.form.statusInactive' | i18n }}
+              </label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="col">
+        <div class="m-form-label-field">
+          <label class="a-label" for="abac-rules-description">{{
+            '@pry.admin.abac-rules.form.description' | i18n
+          }}</label>
+          <textarea
+            name="description"
+            id="abac-rules-description"
+            [ngModel]="rule.description"
+            (ngModelChange)="onChangeAbacRuleProperty('description', $event)"
+            class="a-form-field"
+            maxlength="90"
+            [readonly]="readonly"
+          ></textarea>
+        </div>
+
+        <div class="m-form-label-field">
+          <label id="predicate-label" for="predicate" class="a-label">
+            {{ '@pry.admin.abac-rules.form.predicate' | i18n }} *
+            <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+          </label>
+          <pry-select
+            id="predicate"
+            class="a-pry-select"
+            [attr.aria-labelledby]="
+              isSubmitted && abacRuleForm.form.get('predicate')?.invalid
+                ? 'predicate-label predicate-error'
+                : 'predicate-label'
+            "
+            [readonly]="readonly"
+            [items]="predicates$ | async"
+            bindLabel="name"
+            bindValue="id"
+            [itemsAsOption]="true"
+            [templateOption]="templateOption"
+            name="predicate"
+            [ngModel]="rule.predicate"
+            (ngModelChange)="onChangeAbacRuleProperty('predicate', $event)"
+            [isForm]="!readonly"
+            [attr.aria-invalid]="isSubmitted && abacRuleForm.form.get('predicate')?.invalid"
+            required
+          ></pry-select>
+
+          <ng-template #templateOption let-item="item">
+            <ng-container *ngIf="toPredicate(item); let item">
+              <div class="u-display-flex -column">
+                <span>#{{ item.id }}</span>
+                <span>{{ item.name }}</span>
+                <span>{{ item.value }}</span>
+              </div>
+            </ng-container>
+          </ng-template>
+          <label
+            class="a-label a-label--help -error"
+            id="predicate-error"
+            for="predicate"
+            *ngIf="isSubmitted && abacRuleForm.form.get('predicate')?.invalid"
+            >{{ '@pry.admin.required' | i18n }}</label
+          >
+        </div>
+
+        <fieldset class="m-form-radio-group-wrapper" [disabled]="readonly">
+          <legend class="a-label">
+            <label>{{ '@pry.admin.abac-rules.form.type' | i18n }}</label> *
+            <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+          </legend>
+
+          <div class="m-form-radio-group">
+            <ng-container *ngIf="typeSelected$ | async; else typeNotSelected">
+              <div class="m-form-radio-group__item">
+                <input
+                  class="a-form-field"
+                  type="radio"
+                  disabled
+                  id="metadataId"
+                  name="type"
+                  [ngModel]="rule.type"
+                  value="METADATA"
+                />
+                <label class="a-label" for="metadataId">
+                  {{ '@pry.admin.abac-rules.form.typeMetadata' | i18n }}
+                </label>
+              </div>
+              <div class="m-form-radio-group__item">
+                <input
+                  class="a-form-field"
+                  type="radio"
+                  disabled
+                  id="attributeId"
+                  name="type"
+                  [ngModel]="rule.type"
+                  value="ATTRIBUTE"
+                />
+                <label class="a-label" for="attributeId">
+                  {{ '@pry.admin.abac-rules.form.typeAttribute' | i18n }}
+                </label>
+              </div>
+              <span *ngIf="!readonly" style="font-size: 12px; font-style: italic">{{
+                '@pry.admin.abac-rules.form.typeSelected' | i18n
+              }}</span>
+            </ng-container>
+
+            <ng-template #typeNotSelected>
+              <div class="m-form-radio-group__item">
+                <input
+                  class="a-form-field"
+                  type="radio"
+                  id="metadataId"
+                  name="type"
+                  [ngModel]="rule.type"
+                  (ngModelChange)="onChangeAbacRuleProperty('type', METADATA)"
+                  value="METADATA"
+                  [disabled]="readonly"
+                />
+                <label class="a-label" for="metadataId">
+                  {{ '@pry.admin.abac-rules.form.typeMetadata' | i18n }}
+                </label>
+              </div>
+              <div class="m-form-radio-group__item">
+                <input
+                  class="a-form-field"
+                  type="radio"
+                  id="attributeId"
+                  name="type"
+                  [ngModel]="rule.type"
+                  (ngModelChange)="onChangeAbacRuleProperty('type', ATTRIBUTE)"
+                  value="ATTRIBUTE"
+                  [disabled]="readonly"
+                />
+                <label class="a-label" for="attributeId">
+                  {{ '@pry.admin.abac-rules.form.typeAttribute' | i18n }}
+                </label>
+              </div>
+            </ng-template>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+
+    <ng-container *ngIf="editAbacRuleConditionsMasterId$ | async as masterId">
+      <div class="row">
+        <div class="col">
+          <pry-composed-condition
+            class="o-component-pry-composed-condition"
+            style="margin: 1rem"
+            [rootElement]="true"
+            [id]="masterId"
+            [readonly]="readonly"
+          ></pry-composed-condition>
+        </div>
+      </div>
+    </ng-container>
+
+    <div *ngIf="!readonly" class="m-btn-group -align-center -width-sm">
+      <button type="button" class="a-btn a-btn--secondary" (click)="goBack()">
+        {{ '@pry.admin.cancel' | i18n }}
+      </button>
+      <button type="button" class="a-btn a-btn--primary" (click)="onCreateAbacRule(abacRuleForm)">
+        {{ '@pry.admin.' + (edit ? 'edit' : 'create') | i18n }}
+      </button>
+    </div>
+  </form>
+</ng-container>

@@ -1,0 +1,16 @@
+=== Select image (pry-select-image)
+
+Le composant `+Select image+` permet de selectionner une image dans la
+banque d’image de l’application ou d’en ajouter une nouvelle grâce au
+composant <<upload, Upload>>
+
+Les paramètres d’entrée du composant sont les suivants :
+
+- iconUrl: Nom de l’image à afficher par défaut
+- size (défaut=50): Taille des icones
+- mode (défaut='`icon`', disponibles='`icon | illustration`'): Permet de choisir le catalogue à afficher
+
+Le paramètre de sortie du composant sont les suivants :
+
+- toggled: Evenement déclenché lors de l’affichage ou la disparition de la modal de sélection d’image
+- changed: Evenement déclenché suite au changement de sélection d’image

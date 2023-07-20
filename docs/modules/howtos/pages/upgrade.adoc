@@ -1,0 +1,11 @@
+=== Mise à jour vers Angular 15
+
+La librairie Pry passe en Angular 15.
+Pour continuer à l'utiliser il faut aussi faire la mise à jour sur chaque client.
+
+La commande de mise à jour est la suivante:
+```
+ng update @angular/cli @angular/core
+```
+
+Des erreurs de compatibilité avec les autres paquets de votre client ou avec la librairie peuvent apparaitre. Pour les corriger, il faudra mettre à jour manuellement les paquets concernés (ex: ngrx ou eslint à passer en v15)

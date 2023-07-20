@@ -1,0 +1,23 @@
+import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { BaseFilterComponent } from '@provoly/dashboard';
+import { debounceTime, Subject } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
+
+@Component({
+  selector: 'pry-number-filter',
+  templateUrl: './number-filter.component.html'
+})
+export class NumberFilterComponent extends BaseFilterComponent {
+  value$ = new Subject<string>();
+
+  constructor(store: Store) {
+    super(store);
+    this.type = 'number';
+    this.value$.pipe(distinctUntilChanged(), debounceTime(500)).subscribe((value) => this.setFilter(value));
+  }
+
+  setFilter(value: string) {
+    super.updateFilter(value);
+  }
+}

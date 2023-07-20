@@ -1,0 +1,65 @@
+@use '../../styles/abstracts/index' as *;
+
+/* Organism - multi class condition */
+.o-multi-class-condition {
+  display: flex;
+  gap: toRem(10);
+  justify-content: space-between;
+  margin-top: toRem(5);
+  padding-left: toRem(4);
+  border-left-width: toRem(4);
+  border-left-style: solid;
+  border-radius: toRem(5);
+  overflow: hidden;
+
+  &:hover {
+    .o-multi-class-condition__delete-content {
+      opacity: 1;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.5rem;
+    width: toRem(205);
+    padding: toRem(8) 0 toRem(8) toRem(4);
+
+    &__action {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: toRem(5);
+      cursor: pointer;
+
+      &__button {
+        flex: 1;
+        margin-right: 0;
+        padding-left: toRem(7);
+        padding-right: toRem(7);
+      }
+    }
+
+    .m-form-label-field {
+      margin-bottom: toRem(5);
+
+      .a-form-field + .a-form-field {
+        margin-top: toRem(10);
+      }
+    }
+  }
+
+  &__delete-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    opacity: 0;
+
+    .a-btn:disabled {
+      pointer-events: auto;
+      cursor: not-allowed;
+    }
+  }
+}

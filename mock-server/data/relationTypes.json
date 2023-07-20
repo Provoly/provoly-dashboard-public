@@ -1,0 +1,34 @@
+[
+  {
+    "id": "2f021992-5fb0-42d3-9646-0affccb98105",
+    "name": "est accidentée",
+    "nbRelation": 2,
+    "nbLink": 300,
+    "deletable": false,
+    "modificationDate": "2022-05-06T15:07:39.689962Z"
+  },
+  {
+    "id": "08178490-65fa-42f8-85be-8a41443a7d3e",
+    "name": "est impliqué",
+    "nbRelation": 0,
+    "nbLink": 0,
+    "deletable": true,
+    "modificationDate": "2022-05-06T09:07:39.689962Z"
+  },
+  {
+    "id": "d5fc353e-90b8-498e-8ee8-ee3162a1aff2",
+    "name": "src->dest ne veut rien dire",
+    "nbRelation": 1,
+    "nbLink": 35,
+    "deletable": false,
+    "modificationDate": "2022-05-06T09:07:39.689962Z"
+  },
+  {
+    "id": "a3d82222-f57d-4312-bab0-bec1b1024edb",
+    "name": "relation 3"
+  },
+  {
+    "id": "9f0fb1d1-46e2-4cf5-987e-88ed637c0120",
+    "name": "a laissé sa chance"
+  }
+]

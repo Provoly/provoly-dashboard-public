@@ -1,0 +1,9 @@
+@use '../abstracts' as *;
+
+/* Organism - component pry edit */
+
+.o-pry-edit {
+  .m-form-label-field__edit-inline__txtvalue {
+    font-size: toRem(16);
+  }
+}

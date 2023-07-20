@@ -1,0 +1,42 @@
+==== Installation
+
+Les widgets s’instancient de manière lazy-loadée grâce à un helper :
+
+[source,js]
+----
+PryDashboardModule.forRoot(
+    {
+        chart: {
+            name: 'chart',
+            load: () =>
+                import('@provoly/dashboard/widgets/widget-chart').then((module) => widgetLoader(module, 'WidgetChartModule')
+                )
+        }, ...
+----
+
+Il est également possible de l’ajouter de manière statique :
+
+[source,js]
+----
+PryDashboardModule.forRoot(
+{
+    image: { name: 'image', component: WidgetImageComponent }, // ici, la référence est fixe
+    }, ...
+),
+----
+
+Pour permettre l’utilisation de tooltips lazy-loadés dans les tooltips,
+il faut les ajouter en dernier paramètre du `+forRoot+`:
+
+[source,js]
+----
+{
+    attribute: {
+        name: 'attribute',
+        load: () =>
+            import('@provoly/dashboard/tooltips/attribute').then((module) =>
+                tooltipLoader(module, 'PryAttributeTooltipModule')
+            )
+    }
+}
+----

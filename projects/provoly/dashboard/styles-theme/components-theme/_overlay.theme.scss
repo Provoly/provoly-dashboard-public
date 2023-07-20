@@ -1,0 +1,44 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Overlay */
+
+.pry-tooltip-container {
+  @include typography-level(themed($theme-map, 'typography', 'panel'));
+  color: themed($theme-map, 'color', 'primary', 700);
+  background-color: themed($theme-map, 'color', 'primary', 50);
+
+  &.pry-tooltip-reversed {
+    color: themed($theme-map, 'color', 'primary', 'contrast', 700);
+    background-color: themed($theme-map, 'color', 'primary', 700);
+  }
+
+  box-shadow:
+    0 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0 4px 5px rgba(0, 0, 0, 0.14),
+    0 1px 10px rgba(0, 0, 0, 0.12);
+}
+
+.pry-overlay-container {
+  color: themed($theme-map, 'color', 'primary', 700);
+  background-color: themed($theme-map, 'color', 'primary', 'contrast', 700);
+
+  &.pry-overlay-reversed {
+    color: themed($theme-map, 'color', 'primary', 'contrast', 700);
+    background-color: themed($theme-map, 'color', 'primary', 700);
+  }
+
+  box-shadow:
+    0 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0 4px 5px rgba(0, 0, 0, 0.14),
+    0 1px 10px rgba(0, 0, 0, 0.12);
+}
+
+.pry-overlay-sticky {
+  box-shadow: none;
+}
+
+.pry-dialog-container {
+  background-color: white;
+  box-shadow: 0 0 5px themed($theme-map, 'color', 'grey', 200);
+}

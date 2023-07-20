@@ -1,0 +1,273 @@
+<pry-presentation-css></pry-presentation-css>
+<div class="o-manifest-layout" [ngSwitch]="selectedMode">
+  <ng-container *ngSwitchCase="ViewMode.CATALOG">
+    <div class="o-manifest-layout__toolbox">
+      <button
+        [pryTooltip]="create"
+        class="a-btn a-btn--primary a-btn--icon-text"
+        type="button"
+        (click)="creation()"
+        *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'create' }"
+      >
+        {{ '@pry.presentation.create' | i18n }}
+      </button>
+      <div>
+        <div class="a-presentation__search">
+          <label id="catalog-search-label" for="catalog-search" class="u-visually-hidden">
+            <span>{{ '@pry.toolbox.catalog.filter.name' | i18n }}</span>
+          </label>
+          <input
+            id="catalog-search"
+            type="text"
+            class="a-form-field"
+            [placeholder]="'@pry.presentation.search' | i18n"
+            [ngModel]="search$ | async"
+            (ngModelChange)="this.search$.next($event)"
+          />
+          <pry-icon iconSvg="search" [width]="17" [height]="17"></pry-icon>
+        </div>
+      </div>
+    </div>
+    <div class="o-manifest-layout__content">
+      <h1 class="a-h1">{{ '@pry.manifest.title' | i18n }}</h1>
+
+      <div class="o-presentation-wrapper">
+        <ul class="o-presentation">
+          <li class="o-presentation__item" *ngFor="let presentation of filteredPresentations$ | async">
+            <div class="o-presentation__item__header">
+              <ng-container *ngIf="presentation.visibility.type === PryVisibilityType.PRIVATE">
+                <pry-icon
+                  [iconSvg]="presentation.visibility.type.toLowerCase()"
+                  [pryTooltip]="private"
+                  class="is-private"
+                  [height]="17"
+                  [width]="17"
+                ></pry-icon>
+              </ng-container>
+
+              <img
+                alt=""
+                [height]="presentation.cover ? 600 : 128"
+                [width]="presentation.cover ? 600 : 128"
+                [class.is-full-width]="presentation.cover"
+                [src]="presentation.image | getSecuredImage | async"
+                (click)="fetch(presentation)"
+                [pryTooltip]="view"
+              />
+            </div>
+
+            <div class="o-presentation__item__txt">
+              <h3 class="a-h3">{{ presentation.name }}</h3>
+              <p class="a-p -date">{{ presentation.modificationDate | sinceDate }}</p>
+            </div>
+
+            <div class="o-presentation__item__footer">
+              <ul class="m-actions-list">
+                <li>
+                  <button
+                    type="button"
+                    class="a-btn a-btn--icon-only"
+                    (click)="default(presentation.id, presentation.name)"
+                  >
+                    <pry-icon
+                      [iconSvg]="presentation.default ? 'home-fill' : 'home-line'"
+                      [pryTooltip]="homeView"
+                    ></pry-icon>
+                    <span class="u-visually-hidden"></span>
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="a-btn a-btn--icon-only"
+                    (click)="edit(presentation)"
+                    [disabled]="presentation.owner === false"
+                    *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'edit' }"
+                  >
+                    <pry-icon iconSvg="edit" [pryTooltip]="change"></pry-icon>
+                    <span class="u-visually-hidden">{{ '@pry.presentation.edition' | i18n }}</span>
+                  </button>
+                </li>
+                <li>
+                  <button
+                    (click)="toggleModal(presentation)"
+                    class="a-btn a-btn--icon-only"
+                    aria-haspopup="dialog"
+                    [disabled]="presentation.owner === false"
+                    *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'share' }"
+                  >
+                    <pry-icon iconSvg="share" [pryTooltip]="share"></pry-icon>
+                    <span class="u-visually-hidden">{{ '@pry.presentation.share' | i18n }}</span>
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="a-btn a-btn--icon-only"
+                    #openModal
+                    (click)="toggleRemoveConfirm($event, presentation)"
+                    [disabled]="presentation.owner === false"
+                    *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'delete' }"
+                  >
+                    <pry-icon iconSvg="delete" [pryTooltip]="erase"></pry-icon>
+                    <span class="u-visually-hidden">{{ '@pry.presentation.delete' | i18n }}</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="ViewMode.CREATION">
+    <pry-add-edit-presentation
+      [selectedPresentation]="selectedPresentation!"
+      (goBack)="closeRestitution()"
+      [editionStartUrl]="editionStartUrl"
+      [edition]="false"
+    ></pry-add-edit-presentation>
+  </ng-container>
+  <ng-container *ngSwitchCase="ViewMode.EDITION">
+    <pry-add-edit-presentation
+      [selectedPresentation]="selectedPresentation!"
+      (goBack)="closeRestitution()"
+      [editionStartUrl]="editionStartUrl"
+      [edition]="true"
+    ></pry-add-edit-presentation>
+  </ng-container>
+</div>
+
+<ng-template #modal>
+  <div
+    class="o-modal"
+    (click)="$event.stopPropagation()"
+    #visibilityModal
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dialog change visibility"
+    *ngIf="selectedPresentation"
+  >
+    <div class="o-modal__top">
+      <div class="o-modal__top__title">
+        <h2 class="a-h2" id="dialog_title">{{ '@pry.toolbox.rename' | i18n }}</h2>
+      </div>
+      <div class="o-modal__top__close">
+        <button
+          class="a-btn a-btn--icon-only"
+          #crossVisibility
+          (keydown.shift.tab)="focusValidation()"
+          (click)="toggleModal()"
+        >
+          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+    <pry-share [ngModel]="selectedPresentation.visibility" (ngModelChange)="visibility = $event"></pry-share>
+    <div class="m-btn-group">
+      <button type="button" class="a-btn a-btn--secondary" (click)="toggleModal()">
+        {{ '@pry.toolbox.manifest.close' | i18n }}
+      </button>
+      <button
+        type="submit"
+        class="a-btn a-btn--primary"
+        #submit
+        (keydown.tab)="focusCrossElement()"
+        (click)="changeVisibility()"
+      >
+        {{ '@pry.toolbox.manifest.check' | i18n }}
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #templateModal>
+  <div
+    class="o-modal"
+    *ngIf="presentation"
+    (keydown.escape)="toggleRemoveConfirm($event, presentation)"
+    #deleteModal
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dialog confirm delete presentation"
+  >
+    <div class="o-modal__top">
+      <div class="o-modal__top__title">
+        <h2 class="a-h2">
+          {{ '@pry.widget.modalTitle' | i18n }}
+        </h2>
+      </div>
+      <div class="o-modal__top__close">
+        <button
+          class="a-btn a-btn--icon-only"
+          #cross
+          (keydown.shift.tab)="focusValidation()"
+          (click)="cancelRemoveConfirm()"
+        >
+          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+    <div class="m-btn-group">
+      <button type="button" #cancelRemove (click)="cancelRemoveConfirm()" class="a-btn a-btn--secondary">
+        {{ '@pry.toolbox.manifest.close' | i18n }}
+      </button>
+      <button
+        type="submit"
+        class="a-btn a-btn--primary"
+        #confirm
+        (click)="delete(presentation.id)"
+        (keydown.tab)="focusCrossElement()"
+      >
+        {{ '@pry.toolbox.manifest.validate' | i18n }}
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #create>
+  <div class="m-tooltip" role="tooltip">
+    <span class="m-tooltip__text">{{ '@pry.presentation.create' | i18n }}</span>
+  </div>
+</ng-template>
+
+<ng-template #view>
+  <div class="m-tooltip" role="tooltip">
+    <span class="m-tooltip__text">{{ '@pry.presentation.view' | i18n }}</span>
+  </div>
+</ng-template>
+
+<ng-template #private>
+  <div class="m-tooltip" role="tooltip">
+    <span class="m-tooltip__text">{{ '@pry.presentation.private' | i18n }}</span>
+  </div>
+</ng-template>
+
+<ng-template #homeView>
+  <div class="m-tooltip" role="tooltip">
+    <span class="m-tooltip__text">{{ '@pry.presentation.homeView' | i18n }}</span>
+  </div>
+</ng-template>
+
+<ng-template #share>
+  <div class="m-tooltip" role="tooltip">
+    <span class="m-tooltip__text">{{ '@pry.presentation.share' | i18n }}</span>
+  </div>
+</ng-template>
+
+<ng-template #erase>
+  <div class="m-tooltip" role="tooltip">
+    <span class="m-tooltip__text">{{ '@pry.presentation.erase' | i18n }}</span>
+  </div>
+</ng-template>
+
+<ng-template #change>
+  <div class="m-tooltip" role="tooltip">
+    <span class="m-tooltip__text">{{ '@pry.presentation.change' | i18n }}</span>
+  </div>
+</ng-template>
+<ng-template #backToCatalog>
+  <div class="m-tooltip" role="tooltip">
+    <span class="m-tooltip__text">{{ '@pry.presentation.backToCatalog' | i18n }}</span>
+  </div>
+</ng-template>

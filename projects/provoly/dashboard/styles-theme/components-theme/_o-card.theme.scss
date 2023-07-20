@@ -1,0 +1,45 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme' as *;
+
+/* Theme Organism - card */
+
+.o-card {
+  $this: &;
+
+  @extend %card-with-hover;
+
+  /* Card infrastructure */
+  &--infra {
+    #{$this}__header {
+      background-color: themed($theme-map, 'color', 'primary', 100);
+      border-bottom: 1px themed($theme-map, 'color', 'primary', 300) solid;
+
+      &__logo {
+        background-color: themed($theme-map, 'color', 'primary', 300);
+      }
+
+      &__status {
+        &.-ok,
+        &.GREEN {
+          background-color: themed($theme-map, 'color', 'status', 'ok');
+        }
+
+        &.-warning,
+        &.YELLOW {
+          background-color: themed($theme-map, 'color', 'status', 'warning');
+        }
+
+        &.-error,
+        &.RED {
+          background-color: themed($theme-map, 'color', 'status', 'error');
+        }
+      }
+    }
+
+    #{$this}__content {
+      &__info {
+        color: themed($theme-map, 'color', 'primary', 500);
+      }
+    }
+  }
+}

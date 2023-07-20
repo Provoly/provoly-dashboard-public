@@ -1,0 +1,61 @@
+<div>
+  <div class="m-form-label-field -width-xl">
+    <label class="a-label" for="tooltip_type">{{ '@pry.admin.customize.type' | i18n }}</label>
+    <pry-select
+      id="tooltip_type"
+      class="a-pry-select"
+      (ngModelChange)="tooltipTypeChanged($event)"
+      [ngModel]="currentClassConfig.type"
+      [items]="possibleTooltipTypes$ | async"
+      [itemsAsOption]="true"
+      bindValue="value"
+      bindLabel="label"
+      [labelTranslate]="true"
+    ></pry-select>
+  </div>
+
+  <div>
+    <pry-checkbox [(ngModel)]="advancedTooltip">{{ '@pry.admin.customize.advanced' | i18n }}</pry-checkbox>
+  </div>
+
+  <ng-container *ngIf="!advancedTooltip && currentClassConfig.type === 'attribute'">
+    <label class="a-label" for="customize_simplified">{{ '@pry.admin.customize.simplified' | i18n }}</label>
+    <pry-select
+      id="customize_simplified"
+      class="a-pry-select"
+      (ngModelChange)="changeAttributes($event)"
+      [ngModel]="currentClassConfig.options.attributes"
+      [itemsAsOption]="true"
+      [items]="possibleAttributes"
+      [multiple]="true"
+      bindLabel="name"
+      bindValue="name"
+    ></pry-select>
+  </ng-container>
+
+  <ng-container *ngIf="advancedTooltip">
+    <textarea
+      cols="100"
+      rows="15"
+      class="a-form-field"
+      [(ngModel)]="strOptions"
+      (focusout)="optionsChanged()"
+    ></textarea>
+  </ng-container>
+</div>
+
+<div class="m-tooltip m-tooltip--example" [class.-hidden]="noTooltip">
+  <div #example></div>
+</div>
+
+<div class="m-btn-group -width-md">
+  <button
+    type="button"
+    class="a-btn a-btn--secondary"
+    (click)="goBack()"
+    [innerHTML]="'@pry.admin.cancel' | i18n"
+  ></button>
+  <button class="a-btn a-btn--primary" type="submit" (click)="updateTemplate()">
+    {{ '@pry.admin.customize.update' | i18n }}
+  </button>
+</div>

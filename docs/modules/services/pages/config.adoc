@@ -1,0 +1,5 @@
+=== Configuration `+config.service.ts+`
+
+Ce service sert principalement à la gestion de la personalisation pour
+les classes. Il est à surcharger si aucun backend pry n’est présent pour
+obtenir une personalisation choisie.

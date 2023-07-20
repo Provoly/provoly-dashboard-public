@@ -1,0 +1,154 @@
+@use '../../styles/abstracts/index' as *;
+
+/* Organism - Search full text */
+
+.o-search-fulltext {
+  $this: &;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: inherit;
+
+  &--vertical {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &--vertical > &__container {
+    width: 100%;
+  }
+
+  &__container {
+    display: flex;
+    height: toRem(36);
+  }
+
+  // Button .o-search-fulltext__classes
+  &__classes {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    min-width: toRem(60);
+    height: 100%;
+    padding: 0;
+    border: none;
+    border-radius: toRem(4) 0 0 toRem(4);
+    cursor: pointer;
+
+    &--inline {
+      width: toRem(226);
+      padding: 0;
+      margin: 0;
+
+      #{$this}__classes__content {
+        flex-direction: row;
+
+        &__label {
+          line-height: 1;
+        }
+      }
+
+      #{$this}__classes__arrow {
+        width: 36px;
+        border-left-width: 1px;
+        border-left-style: solid;
+      }
+    }
+
+    &__content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: toRem(5);
+      padding: toRem(8.5) toRem(12) toRem(8.5) toRem(12);
+    }
+
+    &__arrow {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: toRem(30);
+      height: 100%;
+
+      &__icon {
+        transition: transform 300ms ease-in-out;
+
+        &.is-open {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+
+  &__input {
+    &__clear {
+      position: absolute;
+      right: toRem(10);
+      top: toRem(8);
+
+      &__wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: toRem(20);
+        height: toRem(20);
+        padding: toRem(2);
+        border-radius: 50%;
+      }
+    }
+  }
+
+  &__button {
+    display: flex;
+    width: 100%;
+    margin-right: 0;
+    margin-top: toRem(5);
+  }
+
+  &__button__inline {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0 toRem(6);
+    width: inherit;
+    min-width: inherit;
+    height: toRem(36);
+    border-radius: 0 toRem(4) toRem(4) 0;
+    border: 0 solid transparent;
+  }
+
+  &__classes-overlay {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    max-height: toRem(200);
+    padding: toRem(5) 0;
+
+    &__inline {
+      width: toRem(230);
+      border-radius: toRem(4);
+    }
+
+    &__item {
+      display: flex;
+      align-items: center;
+      gap: toRem(8);
+      width: 93%;
+      height: toRem(32);
+      margin: 0 auto toRem(3) auto;
+      padding: toRem(8);
+      border-radius: toRem(5);
+      cursor: pointer;
+
+      &:first-child {
+        font-weight: bold;
+        white-space: nowrap;
+      }
+
+      &__label {
+        text-transform: capitalize;
+      }
+    }
+  }
+}

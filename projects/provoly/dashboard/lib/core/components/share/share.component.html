@@ -1,0 +1,37 @@
+<div class="m-form-label-field">
+  <label class="a-label" for="share_type">{{ '@pry.share.type' | i18n }}</label>
+  <pry-select
+    (ngModelChange)="writeValueType($event)"
+    [itemsAsOption]="true"
+    [items]="visibilityTypes"
+    [labelTranslate]="true"
+    [ngModel]="value?.type"
+    [disabled]="_disabled"
+    baseTranslate="@pry.share."
+    class="a-pry-select"
+    bindValue="value"
+    bindLabel="label"
+    id="share_type"
+    bindIcon="icon"
+    [iconSize]="[21, 18]"
+  ></pry-select>
+</div>
+
+<ng-container *ngIf="value?.type === PryVisibilityType.RESTRICTED">
+  <div class="m-form-label-field">
+    <label class="a-label" for="users">{{ '@pry.share.users' | i18n }}</label>
+    <pry-select
+      (ngModelChange)="writeValueUsers($event)"
+      [itemsAsOption]="true"
+      [items]="users$ | async"
+      [multiple]="true"
+      [ngModel]="value?.users"
+      [disabled]="_disabled"
+      [bindLabel]="labelProperty"
+      [bindValue]="valueProperty"
+      [autocomplete]="true"
+      class="a-pry-select"
+      id="users"
+    ></pry-select>
+  </div>
+</ng-container>

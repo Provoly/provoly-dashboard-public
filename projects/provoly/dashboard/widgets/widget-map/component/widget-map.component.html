@@ -1,0 +1,491 @@
+<pry-widget-map-css></pry-widget-map-css>
+<div class="o-widget o-widget--map">
+  <pry-widget-header
+    [datasourceIds$]="datasourceIds$"
+    *ngIf="displayHeader$ | async"
+    [widgetIndex]="widgetIndex"
+    [manifest]="manifest"
+    (manifestModified)="manifestModified.emit($event)"
+    [headerOptions]="(displayHeader$ | async) ?? {}"
+    #header
+  >
+    <pry-settings
+      (saveTriggered)="emitManifest()"
+      [headerPresent]="displayHeader$ | async"
+      [widgetIndex]="widgetIndex"
+      [header]="header"
+      [open$]="open$"
+      class="o-settings"
+    >
+      <div class="m-form-label-field">
+        <label class="a-label" for="map_style">{{ '@pry.widget.map.style' | i18n }}</label>
+        <pry-select
+          (ngModelChange)="changeStyle($event)"
+          [itemsAsOption]="true"
+          [items]="styles$ | async"
+          [ngModel]="optionsCopy.style"
+          bindLabel="label"
+          bindValue="identifier"
+          id="map_style"
+          class="a-pry-select"
+        ></pry-select>
+      </div>
+
+      <pry-checkbox (ngModelChange)="changeFit($event)" [ngModel]="optionsCopy.fit ?? false">
+        {{ '@pry.widget.map.fit' | i18n }}
+      </pry-checkbox>
+
+      <pry-checkbox (ngModelChange)="changeAttributions($event)" [ngModel]="optionsCopy.attributions ?? false">
+        {{ '@pry.widget.map.attributions' | i18n }}
+      </pry-checkbox>
+
+      <fieldset class="m-form-radio-group-wrapper">
+        <legend class="a-label">{{ '@pry.widget.map.tooltip.title' | i18n }}</legend>
+        <div class="m-form-radio-group">
+          <div class="m-form-radio-group__item">
+            <input
+              class="a-form-field"
+              type="radio"
+              id="click"
+              name="tooltip"
+              [ngModel]="optionsCopy.tooltipMode"
+              (ngModelChange)="changeTooltipMode('click')"
+              value="click"
+              [disabled]="((geoServerLayerDescriptions$ | async)?.length ?? 0) > 0"
+            />
+            <label for="click" class="a-label">
+              {{ '@pry.widget.map.tooltip.click' | i18n }}
+            </label>
+          </div>
+          <div class="m-form-radio-group__item">
+            <input
+              class="a-form-field"
+              type="radio"
+              id="hover"
+              name="tooltip"
+              [ngModel]="optionsCopy.tooltipMode"
+              (ngModelChange)="changeTooltipMode('hover')"
+              value="hover"
+              [disabled]="((geoServerLayerDescriptions$ | async)?.length ?? 0) > 0"
+            />
+            <label for="hover" class="a-label">
+              {{ '@pry.widget.map.tooltip.hover' | i18n }}
+            </label>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="o-settings__popup__content__actions -has-separator">
+        <button type="button" (click)="addLayer()" class="a-btn a-btn--icon-text -link-like">
+          <pry-icon iconSvg="library_add"></pry-icon>
+          {{ '@pry.widget.map.addLayer' | i18n }}
+        </button>
+      </div>
+
+      <div *ngFor="let layer of optionsCopy?.layers; let i = index" class="o-settings__popup__content__fields">
+        <div class="o-settings__popup__content__fields__head">
+          <h3 class="a-h3 settings-layer-title__title">{{ '@pry.widget.map.layer' | i18n: { index: i + 1 } }}</h3>
+          <div class="m-btn-group">
+            <button type="button" class="a-btn a-btn--icon-only" (click)="invertLayers(i, i - 1)" *ngIf="i > 0">
+              <pry-icon iconSvg="fleche_haut"></pry-icon>
+              <span class="u-visually-hidden">{{ '@pry.action.moveUp' | i18n }}</span>
+            </button>
+            <button
+              type="button"
+              class="a-btn a-btn--icon-only"
+              (click)="invertLayers(i, i + 1)"
+              *ngIf="i < (optionsCopy?.layers?.length ?? 0) - 1"
+            >
+              <pry-icon iconSvg="fleche_bas"></pry-icon>
+              <span class="u-visually-hidden">{{ '@pry.action.moveDown' | i18n }}</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="o-settings__popup__content__fields__content">
+          <pry-range
+            [ngModel]="(layer?.opacity ?? 100) + ''"
+            (ngModelChange)="changeOpacity(layer, $event)"
+            labelTranslate="@pry.widget.map.opacity"
+            min="0"
+            max="100"
+          ></pry-range>
+
+          <fieldset>
+            <legend class="u-visually-hidden">{{ '@pry.widget.map.layerOptions' | i18n: { index: i + 1 } }}</legend>
+            <div class="m-form-label-field">
+              <label class="a-label" for="map_layerTitle">{{ '@pry.widget.map.layerTitle' | i18n }}</label>
+              <input
+                id="map_layerTitle"
+                class="a-form-field"
+                type="text"
+                (input)="changeTitle($event, layer)"
+                [value]="layer.title ?? ''"
+              />
+            </div>
+
+            <div class="m-form-label-field">
+              <label class="a-label" for="map_layerType">{{ '@pry.widget.map.layerType.title' | i18n }}</label>
+              <pry-select
+                (ngModelChange)="changeLayerType($event, i)"
+                [bindData]="true"
+                [itemsAsOption]="true"
+                [items]="layerTypes"
+                [labelTranslate]="true"
+                [ngModel]="layer.type"
+                [disabled]="layer.type === 'geoserver'"
+                baseTranslate="@pry.widget.map.layerType."
+                class="a-pry-select"
+                id="map_layerType"
+              ></pry-select>
+            </div>
+
+            <div
+              *ngIf="
+                layer.type !== 'relation' &&
+                layer.type !== 'wms' &&
+                layer.type !== 'wmts' &&
+                layer.type !== 'geoserver' &&
+                layer.type !== 'featurelayer' &&
+                layer.type !== 'vectortile' &&
+                layer.type !== 'rastertile'
+              "
+              class="m-form-label-field"
+            >
+              <label class="a-label" for="map_classes">{{ '@pry.widget.map.classes' | i18n }}</label>
+              <pry-select
+                (ngModelChange)="changeClasses($event, layer)"
+                [itemsAsOption]="true"
+                [items]="classes$ | async"
+                [multiple]="true"
+                [ngModel]="layer.classes"
+                bindLabel="name"
+                bindValue="id"
+                class="a-pry-select"
+                id="map_classes"
+              ></pry-select>
+            </div>
+          </fieldset>
+        </div>
+
+        <fieldset
+          *ngIf="
+            layer.type !== 'relation' &&
+            layer.type !== 'wms' &&
+            layer.type !== 'wmts' &&
+            layer.type !== 'geoserver' &&
+            layer.type !== 'featurelayer' &&
+            layer.type !== 'vectortile' &&
+            layer.type !== 'rastertile'
+          "
+        >
+          <legend class="u-visually-hidden">{{ '@pry.widget.map.locationAttr' | i18n }}</legend>
+          <ng-container
+            *ngIf="
+              layer
+                | geometryFieldsFor: { resultSet: resultSet$, classes: layer.classes, type: layer.type }
+                | async as fields
+            "
+          >
+            <div
+              *ngIf="
+                ['heatmap', 'bubble', 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].indexOf(
+                  layer.type
+                ) >= 0
+              "
+            >
+              <div class="m-form-label-field">
+                <label class="a-label" for="map_locationAttribute_both">{{
+                  '@pry.widget.map.locationAttribute.both' | i18n
+                }}</label>
+                <pry-select
+                  (ngModelChange)="changeLocationAttributes($event, layer)"
+                  [itemsAsOption]="true"
+                  [items]="fields"
+                  [ngModel]="layer.attribute"
+                  bindLabel="name"
+                  bindValue="name"
+                  id="map_locationAttribute_both"
+                  class="a-pry-select"
+                ></pry-select>
+              </div>
+            </div>
+
+            <div *ngIf="['heatmap', 'bubble'].indexOf(layer.type) >= 0">
+              <div class="m-form-label-field">
+                <label class="a-label" for="map_intensityAttribute">{{
+                  '@pry.widget.map.intensityAttribute' | i18n
+                }}</label>
+                <pry-select
+                  (ngModelChange)="changeIntensityAttributes($event, layer)"
+                  [itemsAsOption]="true"
+                  [items]="fields"
+                  [ngModel]="layerHasIntensity(layer).intensityAttribute"
+                  bindLabel="name"
+                  bindValue="name"
+                  id="map_intensityAttribute"
+                  class="a-pry-select"
+                ></pry-select>
+              </div>
+            </div>
+          </ng-container>
+        </fieldset>
+
+        <fieldset
+          *ngIf="
+            layer.type === 'wms' ||
+            layer.type === 'geoserver' ||
+            layer.type === 'wmts' ||
+            layer.type === 'featurelayer' ||
+            layer.type === 'vectortile' ||
+            layer.type === 'rastertile'
+          "
+        >
+          <legend class="u-visually-hidden">{{ '@pry.widget.map.tile' | i18n }}</legend>
+          <div class="m-form-label-field">
+            <label class="a-label" for="map_wms_url">{{ '@pry.widget.map.wms.url' | i18n }}</label>
+            <input
+              id="map_wms_url"
+              class="a-form-field"
+              type="text"
+              (input)="changeUrl($event, layer)"
+              [disabled]="layer.type === 'geoserver'"
+              [value]="layer.url"
+            />
+          </div>
+
+          <div
+            class="m-form-label-field"
+            *ngIf="layer.type === 'wms' || layer.type === 'geoserver' || layer.type === 'wmts'"
+          >
+            <label class="a-label" for="map_wms_paramLayer">{{ '@pry.widget.map.wms.paramLayer' | i18n }}</label>
+            <input
+              id="map_wms_paramLayer"
+              class="a-form-field"
+              type="text"
+              (input)="changeParamLayer($event, layer)"
+              [disabled]="layer.type === 'geoserver'"
+              [value]="layer.paramLayer"
+            />
+          </div>
+
+          <div class="m-form-label-field" *ngIf="layer.type === 'wmts'">
+            <label class="a-label" for="map_wms_matrixSet">{{ '@pry.widget.map.wms.matrixSet' | i18n }}</label>
+            <input
+              id="map_wms_matrixSet"
+              class="a-form-field"
+              type="text"
+              (input)="changeMatrixSet($event, layer)"
+              [value]="layer.matrixSet"
+            />
+          </div>
+
+          <div class="m-form-label-field" *ngIf="layer.type === 'wmts'">
+            <label class="a-label" for="map_wms_style">{{ '@pry.widget.map.wms.style' | i18n }}</label>
+            <input
+              id="map_wms_style"
+              class="a-form-field"
+              type="text"
+              (input)="changeParamStyle($event, layer)"
+              [value]="layer.style"
+            />
+          </div>
+
+          <div class="m-form-label-field" *ngIf="layer.type === 'wms'">
+            <pry-checkbox (ngModelChange)="changeParamTiled($event, layer)" [ngModel]="layer?.paramTiled ?? false">
+              {{ '@pry.widget.map.wms.paramTiled' | i18n }}
+            </pry-checkbox>
+          </div>
+        </fieldset>
+
+        <fieldset *ngIf="layer.type === 'marker'">
+          <legend class="u-visually-hidden">{{ '@pry.widget.map.clustering' | i18n }}</legend>
+          <div class="m-form-label-field">
+            <pry-checkbox (ngModelChange)="changeClustered(layer, $event)" [ngModel]="layer.clustered">
+              {{ '@pry.widget.map.clustered' | i18n }}
+            </pry-checkbox>
+          </div>
+          <div *ngIf="layer.clustered">
+            <pry-range
+              [ngModel]="layer.clustered"
+              (ngModelChange)="changeClusterDistance(layer, $event)"
+              labelTranslate="@pry.widget.map.clusterDistance"
+              min="1"
+              max="500"
+            ></pry-range>
+          </div>
+        </fieldset>
+
+        <div class="m-form-label-field" *ngIf="optionsCopy.attributions">
+          <label class="a-label" for="attribution">{{ '@pry.widget.map.attribution' | i18n }}</label>
+          <input
+            id="attribution"
+            class="a-form-field"
+            type="text"
+            (input)="changeAttribution($event, layer)"
+            [value]="layer.attribution ? layer.attribution : ''"
+          />
+        </div>
+
+        <button
+          type="button"
+          (click)="deleteLayer(i)"
+          class="a-btn a-btn--icon-text -link-like"
+          *ngIf="layer.type !== 'geoserver'"
+          data-func="delete"
+        >
+          <pry-icon iconSvg="delete" [width]="19" [height]="19"></pry-icon>
+          <span>{{ '@pry.widget.map.deleteLayer' | i18n }}</span>
+        </button>
+      </div>
+    </pry-settings>
+  </pry-widget-header>
+
+  <div class="m-btn-group -selection-choice" [style.transform]="bottomLeft$ | async">
+    <ng-container *ngFor="let action of basicActions$ | async">
+      <button
+        type="button"
+        class="a-btn a-btn--icon-only"
+        (click)="selectionInteraction.changeSelection(action)"
+        [class.-selected]="selectionInteraction.selectionType === action"
+        [pryTooltip]="infoTooltipAction"
+        pryTooltipPosition="bottom"
+        aria-describedby="infoTooltipAction"
+        [pryTooltipContext]="{ action: action }"
+      >
+        <pry-icon [iconSvg]="action"></pry-icon>
+        <span class="u-visually-hidden">{{ '@pry.widget.map.' + action | i18n }}</span>
+      </button>
+    </ng-container>
+
+    <button
+      type="button"
+      class="a-btn a-btn--icon-only"
+      id="export_card"
+      aria-expanded="false"
+      aria-controls="export_type"
+      aria-haspopup="menu"
+      [pryTooltip]="infoTooltipDown"
+      pryTooltipPosition="bottom"
+      aria-describedby="infoTooltipDown_widgetMap"
+      *ngIf="(actions$ | async)?.includes('export')"
+    >
+      <pry-icon iconSvg="file_download" (click)="displayExportType($event)"></pry-icon>
+      <span class="u-visually-hidden">{{ '@pry.widget.map.export' | i18n }}</span>
+    </button>
+
+    <button
+      type="button"
+      class="a-btn a-btn--icon-only"
+      (click)="uploader.click()"
+      [pryTooltip]="infoTooltipLoad"
+      aria-describedby="infoTooltipLoad_widgetMap"
+      pryTooltipPosition="bottom"
+      *ngIf="(actions$ | async)?.includes('upload')"
+    >
+      <pry-icon iconSvg="file_upload"></pry-icon>
+      <span class="u-visually-hidden">{{ '@pry.widget.map.import' | i18n }}</span>
+    </button>
+    <input hidden type="file" #uploader (change)="import($event)" />
+  </div>
+
+  <div class="ol-control m-layer-legend" *ngIf="((legendLayers$ | async)?.length ?? 0) > 0">
+    <button class="m-layer-legend__toggle" (click)="toggleLegendWindow()">
+      <pry-icon iconSvg="legend" [width]="22" [height]="22"></pry-icon>
+    </button>
+    <ng-container *ngFor="let geoLayer of legendLayers$ | async; let index = index">
+      <div class="m-layer-legend__title" [class.-hidden]="!legendTabOpen">
+        {{ geoLayer.title }}
+        <ng-container *ngIf="isLayerRendered(geoLayer)">
+          <button class="m-layer-legend__toggle" (click)="toggleLegend(index)">
+            <pry-icon
+              [iconSvg]="legendTab === index ? 'chevron_top' : 'chevron_bottom'"
+              [width]="22"
+              [height]="22"
+            ></pry-icon>
+          </button>
+        </ng-container>
+        <ng-container *ngIf="!isLayerRendered(geoLayer)">
+          <pry-icon [iconSvg]="'close'" [width]="22" [height]="22"></pry-icon>
+        </ng-container>
+      </div>
+      <div
+        class="m-layer-legend__image"
+        [class.-hidden]="!legendTabOpen || legendTab !== index || !isLayerRendered(geoLayer)"
+      >
+        <ng-container *ngIf="!imageNotProvided[index] && (geoLayer | legendUrl)">
+          <img
+            [src]="geoLayer | legendUrl"
+            [alt]="'@pry.widget.map.legend' | i18n: { layer: geoLayer.title }"
+            (error)="imageNotProvided[index] = true"
+          />
+        </ng-container>
+        <ng-container *ngIf="imageNotProvided[index]">
+          <p class="m-layer-legend__error">{{ '@pry.widget.map.legendNotProvided' | i18n }}</p>
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+
+  <div [style.height.px]="height$ | async" class="o-map-wrapper">
+    <div class="o-map">
+      <div #map id="map"></div>
+    </div>
+  </div>
+
+  <ng-template #infoTooltipAction let-action="action">
+    <div class="m-tooltip" role="tooltip" id="infoTooltipAction" aria-hidden="true">
+      <span class="m-tooltip__text">{{ '@pry.widget.map.' + action | i18n }}</span>
+    </div>
+  </ng-template>
+
+  <ng-template #infoTooltipDown>
+    <div class="m-tooltip" role="tooltip" id="infoTooltipDown_widgetMap" aria-hidden="true">
+      <span class="m-tooltip__text">{{ '@pry.widget.map.export' | i18n }}</span>
+    </div>
+  </ng-template>
+
+  <ng-template #infoTooltipLoad>
+    <div class="m-tooltip" role="tooltip" id="infoTooltipLoad_widgetMap" aria-hidden="true">
+      <span class="m-tooltip__text">{{ '@pry.widget.map.import' | i18n }}</span>
+    </div>
+  </ng-template>
+
+  <div #popup class="m-tooltip m-tooltip--popup" [hidden]="true" role="tooltip">
+    <div #popupContent></div>
+  </div>
+  <div
+    #address
+    class="m-tooltip m-tooltip--address tooltip-address"
+    [style.display]="'none'"
+    (click)="hideAddress()"
+  ></div>
+  <ng-template
+    #exportTypeTemplate
+    class="m-context-menu-wrapper"
+    id="export_type"
+    aria-hidden="true"
+    aria-label="TODO-access"
+    aria-labelledby="export_card"
+  >
+    <div class="m-context-menu">
+      <ul class="m-context-menu__list">
+        <li class="m-context-menu__list__item">
+          <button type="button" class="a-btn -link-like" (click)="export('png')">
+            <span class="u-visually-hidden">{{ '@pry.action.exportAsFormat' | i18n }} </span> PNG
+          </button>
+        </li>
+        <li class="m-context-menu__list__item">
+          <button type="button" class="a-btn -link-like" (click)="export('kml')">
+            <span class="u-visually-hidden">{{ '@pry.action.exportAsFormat' | i18n }} </span> KML
+          </button>
+        </li>
+        <li class="m-context-menu__list__item">
+          <button type="button" class="a-btn -link-like" (click)="export('geoJSON')">
+            <span class="u-visually-hidden">{{ '@pry.action.exportAsFormat' | i18n }} </span> GeoJSON
+          </button>
+        </li>
+      </ul>
+    </div>
+  </ng-template>
+</div>

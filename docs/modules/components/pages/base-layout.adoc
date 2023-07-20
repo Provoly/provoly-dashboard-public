@@ -1,0 +1,11 @@
+=== Base layout (pry-base-layout)
+
+Le composant `+Base layout+` fournit une base pour créer un nouveau
+layout. Ce layout comporte une partie menu retractable et une partie
+contenu. C’est une classe template, c’est à dire qu’il faut créer son
+propre menu qui héritera de ce composant.
+
+Le composant fournit 2 méthodes:
+
+- La méthode `+init+` permet de charger les données du menu.
+- La méthode `+highlightMenu+` permet de définir quel lien du menu est sélectionné

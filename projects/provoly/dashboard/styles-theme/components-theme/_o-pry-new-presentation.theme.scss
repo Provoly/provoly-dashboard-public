@@ -1,0 +1,20 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+.o-presentation-form {
+  .select-image__select {
+    .a-btn {
+      background-color: themed($theme-map, 'color', 'primary', 50);
+    }
+  }
+}
+
+.m-category-row {
+  .a-category {
+    background-color: themed($theme-map, 'color', 'primary', 100);
+  }
+}
+
+.a-drag-and-drop-container {
+  background-color: themed($theme-map, 'color', 'primary', 200);
+}

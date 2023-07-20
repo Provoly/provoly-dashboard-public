@@ -1,0 +1,3 @@
+=== Tooltips `+overlay-template.service.ts+`
+
+Sert pour la gestion des tooltips. Interne.

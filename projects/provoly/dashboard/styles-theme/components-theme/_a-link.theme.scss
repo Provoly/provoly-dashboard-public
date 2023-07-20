@@ -1,0 +1,12 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Atom - link */
+.a-link {
+}
+
+.a-link-skip {
+  border-radius: toRem(5);
+  color: themed($theme-map, 'color', 'status', 'contrast', 'ok');
+  background-color: themed($theme-map, 'color', 'status', 'ok');
+}

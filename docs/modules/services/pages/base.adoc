@@ -1,0 +1,3 @@
+Ici sont brièvement présentés les services proposés et utilisés par pry.
+Les surcharger permet simplement de changer le comportement de la
+librairie.

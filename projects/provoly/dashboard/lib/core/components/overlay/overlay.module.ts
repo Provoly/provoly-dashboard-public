@@ -1,0 +1,15 @@
+import { OverlayModule } from '@angular/cdk/overlay';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { PryI18nModule } from '../../i18n/i18n.module';
+import { PryIconModule } from '../icon/icon.module';
+import { PryDialogConfirmComponent } from './dialog-confirm.component';
+import { PryOverlayDirective } from './overlay.directive';
+import { PryTooltipDirective } from './tooltip.directive';
+
+@NgModule({
+  declarations: [PryTooltipDirective, PryOverlayDirective, PryDialogConfirmComponent],
+  exports: [PryTooltipDirective, PryOverlayDirective, PryDialogConfirmComponent],
+  imports: [CommonModule, OverlayModule, PryIconModule, PryI18nModule]
+})
+export class PryOverlayModule {}

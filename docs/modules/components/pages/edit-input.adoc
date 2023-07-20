@@ -1,0 +1,15 @@
+=== Edit input (pry-edit-input)
+
+Le composant `+Edit input+` permet d’afficher une valeur et de la rendre
+modifiable au clic sur un bouton Le composant hérite du
+"`ControlValueAccessor`" qui nous permet d’utiliser les propriétés de
+formulaires Angular.
+
+Les paramètres d’entrée du composant sont les suivants :
+
+- label: Label du champ modifiable
+- ngModel: Permet de donner la valeur par défaut du composant
+
+Le paramètre de sortie du composant est le suivant :
+
+- ngModelChange: Permet de récupérer la valeur du composant

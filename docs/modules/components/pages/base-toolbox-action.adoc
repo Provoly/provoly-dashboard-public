@@ -1,0 +1,10 @@
+=== Base toolbox action (pry-base-toolbox-action)
+
+Le composant `+Base toolbox action+` permet d’afficher une action dans
+la barre de menu `+Base toolbox+`
+
+Les paramètres d’entrée du composant sont les suivants :
+
+- baseToolboxTranslation: Début de la classe de traduction (ex:'@pry.admin.')
+- action: Action à afficher dans le menu
+- iconAction: Défini si l’action est uniquement un icone ou une icone avec un texte

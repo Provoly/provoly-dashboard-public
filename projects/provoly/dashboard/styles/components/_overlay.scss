@@ -1,0 +1,82 @@
+@use '../abstracts' as *;
+
+.overlay {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: toRem(180);
+  padding: toRem(5);
+  border-radius: toRem(5);
+  background-color: #dcdcdc;
+
+  &__point {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    max-width: toRem(120);
+    margin: toRem(5);
+    border-radius: toRem(50);
+    cursor: pointer;
+
+    &__check {
+      position: absolute;
+      top: toRem(-2);
+      left: toRem(-2);
+      color: white;
+    }
+  }
+
+  &--icons {
+    gap: toRem(8);
+    @extend %list-unstyled;
+
+    .a-btn {
+      width: auto;
+      height: auto;
+      min-height: auto;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+.pry-tooltip-container {
+  margin-top: toRem(5);
+  padding: toRem(5) toRem(3) toRem(2) toRem(3);
+  border-radius: toRem(5);
+}
+
+.pry-overlay-container {
+  padding: 0.25rem;
+  border-radius: toRem(5);
+  box-shadow:
+    0 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0 4px 5px rgba(0, 0, 0, 0.14),
+    0 1px 10px rgba(0, 0, 0, 0.12);
+}
+
+.pry-overlay-sticky {
+  margin: 0;
+  box-shadow: none;
+}
+
+.pry-overlay-no-padding {
+  overflow: auto;
+  max-height: 400px;
+  padding: 0;
+}
+
+.pry-dialog-container {
+  width: fit-content;
+  height: fit-content;
+  padding: toRem(24);
+  border-radius: toRem(24);
+}
+
+.cdk-overlay-pane.image-choice-menu {
+  .overlay {
+    overflow-y: auto;
+    max-width: toRem(620);
+    max-height: toRem(190);
+  }
+}

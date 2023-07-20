@@ -1,0 +1,19 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - named query */
+.o-named-query {
+  .combobox {
+    border-color: themed($theme-map, 'color', 'primary', 400);
+    background-color: themed($theme-map, 'color', 'primary', 50);
+    box-shadow: 2px 3px 10px 2px rgba(0, 0, 0, 0.2);
+
+    > div {
+      background: themed($theme-map, 'color', 'primary', 50);
+
+      &:hover {
+        background-color: themed($theme-map, 'color', 'primary', 100);
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+[
+  {
+    "id": 1,
+    "name": "Procédure stationnement gênant camion",
+    "tag": "Stationnement",
+    "steps": [
+      {
+        "name": "Sollicitation de la police municipale",
+        "completed": false
+      },
+      {
+        "name": "Demande de fourrière",
+        "completed": false
+      },
+      {
+        "name": "Sécurisation des abords",
+        "completed": false
+      },
+      {
+        "name": "Installation et raccordement des haut-parleurs, installation et raccordement d'illumination et DMX",
+        "completed": false
+      },
+      {
+        "name": "Préparation des changements d’itinéraires des transports communs",
+        "completed": false
+      },
+      {
+        "name": "Programmation d’un message dans l’application citoyens",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Procédure stationnement gênant voiture",
+    "tag": "Stationnement",
+    "steps": [
+      {
+        "name": "Sollicitation de la police municipale",
+        "completed": false
+      },
+      {
+        "name": "Demande de fourrière",
+        "completed": false
+      },
+      {
+        "name": "Sécurisation des abords",
+        "completed": false
+      },
+      {
+        "name": "Programmation d’un message dans l’application citoyens",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Procédure panne lampe",
+    "tag": "Panne lampe",
+    "steps": [
+      {
+        "name": "Demande d'intervention d'un électricien",
+        "completed": false
+      },
+      {
+        "name": "Commander les pièces nécessaires",
+        "completed": false
+      }
+    ]
+  }
+]

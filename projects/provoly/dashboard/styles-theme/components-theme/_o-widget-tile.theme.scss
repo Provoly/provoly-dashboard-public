@@ -1,0 +1,21 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme' as *;
+// @use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - widget tile */
+.o-widget--tile-wrapper {
+  background-color: white;
+}
+
+.o-widget--tile__list__item {
+  @extend %card-with-hover;
+
+  &__header {
+    border-bottom: 1px themed($theme-map, 'color', 'primary', 300) solid;
+  }
+
+  &__footer {
+    border-top: 1px themed($theme-map, 'color', 'primary', 300) solid;
+    color: themed($theme-map, 'color', 'primary', 500);
+  }
+}

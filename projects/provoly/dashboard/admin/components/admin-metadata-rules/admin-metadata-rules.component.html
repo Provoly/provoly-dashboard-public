@@ -1,0 +1,72 @@
+<div class="o-base-container">
+  <h1 class="a-h1">{{ '@pry.admin.metadata-rules.title' | i18n }}</h1>
+  <ng-container *ngIf="metadataRulesList$ | async as metadataRulesList">
+    <table
+      class="a-table"
+      prySortTable
+      prySortActive="name"
+      prySortDirection="asc"
+      (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
+    >
+      <caption>
+        {{
+          '@pry.admin.metadata-rules.title' | i18n
+        }},
+        {{
+          '@pry.action.sortableColumnHeader' | i18n
+        }}
+      </caption>
+      <thead>
+        <tr>
+          <th></th>
+          <th *ngFor="let conf of configHeader" [prySortHeader]="conf.label">{{ conf.label }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let metadataRules of metadataRulesList | prySortData: sortActive : sortDirection"
+          (click)="selectMetadata(metadataRules)"
+          [class.is-selected]="(selectedMetadataRules$ | async) === metadataRules.id"
+        >
+          <td class="view-details">
+            <button
+              [id]="'button-meta-rule-' + metadataRules.id"
+              type="button"
+              class="a-btn a-btn--icon-only"
+              title="{{ '@pry.action.viewDetails' | i18n }}"
+              [attr.aria-expanded]="(selectedMetadataRules$ | async) === metadataRules.id"
+              aria-haspopup
+              [attr.aria-controls]="'panel-meta-rule-' + metadataRules.id"
+            >
+              <span class="u-visually-hidden">{{ metadataRules.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
+              <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
+            </button>
+          </td>
+          <td>{{ metadataRules.name }}</td>
+          <td>{{ metadataRules.metadataItem?.name }}</td>
+          <td>{{ metadataRules.metadataUser?.name }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</div>
+
+<pry-modal
+  [titleModal]="'@pry.toolbox.rename' | i18n"
+  [validateLabel]="'@pry.toolbox.manifest.check' | i18n"
+  [validateAction]="validateAction"
+  [cancelLabel]="'@pry.toolbox.manifest.close' | i18n"
+  [cancelAction]="cancelAction"
+  [opened]="this.editOpened"
+>
+  <div class="field__input">
+    <span>{{ '@pry.toolbox.manifest.name' | i18n }}</span>
+    <input
+      type="text"
+      (keyup.enter)="validateName(input.value)"
+      [ngModel]="labelMetadataSelected"
+      (ngModelChange)="changeValue($event)"
+      #input
+    />
+  </div>
+</pry-modal>

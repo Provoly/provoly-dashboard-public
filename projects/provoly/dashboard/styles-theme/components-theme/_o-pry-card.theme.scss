@@ -1,0 +1,44 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - component pry-card */
+
+.o-pry-card {
+  .o-pry-card-header {
+    &__title-wrapper {
+      .o-pry-card-title {
+        /*.a-btn.a-btn--secondary {
+          border-color: white;
+          color: white;
+        }*/
+        &__text {
+          font-size: toRem(13);
+          line-height: toRem(18);
+
+          &__description {
+            font-weight: 300;
+          }
+        }
+      }
+    }
+
+    .a-btn.o-pry-card-menu-trigger {
+      background-color: transparent;
+      color: themed($theme-map, 'color', 'primary', 500);
+
+      &:hover {
+        background-color: themed($theme-map, 'color', 'primary', 300);
+        color: themed($theme-map, 'color', 'primary', 600);
+      }
+
+      &:focus,
+      &:active {
+        background-color: themed($theme-map, 'color', 'primary', 300);
+      }
+
+      .a-icon:hover {
+        color: inherit;
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+=== Symbol `+symbol.service.ts+`
+
+Ce service permet de récupérer des images canvas sur lesquelles on peut placer des éléments supplémentaires.
+
+La méthode 'getSymbol' permet de retourner l'image liée à un item. Cette méthode est aussi accessible directement dans le template angular grâce au pipe 'translateItemToSymbol'.
+
+La méthode 'getSymbolOfClass' permet de retourner l'image liée à une classe dont l'id est en paramètre.
+
+La méthode 'getSymbolAsIconStyle' permet de retourner l'image retourné par la méthode 'getSymbol' et de la retourner au format d'icon openlayer

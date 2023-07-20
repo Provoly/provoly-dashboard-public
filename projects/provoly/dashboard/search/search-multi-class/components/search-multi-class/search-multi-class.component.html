@@ -1,0 +1,48 @@
+<div class="o-search-multi-class">
+  <div class="o-search-multi-class__header">
+    <h3 class="a-h3">{{ '@pry.search.multi.title' | i18n }}</h3>
+    <div class="" [pryOverlay]="optionOverlay" [(overlayOpen)]="optionsOpen" (click)="optionsOpen = !optionsOpen">
+      <button
+        class="a-btn a-btn--icon-text"
+        [pryTooltip]="infoTooltip"
+        pryTooltipPosition="bottom"
+        aria-describedby="infoTooltip_searchMulticlass"
+      >
+        {{ '@pry.search.multi.options' | i18n }}
+        <pry-icon iconSvg="tune" [width]="16" [height]="16" [animation]="false"></pry-icon>
+      </button>
+    </div>
+    <ng-template #optionOverlay>
+      <div class="o-search-multi-class__options">
+        <pry-toggle
+          [ngModel]="(multiType$ | async) === 'OR'"
+          [leftword]="'@pry.search.type.or' | i18n"
+          [rightword]="'@pry.search.type.and' | i18n"
+          [alwaysActive]="true"
+          (ngModelChange)="onChangeMultiType($event)"
+          >{{ '@pry.search.multi.multiType' | i18n }}</pry-toggle
+        >
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="o-search-multi-class__conditions-wrapper">
+    <div class="o-search-multi-class__conditions">
+      <ng-container *ngFor="let condition of conditions$ | async">
+        <pry-multi-class-condition [id]="condition.id"></pry-multi-class-condition>
+      </ng-container>
+    </div>
+    <div class="o-search-multi-class__add-condition">
+      <button (click)="onAddCondition()" class="a-btn a-btn--secondary -size-sm">
+        <pry-icon [height]="20" [width]="20" iconSvg="add"></pry-icon>
+        {{ '@pry.search.multi.addCondition' | i18n }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #infoTooltip>
+  <div class="m-tooltip" role="tooltip" id="infoTooltip_searchMulticlass">
+    <span class="m-tooltip__text"> Options supplémentaires </span>
+  </div>
+</ng-template>

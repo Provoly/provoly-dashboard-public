@@ -1,0 +1,54 @@
+@use '../../styles/abstracts/index' as *;
+
+/* Organism - pry search condition */
+.o-pry-search-condition-wrapper {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: toRem(8);
+  width: 100%;
+  margin: 0 toRem(8) toRem(0) 0;
+}
+
+.o-pry-search-condition {
+  display: flex;
+  align-items: center;
+  gap: toRem(5);
+  width: 100%;
+
+  &__fields {
+    display: flex;
+    align-items: center;
+    gap: toRem(4);
+
+    &.has-date-picker {
+      flex-wrap: wrap;
+      width: min-content;
+
+      .a-form-field {
+        flex-grow: 0;
+      }
+    }
+  }
+
+  .a-form-field {
+    width: toRem(125);
+    height: toRem(36);
+
+    &::placeholder {
+      font-size: 13px;
+    }
+  }
+
+  .a-pry-select.operator {
+    width: toRem(125);
+  }
+
+  &__date-picker {
+    width: toRem(254);
+    margin-right: toRem(1);
+    border-style: solid;
+    border-radius: toRem(4);
+    font-size: toRem(14);
+  }
+}

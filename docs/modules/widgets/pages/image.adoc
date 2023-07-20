@@ -1,0 +1,15 @@
+==== Widget Image (insertion d’une image)
+
+Exemple de manifest:
+
+[source,js]
+----
+{
+    type: 'image',
+    layout: { x: 1, y: 3, height: 2, width: 2 },
+    options: {
+        src: 'https://devtobecurious.fr/wp-content/uploads/2020/05/state-management-lifecycle.png',
+        alt: 'alternative text'
+    }
+}
+----

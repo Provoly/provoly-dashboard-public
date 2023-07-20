@@ -1,0 +1,12 @@
+=== Share (pry-share)
+
+Le composant `+Share+` permet de paramétrer la visibilité des éléments
+de l’application. Le composant hérite du "`ControlValueAccessor`" qui
+nous permet d’utiliser les propriétés de formulaires Angular. Les
+paramètres du composant sont les suivants :
+
+- ngModel et/ou ngModelChange: Permet de donner et de récupérer la valeur sélectionnée
+- disabled: Permet de désactiver le sélecteur
+- users: Utilisateurs disponibles pour restreindre la visibilité à un groupe de personne
+- labelProperty (défaut='`label`'): Champ du paramètre `+users+` à utiliser en label
+- valueProperty (défaut='`value`'): Champ du paramètre `+users+` à utiliser en valeur

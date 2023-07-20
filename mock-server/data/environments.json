@@ -1,0 +1,17 @@
+[
+  {
+    "name": "test",
+    "type": "DATE",
+    "value": "2022/04/02"
+  },
+  {
+    "name": "Dudu",
+    "type": "STRING",
+    "value": "2"
+  },
+  {
+    "name": "re",
+    "type": "DOUBLE",
+    "value": 12
+  }
+]

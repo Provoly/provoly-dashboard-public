@@ -1,0 +1,51 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Molecule - buttons - / + */
+
+.m-minus-plus {
+  $this: &;
+
+  &__btn {
+    border-color: themed($theme-map, 'color', 'accent', 500);
+
+    &.-minus {
+      background-color: transparent;
+
+      #{$this}__btn__sign {
+        &:before {
+          background-color: themed($theme-map, 'color', 'accent', 500);
+        }
+      }
+
+      &:disabled {
+        border-color: themed($theme-map, 'color', 'primary', 300);
+
+        #{$this}__btn__sign:before {
+          background-color: themed($theme-map, 'color', 'primary', 300);
+        }
+      }
+    }
+
+    &.-plus {
+      background-color: themed($theme-map, 'color', 'accent', 500);
+
+      #{$this}__btn__sign {
+        &:before,
+        &:after {
+          background-color: themed($theme-map, 'color', 'accent', 'contrast', 500);
+        }
+      }
+
+      &:disabled {
+        border-color: themed($theme-map, 'color', 'primary', 300);
+        background-color: themed($theme-map, 'color', 'primary', 300);
+
+        #{$this}__btn__sign:before,
+        #{$this}__btn__sign:after {
+          background-color: themed($theme-map, 'color', 'accent', 'contrast', 500);
+        }
+      }
+    }
+  }
+}

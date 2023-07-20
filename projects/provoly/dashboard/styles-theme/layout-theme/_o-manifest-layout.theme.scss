@@ -1,0 +1,33 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - Manifest layout */
+
+.o-manifest-layout {
+  &__toolbox {
+    border-bottom-color: themed($theme-map, 'color', 'primary', 300);
+    color: themed($theme-map, 'color', 'primary', 'contrast', 100);
+  }
+
+  .o-card-manifest {
+    &:hover {
+      background-color: themed($theme-map, 'color', 'primary', 50);
+    }
+
+    .a-p {
+      color: themed($theme-map, 'color', 'primary', 700);
+
+      &__title {
+        color: themed($theme-map, 'color', 'primary', 400);
+      }
+    }
+
+    .m-btn-group .a-btn {
+      color: themed($theme-map, 'color', 'primary', 400);
+
+      &:hover {
+        color: themed($theme-map, 'color', 'accent', 500);
+      }
+    }
+  }
+}

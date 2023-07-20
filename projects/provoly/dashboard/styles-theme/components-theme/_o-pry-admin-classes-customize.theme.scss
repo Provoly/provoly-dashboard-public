@@ -1,0 +1,14 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - pry-admin-classes-customize */
+.o-pry-admin-classes-customize {
+  .m-rule {
+    border-color: themed($theme-map, 'color', 'grey', 400);
+
+    &--default {
+      border-color: themed($theme-map, 'color', 'accent', 400);
+      border-width: 2px;
+    }
+  }
+}

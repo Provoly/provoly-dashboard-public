@@ -1,0 +1,7 @@
+=== Ajouter un formulaire de création d’objets
+
+Cela peut se faire simplement en ajoutant le composant
+`+<pry-object-creation>+`. Celui-ci ajoutera un bouton déplaçable
+permettant d’ouvrir une popup qui proposera un choix de la classe de
+l’objet à créer, et une fois choisie, un formulaire complet adapté aux
+type de chaque champ de la classe en question.

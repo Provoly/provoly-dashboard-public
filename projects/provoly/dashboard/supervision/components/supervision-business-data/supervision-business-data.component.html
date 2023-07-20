@@ -1,0 +1,51 @@
+<div class="o-base-container">
+  <h1 class="a-h1">{{ '@pry.supervision.businessData.title' | i18n }}</h1>
+  <table
+    class="a-table"
+    prySortTable
+    prySortActive="name"
+    prySortDirection="asc"
+    (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
+  >
+    <caption>
+      {{
+        '@pry.supervision.businessData.title' | i18n
+      }},
+      {{
+        '@pry.action.sortableColumnHeader' | i18n
+      }}
+    </caption>
+    <thead>
+      <tr>
+        <th>
+          <pry-icon iconSvg="detail"></pry-icon>
+        </th>
+        <th prySortHeader="name">{{ '@pry.supervision.businessData.name' | i18n }}</th>
+        <th prySortHeader="count">{{ '@pry.supervision.businessData.count' | i18n }}</th>
+        <th prySortHeader="date">{{ '@pry.supervision.businessData.date' | i18n }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of datas$ | async | prySortData: sortActive : sortDirection">
+        <td>
+          <ng-container *ngIf="data.icon; else noImg">
+            <img [height]="25" [width]="25" [src]="data.icon | getSecuredImage | async" [alt]="data.title" />
+          </ng-container>
+          <ng-template #noImg>
+            <img
+              [height]="25"
+              [width]="25"
+              [src]="data.id | translateId: { type: 'class', output: 'icon' } | async"
+              [alt]="data.title"
+            />
+          </ng-template>
+        </td>
+        <td>{{ data.name }}</td>
+        <td>{{ data.count }}</td>
+        <td>
+          {{ !data.date ? '' : (data.date | date: ('@pry.format.datetime' | i18n)) }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

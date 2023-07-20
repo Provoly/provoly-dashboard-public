@@ -1,0 +1,24 @@
+* Howtos
+** xref:css-theming.adoc[Surcharger le theme css de la librairie]
+** xref:create.adoc[Ajouter un formulaire de création d’objets]
+** xref:apply.adoc[Appliquer des transformations aux récupérations de données]
+** xref:no-pry-back.adoc[Comment faire sans backend Provoly]
+** xref:overload-service.adoc[Surcharger un service]
+** xref:default-ds.adoc[Changer le dataset par défaut]
+** xref:iframe.adoc[Communication avec une application dans un widget iframe]
+** xref:tooltip-chart.adoc[Personnaliser les tooltips du widget chart]
+** xref:icons.adoc[Personnaliser les icones utilisées dans la map/recherche/relations]
+** xref:tooltip.adoc[Personnaliser les tooltips des widgets graph et map]
+** xref:custom-widget.adoc[Ajouter un widget personnalisé]
+
+
+
+
+
+
+
+
+
+
+
+

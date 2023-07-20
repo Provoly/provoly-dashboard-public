@@ -1,0 +1,26 @@
+<div class="select-image">
+  <div class="select-image__select">
+    <button type="button" class="a-btn a-btn--icon-only" id="button-{{ id }}" (click)="toggleImageChoice($event)">
+      <img alt="" [height]="size" [width]="size" [src]="iconUrl | getSecuredImage | async" />
+      <span class="u-visually-hidden">{{ '@pry.action.selectPicture' | i18n }}</span>
+    </button>
+  </div>
+
+  <div class="select-image__add">
+    <div class="m-file-upload">
+      <pry-upload (uploaded)="changeForImage($event)" [mode]="mode"></pry-upload>
+    </div>
+  </div>
+</div>
+
+<ng-template #template>
+  <ul class="overlay overlay--icons" *ngIf="images$ | async as images">
+    <ng-container *ngIf="!(loading$ | async)?.loading">
+      <li class="overlay__point" *ngFor="let image of images">
+        <button class="a-btn a-btn--icon-only" type="button" (click)="changeForImage(image.image)">
+          <img [alt]="image.image" [height]="size" [width]="size" [src]="image.image | getSecuredImage | async" />
+        </button>
+      </li>
+    </ng-container>
+  </ul>
+</ng-template>

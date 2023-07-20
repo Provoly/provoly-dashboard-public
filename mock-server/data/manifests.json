@@ -1,0 +1,563 @@
+[
+  {
+    "name": "cfra123",
+    "manifest": {
+      "windows": [
+        {
+          "widgets": [
+            {
+              "type": "map",
+              "title": "map",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "height": 4,
+                "width": 7
+              },
+              "options": {
+                "fit": true,
+                "layers": [
+                  {
+                    "type": "heatmap"
+                  }
+                ]
+              },
+              "datasource": "19061554-298f-4f56-8cd2-51ccec998307"
+            },
+            {
+              "type": "map",
+              "layout": {
+                "x": 8,
+                "y": 1,
+                "height": 12,
+                "width": 5
+              },
+              "options": {
+                "fit": true,
+                "layers": [
+                  {
+                    "type": "bubble"
+                  }
+                ]
+              },
+              "datasource": "19061554-298f-4f56-8cd2-51ccec998307"
+            },
+            {
+              "type": "map",
+              "layout": {
+                "x": 1,
+                "y": 5,
+                "height": 8,
+                "width": 7
+              },
+              "options": {
+                "fit": true,
+                "layers": [
+                  {
+                    "type": "marker"
+                  }
+                ]
+              },
+              "datasource": "19061554-298f-4f56-8cd2-51ccec998307"
+            }
+          ]
+        },
+        {
+          "widgets": [
+            {
+              "type": "table",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "height": 12,
+                "width": 8
+              },
+              "options": {},
+              "datasource": "19061554-298f-4f56-8cd2-51ccec998307"
+            },
+            {
+              "type": "detail",
+              "layout": {
+                "x": 9,
+                "y": 4,
+                "height": 12,
+                "width": 4
+              },
+              "options": {},
+              "datasource": "19061554-298f-4f56-8cd2-51ccec998307"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "iframe",
+    "manifest": {
+      "windows": [
+        {
+          "widgets": [
+            {
+              "type": "iframe",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "height": 12,
+                "width": 7
+              },
+              "options": {
+                "src": "http://localhost:3000/"
+              }
+            }
+          ],
+          "route": "/dashboard"
+        }
+      ]
+    }
+  },
+  {
+    "name": "empty",
+    "manifest": {
+      "windows": [
+        {
+          "widgets": [],
+          "route": "/dashboard"
+        }
+      ]
+    }
+  },
+  {
+    "name": "map_et_table",
+    "manifest": {
+      "locked": false,
+      "windows": [
+        {
+          "widgets": [
+            {
+              "type": "table",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "height": 12,
+                "width": 7
+              },
+              "options": {},
+              "datasource": "19061554-298f-4f56-8cd2-51ccec998307"
+            },
+            {
+              "type": "map",
+              "layout": {
+                "x": 8,
+                "y": 1,
+                "height": 8,
+                "width": 5
+              },
+              "options": {
+                "fit": true,
+                "tooltipMode": "click",
+                "layers": [
+                  {
+                    "type": "marker"
+                  }
+                ]
+              },
+              "datasource": "19061554-298f-4f56-8cd2-51ccec998307"
+            },
+            {
+              "type": "detail",
+              "layout": {
+                "x": 8,
+                "y": 9,
+                "height": 4,
+                "width": 5
+              },
+              "options": {}
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "2 charts",
+    "manifest": {
+      "windows": [
+        {
+          "widgets": [
+            {
+              "type": "table",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "height": 6,
+                "width": 12
+              },
+              "options": {},
+              "datasource": "39061554-298f-4f56-8cd2-51ccec998307"
+            },
+            {
+              "type": "chart",
+              "layout": {
+                "x": 7,
+                "y": 7,
+                "height": 6,
+                "width": 12
+              },
+              "options": {},
+              "datasource": "06406e7e-37cd-41ce-b5fc-36d233e5ae5c"
+            }
+          ],
+          "route": "/dashboard"
+        }
+      ]
+    }
+  },
+  {
+    "name": "alexis",
+    "manifest": {
+      "windows": [
+        {
+          "widgets": [
+            {
+              "header": false,
+              "type": "text",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "height": 3,
+                "width": 3
+              },
+              "options": {
+                "title": "Stationnements",
+                "type": "parking"
+              },
+              "datasource": "15061554-298f-4f56-8cd2-52ccec998307"
+            },
+            {
+              "header": false,
+              "type": "chart",
+              "layout": {
+                "x": 1,
+                "y": 4,
+                "height": 3,
+                "width": 3
+              },
+              "options": {
+                "title": "Equipements",
+                "secondaryAggregationType": "count",
+                "mark": {
+                  "type": "arc",
+                  "point": false,
+                  "line": false,
+                  "innerRadius": "80"
+                },
+                "markKey": "arc",
+                "chartTemplate": "donut",
+                "encoding": {
+                  "theta": {
+                    "field": "attributes.axe.value",
+                    "title": "axe",
+                    "type": "nominal",
+                    "aggregate": "count"
+                  },
+                  "color": {
+                    "field": "attributes.an_nais.value",
+                    "title": "an_nais",
+                    "type": "quantitative"
+                  }
+                },
+                "selectedVariables": [
+                  {
+                    "id": "bcd9a238-3333-4cec-803b-16b415f87445",
+                    "property": "attributes.an_nais.value",
+                    "fieldId": "b1633f47-53f6-46ed-b197-0d0a7fb79ece",
+                    "label": "an_nais",
+                    "type": "quantitative",
+                    "fieldName": "an_nais",
+                    "axisOptions": {
+                      "tickMinStep": 1
+                    }
+                  },
+                  {
+                    "id": "6c87f8bc-f30e-4875-b03b-9c4fa97d7286",
+                    "property": "attributes.axe.value",
+                    "fieldId": "4a641178-dca2-40ad-8ee4-063c69d5111d",
+                    "label": "axe",
+                    "type": "nominal",
+                    "fieldName": "axe"
+                  }
+                ]
+              },
+              "datasource": "19061554-298f-4f56-8cd2-51ccec998307"
+            },
+            {
+              "type": "map",
+              "header": false,
+              "layout": {
+                "x": 6,
+                "y": 1,
+                "height": 12,
+                "width": 8
+              },
+              "options": {
+                "fit": true,
+                "layers": [
+                  {
+                    "type": "marker",
+                    "locationAttribute": [
+                      "latitude",
+                      "longitude"
+                    ]
+                  },
+                  {
+                    "type": "bubble",
+                    "locationAttribute": [
+                      "latitude",
+                      "longitude"
+                    ],
+                    "intensityAttribute": "an_nais"
+                  }
+                ]
+              },
+              "datasource": "19061554-298f-4f56-8cd2-51ccec998307"
+            }
+          ],
+          "route": "/dashboard"
+        }
+      ]
+    }
+  },
+  {
+    "name": "issue-124",
+    "manifest": {
+      "windows": [
+        {
+          "widgets": [
+            {
+              "type": "chart",
+              "layout": {
+                "x": 7,
+                "y": 1,
+                "width": 6,
+                "height": 6
+              },
+              "options": {
+                "type": "bar",
+                "subType": "default",
+                "title": "Conditions atmospheriques, Nombre",
+                "selectedVariables": [
+                  {
+                    "type": "nominal",
+                    "label": "Conditions atmospheriques",
+                    "name": "Conditions atmospheriques"
+                  },
+                  {
+                    "label": "Nombre",
+                    "axisOptions": {
+                      "tickMinStep": 1
+                    }
+                  }
+                ],
+                "aggregation": "count",
+                "tooltip": true,
+                "legend": false,
+                "customTitle": "Accident par condition atmosphérique"
+              },
+              "datasource": [
+                "62e70553-bb89-434a-838c-1d30225bf456"
+              ]
+            },
+            {
+              "type": "chart",
+              "layout": {
+                "x": 7,
+                "y": 7,
+                "width": 6,
+                "height": 6
+              },
+              "options": {
+                "type": "line",
+                "subType": "default",
+                "title": "intersection, Nombre",
+                "selectedVariables": [
+                  {
+                    "type": "nominal",
+                    "label": "intersection",
+                    "name": "intersection"
+                  },
+                  {
+                    "label": "Nombre",
+                    "axisOptions": {
+                      "tickMinStep": 1
+                    }
+                  }
+                ],
+                "aggregation": "count",
+                "tooltip": true,
+                "legend": false,
+                "customTitle": "Accident par intersection"
+              },
+              "datasource": [
+                "62e70553-bb89-434a-838c-1d30225bf456"
+              ]
+            },
+            {
+              "type": "map",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "width": 6,
+                "height": 12
+              },
+              "options": {
+                "fit": true,
+                "layers": [
+                  {
+                    "type": "marker"
+                  }
+                ]
+              },
+              "datasource": [
+                "62e70553-bb89-434a-838c-1d30225bf456"
+              ]
+            }
+          ],
+          "route": "/dashboard"
+        }
+      ]
+    }
+  },
+  {
+    "name": "issue-163",
+    "manifest": {
+      "windows": [
+        {
+          "widgets": [
+            {
+              "type": "detail",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "width": 5,
+                "height": 9
+              },
+              "options": {}
+            },
+            {
+              "type": "map",
+              "layout": {
+                "x": 7,
+                "y": 1,
+                "width": 12,
+                "height": 12
+              }
+            },
+            {
+              "type": "table",
+              "layout": {
+                "x": 6,
+                "y": 13,
+                "height": 12,
+                "width": 7
+              },
+              "options": {},
+              "datasource": "19061554-298f-4f56-8cd2-51ccec998307"
+            },
+            {
+              "type": "map",
+              "layout": {
+                "x": 6,
+                "y": 25,
+                "height": 8,
+                "width": 5
+              },
+              "options": {
+                "fit": true,
+                "tooltipMode": "click",
+                "layers": [
+                  {
+                    "type": "marker"
+                  }
+                ]
+              },
+              "datasource": "19061554-298f-4f56-8cd2-51ccec998307"
+            }
+          ],
+          "grid": {
+            "rows": 32
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "map_et_chart",
+    "manifest": {
+      "locked": false,
+      "windows": [
+        {
+          "widgets": [
+            {
+              "type": "table",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "height": 12,
+                "width": 6
+              },
+              "options": {},
+              "datasource": "graphspe-cifi-cdat-acd2-51ccec998307"
+            },
+            {
+              "type": "chart",
+              "layout": {
+                "x": 7,
+                "y": 1,
+                "height": 12,
+                "width": 6
+              },
+              "options": {
+                "title": "test",
+                "ordinate": {
+                  "attribute": "da314951-82cb-4e93-9955-4654993f231c",
+                  "operation": "none",
+                  "label": "Température"
+                },
+                "abscissa": {
+                  "attribute": "d5d4cda4-7ff3-4f19-ab69-7c95745888cf",
+                  "label": "Date"
+                },
+                "graph": {
+                  "offset": true,
+                  "stacked": true
+                },
+                "groupBy": {
+                  "attribute": "eothr951-82cb-4e93-9955-4654993f231c"
+                }
+              },
+              "datasource": "graphspe-cifi-cdat-acd2-51ccec998307"
+            }
+          ]
+        }
+      ],
+      "filters": [
+        {
+          "id": "3695ce4c-26d9-4fba-8ceb-e50b18b22688",
+          "name": "nom station",
+          "type": "list",
+          "attributes": [
+            {
+              "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+              "name": "station_nom",
+              "label": "station_nom / Data for charts / station velo",
+              "datasource": "graphspe-cifi-cdat-acd2-51ccec998307",
+              "type": "string"
+            }
+          ],
+          "operator": "EQUALS",
+          "possibleValues": "A,B,C"
+        }
+      ]
+    }
+  }
+]

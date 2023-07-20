@@ -1,0 +1,66 @@
+<pry-select-grid-layout-css></pry-select-grid-layout-css>
+<div [attr.aria-expanded]="modalOpened" aria-controls="grid-layout">
+  <button type="button" #openModal class="a-btn a-btn--secondary -size-md" (click)="toggleGridChoiceModal()">
+    <ng-container *ngIf="label">
+      {{ '@pry.toolbox.chooseGrid' | i18n }}
+    </ng-container>
+  </button>
+</div>
+<ng-template #template>
+  <div
+    class="o-modal"
+    (click)="$event.stopPropagation()"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dialog_title"
+    id="grid-layout"
+    (keydown.escape)="toggleGridChoiceModal()"
+  >
+    <div class="o-modal__top">
+      <div class="o-modal__top__title">
+        <h2 class="a-h2" id="dialog_title">{{ '@pry.toolbox.chooseGrid' | i18n }}</h2>
+      </div>
+      <div class="o-modal__top__close">
+        <button
+          class="a-btn a-btn--icon-only"
+          #cross
+          (keydown.shift.tab)="focusValidation()"
+          (click)="toggleGridChoiceModal()"
+        >
+          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+    <div class="o-select-grid-layout-wrapper">
+      <ul class="o-select-grid-layout">
+        <li *ngFor="let layout of availableLayouts$ | async" class="o-select-grid-layout__item">
+          <button
+            type="button"
+            #firstButton
+            class="a-btn"
+            [attr.aria-pressed]="chosenLayout === layout.value"
+            [class.selected]="chosenLayout === layout.value"
+            (click)="changeLayout(layout.value)"
+          >
+            <div class="u-txt-center">
+              <img [src]="layout.image" />
+              <strong>{{ layout.translation | i18n }}</strong>
+            </div>
+            <p class="a-p">
+              {{ layout.translation + '_detailled' | i18n }}
+            </p>
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div class="m-btn-group -space-evenly">
+      <button (click)="toggleGridChoiceModal()" class="a-btn a-btn--secondary">
+        {{ '@pry.toolbox.manifest.close' | i18n }}
+      </button>
+      <button (click)="validate()" class="a-btn a-btn--primary" #confirm (keydown.tab)="focusCrossElement()">
+        {{ '@pry.toolbox.manifest.validated' | i18n }}
+      </button>
+    </div>
+  </div>
+</ng-template>

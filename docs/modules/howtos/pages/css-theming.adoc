@@ -1,0 +1,357 @@
+== Theming : architecture et surcharge du thème css de la librairie
+
+
+=== Architecture du thème de la librairie
+
+Le thème de base, intégré à la librairie, est défini dans ``/projects/provoly/dashboard/styles-theme/``
+
+Voir ici ** xref:concepts:css-architecture.adoc[Architecture CSS de la lib]
+
+=== Variables du thème de la lib
+
+Les variables de thème sont définies dans des maps SASS imbriquées, sous la forme de paires clé/valeur, dans le répertoire ``styles-theme/abstracts-theme/variables/``
+
+* variables-colors.scss : définition des palettes de couleurs "primary", "accent", "grey" et "status"
+* variables-decoration.scss : définition de propriétés de décoration (border-radius, état focus-visible, etc...)
+* variables-fonts.scss : définition de la ou les fonts utilisées
+* variables-typo.scss : définition, par types d'éléments, des propriétés de texte (font-size, font-weight, line-height, etc...)
+
+Merge des maps (dans $theme-map) définies dans les fichiers de variables, dans ``styles-theme/abstracts-theme/variables.theme.scss`` :
+
+[source,sass]
+----
+@use '../../styles/abstracts/functions' as *;
+@use 'variables' as *;
+
+// Merge variables maps dans $theme-map
+$theme-map: map-collect($theme-map-colors, $theme-map-typography, $theme-map-fonts, $theme-map-decoration) !default;
+----
+
+La variable $theme-map contient le merge de l'ensemble des maps css définies dans les différents fichiers de variables, variable map nécessaire à la fonction de theming `themed($theme-map, '...', '...')`
+
+Lorsqu'un nouveau fichier de variables est créé (dans "styles-theme/abstracts-theme/variables.theme.scss"), la variable map correspondante doit être ajoutée à `$theme-map: map-collect(...)`
+
+
+
+=== Configuration du theming dans le projet
+
+Toutes les variables (maps) définies dans la librairie, sont accessibles depuis le projet qui appelle la lib.
+
+Eléments requis pour accéder aux variables de la lib dans le projet courant :
+
+- Créer le répertoire `/src/styles/abstracts/variables-project`
+
+- Créer le fichier `_index.scss` à la racine du répertoire `/src/styles/abstracts/variables-project`
+
+- Créer le fichier `_variables.theme.scss`, à la racine du répertoire `/src/styles/abstracts/` :
+
+[source,sass]
+----
+@use '/node_modules/@provoly/dashboard/styles/abstracts/functions' as *;
+// Variables set in lib
+@use '/node_modules/@provoly/dashboard/styles-theme/abstracts-theme/variables' as *;
+// Variables set locally in current project
+@use 'variables-project' as  *;
+
+// Merge all maps in $theme-map
+$theme-map: map-collect($theme-map-colors, $theme-map-typography, $theme-map-fonts, $theme-map-decoration, $theme-icomoon);
+----
+
+La fonction `map-collect()` doit, à minima, recevoir en arguments toutes les maps créées dans la lib:
+
+* $theme-map-colors
+* $theme-map-typography
+* $theme-map-fonts
+* $theme-map-decoration
+
+Les maps créées au niveau du projet, doivent également être passées en argument de `map-collect()`
+
+* Exemple : $theme-icomoon
+
+
+Editer le fichier `/src/styles/style.scss` et ajouter l'appel aux fichiers de variables, #avant l'import des fichiers sass de la lib :
+
+[source,sass]
+----
+// Get project theme maps
+@use 'abstracts/variables.theme' as *;
+// Import lib theme maps, merged with project theme maps
+@use '/node_modules/@provoly/dashboard/styles-theme/abstracts-theme/variables.theme' with (
+  $theme-map : $theme-map
+);
+
+// Import lib sass files
+@use '/node_modules/@provoly/dashboard/styles/main' as *;
+@use '/node_modules/@provoly/dashboard/styles-theme/main-theme' as *;
+
+----
+
+En l'état, les variables de la lib sont accessibles depuis le projet, à l'aide de la fonction `themed()`, de la même manière que dans la lib.
+
+La fonction `themed()` permet de parcourir et accéder aux variables de maps SASS imbriquées.
+
+Exemple :
+
+[source,sass]
+----
+$theme-map-decoration : (
+  'decoration': (
+    'border-radius': (
+      'button': (
+        'default' : 22px,
+        'small' : 15px
+      )
+    )
+    'focus-visible' : (
+      'border-color-light': white,
+      'border-color-dark': #35b99f,
+      'border-radius': 22px
+    )
+  )
+);
+----
+
+[source,sass]
+----
+.my-class-button{
+  border-radius: themed($theme-map, 'decoration', 'border-radius', 'button', 'small');
+
+  &:focus-visible{
+    box-shadow: 0 0 0 4px themed($theme-map, 'decoration', 'focus-visible', 'border-color-dark');
+  }
+}
+----
+
+
+
+=== Surcharge du thème css de la librairie
+
+La surcharge du thème consiste à :
+
+* Redéfinir, au niveau du projet, les variables (clé/valeur) existant dans la lib
+
+(et/ou)
+
+* Définir de nouvelles variables non existantes dans la lib
+
+
+Il est possible de surcharger toutes les variables de la lib, ou seulement certaines variables de certaines maps.
+
+Exemple 1, surcharge de couleurs de la palette 'primary' :
+
+[source,sass]
+----
+// Extrait de la map des couleurs "primary" de la lib
+$theme-colors-primary:(
+  50: #ecedf4,
+  100: #d9dce8,
+  200: #ccd0e0,
+  300: #9ea5bf,
+  400: #6f779b,
+  'contrast': (
+      50: #000000,
+      100: #000000,
+      200: #000000,
+      300: #000000,
+      400: #ffffff
+  )
+);
+----
+
+Pour surcharger la valeur des clés '50', '300' et 'contrast 200' de cette map au niveau du projet :
+
+[source,sass]
+----
+$theme-colors-primary-extend:(
+  50: blue,
+  300: red,
+  'contrast': (
+      200: #000000
+  )
+);
+----
+
+Seules les clés/valeurs à surcharger sont déclarées au niveau du projet.
+
+
+Exemple 2, ajout de couleurs, non existantes dans la lib, à la palette "primary"
+
+[source,sass]
+----
+$theme-colors-primary-extend:(
+  150 : purple,
+  1100 : rgba(0, 0, 0, 0.8),
+  'contrast': (
+    150: #FFFFFF,
+    1100: #FFFFFF
+    )
+);
+----
+
+
+=== Structure des fichiers de surcharge
+
+Dans le répertoire `src/styles/abstracts/variables-project/`, pour chaque type de surcharge (colors, fonts, etc...) créer un fichier de variables `_variables-typedevariable.scss`
+
+Référencer chaque fichier de variables dans `src/styles/abstracts/variables-project/_index.scss` :
+
+Exemple :
+[source,sass]
+----
+@forward "variables-colors";
+@forward "variables-decoration";
+@forward "variables-fonts";
+@forward "variables-typo";
+@forward "variables-icomoon";
+----
+
+
+Structure des fichiers de variables :
+
+[source,sass]
+----
+@use 'node_modules/@provoly/dashboard/styles/abstracts/functions' as *;
+// Get theme color palettes created in the lib
+@use 'node_modules/@provoly/dashboard/styles-theme/abstracts-theme/variables' as *;
+
+
+/// Extend colors maps (update or add colors)
+
+// Extend primary palette
+$theme-colors-primary-extend: (
+  50 : red,
+  'contrast' : (
+    50: #FFFFFF
+  )
+);
+
+// Extend accent palette
+$theme-colors-accent-extend: (
+  ... autres surcharges
+);
+
+// Extend grey palette
+$theme-colors-grey-extend: (
+ ... autres surcharges
+);
+
+// Extend status palette
+$theme-colors-status-extend: (
+ ... autres surcharges
+);
+
+
+///// DO NOT EDIT FROM HERE /////
+$extended-theme-colors-primary: map-extend($theme-colors-primary, $theme-colors-primary-extend, true);
+$extended-theme-colors-accent: map-extend($theme-colors-accent, $theme-colors-accent-extend, true);
+$extended-theme-colors-grey: map-extend($theme-colors-grey, $theme-colors-grey-extend, true);
+$extended-theme-colors-status: map-extend($theme-colors-status, $theme-colors-status-extend, true);
+
+$theme-map-colors : (
+  'color': (
+    'primary':  $extended-theme-colors-primary,
+    'accent':   $extended-theme-colors-accent,
+    'grey':     $extended-theme-colors-grey,
+    'status' :  $extended-theme-colors-status
+  )
+);
+----
+
+Règle des maps surchargées :
+
+* Ajouter le suffixe `-extend` au nom de la map créée dans la lib, exemple : $theme-colors-primay-extend
+* Utiliser le préfixe `extended-` au nom de la variable de merge des maps `map-extend()`
+* La map globale, en fin d'un fichier de variable, doit avoir la même structure de maps imbriquées que dans le fichier de variables surchargé de la lib
+
+Lib :
+[source,sass]
+----
+$theme-map-colors : (
+  'color': (
+    'primary':  $theme-colors-primary,
+    'accent':   $theme-colors-accent,
+    'grey':     $theme-colors-grey,
+    'status' :  $theme-colors-status
+  )
+);
+----
+
+Projet :
+
+[source,sass]
+----
+$theme-map-colors : (
+  'color': (
+    'primary':  $extended-theme-colors-primary,
+    'accent':   $extended-theme-colors-accent,
+    'grey':     $extended-theme-colors-grey,
+    'status' :  $extended-theme-colors-status
+  )
+);
+----
+
+=== Accès aux variables de thème au niveau du projet
+
+Pour accèder aux variables du thème, dans les fichiers scss du projet, ajouter les imports suivants, en début de fichier :
+
+[source,sass]
+----
+@use '/node_modules/@provoly/dashboard/styles/abstracts' as *;
+@use '/src/styles/abstracts/variables.theme' as *;
+----
+
+
+La fonction `themed()` reçoit toujours `$theme-map` en premier argument
+
+* `background-color: themed($theme-map, 'color', 'primary', '50');`
+
+* `color: themed($theme-map, 'color', 'primary', 'contrast', '50');`
+
+* `border-radius: toRem(themed($theme-map, 'decoration', 'border-radius', 'card'));`
+
+* `@include typography-level(themed($theme-map, 'typography', 'title-1'));`
+
+
+=== A propos des maps Sass
+
+Dans les maps Sass, les clés s'écrivent entre quotes lorsqu'elles sont de type `string`
+
+[source,sass]
+----
+$theme-colors-accent: (
+  50: #ecf4f4,
+  100: #d2e6e6,
+  'A100': #88faff,
+    'contrast': (
+      50: #000000,
+      100: #000000,
+      'A100': #000000,
+    )
+);
+----
+
+Dans les map l'unité de mesure est le "px", les pixels sont convertis en "rem" lors de leur utilisation.
+
+[source,sass]
+----
+$theme-typography: (
+  'font-family-default': $typography-default-font-family,
+
+  'body': (
+    'font-family':      $typography-default-font-family,
+    'font-variation':   '',
+    'font-size' :       14px,
+    'line-height' :     18px,
+    'letter-spacing' :  '',
+    'font-weight':      400,
+    'font-style' :      normal
+  ),
+);
+----
+
+
+
+TODO - Documenter :
+
+* functions/mixins utils
+

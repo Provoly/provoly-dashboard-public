@@ -1,0 +1,22 @@
+name: provoly-dashboard
+title: Provoly dashboard
+version: true
+nav:
+  - modules/concepts/nav.adoc
+  - modules/installation/nav.adoc
+  - modules/components/nav.adoc
+  - modules/modules/nav.adoc
+  - modules/services/nav.adoc
+  - modules/widgets/nav.adoc
+  - modules/howtos/nav.adoc
+  - modules/store/nav.adoc
+  - modules/ROOT/nav.adoc
+ext:
+  collector:
+    - run:
+        command: "npm run docs"
+    - run:
+        command: "cp -r ./compodoc /builds/cds-bdx/pole-edition/pry/pry-deploy"
+      scan:
+        dir: compodoc
+        base: modules/compodoc/pages

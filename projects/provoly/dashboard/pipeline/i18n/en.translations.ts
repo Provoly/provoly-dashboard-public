@@ -1,0 +1,73 @@
+export const enTranslations = {
+  '@pry': {
+    pipeline: {
+      codes: {
+        LOOP_IN_TASK: 'A loop is present in the task model, using following nodes: {{ids}}',
+        MISSING_NODE: 'A link to a non-existent node is present : {{value}}',
+        DUPLICATE_NODE: 'Node with id {{id}} is present twice in the model',
+        NO_INPUT: 'A node input is not link even though it is mandatory',
+        NO_INPUT_MODEL: 'Previous node in graph has not provided a model',
+        GRAPH_CANNOT_BE_PARSED: 'Serialized graph cannot be parsed.',
+        GENERIC_ERROR: 'Server validation error ({{error}})',
+        MISSING_PROPERTY: 'Property {{propertyName}} is mandatory',
+        BAD_ATTRIBUTE_TYPE: 'Attribute {{attributeName}} has wrong type.',
+        DATASET_CONFLICT: 'Following datasets ({{datasetIds}}) are inputs and outputs of the pipeline'
+      },
+      activateError: 'Error on activate',
+      deactivateError: 'Error on deactivate',
+      editor: 'Go to process',
+      errors: 'Errors',
+      global: 'Global',
+      node: 'Node',
+      consult: 'Consult',
+      execute: 'Execute',
+      execution_date: 'Execution date',
+      version: 'Version',
+      execution: 'Execution state',
+      title: 'Component title',
+      activity: 'Activity',
+      action: 'Action',
+      transformation_catalog: 'Transformation catalog',
+      activate: 'Activate',
+      activated: 'Activated',
+      deactivate: 'Deactivate',
+      deactivated: 'Deactivated',
+      backToDescription: 'Back to description',
+      selectedTask: 'Selected task',
+      type: 'Type',
+      ok: 'OK',
+      ko: 'KO',
+      create: 'Create transformation',
+      save: 'Save',
+      cancel: 'Cancel',
+      goBack: 'Back to catalog',
+      details: {
+        consult: 'Consultation',
+        transformation: 'Transformation',
+        detail: 'Detail',
+        title: 'Title',
+        description: 'Description',
+        version: 'Version',
+        creation_date: 'Creation date',
+        state: 'State',
+        execution: 'Execution',
+        execution_status: 'Execution status',
+        execution_date: 'Execution date',
+        last_execution_date: 'Last execution date',
+        required: 'This field is required',
+        maxLength: 'Number of characters allowed: {{len}}'
+      },
+      input: 'Incoming data sources',
+      operation: 'Operation list',
+      output: 'Outgoing dataset',
+      delete: 'Delete component',
+      down: 'Display sub-graph',
+      up: 'Exit sub-graph',
+      status: {
+        terminated: 'Completed',
+        started: 'In progress',
+        error: 'Error'
+      }
+    }
+  }
+};

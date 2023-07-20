@@ -1,0 +1,14 @@
+<div class="m-time-picker" *ngIf="{ hour: selectedHour | async, minute: selectedMinute | async } as time">
+  <loop-scroll-column
+    [list]="HOURS"
+    [selectedItem]="time.hour"
+    (selection)="selectHour($event)"
+    #hourInput
+  ></loop-scroll-column>
+  <loop-scroll-column
+    [list]="MINUTES"
+    [selectedItem]="time.minute"
+    (selection)="selectMinute($event)"
+    #minuteInput
+  ></loop-scroll-column>
+</div>

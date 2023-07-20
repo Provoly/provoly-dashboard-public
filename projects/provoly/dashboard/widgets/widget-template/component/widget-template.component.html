@@ -1,0 +1,3 @@
+<pry-widget-template-css></pry-widget-template-css>
+<div *ngIf="css$ | async as css" [innerHtml]="css"></div>
+<div *ngIf="template$ | async as template" [class]="'pry-template-' + id" [innerHtml]="template"></div>

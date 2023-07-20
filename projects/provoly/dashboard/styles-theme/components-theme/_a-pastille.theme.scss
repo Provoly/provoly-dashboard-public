@@ -1,0 +1,14 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Atom - pastille.  Ex: nombre de notifications */
+
+.a-pastille {
+  @include typography-level(themed($theme-map, 'typography', 'pastille'));
+  color: white;
+  background-color: themed($theme-map, 'color', 'accent', 600);
+
+  &.-unread {
+    background-color: themed($theme-map, 'color', 'status', 'error');
+  }
+}

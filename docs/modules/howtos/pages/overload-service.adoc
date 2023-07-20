@@ -1,0 +1,33 @@
+=== Surcharger un service
+
+On voudra effectuer cette opération si l’on ne dispose pas d’un backend
+pry (et c’est dommage !). Mais dans ce cas-là, afin de surcharger un
+service, il suffit de le fournir directement dans votre application, en
+réutilisant le service originel. Par exemple, si je souhaite changer le
+comportement des recherches nommées (j’utilise un widget avec des
+namedquery d’id 1/2/3 dans cet exemple) :
+
+* Je définis le comportement vis-à-vis du server en héritant du service
+de base, en gardant le type de retour :
+[source,js]
+----
+@Injectable({ providedIn: '`root`' })
+export class MySearchService extends SearchService {
+    constructor(private httpClient: HttpClient, private store: Store<ConfigState | SearchState>) {
+        super(…);
+    }
+    searchNamed(id: string): Observable<ResultSet> {
+        return this.httpClient.get<MyServerInterface>(encodeURI(`<my-server-url>`))
+            .pipe(map(serverResult => mapAsResultSet(serverResult)));
+    }
+    ...
+----
+
+* Je fournis ensuite ce service pour qu’il soit utilisé en lieu et place
+de celui par défaut :
+[source,js]
+----
+providers: [ \{ provide: SearchService, useClass: MySearchService }, … ],
+----
+* Pry utilisera directement ce service pour (dans cet exemple) effectuer
+les requêtes de services nommés

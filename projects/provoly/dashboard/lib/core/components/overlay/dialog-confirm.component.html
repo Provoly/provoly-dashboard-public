@@ -1,0 +1,43 @@
+<div
+  class="o-modal-wrapper"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="dialog_confirmDelete"
+  (keydown.escape)="onClick()"
+>
+  <div class="o-modal">
+    <div class="o-modal__top">
+      <div class="o-modal__top__title">
+        <h2 class="a-h2" id="dialog_title">
+          {{ data.title | i18n }}
+        </h2>
+      </div>
+      <div class="o-modal__top__close">
+        <button class="a-btn a-btn--icon-only" (click)="closeDialog()" #cross>
+          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+    <div>
+      <p *ngIf="data?.message as message" class="a-p">{{ message | i18n }}</p>
+    </div>
+    <div class="m-btn-group">
+      <ng-container *ngFor="let action of data.actions" #buttonAction>
+        <button
+          (click)="onClick(action)"
+          class="a-btn"
+          type="button"
+          [class.a-btn--primary]="action.color === 'primary' || action.color === undefined"
+          [class.a-btn--secondary]="action.color === 'secondary'"
+          [class.a-btn--tertiary]="action.color === 'tertiary'"
+          [class.a-btn--ghost]="action.color === 'ghost'"
+          [ngClass]="{ 'a-btn--icon-text': action.icon }"
+        >
+          <pry-icon *ngIf="action.icon" [iconSvg]="action.icon"></pry-icon>
+          {{ action.label | i18n }}
+        </button>
+      </ng-container>
+    </div>
+  </div>
+</div>

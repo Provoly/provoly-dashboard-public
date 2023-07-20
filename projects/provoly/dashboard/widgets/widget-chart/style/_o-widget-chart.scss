@@ -1,0 +1,43 @@
+@use '../../../styles/abstracts/index' as *;
+
+/* Organism - widget tile */
+/* Extends o-widget */
+
+.o-widget--chart {
+  &-color-thumb {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+
+    &-item {
+      flex: 1 1 20px;
+      height: 20px;
+      border-radius: 4px;
+    }
+  }
+
+  div.vega-embed {
+    display: block;
+  }
+
+  div.vega-embed.has-actions {
+    display: block;
+    height: 100%;
+    padding-right: 0;
+
+    > div.chart-wrapper.fit-y.fit-x {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    > details {
+      > summary {
+        right: 25px;
+      }
+
+      .vega-actions {
+        right: 16px;
+      }
+    }
+  }
+}

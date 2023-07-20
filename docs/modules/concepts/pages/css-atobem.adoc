@@ -1,0 +1,456 @@
+= Méthodologie CSS "ATOBEM"
+
+ATOBEM est la fusion du concept d'Atomic Design et de la méthodogie CSS "BEM"
+
+Ressources :
+
+* https://atomicdesign.bradfrost.com/
+* https://getbem.com/
+
+
+== Atomic Design
+
+L’approche Atomic Design consiste à concevoir les éléments simples de l'interface (atomes) puis de les assembler pour concevoir des éléments plus complexes (molécules, organismes), jusqu'aux pages complètes.
+
+Avantages d'Atomic Design :
+
+* Proximité avec les méthodes de création d’un Design System
+* Meilleure compréhension entre les acteurs du projet (Designer, intégrateur, développeur, etc...)
+* Faciliter le codage pour les développeurs
+* Faciliter la réutilisation des composants
+* Garder une cohérence globale sur les éléments d’interface
+
+
+=== Atomes
+
+Les atomes sont les éléments de base de l’interface.
+Ils sont non divisibles, et ne peuvent être décomposés en d’autres atomes.
+
+_Convention de nommage :_
+
+Le nom des atomes est préfixé de "a-" (HTML & SCSS)
+
+_Exemples d'atomes :_
+
+[source, html]
+----
+
+<label for="anID" class="a-label">Your name</label>
+
+<input type="text" id="anID" class="a-form-field" placeholder="Your name..." />
+
+<button class="a-btn a-btn-primary" type="button">Valider</button>
+----
+
+Chaque atome est associé à une feuille de styles qui lui est dédiée
+
+Le nom de la feuille de styles associée à un atome est préfixé par "a-" suivi du nom de l'atome
+
+Exemple : `a-btn.scss` pour l'atome button dont le nom de classe est "a-btn"
+
+
+
+=== Molecules
+
+Les molécules représentent le regroupement de 1 ou plusieurs atomes pour former  une molécule.
+La molécule doit rester un élément d'interface simple.
+
+_Convention de nommage :_
+
+Le nom des molécules est préfixé de "m-" (HTML & SCSS)
+
+_Exemples de molécules :_
+
+Regroupement des atomes label (a-label) et d'un champ input (a-form-field) pour former la molécule "m-form-label-field"
+
+[source, html]
+----
+  <div class="m-form-label-field">
+    <label class="a-label" for="status">status</label>
+    <input type="text" id="status" class="a-form-field" value="">
+  </div>
+----
+
+Regroupement de 2 atomes button (a-btn) et d'un champ input (a-form-field) pour former la molécule "m-btn-group"
+
+[source, html]
+----
+<div class="m-btn-group">
+  <button type="button" class="a-btn a-btn--ghost"> Annuler </button>
+  <button type="button" class="a-btn a-btn--primary"> Créer </button>
+</div>
+----
+
+Chaque molécule peut être associée à une feuille de styles.
+
+Les atomes d'une molécule sont stylés à partir de la feuille de styles qui leur est dédiée.
+
+ET
+
+La feuille de styles associée à la molécule permet de définir les styles de ces éléments lorsqu'ils sont regroupés, sans avoir à modifier les styles originels des atomes présents dans cette molécule.
+
+Le nom de la feuille de styles associée à une molécule est préfixé par "m-" suivi du nom de la molécule
+
+Exemple : `m-btn-group.scss` pour la molécule dont le nom de classe est "m-btn-group"
+
+
+=== Organismes
+
+
+Les organismes représentent le regroupement de 1 ou plusieurs atomes et/ou 1 ou plusieurs molécules pour former un élément plus complexe de l'interface.
+
+_Convention de nommage :_
+
+Le nom des organismes est préfixé de "o-" (HTML & SCSS)
+
+Exemples :
+
+Regroupement de 2 molécules et d'un atome pour former l'organisme "o-form-fieldset"
+
+[source, html]
+----
+<div class="o-form-fieldset">
+    <fieldset>
+      <div class="m-form-label-field">
+        <label class="a-label" for="latitude">latitude</label>
+        <input type="text" id="latitude" class="a-form-field" value="">
+      </div>
+
+      <div class="m-form-label-field">
+        <label class="a-label" for="longitude">longitude</label>
+        <input type="text" id="longitude" class="a-form-field" value="">
+      </div>
+    </fieldset>
+    <button type="submit" class="a-btn a-btn--ghost">Valider</button>
+</div>
+----
+
+
+Chaque organisme peut être associé à une feuille de styles.
+
+Les atomes et molécules sont stylés à partir des feuilles de styles qui leur sont dédiées.
+
+ET
+
+La feuille de styles associée à l'organisme permet de définir les styles de ces éléments lorsqu'ils sont assemblés, sans avoir à modifier les styles originels des molécules et/ou atomes présents dans cet organisme.
+
+Le nom de la feuille de styles associée à un organisme est préfixé par "o-" suivi du nom de l'organisme
+
+Exemple : `o-widget-map.scss` pour l'organisme dont le nom de classe est "o-widget-map"
+
+
+
+=== Templates
+
+(Non applicable sur PRY)
+
+Les templates représentent le regroupement de 1 ou plusieurs atomes, molécules, organismes pour former les éléments d'une page complète.
+
+
+=== Pages
+
+(Non applicable sur PRY)
+
+
+
+=== RE-USE
+
+Si un élément d'interface est amené à être utilisé plusieurs fois, il doit être atomisé, sous la forme d'un atome, d'une molécule, ou d'un organisme (selon sa complexité), pour être ré-utilisable plus facilement.
+
+Par exemple, une ligne de formulaire, composée d'un label et d'un champ input doit systématiquement utiliser la molécule `m-form-field`, créée spécifiquement pour l'association de ces 2 types d'éléments.
+
+Etc...
+
+
+
+== BEM (BEVM)
+
+BEM une méthodologie CSS aidant à structurer, nommer et maintenir des composants d'interface.
+
+* B = block (représente l'élément parent)
+* E = elements in block (représente les éléments enfants du block)
+* V = variation (représente une variante d'un élément parent et/ou enfant)
+* M = modifier (représente la modification du comportement d'un ou plusieurs éléments, parents ou enfants)
+
+_Séparateurs :_
+
+* "__" (double underscore) sépare le block des éléments enfants, et les enfants d'enfants
+* "--" (double tiret) sépare le block ou l'élément du nom de la variante
+* " -" (espace + tiret) préfixe le nom du modificateur
+
+
+Le nommage BEM complète les conventions de nommage fixées dans la partie atomic et constitue le concept "ATOBEM"
+
+* "a-" pour les atomes
+* "m-" pour les molécules
+* "o-" pour les organismes
+
+
+BEM peut-être utilisé au niveau des atomes, molécules et organismes.
+
+
+Exemple HTML - Block + éléments imbriqués
+
+[source, html]
+----
+<div class="m-blockname">
+
+    <div class="m-blockname__element1">
+        <div class="m-blockname__element1__element2">
+            <span class="m-blockname__element1__element2__element3">
+                ...
+            </span>
+        </div>
+    </div>
+
+    <div class="m-blockname__element1">
+        ...
+    </div>
+
+    <div class="m-blockname__element1 m-blockname__element1--special">
+         <div class="m-blockname__element1__element2">
+            ...
+        </div>
+    </div>
+
+</div>
+----
+
+
+Exemple HTML - Variantes
+
+Un élément peut utiliser une ou plusieurs variantes
+
+[source, html]
+----
+<button type="button" class="a-btn a-btn--primary">BUTTON PRIMARY</button>
+
+<button type="button" class="a-btn a-btn--secondary a-btn--icon-only">BUTTON SECONDARY ICON ONLY</button>
+
+----
+
+Exemple HTML - Variante + modifier
+
+Un modifier est généralement utilisé pour modifier une propriété simple, et utilisable sur différents types d'élements. La variante est locale à l'élément qu'elle modifie.
+
+[source, html]
+----
+<button type="button" class="a-btn a-btn--primary -circle -size-lg">BUTTON</button>
+----
+
+La variante, bien que parfois comparable à un Modifier présente l'avantage d'être plus pratique/propre à coder en CSS.
+
+
+
+Exemple CSS - Block + éléments imbriqués
+
+[source, css]
+----
+/* Block parent */
+.m-blockname{
+
+  /* propriétés css */
+
+  &__element1{  /* Child element 1 */
+    /* propriétés css */
+
+      &--special{  /* Variante element 1 */
+        /* propriétés css variante */
+      }
+
+      &__element2{    /* Child element 2 */
+        /* propriétés css */
+
+          &__element3{ // Child element 3
+          /* propriétés css */
+          }
+
+      }
+
+    }
+
+}
+
+----
+
+
+Exemple CSS - Block + variantes + modifiers
+
+[source, sass]
+----
+
+.a-btn {
+  /* propriétés css communes */
+
+  &--primary {   /* Variante "primary" */
+      /* propriétés css variante */
+  }
+
+  &--secondary {   /* Variante "secondary" */
+       /* propriétés css variante */
+  }
+
+  &.-circle {  /* Modifier "circle" applicable aux 2 variantes */
+      /* propriétés css modifier */
+  }
+
+  &.-size-lg{
+    /* propriétés css modifier */
+  }
+}
+
+
+// Modifiers créés en dehors d'un bloc, peuvent s'appliquer sur n'importe quel élément
+.-size-lg{
+  /* Propriétés css */
+}
+
+.-size-md{
+  /* Propriétés css */
+}
+
+
+----
+
+L'avantage des variantes, contrairement aux Modifiers, est de ne pas casser la chaine BEM
+
+
+=== Less is more
+
+Dans le concept ATOBEM, se fixer comme objectif, tant que possible, de limiter le nombre d'imbrications et donc la longueur de la chaine BEM, pour une meilleure maintenabilité.
+
+Dans les éléments les plus complexes (généraelement les organismes), préferér écrire :
+
+[source, html]
+----
+<div class="m-blockname">
+
+    <div class="m-blockname__element1">
+        <h3 class="a-h3">Un titre h3</h3>
+    </div>
+
+    <div class="m-blockname__element1">
+        <h3 class="a-h3">Un autre titre h3</h3>
+    </div>
+</div>
+----
+
+Plutôt que :
+
+[source, html]
+----
+<div class="m-blockname">
+
+    <div class="m-blockname__element1">
+        <h3 class="m-blockname__element1__titleh3">Un titre h3</h3>
+    </div>
+
+    <div class="m-blockname__element1">
+        <h3 class="m-blockname__element1__titleh3">Un autre titre h3</h3>
+    </div>
+</div>
+----
+
+
+
+=== BEM - Cas particuliers
+
+Les *wrappers*, blocks très souvent utilisés autour d'un autre bloc, pour positionner l'élément sur la grid, peuvent être omis de la chaine BEM, pour ne pas alourdir la chaine et les noms de classes dans le markup.
+
+Convention de nommage des wrappers : nomdublock-wrapper, exemple : `o-widget-wrapper`
+
+
+Exemple HTML - wrapper :
+
+[source, html]
+----
+<div class="o-widget-wrapper">
+    <div class="o-widget">
+        <div class="o-widget__header">
+          ...
+        </div>
+        <div class="o-widget__footer">
+          ...
+        </div>
+    </div>
+</div>
+----
+
+Exemple CSS - wrapper :
+
+[source, sass]
+----
+.o-widget-wrapper{
+  /* Propriétés CSS du wrapper */
+}
+
+/* "-wrapper" est ensuuite omis de la chaine BEM css */
+.o-widget{
+  &__header{
+    /* Propriétés CSS */
+  }
+
+  &__footer{
+    /* Propriétés CSS */
+  }
+}
+----
+
+
+Les éléments enfants répétés, appartenant à un même block, devraient, par convention,  utiliser le terme "item".
+
+Exemple - liste ul>li
+
+[source, html]
+----
+<ul class="a-ul">
+    <li class="a-ul__item">
+        ...
+    </li>
+    <li class="a-ul__item">
+        ...
+    </li>
+    <li class="a-ul__item a-ul__item--variante">
+        ...
+    </li>
+</div>
+----
+
+[source, sass]
+----
+.a-ul{
+  /* Propriétés CSS */
+  &__item{
+    /* Propriétés CSS */
+
+    &--variante{
+      /* Propriétés CSS variante */
+    }
+  }
+}
+----
+
+
+=== Noms de classes particuliers
+
+Les classes suivantes font l'objet d'une convention de nommage particulier et sortent de la convention BEM.
+
+
+* Classes utils/helpers, préfixées "u-"
+  - u-visually-hidden
+  - u-ellipsis
+  - etc...
+
+* Classes spécifiant un état, et manipulées en JS, préfixées "is-"
+  - is-active
+  - is-open
+  - is-selected
+  - is-hidden
+  - etc...
+
+
+* Classes spécifiant une particularité, et manipulées en JS, préfixées "has-"
+  - has-date-picker
+  - has-xxxxxx
+  - has-not-xxxxx
+  - etc...

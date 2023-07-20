@@ -1,0 +1,9 @@
+<div class="classes-container" *ngIf="selectedClass$ | async as selectedClass">
+  <div *ngIf="selectedAttribute$ | async as selectedAttribute">
+    <h2 class="classes__title" [innerHTML]="'@pry.admin.classes.attributes.edit' | i18n"></h2>
+    <pry-admin-attributes-form
+      [selectedClass]="selectedClass"
+      [selectedAttribute]="selectedAttribute"
+    ></pry-admin-attributes-form>
+  </div>
+</div>

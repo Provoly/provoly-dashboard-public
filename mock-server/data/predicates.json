@@ -1,0 +1,17 @@
+[
+  {
+    "id": "43407d48-2548-11ed-861d-0242ac120002",
+    "name": "true",
+    "value": "true"
+  },
+  {
+    "id": "4b89236a-2548-11ed-861d-0242ac120002",
+    "name": "falsy2",
+    "value": "false"
+  },
+  {
+    "id": "501d67e2-2548-11ed-861d-0242ac120002",
+    "name": "data-reader",
+    "value": "user.hasRole('data-reader') && request.header('User-Agent').startsWith('Post')"
+  }
+]

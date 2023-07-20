@@ -1,0 +1,13 @@
+=== Supervision `+supervision.service.ts+`
+
+Ce service permet de faire les requêtes nécessaires pour l’interface de
+supervision. Utilisé uniquement par le composant supervision.
+
+Le module de supervision permet de surveiller les processus en cours et,
+pour ceux qui le permettent, de redimensionner à chaud le nombre
+d’instance de chacun des services de la plateforme. Chaque service
+possède un nombre minimum et un nombre maximum d’instances qui ne peut
+pas être franchi afin d’assurer la stabilité de la plateforme et de
+limiter des impacts dûs à des erreurs de manipulation. La supervision
+utilise l’API de Kubernetes afin de connaître l’état actuel et le nombre
+d’instances disponible de chaque service répertorié.

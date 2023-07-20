@@ -1,0 +1,120 @@
+[
+  {
+    "id": "06406e7e-37cd-41ce-b5fc-36d233e5ae5c",
+    "name": "ds-open",
+    "oClass": "06406e7e-37cd-41ce-b5fc-36d233e5ae5c",
+    "type": "OPEN",
+    "metadata": [
+      {
+        "metadataDef": {
+          "id": "9d9aba2c-fc3a-44d7-a508-287ad2d8cbb0",
+          "name": "_class",
+          "type": "UUID"
+        },
+        "value": "\"z'(\"'z"
+      },
+      {
+        "metadataDef": {
+          "id": "7ce12610-e031-403c-a6e0-b8147979f657",
+          "name": "Test",
+          "type": "INTEGER",
+          "description": null,
+          "allowedValues": []
+        },
+        "value": "12"
+      }
+    ],
+    "state": "1"
+  },
+  {
+    "id": "17b90da3-f448-4cc3-bfd8-74c8b8481590",
+    "name": "ds-modifiable",
+    "oClass": "17b90da3-f448-4cc3-bfd8-74c8b8481590",
+    "type": "MODIFIABLE",
+    "metadata": [
+      {
+        "metadataDef": {
+          "id": "c63a3431-6fe8-43de-afab-38752ef40ed9",
+          "name": "scroll",
+          "type": "LIST",
+          "description": null,
+          "allowedValues": ["1", "1", "1", "1", "1", "1", "1", "1"]
+        },
+        "value": ["1", "1"]
+      }
+    ],
+    "state": "2"
+  },
+  {
+    "id": "d260d53d-3529-4712-bedb-6517ecad5784",
+    "name": "ds-closed",
+    "oClass": "d260d53d-3529-4712-bedb-6517ecad5784",
+    "type": "CLOSED",
+    "metadata": [
+      {
+        "metadataDef":   {
+          "id": "ba681f33-fe70-42f8-a277-05c607ba29cf",
+          "name": "vigipirate",
+          "type": "INTEGER"
+        },
+        "value": "44"
+      }
+    ]
+  },
+  {
+    "id": "06406e7e-37cd-41ce-b5fc-36d233e6ae5c",
+    "name": "Tronçon de route",
+    "oClass": "123456789-69a6-474e-8f46-7cc8796ed151",
+    "type": "OPEN",
+    "metadata": [
+      {
+        "metadataDef": {
+          "id": "9d9aba2c-fc3a-44d7-a508-287ad2d8cbb0",
+          "name": "_geoNamespace",
+          "type": "string"
+        },
+        "value": "fntp"
+      },
+      {
+        "metadataDef": {
+          "id": "7ce12610-e031-403c-a6e0-b8147979f657",
+          "name": "_geoKey",
+          "type": "string"
+        },
+        "value": "troncon_de_route"
+      }
+    ]
+  },
+  {
+    "id": "s6406e7e-37cd-41ce-b5fc-36d233e6ae5c",
+    "name": "Submersion",
+    "oClass": "123456789-69a6-474e-8f46-7cc8796ed151",
+    "type": "OPEN",
+    "metadata": [
+      {
+        "metadataDef": {
+          "id": "9d9aba2c-fc3a-44d7-a508-287ad2d8cbb0",
+          "name": "_geoNamespace",
+          "type": "string"
+        },
+        "value": "fntp"
+      },
+      {
+        "metadataDef": {
+          "id": "7ce12610-e031-403c-a6e0-b8147979f657",
+          "name": "_geoKey",
+          "type": "string"
+        },
+        "value": "submersion"
+      },
+      {
+        "metadataDef": {
+          "id": "7ce12610-e031-403c-a6e0-b8147979f657",
+          "name": "_geoOpacity",
+          "type": "string"
+        },
+        "value": "100"
+      }
+    ]
+  }
+]

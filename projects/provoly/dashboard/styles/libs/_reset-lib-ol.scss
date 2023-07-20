@@ -1,0 +1,35 @@
+@use '../abstracts' as *;
+
+/* Reset lib ol */
+
+.ol-control button,
+.ol-searchbar button {
+  width: 30px !important;
+  height: 30px !important;
+  cursor: pointer;
+}
+
+.ol-zoom {
+  border-width: toRem(1);
+  border-style: solid;
+  border-radius: toRem(7);
+}
+
+.ol-searchbar {
+  top: toRem(122);
+  left: toRem(8);
+  border-width: toRem(1);
+  border-style: solid;
+  border-radius: toRem(7);
+
+  > button {
+    > div {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      background-image: url(/assets/svgs/search-line.svg);
+      background-repeat: no-repeat;
+      background-size: 22px;
+    }
+  }
+}

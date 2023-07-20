@@ -1,0 +1,19 @@
+=== Appliquer des transformations aux récupérations de données
+
+Pour pouvoir modifier automatiquement les données récupérées, il est
+possible de fournir une fonction de transformation à appliquer de cette
+manière:
+
+[source,js]
+----
+this.searchService.addTransformation((id, result) => {
+    const allObjects = result.items['8c2833a9-668d-49d0-a7e9-e67b4d7afa06'];
+    result.items['8c2833a9-668d-49d0-a7e9-e67b4d7afa06'] = allObjects.filter(obj => obj.attributes['a'].value === 0)
+    result.items['12345678-668d-49d0-a7e9-e67b4d7afa06'] = allObjects.filter(obj => obj.attributes['a'].value === 1)
+    return result;
+});
+----
+
+L’`+id+` fourni en paramètre est l’id de la named query, ou
+DEFAULT_NAMED_QUERY_ID si c’est la recherche courante. `+result+` est le
+resultset à transformer.

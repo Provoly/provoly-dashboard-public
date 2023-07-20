@@ -1,0 +1,62 @@
+<div
+  class="m-notifications-list"
+  id="notifications_list"
+  aria-labelledby="read_notifications"
+  aria-hidden="false"
+  #caret
+  (keydown.escape)="closeToEscape()"
+>
+  <span class="caret-top" [style.left.px]="left"></span>
+  <div class="m-notifications-list__header">
+    <h2 class="a-h2">{{ '@pry.notif.label' | i18n }}</h2>
+    <p class="a-p none" *ngIf="(notifications$ | async)?.length === 0; else notification">
+      {{ '@pry.notif.noNotifications' | i18n }}
+    </p>
+    <ng-template #notification>
+      <div class="m-btn-group">
+        <button type="button" #button class="a-btn a-btn--primary" (click)="deleteAll()">
+          {{ '@pry.notif.deleteAll' | i18n: { count: (notifications$ | async)?.length } }}
+        </button>
+      </div>
+    </ng-template>
+  </div>
+  <div class="m-notifications-list__content">
+    <ul class="m-notifications-list__items">
+      <li class="m-notifications-list__items__li" *ngFor="let notification of notifications$ | async; let last = last">
+        <div
+          class="m-notifications-list__items__li__txt"
+          *ngIf="
+            ('@pry.notif.title.' + notification.text.code | i18n) !== '@pry.notif.title.' + notification.text.code;
+            else noTranslation
+          "
+        >
+          <h3 class="a-h3">{{ '@pry.notif.title.' + notification.text.code | i18n }}</h3>
+          <p class="a-p date">{{ notification.creationDate | date: "dd/MM/yyyy, H'h'mm" }}</p>
+          <p class="a-p desc">{{ '@pry.notif.message.' + notification.text.code | i18n: notification.text.param }}</p>
+          <a *ngIf="!!notification.link" (click)="goTo(notification)">
+            {{ '@pry.notif.link' | i18n }}
+          </a>
+        </div>
+        <ng-template #noTranslation>
+          <div class="m-notifications-list__items__li__txt">
+            <h3 class="a-h3">{{ notification.text.title }}</h3>
+            <p class="a-p date">{{ notification.creationDate | date: "dd/MM/yyyy, H'h'mm" }}</p>
+            <p class="a-p desc">{{ notification.text.code }}</p>
+            <a *ngIf="!!notification.link" (click)="goTo(notification)">
+              {{ '@pry.notif.link' | i18n }}
+            </a>
+          </div>
+        </ng-template>
+        <button
+          class="a-btn a-btn--deletenotification"
+          (click)="delete(notification)"
+          (keydown.tab)="last ? closeToEscape() : null"
+          title="{{ '@pry.notif.delete' | i18n }}"
+        >
+          <pry-icon iconSvg="close"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.notif.delete' | i18n }}</span>
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>

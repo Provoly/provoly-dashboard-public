@@ -1,0 +1,32 @@
+@use '../../styles/abstracts/index' as *;
+
+.o-restitution {
+  height: 100%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  font-size: toRem(14);
+  min-width: toRem(330);
+  overflow: hidden;
+
+  .widget-instanciator {
+    position: relative;
+    height: 100%;
+  }
+
+  .m-btn-group.actions {
+    padding-top: toRem(25);
+    padding-bottom: toRem(20);
+  }
+
+  .a-checkbox {
+    margin-bottom: toRem(0);
+  }
+
+  h4 {
+    margin-top: 2rem;
+  }
+
+  label {
+    border-radius: 10%;
+  }
+}

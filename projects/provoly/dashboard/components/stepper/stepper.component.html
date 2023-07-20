@@ -1,0 +1,30 @@
+<div class="o-pry-stepper">
+  <div class="o-pry-stepper__header">
+    <div
+      class="m-stepper-item-wrapper"
+      [class.has-step-line]="i !== steps.length - 1"
+      *ngFor="let step of steps; index as i"
+    >
+      <div class="m-stepper-item" (click)="goTo(i)" [class.-pointer]="step.status !== 'pending'">
+        <div
+          class="m-stepper-item__count"
+          [class.-complete]="step.status === 'completed'"
+          [class.-active]="step.status === 'in progress'"
+        >
+          <span>{{ i + 1 }}</span>
+        </div>
+        <ng-container #vc>{{ step.title }}</ng-container>
+      </div>
+      <div class="m-stepper-line" *ngIf="i !== steps.length - 1">
+        <div
+          class="m-stepper-line__percent"
+          [class.-complete]="step.status === 'completed'"
+          [class.-active]="step.status === 'in progress'"
+        ></div>
+      </div>
+    </div>
+  </div>
+  <div class="o-pry-stepper__content">
+    <ng-content select="pry-step"></ng-content>
+  </div>
+</div>

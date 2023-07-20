@@ -1,0 +1,44 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - pry search composed */
+
+.o-pry-search-composed {
+  &__condition {
+    &__type {
+      &.-vertical-bar {
+        &:before {
+          background-color: themed($theme-map, 'color', 'accent', 400);
+        }
+
+        &:after {
+          border: 1px themed($theme-map, 'color', 'accent', 400) dashed;
+        }
+      }
+    }
+
+    &__content {
+      &__footer {
+        .a-btn.a-btn--select:hover {
+          background: themed($theme-map, 'color', 'primary', 50);
+        }
+
+        &__remove {
+          color: themed($theme-map, 'color', 'primary', 400);
+          background: themed($theme-map, 'color', 'primary', 100);
+        }
+      }
+    }
+  }
+}
+
+// Function generate dynamics lighten background-color
+@for $i from 1 through 10 {
+  $x: 10 * ($i - 1);
+  .o-pry-search-composed-wrapper:nth-of-type(#{$i}) {
+    // .o-pry-search-composed {
+    $color: lighten(themed($theme-map, 'color', 'primary', 300), $x);
+    background-color: $color;
+    // }
+  }
+}

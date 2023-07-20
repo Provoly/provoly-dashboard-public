@@ -1,0 +1,207 @@
+@use '../abstracts' as *;
+
+/* Atom - button */
+%a-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  height: toRem(44);
+  padding: toRem(8) toRem(22);
+  border: 0 solid transparent;
+  background-color: transparent;
+  font-size: inherit;
+  text-align: center;
+  white-space: normal;
+  letter-spacing: 0;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.24s ease-in-out;
+}
+
+.a-btn {
+  $this: &;
+  @extend %a-btn;
+  @include outlineOnFocus();
+
+  &:hover,
+  &:active {
+    text-decoration: none;
+  }
+
+  &.-disabled,
+  &:disabled {
+    pointer-events: none;
+    cursor: default;
+  }
+
+  &--primary,
+  &--secondary {
+    // Case have icon(s)
+    gap: toRem(10);
+  }
+
+  &--action {
+    gap: 0.5rem;
+    padding: toRem(2) toRem(10);
+    text-align: left;
+    text-decoration: none;
+  }
+
+  // Button with an icon only
+  &--icon-only {
+    width: toRem(20);
+    height: toRem(20);
+    padding: toRem(5);
+  }
+
+  // Action button displayed near a input field, icon + circle background  (ex: add/remove)
+  &--input-action {
+    width: toRem(28);
+    height: toRem(28);
+    padding: 0;
+
+    &:before {
+      content: '';
+      position: absolute;
+      width: toRem(28);
+      height: toRem(28);
+      border-radius: 50%;
+    }
+  }
+
+  // Action add item, circled icon on left + text on right
+  &--iconcircle-text {
+    gap: toRem(10);
+    height: toRem(25);
+    padding-left: toRem(5);
+    padding-right: toRem(5);
+
+    &__icon-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:before {
+        content: '';
+        position: absolute;
+        display: block;
+        width: toRem(20);
+        height: toRem(20);
+        border-radius: 50%;
+        background-color: #6f779b;
+      }
+    }
+  }
+
+  // Button looks like a link, icon on left + text on right
+  &--icon-text {
+    gap: toRem(7);
+  }
+
+  &--select {
+    padding-left: toRem(10);
+    padding-right: toRem(10);
+
+    @include outlineOnFocus($border-radius: 5px);
+  }
+
+  // Button more dots ( ...)
+  &--more {
+    width: toRem(27);
+    height: toRem(27);
+    padding: 0;
+  }
+
+  // Toggler open/close element
+  &--toggle {
+    flex-direction: column;
+    width: toRem(40);
+    height: toRem(40);
+    padding: 0;
+
+    &:before {
+      @include drawChevron($size: 10px, $direction: right);
+      left: toRem(-2);
+    }
+
+    &[aria-pressed='false'],
+    &.is-active {
+      &:before {
+        @include drawChevron($size: 10px, $direction: left);
+        left: toRem(2);
+      }
+    }
+  }
+
+  /* MODIFIERS */
+  &.-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    @include outlineOnFocus($border-radius: 50%);
+  }
+
+  // Classic link aspect
+  &.-link-like {
+    justify-content: left;
+    height: toRem(25);
+    padding: 0;
+    @include outlineOnFocus($border-radius: 5px);
+    text-align: left;
+    font-size: inherit;
+  }
+
+  &.-size-xs {
+    &.-circle {
+      width: toRem(27);
+      min-width: toRem(27);
+      height: toRem(27);
+    }
+  }
+
+  &.-size-sm {
+    gap: toRem(5);
+    height: toRem(34);
+    padding-left: toRem(15);
+    padding-right: toRem(15);
+    font-size: toRem(13);
+    line-height: toRem(15);
+
+    &.-circle {
+      width: toRem(34);
+      height: toRem(34);
+    }
+  }
+
+  &.-size-md {
+    gap: toRem(5);
+    height: toRem(37);
+    padding-left: toRem(20);
+    padding-right: toRem(20);
+    font-size: toRem(14);
+    line-height: toRem(16);
+
+    &.-circle {
+      width: toRem(37);
+      height: toRem(37);
+    }
+
+    pry-icon,
+    .a-icon {
+      width: 17px !important;
+      height: auto;
+    }
+  }
+
+  &.-width-full {
+    width: 100%;
+  }
+}
+
+/*a[href].a-btn {
+  color: inherit;
+}*/

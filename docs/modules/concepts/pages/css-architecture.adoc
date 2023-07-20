@@ -1,0 +1,94 @@
+= Architecture CSS de la lib
+
+== Répertoire /styles/
+
+Contient les informations de styles d'init, normalisation, éléments de base, functions/mixins utilisables dans styles/, styles-theme/ et dans les projets qui appelent la lib, les styles (Hors thème) des components, et la surcharge de  libs utilisées.
+
+
+----
+
+styles/
+
+* abstracts/                  ## Eléments non compilés
+  - abstracts-overlays.scss   # panel overlay
+  - abstracts-utils.scss      # placeholder Sass utils
+  - functions.scss            # Sass Functions
+  - mixins.scss               # Sass Mixins
+  - variables.scss            # Sass Variables for Reboot
+  - index.scss                # Sass forwards
+
+* base/                       ## Sass éléments de base
+  - custom-scrollbar          # Scrollbar custom styles
+  - html-body                 # Init body styles
+  - normalize                 # Cross browser normalize
+  - reboot                    # Cross browser normalize ++
+  - typography                # Titles init
+  - utils                     # Utils/helpers classes
+  - index.scss                # Sass forwards
+
+* components/                 ## Atomic components (atomes, molécules, organismes)
+  - ...
+  - ...
+  - ...
+
+* layout /                    ## Grid/Layout
+  - o-base-layout             # Base grid/layout
+  - o-main-layout             # Main grid/layout
+  - o-manifest-layout         # Manifest grid/layout
+  - o-workspace-layout        # Workspace grid/layout
+
+* libs /                      ## Sass libraries
+  - reset-lib-ol              # ol lib
+
+* main.scss                   # Main Sass file
+
+----
+
+
+== Répertoire /styles-theme/
+
+
+Contient les informations de styles du thème
+
+----
+
+styles-theme/
+
+* abstracts-theme/               ## Eléments non compilés
+  - variables/                   # Split des variables
+    -- variables-colors          # Sass maps coplors
+    -- variables-decoration      # Sass maps border-radius, accessibilité
+    -- variables-fonts           # Sass maps fonts
+    -- variables-typo            # Sass maps textes par types d'éléments
+    -- index.scss                # Sass forwards
+
+  - abstracts-overlays.scss      # Theming panel overlay
+  - variables.theme.scss         # Theme Sass final map builder
+  - index.scss                   # Sass forwards
+
+* base-theme/                    ## Theming éléments de base
+  - custom-scrollbar.theme       # Theming Scrollbar
+  - fonts.theme                  # Font-face
+  - typography.theme             # Theming titles
+  - index.scss                   # Sass forwards
+
+* components-theme/              ## Theming Atomic components (atomes, molécules, organismes)
+  - *.theme
+
+
+* layout-theme /                 ## Theme grid/Layout
+  - o-base-layout.theme          # Theming base layout
+  - o-main-layout.theme          # Theming main layout
+  - o-manifest-layout.theme      # Theming manifest layout
+  - o-workspace-layout.theme     # Theming workspace layout
+
+* libs-theme /                   # Theming Sass libraries
+  - reset-lib-ol.theme           # Theming ol lib
+
+* main-theme.scss                # Main theme Sass file
+
+----
+
+
+
+

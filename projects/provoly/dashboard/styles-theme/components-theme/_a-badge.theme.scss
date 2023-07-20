@@ -1,0 +1,21 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Atom - badge */
+
+.a-badge {
+  &.-status-ok {
+    color: themed($theme-map, 'color', 'status', 'contrast', 'ok');
+    background-color: themed($theme-map, 'color', 'status', 'ok');
+  }
+
+  &.-status-ko {
+    color: themed($theme-map, 'color', 'status', 'contrast', 'error');
+    background-color: themed($theme-map, 'color', 'status', 'error');
+  }
+
+  &.-status-inactive {
+    color: themed($theme-map, 'color', 'status', 'contrast', 'inactive');
+    background-color: themed($theme-map, 'color', 'status', 'inactive');
+  }
+}

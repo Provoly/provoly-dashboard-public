@@ -1,0 +1,89 @@
+@use '../abstracts' as *;
+
+/* Organism - Manifest layout */
+
+.invisible {
+  display: none;
+}
+
+.o-manifest-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+
+  &__toolbox {
+    display: flex;
+    gap: toRem(15);
+    width: 100%;
+    padding: toRem(15) toRem(20);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
+
+  &__content {
+    width: 100%;
+    padding: toRem(25) toRem(20) toRem(20) toRem(20);
+    overflow: auto;
+  }
+
+  .o-card-manifest {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: toRem(24);
+    padding: toRem(17);
+    border-width: toRem(1);
+    border-style: solid;
+    border-radius: toRem(10);
+
+    &__content {
+      flex: 1;
+      display: flex;
+
+      .a-p {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: toRem(13);
+
+        &__title {
+          margin-bottom: toRem(4);
+          font-size: toRem(12);
+          text-transform: uppercase;
+        }
+      }
+    }
+
+    .m-btn-group {
+      gap: toRem(10);
+      padding-left: toRem(25);
+      padding-top: 0;
+
+      .a-btn--icon-only {
+        @include outlineOnFocus($border-radius: 3px);
+      }
+    }
+  }
+
+  .pry-viewingpresentation {
+    flex: 1 1;
+    width: 100%;
+    overflow-y: scroll;
+
+    .o-manifest-layout__content {
+      display: flex;
+      flex-direction: column;
+
+      .o-dashboard-widget {
+        flex: 1 1;
+      }
+    }
+  }
+
+  pry-add-edit-presentation {
+    width: 100%;
+  }
+}

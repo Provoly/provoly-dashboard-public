@@ -1,0 +1,7 @@
+=== Données `+category.service.ts+` `+relation-types.service.ts+` `+field.service.ts+` `+class.service.ts+` `+raw.service.ts+` `+item.service.ts+`
+
+Récupération de la liste des catégories, des types de relations, des
+champs, des classes du modèle de données actuellement déclarées dans le
+backend pry, mais aussi aux données de type brut, et les items ainsi que
+les recherches par proximité. A surcharger si on utilise un backend
+autre que pry, et changer la façon d’accéder à ces données.

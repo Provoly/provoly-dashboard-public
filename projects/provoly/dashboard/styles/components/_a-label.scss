@@ -1,0 +1,16 @@
+@use '../abstracts' as *;
+
+/* Atom - label */
+.a-label {
+  display: block;
+  margin-bottom: toRem(6);
+
+  &[for] {
+    cursor: pointer;
+  }
+
+  &--help {
+    padding-top: 7px;
+    padding-left: 12px;
+  }
+}

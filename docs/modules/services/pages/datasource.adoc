@@ -1,0 +1,4 @@
+=== Sources de données `+datasource.service.ts+`
+
+Gestion des recherches nommées (enregistrement / mise en favori / …) et des dataset, se
+basant sur le backend pry. À surcharger si le système backend n’est pas pry.

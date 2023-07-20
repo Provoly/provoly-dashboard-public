@@ -1,0 +1,85 @@
+<pry-import-css></pry-import-css>
+<div class="o-import">
+  <h1 class="a-h1">{{ '@pry.import.title' | i18n }}</h1>
+  <div class="o-import__container">
+    <div class="o-import__container__input">
+      <div class="m-form-label-field">
+        <div class="m-form-label-field">
+          <label class="a-h3" for="datasets">{{ '@pry.import.fileType' | i18n }}</label>
+          <pry-select
+            class="a-pry-select"
+            id="fileType"
+            [items]="fileTypes"
+            [itemsAsOption]="true"
+            [ngModel]="fileTypes[0].value"
+            [disabled]="true"
+            bindValue="value"
+            bindLabel="label"
+          ></pry-select>
+        </div>
+        <label class="a-h3" for="upload_input">{{ '@pry.import.uploadTitle' | i18n }}</label>
+        <div class="o-file-input">
+          <div *ngIf="file" class="o-import__container__input__file">
+            <pry-icon iconSvg="download"></pry-icon>
+            <h3>{{ file.name }}</h3>
+            <span>{{ getFileSize(file.size) }}</span>
+          </div>
+          <pry-upload
+            id="upload_input"
+            accept=".csv"
+            mode="csv"
+            (uploadedFile)="uploadedChange($event)"
+            labelTranslate="@pry.import.selectFile"
+          ></pry-upload>
+        </div>
+      </div>
+      <div class="m-form-label-field">
+        <label class="a-h3" for="datasets">{{ '@pry.import.datasetImport' | i18n }}</label>
+        <pry-select
+          class="a-pry-select"
+          id="datasets"
+          [items]="datasets$ | async"
+          [itemsAsOption]="true"
+          [(ngModel)]="datasetSelected"
+          [placeholder]="'@pry.import.dataset' | i18n"
+          bindValue="id"
+          bindLabel="name"
+        ></pry-select>
+      </div>
+      <div class="o-import__container__input__actions">
+        <button class="a-btn a-btn--primary" (click)="submit()" [disabled]="isSubmitDisabled()">
+          {{ '@pry.import.import' | i18n }}
+        </button>
+      </div>
+    </div>
+    <ng-container *ngIf="numberOfLine$ | async as lineImported; else errors">
+      <div *ngIf="lineImported > 0; else errors" class="o-import__result">
+        <h2>{{ '@pry.import.successTitle' | i18n }}</h2>
+        <div>
+          <h3>{{ lineImported }} {{ '@pry.import.importedLines' | i18n }}</h3>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+<ng-template #errors>
+  <div class="o-import__result" *ngIf="errors$ | async as errors">
+    <h2 class="a-h2">{{ '@pry.import.errorTitle' | i18n }}</h2>
+    <div>
+      <h3>{{ errorCount$ | async }} {{ '@pry.import.errors' | i18n }}</h3>
+      <div *ngFor="let error of errors | keyvalue: sortObjectEntries" class="o-import__result__error">
+        <p *ngIf="error.key === '0'; else withLine">
+          {{ '@pry.import.withoutLine' | i18n }}
+        </p>
+        <ng-template #withLine>
+          {{ '@pry.import.line' | i18n: { line: error.key } }}
+        </ng-template>
+        <ul *ngIf="error.value">
+          <li *ngFor="let lineError of error.value">
+            {{ '@pry.import.code.' + lineError.code | i18n: lineError.params }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</ng-template>

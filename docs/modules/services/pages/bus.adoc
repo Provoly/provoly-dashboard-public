@@ -1,0 +1,15 @@
+=== Partage de données entre pages `+bus.service.ts+`
+
+Sert à partager les données/synchronisations entre pages. Il se base sur
+BraodcastChannel, dans lequel il ouvre 2 channels, data et control.
+
+Le channel de contrôle permet la synchronisation à l’ouverture/fermeture
+d’onglets, via des messages de type "`join`" ou "`leave`".
+
+La synchronisation des données fonctionne sur ce principe : un effect de
+`+action-bus.effects.ts+` regarde si la chaîne "`(bus)`" est dans chaque
+action. Pour chacune de ces actions, elle est postée sur le channel de
+data du BusService. Côté BusService, si quelque chose est reçu sur le
+dataChannel, alors on le dispatche dans le store. Ces actions
+permettront donc automatiquement de synchroniser les contenus des stores
+des différents onglets.

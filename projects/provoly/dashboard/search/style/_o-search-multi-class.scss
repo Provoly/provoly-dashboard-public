@@ -1,0 +1,34 @@
+@use '../../styles/abstracts/index' as *;
+
+/* Organism - Search multi class */
+
+.o-search-multi-class {
+  position: relative;
+  height: 100%;
+  padding: toRem(10) toRem(5);
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: toRem(8);
+
+    .a-h3 {
+      padding-bottom: 0;
+    }
+  }
+
+  &__add-condition {
+    padding-top: toRem(10);
+
+    .a-btn {
+      margin-bottom: toRem(15);
+    }
+  }
+
+  .a-btn.a-btn--icon-text {
+    @include outlineOnFocus($border-radius: 6px);
+    height: auto;
+    padding: 5px 2px;
+  }
+}

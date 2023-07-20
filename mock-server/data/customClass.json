@@ -1,0 +1,115 @@
+{
+  "symbol": {
+    "8c2833a9-668d-49d0-a7e9-e67b4d7afa06": [
+      {
+        "iconSize": [
+          25,
+          25
+        ],
+        "iconUrl": "internal:test2.png",
+        "position": "FULL"
+      }
+    ],
+    "06406e7e-37cd-41ce-b5fc-36d233e5ae5c": [
+      {
+        "iconSize": [
+          25,
+          25
+        ],
+        "iconUrl": "/assets/icons/vente.png",
+        "position": "FULL"
+      }
+    ],
+    "d260d53d-3529-4712-bedb-6517ecad5784": [
+      {
+        "iconSize": [
+          25,
+          25
+        ],
+        "iconUrl": "/assets/icons/collision.png",
+        "position": "FULL"
+      }
+    ],
+    "534ff6cd-0a85-4612-82c0-7f83e9ce2caa": [
+      {
+        "iconSize": [
+          25,
+          25
+        ],
+        "iconUrl": "internal:pin.png",
+        "position": "FULL"
+      }
+    ],
+    "17b90da3-f448-4cc3-bfd8-74c8b8481590": [
+      {
+        "iconSize": [
+          25,
+          25
+        ],
+        "iconUrl": "/assets/icons/weather.png",
+        "position": "FULL",
+        "rule": {
+          "attributeName": "temperature_en_degre_c",
+          "value": 20,
+          "operation": "LOWER_OR_EQUAL"
+        }
+      },
+      {
+        "iconSize": [
+          25,
+          25
+        ],
+        "iconUrl": "/assets/icons/soleil.png",
+        "position": "FULL",
+        "rule": {
+          "attributeName": "temperature_en_degre_c",
+          "value": 20,
+          "operation": "GREATER"
+        }
+      },
+      {
+        "iconSize": [
+          25,
+          25
+        ],
+        "iconUrl": "/assets/icons/water.png",
+        "position": "TOP_LEFT",
+        "rule": {
+          "attributeName": "humidite",
+          "value": 20,
+          "operation": "GREATER"
+        }
+      }
+    ]
+  },
+  "tableAttr": {},
+  "template": {
+    "06406e7e-37cd-41ce-b5fc-36d233e5ae5c": {
+      "htmlContent": "<div><div>Vente foncière</div></div><div>{{attributes.valeur_fonciere}}€</div>"
+    },
+    "17b90da3-f448-4cc3-bfd8-74c8b8481590": {
+      "htmlContent": "<div><div>Météo</div></div><div>{{attributes.humidite}}% - {{attributes.temperature_en_degre_c}} °C</div></div>"
+    },
+    "d260d53d-3529-4712-bedb-6517ecad5784": {
+      "htmlContent": "<div><div>Collision</div></div><div>N°{{attributes.Num_Acc}}</div></div>"
+    },
+    "8c2833a9-668d-49d0-a7e9-e67b4d7afa06": {
+      "htmlContent": "<div><div>Usager</div></div><div>{{attributes.an_nais}} - {{attributes.sexe}}</div></div>"
+    }
+  },
+  "tooltips": {
+    "534ff6cd-0a85-4612-82c0-7f83e9ce2caa": {
+      "type": "attribute",
+      "options": {
+        "attributes": [
+          "id",
+          "latitude",
+          "longitude",
+          "numero_accident_qui_a_eu_lieu",
+          "oClass",
+          "voie"
+        ]
+      }
+    }
+  }
+}

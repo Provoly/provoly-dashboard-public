@@ -1,0 +1,88 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme organism - Pipeline */
+
+.o-pipeline-layout {
+  &__toolbox {
+    &:first-of-type {
+      border-bottom: 1px solid themed($theme-map, 'color', 'primary', 300);
+    }
+  }
+}
+
+.o-pipeline {
+  &__menu {
+    border-right: 1px solid themed($theme-map, 'color', 'primary', 300);
+  }
+
+  .o-accordion {
+    &__title {
+      border-bottom-color: themed($theme-map, 'color', 'primary', 300);
+
+      &__btn pry-icon {
+        color: themed($theme-map, 'color', 'accent', 600);
+      }
+    }
+
+    &__panel {
+      &[aria-hidden='false'] {
+        border-bottom-color: themed($theme-map, 'color', 'primary', 300);
+      }
+
+      .o-pipeline__components {
+        li {
+          border-top-color: themed($theme-map, 'color', 'primary', 300);
+
+          .a-icon {
+            color: themed($theme-map, 'color', 'primary', 500);
+          }
+        }
+      }
+    }
+  }
+
+  .o-pipeline-editor__properties {
+    border-left: 1px solid themed($theme-map, 'color', 'primary', 300);
+
+    &__node {
+      .a-h4 {
+        color: themed($theme-map, 'color', 'primary', 600);
+      }
+
+      .a-p--type {
+        color: themed($theme-map, 'color', 'primary', 500);
+        border-bottom: 1px solid themed($theme-map, 'color', 'primary', 300);
+      }
+    }
+
+    &__errors {
+      &__title {
+        pry-icon {
+          color: themed($theme-map, 'color', 'status', 'error');
+        }
+
+        .a-p {
+          color: themed($theme-map, 'color', 'primary', 600);
+        }
+      }
+
+      ul {
+        padding-left: toRem(24);
+
+        li {
+          color: themed($theme-map, 'color', 'primary', 500);
+
+          .type {
+            background-color: themed($theme-map, 'color', 'accent', 50);
+            color: themed($theme-map, 'color', 'primary', 600);
+          }
+
+          &:not(last-of-type) {
+            margin-bottom: toRem(12);
+          }
+        }
+      }
+    }
+  }
+}

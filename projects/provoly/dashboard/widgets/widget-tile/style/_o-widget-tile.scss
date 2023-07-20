@@ -1,0 +1,83 @@
+@use '../../../styles/abstracts/index' as *;
+
+/* Organism - widget tile */
+/* Extends o-widget */
+
+.o-widget--tile {
+  &-wrapper {
+    flex: 1;
+    overflow: auto;
+    height: 100%;
+    padding-bottom: toRem(60);
+  }
+
+  &__list {
+    @extend %list-unstyled;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: toRem(20);
+    padding: toRem(20);
+
+    &__item {
+      display: flex;
+      flex-direction: column;
+      flex-basis: 32%;
+      overflow: hidden;
+      padding: 0;
+
+      .o-widget.o-widget--detail {
+        height: auto;
+        padding-top: 15px;
+      }
+
+      &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: toRem(10);
+
+        &__title {
+          margin-bottom: 0;
+          padding-bottom: 0;
+          font-size: toRem(15);
+        }
+
+        .a-checkbox {
+          margin-bottom: 0;
+        }
+
+        &__id {
+          padding: toRem(10);
+          margin-bottom: 0;
+          font-size: toRem(12);
+        }
+      }
+
+      &__footer {
+        margin-top: auto;
+        padding: toRem(10);
+
+        .a-btn.a-btn--icon-text {
+          &:after {
+            @include drawChevron($border-width: 1.5px);
+            top: toRem(-2);
+            margin-right: toRem(5);
+          }
+
+          display: inline-flex;
+          margin: toRem(5) 0 toRem(3) 0;
+          padding: toRem(12) 0;
+          font-weight: 400;
+
+          &[aria-expanded='true'] {
+            &:after {
+              @include drawChevron($border-width: 1.5px, $direction: up);
+              top: toRem(2);
+            }
+          }
+        }
+      }
+    }
+  }
+}

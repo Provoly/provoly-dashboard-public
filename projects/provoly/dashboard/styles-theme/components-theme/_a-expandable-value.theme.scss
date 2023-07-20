@@ -1,0 +1,23 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Atom - expandable value */
+
+.a-expandable-value {
+  $this: &;
+
+  &__expanded {
+    color: themed($theme-map, 'color', 'grey', 'contrast', 400);
+    background: themed($theme-map, 'color', 'grey', 400);
+
+    &::before {
+      border-color: transparent transparent themed($theme-map, 'color', 'grey', 400) transparent;
+    }
+  }
+
+  &:hover {
+    #{$this}__initial {
+      color: themed($theme-map, 'color', 'accent', 500);
+    }
+  }
+}

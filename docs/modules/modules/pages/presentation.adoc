@@ -1,0 +1,9 @@
+=== Presentation
+
+Le module presentation permet : - l’affichage de l’ensemble des
+presentations disponible. - la consultation, la modification et partager
+(public ou privé) une presentation.
+
+Il y a également la possibilité de créer une presentation via un bouton
+`+créer une presentation+` qui permet d’accéder au formulaire de
+création.

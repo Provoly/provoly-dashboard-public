@@ -1,0 +1,84 @@
+[
+  {
+    "id": "71542727-8628-418b-93ce-bdb85ce58198",
+    "active": true,
+    "description": "",
+    "name": "nouvelle règle",
+    "predicate": "4b89236a-2548-11ed-861d-0242ac120002",
+    "type": "METADATA",
+    "condition": {
+      "type": "OR",
+      "composed": [
+        {
+          "type": "METADATA",
+          "metadata": "9d9aba2c-fc3a-44d7-a508-287ad2d8cbb0",
+          "operator": "NOT_EQUALS",
+          "value": "34"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a394906c-7880-4fa0-b9ad-cd6cb0bbca77",
+    "active": false,
+    "description": "description",
+    "name": "nom règle attribute",
+    "predicate": "501d67e2-2548-11ed-861d-0242ac120002",
+    "type": "ATTRIBUTE",
+    "condition": {
+      "type": "AND",
+      "composed": [
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "5c284821-3a33-4469-8356-16dce684847e",
+          "operator": "EQUALS",
+          "value": ""
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "1a1d9454-ca4f-493a-a309-ac50e1f4725a",
+          "operator": "START_WITH",
+          "value": "3"
+        }
+      ]
+    }
+  },
+  {
+    "id": "5539b95c-7514-4f21-accb-74a1a2f031b5",
+    "active": true,
+    "description": "",
+    "name": "Nom de la règle meta avec changements",
+    "predicate": "43407d48-2548-11ed-861d-0242ac120002",
+    "type": "METADATA",
+    "condition": {
+      "type": "AND",
+      "composed": [
+        {
+          "type": "METADATA",
+          "metadata": "7ce12610-e031-403c-a6e0-b8147979f657",
+          "operator": "NOT_EQUALS",
+          "value": "${user.metadata('zzz')}"
+        }
+      ]
+    }
+  },
+  {
+    "id": "52419e95-d746-4baf-a2d9-8a1baa7dadc0",
+    "active": true,
+    "description": "aze",
+    "name": "aze",
+    "predicate": "43407d48-2548-11ed-861d-0242ac120002",
+    "type": "ATTRIBUTE",
+    "condition": {
+      "type": "AND",
+      "composed": [
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "940f5738-c0bf-4fd4-96af-8f319e6fd445",
+          "operator": "NOT_EQUALS",
+          "value": "44"
+        }
+      ]
+    }
+  }
+]

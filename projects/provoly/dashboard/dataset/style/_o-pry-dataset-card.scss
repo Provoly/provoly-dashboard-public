@@ -1,0 +1,29 @@
+@use '../../styles/abstracts/index' as *;
+
+/* Organism - pry-dataset-card */
+
+.o-pry-dataset-card {
+  margin: 0 auto;
+  border-collapse: collapse;
+  font-size: toRem(14);
+  min-width: toRem(330);
+  flex-grow: 2;
+  overflow: hidden;
+
+  &__header {
+    display: flex;
+    gap: toRem(15);
+    padding: toRem(10);
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+  }
+
+  &__button {
+    .a-btn {
+      width: 100%;
+    }
+  }
+}

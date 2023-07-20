@@ -1,0 +1,60 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - component pry-composed condition */
+
+.o-pry-composed-condition-wrapper {
+  background-color: themed($theme-map, 'color', 'grey', 200);
+}
+
+.o-pry-composed-condition {
+  &__type {
+    &.-vertical-bar {
+      &:before {
+        background-color: themed($theme-map, 'color', 'accent', 400);
+      }
+
+      &:after {
+        border: 1px themed($theme-map, 'color', 'accent', 400) dashed;
+      }
+    }
+  }
+
+  .o-pry-metadata-condition,
+  .o-pry-attribute-condition {
+    .a-btn--icon-only .a-icon {
+      color: themed($theme-map, 'color', 'primary', 400);
+    }
+  }
+
+  // Sous-groupe
+  .o-pry-composed-condition-wrapper {
+    background-color: themed($theme-map, 'color', 'primary', 100);
+
+    .o-pry-composed-condition__type.-vertical-bar {
+      &:before {
+        background-color: #4d9dc1;
+      }
+
+      &:after {
+        border-color: #4d9dc1;
+      }
+    }
+
+    .a-toggle__display {
+      background-color: #4d9dc1;
+    }
+  }
+}
+
+.o-component-pry-composed-condition.ng-select-disabled {
+  .o-pry-composed-condition__type.-vertical-bar {
+    &:before {
+      background-color: themed($theme-map, 'color', 'primary', 400);
+    }
+
+    &:after {
+      border-color: themed($theme-map, 'color', 'primary', 400);
+    }
+  }
+}

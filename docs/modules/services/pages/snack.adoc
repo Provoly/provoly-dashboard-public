@@ -1,0 +1,4 @@
+=== Snackbar `+snackbar.service.ts+`
+
+Mise à disposition d’une snackbar. Utilisable par les applications
+utilisant pry.

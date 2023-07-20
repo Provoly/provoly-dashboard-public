@@ -1,0 +1,28 @@
+@use '../../styles/abstracts/index' as *;
+
+/* Molecule - pry search select attribute  */
+.m-pry-search-select-attribute {
+  @extend %list-unstyled;
+
+  &__item {
+    &:last-of-type {
+      margin-bottom: toRem(6);
+    }
+
+    &:first-of-type {
+      margin-top: toRem(6);
+    }
+
+    .a-btn {
+      overflow: hidden;
+      max-width: fit-content;
+      height: auto;
+      margin: 1px toRem(6) 1px toRem(6);
+      padding: toRem(8);
+      border-radius: toRem(4);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }
+  }
+}

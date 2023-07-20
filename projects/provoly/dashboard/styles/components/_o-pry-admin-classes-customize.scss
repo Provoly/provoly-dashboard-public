@@ -1,0 +1,130 @@
+@use '../abstracts' as *;
+
+/* Organism - pry-admin-classes-customize */
+.o-pry-admin-classes-customize {
+  .o-tabs__list {
+    margin-bottom: toRem(30);
+  }
+
+  .m-btn-group {
+    padding-top: toRem(20);
+  }
+
+  .m-rule-wrapper {
+    @extend %list-unstyled;
+  }
+
+  .m-rule {
+    margin-bottom: toRem(20);
+    padding: toRem(15) toRem(20) toRem(25) toRem(20);
+    border-width: 1px;
+    border-style: solid;
+    border-radius: toRem(5);
+
+    &__header {
+      display: flex;
+      align-items: flex-start;
+
+      .a-h3 {
+        display: flex;
+        flex-direction: row;
+        column-gap: toRem(30);
+        margin-bottom: toRem(20);
+        font-size: toRem(17);
+
+        span {
+          flex: 1;
+          font-size: toRem(15);
+          font-weight: 300;
+        }
+      }
+
+      > div:first-of-type {
+        flex: 2;
+      }
+
+      > div.m-rule__actions {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+        gap: toRem(15);
+        padding: toRem(5) toRem(10);
+      }
+    }
+
+    &__display-mode {
+      margin-top: toRem(25);
+    }
+
+    .m-form-label-field {
+      max-width: toRem(400);
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .m-btn-group {
+    padding-top: toRem(40);
+    padding-bottom: toRem(10);
+  }
+
+  .m-tooltip {
+    margin-top: toRem(20);
+  }
+}
+
+.container {
+  display: inline-block;
+  vertical-align: top;
+  width: 400px;
+  max-width: 100%;
+  margin: 0 25px 25px 0;
+}
+
+.list {
+  display: block;
+  overflow: hidden;
+  min-height: 60px;
+  border: solid 1px #ccc;
+  background: white;
+  border-radius: toRem(4);
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 10px;
+  border-bottom: solid 1px #ccc;
+  background: white;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 14px;
+  cursor: move;
+}
+
+.cdk-drag-preview {
+  border-radius: toRem(4);
+  box-shadow:
+    0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.item:last-child {
+  border: none;
+}
+
+.list.cdk-drop-list-dragging .item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

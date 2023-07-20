@@ -1,0 +1,25 @@
+@use '../abstracts' as *;
+
+/* Molecule - list of actions (buttons, togglers, etc...) */
+
+.m-actions-list {
+  @extend %list-unstyled;
+  display: flex;
+  align-items: center;
+
+  /* MODFIFIERS */
+  &.-vertical {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+}
+
+.o-file-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  padding: toRem(20) 0;
+  border: 1px dashed black;
+}

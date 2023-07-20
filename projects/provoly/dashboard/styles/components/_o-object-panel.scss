@@ -1,0 +1,109 @@
+@use '../abstracts' as *;
+
+/* Organism - Object panel */
+#object_creator_link {
+  box-shadow: 0px 0 5px -2px rgba(0, 0, 0, 0.2);
+
+  &:hover,
+  &:active {
+    box-shadow: 0px 0 6px -2px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.create-object-panel {
+  justify-content: space-between;
+
+  .context-menu-panel-button {
+    display: flex;
+    justify-content: space-between;
+    margin-top: toRem(10);
+  }
+
+  .panel-content {
+    overflow: auto;
+    height: 100%;
+    padding: 20px;
+  }
+
+  .m-btn-group {
+    padding: toRem(10) toRem(20) 0 toRem(20);
+  }
+}
+
+.o-object-panel {
+  display: flex;
+  flex-direction: column;
+  max-height: 86%;
+  margin-bottom: toRem(20);
+
+  .m-form-label-field:last-of-type {
+    padding-bottom: toRem(20);
+  }
+
+  // padding: toRem(25) toRem(20) toRem(20) toRem(20);
+  input {
+    height: toRem(36);
+    min-height: toRem(36);
+  }
+
+  // overflow: auto;
+
+  &__name {
+    margin-top: 16px;
+    margin-bottom: toRem(3);
+    font-size: 12px;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+
+    &.-label-select {
+      margin-bottom: toRem(4);
+    }
+  }
+
+  .multi-value-container {
+    display: flex;
+    flex-direction: column;
+
+    .button-add {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .multi-value {
+      display: flex;
+      align-items: flex-start;
+      width: 100%;
+      margin-top: toRem(10);
+    }
+  }
+
+  .m-form-label-field {
+    .a-date-input {
+      position: relative;
+
+      .date-picker-container {
+        position: absolute;
+        z-index: 3;
+        top: toRem(40);
+        width: 100%;
+        width: -moz-available;
+        width: -webkit-fill-available;
+        width: stretch;
+        border-width: toRem(1);
+        border-style: solid;
+      }
+
+      .a-open-date-picker {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: toRem(50);
+        height: toRem(36);
+        cursor: pointer;
+      }
+    }
+  }
+}

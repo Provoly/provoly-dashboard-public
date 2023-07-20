@@ -1,0 +1,150 @@
+@use '../abstracts' as *;
+
+/* Atom a-toggle */
+
+.a-toggle {
+  $this: &;
+
+  $width: toRem(38);
+  $widthTxtInside: toRem(48);
+  $marginTxtInside: toRem(5);
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  gap: 0.5rem;
+  cursor: pointer;
+
+  &__input {
+    @extend %visuallyHidden;
+  }
+
+  &__display {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-around;
+    width: $width;
+    height: toRem(24);
+    border-width: 1px;
+    border-style: solid;
+    border-radius: toRem(12);
+    font-size: 12px;
+    font-weight: 300;
+    transition: 250ms;
+
+    &:before {
+      content: '';
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      left: 2px;
+      width: toRem(18);
+      height: toRem(18);
+      border-radius: 50%;
+      transform: translate(0, -50%);
+      will-change: transform;
+      transition: inherit;
+    }
+
+    &__txtleft,
+    &__txtright {
+      position: absolute;
+      transform: translateY(1px);
+    }
+
+    &__txtleft {
+      left: $marginTxtInside;
+      opacity: 0;
+    }
+
+    &__txtright {
+      // right: $marginTxtInside;
+      right: toRem(4);
+    }
+  }
+
+  &__wording {
+    z-index: 0;
+    cursor: pointer;
+  }
+
+  /* MODIFIERS */
+
+  // Ex: ET/OU, toggle is larger
+  &.-txt-inside {
+    #{$this}__display {
+      width: $widthTxtInside;
+    }
+  }
+
+  // When used with a vertical line on right
+  &.-no-radius-right {
+    #{$this}__display {
+      border-radius: toRem(12) 0 0 toRem(12);
+    }
+  }
+}
+
+/* STATES */
+.a-toggle:focus-visible .a-toggle__display,
+.a-toggle__input:focus-visible + .a-toggle__display {
+  @include eltFocusVisible();
+}
+
+.a-toggle:focus,
+.a-toggle:focus:not(:focus-visible) .a-toggle__display,
+.a-toggle__input:focus:not(:focus-visible) + .a-toggle__display {
+  outline: 0;
+}
+
+.a-toggle.-disabled,
+.a-toggle:disabled,
+.a-toggle__input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  z-index: 0;
+
+  .a-toggle__display,
+  & + .a-toggle__display,
+  & + .a-toggle__display + .a-toggle__wording {
+    /* opacity: 0.7;
+    filter: grayscale(40%);*/
+    cursor: not-allowed;
+  }
+}
+
+/*.a-toggle[dir='rtl'] .a-toggle__display::before {
+  left: auto;
+  right: 19px;
+}
+.a-toggle.-txt-inside[dir='rtl'] .a-toggle__display::before {
+  right: 29px;
+}*/
+
+.a-toggle[dir='rtl'] .a-toggle[aria-pressed='true'] + .a-toggle__display::before,
+.a-toggle[dir='rtl'] .a-toggle__input:checked + .a-toggle__display::before {
+  transform: translate(-100%, -50%);
+}
+
+.a-toggle[aria-pressed='true'] .a-toggle__display::before,
+.a-toggle__input:checked + .a-toggle__display::before {
+  transform: translate(calc(100% - 5px), -50%);
+}
+
+.a-toggle.-txt-inside[aria-pressed='true'] .a-toggle__display,
+.a-toggle.-txt-inside .a-toggle__input:checked + .a-toggle__display,
+.a-toggle.-txt-inside[dir='rtl'] .a-toggle__input:checked + .a-toggle__display {
+  &:before {
+    // transform: translate(164%, -50%);
+    left: auto;
+    transform: translate(calc(100% - 6px), -50%);
+  }
+
+  .a-toggle__display__txtleft {
+    opacity: 1;
+  }
+
+  .a-toggle__display__txtright {
+    opacity: 0;
+  }
+}

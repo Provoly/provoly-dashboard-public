@@ -1,0 +1,26 @@
+Le but de cette section est d’offrir une vue simplifiée de certains
+aspects pouvant être utiles dans le cadre de développement par exemple
+de widgets personnalisés, ou d’adaptation de la librairie à certains
+contextes.
+
+Pour consulter le contenu du store directement depuis le navigateur, il
+existe une extension `+Redux DevTools+`:
+
+* https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=fr[Chrome]
+* https://addons.mozilla.org/fr/firefox/addon/reduxdevtools/[Firefox]
+
+Notre store utilise le cycle de vie de NGRX.
+
+Les données sont modifiables en appelant des actions, ces actions vont
+pouvoir interagir avec les différents services de l’application ainsi
+que sur le store lui-même.
+
+Les données sont accessibles via des sélecteurs. Un sélecteur permet de
+rendre disponible une donnée du store aux composants.
+
+Dans chaque module, on retrouve un dossier `+store+` dans lequel on peut
+retrouver les fichiers suivants : - Action : Classe implémentant les
+actions NGRX - Reducer : Classe qui va, à partir d’une action, appliquer
+des modifications sur le state - Effects : Classe qui va, à partir d’une
+action, faire des appels aux différents services de l’application -
+Service : Classe qui va gérer les appels au backend

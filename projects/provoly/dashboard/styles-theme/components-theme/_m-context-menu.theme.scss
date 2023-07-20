@@ -1,0 +1,46 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Molecule context menu */
+
+.m-context-menu {
+  border: 1px themed($theme-map, 'color', 'primary', 400) solid;
+  border-radius: themed($theme-map, 'decoration', 'border-radius', 'contextual');
+  background-color: white;
+  box-shadow: themed($theme-map, 'decoration', 'shadow', 'default');
+
+  &__list {
+    &__item {
+      a[href],
+      .a-btn {
+        color: themed($theme-map, 'color', 'primary', 700);
+        font-size: toRem(14);
+        font-weight: 400;
+
+        &:hover,
+        &:active {
+          color: themed($theme-map, 'color', 'primary', 800);
+
+          &:before {
+            background-color: themed($theme-map, 'color', 'primary', 200);
+          }
+        }
+      }
+    }
+  }
+
+  &.create-object-panel {
+    background-color: themed($theme-map, 'color', 'primary', 50);
+    border: 1px themed($theme-map, 'color', 'primary', 400) solid;
+    box-shadow: themed($theme-map, 'decoration', 'shadow', 'default');
+  }
+}
+
+.floating-menu {
+  background-color: themed($theme-map, 'color', 'primary', 50);
+}
+
+.floating-menu:hover {
+  background-color: themed($theme-map, 'color', 'primary', 100);
+  box-shadow: 2px 3px 10px 2px rgba(0, 0, 0, 0.2);
+}

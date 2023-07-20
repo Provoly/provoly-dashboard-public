@@ -1,0 +1,33 @@
+=== Ajouter un composant personnalisé
+
+Pour l’ajout d’un composant personnalisé dans l’application, il y a
+plusieurs étapes à effectuer:
+
+* tout d’abord le code du widget à proprement parler, dans l’application qui utilise pry.
+* ensuite ajouter la référence à ce widget avec son type au dashboard
+* puis la définition d’un manifest-type correspondant (avec les options, … éventuelles),
+permettant d’initialiser ce widget par exemple quand il est drag’n’drop
+depuis la barre correspondante.
+* et enfin, l’ajout de ce widget dans un menu (avec éventuellement un sous-menu).
+
+[source,js]
+----
+/* Add custom component during PryDashboardModule import (you can use load) */
+...
+PryDashboardModule.forRoot(
+    {
+    ...
+        formula: { name: 'formula', component: CustomFormulaComponent },
+    },...
+
+/* adding a manifest declaration for 'custom' (i.e. widget configuration) */
+toolboxManifestService.set('formula', { type: 'formula', layout: { x: 1, y: 1, width: 3, height: 5 } });
+
+/* Adding a menu entry for that custom component manifest declaration */
+toolboxMenuService.addMenu('default', 'toolbox.custom');
+toolboxMenuService.addWidget('toolbox.custom', 'default', 'toolbox.formula', 'formula');
+----
+
+Afin d’intégrer une configuration pour ce widget personnalisé, on pourra
+utiliser le même principe que pry, en utilisant le composant
+pry-settings.

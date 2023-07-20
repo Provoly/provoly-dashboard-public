@@ -1,0 +1,91 @@
+<div class="o-manifest-layout">
+  <div class="o-manifest-layout__toolbox">
+    <button class="a-btn a-btn--secondary" type="button" (click)="close()">
+      {{ '@pry.toolbox.manifest.close' | i18n }}
+    </button>
+    <button class="a-btn a-btn--primary" type="button" (click)="save()" [disabled]="form.invalid">
+      {{ '@pry.toolbox.manifest.check' | i18n }}
+    </button>
+  </div>
+  <div class="o-manifest-layout__content">
+    <div class="o-presentation-form-wrapper">
+      <h1 class="a-h1">{{ '@pry.presentation.add' + '.pageTitle' | i18n }}</h1>
+      <form [formGroup]="form" class="o-presentation-form">
+        <div class="m-form-label-field -width-full">
+          <label class="a-label" for="presentation_name">{{ '@pry.presentation.form.name' | i18n }}</label>
+          <input
+            type="text"
+            id="presentation_name"
+            formControlName="name"
+            placeholder="{{ '@pry.presentation.form.name' | i18n }}"
+            class="a-form-field"
+            maxlength="30"
+            required
+          />
+          <label
+            for="presentation_name"
+            *ngIf="form.get('name')?.touched && form.get('name')?.hasError('required')"
+            class="a-label a-label--help -error"
+          >
+            {{ '@pry.presentation.required' | i18n }}
+          </label>
+          <label
+            for="presentation_name"
+            *ngIf="form.get('name')?.hasError('maxlength')"
+            class="a-label a-label--help -error"
+          >
+            {{ '@pry.presentation.maxLength' | i18n: { len: '50' } }}
+          </label>
+        </div>
+        <div class="m-form-label-field -width-full">
+          <label class="a-label" for="presentation_description">{{
+            '@pry.presentation.form.description' | i18n
+          }}</label>
+          <textarea
+            formControlName="description"
+            id="presentation_description"
+            name="description"
+            cols="30"
+            rows="5"
+            maxlength="200"
+            placeholder="{{ '@pry.presentation.form.description' | i18n }}"
+            class="a-form-field"
+          ></textarea>
+          <label
+            for="presentation_description"
+            *ngIf="form.get('description')?.hasError('maxlength')"
+            class="a-label a-label--help -error"
+          >
+            {{ '@pry.presentation.maxLength' | i18n: { len: '200' } }}
+          </label>
+        </div>
+        <div class="m-form-label-field -width-full">
+          <label class="a-label" for="presentation_image">{{ '@pry.presentation.form.image' | i18n }}</label>
+          <div class="o-file-input">
+            <pry-select-image
+              id="presentation_image"
+              (changed)="image = $event"
+              [iconUrl]="image"
+              [mode]="type"
+            ></pry-select-image>
+            <pry-checkbox formControlName="cover" name="cover" ngDefaultControl>
+              {{ '@pry.presentation.form.cover' | i18n }}
+            </pry-checkbox>
+          </div>
+        </div>
+        <div class="m-form-label-field -width-full m-form-label-field--inline">
+          <label class="a-label">{{ '@pry.presentation.form.grid' | i18n }}</label>
+          <span class="a-label">{{ '@pry.toolbox.layout.' + this.chosenLayout | i18n }}</span>
+          <pry-select-grid-layout *ngIf="!edition"></pry-select-grid-layout>
+        </div>
+        <button
+          class="a-btn a-btn--primary"
+          (click)="configureDashboard(selectedPresentation!)"
+          [disabled]="form.invalid"
+        >
+          {{ '@pry.presentation.configuration' | i18n }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+==== Widget Detail (détail d’un objet)
+
+Permet la consultation en detail d’une donnée. Exemple de manifest :
+
+[source,js]
+----
+{
+    type: 'detail',
+    layout: {
+        x: 1,
+        y: 1,
+        height: 12,
+        width: 12
+    },
+    options: {
+        itemIds: [
+        '8758ee8e-3c06-4a79-a227-3b1517677cc2@1761602a-d7bc-4fdd-a997-3a4c4cafe168'
+        ]
+    }
+}
+----

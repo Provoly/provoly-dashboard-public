@@ -1,0 +1,104 @@
+<div class="o-manifest-layout__content">
+  <button class="a-btn a-btn--primary" (click)="goBack()">{{ '@pry.dataset.returnToList' | i18n }}</button>
+</div>
+
+<div class="o-pry-dataset-detail">
+  <div class="o-manifest-layout__content">
+    <h1 class="a-h1">{{ dataset.name }}</h1>
+  </div>
+  <div class="dataset-detail">
+    <div class="o-tabs">
+      <div class="o-tabs__list" role="tablist" [attr.aria-labelledby]="'tab-custo'">
+        <button
+          type="button"
+          class="o-tabs__list__btn"
+          role="tab"
+          [id]="'tab-' + compId + '-0'"
+          [attr.aria-selected]="tab === 0"
+          [attr.tabindex]="tab === 0 ? 0 : -1"
+          [attr.aria-controls]="'tabpanel-' + compId + '-0'"
+          (click)="switch(0)"
+        >
+          {{ '@pry.dataset.data' | i18n }}
+        </button>
+        <button
+          type="button"
+          class="o-tabs__list__btn"
+          role="tab"
+          [id]="'tab-' + compId + '-1'"
+          [attr.aria-selected]="tab === 1"
+          [attr.tabindex]="tab === 1 ? 1 : -1"
+          [attr.aria-controls]="'tabpanel-' + compId + '-1'"
+          (click)="switch(1)"
+        >
+          {{ '@pry.dataset.status' | i18n }}
+        </button>
+      </div>
+    </div>
+    <div *ngIf="tab === 0" class="table-container">
+      <pry-widget-instanciator [standalone]="true" [staticManifest]="widgetManifest"></pry-widget-instanciator>
+    </div>
+    <div class="o-base-layout__content">
+      <div *ngIf="tab === 1">
+        <div class="table-container">
+          <table class="a-table">
+            <caption>
+              {{
+                '@pry.admin.dataset.title' | i18n
+              }},
+              {{
+                '@pry.action.sortableColumnHeader' | i18n
+              }}
+            </caption>
+            <thead>
+              <tr>
+                <th>{{ '@pry.dataset.version.title' | i18n }}</th>
+                <th>{{ '@pry.dataset.date' | i18n }}</th>
+                <th>{{ '@pry.dataset.status' | i18n }}</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let version of datasetVersions$ | async; let first = first">
+                <td>
+                  {{ version.version }}
+                  <pry-icon *ngIf="version.state === 'ACTIVE' && first" iconSvg="check" class="check"></pry-icon>
+                </td>
+                <td>{{ version.lastModified | sinceDate }}</td>
+                <td *ngIf="version.state === 'ACTIVE' && first; else notActive">
+                  {{ '@pry.dataset.version.currentlyActive' | i18n }}
+                  <div class="info-icon">
+                    <span class="info-text">i</span>
+                  </div>
+                </td>
+                <ng-template #notActive>
+                  <td>
+                    {{ '@pry.dataset.version.' + version.state | i18n }}
+                    <div class="info-icon">
+                      <span class="info-text">i</span>
+                    </div>
+                  </td>
+                </ng-template>
+                <td>
+                  <div *ngIf="version.state !== 'LOADING' && version.state !== 'INDEXING'">
+                    <button
+                      type="button"
+                      class="a-btn a-btn--primary a-btn--icon-text ng-star-inserted"
+                      (click)="handleButtonAction(version)"
+                    >
+                      {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="showModalStatus">
+  <pry-modalStatus [version]="selectedDatasetVersion" (gotoConsult)="goToConsult($event)"></pry-modalStatus>
+</ng-container>

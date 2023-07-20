@@ -1,0 +1,21 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - widget detail */
+
+.o-widget--detail {
+  &__header {
+    color: themed($theme-map, 'color', 'primary', 500);
+    background-color: themed($theme-map, 'color', 'primary', 50);
+  }
+
+  &__category {
+    color: themed($theme-map, 'color', 'primary', 500);
+    border-color: themed($theme-map, 'color', 'primary', 50);
+  }
+
+  .expanded {
+    background-color: themed($theme-map, 'color', 'primary', 50);
+    border-color: themed($theme-map, 'color', 'primary', 500);
+  }
+}

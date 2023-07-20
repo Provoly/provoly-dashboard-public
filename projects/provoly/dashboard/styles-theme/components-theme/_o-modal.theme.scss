@@ -1,0 +1,28 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - modal */
+
+.o-modal-wrapper {
+  background-color: themed($theme-map, 'color', 'primary', 50);
+  box-shadow: themed($theme-map, 'decoration', 'shadow', 'modal');
+}
+
+.o-modal {
+  &__top__close .a-btn {
+    color: themed($theme-map, 'color', 'primary', 500);
+
+    &:hover {
+      color: themed($theme-map, 'color', 'primary', 600);
+    }
+  }
+
+  &--selector {
+    .m-form-label-field.selector {
+      // Color layer behind field
+      &:before {
+        background: themed($theme-map, 'color', 'primary', 100);
+      }
+    }
+  }
+}

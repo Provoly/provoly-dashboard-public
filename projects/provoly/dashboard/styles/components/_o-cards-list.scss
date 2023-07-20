@@ -1,0 +1,11 @@
+@use '../abstracts' as *;
+
+/* Organism - cards list */
+
+.o-cards-list {
+  @extend %list-unstyled;
+  display: flex;
+  flex-wrap: wrap;
+  gap: toRem(20);
+  padding-bottom: toRem(20);
+}

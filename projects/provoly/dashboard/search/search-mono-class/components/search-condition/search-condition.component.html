@@ -1,0 +1,65 @@
+<div class="o-pry-search-condition">
+  <div class="o-pry-search-condition__fields" [class.has-date-picker]="isDate && !textDateInputs">
+    <input class="a-form-field" type="text" [ngModel]="attributeName$ | async" readonly />
+    <pry-select
+      class="a-pry-select operator"
+      [labelTranslate]="true"
+      [items]="operatorOptions$ | async"
+      [itemsAsOption]="true"
+      bindValue="operator"
+      bindLabel="translation"
+      name="operator"
+      [ngModel]="operatorSelectedValue"
+      (ngModelChange)="onSelectedOperator($event)"
+    ></pry-select>
+    <ng-container *ngIf="isDate && !textDateInputs; else textInput">
+      <pry-date-picker
+        class="o-pry-search-condition__date-picker"
+        [(ngModel)]="dateConditionValue"
+        (ngModelChange)="updateDateCondition()"
+        [rangePicker]="twoValues"
+        [roundSelection]="true"
+        [timePicker]="true"
+        required
+      ></pry-date-picker>
+    </ng-container>
+  </div>
+  <ng-template #textInput>
+    <input
+      class="a-form-field"
+      type="text"
+      [placeholder]="(twoValues ? '@pry.search.placeholder.minValue' : '@pry.search.placeholder.search') | i18n"
+      [ngClass]="{ '-half': twoValues }"
+      [class.pry-search-condition-input-pattern]="firstValue.touched && firstValueInvalid"
+      [class.pry-search-condition-input-required]="firstValue.touched && firstValue.invalid"
+      name="value"
+      [type]="isDate ? 'date' : 'text'"
+      required
+      #firstValue="ngModel"
+      [(ngModel)]="conditionValue"
+      (input)="onCheckValidity($event, true)"
+      (focusout)="updateFirstValue()"
+    />
+    <ng-container *ngIf="twoValues">
+      <input
+        class="a-form-field"
+        type="text"
+        [placeholder]="'@pry.search.placeholder.maxValue' | i18n"
+        required
+        [type]="isDate ? 'date' : 'text'"
+        [(ngModel)]="secondConditionValue"
+        (input)="onCheckValidity($event, false)"
+        (focusout)="updateSecondValue()"
+      />
+    </ng-container>
+  </ng-template>
+  <button
+    type="button"
+    class="a-btn a-btn--icon-only -circle -size-xs delete"
+    (click)="onDeleteAttributeCondition()"
+    [title]="'@pry.search.attribute.remove' | i18n"
+  >
+    <pry-icon iconSvg="close" [width]="22" [height]="22"></pry-icon>
+    <span class="u-visually-hidden">{{ '@pry.search.attribute.remove' | i18n }}</span>
+  </button>
+</div>

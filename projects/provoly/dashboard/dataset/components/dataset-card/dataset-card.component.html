@@ -1,0 +1,29 @@
+<pry-dataset-css></pry-dataset-css>
+<div class="o-pry-dataset-card">
+  <div class="o-pry-dataset-card__header">
+    <img
+      alt=""
+      [height]="25"
+      [width]="25"
+      [src]="dataset.id | translateId: { type: 'datasource', output: 'icon' } | async"
+    />
+    <h4 class="a-h4">{{ dataset.name }}</h4>
+  </div>
+  <div class="o-pry-dataset-card__content"></div>
+  <div class="o-pry-dataset-card__footer">
+    <button class="a-btn" (click)="goToDetailView()">
+      <pry-icon iconSvg="table"></pry-icon>
+      {{ '@pry.dataset.table' | i18n }}
+    </button>
+    <button class="a-btn" (click)="goToDetailView()">
+      <pry-icon iconSvg="download"></pry-icon>
+      {{ '@pry.dataset.export' | i18n }}
+    </button>
+    <button class="a-btn" (click)="goToDetailView()">
+      {{ '@pry.dataset.api' | i18n }}
+    </button>
+  </div>
+  <div class="o-pry-dataset-card__button">
+    <button class="a-btn" (click)="goToDetailView()">Consulter</button>
+  </div>
+</div>

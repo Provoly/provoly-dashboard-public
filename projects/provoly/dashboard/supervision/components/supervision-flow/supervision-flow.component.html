@@ -1,0 +1,52 @@
+<div class="o-base-container">
+  <h1 class="a-h1">{{ '@pry.supervision.inputFlow.title' | i18n }}</h1>
+
+  <table
+    class="a-table"
+    prySortTable
+    prySortActive="name"
+    prySortDirection="asc"
+    (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
+  >
+    <caption>
+      {{
+        '@pry.supervision.inputFlow.title' | i18n
+      }},
+      {{
+        '@pry.action.sortableColumnHeader' | i18n
+      }}
+    </caption>
+    <thead>
+      <tr>
+        <th prySortHeader="name">{{ '@pry.supervision.inputFlow.name' | i18n }}</th>
+        <th prySortHeader="format">{{ '@pry.supervision.inputFlow.format' | i18n }}</th>
+        <th>{{ '@pry.supervision.inputFlow.state' | i18n }}</th>
+        <th prySortHeader="nbIntegrationOk">{{ '@pry.supervision.inputFlow.oks' | i18n }}</th>
+        <th prySortHeader="nbIntegrationKo">{{ '@pry.supervision.inputFlow.kos' | i18n }}</th>
+        <th prySortHeader="dateIntegration">{{ '@pry.supervision.inputFlow.date' | i18n }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let flow of flows$ | async | prySortData: sortActive : sortDirection">
+        <td>
+          <div class="u-display-flex -align-center">
+            {{ flow.name }}
+            <a *ngIf="flow.accessLink" [href]="flow.accessLink" target="_blank" class="a-btn a-btn--icon-only">
+              <pry-icon iconSvg="launch" [height]="15" [width]="15"></pry-icon>
+              <span class="u-sr-only">{{ '@pry.action.opensInNewTab' | i18n }}</span>
+            </a>
+          </div>
+        </td>
+        <td>{{ flow.format }}</td>
+        <td>
+          <span class="a-badge" [ngClass]="{ '-status-ok': flow.status, '-status-inactive': !flow.status }">
+            {{ (flow.status ? '@pry.supervision.inputFlow.active' : '@pry.supervision.inputFlow.inactive') | i18n }}
+          </span>
+        </td>
+        <td>{{ flow.nbIntegrationOk }}</td>
+        <td>{{ flow.nbIntegrationKo }}</td>
+        <td>{{ flow.dateIntegration | date: ('@pry.format.datetime' | i18n) }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

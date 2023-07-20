@@ -1,0 +1,28 @@
+<div class="o-modal-wrapper" *ngIf="opened">
+  <div class="o-modal backdrop">
+    <div class="o-modal__top">
+      <div class="o-modal__top__title">
+        <h2 class="a-h2" id="dialog_title">
+          {{ titleModal }}
+        </h2>
+      </div>
+      <div class="o-modal__top__close">
+        <button class="a-btn a-btn--icon-only" (click)="cancelAction()">
+          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+
+    <ng-content></ng-content>
+
+    <div class="m-btn-group">
+      <button type="button" class="a-btn a-btn--secondary" (click)="cancelAction()">
+        {{ cancelLabel }}
+      </button>
+      <button type="button" class="a-btn a-btn--primary" (click)="validateAction()">
+        {{ validateLabel }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme' as *;
+
+/* Theme Organism - pry-dataset-card */
+
+.o-pry-dataset-card {
+  background-color: themed($theme-map, 'color', 'primary', 50);
+  filter: drop-shadow(0px 4px 4px rgba(17, 59, 110, 0.12));
+
+  .a-h4 {
+    color: themed($theme-map, 'color', 'primary', 600);
+  }
+
+  &__footer {
+    border-top: 1px themed($theme-map, 'color', 'primary', 300) solid;
+    border-bottom: 1px themed($theme-map, 'color', 'primary', 300) solid;
+  }
+}

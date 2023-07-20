@@ -1,0 +1,45 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Molecule button to sort table rows */
+.m-btn-sorttable {
+  @include typography-level(themed($theme-map, 'typography', 'button'));
+  color: themed($theme-map, 'color', 'primary', 600);
+  font-size: toRem(14);
+  font-weight: 700;
+
+  // No focus-visible on button but on button__content
+  &:focus {
+    .m-btn-sorttable__content {
+      outline: 2px solid themed($theme-map, 'decoration', 'focus-visible', 'border-color-dark');
+    }
+  }
+
+  &:focus:not(:focus-visible) {
+    .m-btn-sorttable__content {
+      outline: 0;
+    }
+  }
+
+  &:focus-visible {
+    .m-btn-sorttable__content {
+      @include eltFocusVisible(
+        $color1: themed($theme-map, 'decoration', 'focus-visible', 'border-color-light'),
+        $color2: themed($theme-map, 'decoration', 'focus-visible', 'border-color-dark'),
+        $border-radius: 7px
+      );
+    }
+  }
+}
+
+[aria-sort='ascending'] > .m-btn-sorttable {
+  .m-btn-sorttable__icnmark.-asc {
+    color: themed($theme-map, 'color', 'accent', 600);
+  }
+}
+
+[aria-sort='descending'] > .m-btn-sorttable {
+  .m-btn-sorttable__icnmark.-desc {
+    color: themed($theme-map, 'color', 'accent', 600);
+  }
+}

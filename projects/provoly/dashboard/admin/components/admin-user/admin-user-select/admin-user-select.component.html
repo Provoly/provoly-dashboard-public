@@ -1,0 +1,262 @@
+<div
+  *ngIf="selectedUser$ | async as user"
+  [id]="'panel-user-' + user.id"
+  [attr.aria-labelledby]="'button-user-' + user.id"
+  class="o-panel"
+>
+  <div>
+    <div class="o-panel__header">
+      <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
+        <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
+        <pry-icon iconSvg="close"></pry-icon>
+      </button>
+
+      <h3 [id]="'tab-title-' + compId" class="a-h3">
+        {{ '@pry.admin.userInfo.info' | i18n }}
+      </h3>
+    </div>
+  </div>
+
+  <div class="o-tabs">
+    <div class="o-tabs__list" role="tablist" [attr.aria-labelledby]="'tab-title-' + compId">
+      <button
+        type="button"
+        class="o-tabs__list__btn"
+        role="tab"
+        [id]="'tab-' + compId + '-0'"
+        [attr.aria-selected]="tab === 0"
+        [attr.tabindex]="tab === 0 ? 0 : -1"
+        [attr.aria-controls]="'tabpanel-' + compId + '-0'"
+        (click)="switch(0)"
+      >
+        {{ '@pry.admin.userInfo.profile' | i18n }}
+      </button>
+
+      <button
+        type="button"
+        class="o-tabs__list__btn"
+        [id]="'tab-' + compId + '-1'"
+        role="tab"
+        [attr.aria-selected]="tab === 1"
+        [attr.tabindex]="tab === 1 ? 0 : -1"
+        [attr.aria-controls]="'tabpanel-' + compId + '-1'"
+        (click)="switch(1)"
+      >
+        {{ '@pry.admin.details' | i18n }}
+      </button>
+    </div>
+
+    <div class="o-tabs__panels">
+      <div
+        class="o-tabs__panels__item"
+        [class.is-hidden]="tab !== 0"
+        [id]="'tabpanel-' + compId + '-0'"
+        role="tabpanel"
+        [attr.aria-labelledby]="'tab-' + compId + '-0'"
+        tabindex="0"
+      >
+        <div class="o-tabs__panels__item__content o-tabs__panels__item__content--profil">
+          <div *ngFor="let metadata of userMetadata$ | async">
+            <div class="o-tabs__panels__item__content">
+              <div class="o-tabs__panels__item__content__actions">
+                <div class="o-tabs__panels__item__content__actions__text">
+                  <span class="o-tabs__panels__item__content__actions__text__label"
+                    >{{ metadata.userProfile.name }} :</span
+                  >
+                  <span class="o-tabs__panels__item__content__actions__text__value">{{ metadata.value }}</span>
+                </div>
+
+                <div class="o-tabs__panels__item__content__actions__buttons">
+                  <ng-container *pryAccess="{ module: 'admin', page: 'user', action: 'write' }">
+                    <button type="button" class="a-btn a-btn--icon-only" aria-pressed="false">
+                      <span class="u-visually-hidden"
+                        >{{ '@pry.action.edit' | i18n }} {{ metadata.userProfile.name }}</span
+                      >
+                      <pry-icon
+                        class="edit-icon"
+                        iconSvg="edit"
+                        [width]="15"
+                        [height]="15"
+                        (click)="editMetadata(metadata)"
+                      ></pry-icon>
+                    </button>
+                    <button type="button" class="a-btn a-btn--icon-only" aria-pressed="false">
+                      <span class="u-visually-hidden"
+                        >{{ '@pry.action.delete' | i18n }} {{ metadata.userProfile.name }}</span
+                      >
+                      <pry-icon
+                        class="delete-icon"
+                        iconSvg="delete"
+                        [width]="15"
+                        [height]="15"
+                        (click)="removeMetadata(metadata)"
+                      ></pry-icon>
+                    </button>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-container *pryAccess="{ module: 'admin', page: 'user', action: 'write' }">
+          <ng-container *ngIf="metaForm.value.metadata">
+            <form class="o-form -border-top" [formGroup]="metaForm" (ngSubmit)="addMetadataUser()">
+              <fieldset>
+                <legend class="u-visually-hidden">{{ '@pry.action.editProfil' | i18n }}</legend>
+
+                <div class="m-form-label-field">
+                  <label for="metadata" id="metadata-label" class="a-label">Data</label>
+                  <pry-select
+                    id="metadata"
+                    class="a-pry-select"
+                    formControlName="metadata"
+                    [items]="metadataAvailable$ | async"
+                    (ngModelChange)="onMetaChange($event)"
+                    [isForm]="true"
+                    [itemsAsOption]="true"
+                    bindLabel="name"
+                    [readonly]="editable"
+                    [attr.aria-labelledby]="
+                      isSubmitted && metaForm.get('metadata')?.invalid
+                        ? 'metadata-label metadata-error'
+                        : 'metadata-label'
+                    "
+                    [attr.aria-invalid]="isSubmitted && metaForm.get('metadata')?.invalid"
+                  >
+                  </pry-select>
+                  <label
+                    *ngIf="isSubmitted && metaForm.get('metadata')?.invalid"
+                    id="metadata-error"
+                    for="metadata"
+                    class="a-label a-label--help -error"
+                  >
+                    {{ '@pry.admin.required' | i18n }}
+                  </label>
+                </div>
+
+                <ng-container *ngIf="metaForm.value['metadata']['type'] === 'DATE'; else inputList">
+                  <div class="m-form-label-field">
+                    <label id="form_date-label" for="form_date" class="a-label">
+                      {{ '@pry.action.selectDate' | i18n }} *
+                      <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+                    </label>
+                    <input
+                      id="form_date"
+                      type="date"
+                      class="a-form-field"
+                      formControlName="value"
+                      [attr.aria-labelledby]="
+                        isSubmitted && metaForm.get('value')?.invalid
+                          ? 'form-date-label form-date-error'
+                          : 'form-date-label'
+                      "
+                      [attr.aria-invalid]="isSubmitted && metaForm.get('value')?.invalid"
+                      required
+                    />
+                    <label
+                      *ngIf="isSubmitted && metaForm.get('value')?.invalid"
+                      id="form_date-error"
+                      for="form_date"
+                      class="a-label a-label--help -error"
+                    >
+                      {{ '@pry.admin.required' | i18n }}
+                    </label>
+                  </div>
+                </ng-container>
+
+                <ng-template #inputList>
+                  <ng-container *ngIf="metaForm.value['metadata']['type'] === 'LIST'; else inputText">
+                    <div class="m-form-label-field">
+                      <label id="list-label" class="a-label" for="list">{{ '@pry.action.choiceInList' | i18n }}</label>
+                      <pry-select
+                        id="list"
+                        class="a-pry-select"
+                        formControlName="value"
+                        [items]="metaForm.value['metadata']['allowedValues']"
+                        [isForm]="true"
+                        aria-labelledby="list-label"
+                      ></pry-select>
+                    </div>
+                  </ng-container>
+                </ng-template>
+
+                <ng-template #inputText>
+                  <div class="m-form-label-field">
+                    <label id="text-label" class="a-label" for="text">
+                      {{ '@pry.action.text' | i18n }} *
+                      <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+                    </label>
+                    <input
+                      id="text"
+                      type="text"
+                      class="a-form-field"
+                      formControlName="value"
+                      [attr.aria-labelledby]="
+                        isSubmitted && metaForm.get('value')?.invalid ? 'text-label text-error' : 'text-label'
+                      "
+                      [attr.aria-invalid]="isSubmitted && metaForm.get('value')?.invalid"
+                      required
+                    />
+                    <label
+                      *ngIf="isSubmitted && metaForm.get('value')?.invalid"
+                      id="test-error"
+                      for="text"
+                      class="a-label a-label--help -error"
+                    >
+                      <span *ngIf="metaForm.get('value')?.hasError('required')">{{
+                        '@pry.admin.required' | i18n
+                      }}</span>
+                      <ng-container *ngIf="metaForm.get('value')?.hasError('pattern')">
+                        <span *ngIf="metaForm.value['metadata']['type'] === 'DOUBLE'">
+                          {{ '@pry.admin.environment.formatDouble' | i18n }}
+                        </span>
+                        <span *ngIf="metaForm.value['metadata']['type'] === 'INTEGER'">
+                          {{ '@pry.admin.environment.formatInt' | i18n }}
+                        </span>
+                      </ng-container>
+                    </label>
+                  </div>
+                </ng-template>
+              </fieldset>
+
+              <div class="m-btn-group -end">
+                <button
+                  type="submit"
+                  class="a-btn a-btn--primary"
+                  [innerHTML]="
+                    ((editable$ | async) ? '@pry.admin.userInfo.editMetadata' : '@pry.admin.userInfo.addMetadata')
+                      | i18n
+                  "
+                ></button>
+              </div>
+            </form>
+          </ng-container>
+        </ng-container>
+      </div>
+
+      <div
+        class="o-tabs__panels__item"
+        [class.is-hidden]="tab !== 1"
+        [id]="'tabpanel-' + compId + '-1'"
+        role="tabpanel"
+        [attr.aria-labelledby]="'tab-' + compId + '-1'"
+        tabindex="0"
+      >
+        <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
+        <p class="a-p">
+          {{ '@pry.admin.userInfo.name' | i18n }} :
+          <strong>{{ user?.name }}</strong>
+        </p>
+        <p class="a-p">
+          {{ '@pry.admin.userInfo.familyName' | i18n }} :
+          <strong>{{ user.familyName }}</strong>
+        </p>
+        <p class="a-p">
+          {{ '@pry.admin.userInfo.email' | i18n }} :
+          <strong>{{ user.email }}</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

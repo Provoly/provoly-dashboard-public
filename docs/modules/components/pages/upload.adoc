@@ -1,0 +1,14 @@
+=== Upload (pry-upload) [[upload]]
+
+Le composant `+Upload+` permet d’ajouter une image dans la banque
+d’image de l’application
+
+Les paramètres d’entrée du composant sont les suivants :
+
+- mode (défaut='`icon`'): Permet de sélectionner dans quel catalogue l’icône
+sera enregistrer (actuellement il en existe 2, icon et illustration)
+- accept (défaut=’image/*’): Format du fichier accepté
+
+Le paramètre de sortie du composant est le suivant :
+
+- uploaded: Evenement créé après l’ajout d’un fichier dont le mode est inconnu

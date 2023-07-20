@@ -1,0 +1,54 @@
+@use '../abstracts' as *;
+
+/* Organism - draggable menu */
+
+.o-draggable-menu {
+  display: flex;
+  flex-direction: column;
+  width: toRem(150);
+  padding: toRem(6);
+
+  &__list {
+    @extend %list-unstyled;
+
+    &__item {
+      .a-btn,
+      .a-link {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: toRem(5);
+        width: 100%;
+        min-width: max-content;
+        height: auto;
+        padding: toRem(4) toRem(10);
+        word-break: keep-all;
+        cursor: pointer;
+
+        &[aria-expanded='true'] + .o-draggable-menu__list__submenu,
+        &:hover + .o-draggable-menu__list__submenu {
+          display: block;
+        }
+      }
+    }
+
+    &__submenu {
+      @extend %list-unstyled;
+      position: absolute;
+      left: 96%;
+      display: none;
+      min-width: max-content;
+      margin-top: toRem(-35);
+      padding: toRem(6);
+
+      [draggable] {
+        cursor: move;
+      }
+
+      &.is-active,
+      &:hover {
+        display: block;
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+<pry-date-filter-css></pry-date-filter-css>
+<div *ngIf="filter">
+  <div *ngIf="!filter?.hasDateRange; else dateRange">
+    <label class="a-label" for="{{ filter.name }}">{{ filter.name }}</label>
+    <input
+      [ngModel]="filter.value"
+      (ngModelChange)="this.value$.next($event)"
+      type="date"
+      class="a-form-field"
+      [id]="filter.name"
+    />
+  </div>
+  <ng-template #dateRange>
+    <label for="{{ filter.name }}">{{ filter.name }}</label>
+    <div class="date-range">
+      <input
+        [ngModel]="date1"
+        (ngModelChange)="date1$.next($event)"
+        type="date"
+        class="a-form-field"
+        [id]="filter.name + '1'"
+      />
+      <input
+        [ngModel]="date2"
+        (ngModelChange)="date2$.next($event)"
+        type="date"
+        class="a-form-field"
+        [id]="filter.name + '2'"
+      />
+    </div>
+  </ng-template>
+</div>

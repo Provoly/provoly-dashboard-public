@@ -1,0 +1,24 @@
+<div class="o-base-layout__toolbox__actions">
+  <ul class="m-actions-list">
+    <ng-container *ngFor="let action of actions$ | async">
+      <pry-base-toolbox-action
+        *pryAccess="{ module: action.moduleAccess, page: action.pageAccess, action: action.actionAccess }"
+        [action]="action"
+        [baseToolboxTranslation]="baseToolboxTranslation"
+      >
+      </pry-base-toolbox-action>
+    </ng-container>
+  </ul>
+
+  <ul class="m-actions-list">
+    <ng-container *ngFor="let action of subActions$ | async">
+      <pry-base-toolbox-action
+        *pryAccess="{ module: action.moduleAccess, page: action.pageAccess, action: action.actionAccess }"
+        [action]="action"
+        [baseToolboxTranslation]="baseToolboxTranslation"
+        [iconAction]="true"
+      >
+      </pry-base-toolbox-action>
+    </ng-container>
+  </ul>
+</div>

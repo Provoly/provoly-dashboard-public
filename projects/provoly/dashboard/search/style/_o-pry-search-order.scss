@@ -1,0 +1,14 @@
+@use '../../styles/abstracts/index' as *;
+
+/* Organism - pry search composed */
+.o-pry-search-order {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: toRem(10);
+  padding-bottom: toRem(20);
+
+  .a-pry-select {
+    width: 200px;
+  }
+}

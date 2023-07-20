@@ -1,0 +1,36 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme molecule - time picker */
+
+.m-time-picker {
+  border-left: 1px solid themed($theme-map, 'color', 'primary', 100);
+  background: white;
+
+  &__list {
+    &__item {
+      button {
+        color: themed($theme-map, 'color', 'primary', 700);
+
+        &:hover {
+          background-color: themed($theme-map, 'color', 'primary', 50);
+        }
+
+        &:active {
+          background-color: themed($theme-map, 'color', 'primary', 600);
+          font-weight: 500;
+        }
+
+        &.-selected {
+          color: themed($theme-map, 'color', 'primary', 'contrast', 600);
+          background-color: themed($theme-map, 'color', 'primary', 600);
+          font-weight: 500;
+
+          &:hover {
+            background-color: themed($theme-map, 'color', 'primary', 600);
+          }
+        }
+      }
+    }
+  }
+}

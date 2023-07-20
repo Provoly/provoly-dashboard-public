@@ -1,0 +1,5 @@
+=== Vues / Manifests `+manifest.service.ts+`
+
+Ce service permet de gérer les vues (par défaut, création, …), à partir
+d’un backend pry. Utilisé uniquement par le composant de liste des
+manifests.

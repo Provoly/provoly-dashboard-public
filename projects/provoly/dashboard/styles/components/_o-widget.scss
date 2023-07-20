@@ -1,0 +1,208 @@
+@use '../abstracts' as *;
+
+/* Organism - widget */
+.o-widget {
+  height: 100%;
+
+  &__search {
+    position: relative;
+
+    .a-icon {
+      position: absolute;
+      right: toRem(11);
+      bottom: toRem(9);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
+  &__header {
+    position: relative;
+    z-index: 0;
+    display: flex;
+    overflow: auto;
+    justify-content: space-between;
+    width: 100%;
+    height: toRem(60);
+
+    &__content {
+      display: flex;
+      align-items: center;
+
+      &__title {
+        padding-bottom: 0;
+        padding-left: toRem(15);
+        font-size: toRem(16);
+        font-weight: 500;
+      }
+
+      &__query {
+        display: flex;
+        align-items: center;
+        margin-left: toRem(15);
+
+        &__name {
+          overflow: hidden;
+          padding-left: toRem(10);
+          padding-bottom: 0;
+          font-size: toRem(15);
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        &__color-point {
+          width: toRem(8);
+          height: toRem(8);
+          margin-right: toRem(8);
+          border-radius: toRem(50);
+        }
+      }
+    }
+
+    .m-btn-group {
+      padding-right: toRem(15);
+
+      .a-btn {
+        &:not(:last-child) {
+          margin-right: 5px;
+        }
+      }
+
+      pry-settings {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  &__choose-parameters {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 65%;
+    align-items: center;
+
+    .a-p {
+      padding-bottom: toRem(30);
+      font-size: toRem(15);
+    }
+  }
+
+  .no-result {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    &__search {
+      width: 20%;
+      margin-bottom: toRem(40);
+    }
+
+    &__text {
+      max-width: toRem(294);
+      line-height: toRem(20);
+      text-align: center;
+    }
+  }
+
+  &__menu {
+    @extend %overlay-panel-fixed-right;
+    position: absolute;
+    right: auto;
+    bottom: auto;
+    width: 300px;
+    padding: 0;
+    transform: translateX(-20px);
+  }
+
+  // Resultset displayed in popup/panel
+  &__choose-resultset {
+    @extend %overlay-panel-fixed-right;
+    width: toRem(560);
+    padding: 0 0 toRem(10) 0;
+
+    .m-namedqueries-wrapper {
+      overflow: auto;
+      overflow-x: hidden;
+      height: auto;
+      padding: toRem(30) toRem(20) 0 toRem(20);
+
+      .o-widget__search {
+        margin-bottom: toRem(20);
+      }
+
+      .m-namedqueries {
+        @extend %list-unstyled;
+
+        &__item {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: toRem(15);
+
+          .a-checkbox {
+            margin-bottom: 0;
+          }
+
+          .a-checkbox__text {
+            padding-right: toRem(10);
+          }
+        }
+      }
+    }
+
+    .m-btn-group {
+      min-height: 65px;
+      padding: toRem(10) toRem(20) toRem(10) toRem(20);
+    }
+  }
+
+  &__choose-form {
+    @extend %overlay-panel-fixed-right;
+    bottom: auto;
+    min-width: 260px;
+  }
+
+  .m-btn-group.-selection-choice {
+    position: absolute;
+    z-index: 400;
+    gap: toRem(10);
+    padding: toRem(7);
+    background: white;
+    border-radius: toRem(6);
+    border-width: 1px;
+    border-style: solid;
+
+    .a-btn {
+      @include outlineOnFocus($border-radius: 4px);
+    }
+  }
+}
+
+.widget-below-header {
+  height: toRem(60);
+}
+
+/*.widget-choose-resultset,*/
+.create-object-panel {
+  gap: toRem(5);
+  position: absolute;
+  top: 8.5%;
+  right: 0;
+  bottom: 0;
+  width: toRem(336);
+  max-width: toRem(400);
+  padding: 0 0 toRem(20) 0;
+  border-radius: 0;
+}
+
+.widget-choose-resultset {
+  .context-menu-panel-button {
+    display: flex;
+    justify-content: center;
+    margin-top: toRem(12);
+  }
+}

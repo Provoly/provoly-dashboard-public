@@ -1,0 +1,43 @@
+@use '../../styles/abstracts' as *;
+
+/* Organism - named query */
+
+.o-named-query {
+  .combobox-container {
+    position: relative;
+  }
+
+  .combobox-container-btn {
+    &__label {
+      padding-left: toRem(6);
+    }
+  }
+
+  .combobox {
+    position: absolute;
+    z-index: 999;
+    top: toRem(51);
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    border-radius: 0 0 toRem(12) toRem(12);
+    border-width: toRem(1);
+    border-style: solid;
+    border-top: 0;
+
+    > div {
+      padding: toRem(10);
+      border-radius: 0 0 toRem(12) toRem(12);
+      cursor: move;
+
+      &:hover {
+        border-radius: 0;
+      }
+
+      &:last-of-type {
+        border-radius: 0 0 toRem(12) toRem(12);
+      }
+    }
+  }
+}

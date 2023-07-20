@@ -1,0 +1,7 @@
+<ul class="m-time-picker__list" (scroll)="onScroll()" [class.disable-scroll]="disableScroll" #column>
+  <ng-container *ngFor="let index of LOOP_COUNTER">
+    <li *ngFor="let item of list" class="m-time-picker__list__item" [class.is-clone]="index === 0">
+      <button (click)="select(item)" [class.-selected]="selectedItem === item">{{ item }}</button>
+    </li>
+  </ng-container>
+</ul>

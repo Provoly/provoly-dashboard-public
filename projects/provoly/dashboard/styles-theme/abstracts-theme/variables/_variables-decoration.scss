@@ -1,0 +1,49 @@
+// Theme decoration variables
+
+// Accessibility - outline/focus visible
+// $outline-border-color-light: white !default;
+// $outline-border-color-dark: #35b99f !default;
+// $outline-border-radius: 22px !default;
+
+$theme-focus-visible: (
+  'border-color-light': white,
+  'border-color-dark': #35b99f,
+  'border-radius': 22px
+);
+
+// Border-radius
+$theme-border-radius: (
+  'scrollbar-thumb': 6px,
+  'button': (
+    'default': 22px
+  ),
+  'checkbox': 3px,
+  'card': (
+    'default': 10px,
+    'small': 5px
+  ),
+  'contextual': 4px
+);
+
+$theme-shadow: (
+  'default': 0px 4px 4px rgba(17, 59, 110, 0.12),
+  'notification': 0px 0px 11px rgba(17, 59, 110, 0.2),
+  'card': 0px 4px 4px rgba(17, 59, 110, 0.12),
+  'card-hover': 0px 4px 4px rgba(17, 59, 110, 0.22),
+  'modal': 0px 4px 15px rgba(17, 59, 110, 0.3)
+);
+
+///// DO NOT EDIT FROM HERE /////
+$theme-map-decoration: (
+  'decoration': (
+    'border-radius': (
+      $theme-border-radius
+    ),
+    'shadow': (
+      $theme-shadow
+    ),
+    'focus-visible': (
+      $theme-focus-visible
+    )
+  )
+);

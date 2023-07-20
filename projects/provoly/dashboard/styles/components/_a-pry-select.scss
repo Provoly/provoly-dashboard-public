@@ -1,0 +1,19 @@
+@use '../abstracts' as *;
+
+/* Atom - Component pry-select  (lib) */
+.a-pry-select {
+  .ng-value-label {
+    display: flex;
+    align-items: center;
+    height: toRem(36);
+  }
+
+  .ng-option-label {
+    display: flex;
+    align-items: center;
+
+    pry-icon {
+      margin-right: toRem(8);
+    }
+  }
+}

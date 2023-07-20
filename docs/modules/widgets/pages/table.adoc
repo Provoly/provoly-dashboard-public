@@ -1,0 +1,21 @@
+==== Widget Table (Tableau de données)
+
+Permet la restitution des données dans un tableau (merci captain
+obvious) Le paramétrage va permettre d’ajouter des colonnes avec un
+choix de la propriété à afficher ainsi que son libellé, ou en supprimer.
+
+Exemple de manifest :
+
+[source,js]
+----
+{
+    type: 'table',
+    layout: { x: 1, y: 1, height: 10, width: 12 },
+    options: {},
+    datasource: [
+      '06406e7e-37cd-41ce-b5fc-36d233e5ae5c',
+      '17b90da3-f448-4cc3-bfd8-74c8b8481590',
+      'd260d53d-3529-4712-bedb-6517ecad5784'
+    ]
+}
+----

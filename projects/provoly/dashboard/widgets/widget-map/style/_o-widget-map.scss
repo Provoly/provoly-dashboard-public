@@ -1,0 +1,69 @@
+@use '../../../styles/abstracts/index' as *;
+@use '../../../../../../node_modules/ol-layerswitcher/dist/ol-layerswitcher.css';
+@use '../../../../../../node_modules/ol/ol.css';
+
+/* Organism - widget map */
+/* Extends o-widget */
+
+.o-widget--map {
+  display: flex;
+  flex-direction: column;
+
+  div.ol-scale-bar {
+    position: absolute;
+    left: initial;
+    right: 8px;
+    bottom: 8px;
+  }
+}
+
+.o-map-wrapper {
+  display: flex;
+  width: 100%;
+  flex: 1 1;
+}
+
+.o-map {
+  width: 100%;
+  height: 100%;
+}
+
+#map {
+  height: 100%;
+}
+
+.map-frame {
+  height: 100%;
+}
+
+.layer-switcher {
+  top: toRem(80);
+  left: toRem(8);
+  right: unset;
+  border-width: toRem(1);
+  border-style: solid;
+  border-radius: toRem(7);
+
+  button {
+    background-size: 30px;
+    background-position: unset;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIj48cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDB6Ii8+PHBhdGggZD0iTTIwLjA4MyAxNS4ybDEuMjAyLjcyMWEuNS41IDAgMCAxIDAgLjg1OGwtOC43NyA1LjI2MmExIDEgMCAwIDEtMS4wMyAwbC04Ljc3LTUuMjYyYS41LjUgMCAwIDEgMC0uODU4bDEuMjAyLS43MjFMMTIgMjAuMDVsOC4wODMtNC44NXptMC00LjdsMS4yMDIuNzIxYS41LjUgMCAwIDEgMCAuODU4TDEyIDE3LjY1bC05LjI4NS01LjU3MWEuNS41IDAgMCAxIDAtLjg1OGwxLjIwMi0uNzIxTDEyIDE1LjM1bDguMDgzLTQuODV6bS03LjU2OS05LjE5MWw4Ljc3MSA1LjI2MmEuNS41IDAgMCAxIDAgLjg1OEwxMiAxMyAyLjcxNSA3LjQyOWEuNS41IDAgMCAxIDAtLjg1OGw4Ljc3LTUuMjYyYTEgMSAwIDAgMSAxLjAzIDB6TTEyIDMuMzMyTDUuODg3IDcgMTIgMTAuNjY4IDE4LjExMyA3IDEyIDMuMzMyeiIvPjwvc3ZnPg==);
+  }
+
+  &.shown.ol-control:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+.ol-attribution {
+  top: toRem(5);
+  bottom: unset;
+}
+
+.a-form-field {
+  &[type='radio'] {
+    &:read-only {
+      pointer-events: auto;
+    }
+  }
+}

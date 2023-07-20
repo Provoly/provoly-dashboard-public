@@ -1,0 +1,8 @@
+@use '../abstracts' as *;
+
+/* Atom - badge */
+
+.a-badge {
+  padding: toRem(3) toRem(10);
+  border-radius: toRem(50);
+}

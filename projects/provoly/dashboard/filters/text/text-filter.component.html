@@ -1,0 +1,10 @@
+<div *ngIf="filter">
+  <label class="a-label" for="{{ filter.name }}">{{ filter.name }}</label>
+  <input
+    [ngModel]="filter.value"
+    (ngModelChange)="this.value$.next($event)"
+    [id]="filter.name"
+    type="text"
+    class="a-form-field"
+  />
+</div>

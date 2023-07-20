@@ -1,0 +1,9 @@
+<ng-container *ngIf="_attributes$ | async as attributes">
+  <ul class="m-pry-search-select-attribute">
+    <li class="m-pry-search-select-attribute__item" *ngFor="let attr of attributes">
+      <button class="a-btn" (click)="onSelectAttribute(attr)">
+        {{ attr.name }}
+      </button>
+    </li>
+  </ul>
+</ng-container>

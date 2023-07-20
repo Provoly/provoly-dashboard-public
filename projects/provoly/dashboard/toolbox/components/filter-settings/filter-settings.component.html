@@ -1,0 +1,157 @@
+<pry-select-grid-layout-css></pry-select-grid-layout-css>
+<div class="save-manifest-container">
+  <div style="display: none">
+    <ng-template #container></ng-template>
+  </div>
+  <button
+    type="button"
+    class="a-btn a-btn--secondary -size-md"
+    [disabled]="(attributes$ | async)?.length === 0"
+    (click)="toggleSettings()"
+    aria-haspopup="dialog"
+  >
+    <ng-container *ngIf="label">{{ '@pry.filters.label' | i18n }}</ng-container>
+  </button>
+</div>
+
+<ng-template #settings>
+  <div class="o-filters">
+    <div class="o-filters__header">
+      <ng-container *ngIf="currentStep === FilterSteps.LIST">
+        <h2>Paramétrer les filtres</h2>
+      </ng-container>
+      <ng-container *ngIf="currentStep === FilterSteps.CREATION || currentStep === FilterSteps.EDITION">
+        <div class="u-display-flex -row -align-center">
+          <button (click)="goBack()" type="button" class="back-button">
+            <pry-icon iconSvg="chevron_right"></pry-icon>
+          </button>
+          <h2>
+            {{
+              (currentStep === FilterSteps.CREATION ? '@pry.filters.creation.create' : '@pry.filters.creation.update')
+                | i18n
+            }}
+          </h2>
+        </div>
+      </ng-container>
+      <button (click)="toggleSettings()" type="button">
+        <pry-icon iconSvg="close"></pry-icon>
+      </button>
+    </div>
+    <ng-container *ngIf="currentStep === FilterSteps.LIST">
+      <div class="o-filters__content">
+        <div *ngIf="(attributes$ | async)?.length === 0; else attributesExists" class="a-table-wrapper"></div>
+        <ng-template #attributesExists>
+          <table *ngIf="filters.length > 0; else noFilters" class="a-table">
+            <tbody cdkDropList [cdkDropListData]="filters" (cdkDropListDropped)="drop($event)">
+              <tr *ngFor="let filter of filters" class="o-filters__filter" cdkDrag>
+                <td>
+                  <span>{{ filter.name }}</span>
+                </td>
+                <td>
+                  <span>{{ getFilterAttributes(filter, 3) }}</span>
+                </td>
+                <td>
+                  <button type="button" class="a-btn a-btn--primary" (click)="deleteFilter(filter.id)">
+                    {{ '@pry.action.delete' | i18n }}
+                  </button>
+                </td>
+                <td>
+                  <button type="button" class="a-btn a-btn--primary" (click)="goToEdition(filter)">
+                    {{ '@pry.filters.list.modify' | i18n }}
+                  </button>
+                </td>
+                <td cdkDragHandle>
+                  <pry-icon iconSvg="drag_indicator"></pry-icon>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <ng-template #noFilters>
+            <span class="o-filters__no-filters">{{ '@pry.filters.noFilters' | i18n }}</span>
+          </ng-template>
+          <button (click)="goToCreation()" class="a-btn a-btn--primary">{{ '@pry.filters.list.add' | i18n }}</button>
+        </ng-template>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="currentStep === FilterSteps.CREATION || currentStep === FilterSteps.EDITION">
+      <div class="o-filters__content">
+        <div class="m-form-label-field">
+          <label for="filterName" class="a-label">{{ '@pry.filters.creation.name' | i18n }}</label>
+          <input id="filterName" class="a-form-field" type="text" [(ngModel)]="filter.name" />
+        </div>
+        <div class="m-form-label-field">
+          <label for="filterType" class="a-label">{{ '@pry.filters.creation.type' | i18n }}</label>
+          <pry-select
+            id="filterType"
+            [labelTranslate]="true"
+            [itemsAsOption]="true"
+            [placeholder]="'@pry.filters.creation.type' | i18n"
+            [items]="types$ | async"
+            bindLabel="label"
+            bindValue="value"
+            [(ngModel)]="filter.type"
+            (ngModelChange)="updateFilterType($event)"
+          >
+          </pry-select>
+        </div>
+        <div *ngIf="(currentFilterComponentType$ | async) === 'date'" class="m-form-label-field u-display-flex -row">
+          <label for="date-range" class="a-label">Plage de dates</label>
+          <pry-checkbox
+            id="date-range"
+            [(ngModel)]="filter.hasDateRange"
+            (ngModelChange)="this.currentOperators$.next(getOperators())"
+          />
+        </div>
+        <div *ngIf="(currentFilterComponentType$ | async) === 'list'" class="m-form-label-field">
+          <label for="possibleValues" class="a-label">{{ '@pry.filters.creation.values' | i18n }}</label>
+          <input
+            id="possibleValues"
+            class="a-form-field"
+            type="text"
+            [(ngModel)]="filter.possibleValues"
+            placeholder="valeur1, valeur2, valeur3"
+          />
+        </div>
+        <div class="m-form-label-field">
+          <label for="attributes" class="a-label">{{ '@pry.filters.creation.attributes' | i18n }}</label>
+          <pry-select
+            id="attributes"
+            [labelTranslate]="false"
+            [itemsAsOption]="true"
+            [multiple]="true"
+            [items]="attributes$ | async"
+            [ngModel]="filter.attributes"
+            (ngModelChange)="selectAttribute($event)"
+            [placeholder]="'@pry.filters.creation.attributes' | i18n"
+            [autocomplete]="true"
+            bindLabel="label"
+          >
+          </pry-select>
+        </div>
+        <div class="m-form-label-field">
+          <label for="operations" class="a-label">{{ '@pry.filters.attributes.operator' | i18n }}</label>
+          <pry-select
+            id="operations"
+            [labelTranslate]="true"
+            [itemsAsOption]="true"
+            [items]="currentOperators$ | async"
+            [(ngModel)]="filter.operator"
+            [placeholder]="'@pry.filters.attributes.operator' | i18n"
+            bindLabel="label"
+            bindValue="value"
+            [disabled]="(currentFilterComponentType$ | async) === 'list'"
+          >
+          </pry-select>
+        </div>
+        <button
+          class="a-btn a-btn--primary"
+          (click)="submitFilter()"
+          [disabled]="!(filter.name && filter.type && filter.attributes.length !== 0 && filter.operator)"
+          type="submit"
+        >
+          {{ '@pry.toolbox.manifest.validate' | i18n }}
+        </button>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>

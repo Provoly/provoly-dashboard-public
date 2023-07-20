@@ -1,0 +1,60 @@
+<div class="toolbox-draggable">
+  <div [pryTooltip]="infoTooltip" pryTooltipPosition="bottom" aria-describedby="infoTooltip_dragWidgets">
+    <button
+      type="button"
+      class="a-btn a-btn--secondary -size-md"
+      (click)="openMenu($event)"
+      cdkOverlayOrigin
+      #trigger="cdkOverlayOrigin"
+      id="widget_insert"
+      aria-haspopup
+      aria-controls="IDpanel"
+      aria-expanded="false"
+    >
+      <ng-container *ngIf="labels"
+        ><span class="u-visually-hidden">{{ '@pry.toolbox.dragIndication' | i18n }}</span
+        >{{ '@pry.toolbox.drag' | i18n }}
+      </ng-container>
+    </button>
+  </div>
+</div>
+
+<ng-template #infoTooltip>
+  <div class="m-tooltip" role="tooltip" id="infoTooltip_dragWidgets">
+    <span class="m-tooltip__text"> Insérer un widget </span>
+  </div>
+</ng-template>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="mainOpened"
+  [cdkConnectedOverlayHasBackdrop]="true"
+  [cdkConnectedOverlayPositions]="[connectedPosition]"
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  (backdropClick)="mainOpened = false"
+>
+  <div class="o-draggable-menu" aria-label="Insérer un widget (par glisser/déposer)" aria-labelledby="widget_insert">
+    <ul class="o-draggable-menu__list">
+      <ng-container *ngFor="let menu of menu$ | async">
+        <li class="o-draggable-menu__list__item">
+          <button class="a-btn" aria-haspopup="true" aria-expanded="false">
+            <pry-icon [iconSvg]="menu.icon"></pry-icon>
+            <ng-container *ngIf="labels">{{ menu.label | i18n }}</ng-container>
+          </button>
+
+          <ul class="o-draggable-menu__list__submenu">
+            <ng-container *ngFor="let sub of menu.sub">
+              <li class="o-draggable-menu__list__submenu__item">
+                <button class="a-btn" (dragstart)="dragStart($event, sub.type)" draggable="true">
+                  <img [alt]="sub.label" [height]="24" [width]="24" [src]="sub.icon | getSecuredImage | async" />
+                  <ng-container *ngIf="labels">{{ sub.label | i18n }}</ng-container>
+                </button>
+              </li>
+            </ng-container>
+          </ul>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</ng-template>

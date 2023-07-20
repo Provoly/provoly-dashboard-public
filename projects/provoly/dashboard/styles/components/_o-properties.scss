@@ -1,0 +1,42 @@
+@use '../abstracts' as *;
+
+/* Organism - Properties (Tile, widget details */
+.o-properties {
+  margin-top: 1rem;
+
+  &__list {
+    padding: 0 toRem(15) toRem(10) toRem(15);
+
+    &__item {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: toRem(13);
+
+      p {
+        margin-bottom: 0;
+      }
+
+      &__label {
+        margin-right: toRem(10);
+      }
+
+      &__value {
+        font-weight: 500;
+      }
+
+      &__raw {
+        img,
+        video {
+          max-height: 120px;
+          max-width: 200px;
+          margin-top: toRem(10);
+        }
+      }
+
+      pry-metadata {
+        display: block;
+        width: 100%;
+      }
+    }
+  }
+}

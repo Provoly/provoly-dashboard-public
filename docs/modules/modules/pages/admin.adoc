@@ -1,0 +1,7 @@
+
+=== Admin
+
+Le module `+admin+` regroupe tous les paramétrages pour le bon
+fonctionnement de l’application.
+
+Il y a de nombreux sous menus, permettant de gérer le modèle (classes et champs), les utilisateurs, etc...

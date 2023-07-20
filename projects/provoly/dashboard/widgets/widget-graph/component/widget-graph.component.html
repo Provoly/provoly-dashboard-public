@@ -1,0 +1,114 @@
+<pry-widget-force-graph-css></pry-widget-force-graph-css>
+<div class="o-widget o-widget--graph">
+  <pry-widget-header
+    [datasourceIds$]="datasourceIds$"
+    *ngIf="displayHeader$ | async"
+    [widgetIndex]="widgetIndex"
+    [manifest]="manifest"
+    (manifestModified)="manifestModified.emit($event)"
+    [headerOptions]="(displayHeader$ | async) ?? {}"
+    #header
+  >
+    <pry-settings
+      (saveTriggered)="emitManifest()"
+      [headerPresent]="displayHeader$ | async"
+      [widgetIndex]="widgetIndex"
+      [header]="header"
+      [open$]="open$"
+      class="o-settings"
+    >
+      <div class="m-form-label-field">
+        <label class="a-label" for="graph_layout">{{ '@pry.widget.graph.layout' | i18n }}</label>
+        <pry-select
+          (ngModelChange)="changeLayout($event)"
+          [itemsAsOption]="true"
+          [items]="layouts"
+          [ngModel]="optionsCopy!.layout"
+          bindLabel="key"
+          bindValue="key"
+          id="graph_layout"
+          class="a-pry-select"
+        ></pry-select>
+      </div>
+
+      <div class="m-form-label-field">
+        <pry-range
+          [ngModel]="optionsCopy!.nodeRadius"
+          (ngModelChange)="changeNodeRadius($event)"
+          labelTranslate="@pry.widget.graph.nodeRadius"
+          min="10"
+          max="200"
+        ></pry-range>
+      </div>
+    </pry-settings>
+  </pry-widget-header>
+  <div class="no-result" *ngIf="(allItemsWithImages$ | async)?.length === 0">
+    <img
+      class="no-result__search"
+      src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
+      alt="{{ '@pry.widget.table.empty' | i18n }}"
+      aria-hidden="true"
+    />
+    <span class="no-result__text">{{ '@pry.widget.graph.empty' | i18n }}</span>
+  </div>
+  <div class="m-btn-group -selection-choice" [style.transform]="bottomLeft$ | async">
+    <button
+      type="button"
+      class="a-btn a-btn--icon-only"
+      (click)="changeMode('move')"
+      [class.-selected]="mode === 'move'"
+      [pryTooltip]="infoTooltipMove"
+      pryTooltipPosition="bottom"
+      aria-describedby="infoTooltipMove_widgetMap"
+    >
+      <pry-icon iconSvg="move"></pry-icon>
+      <span class="u-visually-hidden">{{ '@pry.widget.graph.move' | i18n }}</span>
+    </button>
+
+    <button
+      type="button"
+      class="a-btn a-btn--icon-only"
+      (click)="changeMode('rectangle')"
+      [class.-selected]="mode === 'rectangle'"
+      [pryTooltip]="infoTooltipRect"
+      pryTooltipPosition="bottom"
+      aria-describedby="infoTooltipRect_widgetMap"
+    >
+      <pry-icon iconSvg="rectangle"></pry-icon>
+      <span class="u-visually-hidden">{{ '@pry.widget.graph.rectangle' | i18n }}</span>
+    </button>
+  </div>
+
+  <canvas
+    #canvas
+    class="o-widget--graph__canvas"
+    (mousemove)="onMouseMove($event)"
+    (mousedown)="onMouseDown($event)"
+    (mouseup)="onMouseUp($event)"
+    (mouseleave)="onMouseUp($event, true)"
+    (contextmenu)="contextMenu($event)"
+  ></canvas>
+
+  <div class="selection-rectangle" #selectionRectangle></div>
+
+  <div
+    class="m-tooltip m-tooltip--popup noevent"
+    [style.display]="(tooltip$ | async)?.display ? 'block' : 'none'"
+    [style.left.px]="((tooltip$ | async)?.x ?? 0) + 50"
+    [style.top.px]="((tooltip$ | async)?.y ?? 0) + 50"
+  >
+    <div #tooltip></div>
+  </div>
+</div>
+
+<ng-template #infoTooltipMove>
+  <div class="m-tooltip" role="tooltip" id="infoTooltipMove_widgetMap" aria-hidden="true">
+    <span class="m-tooltip__text">{{ '@pry.widget.graph.move' | i18n }}</span>
+  </div>
+</ng-template>
+
+<ng-template #infoTooltipRect>
+  <div class="m-tooltip" role="tooltip" id="infoTooltipRect_widgetMap" aria-hidden="true">
+    <span class="m-tooltip__text">{{ '@pry.widget.graph.rectangle' | i18n }}</span>
+  </div>
+</ng-template>

@@ -1,0 +1,13 @@
+=== Modal (pry-modal)
+
+Le composant `+Modal+` permet d’afficher une modal avec le contenu
+présent entre les balises
+
+Les paramètres d’entrée du composant sont les suivants :
+
+- titleModal: Titre de la modal
+- opened: Etat d’ouverture de la modal
+- validateLabel: Titre du bouton de validation
+- validateAction: Action du bouton de validation
+- cancelLabel: Titre du bouton de fermeture
+- cancelAction: Action du bouton de fermeture

@@ -1,0 +1,64 @@
+<ng-container *ngIf="mode !== 'action'">
+  <label
+    class="a-toggle"
+    [for]="'toggle-' + _id"
+    [dir]="dir"
+    [ngClass]="{
+      '-disabled': disabled,
+      '-always-active': alwaysActive,
+      '-size-sm': size === 'sm',
+      '-txt-inside': hasTextInside
+    }"
+    [pryTooltip]="infoTooltip"
+    pryTooltipPosition="bottom"
+    aria-describedby="infoTooltip_toggle"
+  >
+    <input
+      #input
+      type="checkbox"
+      name="toggle"
+      [id]="'toggle-' + _id"
+      class="a-toggle__input"
+      [checked]="checked"
+      [disabled]="disabled"
+      (change)="onChangeValue($event)"
+      (click)="onInputClick($event)"
+    />
+    <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
+  </label>
+  <ng-template #infoTooltip>
+    <div class="m-tooltip" role="tooltip" id="infoTooltip_toggle">
+      <span class="m-tooltip__text">{{ '@pry.toolbox.edit' | i18n }}</span>
+    </div>
+  </ng-template>
+</ng-container>
+<ng-container *ngIf="mode === 'action'">
+  <button
+    type="button"
+    class="a-toggle"
+    [dir]="dir"
+    [ngClass]="{
+      '-disabled': disabled,
+      '-always-active': alwaysActive,
+      '-size-sm': size === 'sm',
+      '-txt-inside': hasTextInside
+    }"
+    [attr.aria-pressed]="checked"
+    [disabled]="disabled"
+    (change)="onChangeValue($event)"
+    (click)="onInputClick($event)"
+    #button
+  >
+    <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
+  </button>
+</ng-container>
+
+<ng-template #contentTpl>
+  <span class="a-toggle__display" aria-hidden="true">
+    <span class="a-toggle__display__txtleft">{{ leftword }}</span>
+    <span class="a-toggle__display__txtright">{{ rightword }}</span>
+  </span>
+  <span class="a-toggle__wording">
+    <ng-content></ng-content>
+  </span>
+</ng-template>

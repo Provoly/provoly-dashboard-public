@@ -1,0 +1,29 @@
+@use '../abstracts' as *;
+
+/* Organism - form*/
+
+.o-form {
+  padding-top: toRem(20);
+
+  // Dynamic list of input values (add/remove)
+  .o-datas-list {
+    &__fields {
+      display: flex;
+
+      .m-form-label-field {
+        margin-bottom: toRem(15);
+        margin-right: toRem(10);
+      }
+
+      .m-btn-group--input-actions {
+        transform: translateY(3px);
+      }
+    }
+  }
+
+  /* MODIFIERS */
+  &.-border-top {
+    margin-top: toRem(22);
+    border-top: 1px solid #d9dce8;
+  }
+}

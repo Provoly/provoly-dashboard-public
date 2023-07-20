@@ -1,0 +1,9 @@
+<pry-toggle
+  [ngModel]="modeEdition$ | async"
+  (ngModelChange)="toggleEditionMode()"
+  [alwaysActive]="true"
+  mode="action"
+  dir="ltr"
+>
+  {{ ((modeEdition$ | async) ? '@pry.toolbox.editOff' : '@pry.toolbox.edit') | i18n }}
+</pry-toggle>

@@ -1,0 +1,128 @@
+@use '../abstracts' as *;
+
+/* Atom - table */
+.a-table-wrapper {
+  flex: 1;
+  height: 100%;
+  overflow: auto;
+  padding-bottom: toRem(20);
+}
+
+.a-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  caption {
+    @extend %screenReaderOnly;
+
+    &:first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  tbody,
+  thead {
+    td,
+    th {
+      height: toRem(24);
+      margin: toRem(8);
+      padding: toRem(8);
+    }
+  }
+
+  thead {
+    tr {
+      border-bottom-width: toRem(1);
+      border-bottom-style: solid;
+
+      th {
+        height: toRem(60);
+        font-weight: 700;
+        text-align: left;
+        cursor: pointer;
+
+        .content {
+          display: flex;
+          flex-direction: row;
+        }
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      position: relative;
+      border-bottom-width: toRem(1);
+      border-bottom-style: solid;
+      cursor: pointer;
+
+      &.is-selected,
+      &:hover {
+        td {
+          &.view-details {
+            .a-btn {
+              opacity: 1;
+            }
+          }
+        }
+      }
+
+      td {
+        padding: toRem(12) toRem(8);
+
+        &.view-details {
+          width: 30px;
+
+          .a-btn {
+            opacity: 0.5;
+
+            &:focus {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+
+    th {
+      padding-top: toRem(12);
+      padding-bottom: toRem(12);
+      text-align: left;
+    }
+  }
+
+  .a-checkbox {
+    margin-bottom: 0;
+  }
+
+  a[href].a-btn {
+    color: inherit;
+  }
+}
+
+.a-table-loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  &__loader {
+    display: inline-block;
+    width: toRem(60);
+    height: toRem(60);
+    border: 5px solid #ecedf4;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    animation: rotation 1s linear infinite;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}

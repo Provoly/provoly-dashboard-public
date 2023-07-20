@@ -1,0 +1,37 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+// Get fonts declaration list in $theme-map
+$fontsList: map-deep-get($theme-map, 'font');
+
+// Iterate on list to build @font-faces
+@each $key, $font in $fontsList {
+  @if is-map($font) {
+    $font-path: '';
+
+    $family: map-deep-get($theme-map, 'font', $key, 'family');
+    $filepath: map-deep-get($theme-map, 'font', $key, 'filepath');
+    $filename: map-deep-get($theme-map, 'font', $key, 'filename');
+    $style: map-deep-get($theme-map, 'font', $key, 'style');
+    $weight: map-deep-get($theme-map, 'font', $key, 'weight');
+    $display: map-deep-get($theme-map, 'font', $key, 'display');
+
+    @if empty($filepath) {
+      $font-path: themed($theme-map, 'font', 'fonts-path');
+    } @else {
+      $font-path: $filepath;
+    }
+
+    @if empty($filename) {
+      @error 'Font filename is missing';
+    }
+
+    @font-face {
+      font-family: $family;
+      src: url('#{$font-path}/#{$filename}.woff2') format('woff2');
+      font-style: $style;
+      font-weight: $weight;
+      font-display: $display;
+    }
+  }
+}

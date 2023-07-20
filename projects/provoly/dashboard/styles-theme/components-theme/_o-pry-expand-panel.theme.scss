@@ -1,0 +1,12 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - component pry-expand-panel */
+
+.o-pry-expand-panel {
+  &__toggler {
+    &__text {
+      font-size: toRem(15);
+    }
+  }
+}

@@ -1,0 +1,10 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Panel display as on overlay - stuck on right most often */
+%overlay-panel-fixed-right {
+  border: 1px themed($theme-map, 'color', 'primary', 400) solid;
+  border-radius: themed($theme-map, 'decoration', 'border-radius', 'contextual');
+  background-color: white;
+  box-shadow: themed($theme-map, 'decoration', 'shadow', 'default');
+}

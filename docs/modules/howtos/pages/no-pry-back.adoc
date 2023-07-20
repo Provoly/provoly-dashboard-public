@@ -1,0 +1,16 @@
+=== Comment faire sans backend Provoly
+
+Pour cela, il va falloir surcharger tous les services du front provoly,
+afin d’utiliser vos propres services et retourner tout ce qui est
+nécessaire au front de provoly via vos propres moyens. Le détail de
+comment surcharger un service est disponible ci-après.
+
+Par exemple, il faudra surcharger le modèle (classes et champs),
+surcharger la recherche ou la récupération de données, résolution
+d’adresse carto, etc.
+
+Le fonctionnement interne du frontend Provoly restera identique, et fera
+donc les appels nécessaires au moment où le besoin s’en fait sentir.
+Vous pouvez néanmoins surcharger aussi certaines parties et faire en
+sorte de précharger des données si besoin, en utilisant les actions
+nécessaire pour charger les données souhaitées dans le store.

@@ -1,0 +1,12 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme' as *;
+
+/* Theme Organism - pry-dataset */
+
+.o-pry-dataset {
+  &__search {
+    pry-icon {
+      color: red;
+    }
+  }
+}

@@ -1,0 +1,42 @@
+@use '../../../styles/abstracts/index' as *;
+
+.m-layer-legend {
+  z-index: 2;
+  top: toRem(225);
+  left: toRem(8);
+
+  &.ol-control {
+    border: 1px solid #bccad8;
+  }
+
+  button {
+    background-color: #fafafa !important;
+    color: black;
+  }
+
+  .-hidden {
+    display: none;
+  }
+
+  &__toggle {
+    width: toRem(30);
+    height: toRem(30);
+  }
+
+  &__title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: white;
+    justify-content: space-between;
+  }
+
+  &__image {
+    background: white;
+  }
+
+  &__error {
+    font-style: italic;
+    color: #c74646;
+  }
+}

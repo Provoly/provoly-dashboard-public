@@ -1,0 +1,146 @@
+<ul class="m-rule-wrapper">
+  <li
+    *ngFor="let definition of definitions; let i = index"
+    [class.m-rule--default]="definition.isDefault"
+    class="m-rule"
+  >
+    <div class="m-rule__header">
+      <h3 class="a-h3">
+        {{ '@pry.admin.rule' | i18n: { id: i + 1 } }}
+        <span>{{ definition.isDefault ? ('@pry.admin.defaultRule' | i18n) : '' }}</span>
+      </h3>
+
+      <div *ngIf="!definition.isDefault" class="m-rule__actions">
+        <button
+          type="button"
+          class="a-btn a-btn--icon-only"
+          [class.-disabled]="i <= 1"
+          [disabled]="i <= 1"
+          (click)="move(i, i - 1)"
+        >
+          <pry-icon [height]="25" [width]="25" iconSvg="fleche_haut"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.action.moveUp' | i18n }}</span>
+        </button>
+        <button
+          type="button"
+          class="a-btn a-btn--icon-only"
+          [class.-disabled]="i >= definitions.length - 1"
+          [disabled]="i >= definitions.length - 1"
+          (click)="move(i, i + 1)"
+        >
+          <pry-icon [height]="25" [width]="25" iconSvg="fleche_bas"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.action.moveDown' | i18n }}</span>
+        </button>
+        <button type="button" class="a-btn a-btn--icon-only" (click)="removeRule(i)">
+          <pry-icon [height]="20" [width]="20" iconSvg="delete"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.action.delete' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <pry-select-image [iconUrl]="definition.iconUrl" (changed)="changeForImage($event, i)"></pry-select-image>
+
+      <ng-container *ngIf="definition.isDefault">
+        <div class="m-form-label-field m-rule__display-mode">
+          <label class="a-label" for="size">{{ '@pry.admin.size' | i18n }}</label>
+          <pry-select
+            (ngModelChange)="changeSize($event)"
+            [itemsAsOption]="true"
+            [items]="sizes"
+            [ngModel]="definition.iconSize[0]"
+            [labelTranslate]="true"
+            bindLabel="label"
+            bindValue="value"
+            class="a-pry-select"
+            id="size"
+          ></pry-select>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="!definition.isDefault">
+        <div class="m-form-label-field m-rule__display-mode">
+          <label class="a-label" for="display_mode">{{ '@pry.admin.displayModeImage' | i18n }}</label>
+          <pry-select
+            (ngModelChange)="changePosition($event, i)"
+            [itemsAsOption]="true"
+            [items]="positions"
+            [ngModel]="definition.position"
+            [labelTranslate]="true"
+            bindLabel="label"
+            bindValue="value"
+            class="a-pry-select"
+            id="display_mode"
+          ></pry-select>
+        </div>
+        <div class="m-form-label-field">
+          <pry-checkbox [ngModel]="!!definition.rule" (click)="toggleRule(i)">{{
+            '@pry.admin.classes.condition' | i18n
+          }}</pry-checkbox>
+        </div>
+      </ng-container>
+
+      <div *ngIf="!!definition.rule && !definition.isDefault">
+        <div class="m-form-label-field">
+          <label class="a-label" for="classes_attrname">{{ '@pry.admin.classes.attrName' | i18n }}</label>
+          <pry-select
+            (ngModelChange)="changeAttrName($event, i)"
+            [itemsAsOption]="true"
+            [items]="fieldsForClass"
+            [ngModel]="definition.rule.attributeName"
+            [labelTranslate]="true"
+            bindLabel="name"
+            bindValue="name"
+            class="a-pry-select"
+            id="classes_attrname"
+          ></pry-select>
+        </div>
+
+        <div class="m-form-label-field">
+          <label class="a-label" for="classes_operation">{{ '@pry.admin.classes.operation' | i18n }}</label>
+          <pry-select
+            (ngModelChange)="changeOperation($event, i)"
+            [itemsAsOption]="true"
+            [items]="operations"
+            [ngModel]="definition.rule.operation"
+            [labelTranslate]="true"
+            bindLabel="label"
+            bindValue="name"
+            class="a-pry-select"
+            id="classes_operation"
+          ></pry-select>
+        </div>
+
+        <div class="m-form-label-field">
+          <label class="a-label" for="classes_value">{{ '@pry.admin.classes.value' | i18n }}</label>
+          <input
+            id="classes_value"
+            type="text"
+            class="a-form-field"
+            (ngModelChange)="changeValue($event, i)"
+            [ngModel]="definition.rule.value"
+          />
+        </div>
+      </div>
+    </div>
+  </li>
+</ul>
+
+<button type="button" class="a-btn a-btn--secondary" (click)="addRule()">
+  <pry-icon iconSvg="add"></pry-icon>
+  Ajouter une règle
+</button>
+
+<div class="m-btn-group -width-lg">
+  <button
+    type="button"
+    class="a-btn a-btn--secondary"
+    (click)="restoreSymbols(); goBack()"
+    [innerHTML]="'@pry.admin.cancel' | i18n"
+  ></button>
+  <button
+    class="a-btn a-btn--primary"
+    [innerHTML]="'@pry.admin.customize.updateIcons' | i18n"
+    (click)="valid()"
+  ></button>
+</div>

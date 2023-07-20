@@ -1,0 +1,635 @@
+[
+  {
+    "id": "06406e7e-37cd-41ce-b5fc-36d233e5ae5c",
+    "name": "valeur_fonciere",
+    "attributes": [
+      {
+        "id": "5b9d6408-ec70-461d-921f-88ef6ebb6cf6",
+        "name": "id_mutation",
+        "field": "619c7c3c-070d-41d3-b61e-60ed854c39e2",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      },
+      {
+        "id": "0e2637e7-0f34-47f3-9863-43576d8b31fb",
+        "name": "valeur_fonciere",
+        "field": "abbac2de-0ff4-4d3d-b6e8-cd8f7ebdf5af",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "0e2637e7-0f34-47f3-9863-43576d8b32fb",
+        "name": "valeur_notariale",
+        "field": "abbac2de-0ff4-4d3d-b6e8-cd8f7ebdf5af",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "0e2637e7-0f34-47f3-9863-43576d8b33fb",
+        "name": "type_maison",
+        "field": "abbac2de-0ff4-4d3d-b6e8-cd8f7ebdf5af",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "0e2637e7-0f34-47f3-9863-43576d8b30fb",
+        "name": "type_terrain",
+        "field": "abbac2de-0ff4-4d3d-b6e8-cd8f7ebdf5af",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "e1dc1e5c-1b85-4441-ab1a-cc2548c6a7c2",
+        "name": "creation",
+        "field": "e374bef3-dd45-4130-8668-7ecf77a00001",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "06253165-31d4-4ab3-9d2d-a4c6394fb80a",
+        "name": "latitude",
+        "field": "59853619-9773-418a-ace5-70b80fd4dc75",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "37d71f6c-9c88-405e-85b2-1895e6c190d5",
+        "name": "longitude",
+        "field": "7be854d6-706c-4784-af44-f8c1d071e512",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "37d71f6c-9c88-405e-85b2-1895e6c190d5",
+        "name": "location-auto",
+        "field": "59853619-9773-418a-ace5-70b80fd4dc74",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "graphspe-cifi-ccla-ssss-7f83e9ce2caa",
+    "name": "classe pour graphiques",
+    "attributes": [
+      {
+        "id": "12353619-9773-418a-ace5-70b80fd4dc74",
+        "name": "value_dec_1",
+        "field": "9fc993db-ab5f-403d-883d-1bb3970692af",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      },
+      {
+        "id": "124854d6-706c-4784-af44-f8c1d071e512",
+        "name": "value_dec_2",
+        "field": "9fc993db-ab5f-403d-883d-1bb3970692af",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      },
+      {
+        "id": "12533f47-53f6-46ed-b197-0d0a7fb79ece",
+        "name": "value_int",
+        "field": "79f91495-02e9-4208-8166-149a7a28e610",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      },
+      {
+        "id": "126854d6-706c-4784-af44-f8c1d071e512",
+        "name": "value_long",
+        "field": "AAA97d0c-d81c-4927-aaa4-38710775633d",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      },
+      {
+        "id": "127854d6-706c-4784-af44-f8c1d071e512",
+        "name": "seriesName",
+        "field": "fezhr255-9e67-41e6-89a2-1c1bd5a0a5ce",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      },
+      {
+        "id": "128854d6-706c-4784-af44-f8c1d071e512",
+        "name": "département",
+        "field": "eothr255-9e67-41e6-89a2-1c1bd5a0a5ce",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "17b90da3-f448-4cc3-bfd8-74c8b8481590",
+    "name": "meteo",
+    "attributes": [
+      {
+        "id": "3010e2c4-ef24-40fb-a72b-6757df8017f0",
+        "name": "location",
+        "field": "59853619-9773-418a-ace5-70b80fd4dc74",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "62756f90-79f7-43c5-b56e-624ccdb40e84",
+        "name": "humidite",
+        "field": "9fc993db-ab5f-403d-883d-1bb3970692af",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      },
+      {
+        "id": "d5d4cda4-7ff3-4f19-ab69-7c95745888cf",
+        "name": "heure_utc",
+        "field": "qsdf622e-d44f-426b-bfdd-9b19e83f44da",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "da314951-82cb-4e93-9955-4654993f231c",
+        "name": "temperature_en_degre_c",
+        "field": "ea1f6255-9e67-41e6-89a2-1c1bd5a0a5ce",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      },
+      {
+        "id": "eothr951-82cb-4e93-9955-4654993f231c",
+        "name": "département",
+        "field": "eothr255-9e67-41e6-89a2-1c1bd5a0a5ce",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "d260d53d-3529-4712-bedb-6517ecad5784",
+    "name": "caracteristique",
+    "attributes": [
+      {
+        "id": "940f5738-c0bf-4fd4-96af-8f319e6fd445",
+        "name": "location",
+        "field": "59853619-9773-418a-ace5-70b80fd4dc74",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "f70d8bcd-9580-4575-a4cd-b42f415aee38",
+        "name": "Num_Acc",
+        "field": "178c19cf-702c-4a0a-a218-cca5c0eef7d7",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      },
+      {
+        "id": "aaaaaaaa-9580-4575-a4cd-b42f415aee38",
+        "name": "image_raw",
+        "field": "aaaaaaaa-dd45-4130-8668-7ecf77a00009",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      },
+      {
+        "id": "d5d4cda4-7ff3-4f19-ab69-7c95745888cf",
+        "name": "heure_utc",
+        "field": "qsdf622e-d44f-426b-bfdd-9b19e83f44da",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "534ff6cd-0a85-4612-82c0-7f83e9ce2caa",
+    "name": "lieu",
+    "attributes": [
+      {
+        "id": "ea1f6255-9e67-41e6-89a2-1c1bd5a0a5ce",
+        "name": "voie",
+        "field": "d31a3850-0ec3-4ce1-b005-8b5fca5029cb",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "38f7b6a1-1550-4451-a191-d25d24e6e61e",
+        "name": "numero_accident_qui_a_eu_lieu",
+        "field": "178c19cf-702c-4a0a-a218-cca5c0eef7d7",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "54a21924-5309-43cd-b8c6-f98a4712ca61",
+        "name": "location",
+        "field": "59853619-9773-418a-ace5-70b80fd4dc74",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "8c2833a9-668d-49d0-a7e9-e67b4d7afa06",
+    "name": "usager",
+    "attributes": [
+      {
+        "id": "e91bc25c-9845-4712-bdde-2a8e44e751d1",
+        "name": "id_vehicule",
+        "field": "9a27ad6c-94da-4176-b50d-3ec8f109a913",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "1a1d9454-ca4f-493a-a309-ac50e1f4725a",
+        "name": "num_acc",
+        "field": "178c19cf-702c-4a0a-a218-cca5c0eef7d7",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "bcd9a238-3333-4cec-803b-16b415f87445",
+        "name": "an_nais",
+        "field": "b1633f47-53f6-46ed-b197-0d0a7fb79ece",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      },
+      {
+        "id": "30a7beb9-a358-47c4-b3d2-03e3ea776ed3",
+        "name": "sexe",
+        "field": "49156155-1e56-451b-b455-477cd9008959",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      },
+      {
+        "id": "fa3082bc-2acf-45c4-9af6-3ffd53e59330",
+        "name": "location",
+        "field": "59853619-9773-418a-ace5-70b80fd4dc74",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "411a19f5-9d00-4028-b4b6-4b04101f6316",
+    "name": "vehicule",
+    "attributes": [
+      {
+        "id": "303a1aaf-8f13-4990-88ee-be4f787ac041",
+        "name": "id_vehicule",
+        "field": "9a27ad6c-94da-4176-b50d-3ec8f109a913",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "9d82213c-db91-42db-8675-5f2e70ae2f05",
+        "name": "Num_Acc",
+        "field": "178c19cf-702c-4a0a-a218-cca5c0eef7d7",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "09b1dc99-5410-418b-9174-b3b13a102018",
+        "name": "catv",
+        "field": "97a3f75e-d488-49e8-85bd-42487c0d40d7",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "dbf3917f-1af8-495e-94af-67d8315a7772",
+        "name": "choc",
+        "field": "d19f45cf-e932-4bfa-8f87-0b723e2f4354",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": true
+      },
+      {
+        "id": "e1dc1e5c-1b85-4441-ab1a-cc2548c6a7c2",
+        "name": "creation",
+        "field": "e374bef3-dd45-4130-8668-7ecf77a00001",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "4cf300b2-f56d-47de-b6a9-81a47de6af2e",
+        "name": "location",
+        "field": "59853619-9773-418a-ace5-70b80fd4dc74",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "5032106e-ca16-4742-a8f9-a43757c99d67",
+    "name": "parking",
+    "icon": "parking",
+    "attributes": [
+      {
+        "id": "6c87f8bc-f30e-4875-b03b-9c4fa97d7288",
+        "name": "nb_spots",
+        "field": "79f91495-02e9-4208-8166-149a7a28e611",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "93c1c4b1-7191-4937-9f07-7d69eb63bd8e",
+        "name": "parked_cars",
+        "field": "79f91495-02e9-4208-8166-149a7a28e612",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "3c84e66a-461b-4857-ad55-64863b0a2354",
+        "name": "uuid",
+        "field": "79f91495-02e9-4208-8166-149a7a28e613",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "8923749e-ca16-4742-a8f9-a43757c99d67",
+    "name": "illegal_parking",
+    "icon": "add",
+    "attributes": [
+      {
+        "id": "6c87f8bc-f30e-4875-b03b-9c4fa97d7288",
+        "name": "nb_illegal_parking",
+        "field": "7503974-02e9-4208-8166-149a7a28e611",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "5032100e-ca16-4742-a8f9-a43757c99d68",
+    "name": "tree",
+    "attributes": [
+      {
+        "id": "aze1c4b1-7191-4937-9f07-7d69eb63bd8e",
+        "name": "id",
+        "field": "AAA97d0c-d81c-4927-aaa4-38710775633d",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "qsd4e66a-461b-4857-ad55-64863b0a2354",
+        "name": "parent",
+        "field": "AAA97d0c-d81c-4927-aaa4-38710775633d",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "wxc45ad5-b027-42e0-8b88-1d10606758f6",
+        "name": "name",
+        "field": "4a641178-dca2-40ad-8ee4-063c69d5111d",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "dfg45ad5-b027-42e0-8b88-1d10606758f6",
+        "name": "size",
+        "field": "79f91495-02e9-4208-8166-149a7a28e610",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "2032106e-ca16-4742-a8f9-a43757c99d67",
+    "name": "multi-modes",
+    "icon": "multi-modes",
+    "attributes": [
+      {
+        "id": "2c87f8bc-f30e-4875-b03b-9c4fa97d7288",
+        "name": "type",
+        "field": "29f91495-02e9-4208-8166-149a7a28e612",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "23c1c4b1-7191-4937-9f07-7d69eb63bd8e",
+        "name": "count",
+        "field": "29f91495-02e9-4208-8166-149a7a28e613",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "4032106e-ca16-4742-a8f9-a43757c99d67",
+    "name": "lampadaire",
+    "icon": "lampadaire",
+    "attributes": [
+      {
+        "id": "4c87f8bc-f30e-4875-b03b-9c4fa97d7288",
+        "name": "id",
+        "field": "79f91495-02e9-4208-8166-149a7a28e613",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "4c87f8bc-f30e-4875-b03b-9c4fa97d7289",
+        "name": "status",
+        "field": "49f91495-02e9-4208-8166-149a7a28e613",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "99b90da3-f448-4cc3-bfd8-74c8b8481590",
+    "name": "traffic_light",
+    "image": "svgs/traffic_light.svg",
+    "attributes": [
+      {
+        "id": "1230e2c4-ef24-40fb-a72b-6757df8017f0",
+        "name": "location",
+        "field": "59853619-9773-418a-ace5-70b80fd4dc74",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "12556f90-79f7-43c5-b56e-624ccdb40e84",
+        "name": "is_broken",
+        "field": "12341495-02e9-4208-8166-149a7a28e612",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "98b90da3-f448-4cc3-bfd8-74c8b8481590",
+    "name": "traffic_light_broken",
+    "image": "images/broke.png",
+    "attributes": [
+      {
+        "id": "1260e2c4-ef24-40fb-a72b-6757df8017f0",
+        "name": "location",
+        "field": "59853619-9773-418a-ace5-70b80fd4dc74",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "12856f90-79f7-43c5-b56e-624ccdb40e84",
+        "name": "is_broken",
+        "field": "12341495-02e9-4208-8166-149a7a28e612",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "11111111-69a6-474e-8f46-7cc8796ed151",
+    "name": "station velo",
+    "attributes": [
+      {
+        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+        "name": "station_longitude",
+        "field": "497f6eca-6276-4993-bfeb-53cbbbba6f08-station_longitude",
+        "multiValued": false
+      },
+      {
+        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f09",
+        "name": "station_location",
+        "field": "497f6eca-6276-4993-bfeb-53cbbbba6f08-station_location",
+        "multiValued": false
+      },
+      {
+        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f10",
+        "name": "geo_point_2d",
+        "field": "497f6eca-6276-4993-bfeb-53cbbbba6f08-geo_point_2d",
+        "multiValued": false
+      },
+      {
+        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f11",
+        "name": "station_nom",
+        "field": "497f6eca-6276-4993-bfeb-53cbbbba6f08-station_nom",
+        "multiValued": false
+      },
+      {
+        "id": "347f6eca-6276-4993-bfeb-53cbbbba6f12",
+        "name": "accroches_libres",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-accroches_libres",
+        "multiValued": false
+      },
+      {
+        "id": "347f6eca-6276-4993-bfeb-53cbbbba6f13",
+        "name": "velos_disponibles",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-velos_disponibles",
+        "multiValued": false
+      },
+      {
+        "id": "347f6eca-6276-4993-bfeb-53cbbbba6f14",
+        "name": "nombre_emplacements",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-nombre_emplacements",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "22222222-69a6-474e-8f46-7cc8796ed151",
+    "name": "point",
+    "attributes": [
+      {
+        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08point",
+        "name": "position",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-point",
+        "multiValued": false
+      },
+      {
+        "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56pointi",
+        "name": "velos_disponibles",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-velos_disponibles",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "33333333-69a6-474e-8f46-7cc8796ed151",
+    "name": "trajet",
+    "attributes": [
+      {
+        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08trajet",
+        "name": "trajet",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-trajet",
+        "multiValued": false
+      },
+      {
+        "id": "347f6eca-6276-4993-bfeb-53cbbbba6f08trajeti",
+        "name": "velos_disponibles",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-velos_disponibles",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "44444444-69a6-474e-8f46-7cc8796ed151",
+    "name": "zone",
+    "attributes": [
+      {
+        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08zone",
+        "name": "zone",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-zone",
+        "multiValued": false
+      },
+      {
+        "id": "347f6eca-6276-4993-bfeb-53cbbbba6f08zonei",
+        "name": "velos_disponibles",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-velos_disponibles",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "33333333-69a6-474e-8f46-7cc8796ed158",
+    "name": "trajetM",
+    "attributes": [
+      {
+        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08trajet",
+        "name": "multi-trajet",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-trajetM",
+        "multiValued": false
+      },
+      {
+        "id": "347f6eca-6276-4993-bfeb-53cbbbba6f08trajeti",
+        "name": "velos_disponibles",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-velos_disponibles",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "44444444-69a6-474e-8f46-7cc8796ed158",
+    "name": "zoneM",
+    "attributes": [
+      {
+        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08zone",
+        "name": "multi-zone",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-zoneM",
+        "multiValued": false
+      },
+      {
+        "id": "347f6eca-6276-4993-bfeb-53cbbbba6f08zonei",
+        "name": "velos_disponibles",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-velos_disponibles",
+        "multiValued": false
+      }
+    ]
+  },
+  {
+    "id": "123456789-69a6-474e-8f46-7cc8796ed151",
+    "name": "tronçon_de_route",
+    "attributes": [
+      {
+        "id": "4c87f8bc-f30e-4875-b03b-9c4fa97d7288",
+        "name": "id",
+        "field": "79f91495-02e9-4208-8166-149a7a28e613",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "4c87f8bc-f30e-4875-b03b-9c4fa97d7289",
+        "name": "status",
+        "field": "49f91495-02e9-4208-8166-149a7a28e613",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      },
+      {
+        "id": "1a1d9454-ca4f-493a-a309-ac50e1f4725a",
+        "name": "num_acc",
+        "field": "178c19cf-702c-4a0a-a218-cca5c0eef7d7",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      }
+    ]
+  }
+]

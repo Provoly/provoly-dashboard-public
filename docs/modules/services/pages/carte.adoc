@@ -1,0 +1,5 @@
+=== Cartes `+open-map-tiles.service.ts+` `+geocoding.service.ts+`
+
+Récupération dans le serveur Open Map Tiles de la liste des styles
+disponible sur celui-ci, et accès au service de geocoding d’adresse. Le
+2e est surchargeable pour changer le serveur de geocoding ou son API.

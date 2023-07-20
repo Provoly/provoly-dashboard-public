@@ -1,0 +1,15 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Molecule - pry search select attribute  */
+
+.m-pry-search-select-attribute {
+  @extend %list-unstyled;
+
+  &__item {
+    .a-btn {
+      @include typography-level(themed($theme-map, 'typography', 'contextual-menu'));
+      font-weight: 400;
+    }
+  }
+}

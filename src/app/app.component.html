@@ -1,0 +1,97 @@
+<a class="a-link-skip" [href]="router.url + '#app_main_content'">{{ '@pry.action.skipLink' | i18n }}</a>
+<div class="general-wrapper" pryHwo>
+  <header class="o-app-header">
+    <h1 class="a-h1"><a routerLink="/">LIB</a></h1>
+    <pry-title-presentation></pry-title-presentation>
+    <div class="m-app-links-wrapper">
+      <ul class="m-app-links">
+        <li>
+          <a routerLink="/">Root</a>
+        </li>
+        <li>
+          <a routerLink="/map">Map</a>
+        </li>
+        <li>
+          <a routerLink="/geo">Géo</a>
+        </li>
+        <li>
+          <a routerLink="/table">Table</a>
+        </li>
+        <li>
+          <a routerLink="/chart">Chart</a>
+        </li>
+        <li>
+          <a routerLink="/chart-legacy">Chart legacy</a>
+        </li>
+        <li>
+          <a routerLink="/graph">Graph</a>
+        </li>
+        <li>
+          <a routerLink="/template">Template</a>
+        </li>
+        <li>
+          <a routerLink="/tile">Tile</a>
+        </li>
+        <li>
+          <a routerLink="/search">Search</a>
+        </li>
+        <li>
+          <a routerLink="/catalog">Catalog</a>
+        </li>
+        <li>
+          <a routerLink="/presentation">Presentation</a>
+        </li>
+        <li>
+          <a routerLink="/restitution">Restitution</a>
+        </li>
+        <li>
+          <a routerLink="/dataset">Dataset</a>
+        </li>
+        <li>
+          <a routerLink="/admin">Admin</a>
+        </li>
+        <li>
+          <a routerLink="/import">Import</a>
+        </li>
+        <li>
+          <a routerLink="/supervision">Supervision</a>
+        </li>
+        <li>
+          <a routerLink="/editor">Editor</a>
+        </li>
+      </ul>
+    </div>
+    <div class="search">
+      <pry-search-fulltext mode="inline"></pry-search-fulltext>
+    </div>
+    <pry-notification></pry-notification>
+  </header>
+
+  <div class="o-main-layout" [class.-no-sidebar]="!panelOutlet.isActivated">
+    <div class="o-main-layout__panel" [class.-panel-none]="!panelOutlet.isActivated">
+      <router-outlet name="panel" #panelOutlet="outlet"></router-outlet>
+    </div>
+
+    <div class="o-main-layout__workspace">
+      <div class="o-workspace">
+        <section class="o-workspace__toolbox">
+          <pry-toolbox [labels]="true"></pry-toolbox>
+        </section>
+        <main
+          class="o-workspace__dashboard"
+          [class.scrollable-dashboard]="scrollable"
+          role="main"
+          id="app_main_content"
+        >
+          <router-outlet></router-outlet>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <pry-edit-named-query-modal></pry-edit-named-query-modal>
+  <pry-object-creation
+    *pryAccess="{ module: 'dashboard', page: 'dashboard', action: 'edit_object' }"
+    [object]="true"
+  ></pry-object-creation>
+</div>

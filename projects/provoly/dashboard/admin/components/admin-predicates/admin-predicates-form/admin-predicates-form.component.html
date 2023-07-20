@@ -1,0 +1,83 @@
+<div>
+  <form class="o-form" [formGroup]="predForm" (ngSubmit)="checkModal()">
+    <div class="m-form-label-field -width-sm">
+      <label id="name-label" for="name" class="a-label">
+        {{ '@pry.admin.predicates.name' | i18n }} *
+        <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+      </label>
+      <input
+        id="name"
+        type="text"
+        class="a-form-field"
+        formControlName="name"
+        [attr.aria-labelledby]="isSubmitted && predForm.get('name')?.invalid ? 'name-label name-error' : 'name-label'"
+        [attr.aria-invalid]="isSubmitted && predForm.get('name')?.invalid"
+        required
+      />
+      <label
+        *ngIf="isSubmitted && predForm.get('name')?.invalid"
+        id="name-error"
+        for="name"
+        class="a-label a-label--help -error"
+      >
+        <span *ngIf="predForm.get('name')?.hasError('same-name')">{{ '@pry.admin.exists' | i18n }}</span>
+        <span *ngIf="predForm.get('name')?.hasError('required')">{{ '@pry.admin.required' | i18n }}</span>
+      </label>
+    </div>
+
+    <div class="m-form-label-field -width-xl">
+      <label id="value-label" for="value" class="a-label">
+        {{ '@pry.admin.predicates.value' | i18n }} *
+        <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+      </label>
+      <textarea
+        id="value"
+        rows="10"
+        type="text"
+        class="a-form-field"
+        formControlName="value"
+        name="value"
+        [attr.aria-labelledby]="
+          isSubmitted && predForm.get('value')?.invalid ? 'value-label value-error' : 'value-label'
+        "
+        [attr.aria-invalid]="isSubmitted && predForm.get('value')?.invalid"
+        required
+      ></textarea>
+      <label
+        *ngIf="isSubmitted && predForm.get('value')?.invalid"
+        id="value-error"
+        for="value"
+        class="a-label a-label--help -error"
+      >
+        {{ '@pry.admin.required' | i18n }}
+      </label>
+    </div>
+
+    <div class="m-btn-group -width-sm">
+      <button
+        type="button"
+        class="a-btn a-btn--secondary"
+        (click)="goBack()"
+        [innerHTML]="'@pry.admin.cancel' | i18n"
+      ></button>
+      <button
+        class="a-btn a-btn--primary"
+        type="submit"
+        [innerHTML]="(_currentPred ? '@pry.admin.edit' : '@pry.admin.create') | i18n"
+      ></button>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="predicatesUsed$ | async as used">
+  <pry-modal
+    [titleModal]="'@pry.admin.predicates.validEdit' | i18n"
+    [validateLabel]="'@pry.admin.edit' | i18n"
+    [validateAction]="validateAction"
+    [cancelLabel]="'@pry.admin.cancel' | i18n"
+    [cancelAction]="cancelAction"
+    [opened]="openedModal"
+  >
+    <p [innerHTML]="'@pry.admin.predicates.validEditMessage' | i18n: { used: used }"></p>
+  </pry-modal>
+</div>

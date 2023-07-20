@@ -1,0 +1,113 @@
+// Theme colors palettes (primary, accent, grey, status)
+
+// Primary palette
+$theme-colors-primary: (
+  50: #ffffff,
+  100: #f9fafb,
+  200: #f5f7f9,
+  300: #dfe5ec,
+  400: #bccad8,
+  500: #7b96b2,
+  600: #3e546a,
+  700: #263340,
+  800: #131920,
+  'contrast': (
+    50: #263340,
+    100: #263340,
+    200: #263340,
+    400: #263340,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff
+  )
+);
+
+// Accent palette
+$theme-colors-accent: (
+  50: #ecf8f4,
+  100: #a7ddc8,
+  400: #7bccad,
+  500: #5dc19b,
+  600: #40b688,
+  700: #3caa7f,
+  800: #328f6b,
+  'contrast': (
+    50: #263340,
+    100: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff
+  )
+);
+
+// Grey palette
+$theme-colors-grey: (
+  50: #fafafa,
+  100: #f5f5f5,
+  200: #eeeeee,
+  400: #bdbdbd,
+  500: #9e9e9e,
+  600: #757575,
+  1000: #000000,
+  'contrast': (
+    50: #263340,
+    100: #263340,
+    200: #263340,
+    400: #263340,
+    500: #ffffff,
+    600: #ffffff,
+    1000: #ffffff
+  )
+);
+
+// Status palette
+$theme-colors-status: (
+  'ok': #35b99f,
+  'warning': #f8cd59,
+  'error': #fc5640,
+  'active': #242a47,
+  'inactive': #6f779b,
+  'contrast': (
+    'ok': #ffffff,
+    'warning': #ffffff,
+    'error': #ffffff,
+    'active': #ffffff,
+    'inactive': #ffffff
+  )
+);
+
+// Graph palette
+$theme-colors-graph: (
+  01: #3e546a,
+  02: #113b6e,
+  03: #4e92e4,
+  04: #40b688,
+  05: #7bccad,
+  06: #ffc971,
+  07: #fd9843,
+  08: #ec547a,
+  'contrast': (
+    01: #ffffff,
+    02: #ffffff,
+    03: #ffffff,
+    04: #ffffff,
+    05: #263340,
+    06: #263340,
+    07: #263340,
+    08: #263340
+  )
+);
+
+///// DO NOT EDIT FROM HERE /////
+$theme-map-colors: (
+  'color': (
+    'primary': $theme-colors-primary,
+    'accent': $theme-colors-accent,
+    'grey': $theme-colors-grey,
+    'status': $theme-colors-status,
+    'graph': $theme-colors-graph
+  )
+);
