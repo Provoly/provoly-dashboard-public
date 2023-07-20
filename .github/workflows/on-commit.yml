@@ -1,13 +1,17 @@
+name: Tests
+
+on:
+  push:
+    tags-ignore:
+      - '**'
+
 jobs:
   test:
     container: node:18-bullseye
-    on:
-      push:
-        tags-ignore:
-          - '**'
     steps:
-      - run: npm ci
-      - name: Running Test & coverage
+      - name: Manage Dependencies
+        run: npm ci
+      - name: Running Tests & coverage
         run: npm run test:lib:ci
         with:
           name: coverage
