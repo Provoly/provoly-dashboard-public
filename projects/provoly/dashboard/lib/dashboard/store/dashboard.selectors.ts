@@ -23,12 +23,12 @@ const currentManifestId = createSelector(manifests, (manifests) => manifests.cur
 const globalManifest = createSelector(
   manifests,
   // @ts-ignore
-  (manifests) => ({ windows: [], ...manifests?.manifest }) ?? ({ windows: [] } as GlobalManifest)
+  (manifests) => ({ windows: [], ...manifests?.manifest } ?? ({ windows: [] } as GlobalManifest))
 );
 const staticManifest = createSelector(
   manifests,
   // @ts-ignore
-  (manifests) => ({ windows: [], ...manifests?.staticManifest }) ?? ({ windows: [] } as GlobalManifest)
+  (manifests) => ({ windows: [], ...manifests?.staticManifest } ?? ({ windows: [] } as GlobalManifest))
 );
 const refreshRates = createSelector(globalManifest, (manifests) => manifests.refreshRates ?? {});
 const windowManifest = createSelector(
@@ -136,7 +136,7 @@ const datasourceFilters = createSelector(feature, (state: DashboardState) =>
             (obj[attribute.datasource] || (obj[attribute.datasource] = [])).push({
               attribute: attribute.id,
               operator: filter.operator ?? '',
-              value: filter.value ?? ''
+              value: filter.value
             })
           ),
           obj

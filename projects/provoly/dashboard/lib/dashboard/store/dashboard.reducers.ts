@@ -677,24 +677,29 @@ const internalReducer = createReducer<DashboardState>(
       }
     }
   })),
-  on(DashboardActions.updateFilterValue, (state, action) => ({
-    ...state,
-    manifests: {
-      ...state.manifests,
-      manifest: {
-        ...state.manifests.manifest,
-        filters: state.manifests.manifest.filters
-          ? [
-              ...state.manifests.manifest.filters.map((filter, i) =>
-                i === state.manifests.manifest.filters?.findIndex((filter) => filter.id === action.id)
-                  ? { ...filter, value: action.value }
-                  : filter
-              )
-            ]
-          : []
+  on(DashboardActions.updateFilterValue, (state, action) => {
+    const filters = JSON.parse(JSON.stringify(state.manifests.manifest.filters ?? [])) as Filter[];
+
+    const filterToUpdate = filters.find((filter) => filter.id === action.id);
+    if (filterToUpdate) {
+      if (!action.value) {
+        delete filterToUpdate.value;
+      } else {
+        filterToUpdate.value = action.value;
       }
     }
-  })),
+
+    return {
+      ...state,
+      manifests: {
+        ...state.manifests,
+        manifest: {
+          ...state.manifests.manifest,
+          filters
+        }
+      }
+    };
+  }),
   on(DashboardActions.getWmsFeatures, (state, action) => ({
     ...state,
     wmsFeatures: []

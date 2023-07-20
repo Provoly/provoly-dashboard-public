@@ -22,10 +22,7 @@ export class SearchService {
   transformations: ResultsetTransformation[] = [];
   filters: { [datasource: string]: FilterContext[] } = {};
 
-  constructor(
-    private httpClient: HttpClient,
-    private store: Store<ConfigState | SearchState>
-  ) {
+  constructor(private httpClient: HttpClient, private store: Store<ConfigState | SearchState>) {
     store.select(DashboardSelectors.datasourceFilters).subscribe((filters) => {
       this.filters = filters;
     });
@@ -61,9 +58,11 @@ export class SearchService {
     let filterFormed: any = '';
     if (this.filters[id]) {
       filterFormed = [];
-      this.filters[id].forEach((filter) => {
-        filterFormed.push('filter=' + filter.attribute + ',' + filter.operator + ',' + filter.value);
-      });
+      this.filters[id]
+        .filter((filter) => filter.value !== null && filter.value !== undefined)
+        .forEach((filter) => {
+          filterFormed.push('filter=' + filter.attribute + ',' + filter.operator + ',' + filter.value);
+        });
       filterFormed = '?' + filterFormed.join('&');
     }
     return filterFormed;
