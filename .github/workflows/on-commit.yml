@@ -1,0 +1,15 @@
+jobs:
+  test:
+    container: node:18-bullseye
+    on:
+      push:
+        tags-ignore:
+          - '**'
+    steps:
+      - run: npm ci
+      - name: Running Test & coverage
+        run: npm run test:lib:ci
+        with:
+          name: coverage
+          path: coverage/
+
