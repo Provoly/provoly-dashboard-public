@@ -5,6 +5,7 @@ import { DashboardActions, ManifestDescription, PryVisibilityType, ViewMode } fr
 import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pry-icon.component';
 import { MockPryShareComponent } from '@provoly/dashboard/mock/components/mock-pry-share.component';
 import { MockNgModelDirective } from '@provoly/dashboard/mock/directive/mock-ng-model.directive';
+import { MockPryAccessDirective } from '@provoly/dashboard/mock/directive/mock-pry-access.directive';
 import { MockPryTooltipDirective } from '@provoly/dashboard/mock/directive/mock-pry-tooltip.directive';
 import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
 import { MockPryPresentationCssComponent } from '@provoly/dashboard/mock/style/mock-pry-presentation-css';
@@ -32,7 +33,8 @@ describe('PryPresentationComponent', () => {
         MockPryPresentationCssComponent,
         MockPryTooltipDirective,
         MockPryShareComponent,
-        MockNgModelDirective
+        MockNgModelDirective,
+        MockPryAccessDirective
       ],
       providers: [provideMockStore({}), { provide: Overlay }]
     }).compileComponents();
