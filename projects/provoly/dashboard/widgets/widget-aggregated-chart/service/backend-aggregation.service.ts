@@ -2,7 +2,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
-  Attribute,
   ChartAggregatedWidgetOptions,
   Class,
   ClassSelectors,
@@ -13,12 +12,11 @@ import {
   Field,
   FieldSelectors,
   FilterContext,
-  Item,
-  ItemUtils,
   Operation,
   PryI18nService,
   PrySnackbarService,
-  ResultSets
+  ResultSets,
+  SearchService
 } from '@provoly/dashboard';
 import { map, Observable, of, switchMap } from 'rxjs';
 import { AggregationResult, PryAggregationService } from './base-aggregation.service';
@@ -36,7 +34,8 @@ export class PryBackendAggregationService extends PryAggregationService {
     private store: Store,
     private snackBar: PrySnackbarService,
     private translateService: PryI18nService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private searchService: SearchService
   ) {
     super();
 
@@ -45,6 +44,7 @@ export class PryBackendAggregationService extends PryAggregationService {
     this.store.select(FieldSelectors.fields).subscribe((fields) => (this.fields = fields));
     this.store.select(DashboardSelectors.datasourceFilters).subscribe((filters) => (this.filters = filters));
   }
+
   override aggregate(datasources: string[], options: ChartAggregatedWidgetOptions): Observable<AggregationResult> {
     const targetDatasource = datasources.find((ds) => ![DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID].includes(ds));
 
@@ -98,13 +98,7 @@ export class PryBackendAggregationService extends PryAggregationService {
     if (options.groupBy) {
       params = params.set('groupBy', options.groupBy.attribute);
     }
-    if (this.filters[targetDatasource]) {
-      this.filters[targetDatasource]
-        .filter((filter) => !!filter && filter.value !== undefined && filter.value !== null)
-        .forEach((filter) => {
-          params = params.append('filter', filter.attribute + ',' + filter.operator + ',' + filter.value);
-        });
-    }
+    params = this.searchService.getItemsFilter(targetDatasource, params);
 
     return this.store.select(ConfigSelectors.dataUrl).pipe(
       switchMap((url) =>
@@ -120,10 +114,5 @@ export class PryBackendAggregationService extends PryAggregationService {
           )
       )
     );
-  }
-
-  getValueFromAttribute(item: Item, attribute: Attribute) {
-    let value = ItemUtils.getAttributeValue(item, attribute);
-    return Array.isArray(value) ? value[0] : value;
   }
 }

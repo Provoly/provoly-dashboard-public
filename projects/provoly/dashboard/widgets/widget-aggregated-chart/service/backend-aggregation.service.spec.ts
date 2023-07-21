@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -7,9 +8,11 @@ import {
   ConfigSelectors,
   DashboardSelectors,
   FieldSelectors,
+  FilterContext,
   Operation,
   PryI18nService,
   PrySnackbarService,
+  SearchService,
   ValueType
 } from '@provoly/dashboard';
 import { AggregationResult, PryBackendAggregationService } from '@provoly/dashboard/widgets/widget-aggregated-chart';
@@ -45,6 +48,12 @@ describe('BackendAggregationService', () => {
           provide: PrySnackbarService,
           useValue: {
             open: () => null
+          }
+        },
+        {
+          provide: SearchService,
+          useValue: {
+            getItemsFilter: (id: string, params: HttpParams) => params.append('mock', 'true')
           }
         },
         {
@@ -295,7 +304,7 @@ describe('BackendAggregationService', () => {
           { attribute: 'attrId', operator: 'CONTAINS', value: 'a' },
           { attribute: 'attrId2', operator: 'CONTAINS', value: 'b' }
         ]
-      };
+      } as { [datasource: string]: FilterContext[] };
       service.aggregate(['1'], chartOptionsWithOperation).subscribe();
       const reqs = httpTestingController.match(() => true);
       expect(reqs.length).toEqual(1);
@@ -304,7 +313,7 @@ describe('BackendAggregationService', () => {
       expect(req.request.params.get('aggregatedBy')).toEqual('1');
       expect(req.request.params.get('operation')).toEqual('avg');
       expect(req.request.params.get('valueField')).toEqual('2');
-      expect(req.request.params.getAll('filter')).toEqual(['attrId,CONTAINS,a', 'attrId2,CONTAINS,b']);
+      expect(req.request.params.getAll('mock')).toEqual(['true']);
       expect(req.request.method).toEqual('GET');
       req.flush({
         operation: Operation.AVERAGE,

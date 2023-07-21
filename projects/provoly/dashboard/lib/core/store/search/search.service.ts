@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { combineLatest, map, mergeMap, Observable, of } from 'rxjs';
@@ -34,8 +34,7 @@ export class SearchService {
    * @param quickOrder if it has to be applied
    */
   getItems(id: string, quickOrder?: ResultOrder): Observable<ResultSet> {
-    const params = this.getItemsParams(quickOrder);
-    let filterFormed = this.getItemsFilter(id);
+    const params = this.getItemsFilter(id, this.getOrder(quickOrder));
 
     if (!id) {
       console.warn('Not sending items request with no datasource attached.');
@@ -43,35 +42,31 @@ export class SearchService {
     }
 
     return this.store.select(ConfigSelectors.dataUrl).pipe(
-      mergeMap((url) =>
-        this.httpClient.get<ResultSet>(encodeURI(`${url}/data-sources/id/${id}/items${filterFormed}`), { params })
-      ),
+      mergeMap((url) => this.httpClient.get<ResultSet>(encodeURI(`${url}/data-sources/id/${id}/items`), { params })),
       map((rs) => this.applyTransformations('current', rs))
     );
   }
 
   getItemsSerializedParams(id: string, quickOrder: any): string {
-    return JSON.stringify(this.getItemsParams(quickOrder[id])) + this.getItemsFilter(id);
+    return JSON.stringify(this.getItemsFilter(id, this.getOrder(quickOrder[id])));
   }
 
-  getItemsFilter(id: string): string {
-    let filterFormed: any = '';
+  getItemsFilter(id: string, cumulative?: HttpParams): HttpParams {
+    let params = cumulative ?? new HttpParams();
     if (this.filters[id]) {
-      filterFormed = [];
       this.filters[id]
         .filter((filter) => filter.value !== null && filter.value !== undefined)
         .forEach((filter) => {
-          filterFormed.push('filter=' + filter.attribute + ',' + filter.operator + ',' + filter.value);
+          params = params.append('filter', `${filter.attribute},${filter.operator},${filter.value}`);
         });
-      filterFormed = '?' + filterFormed.join('&');
     }
-    return filterFormed;
+    return params;
   }
 
-  getItemsParams(quickOrder: ResultOrder | undefined) {
-    const params = {} as { [key: string]: string };
+  getOrder(quickOrder: ResultOrder | undefined, cumulative?: HttpParams): HttpParams {
+    let params = cumulative ?? new HttpParams();
     if (quickOrder) {
-      params['order'] = `${quickOrder.attribute},${quickOrder.asc ?? ''}`;
+      params = params.append('order', `${quickOrder.attribute},${quickOrder.asc ?? ''}`);
     }
     return params;
   }
