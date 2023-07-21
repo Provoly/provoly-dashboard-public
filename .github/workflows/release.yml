@@ -19,7 +19,7 @@ jobs:
       - name: Manage Dependencies
         run: npm ci
       - name: Prepare release
-        run: npm run version:from-tag
+        run: npm version ${{ github.ref_name }} --no-git-tag-version --no-commit-hooks --allow-same-version -w projects/provoly/dashboard
       - name: Building release
         run: npm run build:lib:prod
       - name: Publishing
