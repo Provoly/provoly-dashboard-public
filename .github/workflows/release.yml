@@ -13,9 +13,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Set repository
-        run: npm config set @provoly:registry https://registry.npmjs.org
-      - name: Set repository authentication
-        run: npm config set '//registry.npmjs.org/:_authToken' "${NPM_AUTH_TOKEN}"
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
       - name: Manage Dependencies
         run: npm ci
       - name: Prepare release
@@ -24,5 +25,7 @@ jobs:
         run: npm run build:lib:prod
       - name: Publishing
         run: npm run pub
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
 
