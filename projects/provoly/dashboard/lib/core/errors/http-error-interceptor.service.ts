@@ -11,10 +11,7 @@ export const httpErrorOptions = {
 
 @Injectable({ providedIn: 'root' })
 export class PryHttpErrorInterceptorService implements HttpInterceptor {
-  constructor(
-    readonly snackbar: PrySnackbarService,
-    private translateService: PryI18nService
-  ) {}
+  constructor(readonly snackbar: PrySnackbarService, private translateService: PryI18nService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
@@ -24,17 +21,21 @@ export class PryHttpErrorInterceptorService implements HttpInterceptor {
           if (!message) {
             message = error.message;
           }
-          this.snackbar.open({
-            message: 'Statut: ' + error.status + '. Erreur: ' + message,
-            type: 'error'
-          });
+          if (error.status >= 400) {
+            this.snackbar.open({
+              message: 'Statut: ' + error.status + '. Erreur: ' + message,
+              type: 'error'
+            });
+          }
 
           console.error(error);
         } else {
-          this.snackbar.open({
-            message: this.translateService.instant('@pry.errors.codes.' + error.status),
-            type: 'error'
-          });
+          if (error.status >= 400) {
+            this.snackbar.open({
+              message: this.translateService.instant('@pry.errors.codes.' + error.status),
+              type: 'error'
+            });
+          }
         }
         return throwError(() => error);
       })
