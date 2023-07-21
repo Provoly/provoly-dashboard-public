@@ -35,8 +35,10 @@ export class ManifestService {
           });
         } else {
           // The backend returned an unsuccessful response code.
-          console.error(`Backend returned code ${error.status}, body was: ${JSON.stringify(error.error)}`);
-          if (error.code !== 204) {
+          if (error.code !== 200) {
+            console.error(`Backend returned code ${error.status}, body was: ${JSON.stringify(error.error)}`);
+          }
+          if (error.code >= 400) {
             this.snackBar.open({
               type: 'error',
               message: this.translateService.instant('@pry.manifest.get.errorBack', {
