@@ -1,11 +1,6 @@
-import {
-  PryAccess,
-  PryAccessModuleAdmin,
-  PryAccessModuleDashboard,
-  PryAccessModuleSupervision
-} from '@provoly/dashboard';
+import { PryAccess, PryAccessModule } from '@provoly/dashboard';
 
-const dashboardDashboard: PryAccessModuleDashboard = {
+const dashboardDashboard: PryAccessModule = {
   pages: {
     dashboard: {},
     manifest: {},
@@ -14,12 +9,12 @@ const dashboardDashboard: PryAccessModuleDashboard = {
   }
 };
 
-const dashboardSupervision: PryAccessModuleSupervision = {
+const dashboardSupervision: PryAccessModule = {
   pages: {
     infrastructures: {
       roles: undefined,
       actions: {
-        scale: undefined
+        scale: []
       }
     },
     input_flows: {
@@ -31,61 +26,61 @@ const dashboardSupervision: PryAccessModuleSupervision = {
   }
 };
 
-const dashboardAdmin: PryAccessModuleAdmin = {
+const dashboardAdmin: PryAccessModule = {
   pages: {
     abac_rules: {
       actions: {
-        write: undefined
+        write: []
       }
     },
     environment: {
       actions: {
-        write: undefined
+        write: []
       }
     },
     classes: {
       actions: {
-        write: undefined
+        write: []
       }
     },
     links: {
       actions: {
-        write: undefined
+        write: []
       }
     },
     metadata: {
       actions: {
-        write: undefined
+        write: []
       }
     },
     metadata_rules: {
       actions: {
-        write: undefined
+        write: []
       }
     },
     metadata_user: {
       actions: {
-        write: undefined
+        write: []
       }
     },
     relation_types: {
       actions: {
-        write: undefined
+        write: []
       }
     },
     user: {
       actions: {
-        write: undefined
+        write: []
       }
     },
     fields: {
       actions: {
-        write: undefined
+        write: []
       }
     },
     predicates: {
       actions: {
-        write: undefined
+        write: []
       }
     }
   }
