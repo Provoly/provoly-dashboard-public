@@ -43,9 +43,8 @@ export class PryBackendAggregationService extends PryAggregationService {
     this.store.select(DashboardSelectors.resultSets).subscribe((rs) => (this.rs = rs as ResultSets));
     this.store.select(ClassSelectors.classes).subscribe((classes) => (this.classes = classes));
     this.store.select(FieldSelectors.fields).subscribe((fields) => (this.fields = fields));
-    this.store.select(DashboardSelectors.filters).subscribe((filters) => (this.filters = filters));
+    this.store.select(DashboardSelectors.datasourceFilters).subscribe((filters) => (this.filters = filters));
   }
-
   override aggregate(datasources: string[], options: ChartAggregatedWidgetOptions): Observable<AggregationResult> {
     const targetDatasource = datasources.find((ds) => ![DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID].includes(ds));
 
@@ -100,9 +99,11 @@ export class PryBackendAggregationService extends PryAggregationService {
       params = params.set('groupBy', options.groupBy.attribute);
     }
     if (this.filters[targetDatasource]) {
-      this.filters[targetDatasource].forEach((filter) => {
-        params = params.append('filter', filter.attribute + ',' + filter.operator + ',' + filter.value);
-      });
+      this.filters[targetDatasource]
+        .filter((filter) => !!filter && filter.value !== undefined && filter.value !== null)
+        .forEach((filter) => {
+          params = params.append('filter', filter.attribute + ',' + filter.operator + ',' + filter.value);
+        });
     }
 
     return this.store.select(ConfigSelectors.dataUrl).pipe(

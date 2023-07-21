@@ -1,8 +1,7 @@
 import { Component, ElementRef, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import equal from 'fast-deep-equal/es6';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, filter, map, Observable } from 'rxjs';
 import { UNKNOWN_DATASOURCE } from '../../../core/components/translate-id/translate-id.pipe';
 import { Item } from '../../../core/model/item.interface';
 import { ResultSet } from '../../../core/model/result-set.interface';
