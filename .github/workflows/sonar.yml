@@ -1,0 +1,17 @@
+name: Sonar
+
+on:
+  schedule:
+    - cron: '30 0 * * *'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: sonarsource/sonar-scanner-cli
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Export sonar URL
+        run: export SONAR_HOST_URL=$SONAR_URL
+      - name: Analysis
+        run: sonar-scanner -Dsonar.login=$SONAR_ADMIN_TOKEN

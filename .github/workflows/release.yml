@@ -1,0 +1,28 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: node:18-bullseye
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set repository
+        run: npm config set @provoly:registry https://registry.npmjs.org
+      - name: Set repository authentication
+        run: npm config set '//registry.npmjs.org/:_authToken' "${NPM_AUTH_TOKEN}"
+      - name: Manage Dependencies
+        run: npm ci
+      - name: Prepare release
+        run: npm run version:from-tag
+      - name: Building release
+        run: npm run build:lib:prod
+      - name: Publishing
+        run: npm run pub
+
+

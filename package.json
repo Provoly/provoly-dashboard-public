@@ -37,7 +37,7 @@
     "lint-fix": "eslint --fix --ext .js,.ts,.html ./src ./projects",
     "lint-prettier": "npx prettier ./src ./projects --write",
     "lint-prettier-ci": "npx prettier ./src ./projects --check",
-    "version:from-tag": "npm version ${CI_COMMIT_TAG} --no-git-tag-version --no-commit-hooks --allow-same-version -w projects/provoly/dashboard",
+    "version:from-tag": "npm version ${{ github.ref }} --no-git-tag-version --no-commit-hooks --allow-same-version -w projects/provoly/dashboard",
     "pub": "cd dist/@provoly/dashboard; npm publish --access=public; cd ../..",
     "bundle:size": "ng build --stats-json; npx webpack-bundle-analyzer dist/*/stats.json",
     "prepare": "husky install",
