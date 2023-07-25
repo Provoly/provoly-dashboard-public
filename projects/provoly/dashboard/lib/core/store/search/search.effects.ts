@@ -13,11 +13,7 @@ import { SearchService } from './search.service';
 
 @Injectable()
 export class SearchEffects {
-  constructor(
-    private actions$: Actions,
-    private searchService: SearchService,
-    private store: Store
-  ) {}
+  constructor(private actions$: Actions, private searchService: SearchService, private store: Store) {}
 
   searchNamed$ = createEffect(() =>
     this.actions$.pipe(
@@ -60,7 +56,7 @@ export class SearchEffects {
         DashboardActions.updateResultSet({
           id: action.id ?? DEFAULT_NAMED_QUERY_ID,
           resultSet: action.resultSet,
-          params: action.params ? action.params : undefined
+          params: action.params
         })
       )
     )

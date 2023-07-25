@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { PrySnackbarService } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
-import { PrySnackbarService } from '../../lib/core/components/snackbar/snackbar.service';
 import { NotificationEffects } from './notification.effects';
 import { initialNotificationState } from './notification.reducer';
 

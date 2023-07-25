@@ -2,14 +2,16 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import {
+  ClassSelectors,
+  DataSourceSelectors,
+  MultiClassCondition,
+  NamedQueryTypes,
+  SearchActions,
+  SearchService
+} from '@provoly/dashboard';
 import { hot } from 'jest-marbles';
 import { Observable } from 'rxjs';
-import { MultiClassCondition } from '../../../lib/core/model/search-multi-class.model';
-import { ClassSelectors } from '../../../lib/core/store/class/class.selectors';
-import { DataSourceSelectors } from '../../../lib/core/store/data-source/data-source.selectors';
-import { NamedQueryTypes } from '../../../lib/core/store/data-source/named-query-types.model';
-import { SearchActions } from '../../../lib/core/store/search/search.actions';
-import { SearchService } from '../../../lib/core/store/search/search.service';
 import { SearchMultiClassActions } from './search-multi-class.actions';
 import { SearchMultiClassEffects } from './search-multi-class.effects';
 import { initialSearchState, SearchMultiClassState } from './search-multi-class.reducer';
