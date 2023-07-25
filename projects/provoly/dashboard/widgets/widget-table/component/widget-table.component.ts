@@ -52,11 +52,7 @@ export class WidgetTableComponent extends DataWidgetComponent {
   isContextMenuOpened$: Observable<boolean>;
   quickOrder$: Observable<ResultOrder | undefined>;
 
-  constructor(
-    store: Store<any>,
-    el: ElementRef,
-    private cdr: ChangeDetectorRef
-  ) {
+  constructor(store: Store<any>, el: ElementRef, private cdr: ChangeDetectorRef) {
     super(store, el);
     this.options$ = this.manifest$.pipe(map((manifest) => manifest.options as TableWidgetOptions));
 
@@ -101,7 +97,7 @@ export class WidgetTableComponent extends DataWidgetComponent {
         ([resultSet, classes, fields]) =>
           [
             ...ItemUtils.getFieldsFromAvailabilityInResultSet(resultSet, classes, fields),
-            ...baseItemProperties.map((p) => ({ name: p, id: p }) as Field)
+            ...baseItemProperties.map((p) => ({ name: p, id: p } as Field))
           ] as Field[]
       ),
       map((fields) => fields.filter((field) => field.type !== FieldType.RAW))
@@ -179,6 +175,9 @@ export class WidgetTableComponent extends DataWidgetComponent {
       this.optionsCopy = { columns: [] };
     }
     this.optionsCopy.columns?.push({ label: '', property: '' });
+    setTimeout(() => {
+      this.cdr.detectChanges();
+    }, 100);
   }
 
   changePropertyName($event: any, columnDef: ColumnDefinition) {
