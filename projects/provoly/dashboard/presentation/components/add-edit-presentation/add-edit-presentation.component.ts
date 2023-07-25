@@ -30,10 +30,7 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
   type: LibraryTypes = LibraryTypes.ILLUSTRATION;
   chosenLayout?: string;
 
-  constructor(
-    private store: Store,
-    @Optional() protected router: Router
-  ) {
+  constructor(private store: Store, @Optional() protected router: Router) {
     super();
     this.store.dispatch(DashboardActions.setGridLayout({ layout: DashboardGridLayout.FULL }));
     this.staticManifest$ = this.store.select(DashboardSelectors.staticManifest);
@@ -72,7 +69,16 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
       cover: this.form.value.cover ?? false,
       image: this.image ?? DEFAULT_RESTITUTION_ICON_URL
     };
-    this.store.dispatch(DashboardActions.saveManifest(presentation));
+    this.subscriptions.add(
+      this.staticManifest$.pipe(take(1)).subscribe((staticManifest) => {
+        this.store.dispatch(
+          DashboardActions.saveManifest({
+            ...presentation,
+            manifest: staticManifest
+          })
+        );
+      })
+    );
     this.store.dispatch(
       DashboardActions.selectPresentation({
         presentation: presentation,

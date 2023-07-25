@@ -51,6 +51,12 @@ describe('PryAddEditPresentationComponent', () => {
                   default: false
                 }
               ]
+            },
+            {
+              selector: DashboardSelectors.staticManifest,
+              value: {
+                windows: []
+              }
             }
           ]
         })
@@ -80,7 +86,10 @@ describe('PryAddEditPresentationComponent', () => {
         name: '',
         description: '',
         cover: false,
-        image: '/assets/svgs/default-restitution.svg'
+        image: '/assets/svgs/default-restitution.svg',
+        manifest: {
+          windows: []
+        }
       })
     );
   });
