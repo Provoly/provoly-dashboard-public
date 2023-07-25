@@ -47,7 +47,7 @@ export class SearchService {
     );
   }
 
-  getItemsSerializedParams(id: string, quickOrder: any): string {
+  getItemsSerializedParams(id: string, quickOrder: { [id: string]: ResultOrder | undefined } = {}): string {
     return JSON.stringify(this.getItemsFilter(id, this.getOrder(quickOrder[id])));
   }
 
