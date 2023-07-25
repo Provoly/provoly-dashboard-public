@@ -1,7 +1,14 @@
 <ng-container *ngIf="action">
   <ul>
-    <li class="m-actions-list__item" (click)="select(action)" cdkOverlayOrigin #origin="cdkOverlayOrigin">
-      <button class="a-btn a-btn--secondary" [class.is-active]="panelOpen" [disabled]="action.disabled">
+    <li class="m-actions-list__item">
+      <button
+        class="a-btn a-btn--secondary"
+        [class.is-active]="panelOpen"
+        (click)="select(action)"
+        [disabled]="action.disabled"
+        cdkOverlayOrigin
+        #origin="cdkOverlayOrigin"
+      >
         <ng-container *ngIf="!iconAction; else iconActionTpl">
           <pry-icon *ngIf="action.icon" [iconSvg]="action.icon"></pry-icon>
           {{ baseToolboxTranslation + action.label | i18n }}

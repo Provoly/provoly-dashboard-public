@@ -53,7 +53,7 @@ describe('BaseToolboxActionComponent', () => {
     } as BaseToolboxAction;
     fixture.detectChanges();
     await fixture.whenStable();
-    const element = fixture.debugElement.query(By.css('.m-actions-list__item'));
+    const element = fixture.debugElement.query(By.css('.m-actions-list__item>button'));
     expect(element).toBeTruthy();
     element.nativeElement.click();
     expect(spy).toHaveBeenCalled();
@@ -84,7 +84,7 @@ describe('BaseToolboxActionComponent', () => {
     };
     fixture.detectChanges();
     await fixture.whenStable();
-    const element = fixture.debugElement.query(By.css('.m-actions-list__item'));
+    const element = fixture.debugElement.query(By.css('.m-actions-list__item>button'));
     expect(element).toBeTruthy();
     element.nativeElement.click();
     fixture.detectChanges();
