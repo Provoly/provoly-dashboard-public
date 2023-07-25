@@ -111,8 +111,9 @@ export class SaveViewComponent extends SubscriptionnerDirective {
           viewMode: ViewMode.CATALOG
         })
       );
+      this.mode = 'directSave';
     }, 200);
-
+    this.overlayRefSaveAs?.dispose();
     this.closeModals();
   }
 
@@ -145,6 +146,7 @@ export class SaveViewComponent extends SubscriptionnerDirective {
         backdropClass: 'backdrop'
       })
     );
+    this.mode = 'saveAs';
     this.store.dispatch(ConfigActions.addingOverlay({ id: this.constructor.name }));
     this.overlayRefSaveAs.backdropClick().subscribe((_) => this.toggleSaveAs());
     this.overlayRefSaveAs.attach(new TemplatePortal(this.templateSaveAs, this.viewContainerRef));
