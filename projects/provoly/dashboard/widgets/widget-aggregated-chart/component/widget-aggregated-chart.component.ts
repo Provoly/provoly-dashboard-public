@@ -66,6 +66,8 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   copyOrdinateField?: Field;
   schemes: { id: string }[] = [];
   noData$: Observable<boolean>;
+  sortActive? = 'name';
+  sortDirection? = 'asc';
 
   constructor(
     store: Store<any>,

@@ -13,6 +13,7 @@ import {
   PryIconModule,
   PryRangeModule,
   PrySelectModule,
+  PrySortModule,
   PryToggleModule
 } from '@provoly/dashboard';
 import { PryCheckboxModule } from '@provoly/dashboard/components/checkbox';
@@ -36,7 +37,8 @@ import { PryWidgetAggregatedChartCssComponent } from './style/css.component';
     PryToggleModule,
     PryEditInputModule,
     PryI18nModule,
-    PryRangeModule
+    PryRangeModule,
+    PrySortModule
   ],
   exports: [WidgetAggregatedChartComponent],
   providers: [PryAggregationService]

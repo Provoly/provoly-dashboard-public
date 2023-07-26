@@ -69,7 +69,7 @@
             <pry-select
               (ngModelChange)="changeAbscissa($event)"
               [itemsAsOption]="true"
-              [items]="abscissaAttributes$ | async"
+              [items]="abscissaAttributes$ | async | prySortData: sortActive : sortDirection "
               [ngModel]="optionsCopy.abscissa.attribute"
               bindLabel="name"
               bindValue="id"
@@ -185,7 +185,7 @@
               <pry-select
                 (ngModelChange)="changeOrdinate($event)"
                 [itemsAsOption]="true"
-                [items]="ordinateAttributes$ | async"
+                [items]="ordinateAttributes$ | async | prySortData: sortActive : sortDirection "
                 [ngModel]="optionsCopy.ordinate.attribute"
                 bindLabel="name"
                 bindValue="id"
@@ -224,7 +224,7 @@
                 <pry-select
                   (ngModelChange)="changeGroupBy($event)"
                   [ngModel]="optionsCopy.groupBy.attribute"
-                  [items]="abscissaAttributes$ | async"
+                  [items]="abscissaAttributes$ | async | prySortData: sortActive : sortDirection "
                   bindLabel="name"
                   bindValue="id"
                   class="a-pry-select"
