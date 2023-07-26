@@ -28,10 +28,9 @@ export class PryI18nService {
   }
 
   updateTranslations() {
-    this.translations$.next({});
-    Object.values(this.langObjects[this.currentLang]).forEach((obj) =>
-      this.translations$.next(deepMerge(obj, this.translations$.getValue()))
-    );
+    let calculated = {};
+    Object.values(this.langObjects[this.currentLang]).forEach((obj) => (calculated = deepMerge(obj, calculated)));
+    this.translations$.next(calculated);
   }
 
   use(lang: string) {
