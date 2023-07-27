@@ -18,14 +18,23 @@ export class DashboardInitService {
   ) {}
 
   init() {
-    this.store.dispatch(
-      ConfigActions.defineUrls({
-        mapUrl: this.baseConfig.mapUrl,
-        pryUrl: this.baseConfig.pryUrl,
-        wsUrl: this.baseConfig.wsUrl,
-        geoServerUrl: this.baseConfig.geoServerUrl
-      })
-    );
+    const properties = ['mapUrl', 'pryUrl', 'wsUrl', 'geoServerUrl'] as (
+      | 'mapUrl'
+      | 'pryUrl'
+      | 'wsUrl'
+      | 'geoServerUrl'
+    )[];
+
+    const config = {} as { [key: string]: string };
+    properties.forEach((prop) => {
+      if (!!this.baseConfig[prop]) {
+        config[prop] = this.baseConfig[prop]!;
+      }
+    });
+
+    if (Object.keys(config).length > 0) {
+      this.store.dispatch(ConfigActions.defineUrls(config));
+    }
 
     if (!!this.baseConfig.path) {
       this.router.config.push({ path: this.baseConfig.path, component: DashboardComponent });
