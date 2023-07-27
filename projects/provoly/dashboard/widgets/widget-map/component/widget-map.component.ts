@@ -143,6 +143,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   legendTabOpen = false;
   legendTab = 0;
   legendLayers$!: Observable<(MapGeoServerLayerOptions | MapWMSLayerLayerOptions)[]>;
+  legendTop$: Observable<number>;
+  legendHeight$: Observable<number>;
   imageNotProvided: boolean[] = [];
   basicActions$: Observable<('click' | 'lasso' | 'rectangle' | 'zoom' | 'move' | 'export' | 'upload')[]>;
   zoomAndCenter$ = new BehaviorSubject<{ zoom?: { start: number; min: number; max: number }; center?: number[] }>({});
@@ -288,13 +290,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.mapUrl$ = this.store.select(ConfigSelectors.mapUrl);
     this.wmsFeatures$ = this.store.select(DashboardSelectors.wmsFeatures);
 
-    this.bottomLeft$ = combineLatest([this.widgetSize$, this.displayHeader$]).pipe(
-      map(
-        ([size, displayHeader]) =>
-          `translate(10px ,calc(${size.height}px - 100% - 10px - ${
-            displayHeader ? WIDGET_HEADER_HEIGHT + 'px' : '0px'
-          }))`
-      ),
+    this.bottomLeft$ = this.widgetSize$.pipe(
+      map((size) => `translate(10px ,calc(${size.height}px - 100% - 10px))`),
       delay(10)
     );
 
@@ -329,6 +326,15 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
     this.height$ = combineLatest([this.widgetSize$.pipe(debounceTime(100)), this.displayHeader$]).pipe(
       map(([size, display]) => (size.height ?? 100) - (display ? WIDGET_HEADER_HEIGHT : 0)),
+      delay(10)
+    );
+
+    this.legendTop$ = this.displayHeader$.pipe(map((display) => 225 - (display ? 0 : WIDGET_HEADER_HEIGHT)));
+
+    this.legendHeight$ = combineLatest([this.widgetSize$.pipe(debounceTime(100)), this.legendTop$]).pipe(
+      map(([size, top]) => {
+        return (size.height ?? 100) - WIDGET_HEADER_HEIGHT - top - 56; // 56px is the tooltip height + margin
+      }),
       delay(10)
     );
   }

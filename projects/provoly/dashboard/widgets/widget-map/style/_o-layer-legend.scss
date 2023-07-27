@@ -2,8 +2,8 @@
 
 .m-layer-legend {
   z-index: 2;
-  top: toRem(225);
   left: toRem(8);
+  overflow: hidden;
 
   &.ol-control {
     border: 1px solid #bccad8;
@@ -33,6 +33,7 @@
 
   &__image {
     background: white;
+    overflow: scroll;
   }
 
   &__error {

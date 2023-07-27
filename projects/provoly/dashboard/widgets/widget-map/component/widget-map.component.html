@@ -84,7 +84,7 @@
 
       <div *ngFor="let layer of optionsCopy?.layers; let i = index" class="o-settings__popup__content__fields">
         <div class="o-settings__popup__content__fields__head">
-          <h3 class="a-h3 settings-layer-title__title">{{ '@pry.widget.map.layer' | i18n: { index: i + 1 } }}</h3>
+          <h3 class="a-h3 settings-layer-title__title">{{ '@pry.widget.map.layer' | i18n : { index: i + 1 } }}</h3>
           <div class="m-btn-group">
             <button type="button" class="a-btn a-btn--icon-only" (click)="invertLayers(i, i - 1)" *ngIf="i > 0">
               <pry-icon iconSvg="fleche_haut"></pry-icon>
@@ -112,7 +112,7 @@
           ></pry-range>
 
           <fieldset>
-            <legend class="u-visually-hidden">{{ '@pry.widget.map.layerOptions' | i18n: { index: i + 1 } }}</legend>
+            <legend class="u-visually-hidden">{{ '@pry.widget.map.layerOptions' | i18n : { index: i + 1 } }}</legend>
             <div class="m-form-label-field">
               <label class="a-label" for="map_layerTitle">{{ '@pry.widget.map.layerTitle' | i18n }}</label>
               <input
@@ -183,7 +183,7 @@
           <ng-container
             *ngIf="
               layer
-                | geometryFieldsFor: { resultSet: resultSet$, classes: layer.classes, type: layer.type }
+                | geometryFieldsFor : { resultSet: resultSet$, classes: layer.classes, type: layer.type }
                 | async as fields
             "
           >
@@ -389,7 +389,11 @@
     <input hidden type="file" #uploader (change)="import($event)" />
   </div>
 
-  <div class="ol-control m-layer-legend" *ngIf="((legendLayers$ | async)?.length ?? 0) > 0">
+  <div
+    class="ol-control m-layer-legend"
+    *ngIf="((legendLayers$ | async)?.length ?? 0) > 0"
+    [style.top.px]="legendTop$ | async"
+  >
     <button class="m-layer-legend__toggle" (click)="toggleLegendWindow()">
       <pry-icon iconSvg="legend" [width]="22" [height]="22"></pry-icon>
     </button>
@@ -412,11 +416,12 @@
       <div
         class="m-layer-legend__image"
         [class.-hidden]="!legendTabOpen || legendTab !== index || !isLayerRendered(geoLayer)"
+        [style.max-height.px]="legendHeight$ | async"
       >
         <ng-container *ngIf="!imageNotProvided[index] && (geoLayer | legendUrl)">
           <img
             [src]="geoLayer | legendUrl"
-            [alt]="'@pry.widget.map.legend' | i18n: { layer: geoLayer.title }"
+            [alt]="'@pry.widget.map.legend' | i18n : { layer: geoLayer.title }"
             (error)="imageNotProvided[index] = true"
           />
         </ng-container>
