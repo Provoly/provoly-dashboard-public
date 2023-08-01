@@ -74,7 +74,10 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     this.filteredPresentations$ = combineLatest([this.manifests$, this.search$]).pipe(
       map(([presentations, search]) =>
         presentations.filter(
-          (presentations) => search.length === 0 || presentations.name.toLowerCase().includes(search.toLowerCase())
+          (presentations) =>
+            search.length === 0 ||
+            presentations.description.toLowerCase().includes(search.toLowerCase()) ||
+            presentations.name.toLowerCase().includes(search.toLowerCase())
         )
       )
     );

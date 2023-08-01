@@ -58,6 +58,14 @@
 
             <div class="o-presentation__item__txt">
               <h3 class="a-h3">{{ presentation.name }}</h3>
+              <div class="a-p">
+                <div class="description-container">
+                  <span class="description">
+                    {{ presentation.description }}
+                  </span>
+                  <div class="description-tooltip">{{ presentation.description }}</div>
+                </div>
+              </div>
               <p class="a-p -date">{{ presentation.modificationDate | sinceDate }}</p>
             </div>
 
