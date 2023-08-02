@@ -52,51 +52,76 @@
         </button>
       </div>
     </div>
-    <ul class="o-catalog__list" role="list" aria-live="polite">
-      <li
-        *ngFor="let widget of filteredWidgets$ | async"
-        class="o-catalog__list__item"
-        [class.is-point]="automaticGridMode$ | async"
-        [draggable]="!(automaticGridMode$ | async)"
-        role="listitem"
-        aria-grabbed="false"
-        aria-haspopup="true"
-        tabindex="-1"
-        [title]="widget.description ?? widget.label | i18n"
-        (dragstart)="dragStart($event, widget.type)"
-      >
-        <ng-container *ngIf="automaticGridMode$ | async">
-          <button
-            type="button"
-            class="a-btn a-btn--icon-only"
-            (click)="viewInDashboard(widget)"
-            [title]="'@pry.restitution.add_icon' | i18n"
+    <ng-container *ngIf="showTabs; else list">
+      <div class="o-accordion" role="tablist" aria-multiselectable="false">
+        <ng-container *ngFor="let category of categories">
+          <h2
+            class="o-accordion__title"
+            [class.is-active]="categoryOpened === category.label"
+            [style.--border-color]="category.color"
           >
-            <pry-icon [width]="25" [height]="25" iconSvg="add_column" class="o-catalog__list__icon"></pry-icon>
-            <span class="u-visually-hidden">{{ '@pry.restitution.add_icon' | i18n }}</span>
-          </button>
+            <button
+              type="button"
+              class="o-accordion__title__btn"
+              [id]="'button_' + category.label"
+              role="tab"
+              [attr.aria-controls]="'panel_' + category.label"
+              [attr.aria-selected]="categoryOpened === category.label"
+              [attr.aria-expanded]="categoryOpened === category.label"
+              (click)="toggle(category.label)"
+            >
+              <span>
+                {{ '@pry.restitution.catalogTabs.' + category.label | i18n }}
+                ({{
+                  category.label === 'model' ? (nonCustomWidgets$ | async)?.length : (customWidgets$ | async)?.length
+                }})
+              </span>
+              <pry-icon
+                [width]="15"
+                [height]="15"
+                [iconSvg]="categoryOpened === category.label ? 'chevron_top_rounded' : 'chevron_bottom_rounded'"
+              ></pry-icon>
+            </button>
+          </h2>
+          <div
+            class="o-accordion__panel"
+            role="tabpanel"
+            [attr.aria-labelledby]="'button_' + category.label"
+            [id]="'panel_' + category.label"
+            [attr.aria-hidden]="categoryOpened !== category.label"
+          >
+            <ng-container *ngIf="categoryOpened === category.label">
+              <ul class="o-catalog__list" role="list" aria-live="polite">
+                <ng-container *ngIf="categoryOpened === 'model'">
+                  <pry-catalog-item
+                    *ngFor="let widget of nonCustomWidgets$ | async"
+                    [widget]="widget"
+                    (selectRestitution)="selectRestitution($event)"
+                  ></pry-catalog-item>
+                </ng-container>
+                <ng-container *ngIf="categoryOpened === 'noModel'">
+                  <pry-catalog-item
+                    *ngFor="let widget of customWidgets$ | async"
+                    [widget]="widget"
+                    (selectRestitution)="selectRestitution($event)"
+                  ></pry-catalog-item>
+                </ng-container>
+              </ul>
+            </ng-container>
+          </div>
         </ng-container>
-        <img
-          [alt]="widget.label"
-          [src]="widget.icon | getSecuredImage: [600, 600] | async"
-          [height]="widget.cover ? 600 : 53"
-          [width]="widget.cover ? 600 : 53"
-          [class.is-full-width]="widget.cover"
-        />
-        <p class="o-catalog__list__item__libelle" *ngIf="widget.isCustom; else translate">{{ widget.label }}</p>
-        <ng-template #translate>
-          <p class="o-catalog__list__item__libelle">{{ widget.label | i18n }}</p>
-        </ng-template>
-        <ng-container *ngIf="widget.visibility?.type === PryVisibilityType.PRIVATE">
-          <pry-icon iconSvg="private" [pryTooltip]="private" class="is-private" [height]="17" [width]="17"></pry-icon>
-        </ng-container>
-        <div class="o-catalog__list__item__action" *ngIf="widget.isCustom">
-          <button type="button" class="a-btn a-btn--ghost" (click)="selectRestitution(widget)">
-            {{ '@pry.restitution.view' | i18n }}
-          </button>
-        </div>
-      </li>
-    </ul>
+      </div>
+    </ng-container>
+
+    <ng-template #list>
+      <ul class="o-catalog__list" role="list" aria-live="polite">
+        <pry-catalog-item
+          *ngFor="let widget of filteredWidgets$ | async"
+          [widget]="widget"
+          (selectRestitution)="selectRestitution($event)"
+        ></pry-catalog-item>
+      </ul>
+    </ng-template>
   </ng-template>
 
   <ng-template [ngIf]="selectedMode === mode.CONSULT">
@@ -109,7 +134,7 @@
     <pry-restitution
       [selectedRestitution]="selectedRestitution"
       [edit]="false"
-      (restitutionCreated)="closeRestitution($event)"
+      (restitutionCreated)="closeRestitution()"
     ></pry-restitution>
   </ng-template>
 
@@ -120,12 +145,6 @@
       </button>
     </div>
 
-    <pry-restitution (restitutionCreated)="closeRestitution($event)"></pry-restitution>
+    <pry-restitution (restitutionCreated)="closeRestitution()"></pry-restitution>
   </ng-template>
 </div>
-
-<ng-template #private>
-  <div class="m-tooltip" role="tooltip">
-    <span class="m-tooltip__text">{{ '@pry.restitution.lock' | i18n }}</span>
-  </div>
-</ng-template>

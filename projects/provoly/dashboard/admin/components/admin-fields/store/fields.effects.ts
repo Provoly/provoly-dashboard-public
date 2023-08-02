@@ -54,7 +54,8 @@ export class FieldsEffects {
             actions: [
               {
                 id: 0,
-                label: '@pry.admin.validate'
+                label: '@pry.admin.validate',
+                actions: [FieldsActions.deleteField({ id: action.id, route: action.path })]
               },
               {
                 id: 1,
@@ -99,9 +100,5 @@ export class FieldsEffects {
     )
   );
 
-  constructor(
-    private actions$: Actions,
-    private fieldService: FieldService,
-    private pryDialog: PryDialogService
-  ) {}
+  constructor(private actions$: Actions, private fieldService: FieldService, private pryDialog: PryDialogService) {}
 }

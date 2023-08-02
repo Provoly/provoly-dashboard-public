@@ -22,6 +22,7 @@ import { PryRestitutionComponent } from './components/restitution/restitution.co
 import { enTranslations } from './i18n/en.translations';
 import { frTranslations } from './i18n/fr.translations';
 import { PryCatalogCssComponent } from './style/css.component';
+import { PryRestitutionListItemComponent } from './components/restitution-list-item/restitution-list-item.component';
 
 @NgModule({
   providers: [DatePipe],
@@ -29,7 +30,8 @@ import { PryCatalogCssComponent } from './style/css.component';
     PryRestitutionListComponent,
     PryRestitutionComponent,
     PryCatalogCssComponent,
-    PryRestitutionCatalogComponent
+    PryRestitutionCatalogComponent,
+    PryRestitutionListItemComponent
   ],
   imports: [
     CommonModule,

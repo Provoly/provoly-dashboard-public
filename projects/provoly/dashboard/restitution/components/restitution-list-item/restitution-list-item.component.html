@@ -1,0 +1,48 @@
+<li
+  class="o-catalog__list__item"
+  [class.is-point]="automaticGridMode$ | async"
+  [draggable]="!(automaticGridMode$ | async)"
+  role="listitem"
+  aria-grabbed="false"
+  aria-haspopup="true"
+  tabindex="-1"
+  [title]="widget.description ?? widget.label | i18n"
+  (dragstart)="dragStart($event, widget.type)"
+>
+  <ng-container *ngIf="automaticGridMode$ | async">
+    <button
+      type="button"
+      class="a-btn a-btn--icon-only"
+      (click)="viewInDashboard(widget)"
+      [title]="'@pry.restitution.add_icon' | i18n"
+    >
+      <pry-icon [width]="25" [height]="25" iconSvg="add_column" class="o-catalog__list__icon"></pry-icon>
+      <span class="u-visually-hidden">{{ '@pry.restitution.add_icon' | i18n }}</span>
+    </button>
+  </ng-container>
+  <img
+    [alt]="widget.label"
+    [src]="widget.icon | getSecuredImage : [600, 600] | async"
+    [height]="widget.cover ? 600 : 53"
+    [width]="widget.cover ? 600 : 53"
+    [class.is-full-width]="widget.cover"
+  />
+  <p class="o-catalog__list__item__libelle" *ngIf="widget.isCustom; else translate">{{ widget.label }}</p>
+  <ng-template #translate>
+    <p class="o-catalog__list__item__libelle">{{ widget.label | i18n }}</p>
+  </ng-template>
+  <ng-container *ngIf="widget.visibility?.type === PryVisibilityType.PRIVATE">
+    <pry-icon iconSvg="private" [pryTooltip]="private" class="is-private" [height]="17" [width]="17"></pry-icon>
+  </ng-container>
+  <div class="o-catalog__list__item__action" *ngIf="widget.isCustom">
+    <button type="button" class="a-btn a-btn--ghost" (click)="emitSelectedRestitution(widget)">
+      {{ '@pry.restitution.view' | i18n }}
+    </button>
+  </div>
+</li>
+
+<ng-template #private>
+  <div class="m-tooltip" role="tooltip">
+    <span class="m-tooltip__text">{{ '@pry.restitution.lock' | i18n }}</span>
+  </div>
+</ng-template>

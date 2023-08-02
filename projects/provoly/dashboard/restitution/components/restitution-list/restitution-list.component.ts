@@ -1,12 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   CatalogEntry,
   ConfigActions,
-  ConfigSelectors,
-  DashboardActions,
-  DashboardGridLayout,
-  DashboardSelectors,
   PryI18nService,
   PryVisibilityType,
   SubscriptionnerDirective,
@@ -22,16 +18,21 @@ import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
   templateUrl: './restitution-list.component.html'
 })
 export class PryRestitutionListComponent extends SubscriptionnerDirective {
+  @Input() showTabs = true;
   search$ = new BehaviorSubject('');
   type$ = new BehaviorSubject<undefined | string>(undefined);
   filteredWidgets$: Observable<CatalogEntry[]>;
+  nonCustomWidgets$: Observable<CatalogEntry[]>;
+  customWidgets$: Observable<CatalogEntry[]>;
   types$: Observable<{ icon: string; label: string; type: string }[]>;
   selectedRestitution: Widget | null = null;
   mode = ViewMode;
   selectedMode: ViewMode = ViewMode.CATALOG;
-  catalog: Widget[] | undefined;
-  automaticGridMode$: Observable<boolean>;
-  modeAuto: boolean = false;
+  categories = [
+    { label: 'model', color: '#FFC971' },
+    { label: 'noModel', color: '#4E92E4' }
+  ];
+  categoryOpened: string = '';
   PryVisibilityType = PryVisibilityType;
 
   constructor(
@@ -42,51 +43,40 @@ export class PryRestitutionListComponent extends SubscriptionnerDirective {
   ) {
     super();
     this.store.dispatch(ConfigActions.loadWidgets());
+    this.types$ = this.toolboxMenuService.types$;
     this.filteredWidgets$ = combineLatest([this.toolboxMenuService.menuList$, this.search$, this.type$]).pipe(
-      map(([menus, search, type]) =>
-        menus.filter(
-          (menu) =>
+      map(([widgets, search, type]) =>
+        widgets.filter(
+          (widget) =>
             (search.length === 0 ||
-              this.translateService.instant(menu.label).toLocaleLowerCase().includes(search.toLocaleLowerCase())) &&
-            (!type || this.toolboxManifestService.get(menu.type).type === type)
+              this.translateService.instant(widget.label).toLocaleLowerCase().includes(search.toLocaleLowerCase())) &&
+            (!type || this.toolboxManifestService.get(widget.type).type === type)
         )
       )
     );
-    this.types$ = this.toolboxMenuService.types$;
-    this.store.select(ConfigSelectors.catalog).subscribe((catalog: Widget[]) => (this.catalog = catalog));
-    this.automaticGridMode$ = this.store
-      .select(DashboardSelectors.gridLayout)
-      .pipe(map((layout) => layout !== DashboardGridLayout.MANUAL));
-    this.subscriptions.add(this.automaticGridMode$.subscribe((modeAuto) => (this.modeAuto = modeAuto)));
-  }
-
-  dragStart($event: DragEvent, type: string) {
-    if (!this.modeAuto) {
-      this.toolboxManifestService.dataTransfer($event, type);
-    }
+    this.nonCustomWidgets$ = this.filteredWidgets$.pipe(
+      map((widgets) => widgets.filter((widget) => this.toolboxManifestService.isModel(widget.type)))
+    );
+    this.customWidgets$ = this.filteredWidgets$.pipe(
+      map((widgets) => widgets.filter((widget) => !this.toolboxManifestService.isModel(widget.type)))
+    );
   }
 
   selectMode(newMode: ViewMode) {
     this.selectedMode = newMode;
   }
 
-  selectRestitution(catalogEntry: CatalogEntry) {
-    if (catalogEntry.isCustom) {
-      this.catalog?.forEach((widget: Widget) => {
-        if (widget.id === catalogEntry.type) {
-          this.selectedRestitution = widget;
-          this.selectMode(this.mode.CONSULT);
-        }
-      });
-    }
+  selectRestitution($event: Widget) {
+    this.selectedRestitution = $event;
+    this.selectMode(ViewMode.CONSULT);
   }
 
-  closeRestitution($event: void) {
+  closeRestitution() {
     this.selectedRestitution = null;
     this.selectMode(this.mode.CATALOG);
   }
 
-  viewInDashboard(widget: CatalogEntry) {
-    this.store.dispatch(DashboardActions.addWidgetToPresentation({ widgetType: widget.type }));
+  toggle(category: string) {
+    this.categoryOpened = this.categoryOpened === category ? '' : category;
   }
 }

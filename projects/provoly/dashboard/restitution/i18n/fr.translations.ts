@@ -37,7 +37,11 @@ export const frTranslations = {
       lock: 'Restitution privée',
       update: 'Modifier les informations',
       cover: "L'image doit couvrir la carte de la restitution",
-      noDataSourceSelected: 'Aucune source de données sélectionnée'
+      noDataSourceSelected: 'Aucune source de données sélectionnée',
+      catalogTabs: {
+        model: 'Modèles de restitution',
+        noModel: 'Resitutions du catalogue'
+      }
     }
   }
 };

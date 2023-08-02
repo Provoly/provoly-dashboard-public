@@ -1,15 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import {
-  CatalogEntry,
-  DashboardActions,
-  PryI18nService,
-  ToolboxMenuService,
-  ViewMode,
-  Widget
-} from '@provoly/dashboard';
+import { provideMockStore } from '@ngrx/store/testing';
+import { PryI18nService, ToolboxMenuService, ViewMode, Widget } from '@provoly/dashboard';
 import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pry-icon.component';
 import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '@provoly/dashboard/mock/pipe/mock-translate.pipe';
@@ -21,8 +14,6 @@ describe('PryRestitutionListComponent', () => {
   let component: PryRestitutionListComponent;
   let fixture: ComponentFixture<PryRestitutionListComponent>;
   const mockWidgetFactoryService = { resolveComponent: jest.fn(() => WidgetImageComponent) };
-  let store: MockStore;
-  let service: ToolboxMenuService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -40,8 +31,6 @@ describe('PryRestitutionListComponent', () => {
       ],
       imports: [CommonModule, FormsModule]
     }).compileComponents();
-    service = TestBed.inject(ToolboxMenuService);
-    store = TestBed.inject(MockStore);
   });
 
   beforeEach(() => {
@@ -53,40 +42,16 @@ describe('PryRestitutionListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should selectRestitution with restitution widget', () => {
-    const catalogEntry = {
-      icon: '',
-      label: '',
-      category: 'test-test',
-      type: 'restitution-type',
-      description: 'test du dredi',
-      isCustom: true
-    } as CatalogEntry;
-    component.catalog = [
-      { id: 'restitution-type', name: 'Custom Widget', type: 'restitution-type' } as unknown as Widget
-    ];
-    component.selectRestitution(catalogEntry);
-    expect(component.selectedRestitution).toEqual(component.catalog[0]);
+  it('should set selectedRestitution to the emitted widget', () => {
+    let widget = { id: 'restitution-type', name: 'Custom Widget', type: 'restitution-type' } as unknown as Widget;
+    component.selectRestitution(widget);
+    expect(component.selectedRestitution).toEqual(widget);
     expect(component.selectedMode).toEqual(component.mode.CONSULT);
   });
-  it('should selectRestitution with a widget', () => {
-    const catalogEntry = {
-      type: 'widget-type',
-      isCustom: false
-    } as CatalogEntry;
-    component.catalog = [{ id: 'widget-type', name: 'Widget', type: 'widget-type' } as unknown as Widget];
-    component.selectRestitution(catalogEntry);
-    expect(component.selectedRestitution).toBeNull();
-    expect(component.selectedMode).toEqual(component.mode.CATALOG);
-  });
-
-  it('should  selectedRestitution with a widget', () => {
-    const catalogEntry = {
-      type: 'widget-type',
-      isCustom: false
-    } as CatalogEntry;
-    component.catalog = [{ id: 'widget-type', name: 'Non-custom Widget', type: 'widget-type' } as unknown as Widget];
-    component.selectRestitution(catalogEntry);
+  it('should set selectedRestitution to null', () => {
+    let widget = { id: 'restitution-type', name: 'Custom Widget', type: 'restitution-type' } as unknown as Widget;
+    component.selectRestitution(widget);
+    component.closeRestitution();
     expect(component.selectedRestitution).toBeNull();
     expect(component.selectedMode).toEqual(component.mode.CATALOG);
   });
@@ -105,12 +70,5 @@ describe('PryRestitutionListComponent', () => {
 
     expect(component.selectedRestitution).toBeNull();
     expect(component.selectedMode).toEqual(ViewMode.CATALOG);
-  });
-
-  it('should  viewInDashboard is called', () => {
-    const widget: CatalogEntry = { icon: '', label: '', type: 'test', isCustom: false };
-    const spy = jest.spyOn(store, 'dispatch');
-    component.viewInDashboard(widget);
-    expect(spy).toHaveBeenCalledWith(DashboardActions.addWidgetToPresentation({ widgetType: widget.type }));
   });
 });

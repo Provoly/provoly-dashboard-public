@@ -24,4 +24,19 @@
       }
     }
   }
+
+  .o-accordion {
+    &__title {
+      border-top-color: themed($theme-map, 'color', 'primary', 300);
+      border-bottom-color: themed($theme-map, 'color', 'primary', 300);
+
+      &:before {
+        background-color: themed($theme-map, 'color', 'accent', 600);
+      }
+
+      &__btn pry-icon {
+        color: themed($theme-map, 'color', 'accent', 600);
+      }
+    }
+  }
 }

@@ -50,7 +50,7 @@
                 [height]="restitution.cover ? 600 : 128"
                 [width]="restitution.cover ? 600 : 128"
                 [class.is-full-width]="restitution.cover"
-                [src]="restitution.image | getSecuredImage: [600, 600] | async"
+                [src]="restitution.image | getSecuredImage : [600, 600] | async"
                 class="pointer"
                 (click)="selectRestitution(restitution)"
                 [pryTooltip]="infoTooltipEye"
