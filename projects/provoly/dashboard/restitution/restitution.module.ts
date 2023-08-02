@@ -49,7 +49,12 @@ import { PryRestitutionListItemComponent } from './components/restitution-list-i
     PryOverlayModule,
     PrySinceDateModule
   ],
-  exports: [PryRestitutionListComponent, PryRestitutionComponent, PryRestitutionCatalogComponent]
+  exports: [
+    PryRestitutionListComponent,
+    PryRestitutionComponent,
+    PryRestitutionCatalogComponent,
+    PryRestitutionListItemComponent
+  ]
 })
 export class PryRestitutionModule {
   constructor(private pryTranslateService: PryI18nService) {
