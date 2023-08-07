@@ -46,7 +46,7 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      name: new FormControl(null, [Validators.required, Validators.maxLength(30)]),
+      name: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
       description: new FormControl(null, [Validators.maxLength(200)]),
       cover: new FormControl(false)
     });
