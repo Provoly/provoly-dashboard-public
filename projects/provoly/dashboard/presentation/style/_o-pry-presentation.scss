@@ -2,6 +2,12 @@
 
 /* Organism - pry-presentation */
 
+.o-manifest-layout__toolbox {
+  div:first-child {
+    margin-left: auto;
+  }
+}
+
 .o-manifest-layout__content {
   height: 100%;
 
