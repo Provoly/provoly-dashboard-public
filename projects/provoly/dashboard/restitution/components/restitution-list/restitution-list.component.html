@@ -55,42 +55,36 @@
     <ng-container *ngIf="showTabs; else list">
       <div class="o-accordion" role="tablist" aria-multiselectable="false">
         <ng-container *ngFor="let category of categories">
-          <h2
-            class="o-accordion__title"
-            [class.is-active]="categoryOpened === category.label"
-            [style.--border-color]="category.color"
-          >
+          <h2 class="o-accordion__title" [class.is-active]="categoryOpened === category">
             <button
               type="button"
               class="o-accordion__title__btn"
-              [id]="'button_' + category.label"
+              [id]="'button_' + category"
               role="tab"
-              [attr.aria-controls]="'panel_' + category.label"
-              [attr.aria-selected]="categoryOpened === category.label"
-              [attr.aria-expanded]="categoryOpened === category.label"
-              (click)="toggle(category.label)"
+              [attr.aria-controls]="'panel_' + category"
+              [attr.aria-selected]="categoryOpened === category"
+              [attr.aria-expanded]="categoryOpened === category"
+              (click)="toggle(category)"
             >
               <span>
-                {{ '@pry.restitution.catalogTabs.' + category.label | i18n }}
-                ({{
-                  category.label === 'model' ? (nonCustomWidgets$ | async)?.length : (customWidgets$ | async)?.length
-                }})
+                {{ '@pry.restitution.catalogTabs.' + category | i18n }}
+                ({{ category === 'model' ? (nonCustomWidgets$ | async)?.length : (customWidgets$ | async)?.length }})
               </span>
               <pry-icon
                 [width]="15"
                 [height]="15"
-                [iconSvg]="categoryOpened === category.label ? 'chevron_top_rounded' : 'chevron_bottom_rounded'"
+                [iconSvg]="categoryOpened === category ? 'chevron_top_rounded' : 'chevron_bottom_rounded'"
               ></pry-icon>
             </button>
           </h2>
           <div
             class="o-accordion__panel"
             role="tabpanel"
-            [attr.aria-labelledby]="'button_' + category.label"
-            [id]="'panel_' + category.label"
-            [attr.aria-hidden]="categoryOpened !== category.label"
+            [attr.aria-labelledby]="'button_' + category"
+            [id]="'panel_' + category"
+            [attr.aria-hidden]="categoryOpened !== category"
           >
-            <ng-container *ngIf="categoryOpened === category.label">
+            <ng-container *ngIf="categoryOpened === category">
               <ul class="o-catalog__list" role="list" aria-live="polite">
                 <ng-container *ngIf="categoryOpened === 'model'">
                   <pry-catalog-item

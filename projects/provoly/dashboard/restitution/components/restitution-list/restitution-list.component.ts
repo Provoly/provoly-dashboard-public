@@ -19,6 +19,14 @@ import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 })
 export class PryRestitutionListComponent extends SubscriptionnerDirective {
   @Input() showTabs = true;
+  @Input()
+  get customModels(): string[] {
+    return this._customModels;
+  }
+  set customModels(models: string[]) {
+    this._customModels = ['detail', 'iframe', ...models];
+  }
+  private _customModels = ['detail', 'iframe'];
   search$ = new BehaviorSubject('');
   type$ = new BehaviorSubject<undefined | string>(undefined);
   filteredWidgets$: Observable<CatalogEntry[]>;
@@ -28,10 +36,7 @@ export class PryRestitutionListComponent extends SubscriptionnerDirective {
   selectedRestitution: Widget | null = null;
   mode = ViewMode;
   selectedMode: ViewMode = ViewMode.CATALOG;
-  categories = [
-    { label: 'model', color: '#FFC971' },
-    { label: 'noModel', color: '#4E92E4' }
-  ];
+  categories = ['model', 'noModel'];
   categoryOpened: string = '';
   PryVisibilityType = PryVisibilityType;
 
@@ -55,10 +60,18 @@ export class PryRestitutionListComponent extends SubscriptionnerDirective {
       )
     );
     this.nonCustomWidgets$ = this.filteredWidgets$.pipe(
-      map((widgets) => widgets.filter((widget) => this.toolboxManifestService.isModel(widget.type)))
+      map((widgets) =>
+        widgets.filter(
+          (widget) => this.toolboxManifestService.isModel(widget.type) || this.customModels.includes(widget.type)
+        )
+      )
     );
     this.customWidgets$ = this.filteredWidgets$.pipe(
-      map((widgets) => widgets.filter((widget) => !this.toolboxManifestService.isModel(widget.type)))
+      map((widgets) =>
+        widgets.filter(
+          (widget) => !this.toolboxManifestService.isModel(widget.type) && !this.customModels.includes(widget.type)
+        )
+      )
     );
   }
 
