@@ -1,6 +1,13 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { DashboardActions, Dataset, DataSourceSelectors, SubscriptionnerDirective, ViewMode } from '@provoly/dashboard';
+import {
+  DashboardActions,
+  Dataset,
+  DataSourceActions,
+  DataSourceSelectors,
+  SubscriptionnerDirective,
+  ViewMode
+} from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 
 @Component({
@@ -17,6 +24,7 @@ export class PryDatasetComponent extends SubscriptionnerDirective {
 
   constructor(protected store: Store<any>) {
     super();
+    this.store.dispatch(DataSourceActions.load());
     this.datasets$ = this.store.select(DataSourceSelectors.datasets);
     this.store.dispatch(DashboardActions.fetchManifestsList());
     this.filteredDatasets$ = combineLatest([this.datasets$, this.search$]).pipe(
