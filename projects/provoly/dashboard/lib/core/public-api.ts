@@ -107,7 +107,6 @@ export * from './i18n/i18n.service';
 export * from './i18n/fr.translations';
 export * from './i18n/en.translations';
 export * from './i18n/deep-merge.function';
-export * from './components/title-presentation/title-presentation.component';
 export * from './errors/http-error-interceptor.service';
 export * from './components/modalStatus/modalStatus.component';
 export * from './components/modalStatus/modalStatus.module';

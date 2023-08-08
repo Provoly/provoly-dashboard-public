@@ -1,6 +1,7 @@
 // noinspection AngularMissingOrInvalidDeclarationInModule
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+// @ts-ignore
 import { IMetadata } from '../../../../admin/store/admin-api.model';
 
 @Component({

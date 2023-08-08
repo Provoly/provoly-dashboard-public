@@ -11,10 +11,10 @@
               <pry-card-icon>
                 <pry-nq-color-selector [datasource]="nq" [disabled]="true"></pry-nq-color-selector>
                 <img
-                  [alt]="nq.id | translateId: { type: 'datasource', output: 'name' } | async"
+                  [alt]="nq.id | translateId : { type: 'datasource', output: 'name' } | async"
                   [height]="22"
                   [width]="22"
-                  [src]="nq.id | translateId: { type: 'datasource', output: 'icon' } | async"
+                  [src]="nq.id | translateId : { type: 'datasource', output: 'icon' } | async"
                 />
               </pry-card-icon>
 
@@ -227,11 +227,11 @@
       ((spottingWidget$ | async)?.length ?? 0 > 0
         ? '@pry.search.namedQuery.spotTitle'
         : '@pry.search.namedQuery.noSpot'
-      ) | i18n: { length: (spottingWidget$ | async)?.length }
+      ) | i18n : { length: (spottingWidget$ | async)?.length }
     }}
     <div *ngFor="let use of spottingWidget$ | async" class="spot-line">
       <pry-icon [width]="20" [height]="20" [iconSvg]="icons[use.type]"></pry-icon>
-      {{ '@pry.search.namedQuery.type.' + use.type | i18n }} - {{ '@pry.search.namedQuery.use' | i18n: use }}
+      {{ '@pry.search.namedQuery.type.' + use.type | i18n }} - {{ '@pry.search.namedQuery.use' | i18n : use }}
     </div>
   </div>
 </ng-template>

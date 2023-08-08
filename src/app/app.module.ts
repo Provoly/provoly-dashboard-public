@@ -58,7 +58,7 @@ import { SearchContainerComponent } from './search-container/search-container.co
     AppRoutingModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
-    StoreDevtoolsModule.instrument({ maxAge: 200 }),
+    StoreDevtoolsModule.instrument({maxAge: 200}),
     PrySearchModule,
     PryDashboardModule.forRoot(
       {
@@ -198,7 +198,7 @@ import { SearchContainerComponent } from './search-container/search-container.co
             sizes: WidgetLayout[],
             params: Partial<DashboardCellParams>
           ) => [
-            { ...widgetToPlace, layout: { ...widgetToPlace.layout, ...sizes[0], x: 1, y: 1 } },
+            { ...widgetToPlace, layout: { ...widgetToPlace.layout, ...sizes[0], x: 1, y: 1 }},
             {
               ...widgetToPlace,
               layout: {

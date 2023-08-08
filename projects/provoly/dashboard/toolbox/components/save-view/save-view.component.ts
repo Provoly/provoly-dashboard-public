@@ -154,7 +154,7 @@ export class SaveViewComponent extends SubscriptionnerDirective {
 
   isValid() {
     return (
-      this.currentManifest?.name && 0 < this.currentManifest?.name.length && this.currentManifest?.name.length <= 30
+      this.currentManifest?.name && 0 < this.currentManifest?.name.length && this.currentManifest?.name.length <= 50
     );
   }
 

@@ -18,7 +18,6 @@ import { PryModalStatusModule } from './components/modalStatus/modalStatus.modul
 import { PryNqColorSelectorComponent } from './components/nq-color-selector/nq-color-selector.component';
 import { PryOverlayModule } from './components/overlay/overlay.module';
 import { PrySelectImageComponent } from './components/select-image/select-image.component';
-import { PryTitlePresentationComponent } from './components/title-presentation/title-presentation.component';
 import { TranslateIdPipe } from './components/translate-id/translate-id.pipe';
 import { TranslateItemToSymbolPipe } from './components/translate-item-to-symbol/translate-item-to-symbol.pipe';
 import { PryUploadComponent } from './components/upload/upload.component';
@@ -56,8 +55,7 @@ import { searchFeatureKey, searchReducer } from './store/search/search.reducer';
     PryNqColorSelectorComponent,
     PryAccessDirective,
     PryUploadComponent,
-    PrySelectImageComponent,
-    PryTitlePresentationComponent
+    PrySelectImageComponent
   ],
   imports: [
     CommonModule,
@@ -98,8 +96,7 @@ import { searchFeatureKey, searchReducer } from './store/search/search.reducer';
     PryNqColorSelectorComponent,
     PryAccessDirective,
     PryUploadComponent,
-    PrySelectImageComponent,
-    PryTitlePresentationComponent
+    PrySelectImageComponent
   ]
 })
 export class PryCoreModule {
