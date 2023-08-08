@@ -34,6 +34,12 @@
   padding: toRem(4) toRem(4) toRem(20) toRem(4);
   overflow-y: auto;
 
+  .a-h3 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   &__item {
     display: flex;
     flex-direction: column;
