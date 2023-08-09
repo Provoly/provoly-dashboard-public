@@ -9,16 +9,11 @@
   padding-left: toRem(30);
 
   &__search {
-    margin-left: auto;
     position: relative;
 
-    .a-form-field {
-      padding-left: toRem(40);
-    }
-
-    pry-icon {
+    .a-icon {
       position: absolute;
-      left: 0.6875rem;
+      right: 0.6875rem;
       bottom: 0.5625rem;
       opacity: 0.5;
       pointer-events: none;
