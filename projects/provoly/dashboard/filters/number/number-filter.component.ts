@@ -14,7 +14,9 @@ export class NumberFilterComponent extends BaseFilterComponent {
   constructor(store: Store) {
     super(store);
     this.type = 'number';
-    this.value$.pipe(distinctUntilChanged(), debounceTime(500)).subscribe((value) => this.setFilter(value));
+    this.subscriptions.add(
+      this.value$.pipe(distinctUntilChanged(), debounceTime(500)).subscribe((value) => this.setFilter(value))
+    );
   }
 
   setFilter(value: string) {

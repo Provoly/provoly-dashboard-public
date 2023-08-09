@@ -1,10 +1,21 @@
-<div *ngIf="filter">
+<div *ngIf="filter" class="m-filter">
   <label class="a-label" for="{{ filter.name }}">{{ filter.name }}</label>
-  <input
-    [ngModel]="filter.value"
-    (ngModelChange)="this.value$.next($event)"
-    [id]="filter.name"
-    type="text"
-    class="a-form-field"
-  />
+  <div class="m-filter__wrapper">
+    <input
+      [ngModel]="filter.value"
+      (ngModelChange)="this.value$.next($event)"
+      [id]="filter.name"
+      type="text"
+      class="a-form-field"
+    />
+    <span
+      *ngIf="!!filter.value"
+      class="m-filter__clear-wrapper m-filter__clear-wrapper--text"
+      (click)="setFilter('')"
+      title="Clear all"
+    >
+      <span class="m-filter__clear">x</span>
+      <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+    </span>
+  </div>
 </div>

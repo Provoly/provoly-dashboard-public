@@ -23,19 +23,29 @@ export class DateFilterComponent extends BaseFilterComponent implements Subscrip
   ngOnInit() {
     if (this.filter?.hasDateRange) {
       this.date1 = (this.filter?.value ?? '').split(',')[0];
-      this.date2 = (this.filter?.value ?? '').split(',')[0];
+      this.date2 = (this.filter?.value ?? '').split(',')[1];
+      // subscription responsible for sending api requests
       this.subscriptions.add(
         combineLatest([
-          this.date1$.pipe(debounceTime(1800), startWith(this.date1)),
-          this.date2$.pipe(debounceTime(1800), startWith(this.date2))
+          this.date1$.pipe(debounceTime(1000), startWith(this.date1)),
+          this.date2$.pipe(debounceTime(1000), startWith(this.date2))
         ])
           .pipe(skipWhile(([date1, date2]) => date1 === this.date1 && date2 === this.date2))
           .subscribe(([date1, date2]) => {
             if (date1 && date2) {
               this.setFilter(date1 + ',' + date2);
-            } else {
+            } else if (!date1 && !date2) {
               this.setFilter('');
             }
+          })
+      );
+      // subscription responsible for updating the ui
+      this.subscriptions.add(
+        combineLatest([this.date1$.pipe(startWith(this.date1)), this.date2$.pipe(startWith(this.date2))])
+          .pipe(skipWhile(([date1, date2]) => date1 === this.date1 && date2 === this.date2))
+          .subscribe(([date1, date2]) => {
+            this.date1 = date1 ? date1 : '';
+            this.date2 = date2 ? date2 : '';
           })
       );
     } else {
@@ -47,5 +57,13 @@ export class DateFilterComponent extends BaseFilterComponent implements Subscrip
 
   setFilter(value: string) {
     super.updateFilter(value);
+  }
+
+  clearDate(index: number) {
+    if (index === 1) {
+      this.date1$.next('');
+    } else {
+      this.date2$.next('');
+    }
   }
 }

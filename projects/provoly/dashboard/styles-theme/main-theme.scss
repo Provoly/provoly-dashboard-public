@@ -14,6 +14,7 @@
 @use 'components-theme/a-toggle.theme' as *;
 @use 'components-theme/a-expandable-value.theme' as *;
 
+
 /* Atoms lib */
 @use 'components-theme/a-pry-select.theme' as *;
 
@@ -21,6 +22,7 @@
 @use 'components-theme/m-btn-sorttable.theme' as *;
 @use 'components-theme/m-choose-widget.theme' as *;
 @use 'components-theme/m-context-menu.theme' as *;
+@use 'components-theme/m-filter.theme' as *;
 @use 'components-theme/m-metadata-tag.theme' as *;
 @use 'components-theme/m-minus-plus.theme' as *;
 @use 'components-theme/m-nav-links.theme' as *;

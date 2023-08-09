@@ -1,0 +1,12 @@
+/* Theme - Atom a-icon */
+
+// colors that make the clear button look like the ng-select clear button
+.m-filter {
+  &__clear-wrapper {
+    color: #999999;
+
+    &:hover {
+      color: #D0021B
+    }
+  }
+}

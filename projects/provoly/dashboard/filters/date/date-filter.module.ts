@@ -7,15 +7,15 @@ import {
   BaseFilterModule,
   PryCoreModule,
   PryDatePickerModule,
-  PryI18nModule
+  PryI18nModule,
+  PryIconModule
 } from '@provoly/dashboard';
 import { DateFilterComponent } from './date-filter.component';
-import { PryDateFilterCssComponent } from './style/css.component';
 
 @NgModule({
-  declarations: [DateFilterComponent, PryDateFilterCssComponent],
-  imports: [CommonModule, FormsModule, OverlayModule, PryCoreModule, PryI18nModule, PryDatePickerModule],
-  exports: [DateFilterComponent, PryDateFilterCssComponent]
+  declarations: [DateFilterComponent],
+  imports: [CommonModule, FormsModule, OverlayModule, PryCoreModule, PryI18nModule, PryDatePickerModule, PryIconModule],
+  exports: [DateFilterComponent]
 })
 export class PryDateFilterModule extends BaseFilterModule {
   override getComponent() {

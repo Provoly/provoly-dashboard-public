@@ -1,32 +1,64 @@
-<pry-date-filter-css></pry-date-filter-css>
-<div *ngIf="filter">
+<div *ngIf="filter" class="m-filter">
   <div *ngIf="!filter?.hasDateRange; else dateRange">
     <label class="a-label" for="{{ filter.name }}">{{ filter.name }}</label>
-    <input
-      [ngModel]="filter.value"
-      (ngModelChange)="this.value$.next($event)"
-      type="date"
-      class="a-form-field"
-      [id]="filter.name"
-    />
+    <div class="m-filter__wrapper">
+      <input
+        [ngModel]="filter.value"
+        (ngModelChange)="this.value$.next($event)"
+        type="date"
+        class="a-form-field"
+        [id]="filter.name"
+      />
+      <span
+        *ngIf="!!filter.value"
+        class="m-filter__clear-wrapper m-filter__clear-wrapper--date"
+        (click)="setFilter('')"
+        title="Clear all"
+      >
+        <span class="m-filter__clear">x</span>
+        <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+      </span>
+    </div>
   </div>
   <ng-template #dateRange>
-    <label for="{{ filter.name }}">{{ filter.name }}</label>
-    <div class="date-range">
-      <input
-        [ngModel]="date1"
-        (ngModelChange)="date1$.next($event)"
-        type="date"
-        class="a-form-field"
-        [id]="filter.name + '1'"
-      />
-      <input
-        [ngModel]="date2"
-        (ngModelChange)="date2$.next($event)"
-        type="date"
-        class="a-form-field"
-        [id]="filter.name + '2'"
-      />
+    <label class="a-label" for="{{ filter.name }}">{{ filter.name }}</label>
+    <div class="m-filter__wrapper">
+      <div class="m-filter__wrapper">
+        <input
+          [ngModel]="date1"
+          (ngModelChange)="date1$.next($event)"
+          type="date"
+          class="a-form-field"
+          [id]="filter.name + '1'"
+        />
+        <span
+          *ngIf="!!date1"
+          class="m-filter__clear-wrapper m-filter__clear-wrapper--date"
+          (click)="clearDate(1)"
+          title="Clear all"
+        >
+          <span class="m-filter__clear">x</span>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </span>
+      </div>
+      <div class="m-filter__wrapper">
+        <input
+          [ngModel]="date2"
+          (ngModelChange)="date2$.next($event)"
+          type="date"
+          class="a-form-field"
+          [id]="filter.name + '2'"
+        />
+        <span
+          *ngIf="!!date2"
+          class="m-filter__clear-wrapper m-filter__clear-wrapper--date"
+          (click)="clearDate(2)"
+          title="Clear all"
+        >
+          <span class="m-filter__clear">x</span>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </span>
+      </div>
     </div>
   </ng-template>
 </div>

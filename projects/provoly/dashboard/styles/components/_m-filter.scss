@@ -1,5 +1,48 @@
 @use '../abstracts' as *;
 
+/* Molecule m-filter */
+
+.m-filter {
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .m-filter__wrapper:first-child {
+      margin-right: toRem(5);
+    }
+  }
+
+  &__clear-wrapper {
+    position: absolute;
+    bottom: toRem(8);
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+
+    &--number {
+      right: toRem(35);
+    }
+
+    &--text {
+      right: toRem(20);
+    }
+
+    &--date {
+      right: toRem(35);
+    }
+  }
+
+  &__clear {
+    display: inline-block;
+    font-size: toRem(18);
+    pointer-events: none;
+    font-weight: 400;
+    font-style: normal;
+    transform: scale(1, 0.75);
+  }
+}
+
 pry-filter-instanciator {
   display: flex;
   justify-content: space-around;
