@@ -1,6 +1,6 @@
 <div [pryTooltip]="infoTooltip" pryTooltipPosition="bottom" aria-describedby="infoTooltip_clearView">
   <button type="button" class="a-btn a-btn--secondary -size-md" (click)="clear()">
-    <ng-container *ngIf="label">{{ '@pry.toolbox.clear' | i18n }}</ng-container>
+    <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.clear' | i18n }}</ng-container>
   </button>
 </div>
 

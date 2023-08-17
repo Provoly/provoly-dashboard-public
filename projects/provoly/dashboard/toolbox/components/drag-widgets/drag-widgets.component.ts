@@ -1,15 +1,15 @@
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ConfigActions, ToolboxManifestService, ToolboxMenuService, WidgetDescriptionMenu } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
+import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
 @Component({
   selector: 'pry-drag-widgets',
   templateUrl: './drag-widgets.component.html'
 })
-export class DragWidgetsComponent {
-  @Input() labels = true;
+export class DragWidgetsComponent extends ToolboxActionComponent {
   mainOpened = false;
 
   readonly connectedPosition: ConnectedPosition = {
@@ -21,10 +21,11 @@ export class DragWidgetsComponent {
   menu$: Observable<WidgetDescriptionMenu[]>;
 
   constructor(
-    private store: Store,
+    store: Store,
     private toolboxManifestService: ToolboxManifestService,
     public toolboxMenuService: ToolboxMenuService
   ) {
+    super(store);
     this.store.dispatch(ConfigActions.loadWidgets());
     this.menu$ = this.toolboxMenuService.menuStructure$;
   }

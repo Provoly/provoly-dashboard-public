@@ -1,0 +1,14 @@
+<div [pryTooltip]="infoTooltip" pryTooltipPosition="bottom" aria-describedby="infoTooltip_launchTab">
+  <button type="button" class="a-btn a-btn--secondary -size-md" (click)="refresh()" [disabled]="datasetCount < 1">
+    <ng-container *ngIf="displayLabels">
+      {{ '@pry.toolbox.refresh' | i18n }}
+    </ng-container>
+    <pry-icon iconSvg="synchro"></pry-icon>
+  </button>
+</div>
+
+<ng-template #infoTooltip>
+  <div class="m-tooltip" role="tooltip" id="infoTooltip_launchTab">
+    <span class="m-tooltip__text">{{ '@pry.toolbox.refresh' | i18n }}</span>
+  </div>
+</ng-template>

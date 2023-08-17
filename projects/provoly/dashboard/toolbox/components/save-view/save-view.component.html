@@ -9,11 +9,11 @@
     <button
       type="button"
       #directiveSave
-      class="a-btn a-btn--secondary -size-md"
+      class="a-btn a-btn--primary -size-md"
       (click)="directSave()"
       [disabled]="!(savePresentationActive$ | async)"
     >
-      <ng-container *ngIf="label">{{ '@pry.toolbox.save' | i18n }} ({{ nbPages }})</ng-container>
+      <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.save' | i18n }} ({{ nbPages }})</ng-container>
     </button>
   </div>
 </ng-container>
@@ -33,7 +33,7 @@
       (click)="toggleSaveAs()"
       aria-haspopup="dialog"
     >
-      <ng-container *ngIf="label">{{ '@pry.toolbox.saveView' | i18n }} ({{ nbPages }})</ng-container>
+      <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.saveView' | i18n }} ({{ nbPages }})</ng-container>
     </button>
   </div>
 </ng-container>

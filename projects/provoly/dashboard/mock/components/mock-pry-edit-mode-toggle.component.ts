@@ -7,5 +7,5 @@ import { Component, Input } from '@angular/core';
   template: '<p>Mock Pry edit mode toggle</p>'
 })
 export class MockPryEditModeToggleComponent {
-  @Input() label = true;
+  @Input() labels = true;
 }

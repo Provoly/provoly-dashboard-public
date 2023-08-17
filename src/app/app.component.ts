@@ -23,6 +23,14 @@ export const SCROLLABLE_MODE = false;
 })
 export class AppComponent {
   scrollable = SCROLLABLE_MODE;
+  drodpownActions = [
+    { name: 'save_view_as', order: 1 },
+    { name: 'filter_settings', order: 2 },
+    { name: 'default_size', order: 3 },
+    { name: 'new_tab', order: 4 },
+    { name: 'automate_refresh', order: 5 },
+    { name: 'clear_view', order: 6 }
+  ];
 
   constructor(
     private store: Store<any>,

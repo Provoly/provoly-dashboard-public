@@ -11,7 +11,7 @@
       aria-controls="IDpanel"
       aria-expanded="false"
     >
-      <ng-container *ngIf="labels"
+      <ng-container *ngIf="displayLabels"
         ><span class="u-visually-hidden">{{ '@pry.toolbox.dragIndication' | i18n }}</span
         >{{ '@pry.toolbox.drag' | i18n }}
       </ng-container>
@@ -40,7 +40,7 @@
         <li class="o-draggable-menu__list__item">
           <button class="a-btn" aria-haspopup="true" aria-expanded="false">
             <pry-icon [iconSvg]="menu.icon"></pry-icon>
-            <ng-container *ngIf="labels">{{ menu.label | i18n }}</ng-container>
+            <ng-container *ngIf="displayLabels">{{ menu.label | i18n }}</ng-container>
           </button>
 
           <ul class="o-draggable-menu__list__submenu">
@@ -48,7 +48,7 @@
               <li class="o-draggable-menu__list__submenu__item">
                 <button class="a-btn" (dragstart)="dragStart($event, sub.type)" draggable="true">
                   <img [alt]="sub.label" [height]="24" [width]="24" [src]="sub.icon | getSecuredImage | async" />
-                  <ng-container *ngIf="labels">{{ sub.label | i18n }}</ng-container>
+                  <ng-container *ngIf="displayLabels">{{ sub.label | i18n }}</ng-container>
                 </button>
               </li>
             </ng-container>

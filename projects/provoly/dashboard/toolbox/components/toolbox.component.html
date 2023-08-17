@@ -1,56 +1,61 @@
 <ul class="m-actions-list" #input>
+  <ng-container *ngFor="let action of mainActions$ | async">
+    <ng-container *ngIf="action.visible">
+      <li class="m-actions-list__item" *pryAccess="action.access">
+        <pry-toolbox-action-instanciator
+          [action]="action"
+          [displayLabels]="displayLabels"
+        ></pry-toolbox-action-instanciator>
+      </li>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="dropdownActions.length > 0">
+    <li class="m-actions-list__item">
+      <button
+        type="button"
+        class="a-btn a-btn--primary -size-md"
+        cdkOverlayOrigin
+        #trigger="cdkOverlayOrigin"
+        id="widget_insert"
+        aria-controls="IDpanel"
+        aria-expanded="false"
+        (click)="openDropdown($event)"
+      >
+        <ng-container *ngIf="displayLabels"
+          ><span class="u-visually-hidden">{{ '@pry.toolbox.options' | i18n }}</span>
+          <span>{{ '@pry.toolbox.options' | i18n }}</span>
+          <pry-icon [width]="14" [height]="14" iconSvg="chevron_bottom"></pry-icon>
+        </ng-container>
+      </button>
+    </li>
+    <ng-template
+      cdkConnectedOverlay
+      [cdkConnectedOverlayOrigin]="trigger"
+      [cdkConnectedOverlayOpen]="isDropdownOpen"
+      [cdkConnectedOverlayHasBackdrop]="true"
+      cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+      (backdropClick)="isDropdownOpen = false"
+    >
+      <div class="o-draggable-menu" aria-labelledby="">
+        <ul class="o-draggable-menu__list">
+          <li
+            *ngFor="let action of dropdownActions$ | async"
+            class="o-draggable-menu__list__item"
+            [style.order]="getOrder(action.name)"
+          >
+            <pry-toolbox-action-instanciator
+              [action]="action"
+              [displayLabels]="displayLabels"
+            ></pry-toolbox-action-instanciator>
+          </li>
+        </ul>
+      </div>
+    </ng-template>
+  </ng-container>
   <li class="m-actions-list__item" *ngIf="isManualMode$ | async">
     <pry-edit-mode-toggle
       *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'edit_dashboard' }"
-      [label]="labels"
+      [displayLabels]="displayLabels"
     ></pry-edit-mode-toggle>
-  </li>
-  <li class="m-actions-list__item">
-    <pry-filter-settings
-      *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'default_size' }"
-      [style.z-index]="2"
-      [label]="labels"
-    ></pry-filter-settings>
-  </li>
-  <li class="m-actions-list__item">
-    <pry-launch-tab
-      *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'new_tab' }"
-      [label]="labels"
-    ></pry-launch-tab>
-  </li>
-  <li class="m-actions-list__item">
-    <pry-drag-widgets
-      *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'drag_widget' }"
-      [labels]="labels"
-    ></pry-drag-widgets>
-  </li>
-  <li class="m-actions-list__item">
-    <pry-save-view
-      *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'save_view' }"
-      [style.z-index]="2"
-      [label]="labels"
-    ></pry-save-view>
-  </li>
-  <li class="m-actions-list__item" *ngIf="hasInitialPresentation$ | async">
-    <pry-save-view
-      *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'save_view' }"
-      [style.z-index]="2"
-      [label]="labels"
-      mode="directSave"
-    ></pry-save-view>
-  </li>
-  <li class="m-actions-list__item">
-    <pry-clear-view
-      *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'clear_view' }"
-      [style.z-index]="2"
-      [label]="labels"
-    ></pry-clear-view>
-  </li>
-  <li class="m-actions-list__item is-screen-size-select">
-    <pry-select-grid-layout
-      *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'default_size' }"
-      [style.z-index]="2"
-      [label]="labels"
-    ></pry-select-grid-layout>
   </li>
 </ul>

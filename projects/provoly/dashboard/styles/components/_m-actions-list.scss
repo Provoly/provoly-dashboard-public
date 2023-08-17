@@ -6,6 +6,7 @@
   @extend %list-unstyled;
   display: flex;
   align-items: center;
+  gap: toRem(15);
 
   /* MODFIFIERS */
   &.-vertical {

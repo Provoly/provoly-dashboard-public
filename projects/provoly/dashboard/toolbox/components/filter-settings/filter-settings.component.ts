@@ -17,12 +17,12 @@ import {
   FilterFactoryService,
   GlobalManifest,
   MonoClassSearchPayload,
-  NamedQueryTypes,
-  SubscriptionnerDirective
+  NamedQueryTypes
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
 import { v4 } from 'uuid';
+import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
 export enum FilterSteps {
   LIST = 'list',
@@ -42,7 +42,7 @@ export interface Attribute {
   selector: 'pry-filter-settings',
   templateUrl: './filter-settings.component.html'
 })
-export class PryFilterSettingsComponent extends SubscriptionnerDirective {
+export class PryFilterSettingsComponent extends ToolboxActionComponent {
   @Input() label = true;
   @ViewChild('settings', { read: TemplateRef }) templateSettings!: TemplateRef<any>;
   overlayRefSettings?: OverlayRef;
@@ -78,13 +78,13 @@ export class PryFilterSettingsComponent extends SubscriptionnerDirective {
   @ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
 
   constructor(
-    private store: Store,
+    store: Store,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private filterFactoryService: FilterFactoryService,
     private injector: Injector
   ) {
-    super();
+    super(store);
     this.manifest$ = store.select(DashboardSelectors.globalManifest);
     this.subscriptions.add(
       this.manifest$.subscribe((manifest) => {

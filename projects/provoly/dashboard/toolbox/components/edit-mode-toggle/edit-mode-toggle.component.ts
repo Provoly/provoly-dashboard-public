@@ -1,17 +1,18 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { DashboardActions, DashboardSelectors } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
+import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
 @Component({
   selector: 'pry-edit-mode-toggle',
   templateUrl: './edit-mode-toggle.component.html'
 })
-export class EditModeToggleComponent {
-  @Input() label = true;
+export class EditModeToggleComponent extends ToolboxActionComponent {
   modeEdition$: Observable<boolean>;
 
-  constructor(private store: Store<any>) {
+  constructor(store: Store<any>) {
+    super(store);
     this.modeEdition$ = this.store.select(DashboardSelectors.dashboardEditionMode);
   }
 

@@ -10,18 +10,17 @@ import {
   ManifestDescription,
   PryVisibility,
   PryVisibilityType,
-  SubscriptionnerDirective,
   ViewMode
 } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
 import { v4 } from 'uuid';
+import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
 @Component({
   selector: 'pry-save-view',
   templateUrl: './save-view.component.html'
 })
-export class SaveViewComponent extends SubscriptionnerDirective {
-  @Input() label = true;
+export class SaveViewComponent extends ToolboxActionComponent {
   @Input() mode: 'saveAs' | 'directSave' = 'saveAs';
   @ViewChild('input') input!: ElementRef;
   @ViewChild('saveAs') saveAs!: ElementRef<HTMLButtonElement>;
@@ -45,12 +44,8 @@ export class SaveViewComponent extends SubscriptionnerDirective {
   hasInitial: boolean = false;
   ViewMode = ViewMode;
 
-  constructor(
-    private store: Store,
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef
-  ) {
-    super();
+  constructor(store: Store, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
+    super(store);
 
     this.subscriptions.add(
       this.store.select(DashboardSelectors.presentation).subscribe((presentation) => {

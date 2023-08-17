@@ -1,0 +1,30 @@
+@use '../../styles/abstracts/index' as *;
+
+.o-draggable-menu {
+  width: fit-content;
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+
+    &__item {
+      .a-btn {
+        border: none;
+        color: #40b688;
+        font-weight: 500;
+        margin-bottom: toRem(-5);
+      }
+
+      .a-btn:disabled {
+        color: #40b688;
+        opacity: 0.5;
+      }
+
+      .a-btn::before {
+        content: '\2192';
+        font-size: toRem(20);
+        padding-bottom: toRem(10);
+      }
+    }
+  }
+}

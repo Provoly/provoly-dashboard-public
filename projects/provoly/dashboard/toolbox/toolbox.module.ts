@@ -25,8 +25,14 @@ import { SaveViewComponent } from './components/save-view/save-view.component';
 import { SelectGridLayoutComponent } from './components/select-grid-layout/select-grid-layout.component';
 import { ToolboxComponent } from './components/toolbox.component';
 import { PrySelectGridLayoutCssComponent } from './style/css.component';
+import { ToolboxActionInstanciatorComponent } from './components/toolbox-action-instanciator/toolbox-action-instanciator.component';
+import { ToolboxActionComponent } from './components/toolbox-action/toolbox-action.component';
+import { RefreshDatasetsComponent } from './components/refresh-datasets/refresh-datasets.component';
+import { AutomateRefreshComponent } from './components/automate-refresh/automate-refresh.component';
 
 const components = [
+  ToolboxActionComponent,
+  ToolboxActionInstanciatorComponent,
   ClearViewComponent,
   DragWidgetsComponent,
   EditModeToggleComponent,
@@ -36,7 +42,9 @@ const components = [
   SelectGridLayoutComponent,
   ToolboxComponent,
   PrySelectGridLayoutCssComponent,
-  PryFilterSettingsComponent
+  PryFilterSettingsComponent,
+  RefreshDatasetsComponent,
+  AutomateRefreshComponent
 ];
 
 @NgModule({

@@ -1,24 +1,23 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Component, ElementRef, Input, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   ConfigActions,
   DashboardActions,
   DashboardGridLayout,
   DashboardSelectors,
-  SubscriptionnerDirective,
   WidgetPlacementUtils
 } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
 @Component({
   selector: 'pry-select-grid-layout',
   templateUrl: './select-grid-layout.component.html'
 })
-export class SelectGridLayoutComponent extends SubscriptionnerDirective {
-  @Input() label = true;
+export class SelectGridLayoutComponent extends ToolboxActionComponent {
   availableLayouts$: Observable<{ translation: any; value: any; image: string }[]>;
   chosenLayout: DashboardGridLayout = DashboardGridLayout.MANUAL;
   canDispatch = false;
@@ -30,12 +29,8 @@ export class SelectGridLayoutComponent extends SubscriptionnerDirective {
   modalOpened: boolean = false;
   overlayRef?: OverlayRef;
 
-  constructor(
-    private store: Store,
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef
-  ) {
-    super();
+  constructor(store: Store, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
+    super(store);
     this.subscriptions.add(
       this.store.select(DashboardSelectors.gridLayout).subscribe((layout) => (this.chosenLayout = layout))
     );
