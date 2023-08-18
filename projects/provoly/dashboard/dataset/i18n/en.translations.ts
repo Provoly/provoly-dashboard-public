@@ -7,6 +7,8 @@ export const enTranslations = {
       status: 'Status',
       data: 'Data',
       export: 'Export',
+      api: 'API',
+      returnToList: 'Back to catalog',
       version: {
         title: 'Title',
         INDEXING: 'Loading',
@@ -23,7 +25,6 @@ export const enTranslations = {
         LOADING: '',
         INDEXING: ''
       },
-      api: 'API',
       error: {
         title: 'List of errors',
         close: 'Close'

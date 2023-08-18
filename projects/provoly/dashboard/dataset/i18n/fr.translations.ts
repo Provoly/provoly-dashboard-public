@@ -9,7 +9,7 @@ export const frTranslations = {
       table: 'Tableau',
       export: 'Export',
       api: 'API',
-      returnToList: 'Retourner a la liste des jeux de donnees',
+      returnToList: 'Retour au catalogue',
       version: {
         title: 'Intitulé',
         INDEXING: 'En chargement',
