@@ -1,5 +1,12 @@
+<pry-toolbox-css></pry-toolbox-css>
 <div [pryTooltip]="infoTooltip" pryTooltipPosition="bottom" aria-describedby="infoTooltip_automateRefresh">
-  <button type="button" class="a-btn a-btn--secondary -size-md">
+  <button
+    type="button"
+    class="a-btn a-btn--secondary -size-md automate-btn"
+    cdkOverlayOrigin
+    #trigger="cdkOverlayOrigin"
+    (click)="toggleDatasourceList()"
+  >
     <ng-container *ngIf="displayLabels">
       {{ '@pry.toolbox.automateRefresh' | i18n }}
     </ng-container>
@@ -8,5 +15,44 @@
 <ng-template #infoTooltip>
   <div class="m-tooltip" role="tooltip" id="infoTooltip_automateRefresh">
     <span class="m-tooltip__text">{{ '@pry.toolbox.automateRefresh' | i18n }}</span>
+  </div>
+</ng-template>
+
+<ng-template #datasourceList>
+  <div *ngIf="datasources$ | async as dataSources">
+    <button
+      *ngIf="dataSources.length > 0"
+      class="refresh-line a-btn a-btn--icon-text -size-sm ds-0"
+      (click)="toggleRefreshRateList('all', 0)"
+      [class.-selected]="selectedDatasourceId === 'all'"
+    >
+      Tous
+    </button>
+    <button
+      *ngFor="let datasourceId of dataSources; let i = index"
+      class="refresh-line a-btn a-btn--icon-text -size-sm ds-{{ i + 1 }}"
+      (click)="toggleRefreshRateList(datasourceId, i + 1)"
+      [class.-selected]="selectedDatasourceId === datasourceId"
+    >
+      {{ datasourceId }}
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #refreshRateList>
+  <div>
+    <button
+      *ngFor="let rate of refreshRates"
+      class="refresh-line a-btn a-btn--icon-text -size-sm"
+      (click)="toggleRefreshRate(rate)"
+    >
+      <pry-icon
+        [width]="20"
+        [height]="20"
+        iconSvg="check"
+        *ngIf="(((refreshRates$ | async) ?? {})[selectedDatasourceId] ?? 0) === rate"
+      ></pry-icon>
+      {{ '@pry.search.namedQuery.refresh.' + rate | i18n }}
+    </button>
   </div>
 </ng-template>

@@ -12,19 +12,29 @@ let defaultManifest = '--no--default--manifest';
 
 module.exports = {
   list: () => {
-    return manifests.map((manifest, idx) => ({
-      id: manifest.id,
-      name: manifest.name,
-      description: manifest.description ?? `Description de ${manifest.name}`,
-      manifestUrl: `/dashboard/manifest/${manifest.name}`,
-      creationDate: manifest.creationDate,
-      modificationDate: manifest.modificationDate,
-      image: manifest.image ?? '/assets/svgs/default.svg',
-      visibility: manifest.visibility ?? { type: 'PRIVATE' },
-      default: manifest.id === defaultManifest,
-      owner: true,
-      cover: casual.boolean
-    }));
+    return manifests.map((manifest, idx) => {
+      return {
+        id: manifest.id,
+        name: manifest.name,
+        description: manifest.description ?? `Description de ${manifest.name}`,
+        manifestUrl: `/dashboard/manifest/${manifest.name}`,
+        creationDate: manifest.creationDate,
+        modificationDate: manifest.modificationDate,
+        image: manifest.image ?? '/assets/svgs/default.svg',
+        visibility: manifest.visibility ?? { type: 'PRIVATE' },
+        default: manifest.id === defaultManifest,
+        owner: true,
+        cover: casual.boolean,
+        datasource: [
+          ...new Set(
+            manifest.manifest.windows
+              .map((window) => window.widgets.map((widget) => widget.datasource))
+              .flat(3)
+              .filter((dataset) => !!dataset)
+          )
+        ]
+      };
+    });
   },
   get: (id) => {
     let manifestById = (manifests.find((manifest) => manifest.id === id) || {}).manifest;

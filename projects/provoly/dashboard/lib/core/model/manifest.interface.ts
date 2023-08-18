@@ -23,6 +23,7 @@ export interface ManifestDescription {
   default: boolean;
   visibility: PryVisibility;
   owner: boolean;
+  datasource: string[];
 }
 
 export interface WidgetLayout {

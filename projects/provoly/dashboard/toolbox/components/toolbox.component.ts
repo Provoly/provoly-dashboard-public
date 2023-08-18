@@ -54,9 +54,9 @@ export class ToolboxComponent implements OnInit {
     $event.stopPropagation();
   }
 
-  closeDropdown($event: Event) {
+  closeDropdown($event: Event | void) {
     this.isDropdownOpen = false;
-    $event.stopPropagation();
+    if ($event) $event.stopPropagation();
   }
 
   getOrder(actionName: string) {

@@ -1,0 +1,24 @@
+@use '../../styles/abstracts/index' as *;
+@use '../../styles/abstracts/functions' as *;
+@use '../../styles/abstracts/mixins' as *;
+
+.refresh-rs {
+  & > div {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  
+  button.refresh-line {
+    border-radius: 0;
+    padding: 0 toRem(15);
+
+    &:hover {
+      font-weight: normal;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    &.-selected {
+      background-color: rgba(0, 0, 0, 0.15);
+    }
+  }
+}

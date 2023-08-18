@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { SubscriptionnerDirective } from '@provoly/dashboard';
 
@@ -8,6 +8,7 @@ import { SubscriptionnerDirective } from '@provoly/dashboard';
 })
 export class ToolboxActionComponent extends SubscriptionnerDirective {
   @Input() displayLabels = true;
+  @Output() closeOptions = new EventEmitter<void>();
 
   constructor(protected store: Store) {
     super();

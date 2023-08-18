@@ -83,14 +83,7 @@ export class ManifestService {
             image,
             visibility,
             cover,
-            datasets: [
-              ...new Set(
-                manifest.windows
-                  .map((window) => window.widgets.map((widget) => widget.datasource))
-                  .flat(3)
-                  .filter((dataset) => !!dataset)
-              )
-            ]
+            datasource: ManifestService.getDatasourcesUsedByManifest(manifest)
           }
         )
       )
@@ -119,5 +112,16 @@ export class ManifestService {
         }
       })
     );
+  }
+
+  public static getDatasourcesUsedByManifest(manifest: GlobalManifest) {
+    return [
+      ...new Set(
+        manifest.windows
+          .map((window) => window.widgets.map((widget) => widget.datasource))
+          .flat(3)
+          .filter((dataset) => !!dataset)
+      )
+    ];
   }
 }

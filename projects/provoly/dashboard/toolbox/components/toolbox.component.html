@@ -16,7 +16,7 @@
         class="a-btn a-btn--primary -size-md"
         cdkOverlayOrigin
         #trigger="cdkOverlayOrigin"
-        id="widget_insert"
+        id="options"
         aria-controls="IDpanel"
         aria-expanded="false"
         (click)="openDropdown($event)"
@@ -46,6 +46,7 @@
             <pry-toolbox-action-instanciator
               [action]="action"
               [displayLabels]="displayLabels"
+              (closeOptions)="closeDropdown($event)"
             ></pry-toolbox-action-instanciator>
           </li>
         </ul>
