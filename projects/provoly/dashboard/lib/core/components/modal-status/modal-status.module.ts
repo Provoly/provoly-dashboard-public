@@ -5,7 +5,7 @@ import { frTranslations } from '../../../../dataset/i18n/fr.translations';
 import { PryI18nModule } from '../../i18n/i18n.module';
 import { PryI18nService } from '../../i18n/i18n.service';
 import { PryIconModule } from '../icon/icon.module';
-import { PryModalStatusComponent } from './modalStatus.component';
+import { PryModalStatusComponent } from './modal-status.component';
 
 @NgModule({
   imports: [CommonModule, PryIconModule, PryI18nModule],

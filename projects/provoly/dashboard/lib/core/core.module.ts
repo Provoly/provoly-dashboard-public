@@ -14,7 +14,7 @@ import { BaseToolboxActionComponent } from './components/base-toolbox-action/bas
 import { BaseToolboxComponent } from './components/base-toolbox/base-toolbox.component';
 import { GetSecuredImagePipe } from './components/get-secured-image/get-secured-image.pipe';
 import { PryIconModule } from './components/icon/icon.module';
-import { PryModalStatusModule } from './components/modalStatus/modalStatus.module';
+import { PryModalStatusModule } from './components/modal-status/modal-status.module';
 import { PryNqColorSelectorComponent } from './components/nq-color-selector/nq-color-selector.component';
 import { PryOverlayModule } from './components/overlay/overlay.module';
 import { PrySelectImageComponent } from './components/select-image/select-image.component';

@@ -13,21 +13,25 @@
   <table class="a-table">
     <thead>
       <tr>
+        <th>Type</th>
         <th>{{ '@pry.dataset.error.code' | i18n }}</th>
         <th>{{ '@pry.dataset.error.elements' | i18n }}</th>
         <th>{{ '@pry.dataset.error.message' | i18n }}</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let error of datasetErrors$ | async | slice : 0 : 5">
+      <tr *ngFor="let preview of datasetPreviews$ | async | slice : 0 : 5">
         <td>
-          {{ error.code }}
+          {{ preview.level }}
         </td>
         <td>
-          {{ error.line }}
+          {{ preview.extractErrorCode }}
         </td>
         <td>
-          {{ error.message }}
+          {{ preview.count }}
+        </td>
+        <td>
+          {{ preview.name }}
         </td>
       </tr>
     </tbody>

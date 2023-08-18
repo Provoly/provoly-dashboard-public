@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { PryVisibility } from '../../components/share/share.model';
-import { Dataset, DatasetError } from '../../model/dataset.interface';
+import { Dataset, DatasetMessage, DatasetPreview } from '../../model/dataset.interface';
 import { MonoClassSearchPayload } from '../../model/search-mono-class.model';
 import { FullTextSearchPayload, MultiClassSearchPayload } from '../../model/search-multi-class.model';
 import { DatasetVersion, NamedQuery } from './data-source.model';
@@ -111,10 +111,10 @@ export const DataSourceActions = {
         error: any;
       }>()
     ),
-    errors: {
-      getById: createAction('[Dataset.errors] get by id', props<{ id: string }>()),
-      getByIdSuccess: createAction('[Dataset.errors] get by id Success', props<{ errors: DatasetError[] }>()),
-      getByIdFailure: createAction('[Dataset.errors] get by id Failure', props<{ error: any }>())
+    previews: {
+      getById: createAction('[Dataset/Previews] get by id', props<{ id: string }>()),
+      getByIdSuccess: createAction('[Dataset/Previews] get by id Success', props<{ previews: DatasetPreview[] }>()),
+      getByIdFailure: createAction('[Dataset/Previews] get by id Failure', props<{ error: any }>())
     }
   }
 };

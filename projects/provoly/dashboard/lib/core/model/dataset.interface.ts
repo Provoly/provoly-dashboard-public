@@ -27,8 +27,16 @@ export enum GeoMetadata {
   OPACITY = '_geoOpacity'
 }
 
-export interface DatasetError {
-  code: string;
-  line: number;
-  message: string;
+export interface DatasetMessage {
+  extractErrorCode: string;
+  type: string;
+  name: string;
+  recordID: string;
+  datasetVersionId: string;
+}
+
+export interface DatasetPreview {
+  level: 'ERROR' | 'WARNING';
+  messages: DatasetMessage[];
+  count: number;
 }

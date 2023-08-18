@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { Dataset, DatasetError } from '../../model/dataset.interface';
+import { Dataset, DatasetPreview, } from '../../model/dataset.interface';
 import { DataSourceActions } from './data-source.actions';
 import { DatasetVersion, NamedQuery } from './data-source.model';
 
@@ -16,7 +16,7 @@ export interface DataSourceState {
   error?: Error;
   datasetVersions: DatasetVersion[];
   selectedDatasetVersion: DatasetVersion | null;
-  errors: DatasetError[];
+  previews: DatasetPreview[];
 }
 
 export const initialDataSourceState: DataSourceState = {
@@ -27,7 +27,7 @@ export const initialDataSourceState: DataSourceState = {
   datasets: [],
   datasetVersions: [],
   selectedDatasetVersion: null,
-  errors: []
+  previews: []
 };
 
 export const dataSourceReducer = createReducer(
@@ -114,19 +114,19 @@ export const dataSourceReducer = createReducer(
     ...state,
     loading: false
   })),
-  on(DataSourceActions.dataset.errors.getById, (state, action) => ({
+  on(DataSourceActions.dataset.previews.getById, (state, action) => ({
     ...state,
     loading: true
   })),
-  on(DataSourceActions.dataset.errors.getByIdSuccess, (state, action) => ({
+  on(DataSourceActions.dataset.previews.getByIdSuccess, (state, action) => ({
     ...state,
-    errors: action.errors,
+    previews: action.previews,
     loading: false
   })),
-  on(DataSourceActions.dataset.errors.getByIdFailure, (state, action) => ({
+  on(DataSourceActions.dataset.previews.getByIdFailure, (state, action) => ({
     ...state,
     error: action.error,
-    errors: [],
+    previews: [],
     loading: false
   }))
 );

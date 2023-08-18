@@ -874,7 +874,7 @@ router.on(['OPTIONS', 'PUT'], '/exec/job/instances/id/:id/start', (req, res, par
     makeResponseOk(res, undefined, 200);
   });
 });
-router.on(['GET'], '/ref/error/id/:id', (req, res, params) => {
+router.on(['GET'], '/ref/dataset-versions/id/:id/previews', (req, res, params) => {
   makeResponseOk(res, errorModule.generateErrors());
 });
 router.on(['OPTIONS', 'GET'], '/ref/datasets', (req, res, params) => {

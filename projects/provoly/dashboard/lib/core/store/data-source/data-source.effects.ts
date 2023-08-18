@@ -314,13 +314,13 @@ export class DataSourceEffects {
     )
   );
 
-  errorsGetById$ = createEffect(() =>
+  previewsGetById$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DataSourceActions.dataset.errors.getById),
+      ofType(DataSourceActions.dataset.previews.getById),
       switchMap((action: any) =>
-        this.dataSourceService.retrieveErrors(action.id).pipe(
-          map((errors) => DataSourceActions.dataset.errors.getByIdSuccess({ errors })),
-          catchError((error) => [DataSourceActions.dataset.errors.getByIdFailure({ error })])
+        this.dataSourceService.getPreviews(action.id).pipe(
+          map((previews) => DataSourceActions.dataset.previews.getByIdSuccess({ previews })),
+          catchError((error) => [DataSourceActions.dataset.previews.getByIdFailure({ error })])
         )
       )
     )

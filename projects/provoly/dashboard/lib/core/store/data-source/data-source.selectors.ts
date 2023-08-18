@@ -51,7 +51,7 @@ const matchingDatasetVersions = (datasetId: string) => {
 
   return memoizeDatasetVersions[datasetId] as MemoizedSelector<any, DatasetVersion[]>;
 };
-const datasetErrors = createSelector(selectFeature, (state) => state?.errors ?? []);
+const datasetPreviews = createSelector(selectFeature, (state) => state?.previews ?? []);
 
 export const DataSourceSelectors = {
   selectFeature,
@@ -73,5 +73,5 @@ export const DataSourceSelectors = {
   datasetVersions,
   selectedDatasetId,
   matchingDatasetVersions,
-  datasetErrors
+  datasetPreviews
 };
