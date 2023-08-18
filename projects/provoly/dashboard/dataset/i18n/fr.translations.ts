@@ -6,6 +6,7 @@ export const frTranslations = {
       date: 'Date',
       status: 'Statut',
       data: 'Données',
+      versionHistory: 'Historique de versions',
       table: 'Tableau',
       export: 'Export',
       api: 'API',

@@ -5,6 +5,7 @@ export const enTranslations = {
       search: 'Search',
       date: 'Date',
       status: 'Status',
+      versionHistory: 'Version history',
       data: 'Data',
       export: 'Export',
       api: 'API',

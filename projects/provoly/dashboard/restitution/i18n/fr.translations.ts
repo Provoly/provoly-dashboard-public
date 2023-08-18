@@ -40,7 +40,7 @@ export const frTranslations = {
       noDataSourceSelected: 'Aucune source de données sélectionnée',
       catalogTabs: {
         model: 'Modèles de restitution',
-        noModel: 'Resitutions du catalogue'
+        noModel: 'Restitutions du catalogue'
       }
     }
   }
