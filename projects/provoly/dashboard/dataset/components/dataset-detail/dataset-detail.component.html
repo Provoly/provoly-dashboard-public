@@ -38,62 +38,60 @@
     <div *ngIf="tab === 0" class="table-container">
       <pry-widget-instanciator [standalone]="true" [staticManifest]="widgetManifest"></pry-widget-instanciator>
     </div>
-    <div class="o-base-layout__content">
-      <div *ngIf="tab === 1">
-        <div class="table-container">
-          <table class="a-table">
-            <caption>
-              {{
-                '@pry.admin.dataset.title' | i18n
-              }},
-              {{
-                '@pry.action.sortableColumnHeader' | i18n
-              }}
-            </caption>
-            <thead>
-              <tr>
-                <th>{{ '@pry.dataset.version.title' | i18n }}</th>
-                <th>{{ '@pry.dataset.date' | i18n }}</th>
-                <th>{{ '@pry.dataset.status' | i18n }}</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let version of datasetVersions$ | async; let first = first">
+    <div *ngIf="tab === 1">
+      <div class="table-container">
+        <table class="a-table">
+          <caption>
+            {{
+              '@pry.admin.dataset.title' | i18n
+            }},
+            {{
+              '@pry.action.sortableColumnHeader' | i18n
+            }}
+          </caption>
+          <thead>
+            <tr>
+              <th>{{ '@pry.dataset.version.title' | i18n }}</th>
+              <th>{{ '@pry.dataset.date' | i18n }}</th>
+              <th>{{ '@pry.dataset.status' | i18n }}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let version of datasetVersions$ | async; let first = first">
+              <td>
+                {{ version.version }}
+                <pry-icon *ngIf="version.state === 'ACTIVE' && first" iconSvg="check" class="check"></pry-icon>
+              </td>
+              <td>{{ version.lastModified | sinceDate }}</td>
+              <td *ngIf="version.state === 'ACTIVE' && first; else notActive">
+                {{ '@pry.dataset.version.currentlyActive' | i18n }}
+                <div class="info-icon">
+                  <span class="info-text">i</span>
+                </div>
+              </td>
+              <ng-template #notActive>
                 <td>
-                  {{ version.version }}
-                  <pry-icon *ngIf="version.state === 'ACTIVE' && first" iconSvg="check" class="check"></pry-icon>
-                </td>
-                <td>{{ version.lastModified | sinceDate }}</td>
-                <td *ngIf="version.state === 'ACTIVE' && first; else notActive">
-                  {{ '@pry.dataset.version.currentlyActive' | i18n }}
+                  {{ '@pry.dataset.version.' + version.state | i18n }}
                   <div class="info-icon">
                     <span class="info-text">i</span>
                   </div>
                 </td>
-                <ng-template #notActive>
-                  <td>
-                    {{ '@pry.dataset.version.' + version.state | i18n }}
-                    <div class="info-icon">
-                      <span class="info-text">i</span>
-                    </div>
-                  </td>
-                </ng-template>
-                <td>
-                  <div *ngIf="version.state !== 'LOADING' && version.state !== 'INDEXING'">
-                    <button
-                      type="button"
-                      class="a-btn a-btn--primary a-btn--icon-text ng-star-inserted"
-                      (click)="handleButtonAction(version)"
-                    >
-                      {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+              </ng-template>
+              <td>
+                <div *ngIf="version.state !== 'LOADING' && version.state !== 'INDEXING'">
+                  <button
+                    type="button"
+                    class="a-btn a-btn--primary a-btn--icon-text ng-star-inserted"
+                    (click)="handleButtonAction(version)"
+                  >
+                    {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
