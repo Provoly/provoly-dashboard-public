@@ -37,7 +37,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: toRem(275);
+  min-width: toRem(275);
   max-height: toRem(665);
   border-radius: toRem(5);
 

@@ -28,10 +28,7 @@ export class PryNotificationContentComponent implements DoCheck, AfterViewInit {
   @ViewChild('button') button!: ElementRef<HTMLButtonElement>;
   left: number = 0;
 
-  constructor(
-    protected store: Store,
-    private router: Router
-  ) {
+  constructor(protected store: Store, private router: Router) {
     this.notifications$ = this.store
       .select(NotificationSelectors.list)
       .pipe(
