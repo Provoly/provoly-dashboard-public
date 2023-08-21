@@ -116,5 +116,37 @@
         "value": "100"
       }
     ]
+  },
+  {
+    "id": "c036bf25-757f-46de-9170-e4540df44c14",
+    "name": "Ponts",
+    "oClass": "123456789-69a6-474e-8f46-7cc8796ed151",
+    "type": "OPEN",
+    "metadata": [
+      {
+        "metadataDef": {
+          "id": "9d9aba2c-fc3a-44d7-a508-287ad2d8cbb0",
+          "name": "_geoNamespace",
+          "type": "string"
+        },
+        "value": "fntp"
+      },
+      {
+        "metadataDef": {
+          "id": "7ce12610-e031-403c-a6e0-b8147979f657",
+          "name": "_geoKey",
+          "type": "string"
+        },
+        "value": "pont"
+      },
+      {
+        "metadataDef": {
+          "id": "7ce12610-e031-403c-a6e0-b8147979f657",
+          "name": "_geoOpacity",
+          "type": "string"
+        },
+        "value": "100"
+      }
+    ]
   }
 ]

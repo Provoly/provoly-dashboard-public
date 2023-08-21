@@ -651,6 +651,7 @@ export class DashboardEffects {
         return DashboardActions.addWmsFeatures({
           features: json.features.map((feature: any) => {
             const result: any = {
+              id: feature.id,
               oClass: action.oClass,
               coordinates: action.coordinates,
               values: { properties: [] }

@@ -704,10 +704,14 @@ const internalReducer = createReducer<DashboardState>(
     ...state,
     wmsFeatures: []
   })),
-  on(DashboardActions.addWmsFeatures, (state, action) => ({
-    ...state,
-    wmsFeatures: [...state.wmsFeatures, ...action.features]
-  }))
+  on(DashboardActions.addWmsFeatures, (state, action) => {
+    const allFeatures = [...state.wmsFeatures, ...action.features];
+    const deDupedIds = [...new Set(allFeatures.map((feat) => feat.id))];
+    return {
+      ...state,
+      wmsFeatures: deDupedIds.map((id) => allFeatures.find((feat) => feat.id === id))
+    };
+  })
 );
 
 export function dashboardReducer(state: DashboardState, action: Action) {
