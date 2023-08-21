@@ -193,6 +193,7 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
       this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name }));
       this.store.dispatch(DashboardActions.setFilters({ filters: this.filters }));
       this.goBack();
+      this.close();
     }
   }
 

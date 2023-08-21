@@ -13,4 +13,8 @@ export class ToolboxActionComponent extends SubscriptionnerDirective {
   constructor(protected store: Store) {
     super();
   }
+
+  close(): void {
+    this.closeOptions.emit();
+  }
 }

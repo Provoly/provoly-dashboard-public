@@ -1,10 +1,10 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
-import { ConfigActions, DashboardActions, DashboardSelectors } from '@provoly/dashboard';
-import { map, Observable, take } from 'rxjs';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
+import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { ConfigActions, DashboardActions, DashboardSelectors } from '@provoly/dashboard';
+import { combineLatest, map, Observable, take } from 'rxjs';
+import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
 @Component({
   selector: 'pry-automate-refresh',
@@ -18,6 +18,7 @@ export class AutomateRefreshComponent extends ToolboxActionComponent implements 
   datasources$: Observable<string[]>;
   refreshRates$!: Observable<{ [p: string]: number }>;
   selectedDatasourceId: string = '';
+  allRefreshRate$!: Observable<number>;
 
   private overlayRefDatasourceList?: OverlayRef;
   private overlayRefRefreshList?: OverlayRef;
@@ -25,15 +26,17 @@ export class AutomateRefreshComponent extends ToolboxActionComponent implements 
   constructor(store: Store, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
     super(store);
 
-    this.datasources$ = this.store.select(DashboardSelectors.presentation).pipe(
-      map((presentation) => {
-        return presentation?.current?.datasource ?? [];
-      })
-    );
+    this.datasources$ = this.store.select(DashboardSelectors.manifestDatasources);
   }
 
   ngOnInit() {
     this.refreshRates$ = this.store.select(DashboardSelectors.refreshRates);
+
+    this.allRefreshRate$ = combineLatest([this.datasources$, this.refreshRates$]).pipe(
+      map(([datasources, refreshRates]) =>
+        datasources.map((ds) => refreshRates[ds] ?? 0).reduce((p, c) => (p === c ? c : -1))
+      )
+    );
   }
 
   toggleDatasourceList() {
@@ -108,7 +111,7 @@ export class AutomateRefreshComponent extends ToolboxActionComponent implements 
     setTimeout(() => {
       this.hide(this.overlayRefRefreshList);
       this.hide(this.overlayRefDatasourceList);
-      this.closeOptions.emit();
+      this.close();
     }, 100);
   }
 }

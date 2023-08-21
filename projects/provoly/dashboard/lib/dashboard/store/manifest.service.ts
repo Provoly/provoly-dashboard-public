@@ -114,13 +114,13 @@ export class ManifestService {
     );
   }
 
-  public static getDatasourcesUsedByManifest(manifest: GlobalManifest) {
+  public static getDatasourcesUsedByManifest(manifest: GlobalManifest): string[] {
     return [
-      ...new Set(
+      ...new Set<string>(
         manifest.windows
           .map((window) => window.widgets.map((widget) => widget.datasource))
           .flat(3)
-          .filter((dataset) => !!dataset)
+          .filter((dataset) => !!dataset) as string[]
       )
     ];
   }

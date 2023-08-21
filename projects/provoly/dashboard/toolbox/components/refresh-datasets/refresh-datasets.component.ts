@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 import { DashboardSelectors, GlobalManifest, ManifestService, SearchActions } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
+import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
 @Component({
   selector: 'pry-refresh-datasets',
@@ -41,5 +41,6 @@ export class RefreshDatasetsComponent extends ToolboxActionComponent {
         }
       });
     }
+    this.close();
   }
 }

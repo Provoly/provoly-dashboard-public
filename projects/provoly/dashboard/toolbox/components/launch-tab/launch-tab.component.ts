@@ -14,5 +14,6 @@ export class LaunchTabComponent extends ToolboxActionComponent {
 
   launchNewWindow() {
     this.store.dispatch(DashboardActions.createTab());
+    this.close();
   }
 }

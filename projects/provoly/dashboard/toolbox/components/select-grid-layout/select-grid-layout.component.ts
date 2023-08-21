@@ -90,6 +90,7 @@ export class SelectGridLayoutComponent extends ToolboxActionComponent {
       this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name }));
       this.openModal.nativeElement.focus();
       this.modalOpened = !this.modalOpened;
+      this.close();
     }
   }
 

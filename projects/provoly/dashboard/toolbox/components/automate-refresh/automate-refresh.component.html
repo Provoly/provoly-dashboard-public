@@ -6,6 +6,7 @@
     cdkOverlayOrigin
     #trigger="cdkOverlayOrigin"
     (click)="toggleDatasourceList()"
+    [disabled]="((datasources$ | async)?.length ?? 0) < 1"
   >
     <ng-container *ngIf="displayLabels">
       {{ '@pry.toolbox.automateRefresh' | i18n }}
@@ -34,7 +35,7 @@
       (click)="toggleRefreshRateList(datasourceId, i + 1)"
       [class.-selected]="selectedDatasourceId === datasourceId"
     >
-      {{ datasourceId }}
+      {{ datasourceId | translateId : { type: 'datasource', output: 'name' } | async }}
     </button>
   </div>
 </ng-template>
@@ -50,7 +51,11 @@
         [width]="20"
         [height]="20"
         iconSvg="check"
-        *ngIf="(((refreshRates$ | async) ?? {})[selectedDatasourceId] ?? 0) === rate"
+        *ngIf="
+          (selectedDatasourceId === 'all'
+            ? (allRefreshRate$ | async)
+            : ((refreshRates$ | async) ?? {})[selectedDatasourceId] ?? 0) === rate
+        "
       ></pry-icon>
       {{ '@pry.search.namedQuery.refresh.' + rate | i18n }}
     </button>

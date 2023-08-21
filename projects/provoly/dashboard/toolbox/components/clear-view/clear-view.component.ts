@@ -14,5 +14,6 @@ export class ClearViewComponent extends ToolboxActionComponent {
 
   clear() {
     this.store.dispatch(DashboardActions.clearManifest());
+    this.close();
   }
 }

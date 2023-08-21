@@ -119,6 +119,7 @@ export class SaveViewComponent extends ToolboxActionComponent {
     if (this.saveAsOpened) {
       this.toggleSaveAs();
     }
+    this.close();
   }
 
   changeVisibility($event: PryVisibility) {
