@@ -121,7 +121,7 @@ router.on('POST', '/ref/model/class', (req, res, params) => {
   });
 });
 
-router.on(['OPTIONS', 'DELETE'], '/ref/model/class/id/:id/attribute/:attrId', (req, res, params) => {
+router.on(['OPTIONS', 'DELETE'], '/ref/model/class/id/:id/attribute/id/:attrId', (req, res, params) => {
   let classIndex = dataModule.classes.findIndex((obj) => obj.id === params.id);
   if (classIndex !== -1) {
     let attributeIndex =

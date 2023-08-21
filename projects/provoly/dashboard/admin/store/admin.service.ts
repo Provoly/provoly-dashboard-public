@@ -23,10 +23,7 @@ import { AbacRule } from '../components/admin-abac-rules/store/abac-rules.model'
   providedIn: 'root'
 })
 export class AdminService {
-  constructor(
-    private httpClient: HttpClient,
-    private store: Store<any>
-  ) {}
+  constructor(private httpClient: HttpClient, private store: Store<any>) {}
 
   getPredicates(): Observable<Predicate[]> {
     return this.store
@@ -155,7 +152,7 @@ export class AdminService {
       .select(ConfigSelectors.refUrl)
       .pipe(
         mergeMap((url) =>
-          this.httpClient.delete<void>(encodeURI(`${url}/model/class/id/${classId}/attribute/${attrId}`))
+          this.httpClient.delete<void>(encodeURI(`${url}/model/class/id/${classId}/attribute/id/${attrId}`))
         )
       );
   }
