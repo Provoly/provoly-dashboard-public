@@ -170,13 +170,13 @@ export class SaveViewComponent extends ToolboxActionComponent {
       this.overlayRefDirectSaveType.backdropClick().subscribe((_) => this.toggleDirectSaveType());
       this.overlayRefDirectSaveType.attach(new TemplatePortal(this.templateDirectSaveType, this.viewContainerRef));
       setTimeout(() => {
-        this.firstFocusdirective.nativeElement.focus();
+        this.firstFocusdirective?.nativeElement.focus();
       }, 10);
     } else {
       this.overlayRefDirectSaveType?.dispose();
       this.overlayRefDirectSaveType = undefined;
       this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name }));
-      this.directiveSave.nativeElement.focus();
+      this.directiveSave?.nativeElement.focus();
     }
   }
 
