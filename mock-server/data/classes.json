@@ -169,6 +169,13 @@
         "multiValued": false
       },
       {
+        "id": "f70d8bcd-9580-4575-a4cd-b42f415aee38",
+        "name": "Num_Acc",
+        "field": "178c19cf-702c-4a0a-a218-cca5c0eef7d7",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
+        "multiValued": false
+      },
+      {
         "id": "aaaaaaaa-9580-4575-a4cd-b42f415aee38",
         "name": "image_raw",
         "field": "aaaaaaaa-dd45-4130-8668-7ecf77a00009",
