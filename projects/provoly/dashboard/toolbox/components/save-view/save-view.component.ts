@@ -77,6 +77,7 @@ export class SaveViewComponent extends ToolboxActionComponent {
       this.overlayRefSaveAs = undefined;
       this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name }));
       this.saveAs.nativeElement.focus();
+      this.clearForm();
     }
   }
 
@@ -215,5 +216,9 @@ export class SaveViewComponent extends ToolboxActionComponent {
     if (!this.currentManifest?.name) {
       this.focusCrossElement();
     }
+  }
+
+  clearForm() {
+    this.currentManifest = { name: '', image: '', description: '', cover: false } as ManifestDescription;
   }
 }
