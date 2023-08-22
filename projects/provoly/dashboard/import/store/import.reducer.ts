@@ -6,7 +6,7 @@ export const importFeatureKey = '@pry/import';
 export interface ImportState {
   loading: boolean;
   errors: { [p: string]: ImportError[] } | null;
-  numberOfLines: number;
+  numberOfLines: number | undefined;
 }
 
 export const initialImportState: ImportState = {

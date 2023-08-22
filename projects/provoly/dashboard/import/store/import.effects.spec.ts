@@ -59,7 +59,7 @@ describe('ImportEffects', () => {
       );
 
       actions$ = hot('--a-', {
-        a: ImportActions.upload({ file: fakeFile, dataset: 'fakedatasetid' })
+        a: ImportActions.upload({ file: fakeFile, dataset: 'fakedatasetid', fileType: 'csv' })
       });
 
       const expected$ = hot('--a-', {
@@ -85,7 +85,55 @@ describe('ImportEffects', () => {
       );
 
       actions$ = hot('--a-', {
-        a: ImportActions.upload({ file: fakeFile, dataset: 'fakedatasetid' })
+        a: ImportActions.upload({ file: fakeFile, dataset: 'fakedatasetid', fileType: 'csv' })
+      });
+
+      const expected$ = hot('--a-', {
+        a: ImportActions.uploadFailure({ errors: errorResponse.error.itemErrors })
+      });
+      expect(effects.upload$).toBeObservable(expected$);
+      expect(effects.upload$).toSatisfyOnFlush(() => {
+        expect(getSpy).toHaveBeenCalled();
+      });
+    });
+    it('should call upload success for .shp file type', () => {
+      const fakeFile = new File([''], 'fakefilename.zip', { type: 'application/shp' });
+      const getSpy = jest.spyOn(importService, 'upload');
+      store.setState(
+        buildState({
+          ...initialState
+        })
+      );
+
+      actions$ = hot('--a-', {
+        a: ImportActions.upload({ file: fakeFile, dataset: 'fakedatasetid', fileType: 'zip' })
+      });
+
+      const expected$ = hot('--a-', {
+        a: ImportActions.uploadSuccess({ numberOfLines: 123 })
+      });
+      expect(effects.upload$).toBeObservable(expected$);
+      expect(effects.upload$).toSatisfyOnFlush(() => {
+        expect(getSpy).toHaveBeenCalled();
+      });
+    });
+
+    it('should call upload failure for .shp file type', () => {
+      const fakeFile = new File([''], 'fakefilename.zip', { type: 'application/shp' });
+      const errorResponse = new HttpErrorResponse({
+        error: { resume: null, itemErrors: [] },
+        status: 400,
+        statusText: 'Bad Request'
+      });
+      const getSpy = jest.spyOn(importService, 'upload').mockReturnValue(throwError(() => errorResponse));
+      store.setState(
+        buildState({
+          ...initialState
+        })
+      );
+
+      actions$ = hot('--a-', {
+        a: ImportActions.upload({ file: fakeFile, dataset: 'fakedatasetid', fileType: 'zip' })
       });
 
       const expected$ = hot('--a-', {

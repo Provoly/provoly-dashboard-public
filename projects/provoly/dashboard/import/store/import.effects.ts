@@ -12,10 +12,12 @@ export class ImportEffects {
     this.actions$.pipe(
       ofType(ImportActions.upload),
       mergeMap((action) =>
-        this.service.upload(action.file, action.dataset).pipe(
-          map((data) => ImportActions.uploadSuccess({ numberOfLines: data.numberOfLines })),
+        this.service.upload(action.file, action.dataset, action.fileType).pipe(
+          map((data) => {
+            return ImportActions.uploadSuccess({ numberOfLines: data.numberOfLines });
+          }),
           catchError((error: HttpErrorResponse) => {
-            if (error.status === 400) {
+            if (error.status === 400 || error.status === 500) {
               return [ImportActions.uploadFailure({ errors: error.error.itemErrors })];
             }
             this.snackbar.open({

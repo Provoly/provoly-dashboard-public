@@ -19,11 +19,25 @@ describe('Import Reducer', () => {
     });
   });
 
-  describe('upload action', () => {
+  describe('upload action with csv', () => {
     it('should change the selected id value', () => {
       const fakeFile = new File([''], 'fakefilename.csv', { type: 'text/csv' });
-      const result = importReducer(initialState, ImportActions.upload({ file: fakeFile, dataset: 'fakedatasetid' }));
+      const result = importReducer(
+        initialState,
+        ImportActions.upload({ file: fakeFile, dataset: 'fakedatasetid', fileType: 'csv' })
+      );
 
+      expect(result).toEqual({ ...initialState, loading: true });
+    });
+  });
+
+  describe('upload action with shapefile', () => {
+    it('should change the selected id value', () => {
+      const fakeFile = new File([''], 'fakefilename.zip', { type: 'application/shp' });
+      const result = importReducer(
+        initialState,
+        ImportActions.upload({ file: fakeFile, dataset: 'fakedatasetid', fileType: 'zip' })
+      );
       expect(result).toEqual({ ...initialState, loading: true });
     });
   });

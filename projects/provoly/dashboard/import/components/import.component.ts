@@ -5,6 +5,8 @@ import { map, Observable } from 'rxjs';
 import { ImportActions, ImportError } from '../store/import.actions';
 import { ImportSelectors } from '../store/import.selectors';
 
+type FileExtension = 'csv' | 'zip';
+
 @Component({
   selector: 'pry-import',
   templateUrl: './import.component.html'
@@ -13,20 +15,27 @@ export class PryImportComponent {
   datasets$: Observable<Dataset[]>;
   file?: File;
   datasetSelected?: string;
-  numberOfLine$: Observable<number>;
+  selectedFileType: FileExtension = 'csv';
+  uploadShapefile$: Observable<boolean>;
+  numberOfLine$: Observable<number | undefined>;
   errors$: Observable<{ [p: string | number]: ImportError[] } | null>;
   errorCount$: Observable<number | null>;
-  fileTypes: { label: string; value: string }[] = [
+  fileTypes: { label: string; value: FileExtension }[] = [
     {
       label: 'Csv',
       value: 'csv'
+    },
+    {
+      label: 'Shapefile',
+      value: 'zip'
     }
   ];
 
-  constructor(
-    private store: Store,
-    private translateService: PryI18nService
-  ) {
+  fileExtension: Record<FileExtension, string> = {
+    csv: '.csv',
+    zip: '.zip'
+  };
+  constructor(private store: Store) {
     store.dispatch(DataSourceActions.dataset.loadDataset());
 
     this.datasets$ = store
@@ -38,6 +47,7 @@ export class PryImportComponent {
             .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
         )
       );
+    this.uploadShapefile$ = store.select(ImportSelectors.upload);
     this.numberOfLine$ = store.select(ImportSelectors.numberOfLines);
     this.errors$ = store.select(ImportSelectors.errors);
     this.errorCount$ = this.errors$.pipe(
@@ -63,8 +73,10 @@ export class PryImportComponent {
   }
 
   submit() {
-    if (this.file && this.datasetSelected) {
-      this.store.dispatch(ImportActions.upload({ file: this.file, dataset: this.datasetSelected }));
+    if (this.file && this.datasetSelected && this.selectedFileType) {
+      this.store.dispatch(
+        ImportActions.upload({ file: this.file, dataset: this.datasetSelected, fileType: this.selectedFileType })
+      );
       this.file = undefined;
     }
   }
@@ -80,5 +92,14 @@ export class PryImportComponent {
       return `${(size / 1000000).toFixed(1)} MB`;
     }
     return `${size} bytes`;
+  }
+
+  onFileTypeChange(fileType: FileExtension) {
+    this.selectedFileType = fileType;
+  }
+
+  getDatasetName(selectedId: string | undefined, datasets: Dataset[]): string | undefined {
+    const selectedDataset = datasets.find((dataset) => dataset.id === selectedId);
+    return selectedDataset ? selectedDataset.name : undefined;
   }
 }

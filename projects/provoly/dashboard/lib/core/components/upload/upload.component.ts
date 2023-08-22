@@ -48,7 +48,7 @@ export class PryUploadComponent {
           );
           this.asyncEmit(files[0]);
           break;
-        case 'csv':
+        case 'files':
           this.uploaded.emit(files[0].name);
           this.uploadedFile.emit(files[0]);
           break;

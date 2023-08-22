@@ -921,10 +921,10 @@ router.on(['OPTIONS', 'DELETE'], '/ref/notification/me/id/:id', (req, res, param
 router.on(['OPTIONS', 'DELETE'], '/ref/notification/me', (req, res, params) => {
   makeResponseOk(res, {}, 204);
 });
-router.on(['OPTIONS'], '/data/imports/csv/datasets/id/:id', (req, res, params) => {
+router.on(['OPTIONS'], '/data/imports/dataset/id/:id', (req, res, params) => {
   makeResponseOk(res, {}, 204);
 });
-router.on(['POST'], '/data/imports/csv/datasets/id/:id', (req, res, params) => {
+router.on(['POST'], '/data/imports/dataset/id/:id', (req, res, params) => {
   const code = casual.coin_flip ? 200 : 400;
   makeResponseOk(res, dataModule.importData(params.file, params.dataset, code), code);
 });

@@ -12,12 +12,15 @@
             [items]="fileTypes"
             [itemsAsOption]="true"
             [ngModel]="fileTypes[0].value"
-            [disabled]="true"
+            [disabled]="false"
+            (ngModelChange)="onFileTypeChange($event)"
             bindValue="value"
             bindLabel="label"
           ></pry-select>
         </div>
-        <label class="a-h3" for="upload_input">{{ '@pry.import.uploadTitle' | i18n }}</label>
+        <label class="a-h3" for="upload_input">
+          {{ ('@pry.import.uploadTitle' | i18n) + selectedFileType }}
+        </label>
         <div class="o-file-input">
           <div *ngIf="file" class="o-import__container__input__file">
             <pry-icon iconSvg="download"></pry-icon>
@@ -26,8 +29,8 @@
           </div>
           <pry-upload
             id="upload_input"
-            accept=".csv"
-            mode="csv"
+            [accept]="fileExtension[selectedFileType]"
+            mode="files"
             (uploadedFile)="uploadedChange($event)"
             labelTranslate="@pry.import.selectFile"
           ></pry-upload>
@@ -60,6 +63,13 @@
         </div>
       </div>
     </ng-container>
+    <ng-container *ngIf="(uploadShapefile$ | async) && (datasets$ | async) as datasets">
+      <div class="o-import__result">
+        <h1>
+          {{ '@pry.import.consultDataset' | i18n : { parameter: getDatasetName(datasetSelected, datasets) } }}
+        </h1>
+      </div>
+    </ng-container>
   </div>
 </div>
 <ng-template #errors>
@@ -67,16 +77,16 @@
     <h2 class="a-h2">{{ '@pry.import.errorTitle' | i18n }}</h2>
     <div>
       <h3>{{ errorCount$ | async }} {{ '@pry.import.errors' | i18n }}</h3>
-      <div *ngFor="let error of errors | keyvalue: sortObjectEntries" class="o-import__result__error">
+      <div *ngFor="let error of errors | keyvalue : sortObjectEntries" class="o-import__result__error">
         <p *ngIf="error.key === '0'; else withLine">
           {{ '@pry.import.withoutLine' | i18n }}
         </p>
         <ng-template #withLine>
-          {{ '@pry.import.line' | i18n: { line: error.key } }}
+          {{ '@pry.import.line' | i18n : { line: error.key } }}
         </ng-template>
         <ul *ngIf="error.value">
           <li *ngFor="let lineError of error.value">
-            {{ '@pry.import.code.' + lineError.code | i18n: lineError.params }}
+            {{ '@pry.import.code.' + lineError.code | i18n : lineError.params }}
           </li>
         </ul>
       </div>

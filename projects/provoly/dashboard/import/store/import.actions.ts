@@ -15,7 +15,7 @@ export interface ImportResponse {
 }
 
 export const ImportActions = {
-  upload: createAction('[Import] import data', props<{ file: File; dataset: string }>()),
-  uploadSuccess: createAction('[Import] import data successful', props<{ numberOfLines: number }>()),
+  upload: createAction('[Import] import data', props<{ file: File; dataset: string; fileType: string }>()),
+  uploadSuccess: createAction('[Import] import data successful', props<{ numberOfLines?: number }>()),
   uploadFailure: createAction('[Import] import data failure', props<{ errors: any }>())
 };
