@@ -3,8 +3,6 @@
 /* Organism - pry-dataset-detail */
 
 pry-dataset-detail {
-  padding-left: 5rem;
-  padding-right: 5rem;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -16,6 +14,8 @@ pry-dataset-detail {
     .table-container {
       max-height: 48vh;
       overflow-y: auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
 
       table {
         height: 100%;
@@ -52,4 +52,13 @@ pry-dataset-detail {
 .info-text {
   font-size: 14px;
   color: #6c6c6c;
+}
+
+.o-tabs {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.o-manifest-layout__content {
+  padding-left: 2rem;
 }
