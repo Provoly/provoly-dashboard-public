@@ -27,23 +27,23 @@ import {
 } from '@provoly/dashboard';
 import { PryCardModule } from '@provoly/dashboard/components/card';
 import { PryExpandPanelModule } from '@provoly/dashboard/components/expand-panel';
+import { PryDatasetModule } from '@provoly/dashboard/dataset';
 import { PryImportModule } from '@provoly/dashboard/import';
 import { PryNotificationModule } from '@provoly/dashboard/notification';
 import { PryPipelineModule } from '@provoly/dashboard/pipeline';
 import { PryPipelineFilterModule } from '@provoly/dashboard/pipeline-components/filter';
 import { PryPipelineInputDatasetModule } from '@provoly/dashboard/pipeline-components/input-datasource';
 import { PryPipelineNoopModule } from '@provoly/dashboard/pipeline-components/noop';
-import { PryPipelineOutputDatasetModule } from '@provoly/dashboard/pipeline-components/output-dataset/output-dataset.module';
+import { PryPipelineOutputDatasetModule } from '@provoly/dashboard/pipeline-components/output-dataset';
 import { PryPipelineSubgraphModule } from '@provoly/dashboard/pipeline-components/subgraph';
 import { PryPresentationModule } from '@provoly/dashboard/presentation';
+import { PryRestitutionModule } from '@provoly/dashboard/restitution';
 import { PrySearchModule } from '@provoly/dashboard/search';
 import { PryToolboxModule } from '@provoly/dashboard/toolbox';
 import {
   PryAggregationService,
   PryBackendAggregationService
 } from '@provoly/dashboard/widgets/widget-aggregated-chart';
-import { PryDatasetModule } from '../../projects/provoly/dashboard/dataset';
-import { PryRestitutionModule } from '../../projects/provoly/dashboard/restitution';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './auth.interceptor';
@@ -58,7 +58,7 @@ import { SearchContainerComponent } from './search-container/search-container.co
     AppRoutingModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
-    StoreDevtoolsModule.instrument({maxAge: 200}),
+    StoreDevtoolsModule.instrument({ maxAge: 200 }),
     PrySearchModule,
     PryDashboardModule.forRoot(
       {
@@ -198,7 +198,7 @@ import { SearchContainerComponent } from './search-container/search-container.co
             sizes: WidgetLayout[],
             params: Partial<DashboardCellParams>
           ) => [
-            { ...widgetToPlace, layout: { ...widgetToPlace.layout, ...sizes[0], x: 1, y: 1 }},
+            { ...widgetToPlace, layout: { ...widgetToPlace.layout, ...sizes[0], x: 1, y: 1 } },
             {
               ...widgetToPlace,
               layout: {

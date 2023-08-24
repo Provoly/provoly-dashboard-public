@@ -20,3 +20,92 @@ import { Buffer } from 'buffer';
 Dans la librairie, nous nous efforçons de rajouter des fonctionnalités multi-écran, le routage étant inclus dans celui-ci.
 En conséquence, c’est généralement une mauvaise idée de charger un manifest sur une route particulière, car cette action a de fortes chances d’interférer avec la construction des manifests.
 Utiliser le chargement de manifests prévu dans la lib est une meilleure idée.
+
+=== Problème avec l'ajout de l'import du module
+
+Il faut ajouter le module en question à l’application. Il faut aussi lui
+donner le set de widgets à utiliser. Si on veut les lazy loader, il
+faudra alors un peu plus de code, comme on peut le voir ci-dessous (en
+mode "`load`", par opposition au mode "`component`"), ou alors utiliser
+la fonction `+widgetLoader+` fournie par la librairie.
+
+Il est aussi possible de paramétrer les tooltips. Il existe un tooltip
+par défaut que l’on importe comme l’exemple ci-dessous grâce à la
+fonction `+tooltipLoader+`.
+
+De la même façon, il est possible de paramétrer des types de filtres.
+La librairie fournit 3 types: Texte, Liste et Date importable avec la fonction `+filterLoader+`
+de la même façon que les tooltips. Ces types de filtres permettront ensuite de pouvoir
+ajouter des filtres sur ses présentations.
+
+[source,js]
+----
+const loadWidgetMap = async (injector: Injector) => {
+    const { WidgetMapModule } = await import('@provoly/dashboard/widgets/widget-map');
+    const moduleRef = createNgModuleRef(WidgetMapModule, injector);
+    return moduleRef.instance.getComponent();
+};
+
+PryDashboardModule.forRoot(
+    {
+        image: { name: 'image', component: WidgetImageComponent },
+        map: { name: 'map', load: loadWidgetMap },
+        detail: {
+            name: 'detail',
+            load: () =>
+                import('@provoly/dashboard/widgets/widget-detail').then((module) =>
+                    widgetLoader(module, 'WidgetDetailModule')
+                )
+        },
+    },
+    {
+        path: 'dashboard',
+        mapUrl: '<url server OpenMapTiles>',
+        pryUrl: 'http://localhost:8080'
+    },
+    {
+        attribute: {
+            name: 'attribute',
+            load: () =>
+                import('@provoly/dashboard/tooltips/attribute').then((module) =>
+                    tooltipLoader(module, 'PryAttributeTooltipModule'))
+        }
+    },
+    {
+        list: {
+        name: 'list',
+        load: () =>
+          import('@provoly/dashboard/filters/list').then((module) => filterLoader(module, 'PryListFilterModule'));
+        }
+    }
+),
+----
+
+=== Vue par défaut / manifest par défaut
+
+Afin d’avoir le comportement "`si j’ai un manifest par défaut, alors je
+l’active. Sinon je charge telle route`", il suffit d’utiliser le
+DefaultViewGuard, sur la route sur laquelle on veut avoir ce
+comportement:
+
+[source,js]
+----
+{ path: '', canActivate: [DefaultViewGuard] }
+----
+
+
+=== Problème avec l’éditeur du moteur de transformation
+
+Afin d’utiliser l’éditeur de transformation, il faudra ajouter les
+modules qui sont requis sur chaque type de nœud pour les rendre
+disponibles. Par exemple:
+
+[source,js]
+----
+PryPipelineModule, // module global
+PryPipelineInputDatasetDefinitionModule, // module du composant des jdd entrants
+PryPipelineOutputDatasetDefinitionModule, // module du composant des jdd sortants
+PryPipelineFilterModule  // module du composant filtre
+----
+
+Il suffira ensuite de rajouter l’éditeur (composant PryPipelineEditorComponent ou pry-pipeline-editor).

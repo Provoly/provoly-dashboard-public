@@ -1,4 +1,4 @@
-import { Rule, SchematicContext, SchematicsException, Tree } from '@angular-devkit/schematics';
+import { chain, Rule, SchematicContext, SchematicsException, Tree } from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { addRootImport } from '@schematics/angular/utility';
 import { addPackageJsonDependency, NodeDependencyType } from '@schematics/angular/utility/dependencies';
@@ -12,7 +12,10 @@ export default function projectSetup(options: ProjectSetupOptions): Rule {
     addDependencies(tree, options);
     context.logger.info('Plan node install');
     context.addTask(new NodePackageInstallTask());
-    return addProvolyForRoot(options, context, tree);
+    const modifications: (Rule | undefined)[] = [];
+    modifications.push(addProvolyForRoot(options, context, tree));
+    modifications.push(...addPipelinesImport(options, context, tree));
+    return chain(modifications.filter((modif) => !!modif) as Rule[]);
   };
 }
 
@@ -32,6 +35,7 @@ function addDependencies(tree: Tree, options: ProjectSetupOptions) {
   ];
 
   if (options.widgets.includes('widget-map')) {
+    console.log('...Adding provoly dependencies for map');
     dependencies.push({ type: NodeDependencyType.Default, version: '^7.0.0', name: 'ol' });
     dependencies.push({ type: NodeDependencyType.Default, version: '^4.1.0', name: 'ol-layerswitcher' });
     dependencies.push({ type: NodeDependencyType.Default, version: '^10.6.0', name: 'ol-mapbox-style' });
@@ -47,12 +51,14 @@ function addDependencies(tree: Tree, options: ProjectSetupOptions) {
   }
 
   if (options.widgets.includes('widget-aggregated-chart')) {
+    console.log('...Adding provoly dependencies for charts');
     dependencies.push({ type: NodeDependencyType.Default, version: '^5.21.0', name: 'vega' });
     dependencies.push({ type: NodeDependencyType.Default, version: '^6.20.5', name: 'vega-embed' });
     dependencies.push({ type: NodeDependencyType.Default, version: '^5.2.0', name: 'vega-lite' });
   }
 
   if (options.widgets.includes('widget-graph')) {
+    console.log('...Adding provoly dependencies for graphs');
     dependencies.push({ type: NodeDependencyType.Default, version: '^3.0.0', name: 'd3-drag' });
     dependencies.push({ type: NodeDependencyType.Default, version: '^3.0.0', name: 'd3-force' });
     dependencies.push({ type: NodeDependencyType.Default, version: '^3.0.0', name: 'd3-selection' });
@@ -65,6 +71,7 @@ function addDependencies(tree: Tree, options: ProjectSetupOptions) {
   }
 
   if (options.pipeline) {
+    console.log('...Adding provoly dependencies for pipelines');
     dependencies.push({ type: NodeDependencyType.Default, version: '^0.7.10', name: 'litegraph.js' });
   }
 
@@ -160,7 +167,7 @@ function provolyUrls(options: ProjectSetupOptions, context: SchematicContext) {
   return JSON.stringify(urlOptions);
 }
 
-async function addProvolyForRoot(options: ProjectSetupOptions, context: SchematicContext, tree: Tree) {
+function addProvolyForRoot(options: ProjectSetupOptions, context: SchematicContext, tree: Tree) {
   context.logger.info('Adding provoly module import');
 
   const pryImportModule = 'PryDashboardModule';
@@ -229,4 +236,46 @@ async function addProvolyForRoot(options: ProjectSetupOptions, context: Schemati
     context.logger.info('Project module not found: You have to manually add Provoly import');
     return;
   }
+}
+
+function addPipelinesImport(options: ProjectSetupOptions, context: SchematicContext, tree: Tree): Rule[] {
+  if (options.pipeline) {
+    context.logger.info('Adding pipeline import');
+
+    const modules = [
+      {
+        name: 'PryPipelineModule',
+        path: '@provoly/dashboard/pipeline'
+      },
+      {
+        name: 'PryPipelineInputDatasetDefinitionModule',
+        path: '@provoly/dashboard/pipeline-components/input-datasource'
+      },
+      {
+        name: 'PryPipelineOutputDatasetDefinitionModule',
+        path: '@provoly/dashboard/pipeline'
+      },
+      {
+        name: 'PryPipelineFilterModule',
+        path: '@provoly/dashboard/pipeline-components/output-dataset'
+      }
+    ];
+
+    try {
+      const modulePath = 'src/app/app.module.ts';
+      if (!tree.exists(modulePath)) {
+        throw new SchematicsException(`Module file ${modulePath} doesn't exist.`);
+      }
+      const recorder = tree.beginUpdate(modulePath);
+      tree.commitUpdate(recorder);
+
+      // Add an import `MyLibModule` from `provoly/dashboard` to the root of the user's project.
+      return modules.map((module) =>
+        addRootImport(options.projectName, ({ code, external }) => code`${external(module.name, module.path)}`)
+      );
+    } catch (e) {
+      context.logger.info('Cannot automatically add pipelines imports.');
+    }
+  }
+  return [];
 }
