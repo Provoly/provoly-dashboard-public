@@ -1,0 +1,12 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme' as *;
+
+/**
+  Theme organism- Dashboard
+ */
+
+.no-widget {
+  &__loading {
+    color: themed($theme-map, 'color', 'accent', 600);
+  }
+}

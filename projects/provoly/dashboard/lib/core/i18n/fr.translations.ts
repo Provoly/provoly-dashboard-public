@@ -29,7 +29,8 @@ export const frTranslations = {
         delete: 'Supprimer',
         maximize: 'Maximiser',
         none_auto: 'Insérez ici vos restitutions',
-        none_manual: 'Glisser - Déposer'
+        none_manual: 'Glisser - Déposer',
+        loading: 'Chargement'
       },
       namedQuery: {
         defaultRs: 'Recherche courante',

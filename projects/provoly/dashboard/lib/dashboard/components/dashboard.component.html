@@ -57,20 +57,34 @@
   </ng-container>
 
   <ng-container *ngIf="(nonFillerWidgets$ | async) === 0">
-    <div class="no-widget" [style.grid-area]="backgroundArea$ | async">
-      <img
-        class="no-widget__search"
-        src="../../../assets/svgs/pry_recherche.svg"
-        alt="{{
+    <ng-container *ngIf="loading$ | async; else notLoading">
+      <div class="no-widget" [style.grid-area]="backgroundArea$ | async">
+        <pry-icon
+          iconSvg="loader"
+          class="no-widget__loading"
+          [alt]="'@pry.widget.target.loading' | i18n"
+          [width]="100"
+          [height]="100"
+        />
+        <span class="no-widget__text">{{ '@pry.widget.target.loading' | i18n }}...</span>
+      </div>
+    </ng-container>
+    <ng-template #notLoading>
+      <div class="no-widget" [style.grid-area]="backgroundArea$ | async">
+        <img
+          class="no-widget__search"
+          src="../../../assets/svgs/pry_recherche.svg"
+          alt="{{
+            (layout === DashboardGridLayout.MANUAL ? '@pry.widget.target.none_manual' : '@pry.widget.target.none_auto')
+              | i18n
+          }} {{ backgroundArea$ | async }}"
+        />
+        <span class="no-widget__text">{{
           (layout === DashboardGridLayout.MANUAL ? '@pry.widget.target.none_manual' : '@pry.widget.target.none_auto')
             | i18n
-        }} {{ backgroundArea$ | async }}"
-      />
-      <span class="no-widget__text">{{
-        (layout === DashboardGridLayout.MANUAL ? '@pry.widget.target.none_manual' : '@pry.widget.target.none_auto')
-          | i18n
-      }}</span>
-    </div>
+        }}</span>
+      </div>
+    </ng-template>
   </ng-container>
 </div>
 <pry-context-menu></pry-context-menu>

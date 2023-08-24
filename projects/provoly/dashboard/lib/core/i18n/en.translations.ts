@@ -29,7 +29,8 @@ export const enTranslations = {
         delete: 'Delete',
         maximize: 'Maximize',
         none_auto: 'Insert restitutions here',
-        none_manual: 'Drag n drop'
+        none_manual: 'Drag n drop',
+        loading: 'Loading'
       },
       namedQuery: {
         defaultRs: 'Current search',

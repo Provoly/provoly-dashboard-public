@@ -34,6 +34,7 @@ const staticManifest = createSelector(
   // @ts-ignore
   (manifests) => ({ windows: [], ...manifests?.staticManifest } ?? ({ windows: [] } as GlobalManifest))
 );
+const loading = createSelector(manifests, (manifests) => !!manifests?.loading);
 const refreshRates = createSelector(globalManifest, (manifests) => manifests.refreshRates ?? {});
 const windowManifest = createSelector(
   globalManifest,
@@ -181,6 +182,7 @@ export const DashboardSelectors = {
   dashboardCellParams,
   dashboardEditionMode,
   staticManifest,
+  loading,
   quickOrder,
   presentation,
   savePresentationActive,

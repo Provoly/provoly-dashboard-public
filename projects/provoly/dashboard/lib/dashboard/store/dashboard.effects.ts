@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { combineLatest, merge, of, throwError } from 'rxjs';
-import { catchError, debounceTime, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, debounceTime, delay, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 import { PryVisibilityType } from '../../core/components/share/share.model';
 import { PrySnackbarService } from '../../core/components/snackbar/snackbar.service';
 import { PryI18nService } from '../../core/i18n/i18n.service';
@@ -86,14 +86,25 @@ export class DashboardEffects {
       })
     )
   );
+
   fetchStaticManifest$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.fetchStaticManifest),
-      mergeMap((action) =>
+      withLatestFrom(this.store.select(DashboardSelectors.rank), this.store.select(DashboardSelectors.selectedItemIds)),
+      filter(([action, rank]) => rank === 0),
+      mergeMap(([action, rank]) =>
         this.manifestService
           .get(action.id)
           .pipe(map((staticManifest) => DashboardActions.updateStaticManifest({ staticManifest })))
       )
+    )
+  );
+
+  fetchStaticManifestLoading$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DashboardActions.fetchStaticManifest),
+      delay(5000),
+      map((action) => DashboardActions.endLoading())
     )
   );
 

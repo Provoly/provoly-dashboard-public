@@ -72,6 +72,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements Afte
   separators$: Observable<WidgetLayout[]>;
   nonFillerWidgets$: Observable<number>;
   widgetsInstances: Array<BaseWidgetComponent> = [];
+  loading$: Observable<boolean>;
 
   @Input() set staticDashboard(window: DashboardManifest) {
     this.staticDashboard$.next(window);
@@ -118,12 +119,9 @@ export class DashboardComponent extends SubscriptionnerDirective implements Afte
   private confirmRemoveRef?: OverlayRef;
   Array: any;
 
-  constructor(
-    private store: Store<any>,
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef
-  ) {
+  constructor(private store: Store<any>, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
     super();
+    this.loading$ = this.store.select(DashboardSelectors.loading);
     this.modeEdition$ = this.store.select(DashboardSelectors.dashboardEditionMode);
     this.subscriptions.add(
       this.modeEdition$.subscribe((mode) => {

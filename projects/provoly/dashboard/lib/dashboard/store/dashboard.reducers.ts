@@ -31,6 +31,7 @@ export interface DashboardState {
     list: ManifestDescription[];
     currentId: string;
     staticManifest: GlobalManifest;
+    loading: boolean;
   };
   presentation: {
     current: ManifestDescription | undefined;
@@ -65,7 +66,8 @@ export const dashboardInitialState: DashboardState = {
       windows: [{ widgets: [] }]
     },
     list: [],
-    currentId: ''
+    currentId: '',
+    loading: false
   },
   presentation: {
     current: undefined,
@@ -710,6 +712,24 @@ const internalReducer = createReducer<DashboardState>(
     return {
       ...state,
       wmsFeatures: deDupedIds.map((id) => allFeatures.find((feat) => feat.id === id))
+    };
+  }),
+  on(DashboardActions.fetchStaticManifest, (state, action) => {
+    return {
+      ...state,
+      manifests: {
+        ...state.manifests,
+        loading: true
+      }
+    };
+  }),
+  on(DashboardActions.endLoading, (state, action) => {
+    return {
+      ...state,
+      manifests: {
+        ...state.manifests,
+        loading: false
+      }
     };
   })
 );

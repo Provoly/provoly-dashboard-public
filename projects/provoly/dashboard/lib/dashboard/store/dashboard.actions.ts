@@ -143,7 +143,8 @@ export const DashboardActions = {
     '[Dashboard] (bus) received manifests list',
     props<{ manifests: ManifestDescription[] }>()
   ),
-  fetchStaticManifest: createAction('[Dashboard] fetching staticManifest', props<{ id: string }>()),
+  fetchStaticManifest: createAction('[Dashboard] (bus) fetching staticManifest', props<{ id: string }>()),
+  endLoading: createAction('[Dashboard] end loading'),
   updateStaticManifest: createAction(
     '[Dashboard] (bus) received staticManifest',
     props<{ staticManifest: GlobalManifest }>()
