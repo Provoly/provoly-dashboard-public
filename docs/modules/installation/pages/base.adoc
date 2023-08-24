@@ -12,7 +12,7 @@ Import du CSS de la lib, ajouter dans le style.scss de votre application :
 @use 'node_modules/@provoly/dashboard/styles-theme/main-theme';
 ----
 
-Import avec gestion du theming, voir détails ici : ** xref:howtos:css-theming.adoc[Theming : architecture et surcharge du thème css de la librairie ]
+Import avec gestion du theming, voir détails ici : xref:howtos:css-theming.adoc[Theming : architecture et surcharge du thème css de la librairie ]
 
 
 === Ajouter NGRX, ngx-translate, @angular/cdk et @ng-select/ng-select
