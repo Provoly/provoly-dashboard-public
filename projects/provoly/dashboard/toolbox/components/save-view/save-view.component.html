@@ -1,43 +1,44 @@
-<ng-container *ngIf="mode === 'directSave'">
-  <div
-    [pryTooltip]="infoTooltipDirectSave"
-    pryTooltipPosition="bottom"
-    [attr.aria-expanded]="saveTypeOpened"
-    aria-controls="directiveSave"
-    aria-describedby="infoTooltip_directSave"
-  >
-    <button
-      type="button"
-      #directiveSave
-      class="a-btn a-btn--primary -size-md"
-      (click)="directSave()"
-      [disabled]="!(savePresentationActive$ | async)"
+<ng-container *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'save' }">
+  <ng-container *ngIf="mode === 'directSave'">
+    <div
+      [pryTooltip]="infoTooltipDirectSave"
+      pryTooltipPosition="bottom"
+      [attr.aria-expanded]="saveTypeOpened"
+      aria-controls="directiveSave"
+      aria-describedby="infoTooltip_directSave"
     >
-      <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.save' | i18n }} ({{ nbPages }})</ng-container>
-    </button>
-  </div>
-</ng-container>
-<ng-container *ngIf="mode === 'saveAs'">
-  <div
-    class="save-manifest-container"
-    [pryTooltip]="infoTooltipSaveAs"
-    pryTooltipPosition="bottom"
-    [attr.aria-expanded]="saveAsOpened"
-    aria-controls="saveModal"
-    aria-describedby="infoTooltip_saveAs"
-  >
-    <button
-      type="button"
-      #saveAs
-      class="a-btn a-btn--secondary -size-md"
-      (click)="toggleSaveAs()"
-      aria-haspopup="dialog"
+      <button
+        type="button"
+        #directiveSave
+        class="a-btn a-btn--primary -size-md"
+        (click)="directSave()"
+        [disabled]="!(savePresentationActive$ | async)"
+      >
+        <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.save' | i18n }} ({{ nbPages }})</ng-container>
+      </button>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="mode === 'saveAs'">
+    <div
+      class="save-manifest-container"
+      [pryTooltip]="infoTooltipSaveAs"
+      pryTooltipPosition="bottom"
+      [attr.aria-expanded]="saveAsOpened"
+      aria-controls="saveModal"
+      aria-describedby="infoTooltip_saveAs"
     >
-      <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.saveView' | i18n }} ({{ nbPages }})</ng-container>
-    </button>
-  </div>
+      <button
+        type="button"
+        #saveAs
+        class="a-btn a-btn--secondary -size-md"
+        (click)="toggleSaveAs()"
+        aria-haspopup="dialog"
+      >
+        <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.saveView' | i18n }} ({{ nbPages }})</ng-container>
+      </button>
+    </div>
+  </ng-container>
 </ng-container>
-
 <ng-template #templateSaveAs>
   <div
     class="o-modal"

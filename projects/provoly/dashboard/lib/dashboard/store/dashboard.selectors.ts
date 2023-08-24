@@ -128,7 +128,8 @@ const presentation = createSelector(feature, (state: DashboardState) => state?.p
 const savePresentationActive = createSelector(
   presentation,
   globalManifest,
-  (state, global) => !!state.current && (state.viewMode === ViewMode.CREATION || !equal(global, state.initial))
+  (state, global) =>
+    !!state.current && state.current.owner && (state.viewMode === ViewMode.CREATION || !equal(global, state.initial))
 );
 
 const filters = createSelector(feature, (state: DashboardState) => state?.manifests.manifest.filters ?? {});
