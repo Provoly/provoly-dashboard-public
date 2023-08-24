@@ -2,8 +2,6 @@ import { chain, Rule, SchematicContext, SchematicsException, Tree } from '@angul
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { addRootImport } from '@schematics/angular/utility';
 import { addPackageJsonDependency, NodeDependencyType } from '@schematics/angular/utility/dependencies';
-import { getFileContent } from '../utils/file-contents.function';
-import { PackageJson } from '../utils/package-json.interface';
 import { ProjectSetupOptions } from './schema';
 
 export default function projectSetup(options: ProjectSetupOptions): Rule {
@@ -22,10 +20,7 @@ export default function projectSetup(options: ProjectSetupOptions): Rule {
 function addDependencies(tree: Tree, options: ProjectSetupOptions) {
   console.log('Adding provoly dependencies');
 
-  const packageJson = JSON.parse(getFileContent(tree, '/package.json')) as PackageJson;
-
   const dependencies = [
-    { type: NodeDependencyType.Default, version: packageJson.version, name: '@provoly/dashboard' },
     { type: NodeDependencyType.Default, version: '^9.0.0', name: 'uuid' },
     { type: NodeDependencyType.Default, version: '^3.1.3', name: 'fast-deep-equal' },
     { type: NodeDependencyType.Default, version: '^1.2.3', name: 'css-element-queries' },
