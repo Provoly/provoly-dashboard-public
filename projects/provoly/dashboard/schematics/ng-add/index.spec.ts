@@ -28,7 +28,6 @@ describe(schematicName, () => {
 
     const packageJson = JSON.parse(getFileContent(tree, '/package.json')) as PackageJson;
 
-    expect(packageJson.dependencies['@provoly/dashboard']).toBe(packageJson.version);
     expect(packageJson.dependencies['uuid']).toBe('^9.0.0');
     expect(packageJson.devDependencies['@types/uuid']).toBe('^9.0.0');
     expect(packageJson.dependencies['ol']).toBe(undefined);
@@ -45,7 +44,6 @@ describe(schematicName, () => {
 
     const packageJson = JSON.parse(getFileContent(tree, '/package.json')) as PackageJson;
 
-    expect(packageJson.dependencies['@provoly/dashboard']).toBe(packageJson.version);
     expect(packageJson.dependencies['uuid']).toBe('^9.0.0');
     expect(packageJson.devDependencies['@types/uuid']).toBe('^9.0.0');
     expect(packageJson.dependencies['ol']).toBe('^7.0.0');

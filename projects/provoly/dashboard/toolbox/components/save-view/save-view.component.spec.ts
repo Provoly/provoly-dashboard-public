@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ConfigActions, DashboardActions, ManifestDescription, PryVisibilityType } from '@provoly/dashboard';
+import { MockPryAccessDirective } from '@provoly/dashboard/mock/directive/mock-pry-access.directive';
 import { of } from 'rxjs';
 import * as uuid from 'uuid';
 import { MockPryIconComponent } from '../../../mock/components/mock-pry-icon.component';
@@ -26,7 +27,14 @@ describe('SaveViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SaveViewComponent, MockPryIconComponent, MockTranslatePipe, MockPryTooltipDirective, MockI18nPipe],
+      declarations: [
+        SaveViewComponent,
+        MockPryIconComponent,
+        MockTranslatePipe,
+        MockPryTooltipDirective,
+        MockI18nPipe,
+        MockPryAccessDirective
+      ],
       providers: [
         provideMockStore({}),
         {

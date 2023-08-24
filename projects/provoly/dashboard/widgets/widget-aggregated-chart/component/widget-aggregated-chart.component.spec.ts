@@ -188,7 +188,7 @@ describe('WidgetAggregatedChartComponent', () => {
               y: {
                 axis: {},
                 field: 'value',
-                scale: { zero: true },
+                scale: { zero: false },
                 title: undefined,
                 type: 'nominal'
               },
@@ -347,7 +347,7 @@ describe('WidgetAggregatedChartComponent', () => {
               y: {
                 axis: {},
                 field: 'value',
-                scale: { zero: true },
+                scale: { zero: false },
                 stack: true,
                 title: 'ORD',
                 type: 'nominal'

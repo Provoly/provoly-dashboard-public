@@ -19,6 +19,12 @@
       "@provoly/dashboard/presentation": [
         "projects/provoly/dashboard/presentation"
       ],
+      "@provoly/dashboard/restitution": [
+        "projects/provoly/dashboard/restitution"
+      ],
+      "@provoly/dashboard/dataset": [
+        "projects/provoly/dashboard/dataset"
+      ],
       "@provoly/dashboard/search": [
         "projects/provoly/dashboard/search"
       ],
