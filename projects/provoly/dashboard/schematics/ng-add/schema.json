@@ -1,0 +1,62 @@
+{
+  "title": "Setup the project for @provoly/dashboard use",
+  "properties": {
+    "projectName": {
+      "type": "string",
+      "x-prompt": "What is your project name ? (leave blank for manual addition)",
+      "default": ""
+    },
+    "widgets": {
+      "type": "array",
+      "description": "Widgets",
+      "x-prompt": {
+        "type": "list",
+        "message": "Which widgets would you like to include ?",
+        "multiselect": true,
+        "items": [
+          "widget-aggregated-chart",
+          "widget-detail",
+          "widget-graph",
+          "widget-iframe",
+          "widget-image",
+          "widget-map",
+          "widget-table",
+          "widget-template",
+          "widget-tile"
+        ]
+      },
+      "default": []
+    },
+    "pipeline": {
+      "type": "boolean",
+      "description": "Using pipelines",
+      "x-prompt": "Do you want to include pipelines ?",
+      "default": false
+    },
+    "pryUrl": {
+      "type": "string",
+      "x-prompt": "What is your backend url ? (blank for none)",
+      "default": ""
+    },
+    "path": {
+      "type": "string",
+      "x-prompt": "Want a simple path for dashboards ? (blank for none, else route)",
+      "default": ""
+    },
+    "mapUrl": {
+      "type": "string",
+      "x-prompt": "What is your map server url ? (blank for none)",
+      "default": ""
+    },
+    "wsServerUrl": {
+      "type": "string",
+      "x-prompt": "What is your websocket server url ? (blank for none)",
+      "default": ""
+    },
+    "geoServerUrl": {
+      "type": "string",
+      "x-prompt": "What is your geoserver url ? (for geolayers - blank for none)",
+      "default": ""
+    }
+  }
+}

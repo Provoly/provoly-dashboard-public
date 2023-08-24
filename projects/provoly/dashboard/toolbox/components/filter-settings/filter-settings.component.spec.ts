@@ -15,6 +15,7 @@ import {
   FilterFactoryService
 } from '@provoly/dashboard';
 import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
+import { MockPryToolboxCssComponent } from '@provoly/dashboard/mock/style/mock-pry-toolbox-css';
 import { mapUtilsData } from '@provoly/dashboard/widgets/widget-map/utils/widget-map.utils.spec';
 import { hot } from 'jest-marbles';
 import { of } from 'rxjs';
@@ -65,7 +66,8 @@ describe('FilterSettingsComponent', () => {
         PryFilterSettingsComponent,
         MockI18nPipe,
         MockPryIconComponent,
-        MockPrySelectGridLayoutCssComponent
+        MockPrySelectGridLayoutCssComponent,
+        MockPryToolboxCssComponent
       ],
       providers: [
         provideMockStore({

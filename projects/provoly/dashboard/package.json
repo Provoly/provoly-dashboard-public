@@ -1,7 +1,11 @@
 {
   "name": "@provoly/dashboard",
   "version": "0.0.0",
-  "type": "module",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc --module commonjs -p tsconfig.schematics.json",
+    "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json ../../../dist/@provoly/dashboard/"
+  },
   "peerDependencies": {
     "@angular/common": "15.x || 16.x",
     "@angular/cdk": "14.x || 15.x || 16.x",
@@ -26,7 +30,9 @@
     "@types/dagre": "^0.7.47",
     "@types/ol": "^6.5.3",
     "@types/shpjs": "^3.4.1",
-    "@types/uuid": "^9.0.0"
+    "@types/uuid": "^9.0.0",
+    "copyfiles": "^2.4.1",
+    "typescript": "~4.9.4"
   },
   "exports": {
     "./lib/theme/styles/themes": {
@@ -38,5 +44,9 @@
     "./styles-theme/main": {
       "sass": "./styles-theme/main-theme.scss"
     }
+  },
+  "schematics": "./schematics/collection.json",
+  "ng-add": {
+    "save": true
   }
 }

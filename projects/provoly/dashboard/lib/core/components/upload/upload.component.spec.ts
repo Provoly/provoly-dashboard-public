@@ -1,7 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { ImageActions } from '@provoly/dashboard';
+import { ImageActions, RawService } from '@provoly/dashboard';
+import { of } from 'rxjs';
 import { MockPryIconComponent } from '../../../../mock/components/mock-pry-icon.component';
 import { MockI18nPipe } from '../../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../../mock/pipe/mock-translate.pipe';
@@ -17,7 +18,7 @@ describe('PryUploadComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       declarations: [PryUploadComponent, MockTranslatePipe, MockPryIconComponent, MockI18nPipe],
-      providers: [provideMockStore()]
+      providers: [provideMockStore(), { provide: RawService, useValue: { upload: (a: any, b: any) => of(b) } }]
     }).compileComponents();
     store = TestBed.inject(MockStore);
   });

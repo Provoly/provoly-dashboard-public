@@ -18,10 +18,7 @@ export class PryUploadComponent {
   @Output() uploadedFile = new EventEmitter<File>();
   @ViewChild('fileInput') fileInput!: ElementRef;
 
-  constructor(
-    private store: Store,
-    private rawService: RawService
-  ) {}
+  constructor(private store: Store, private rawService: RawService) {}
 
   onFileSelect($event: Event) {
     // @ts-ignore

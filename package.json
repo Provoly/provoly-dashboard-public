@@ -126,7 +126,8 @@
   "exports": {
     ".": {
       "sass": "./lib/ds/_index.scss"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "workspaces": [
     "projects/provoly/dashboard"

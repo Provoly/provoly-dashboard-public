@@ -935,20 +935,28 @@ describe('Dashboard reducer', () => {
   });
 
   describe('addWmsFeatures', () => {
-    it('should clear actual features', () => {
+    it('should not clear actual features', () => {
       expect(
         dashboardReducer(
           {
             ...initialState,
-            wmsFeatures: [{ something: true }]
+            wmsFeatures: [{ id: 1, something: true }]
           },
           DashboardActions.addWmsFeatures({
-            features: [{ alsoSomething: true }, { alsoAnotherSomething: true }]
+            features: [
+              { id: 2, alsoSomething: true },
+              { id: 3, alsoAnotherSomething: true },
+              { id: 3, alsoAnotherSomethingWithSameId: true }
+            ]
           })
         )
       ).toEqual({
         ...initialState,
-        wmsFeatures: [{ something: true }, { alsoSomething: true }, { alsoAnotherSomething: true }]
+        wmsFeatures: [
+          { id: 1, something: true },
+          { id: 2, alsoSomething: true },
+          { id: 3, alsoAnotherSomething: true }
+        ]
       });
     });
   });
