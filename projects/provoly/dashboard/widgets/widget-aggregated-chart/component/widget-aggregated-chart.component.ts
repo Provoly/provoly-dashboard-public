@@ -336,7 +336,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                           ...this.setTickCount(values.data)
                         },
                         scale: {
-                          zero: options.ordinate.keep0
+                          zero: !!options.ordinate.keep0
                         },
                         ...(options.graph.stacked ? { stack: true } : {})
                       }
