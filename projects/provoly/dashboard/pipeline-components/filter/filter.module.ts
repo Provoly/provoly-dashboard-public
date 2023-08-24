@@ -30,6 +30,6 @@ export class PryPipelineFilterModule {
     this.pryTranslateService.addLangObject('fr', 'pipeline-filter', frTranslations);
     this.pryTranslateService.addLangObject('en', 'pipeline-filter', enTranslations);
 
-    pipelineComponentFactoryService.addType('com.onepoint.pry.common.transfo.Filter', FilterComponent, FilterNode);
+    pipelineComponentFactoryService.addType('com.provoly.common.transfo.Filter', FilterComponent, FilterNode);
   }
 }

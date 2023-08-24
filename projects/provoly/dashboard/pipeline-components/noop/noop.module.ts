@@ -22,6 +22,6 @@ import { NoopNode } from './node-class/noop-node.class';
 })
 export class PryPipelineNoopModule {
   constructor(pipelineComponentFactoryService: PipelineComponentFactoryService) {
-    pipelineComponentFactoryService.addType('com.onepoint.pry.common.transfo.NoOp', NoopComponent, NoopNode);
+    pipelineComponentFactoryService.addType('com.provoly.common.transfo.NoOp', NoopComponent, NoopNode);
   }
 }

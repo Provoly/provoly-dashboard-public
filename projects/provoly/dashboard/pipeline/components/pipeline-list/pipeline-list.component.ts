@@ -1,4 +1,4 @@
-import { ConnectedPosition, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
+import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Component, ElementRef, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -30,22 +30,11 @@ export class PryPipelineListComponent {
   ViewMode = ViewMode;
   private confirmExecutionRef?: OverlayRef;
 
-  constructor(
-    private store: Store,
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef
-  ) {
+  constructor(private store: Store, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
     this.store.dispatch(PipelineActions.fetchTransfosList());
     this.transformation$ = this.store.select(PipelineSelectors.transfos);
     this.selectedMode = ViewMode.CATALOG;
   }
-
-  readonly connectedPosition: ConnectedPosition = {
-    originX: 'start',
-    originY: 'bottom',
-    overlayX: 'start',
-    overlayY: 'top'
-  };
 
   toggleMoreDropdown($event: any, index: number, transfo: PryTransfo) {
     if (this.toggleIndex !== index) {

@@ -1,11 +1,9 @@
-import { Injectable, InjectionToken, Type } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
 import { LiteGraph } from 'litegraph.js';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PipelinePropertiesPanelComponent } from '../components/pipeline-properties-panel.component';
 import { BaseNode } from '../node-class/base-node.class';
-
-export const PIPELINE_COMPONENT_MODULES = new InjectionToken<string>('Pipeline components modules');
 
 export interface PipelineComponentDefinition {
   type: string;
@@ -59,15 +57,16 @@ export class PipelineComponentFactoryService {
     draggable = true,
     additionalProperties = {}
   ) {
+    const shortLabel = label.length > 0 ? label : type.split('.')[type.split('.').length - 1];
     this.referential$.next([
-      ...this.referential$.getValue(),
+      ...this.referential$.getValue().filter((ref) => ref.type !== type || ref.label !== shortLabel),
       {
         type,
         component,
         nodeClass,
         draggable,
         category,
-        label: label.length > 0 ? label : type.split('.')[type.split('.').length - 1],
+        label: shortLabel,
         additionalProperties,
         // @ts-ignore
         color: nodeClass.getNodeTitleColor()

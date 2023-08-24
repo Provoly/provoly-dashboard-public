@@ -46,7 +46,7 @@ export class PryPipelineOutputDatasetModule {
       const closedDatasources = datasources.filter((def) => def.type === PryDatasetType.CLOSED);
       closedDatasources.forEach((datasource) => {
         pipelineComponentFactoryService.addType(
-          'com.onepoint.pry.common.transfo.OutputDataset',
+          'com.provoly.common.transfo.OutputDataset',
           OutputDatasetComponent,
           OutputDatasetNode,
           'output',

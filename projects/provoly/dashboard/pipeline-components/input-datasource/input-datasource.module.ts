@@ -44,7 +44,7 @@ export class PryPipelineInputDatasetModule {
     this.store.select(DataSourceSelectors.getDataSources).subscribe((datasources) => {
       datasources.forEach((datasource) => {
         pipelineComponentFactoryService.addType(
-          'com.onepoint.pry.common.transfo.InputDatasource',
+          'com.provoly.common.transfo.InputDatasource',
           InputDatasourceComponent,
           InputDatasourceNode,
           'input',

@@ -4,7 +4,7 @@ import { LiteGraph } from 'litegraph.js';
 export class InputDatasourceNode extends BaseNode {
   constructor(title?: string, ...other: any) {
     super();
-    this.properties['type'] = 'com.onepoint.pry.common.transfo.InputDatasource';
+    this.properties['type'] = 'com.provoly.common.transfo.InputDatasource';
     this.color = InputDatasourceNode.getNodeTitleColor();
     this.titleColor = '#000000';
     this.shape = LiteGraph.BOX_SHAPE;
