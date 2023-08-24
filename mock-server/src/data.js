@@ -3,7 +3,7 @@ const relations = require('./relations');
 const casual = require('casual');
 
 const classes = JSON.parse(fs.readFileSync('./data/classes.json', 'utf8'));
-const datasetVersions = JSON.parse(fs.readFileSync('./data/datasetVersions.json', 'utf8'));
+let datasetVersions = JSON.parse(fs.readFileSync('./data/datasetVersions.json', 'utf8'));
 const classesIds = classes.map((oClass) => oClass.id);
 let fields = JSON.parse(fs.readFileSync('./data/fields.json', 'utf8'));
 const categories = JSON.parse(fs.readFileSync('./data/categories.json', 'utf8'));
@@ -275,8 +275,17 @@ const getFields = () => {
 const deleteField = (id) => {
   fields = fields.filter((field) => field.id !== id);
 };
+const deactivateDatasetVersion = (id) => { datasetVersions.find((datasetVersion) => datasetVersion.id === id).state = 'INACTIVE';
+  return datasetVersions;
+};
+
+const activateDatasetVersion = (id) => { datasetVersions.find((datasetVersion) => datasetVersion.id === id).state = 'ACTIVE';
+  return datasetVersions;
+};
 
 module.exports = {
+  activateDatasetVersion,
+  deactivateDatasetVersion,
   datasetVersions,
   classes,
   classesIds,

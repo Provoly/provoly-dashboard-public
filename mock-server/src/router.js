@@ -906,10 +906,16 @@ router.on(['OPTIONS', 'PUT'], '/ref/datasets/id/:datasetId/metadata/id/:metadata
   });
 });
 router.on(['POST'], '/ref/dataset-versions/id/:datasetVersionId/deactivate', (req, res, params) => {
-  makeResponseOk(res);
+  readPayload(req).then((payload) => {
+    dataModule.deactivateDatasetVersion(params['datasetVersionId']);
+    makeResponseOk(res);
+  });
 });
 router.on(['POST'], '/ref/dataset-versions/id/:datasetVersionId/activate', (req, res, params) => {
-  makeResponseOk(res);
+  readPayload(req).then((payload) => {
+    dataModule.activateDatasetVersion(params['datasetVersionId']);
+    makeResponseOk(res);
+  });
 });
 router.on(['DELETE'], '/ref/datasets/id/:datasetId/metadata/id/:metadataId', (req, res, params) => {
   dataModule.dataset.deleteMetadata(params['datasetId'], params['metadataId']);

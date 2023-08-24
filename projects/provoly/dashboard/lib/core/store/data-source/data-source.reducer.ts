@@ -106,12 +106,40 @@ export const dataSourceReducer = createReducer(
     loading: false,
     datasetVersions: action.versions
   })),
+  on(DataSourceActions.dataset.listVersionsFailure, (state, action) => ({
+    ...state,
+    loading: false
+  })),
   on(DataSourceActions.dataset.selectedDatasetVersion, (state, action) => ({
     ...state,
     matchingDatasetVersions: action.version
   })),
-  on(DataSourceActions.dataset.listVersionsFailure, (state, action) => ({
+  on(DataSourceActions.dataset.deactivateDatasetVersion, (state, action) => ({
     ...state,
+    loading: true
+  })),
+  on(DataSourceActions.dataset.deactivateDatasetVersionSuccess, (state, action) => ({
+    ...state,
+    loading: false,
+    datasetVersion: action.datasetVersion
+  })),
+  on(DataSourceActions.dataset.deactivateDatasetVersionFailure, (state, action) => ({
+    ...state,
+    error: action.error,
+    loading: false
+  })),
+  on(DataSourceActions.dataset.activateDatasetVersion, (state, action) => ({
+    ...state,
+    loading: true
+  })),
+  on(DataSourceActions.dataset.activateDatasetVersionSuccess, (state, action) => ({
+    ...state,
+    loading: false,
+    datasetVersion: action.datasetVersion
+  })),
+  on(DataSourceActions.dataset.activateDatasetVersionFailure, (state, action) => ({
+    ...state,
+    error: action.error,
     loading: false
   })),
   on(DataSourceActions.dataset.previews.getById, (state, action) => ({
