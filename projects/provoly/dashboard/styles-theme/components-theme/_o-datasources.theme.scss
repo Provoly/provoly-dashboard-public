@@ -28,11 +28,14 @@
   .o-pry-card {
     @extend %card-with-hover;
 
-    .a-p {
-      color: themed($theme-map, 'color', 'primary', 600);
-      font-size: toRem(14);
-      line-height: toRem(18);
-      font-weight: 700;
+    &.-selected {
+      color: themed($theme-map, 'color', 'accent', 'contrast', 600);
+      background-color: themed($theme-map, 'color', 'accent', 600);
+
+      .a-btn.a-btn--primary {
+        color: themed($theme-map, 'color', 'accent', 600);
+        background-color: themed($theme-map, 'color', 'accent', 'contrast', 600);
+      }
     }
   }
 }

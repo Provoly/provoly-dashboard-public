@@ -71,66 +71,12 @@
     </pry-step>
     <pry-step>
       <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.dataSource' | i18n }}</h4>
-      <div class="overflow">
-        <div class="o-catalog__search">
-          <input
-            id="catalog-search"
-            type="text"
-            class="a-form-field"
-            name="search"
-            [placeholder]="'Recherchez une donnée'"
-            [ngModel]="search$ | async"
-            (ngModelChange)="this.search$.next($event)"
-            ngDefaultControl
-          />
-          <pry-icon iconSvg="search" [width]="17" [height]="17"></pry-icon>
-        </div>
-
-        <div class="o-datasources">
-          <div *ngIf="form.selectedDataSource.length > 0">
-            <h4 class="a-h4">{{ '@pry.restitution.selection' | i18n }}</h4>
-            <ul class="o-datasources__list o-datasources__list--selected">
-              <li class="o-datasources__item" *ngFor="let id of form.selectedDataSource">
-                <button (click)="toggleDatasource(id)" type="button" class="a-btn a-btn--icon-text">
-                  <span class="u-visually-hidden">{{ '@pry.restitution.unselectDataSource' | i18n }}</span>
-                  {{ idToNameDatasource[id] }}
-                  <pry-icon [iconSvg]="'close'" [width]="18" [height]="18"></pry-icon>
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          <ng-container *ngIf="filteredDataSource$ | async as datasource">
-            <h4 class="a-h4">{{ '@pry.restitution.select' | i18n }}</h4>
-            <ul *ngIf="datasource.length > 0; else noDatasource" class="o-datasources__list">
-              <li class="o-datasources__item" *ngFor="let ds of datasource" (click)="toggleDatasource(ds.id)">
-                <div class="o-datasources__card">
-                  <div class="o-datasources__card__name">
-                    <pry-checkbox
-                      [ngModel]="form.selectedDataSource.includes(ds.id)"
-                      (click)="$event.preventDefault()"
-                    ></pry-checkbox>
-                    <span class="u-visually-hidden">{{ '@pry.restitution.selectDataSource' | i18n }}</span>
-                    <p class="a-p">
-                      {{ ds.id | translateId: { type: 'datasource', output: 'name' } | async }}
-                      <pry-icon *ngIf="isGeo(ds)" iconSvg="globe"></pry-icon>
-                    </p>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </ng-container>
-        </div>
-
-        <div class="m-btn-group -space-evenly actions">
-          <button (click)="prev(stepper)" type="button" class="a-btn a-btn--secondary">
-            {{ '@pry.restitution.close' | i18n }}
-          </button>
-          <button (click)="submit(stepper)" [disabled]="noDataSourceSelected()" class="a-btn a-btn--primary">
-            {{ '@pry.restitution.validate' | i18n }}
-          </button>
-        </div>
-      </div>
+      <pry-datasource-selector
+        (cancel)="prev(stepper)"
+        (validated)="submit(stepper)"
+        (datasourcesChanged)="datasourcesChanged($event)"
+        [datasourceIds]="form.selectedDataSource"
+      ></pry-datasource-selector>
     </pry-step>
     <pry-step>
       <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.visualize' | i18n }}</h4>

@@ -1,7 +1,7 @@
 <pry-widget-force-graph-css></pry-widget-force-graph-css>
 <div class="o-widget o-widget--graph">
   <pry-widget-header
-    [datasourceIds$]="datasourceIds$"
+    [datasourceIds]="(datasourceIds$ | async) ?? []"
     *ngIf="displayHeader$ | async"
     [widgetIndex]="widgetIndex"
     [manifest]="manifest"

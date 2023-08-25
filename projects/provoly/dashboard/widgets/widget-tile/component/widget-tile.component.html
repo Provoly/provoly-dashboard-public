@@ -1,7 +1,7 @@
 <pry-widget-tile-css></pry-widget-tile-css>
 <div class="o-widget o-widget--tile">
   <pry-widget-header
-    [datasourceIds$]="datasourceIds$"
+    [datasourceIds]="(datasourceIds$ | async) ?? []"
     *ngIf="displayHeader$ | async"
     [widgetIndex]="widgetIndex"
     [manifest]="manifest"
@@ -54,7 +54,7 @@
             [height]="25"
             [width]="25"
             [src]="item | translateItemToSymbol | async"
-            [alt]="item.oClass | translateId: { type: 'class', output: 'name' } | async"
+            [alt]="item.oClass | translateId : { type: 'class', output: 'name' } | async"
           />
           <h3 class="o-widget--tile__list__item__header__title">
             {{

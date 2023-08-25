@@ -2,6 +2,7 @@ import { Overlay } from '@angular/cdk/overlay';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { PryI18nService, ToolboxMenuService } from '@provoly/dashboard';
+import { MockPryDatasourceSelectorComponent } from '@provoly/dashboard/mock/components/mock-pry-datasource-selector.omponent';
 import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pry-icon.component';
 import { MockPrySelectComponent } from '@provoly/dashboard/mock/components/mock-pry-select.component';
 import { MockPryShareComponent } from '@provoly/dashboard/mock/components/mock-pry-share.component';
@@ -47,7 +48,8 @@ describe('PryRestitution', () => {
         MockPryIconComponent,
         MockPryWidgetInstanciatorComponent,
         MockPrySelectComponent,
-        MockNgModelDirective
+        MockNgModelDirective,
+        MockPryDatasourceSelectorComponent
       ],
       providers: [
         provideMockStore({}),
@@ -77,15 +79,6 @@ describe('PryRestitution', () => {
   });
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-  it('should add id to selectedDataSource if it does not exist', () => {
-    component.toggleDatasource('id1');
-    expect(component.form.selectedDataSource).toEqual(['id1']);
-  });
-  it('should remove id from selectedDataSource if it exists', () => {
-    component.form.selectedDataSource = ['id1', 'id2'];
-    component.toggleDatasource('id1');
-    expect(component.form.selectedDataSource).toEqual(['id2']);
   });
   it('should be test', () => {
     component.form.selectedDataSource = [];

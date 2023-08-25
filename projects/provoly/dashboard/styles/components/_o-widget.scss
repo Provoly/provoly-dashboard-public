@@ -118,41 +118,12 @@
   }
 
   // Resultset displayed in popup/panel
-  &__choose-resultset {
+  &__choose-resultset, .active-step {
     @extend %overlay-panel-fixed-right;
     width: toRem(560);
     padding: 0 0 toRem(10) 0;
-
-    .m-namedqueries-wrapper {
-      overflow: auto;
-      overflow-x: hidden;
-      height: auto;
-      padding: toRem(30) toRem(20) 0 toRem(20);
-
-      .o-widget__search {
-        margin-bottom: toRem(20);
-      }
-
-      .m-namedqueries {
-        @extend %list-unstyled;
-
-        &__item {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: toRem(15);
-
-          .a-checkbox {
-            margin-bottom: 0;
-          }
-
-          .a-checkbox__text {
-            padding-right: toRem(10);
-          }
-        }
-      }
-    }
+    top: toRem(12);
+    height: calc(100% - 24px);
 
     .m-btn-group {
       min-height: 65px;
@@ -205,4 +176,41 @@
     justify-content: center;
     margin-top: toRem(12);
   }
+}
+
+.m-namedqueries-wrapper {
+  overflow: auto;
+  overflow-x: hidden;
+  padding: toRem(30) toRem(20) 0 toRem(20);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .o-widget__search {
+    margin-bottom: toRem(20);
+  }
+
+  .m-namedqueries {
+    @extend %list-unstyled;
+
+    &__item {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: toRem(15);
+
+      .a-checkbox {
+        margin-bottom: 0;
+      }
+
+      .a-checkbox__text {
+        padding-right: toRem(10);
+      }
+    }
+  }
+}
+
+pry-datasource-selector {
+  height: 100%;
 }

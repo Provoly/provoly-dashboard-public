@@ -6,15 +6,11 @@ import {
   ClassActions,
   ClassSelectors,
   ConfigActions,
-  Dataset,
   DataSource,
   DataSourceActions,
-  DataSourceSelectors,
   DEFAULT_RESTITUTION_ICON_URL,
   FieldActions,
-  GeoMetadata,
   LibraryTypes,
-  NamedQuery,
   PryVisibility,
   PryVisibilityType,
   SearchActions,
@@ -25,7 +21,7 @@ import {
   WidgetManifest
 } from '@provoly/dashboard';
 import { PryStepperComponent } from '@provoly/dashboard/components/stepper';
-import { BehaviorSubject, combineLatest, map, Observable, Subject } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 import { v4 } from 'uuid';
 import { RestitutionForm } from '../../model/restitution.model';
 
@@ -34,8 +30,6 @@ import { RestitutionForm } from '../../model/restitution.model';
   templateUrl: './restitution.component.html'
 })
 export class PryRestitutionComponent extends SubscriptionnerDirective implements OnInit {
-  search$ = new BehaviorSubject('');
-  filteredDataSource$?: Observable<DataSource[]>;
   types$: Observable<{ icon: string; label: string; type: string }[]>;
   classes$: Observable<Class[]>;
   customManifest: WidgetManifest = {
@@ -65,7 +59,6 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
   type: LibraryTypes = LibraryTypes.ILLUSTRATION;
   @Input() isDataSourceSelected = false;
   @Input() bindId: any;
-  idToNameDatasource: { [id: string]: string } = {};
   image: string = DEFAULT_RESTITUTION_ICON_URL;
 
   constructor(
@@ -89,21 +82,6 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
           .map((items) => [...items.sub.filter((s) => this.toolboxManifestService.isModel(s.type))])
           .reduce((acc, items) => [...acc, ...items], [])
       )
-    );
-    this.filteredDataSource$ = combineLatest([
-      this.search$,
-      this.store.select(DataSourceSelectors.getDataSourcesSorted)
-    ]).pipe(
-      map(([searchValue, dataSource]) =>
-        dataSource.filter(
-          (dataSource) => searchValue === '' || dataSource.name.toLowerCase().includes(searchValue.toLowerCase())
-        )
-      )
-    );
-    this.subscriptions.add(
-      this.filteredDataSource$.subscribe((dataSource) => {
-        dataSource.forEach((ds) => (this.idToNameDatasource[ds.id] = ds.name));
-      })
     );
   }
 
@@ -161,12 +139,8 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
     this.prev(stepper);
   }
 
-  toggleDatasource(id: string) {
-    if (!this.form.selectedDataSource.includes(id)) {
-      this.form.selectedDataSource.push(id);
-    } else {
-      this.form.selectedDataSource = this.form.selectedDataSource.filter((dataSourceId) => dataSourceId !== id);
-    }
+  datasourcesChanged($event: DataSource[]) {
+    this.form.selectedDataSource = $event.map((ds) => ds.id);
   }
 
   submit(stepper: PryStepperComponent) {
@@ -249,9 +223,5 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
     }
     this.store.dispatch(ConfigActions.loadWidgets());
     this.restitutionCreated.emit();
-  }
-
-  isGeo(ds: NamedQuery | Dataset) {
-    return ds.metadata?.find((m) => m.metadataDef.name === GeoMetadata.NAMESPACE) !== undefined;
   }
 }

@@ -11,14 +11,13 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, combineLatest, map, Observable, Subscription } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable, Subscription } from 'rxjs';
 import { v4 } from 'uuid';
 import { UNKNOWN_DATASOURCE } from '../../../../core/components/translate-id/translate-id.pipe';
 import { DashboardGridLayout, DashboardManifest, WidgetManifest } from '../../../../core/model/manifest.interface';
 import { Widget } from '../../../../core/model/widget.interface';
 import { ConfigActions } from '../../../../core/store/config/config.actions';
-import { DataSource, NamedQuery } from '../../../../core/store/data-source/data-source.model';
+import { DataSource } from '../../../../core/store/data-source/data-source.model';
 import { DataSourceSelectors } from '../../../../core/store/data-source/data-source.selectors';
 import { LibraryTypes } from '../../../../core/store/image/image.service';
 import { ToolboxMenuService } from '../../../../core/toolbox/toolbox-menu.service';
@@ -59,6 +58,7 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
   subscription?: Subscription;
   places: WidgetManifest[] = [];
   selectedItem?: Element | null;
+  usedDatasources$: Observable<DataSource[]>;
 
   @Input() set manifest(manifest: WidgetManifest | null) {
     this.manifest$.next(manifest);
@@ -81,28 +81,8 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
     modificationDate: ''
   };
 
-  get title() {
-    return this.manifest?.title;
-  }
-
-  get manifest() {
-    return this.manifest$.getValue();
-  }
-
-  @Input() set datasourceIds$(datasourceIds$: Observable<string[]>) {
-    this.usedDatasources$ = combineLatest([datasourceIds$, this.store.select(DataSourceSelectors.getDataSources)]).pipe(
-      map(
-        ([ids, datasources]) =>
-          ids
-            .map((id) => datasources.find((ds) => ds.id === id) ?? id)
-            .map((nq) => (typeof nq !== 'string' ? nq : UNKNOWN_DATASOURCE(nq))) as NamedQuery[]
-      )
-    );
-    this.subscriptions.add(this.usedDatasources$.subscribe((unq) => (this.usedNameQueryIds = unq.map((nq) => nq.id))));
-    this.subscription?.unsubscribe();
-    this.subscription = datasourceIds$.subscribe(
-      (dsIds) => (this.selectedDataSource = JSON.parse(JSON.stringify(dsIds)))
-    );
+  @Input() set datasourceIds(datasourceIds: string[]) {
+    this.selectedDataSourceIds$.next(datasourceIds);
   }
 
   @Input() set widgetIndex(widgetIndex: number) {
@@ -110,18 +90,12 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
     this._widgetIndex = widgetIndex;
   }
 
-  search$ = new BehaviorSubject('');
   lockedView$: Observable<boolean>;
   targetIndexes$: Observable<number[]>;
-  usedDatasources$!: Observable<DataSource[]>;
-  allDataSources$: Observable<DataSource[]>;
-  usedNameQueryIds!: string[];
-  choiceUsed = {} as { [is: string]: boolean };
   _widgetIndex$ = new BehaviorSubject<number>(0);
   _widgetIndex!: number;
   open = false;
-  selectedDataSource: string[] = [];
-  idToNameDatasource: { [id: string]: string } = {};
+  selectedDataSourceIds$ = new BehaviorSubject<string[]>([]);
 
   windowManifest: DashboardManifest | null = null;
   private windowManifest$: Observable<DashboardManifest>;
@@ -144,29 +118,7 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
       .select(DashboardSelectors.windowManifest)
       .pipe(distinctUntilChanged((p, c) => JSON.stringify(p) === JSON.stringify(c)));
 
-    this.allDataSources$ = combineLatest([
-      this.manifest$,
-      this.store.select(DataSourceSelectors.getDataSourcesSorted),
-      this.search$
-    ]).pipe(
-      map(([manifest, allNamedQueries, searchValue]) => {
-        let nqs = [...allNamedQueries];
-        if (!!manifest) {
-          const manifestNamedQueries = Array.isArray(manifest.datasource) ? manifest.datasource : [manifest.datasource];
-          manifestNamedQueries.forEach((manifestNamedQuery) => {
-            const alreadyPresent = !!allNamedQueries.find((nq) => nq.id === manifestNamedQuery);
-            if (!alreadyPresent) {
-              nqs.push(UNKNOWN_DATASOURCE(manifestNamedQuery ?? ''));
-            }
-          });
-        }
-        return nqs.filter((nq) => nq.name.toLowerCase().includes(searchValue.toLowerCase()));
-      })
-    );
     this.targetIndexes$ = this.store.select(DashboardSelectors.targetTenantsIndexes);
-    this.subscriptions.add(
-      this.allDataSources$.subscribe((allNqs) => allNqs.forEach((nq) => (this.choiceUsed[nq.id] = false)))
-    );
     this.subscriptions.add(
       this.windowManifest$.subscribe((manifest) => {
         this.windowManifest = manifest;
@@ -174,11 +126,12 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
     );
     this.lockedView$ = this.store
       .select(DashboardSelectors.globalManifest)
-      .pipe(map((m) => !!m.locked || !!this.manifest?.locked));
+      .pipe(map((m) => !!m.locked || !!this.manifest$.getValue()?.locked));
 
-    this.subscriptions.add(
-      this.allDataSources$.subscribe((allDs) => allDs.forEach((ds) => (this.idToNameDatasource[ds.id] = ds.name)))
-    );
+    this.usedDatasources$ = combineLatest([
+      this.store.select(DataSourceSelectors.getDataSourcesSorted),
+      this.selectedDataSourceIds$
+    ]).pipe(map(([allDss, dsIds]) => dsIds.map((id) => allDss.find((ds) => ds.id === id) ?? UNKNOWN_DATASOURCE(id))));
   }
 
   onArrowUp() {
@@ -222,19 +175,11 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
   get currentPlacementIndex() {
     return this.places.findIndex(
       (place) =>
-        this.manifest?.layout.x === place.layout.x &&
-        this.manifest.layout.y === place.layout.y &&
-        this.manifest.layout.width === place.layout.width &&
-        this.manifest.layout.height === place.layout.height
+        this.manifest$.getValue()?.layout.x === place.layout.x &&
+        this.manifest$.getValue()?.layout.y === place.layout.y &&
+        this.manifest$.getValue()?.layout.width === place.layout.width &&
+        this.manifest$.getValue()?.layout.height === place.layout.height
     );
-  }
-
-  toogleDataSource(id: string) {
-    if (!this.selectedDataSource.includes(id)) {
-      this.selectedDataSource.push(id);
-    } else {
-      this.selectedDataSource = this.selectedDataSource.filter((dataSourceId) => dataSourceId !== id);
-    }
   }
 
   menuOpen($event?: MouseEvent, forceOpen?: boolean) {
@@ -280,7 +225,6 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
 
   toggleCombo() {
     if (!this.comboRef) {
-      this.usedNameQueryIds.forEach((unq) => (this.choiceUsed[unq] = true));
       this.comboRef = this.overlay.create(
         new OverlayConfig({
           hasBackdrop: true,
@@ -317,8 +261,8 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
     this.manifestModified.emit({
       widgetIndex: this._widgetIndex,
       manifest: {
-        ...this.manifest,
-        datasource: this.selectedDataSource
+        ...this.manifest$.getValue(),
+        datasource: this.selectedDataSourceIds$.getValue()
       } as unknown as WidgetManifest
     });
     this.toggleCombo();
@@ -422,7 +366,7 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
       this.toolboxMenuService.addToCatalog(
         {
           ...this.catalogInfo,
-          content: JSON.stringify({ ...this.manifest, title: this.catalogInfo.name })
+          content: JSON.stringify({ ...this.manifest$.getValue(), title: this.catalogInfo.name })
         },
         this._widgetIndex
       );
@@ -477,7 +421,7 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
   }
 
   moveToPlace(place: WidgetManifest) {
-    const startLayout = this.manifest!.layout;
+    const startLayout = this.manifest$.getValue()!.layout;
     const targetLayout = place.layout;
     const newWindowManifest = JSON.parse(JSON.stringify(this.windowManifest)) as DashboardManifest;
 
@@ -525,6 +469,13 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
   disableValidation() {
     if (!this.toolboxMenuService.isValidForCatalog(this.catalogInfo?.name)) {
       this.crossCatalog?.nativeElement?.focus();
+    }
+  }
+
+  datasourcesChanged($event: DataSource[]) {
+    const ids = $event.map((ds) => ds.id);
+    if (JSON.stringify(this.selectedDataSourceIds$.getValue()) !== JSON.stringify(ids)) {
+      this.selectedDataSourceIds$.next(ids);
     }
   }
 }

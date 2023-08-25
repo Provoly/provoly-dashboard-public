@@ -25,6 +25,7 @@ import { MetadataComponent } from './components/metadata/metadata.component';
 import { VizualizeRawComponent } from './components/vizualize-raw/vizualize-raw.component';
 import { BaseWidgetComponent } from './components/widgets/base-widget.component';
 import { DataWidgetComponent } from './components/widgets/data-widget.component';
+import { DatasourceSelectorComponent } from './components/widgets/datasource-selector/datasource-selector.component';
 import { ResultSetSizePipe } from './components/widgets/header/resultset-size.pipe';
 import { PryWidgetHeaderComponent } from './components/widgets/header/widget-header.component';
 import { SettingsComponent } from './components/widgets/settings/settings.component';
@@ -70,7 +71,8 @@ const components = [
   DefaultTooltipComponent,
   BaseTooltipComponent,
   BaseFilterComponent,
-  FilterInstanciatorComponent
+  FilterInstanciatorComponent,
+  DatasourceSelectorComponent
 ];
 
 @NgModule({

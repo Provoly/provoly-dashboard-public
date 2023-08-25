@@ -1,6 +1,7 @@
 export * from './base-widget.component';
 export * from './data-widget.component';
 export * from './header/widget-header.component';
+export * from './datasource-selector/datasource-selector.component';
 export * from './header/resultset-size.pipe';
 export * from './widget-instanciator/widget-factory.service';
 export * from './widget-instanciator/widget-instanciator.component';

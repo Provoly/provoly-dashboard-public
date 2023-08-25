@@ -1,24 +1,24 @@
 <div class="o-widget__header">
   <div class="o-widget__header__content">
-    <h2 class="o-widget__header__content__title" *ngIf="!!title; else querySelector">
-      {{ title }}
+    <h2 class="o-widget__header__content__title" *ngIf="(manifest$ | async)?.title; else querySelector">
+      {{ (manifest$ | async)?.title }}
     </h2>
     <ng-template #querySelector>
       <div *ngFor="let ds of usedDatasources$ | async" class="o-widget__header__content__query">
         <pry-nq-color-selector [disabled]="true" [datasource]="ds"></pry-nq-color-selector>
         <img
           [height]="20"
-          [src]="ds.id | translateId: { type: 'datasource', output: 'icon' } | async"
+          [src]="ds.id | translateId : { type: 'datasource', output: 'icon' } | async"
           [width]="20"
           alt=""
           class="o-widget__header__content__query__icon"
         />
         <h3 class="o-widget__header__content__query__name">{{ ds.name }}</h3>
         <h3 class="o-widget__header__content__query__name" *ngIf="displayCount">
-          ({{ usedNameQueryIds | resultSetSize | async }})
+          ({{ (selectedDataSourceIds$ | async) ?? [] | resultSetSize | async }})
         </h3>
       </div>
-      <div *ngIf="!(usedDatasources$ | async)?.length" class="o-widget__header__content__no-data">
+      <div *ngIf="((usedDatasources$ | async) ?? []).length === 0" class="o-widget__header__content__no-data">
         <h2 class="o-widget__header__content__title">{{ '@pry.widget.noData' | i18n }}</h2>
       </div>
     </ng-template>
@@ -55,7 +55,7 @@
       <li
         class="m-context-menu__list__item"
         role="none"
-        *ngIf="!!manifest?.datasource && displayOption(headerOptions, 'datasourceSelection')"
+        *ngIf="(manifest$ | async)?.datasource && displayOption(headerOptions, 'datasourceSelection')"
       >
         <button
           type="button"
@@ -83,12 +83,11 @@
             class="a-btn"
             role="menuitem"
             tabindex="-1"
-            #secondElement
           >
             <pry-icon [height]="17" [width]="17" iconSvg="launch"></pry-icon>
             {{
               (targetIndex !== -1 ? '@pry.widget.target.existing' : '@pry.widget.target.new')
-                | i18n: { targetIndex: this.targetIndex + 1 }
+                | i18n : { targetIndex: this.targetIndex + 1 }
             }}
           </button>
         </li>
@@ -220,71 +219,14 @@
 </ng-template>
 
 <ng-template #template>
-  <div class="m-namedqueries-wrapper" role="dialog" aria-modal="true" aria-labelledby="dialog_namedqueries">
-    <div class="o-widget__search">
-      <input
-        id="catalog-search"
-        #inputCatalog
-        (keydown.shift.tab)="focusValidation()"
-        type="text"
-        class="a-form-field"
-        [placeholder]="'Recherchez une donnée'"
-        [ngModel]="search$ | async"
-        (ngModelChange)="this.search$.next($event)"
-      />
-      <pry-icon iconSvg="search" [width]="17" [height]="17"></pry-icon>
-    </div>
-    <div *ngIf="selectedDataSource.length > 0; else noDataSource">
-      <h4 class="a-h4">{{ '@pry.restitution.selection' | i18n }}</h4>
-      <div>
-        <ul class="o-datasources__list o-datasources__list--selected">
-          <li *ngFor="let id of selectedDataSource" class="o-datasources__item">
-            <button class="o-datasources__card is-selected" (click)="toogleDataSource(id)" type="button">
-              <p>
-                {{ idToNameDatasource[id] }}
-              </p>
-              <div class="a-btn a-btn--primary a-btn--icon-only">
-                <pry-icon [iconSvg]="'close'" [width]="17" [height]="17"></pry-icon>
-                <span class="u-visually-hidden">{{ '@pry.restitution.unselectDataSource' | i18n }}</span>
-              </div>
-            </button>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <ng-template #noDataSource>
-      <h4 class="a-h4">{{ '@pry.restitution.noDataSourceSelected' | i18n }}</h4>
-    </ng-template>
-    <h4 class="a-h4">{{ '@pry.restitution.select' | i18n }}</h4>
-    <ul class="o-datasources__list">
-      <li *ngFor="let nq of allDataSources$ | async" (click)="toogleDataSource(nq.id)" class="o-datasources__item">
-        <div class="o-datasources__card">
-          <div class="o-datasources__card__name">
-            <pry-checkbox
-              [ngModel]="selectedDataSource.includes(nq.id)"
-              (click)="$event.preventDefault()"
-            ></pry-checkbox>
-            <span class="u-visually-hidden">{{ '@pry.restitution.selectDataSource' | i18n }}</span>
-            <p class="a-p">{{ nq.id | translateId: { type: 'datasource', output: 'name' } | async }}</p>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </div>
-  <div class="m-btn-group">
-    <button type="button" (click)="toggleCombo()" class="a-btn a-btn--secondary">
-      {{ '@pry.toolbox.manifest.close' | i18n }}
-    </button>
-    <button
-      type="button"
-      (click)="emitManifest()"
-      #validate
-      (keydown.tab)="focusInputCatalog()"
-      class="a-btn a-btn--primary"
-    >
-      {{ '@pry.toolbox.manifest.validated' | i18n }}
-    </button>
-  </div>
+  <pry-datasource-selector
+    (cancel)="toggleCombo()"
+    (validated)="emitManifest()"
+    (nextTab)="focusInputCatalog()"
+    (previousTab)="focusValidation()"
+    (datasourcesChanged)="datasourcesChanged($event)"
+    [datasourceIds]="(selectedDataSourceIds$ | async) ?? []"
+  ></pry-datasource-selector>
 </ng-template>
 
 <ng-template #overlayCatalog>
@@ -370,7 +312,7 @@
     <ng-container *ngFor="let place of places; let i = index">
       <ng-container *ngIf="currentPlacementIndex !== i">
         <button type="button" class="a-btn" (click)="moveToPlace(place)">
-          <span>{{ '@pry.widget.tooltip.spotName' | i18n: { place: i + 1 } }}</span>
+          <span>{{ '@pry.widget.tooltip.spotName' | i18n : { place: i + 1 } }}</span>
         </button>
       </ng-container>
     </ng-container>

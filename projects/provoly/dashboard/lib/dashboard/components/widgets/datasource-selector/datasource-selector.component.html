@@ -1,0 +1,62 @@
+<div class="m-namedqueries-wrapper" role="dialog" aria-modal="true" aria-labelledby="dialog_namedqueries">
+  <div class="o-widget__search">
+    <input
+      id="catalog-search"
+      (keydown.shift.tab)="previousTab.emit()"
+      type="text"
+      class="a-form-field"
+      [placeholder]="'Recherchez une donnée'"
+      [ngModel]="search$ | async"
+      (ngModelChange)="search($event)"
+    />
+    <pry-icon iconSvg="search" [width]="17" [height]="17"></pry-icon>
+  </div>
+  <div *ngIf="((usedDatasources$ | async) ?? []).length > 0; else noDataSource">
+    <h4 class="a-h4">{{ '@pry.restitution.selection' | i18n }}</h4>
+    <div>
+      <ul class="o-datasources__list o-datasources__list--selected">
+        <li *ngFor="let ds of usedDatasources$ | async" class="o-datasources__item">
+          <button class="o-datasources__card -selected" (click)="toogleDataSource(ds.id)" type="button">
+            <p>
+              {{ ds.name }}
+            </p>
+            <pry-icon *ngIf="isGeo(ds)" iconSvg="globe"></pry-icon>
+            <div class="a-btn a-btn--primary a-btn--icon-only">
+              <pry-icon [iconSvg]="'close'" [width]="17" [height]="17"></pry-icon>
+              <span class="u-visually-hidden">{{ '@pry.restitution.unselectDataSource' | i18n }}</span>
+            </div>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <ng-template #noDataSource>
+    <h4 class="a-h4">{{ '@pry.restitution.noDataSourceSelected' | i18n }}</h4>
+  </ng-template>
+  <h4 class="a-h4">{{ '@pry.restitution.select' | i18n }}</h4>
+  <div class="o-datasources__main">
+    <ul class="o-datasources__list">
+      <li *ngFor="let ds of unusedDatasources$ | async" class="o-datasources__item">
+        <button class="o-datasources__card" (click)="toogleDataSource(ds.id)">
+          <span class="u-visually-hidden">{{ '@pry.restitution.selectDataSource' | i18n }}</span>
+          <p class="a-p">{{ ds.id | translateId : { type: 'datasource', output: 'name' } | async }}</p>
+          <pry-icon *ngIf="isGeo(ds)" iconSvg="globe"></pry-icon>
+        </button>
+      </li>
+    </ul>
+  </div>
+  <div class="m-btn-group o-datasources__bottom">
+    <button type="button" (click)="cancel.emit()" class="a-btn a-btn--secondary">
+      {{ '@pry.toolbox.manifest.close' | i18n }}
+    </button>
+    <button
+      type="button"
+      (click)="validated.emit()"
+      #validate
+      (keydown.tab)="nextTab.emit()"
+      class="a-btn a-btn--primary"
+    >
+      {{ '@pry.toolbox.manifest.validated' | i18n }}
+    </button>
+  </div>
+</div>

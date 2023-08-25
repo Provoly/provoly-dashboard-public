@@ -1,7 +1,7 @@
 <pry-widget-aggregated-chart-css></pry-widget-aggregated-chart-css>
 <div class="o-widget o-widget--chart" *ngIf="optionsCopy$ | async as optionsCopy">
   <pry-widget-header
-    [datasourceIds$]="datasourceIds$"
+    [datasourceIds]="(datasourceIds$ | async) ?? []"
     *ngIf="displayHeader$ | async"
     [widgetIndex]="widgetIndex"
     [manifest]="manifest"
