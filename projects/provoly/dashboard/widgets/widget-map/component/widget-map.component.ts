@@ -148,6 +148,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   imageNotProvided: boolean[] = [];
   basicActions$: Observable<('click' | 'lasso' | 'rectangle' | 'zoom' | 'move' | 'export' | 'upload')[]>;
   zoomAndCenter$ = new BehaviorSubject<{ zoom?: { start: number; min: number; max: number }; center?: number[] }>({});
+  interactionPopupOverlay?: Overlay;
+  interactionPopupListener?: (event: MapBrowserEvent<MouseEvent>) => void;
+  interactionPopupMode?: 'singleclick' | 'pointermove';
 
   constructor(
     store: Store<any>,
@@ -381,7 +384,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
             this.addContextMenuInteraction();
             this.addDropInteraction();
-            this.addOverlayOnHoverInteraction();
+            this.addOverlayOnInteraction();
             this.addSearchBarControl();
             this.addLayerSwitcher();
             this.addScaleControl();
@@ -695,15 +698,20 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     }
   }
 
-  private addOverlayOnHoverInteraction() {
-    const popupOverlay = new Overlay({
-      element: this.popup.nativeElement,
-      offset: [9, 9]
-    });
-    this.map.addOverlay(popupOverlay);
+  private addOverlayOnInteraction() {
+    if (!this.interactionPopupOverlay) {
+      this.interactionPopupOverlay = new Overlay({
+        element: this.popup.nativeElement,
+        offset: [9, 9]
+      });
+      this.map.addOverlay(this.interactionPopupOverlay);
+    }
     if (this.optionsCopy.tooltipMode !== TooltipMode.NONE) {
       const tooltip = this.optionsCopy.tooltipMode === TooltipMode.CLICK ? 'singleclick' : 'pointermove';
-      this.map.on(tooltip, (event: MapBrowserEvent<MouseEvent>) => {
+      if (!!this.interactionPopupMode && !!this.interactionPopupListener) {
+        this.map.un(this.interactionPopupMode, this.interactionPopupListener);
+      }
+      this.interactionPopupListener = (event: MapBrowserEvent<MouseEvent>) => {
         const values = this.map.getFeaturesAtPixel(event.pixel, { hitTolerance: 5 }) as (
           | Feature<Circle>
           | Feature<Point>
@@ -726,7 +734,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         if (wmsLayers) {
           this.getFeatureFromServer(wmsLayers, event.coordinate);
         }
-      });
+      };
+      this.map.on(tooltip, this.interactionPopupListener);
+      this.interactionPopupMode = tooltip;
     }
   }
 
