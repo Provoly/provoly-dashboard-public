@@ -109,6 +109,11 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
           manifestId: selectedPresentation.id
         })
       );
+      this.store.dispatch(
+        DashboardActions.setInitialPresentation({
+          initial: { windows: [{ widgets: [], grid: { layout: this.chosenLayout as DashboardGridLayout } }] }
+        })
+      );
       this.router?.navigateByUrl(this.editionStartUrl);
     } else {
       this.store
