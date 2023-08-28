@@ -275,18 +275,26 @@ const getFields = () => {
 const deleteField = (id) => {
   fields = fields.filter((field) => field.id !== id);
 };
-const deactivateDatasetVersion = (id) => { datasetVersions.find((datasetVersion) => datasetVersion.id === id).state = 'INACTIVE';
+
+const getDatasetVersions = () => {
   return datasetVersions;
 };
 
-const activateDatasetVersion = (id) => { datasetVersions.find((datasetVersion) => datasetVersion.id === id).state = 'ACTIVE';
+const getDatasetVersionsByDatasetId = (id) => {
+  return datasetVersions.filter((version) => version.dataset === id);
+};
+
+const deactivateDatasetVersion = (id) => {
+  datasetVersions.find((datasetVersion) => datasetVersion.id === id).state = 'INACTIVE';
+  return datasetVersions;
+};
+
+const activateDatasetVersion = (id) => {
+  datasetVersions.find((datasetVersion) => datasetVersion.id === id).state = 'ACTIVE';
   return datasetVersions;
 };
 
 module.exports = {
-  activateDatasetVersion,
-  deactivateDatasetVersion,
-  datasetVersions,
   classes,
   classesIds,
   fields: {
@@ -337,6 +345,12 @@ module.exports = {
     getMetadata: getDatasetMetadata,
     addMetadata: addDatasetMetadata,
     deleteMetadata: deleteDatasetMetadata
+  },
+  datasetVersions: {
+    get: getDatasetVersions,
+    getById: getDatasetVersionsByDatasetId,
+    activate: activateDatasetVersion,
+    deactivate: deactivateDatasetVersion
   },
   transformations: {
     get: getTransformations,

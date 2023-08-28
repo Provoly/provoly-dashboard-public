@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { Dataset, DatasetPreview, } from '../../model/dataset.interface';
+import { Dataset, DatasetPreview } from '../../model/dataset.interface';
 import { DataSourceActions } from './data-source.actions';
 import { DatasetVersion, NamedQuery } from './data-source.model';
 
@@ -141,6 +141,10 @@ export const dataSourceReducer = createReducer(
     ...state,
     error: action.error,
     loading: false
+  })),
+  on(DataSourceActions.dataset.updateVersionList, (state, action) => ({
+    ...state,
+    datasetVersions: [...state.datasetVersions.filter((version) => version.id === action.id), ...action.versions]
   })),
   on(DataSourceActions.dataset.previews.getById, (state, action) => ({
     ...state,

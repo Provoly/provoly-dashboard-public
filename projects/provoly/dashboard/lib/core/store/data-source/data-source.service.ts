@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { map, mergeMap, Observable, of, switchMap } from 'rxjs';
 import { PryI18nService } from '../../i18n/i18n.service';
 import { DatasetMetadata } from '../../model/admin-api.model';
-import { Dataset, DatasetMessage, DatasetPreview } from '../../model/dataset.interface';
+import { Dataset, DatasetPreview } from '../../model/dataset.interface';
 import { ConfigState } from '../config/config.reducer';
 import { ConfigSelectors } from '../config/config.selectors';
 import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from '../search/search.constants';
@@ -150,6 +150,16 @@ export class DataSourceService {
     return this.store
       .select(ConfigSelectors.refUrl)
       .pipe(switchMap((url) => this.httpClient.get<DatasetVersion[]>(encodeURI(`${url}/dataset-versions`))));
+  }
+
+  getDatasetVersionsById(id: string) {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(
+        switchMap((url) =>
+          this.httpClient.get<DatasetVersion[]>(encodeURI(`${url}/datasets/id/${id}/dataset-versions`))
+        )
+      );
   }
 
   getPreviews(id: string) {

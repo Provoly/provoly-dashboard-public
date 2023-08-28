@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { PryVisibility } from '../../components/share/share.model';
-import { Dataset, DatasetMessage, DatasetPreview } from '../../model/dataset.interface';
+import { Dataset, DatasetPreview } from '../../model/dataset.interface';
 import { MonoClassSearchPayload } from '../../model/search-mono-class.model';
 import { FullTextSearchPayload, MultiClassSearchPayload } from '../../model/search-multi-class.model';
 import { DatasetVersion, NamedQuery } from './data-source.model';
@@ -72,6 +72,11 @@ export const DataSourceActions = {
       props<{ versions: DatasetVersion[] }>()
     ),
     listVersionsFailure: createAction('[Dataset] Get Dataset versions Failure'),
+    listVersionsByDatasetId: createAction('[Dataset] Get Dataset Versions by Dataset Id', props<{ id: string }>()),
+    updateVersionList: createAction(
+      '[Dataset] Update Dataset version list',
+      props<{ id: string; versions: DatasetVersion[] }>()
+    ),
     selectedDatasetVersion: createAction('[Dataset] Select Dataset version', props<{ version: DatasetVersion }>()),
     deactivateDatasetVersion: createAction(
       '[Dataset] Deactivate dataset version',

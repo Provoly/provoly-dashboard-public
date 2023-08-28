@@ -1,4 +1,4 @@
-import { Dataset, DataSourceActions, PryDatasetType } from '@provoly/dashboard';
+import { Dataset, DatasetVersion, DataSourceActions, PryDatasetType } from '@provoly/dashboard';
 import { dataSourceReducer, DataSourceState, initialDataSourceState } from './data-source.reducer';
 
 describe('Dataset Reducer', () => {
@@ -19,6 +19,31 @@ describe('Dataset Reducer', () => {
       oClass: '987654321',
       type: PryDatasetType.CLOSED,
       metadata: []
+    }
+  ];
+
+  const datasetVersions: DatasetVersion[] = [
+    {
+      id: 'AAAA-BBBB-CCCC',
+      oClass: '123456789',
+      metadata: [],
+      dataset: 'dataset-id',
+      lastModified: '2022-10-05T14:48:00.000Z',
+      available: true,
+      version: 1,
+      state: 'OK',
+      withFile: false
+    },
+    {
+      id: 'CCCC-BBBB-AAAA',
+      oClass: '123456789',
+      metadata: [],
+      dataset: 'dataset-id',
+      lastModified: '2022-10-20T14:48:00.000Z',
+      available: true,
+      version: 2,
+      state: 'OK',
+      withFile: false
     }
   ];
 
@@ -130,6 +155,24 @@ describe('Dataset Reducer', () => {
       ).toEqual({
         ...initialState,
         selectedDataset: null
+      });
+    });
+  });
+
+  describe('dataset versions', () => {
+    it('should filter old versions and update version list with new ones', () => {
+      expect(
+        dataSourceReducer(
+          {
+            ...initialState,
+            datasetVersions: [{ ...datasetVersions[0], available: false }]
+          },
+          DataSourceActions.dataset.updateVersionList({ id: 'dataset-id', versions: datasetVersions })
+        )
+      ).toEqual({
+        ...initialState,
+        datasetVersions: datasetVersions,
+        isLoading: false
       });
     });
   });

@@ -254,8 +254,20 @@ export class DataSourceEffects {
       ofType(DataSourceActions.dataset.listVersions),
       switchMap((action) =>
         this.dataSourceService.getDatasetVersions().pipe(
-          map((data) => DataSourceActions.dataset.listVersionsSuccess({ versions: data })),
-          catchError((error) => [DataSourceActions.dataset.listVersionsFailure()])
+          map((versions) => DataSourceActions.dataset.listVersionsSuccess({ versions })),
+          catchError((_) => [DataSourceActions.dataset.listVersionsFailure()])
+        )
+      )
+    )
+  );
+
+  listVersionsById$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DataSourceActions.dataset.listVersionsByDatasetId),
+      switchMap((action) =>
+        this.dataSourceService.getDatasetVersionsById(action.id).pipe(
+          map((versions) => DataSourceActions.dataset.updateVersionList({ id: action.id, versions })),
+          catchError((_) => [DataSourceActions.dataset.listVersionsFailure()])
         )
       )
     )

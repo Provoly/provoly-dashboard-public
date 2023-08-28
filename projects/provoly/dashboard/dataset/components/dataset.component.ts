@@ -32,6 +32,7 @@ export class PryDatasetComponent extends SubscriptionnerDirective {
         datasets.filter((dataset) => search.length === 0 || dataset.name.toLowerCase().includes(search.toLowerCase()))
       )
     );
+    this.store.dispatch(DataSourceActions.dataset.listVersions());
   }
 
   consult(dataset: Dataset) {

@@ -153,4 +153,20 @@ describe('NamedQueryService', () => {
       httpTestingController.expectOne('ref/users/me/namedquery/fakeid/favorite');
     });
   });
+
+  describe('getDatasetVersions', () => {
+    it('should get versions of all datasets', () => {
+      service.getDatasetVersions().subscribe(() => {});
+
+      httpTestingController.expectOne('ref/dataset-versions');
+    });
+  });
+
+  describe('getDatasetVersionsById', () => {
+    it('should get versions by datasetId', () => {
+      service.getDatasetVersionsById('fakeid').subscribe(() => {});
+
+      httpTestingController.expectOne(`ref/datasets/id/fakeid/dataset-versions`);
+    });
+  });
 });

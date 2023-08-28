@@ -475,7 +475,10 @@ router.on(['OPTIONS', 'GET'], '/ref/model/class/datasets/count', (req, res, para
   makeResponseOk(res, dataModule.datasetCount());
 });
 router.on(['OPTIONS', 'GET'], '/ref/dataset-versions', (req, res, params) =>
-  makeResponseOk(res, dataModule.datasetVersions)
+  makeResponseOk(res, dataModule.datasetVersions.get())
+);
+router.on(['OPTIONS', 'GET'], '/ref/datasets/id/:id/dataset-versions', (req, res, params) =>
+  makeResponseOk(res, dataModule.datasetVersions.getById(params.id))
 );
 router.on(['OPTIONS', 'GET'], '/replay/integrations/errors', (req, res, params) => {
   makeResponseOk(res, dataModule.integrationErrors);
@@ -907,13 +910,13 @@ router.on(['OPTIONS', 'PUT'], '/ref/datasets/id/:datasetId/metadata/id/:metadata
 });
 router.on(['POST'], '/ref/dataset-versions/id/:datasetVersionId/deactivate', (req, res, params) => {
   readPayload(req).then((payload) => {
-    dataModule.deactivateDatasetVersion(params['datasetVersionId']);
+    dataModule.datasetVersions.deactivate(params['datasetVersionId']);
     makeResponseOk(res);
   });
 });
 router.on(['POST'], '/ref/dataset-versions/id/:datasetVersionId/activate', (req, res, params) => {
   readPayload(req).then((payload) => {
-    dataModule.activateDatasetVersion(params['datasetVersionId']);
+    dataModule.datasetVersions.activate(params['datasetVersionId']);
     makeResponseOk(res);
   });
 });

@@ -80,7 +80,8 @@ describe('DataSourceEffects', () => {
           provide: DataSourceService,
           useValue: {
             get: () => of(namedQueryList),
-            delete: () => null
+            delete: () => null,
+            getDatasetVersionsById: () => of([])
           }
         },
         {
@@ -205,4 +206,27 @@ describe('DataSourceEffects', () => {
   describe('updateWidgetAfterSave$', function () {});
 
   describe('loadedDataset$', function () {});
+
+  describe('listVersionsById$', function () {
+    it('should trigger updateVersionList once versions received', () => {
+      const getSpy = jest.spyOn(namedQueryService, 'getDatasetVersionsById').mockReturnValue(of([]));
+      store.setState(
+        buildState({
+          ...initialState
+        })
+      );
+
+      actions$ = hot('--a-', {
+        a: DataSourceActions.dataset.listVersionsByDatasetId({ id: 'fakeid' })
+      });
+
+      const expected$ = hot('--a-', {
+        a: DataSourceActions.dataset.updateVersionList({ id: 'fakeid', versions: [] })
+      });
+      expect(effects.listVersionsById$).toBeObservable(expected$);
+      expect(effects.listVersionsById$).toSatisfyOnFlush(() => {
+        expect(getSpy).toHaveBeenCalled();
+      });
+    });
+  });
 });
