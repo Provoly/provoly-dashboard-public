@@ -27,4 +27,31 @@ describe('Admin Selectors', () => {
       expect(result).toEqual('menu');
     });
   });
+  describe('selectedAssociation', () => {
+    it('should return selected association', () => {
+      const selectedAssociation = {
+        id: 'Attribute123',
+        associations: [
+          {
+            id: '12345',
+            name: 'test association Attribute',
+            type: 'dataset'
+          }
+        ],
+        usedElsewhere: true
+      };
+      const mockStateWithAssociation = {
+        ...initialState,
+        selectedAssociation: selectedAssociation
+      };
+      // @ts-ignore
+      const result = AdminSelectors.selectedAssociation.projector(mockStateWithAssociation);
+      expect(result).toEqual(selectedAssociation);
+    });
+
+    it('should return undefined when no association is selected', () => {
+      const result = AdminSelectors.selectedAssociation.projector(initialState);
+      expect(result).toBeUndefined();
+    });
+  });
 });

@@ -25,6 +25,7 @@ const subMenus = createSelector(
       return p;
     }, []) as SubMenu[]
 );
+const selectedAssociation = createSelector(feature, (state) => state?.selectedAssociation);
 
 export const AdminSelectors = {
   feature,
@@ -35,5 +36,6 @@ export const AdminSelectors = {
   actions,
   subActions,
   panelOpen,
-  componentType
+  componentType,
+  selectedAssociation
 };

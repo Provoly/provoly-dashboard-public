@@ -253,6 +253,7 @@ export class AdminClassEffects {
   constructor(
     private actions$: Actions,
     private adminService: AdminService,
-    private pryDialog: PryDialogService
+    private pryDialog: PryDialogService,
+    private service: AdminService
   ) {}
 }

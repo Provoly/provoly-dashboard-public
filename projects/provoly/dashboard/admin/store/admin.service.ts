@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
+  Associations,
   Attribute,
   Category,
   Class,
@@ -119,6 +120,30 @@ export class AdminService {
     return this.store
       .select(ConfigSelectors.refUrl)
       .pipe(mergeMap((url) => this.httpClient.post<void>(`${url}/abac/rules`, rule)));
+  }
+
+  getClassAssociations(id: string): Observable<Associations> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(mergeMap((url) => this.httpClient.get<Associations>(`${url}/model/class/${id}/associations`)));
+  }
+
+  getDatasetAssociations(id: string): Observable<Associations> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(mergeMap((url) => this.httpClient.get<Associations>(`${url}/datasets/${id}/associations`)));
+  }
+
+  getFieldAssociations(id: string): Observable<Associations> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(mergeMap((url) => this.httpClient.get<Associations>(`${url}/model/fields/${id}/associations`)));
+  }
+
+  getAttributeAssociations(id: string): Observable<Associations> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(mergeMap((url) => this.httpClient.get<Associations>(`${url}/model/attribute/${id}/associations`)));
   }
 
   getClass(id: string): Observable<Class> {

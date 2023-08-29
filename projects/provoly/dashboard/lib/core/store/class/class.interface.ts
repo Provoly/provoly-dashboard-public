@@ -19,3 +19,15 @@ export interface BusinessData {
   date: string;
   icon?: string;
 }
+
+export interface Associations {
+  id: string;
+  associations: [
+    {
+      id: string;
+      name: string;
+      type: string;
+    }
+  ];
+  usedElsewhere: boolean;
+}

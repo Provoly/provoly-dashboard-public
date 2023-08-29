@@ -2,11 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { concatLatestFrom } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { ClassSelectors, Field, FIELD_OPTIONS } from '@provoly/dashboard';
+import { Associations, ClassSelectors, Field, FIELD_OPTIONS } from '@provoly/dashboard';
 import { combineLatest, map, Observable, Subscription } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { FieldsActions } from '../store/fields.actions';
 import { FieldsSelectors } from '../store/fields.selectors';
+import { AdminSelectors } from '../../../store/admin.selectors';
 
 let nextCompId = 0;
 
@@ -17,17 +18,15 @@ let nextCompId = 0;
 export class AdminFieldsSelectComponent implements OnInit, OnDestroy {
   static id = 'AdminFieldsSelectComponent';
   currentField$: Observable<Field | undefined>;
+  associations$: Observable<Associations | undefined>;
   compId: number;
   tab: number = 0;
   sub = new Subscription();
   attributes$: Observable<{ name: string; classId: string }[]>;
 
-  constructor(
-    private store: Store<any>,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.currentField$ = this.store.select(FieldsSelectors.selectedField);
+    this.associations$ = this.store.select(AdminSelectors.selectedAssociation);
     this.compId = nextCompId++;
     this.attributes$ = combineLatest([this.currentField$, store.select(ClassSelectors.classes)]).pipe(
       map(([field, classes]) => {

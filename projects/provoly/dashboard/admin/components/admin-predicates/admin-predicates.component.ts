@@ -19,11 +19,7 @@ export class AdminPredicatesComponent {
   sortActive? = 'name';
   sortDirection? = 'asc';
 
-  constructor(
-    private store: Store<any>,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.store.dispatch(PredicatesActions.loadPredicates());
     this.predicates$ = this.store.select(PredicatesSelectors.predicates);
     this.loading$ = this.store.select(PredicatesSelectors.loading);

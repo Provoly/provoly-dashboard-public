@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import { ConfigSelectors, IMetadata, Predicate, VARIABLE_TYPE } from '@provoly/dashboard';
+import { Associations, ConfigSelectors, IMetadata, Predicate, VARIABLE_TYPE } from '@provoly/dashboard';
 
 import { AdminService } from './admin.service';
 
@@ -108,6 +108,122 @@ describe('Admin Service', () => {
         name: '_class_changed',
         type: 'UUID'
       });
+    });
+  });
+  describe('getAssociationsClass', () => {
+    const classId = 'class123';
+    const mockAssociations: {} = {
+      id: 'class123',
+      associations: [
+        {
+          id: '12345',
+          name: 'test association class',
+          type: 'dataset'
+        }
+      ],
+      usedElsewhere: true
+    };
+
+    it('should get associations for a class', () => {
+      let associations: Associations | undefined;
+
+      service.getClassAssociations(classId).subscribe((_associations) => {
+        associations = _associations;
+      });
+
+      const req = httpTestingController.expectOne(`ref/model/class/${classId}/associations`);
+      expect(req.request.method).toBe('GET');
+
+      req.flush(mockAssociations);
+
+      expect(associations).toBeDefined();
+    });
+  });
+  describe('getAssociationsDataset', () => {
+    const datasetId = 'dataset123';
+    const mockAssociations: {} = {
+      id: 'dataset123',
+      associations: [
+        {
+          id: '12345',
+          name: 'test association dataset',
+          type: 'dataset'
+        }
+      ],
+      usedElsewhere: true
+    };
+
+    it('should get associations for a dataset', () => {
+      let associations: Associations | undefined;
+
+      service.getDatasetAssociations(datasetId).subscribe((_associations) => {
+        associations = _associations;
+      });
+
+      const req = httpTestingController.expectOne(`ref/datasets/${datasetId}/associations`);
+      expect(req.request.method).toBe('GET');
+
+      req.flush(mockAssociations);
+
+      expect(associations).toBeDefined();
+    });
+  });
+  describe('getAssociationsField', () => {
+    const fieldId = 'field123';
+    const mockAssociations: {} = {
+      id: 'field123',
+      associations: [
+        {
+          id: '12345',
+          name: 'test association field',
+          type: 'dataset'
+        }
+      ],
+      usedElsewhere: true
+    };
+
+    it('should get associations for a field', () => {
+      let associations: Associations | undefined;
+
+      service.getFieldAssociations(fieldId).subscribe((_associations) => {
+        associations = _associations;
+      });
+
+      const req = httpTestingController.expectOne(`ref/model/fields/${fieldId}/associations`);
+      expect(req.request.method).toBe('GET');
+
+      req.flush(mockAssociations);
+
+      expect(associations).toBeDefined();
+    });
+  });
+  describe('getAssociationsAttribute', () => {
+    const AttributeId = 'Attribute123';
+    const mockAssociations: {} = {
+      id: 'Attribute123',
+      associations: [
+        {
+          id: '12345',
+          name: 'test association Attribute',
+          type: 'dataset'
+        }
+      ],
+      usedElsewhere: true
+    };
+
+    it('should get associations for a Attribute', () => {
+      let associations: Associations | undefined;
+
+      service.getAttributeAssociations(AttributeId).subscribe((_associations) => {
+        associations = _associations;
+      });
+
+      const req = httpTestingController.expectOne(`ref/model/attribute/${AttributeId}/associations`);
+      expect(req.request.method).toBe('GET');
+
+      req.flush(mockAssociations);
+
+      expect(associations).toBeDefined();
     });
   });
 });

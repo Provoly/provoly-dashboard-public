@@ -3,7 +3,8 @@ const relations = require('./relations');
 const casual = require('casual');
 
 const classes = JSON.parse(fs.readFileSync('./data/classes.json', 'utf8'));
-let datasetVersions = JSON.parse(fs.readFileSync('./data/datasetVersions.json', 'utf8'));
+const associations = JSON.parse(fs.readFileSync('./data/associations.json', 'utf8'));
+const datasetVersions = JSON.parse(fs.readFileSync('./data/datasetVersions.json', 'utf8'));
 const classesIds = classes.map((oClass) => oClass.id);
 let fields = JSON.parse(fs.readFileSync('./data/fields.json', 'utf8'));
 const categories = JSON.parse(fs.readFileSync('./data/categories.json', 'utf8'));
@@ -173,6 +174,10 @@ const importData = (file, dataset, code) => {
     ? { numberOfLines: 145, itemErrors: [] }
     : exampleErrors[Math.floor(Math.random() * exampleErrors.length)];
 };
+const getAssociations = (id) => {
+  return associations.find((association) => association.id === id);
+};
+
 const getDatasetStatus = () => {
   return datasetState;
 };
@@ -271,11 +276,6 @@ const deleteDatasetMetadata = (datasetId, metadataId) => {
 const getFields = () => {
   return fields;
 };
-
-const deleteField = (id) => {
-  fields = fields.filter((field) => field.id !== id);
-};
-
 const getDatasetVersions = () => {
   return datasetVersions;
 };
@@ -293,8 +293,13 @@ const activateDatasetVersion = (id) => {
   datasetVersions.find((datasetVersion) => datasetVersion.id === id).state = 'ACTIVE';
   return datasetVersions;
 };
+const deleteField = (id) => {
+  fields = fields.filter((field) => field.id !== id);
+};
 
 module.exports = {
+  datasetVersions,
+
   classes,
   classesIds,
   fields: {
@@ -359,5 +364,8 @@ module.exports = {
     activate: activateTransformation,
     deactivate: deactivateTransformation
   },
-  departements
+  departements,
+  association: {
+    get: getAssociations
+  }
 };

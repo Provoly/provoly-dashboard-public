@@ -2,11 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { concatLatestFrom } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Class, DataSourceSelectors } from '@provoly/dashboard';
+import { Associations, Class, DataSourceSelectors } from '@provoly/dashboard';
 import { map, Observable, Subscription } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminClassActions } from '../store/admin-class.actions';
 import { AdminClassSelectors } from '../store/admin-class.selectors';
+import { AdminSelectors } from '../../../store/admin.selectors';
 
 let nextCompId = 0;
 
@@ -21,13 +22,11 @@ export class AdminClassesSelectComponent implements OnInit, OnDestroy {
   sub = new Subscription();
   currentClass$: Observable<Class | undefined>;
   linkedObjects$: Observable<any[]>;
+  associations$: Observable<Associations | undefined>;
 
-  constructor(
-    private store: Store<any>,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.currentClass$ = this.store.select(AdminClassSelectors.selectedClass);
+    this.associations$ = this.store.select(AdminSelectors.selectedAssociation);
     this.compId = nextCompId++;
     this.linkedObjects$ = this.currentClass$.pipe(
       concatLatestFrom((clazz) => this.store.select(DataSourceSelectors.datasets)),

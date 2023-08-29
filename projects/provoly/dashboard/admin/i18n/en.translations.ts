@@ -231,6 +231,8 @@ export const enTranslations = {
         createClassConfirmMessage: 'Confirm business model creation',
         deleteClassConfirmMessage: 'Confirm deleting the selected business model',
         linkedObjects: 'Linked objects',
+        usedElsewhere: "Used by other users' objects",
+        associations: 'Associations',
         type: 'Type',
         attributes: {
           add: 'business model Add attribute',

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { DataSourceActions, RelationTypesActions } from '@provoly/dashboard';
-import { map, mergeMap } from 'rxjs/operators';
+import { Associations, DataSourceActions, RelationTypesActions } from '@provoly/dashboard';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { AdminActions } from './admin.actions';
 import { AdminService } from './admin.service';
+import { Observable, switchMap } from 'rxjs';
 
 @Injectable()
 export class AdminEffects {
@@ -82,9 +83,49 @@ export class AdminEffects {
     )
   );
 
-  constructor(
-    private actions$: Actions,
-    private service: AdminService,
-    private router: Router
-  ) {}
+  fetchClassAssociations$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AdminActions.fetchClassAssociations),
+      mergeMap((action) =>
+        this.service.getClassAssociations(action.id).pipe(
+          map((association) => AdminActions.fetchAssociationsSuccess({ association })),
+          catchError((error) => [AdminActions.fetchAssociationsFailure({ error: error })])
+        )
+      )
+    )
+  );
+  fetchFieldAssociations$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AdminActions.fetchFieldAssociations),
+      mergeMap((action) =>
+        this.service.getFieldAssociations(action.id).pipe(
+          map((association) => AdminActions.fetchAssociationsSuccess({ association })),
+          catchError((error) => [AdminActions.fetchAssociationsFailure({ error: error })])
+        )
+      )
+    )
+  );
+  fetchDatasetAssociations$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AdminActions.fetchDatasetAssociations),
+      mergeMap((action) =>
+        this.service.getDatasetAssociations(action.id).pipe(
+          map((association) => AdminActions.fetchAssociationsSuccess({ association })),
+          catchError((error) => [AdminActions.fetchAssociationsFailure({ error: error })])
+        )
+      )
+    )
+  );
+  fetchAttributeAssociations$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AdminActions.fetchAttributeAssociations),
+      mergeMap((action) =>
+        this.service.getAttributeAssociations(action.id).pipe(
+          map((association) => AdminActions.fetchAssociationsSuccess({ association })),
+          catchError((error) => [AdminActions.fetchAssociationsFailure({ error: error })])
+        )
+      )
+    )
+  );
+  constructor(private actions$: Actions, private service: AdminService, private router: Router) {}
 }

@@ -83,6 +83,10 @@ router.on(['OPTIONS', 'GET'], '/ref/model/class', (req, res, params) => {
   makeResponseOk(res, dataModule.classes);
 });
 
+router.on(['OPTIONS', 'GET'], '/ref/model/class/:id/associations', (req, res, params) => {
+  makeResponseOk(res, dataModule.association.get(params.id));
+});
+
 router.on(['OPTIONS', 'PUT'], '/ref/model/class/id/:id/attribute', (req, res, params) => {
   readPayload(req).then((payload) => {
     if (payload) {
@@ -120,6 +124,9 @@ router.on('POST', '/ref/model/class', (req, res, params) => {
     makeResponseOk(res);
   });
 });
+router.on(['OPTIONS', 'GET'], '/ref/model/attribute/:id/associations', (req, res, params) => {
+  makeResponseOk(res, dataModule.association.get(params.id));
+});
 
 router.on(['OPTIONS', 'DELETE'], '/ref/model/class/id/:id/attribute/id/:attrId', (req, res, params) => {
   let classIndex = dataModule.classes.findIndex((obj) => obj.id === params.id);
@@ -147,6 +154,10 @@ router.on(['OPTIONS', 'DELETE'], '/ref/model/class/id/:id', (req, res, params) =
 
 router.on(['OPTIONS', 'GET'], '/ref/model/fields', (req, res, params) => {
   makeResponseOk(res, dataModule.fields.get());
+});
+
+router.on(['OPTIONS', 'GET'], '/ref/model/fields/:id/associations', (req, res, params) => {
+  makeResponseOk(res, dataModule.association.get(params.id));
 });
 
 router.on(['OPTIONS', 'POST'], '/ref/model/field', (req, res, params) => {
@@ -877,6 +888,11 @@ router.on(['OPTIONS', 'PUT'], '/exec/job/instances/id/:id/start', (req, res, par
     makeResponseOk(res, undefined, 200);
   });
 });
+
+router.on(['OPTIONS', 'GET'], '/ref/datasets/:id/associations', (req, res, params) => {
+  makeResponseOk(res, dataModule.association.get(params.id));
+});
+
 router.on(['GET'], '/ref/dataset-versions/id/:id/previews', (req, res, params) => {
   makeResponseOk(res, errorModule.generateErrors());
 });

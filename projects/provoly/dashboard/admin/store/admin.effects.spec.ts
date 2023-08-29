@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { Predicate, RelationTypesActions } from '@provoly/dashboard';
+import { Associations, Predicate, RelationTypesActions } from '@provoly/dashboard';
 import { hot } from 'jest-marbles';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { AdminActions } from './admin.actions';
 import { AdminEffects } from './admin.effects';
 import { AdminState, initialAdminState } from './admin.reducer';
@@ -21,6 +21,18 @@ const predicates: Predicate[] = [
     value: 'value'
   }
 ];
+
+const associations: Associations = {
+  id: 'Attribute123',
+  associations: [
+    {
+      id: '12345',
+      name: 'test association Attribute',
+      type: 'dataset'
+    }
+  ],
+  usedElsewhere: true
+};
 
 describe('AdminEffects', () => {
   let actions$: Observable<any>;
@@ -43,7 +55,19 @@ describe('AdminEffects', () => {
             getPredicates: () => of(predicates),
             getNextAvailableNum: () => of(2),
             getPredicate: () => of(predicates[0]),
-            savePredicate: () => of('')
+            savePredicate: () => of(''),
+            getAssociationClass: () =>
+              of({
+                id: 'Attribute123',
+                associations: [
+                  {
+                    id: '12345',
+                    name: 'test association Attribute',
+                    type: 'dataset'
+                  }
+                ],
+                usedElsewhere: true
+              })
           }
         }
       ]
@@ -153,6 +177,55 @@ describe('AdminEffects', () => {
       });
 
       expect(effects.deleteRelationTypeSuccess$).toBeObservable(expected$);
+    });
+  });
+
+  describe('fetchAssociationsClass$', () => {
+    it('should dispatch fetchAssociationSuccess on successful API call', () => {
+      const action = AdminActions.fetchClassAssociations({ id: '123456' });
+      actions$ = hot('--a-', { a: action });
+      effects.fetchClassAssociations$.subscribe(() => {
+        expect(adminService.getClassAssociations('someId')).toHaveBeenCalled();
+        expect(store.dispatch).toHaveBeenCalledWith(
+          AdminActions.fetchAssociationsSuccess({ association: associations })
+        );
+      });
+    });
+  });
+  describe('fetchAssociationsDataset$', () => {
+    it('should dispatch fetchAssociationSuccess on successful API call', () => {
+      const action = AdminActions.fetchDatasetAssociations({ id: '123456' });
+      actions$ = hot('--a-', { a: action });
+      effects.fetchDatasetAssociations$.subscribe(() => {
+        expect(adminService.getDatasetAssociations('someId')).toHaveBeenCalled();
+        expect(store.dispatch).toHaveBeenCalledWith(
+          AdminActions.fetchAssociationsSuccess({ association: associations })
+        );
+      });
+    });
+  });
+  describe('fetchAssociationsField$', () => {
+    it('should dispatch fetchAssociationSuccess on successful API call', () => {
+      const action = AdminActions.fetchFieldAssociations({ id: '123456' });
+      actions$ = hot('--a-', { a: action });
+      effects.fetchFieldAssociations$.subscribe(() => {
+        expect(adminService.getClassAssociations('someId')).toHaveBeenCalled();
+        expect(store.dispatch).toHaveBeenCalledWith(
+          AdminActions.fetchAssociationsSuccess({ association: associations })
+        );
+      });
+    });
+  });
+  describe('fetchAssociationsAttribute$', () => {
+    it('should dispatch fetchAssociationSuccess on successful API call', () => {
+      const action = AdminActions.fetchAttributeAssociations({ id: '123456' });
+      actions$ = hot('--a-', { a: action });
+      effects.fetchAttributeAssociations$.subscribe(() => {
+        expect(adminService.getClassAssociations('someId')).toHaveBeenCalled();
+        expect(store.dispatch).toHaveBeenCalledWith(
+          AdminActions.fetchAssociationsSuccess({ association: associations })
+        );
+      });
     });
   });
 });

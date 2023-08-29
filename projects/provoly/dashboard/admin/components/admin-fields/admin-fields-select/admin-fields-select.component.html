@@ -42,6 +42,18 @@
         >
           {{ '@pry.admin.fields.attributesTab' | i18n }}
         </button>
+        <button
+          type="button"
+          class="o-tabs__list__btn"
+          role="tab"
+          [id]="'tab-' + compId + '-2'"
+          [attr.aria-selected]="tab === 2"
+          [attr.tabindex]="tab === 2 ? 2 : -2"
+          [attr.aria-controls]="'tabpanel-' + compId + '-2'"
+          (click)="switch(2)"
+        >
+          {{ '@pry.admin.classes.associations' | i18n }}
+        </button>
       </div>
 
       <div class="o-tabs__panels">
@@ -97,6 +109,31 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+        <div
+          class="o-tabs__panels__item"
+          [class.is-hidden]="tab !== 2"
+          [id]="'tabpanel-' + compId + '-1'"
+          role="tabpanel"
+          [attr.aria-labelledby]="'tab-' + compId + '-1'"
+          tabindex="2"
+        >
+          <div *ngIf="associations$ | async as associations" class="o-tabs__panels__item__content">
+            <h4 class="a-h4">{{ '@pry.admin.classes.associations' | i18n }}</h4>
+            <div *ngFor="let association of associations.associations">
+              <p class="a-p">
+                {{ '@pry.admin.classes.name' | i18n }} :
+                <strong>{{ association.name }}</strong>
+              </p>
+              <p class="a-p">
+                {{ '@pry.admin.classes.type' | i18n }} :
+                <strong>{{ association.type }}</strong>
+              </p>
+            </div>
+            <p *ngIf="associations.usedElsewhere === true" class="a-p">
+              <strong>{{ '@pry.admin.classes.usedElsewhere' | i18n }}</strong>
+            </p>
           </div>
         </div>
       </div>

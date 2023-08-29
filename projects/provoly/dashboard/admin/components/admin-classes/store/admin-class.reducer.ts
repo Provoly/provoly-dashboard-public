@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { AttributeExtended, Class } from '@provoly/dashboard';
+import { Associations, AttributeExtended, Class} from '@provoly/dashboard';
 import { AdminClassActions } from './admin-class.actions';
 
 export const classesFeatureKey = '@pry/admin/classes';

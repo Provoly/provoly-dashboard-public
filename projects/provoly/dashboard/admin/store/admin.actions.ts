@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { BaseToolboxAction } from '@provoly/dashboard';
+import { Associations, BaseToolboxAction } from '@provoly/dashboard';
 
 export const AdminActions = {
   highlightMenu: createAction('[Admin] selecting highLight', props<{ menu: string }>()),
@@ -12,5 +12,11 @@ export const AdminActions = {
   selectComponentType: createAction(
     '[Admin] Select component Type for panel ',
     props<{ componentType: string | null }>()
-  )
+  ),
+  fetchClassAssociations: createAction('[Admin] Fetch Class associations', props<{ id: string }>()),
+  fetchFieldAssociations: createAction('[Admin] Fetch field associations', props<{ id: string }>()),
+  fetchAttributeAssociations: createAction('[Admin] Fetch Attribute associations', props<{ id: string }>()),
+  fetchDatasetAssociations: createAction('[Admin] Fetch Dataset associations', props<{ id: string }>()),
+  fetchAssociationsSuccess: createAction('[Admin] Fetch Associations Success', props<{ association: Associations }>()),
+  fetchAssociationsFailure: createAction('[Admin] Fetch Associations failure', props<{ error: any }>())
 };

@@ -20,11 +20,7 @@ export class AdminClassesComponent implements OnInit, OnDestroy {
   sortDirection? = 'asc';
   sub = new Subscription();
 
-  constructor(
-    private store: Store<any>,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.store.dispatch(ClassActions.loadDatasetCount());
     this.store.dispatch(ClassActions.load());
     this.store.dispatch(AdminClassActions.unselectClass());
@@ -73,6 +69,7 @@ export class AdminClassesComponent implements OnInit, OnDestroy {
   }
 
   selectClass(clazz: Class) {
+    this.store.dispatch(AdminActions.fetchClassAssociations({ id: clazz.id }));
     this.store.dispatch(AdminClassActions.selectClass({ clazz: clazz }));
     this.store.dispatch(AdminActions.selectComponentType({ componentType: 'AdminClassesSelectComponent' }));
   }

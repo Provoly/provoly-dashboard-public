@@ -231,6 +231,8 @@ export const frTranslations = {
         createClassConfirmMessage: 'Voulez-vous confirmer la création du modèle de données ?',
         deleteClassConfirmMessage: 'Confirmez-vous la suppression de ce modèle métier ?',
         linkedObjects: 'Objets liés',
+        usedElsewhere: "Utilisé par des objets d'autres utilisateurs",
+        associations: 'Associations',
         type: 'Type',
         attributes: {
           add: 'Nouvel attribut',

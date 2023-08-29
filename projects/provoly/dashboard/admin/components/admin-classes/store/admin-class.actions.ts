@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Attribute, AttributeExtended, Category, Class } from '@provoly/dashboard';
+import { Attribute, AttributeExtended, Category, Class, Associations } from '@provoly/dashboard';
 
 export const AdminClassActions = {
   updateToolbox: createAction('[Admin/Classes] Update Toolbox Class'),

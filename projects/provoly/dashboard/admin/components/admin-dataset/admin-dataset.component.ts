@@ -89,6 +89,7 @@ export class AdminDatasetComponent {
   }
 
   selectDataset(dataset: Dataset) {
+    this.store.dispatch(AdminActions.fetchDatasetAssociations({ id: dataset.id }));
     this.store.dispatch(DataSourceActions.dataset.selectDataset({ dataset }));
     this.store.dispatch(AdminActions.selectComponentType({ componentType: 'AdminSelectDatasetComponent' }));
   }

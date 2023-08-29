@@ -13,10 +13,7 @@ import { AdminState } from '../store/admin.reducer';
 export class PryAdminComponent extends SubscriptionnerDirective {
   limit?: string;
 
-  constructor(
-    private store: Store<AdminState>,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store: Store<AdminState>, private route: ActivatedRoute) {
     super();
     this.store.dispatch(AdminActions.resetActions());
     this.store.dispatch(AdminActions.togglePanel({ panelOpen: false }));

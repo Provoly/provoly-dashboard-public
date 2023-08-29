@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
+  Associations,
   Dataset,
   DatasetMetadata,
   DataSourceActions,
@@ -16,6 +17,7 @@ import { MetadataActions } from '../../admin-metadata/store/metadata.action';
 import { MetadataSelectors } from '../../admin-metadata/store/metadata.selector';
 import { AdminDatasetActions } from '../store/admin-dataset.actions';
 import { AdminDatasetSelectors } from '../store/admin-dataset.selector';
+import {AdminSelectors} from "../../../store/admin.selectors";
 
 let nextCompId = 0;
 
@@ -27,6 +29,7 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
   static id = 'AdminSelectDatasetComponent';
   compId: number;
   selectedDataset$: Observable<Dataset | null>;
+  associations$: Observable<Associations | undefined>;
   sub = new Subscription();
   currentTypeTranslation = '';
   tab: number = 0;
@@ -48,6 +51,7 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
     this.store.dispatch(MetadataActions.loadMetadata());
     this.selectedDataset$ = this.store.select(DataSourceSelectors.selectedDataset);
     this.datasetMetadata$ = this.store.select(DataSourceSelectors.selectedDatasetMetadata);
+    this.associations$ = this.store.select(AdminSelectors.selectedAssociation);
     this.metadata$ = this.store.select(MetadataSelectors.metadata);
     this.editable$ = this.store.select(AdminDatasetSelectors.editable);
     this.compId = nextCompId++;

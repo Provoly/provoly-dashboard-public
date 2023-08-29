@@ -19,11 +19,7 @@ export class AdminFieldsComponent {
   sortDirection? = 'asc';
   currentFieldId$: Observable<string | undefined>;
 
-  constructor(
-    private store: Store<any>,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.store.dispatch(ClassActions.load());
     this.store.dispatch(FieldActions.load());
     this.store.dispatch(FieldsActions.unselectField());
@@ -34,7 +30,7 @@ export class AdminFieldsComponent {
         zip(fields.map((field) => zip(of(field), this.store.select(ClassSelectors.attributesByFieldId(field.id)))))
       ),
       map((superFields) =>
-        superFields.map(([field, attributes]) => ({ ...field, attributes: attributes?.length ?? 0 }) as FieldExtended)
+        superFields.map(([field, attributes]) => ({ ...field, attributes: attributes?.length ?? 0 } as FieldExtended))
       )
     );
     const path = this.router.createUrlTree(['.', 'new'], { relativeTo: this.route });
@@ -57,6 +53,7 @@ export class AdminFieldsComponent {
   selectField(field: any) {
     this.store.dispatch(FieldsActions.selectField({ field: field }));
     this.store.dispatch(AdminActions.selectComponentType({ componentType: 'AdminFieldsSelectComponent' }));
+    this.store.dispatch(AdminActions.fetchFieldAssociations({ id: field.id }));
   }
 
   getTranslationType(type: string) {

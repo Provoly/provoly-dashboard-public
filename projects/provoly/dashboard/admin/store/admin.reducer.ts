@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { BaseMenuItem, BaseToolboxAction } from '@provoly/dashboard';
+import { Associations, BaseMenuItem, BaseToolboxAction } from '@provoly/dashboard';
 import { AdminActions } from './admin.actions';
 
 export const adminFeatureKey = '@pry/admin';
@@ -12,6 +12,7 @@ export interface AdminState {
   subActions: BaseToolboxAction[];
   panelOpen: boolean;
   componentType: string | null;
+  selectedAssociation: Associations | undefined;
 }
 
 export const initialAdminState: AdminState = {
@@ -34,7 +35,8 @@ export const initialAdminState: AdminState = {
   actions: [],
   subActions: [],
   panelOpen: true,
-  componentType: null
+  componentType: null,
+  selectedAssociation: undefined
 };
 
 export const adminReducer = createReducer(
@@ -70,5 +72,9 @@ export const adminReducer = createReducer(
   on(AdminActions.selectComponentType, (state, action) => ({
     ...state,
     componentType: action.componentType
+  })),
+  on(AdminActions.fetchAssociationsSuccess, (state, action) => ({
+    ...state,
+    selectedAssociation: action.association
   }))
 );

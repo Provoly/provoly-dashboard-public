@@ -1,4 +1,4 @@
-import { BaseToolboxAction } from '@provoly/dashboard';
+import {Associations, BaseToolboxAction} from '@provoly/dashboard';
 import { AdminActions } from './admin.actions';
 import { adminReducer, initialAdminState } from './admin.reducer';
 
@@ -92,6 +92,34 @@ describe('Admin Reducer', () => {
       ).toEqual({
         ...initialState,
         subActions: [action, { ...action, label: 'label2' }]
+      });
+    });
+  });
+  describe('fetchAssociationSuccess', () => {
+    it('should be able to update selectedAssociation', () => {
+      const association: Associations = {
+        id: 'Attribute123',
+        associations: [
+          {
+            id: '12345',
+            name: 'test association Attribute',
+            type: 'dataset'
+          }
+        ],
+        usedElsewhere: true
+      };
+
+      const action = AdminActions.fetchAssociationsSuccess({ association });
+
+      const result = adminReducer(initialAdminState, action);
+
+      expect(result).toEqual({
+        ...initialAdminState,
+        selectedAssociation: {
+          id: association.id,
+          associations: [{ ...association.associations[0] }],
+          usedElsewhere: association.usedElsewhere
+        }
       });
     });
   });
