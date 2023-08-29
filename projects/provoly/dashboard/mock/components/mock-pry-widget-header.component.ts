@@ -12,7 +12,7 @@ export class MockPryWidgetHeaderComponent {
   @Input() widgetIndex: any;
   @Input() additionalOptions: HeaderAction[] | null = [];
   @Input() headerOptions: { [key: string]: boolean } | {} | undefined;
-  @Input() datasourceIds$: any;
+  @Input() datasourceIds: any;
   @Input() displayCount: boolean = true;
   menuOpen: () => any = () => {};
 }

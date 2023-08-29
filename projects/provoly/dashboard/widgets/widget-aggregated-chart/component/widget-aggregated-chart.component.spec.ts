@@ -189,6 +189,7 @@ describe('WidgetAggregatedChartComponent', () => {
                 axis: {},
                 field: 'value',
                 scale: { zero: false },
+                stack: true,
                 title: undefined,
                 type: 'nominal'
               },
@@ -281,7 +282,100 @@ describe('WidgetAggregatedChartComponent', () => {
     });
   });
 
-  it('should allow grouping, and stacking with offset', (done) => {
+  it('should allow grouping, and stacking with offset for a line', (done) => {
+    const manifest = {
+      options: {
+        abscissa: {
+          keep0: true,
+          attribute: '1',
+          label: 'ABS'
+        },
+        ordinate: {
+          operation: 'none',
+          keep0: true,
+          attribute: '2',
+          label: 'ORD'
+        },
+        groupBy: {
+          attribute: '3',
+          color: 'my-color'
+        },
+        graph: {
+          legend: true,
+          tooltip: true,
+          type: 'line-default',
+          offset: true,
+          stacked: true
+        }
+      } as ChartAggregatedWidgetOptions,
+      datasource: 'a'
+    } as WidgetManifest;
+    DashboardSelectors.widgetManifest(0).setResult(manifest);
+    component._manifest$ = of(manifest);
+    component.widgetIndex = 0;
+    // @ts-ignore
+    component._widgetSize$.next({ width: 300, height: 300 });
+    component.vegaLiteSpec$.subscribe((spec) => {
+      expect(spec).toEqual({
+        $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+        title: 'ABS / ORD',
+        width: 'container',
+        height: 240,
+        padding: 10,
+        autosize: { type: 'fit', contains: 'padding' },
+        data: { values: [{ key: 'A', value: 'V', series: 'ORD' }] },
+        layer: [
+          {
+            mark: { innerRadius: 30, line: true, point: false, type: 'line' },
+            encoding: {
+              color: {
+                field: 'series',
+                legend: true,
+                scale: { scheme: 'my-color' },
+                title: '@pry.widget.chart.series'
+              },
+              theta: undefined,
+              x: {
+                axis: { grid: false, labelExpr: 'height < 300 ? truncate(datum.value, 10) : datum.value' },
+                bin: false,
+                field: 'key',
+                scale: { zero: true },
+                timeUnit: undefined,
+                title: 'ABS',
+                type: 'nominal'
+              },
+              xOffset: { field: 'series' },
+              y: {
+                axis: {},
+                field: 'value',
+                scale: { zero: false },
+                stack: true,
+                title: 'ORD',
+                type: 'nominal'
+              },
+              tooltip: [
+                { field: 'key', type: 'nominal', title: 'ABS' },
+                { field: 'value', type: 'nominal', title: 'ORD' },
+                { field: 'series', type: 'nominal', title: '@pry.widget.chart.series' }
+              ]
+            }
+          }
+        ],
+        config: {
+          text: { font: 'Ubuntu, sans-serif' },
+          style: {
+            'guide-label': { font: 'Ubuntu, sans-serif' },
+            'guide-title': { font: 'Ubuntu, sans-serif' },
+            'group-title': { font: 'Ubuntu, sans-serif' },
+            'group-subtitle': { font: 'Ubuntu, sans-serif' }
+          }
+        }
+      });
+      done();
+    });
+  });
+
+  it('should allow grouping, and stacking with offset for a bar', (done) => {
     const manifest = {
       options: {
         abscissa: {
@@ -343,12 +437,11 @@ describe('WidgetAggregatedChartComponent', () => {
                 title: 'ABS',
                 type: 'nominal'
               },
-              xOffset: { field: 'series' },
+              xOffset: undefined,
               y: {
                 axis: {},
                 field: 'value',
                 scale: { zero: false },
-                stack: true,
                 title: 'ORD',
                 type: 'nominal'
               },

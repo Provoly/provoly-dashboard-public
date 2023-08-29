@@ -277,6 +277,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     ]).pipe(
       map(([options, types, values, size, display]) => {
         const isCircular = [GraphType.CIRCULAR, GraphType.DONUT].includes(options.graph.type);
+        const stacked = options.graph.type.startsWith('bar') ? !options.graph.stacked : options.graph.stacked;
         return mergeDeep(
           {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
@@ -338,7 +339,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                         scale: {
                           zero: types.ordinate.vegaType === VegaType.QUANTITATIVE ? !!options.ordinate.keep0 : false
                         },
-                        ...(options.graph.stacked ? { stack: true } : {})
+                        ...(stacked ? { stack: true } : {})
                       }
                     : undefined,
                   theta: isCircular ? { field: 'value', type: types.ordinate.vegaType } : undefined,
@@ -350,7 +351,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                     legend: options.graph.legend,
                     scale: options.graph.legend ? { scheme: options.groupBy?.color ?? this.schemes[0].id } : undefined
                   },
-                  xOffset: options.graph.stacked && options.groupBy ? { field: 'series' } : undefined,
+                  xOffset: stacked && options.groupBy ? { field: 'series' } : undefined,
                   tooltip: options.graph.tooltip
                     ? options.groupBy
                       ? [
