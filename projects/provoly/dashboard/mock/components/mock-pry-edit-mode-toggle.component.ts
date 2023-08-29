@@ -8,4 +8,5 @@ import { Component, Input } from '@angular/core';
 })
 export class MockPryEditModeToggleComponent {
   @Input() labels = true;
+  @Input() displayLabels = true;
 }

@@ -21,9 +21,13 @@ export class RefreshService {
     if (!this.subscription) {
       this.subscription = interval(1000)
         .pipe(
-          withLatestFrom(this.store.select(DashboardSelectors.refreshRates)),
-          map(([interval, refreshRates]) =>
+          withLatestFrom(
+            this.store.select(DashboardSelectors.refreshRates),
+            this.store.select(DashboardSelectors.manifestDatasources)
+          ),
+          map(([interval, refreshRates, datasources]) =>
             Object.keys(refreshRates)
+              .filter((key) => datasources.includes(key))
               .filter((key) => refreshRates[key] !== undefined && refreshRates[key] !== 0)
               .filter((key) => interval % refreshRates[key] === 0)
           ),
