@@ -40,18 +40,6 @@
           [attr.aria-controls]="'tabpanel-' + compId + '-1'"
           (click)="switch(1)"
         >
-          {{ '@pry.admin.fields.attributesTab' | i18n }}
-        </button>
-        <button
-          type="button"
-          class="o-tabs__list__btn"
-          role="tab"
-          [id]="'tab-' + compId + '-2'"
-          [attr.aria-selected]="tab === 2"
-          [attr.tabindex]="tab === 2 ? 2 : -2"
-          [attr.aria-controls]="'tabpanel-' + compId + '-2'"
-          (click)="switch(2)"
-        >
           {{ '@pry.admin.classes.associations' | i18n }}
         </button>
       </div>
@@ -85,39 +73,6 @@
           role="tabpanel"
           [attr.aria-labelledby]="'tab-' + compId + '-1'"
           tabindex="1"
-        >
-          <div class="o-tabs__panels__item__content">
-            <table class="a-table">
-              <caption>
-                {{
-                  '@pry.admin.dataset.title' | i18n
-                }},
-                {{
-                  '@pry.action.sortableColumnHeader' | i18n
-                }}
-              </caption>
-              <thead>
-                <tr>
-                  <th>{{ '@pry.admin.fields.attributeName' | i18n }}</th>
-                  <th>{{ '@pry.admin.fields.className' | i18n }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let attribute of attributes$ | async">
-                  <td>{{ attribute.name }}</td>
-                  <td>{{ attribute.classId | translateId: { type: 'class' } | async }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div
-          class="o-tabs__panels__item"
-          [class.is-hidden]="tab !== 2"
-          [id]="'tabpanel-' + compId + '-1'"
-          role="tabpanel"
-          [attr.aria-labelledby]="'tab-' + compId + '-1'"
-          tabindex="2"
         >
           <div *ngIf="associations$ | async as associations" class="o-tabs__panels__item__content">
             <h4 class="a-h4">{{ '@pry.admin.classes.associations' | i18n }}</h4>
