@@ -13,7 +13,7 @@
         *ngIf="!!filter.value"
         class="m-filter__clear-wrapper m-filter__clear-wrapper--date"
         (click)="setFilter('')"
-        title="Clear all"
+        [title]="'@pry.filters.clear' | i18n"
       >
         <span class="m-filter__clear">x</span>
         <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
@@ -35,7 +35,7 @@
           *ngIf="!!date1"
           class="m-filter__clear-wrapper m-filter__clear-wrapper--date"
           (click)="clearDate(1)"
-          title="Clear all"
+          [title]="'@pry.filters.clear' | i18n"
         >
           <span class="m-filter__clear">x</span>
           <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
@@ -53,9 +53,9 @@
           *ngIf="!!date2"
           class="m-filter__clear-wrapper m-filter__clear-wrapper--date"
           (click)="clearDate(2)"
-          title="Clear all"
+          [title]="'@pry.filters.clear' | i18n"
         >
-          <span class="m-filter__clear">x</span>
+          <span class="m-filter__clear">×</span>
           <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
         </span>
       </div>

@@ -298,6 +298,7 @@ export const enTranslations = {
       label: 'Filters settings',
       noAttributes: 'Presentation had no available attributes',
       noFilters: 'No filters set up for this presentation yet.',
+      clear: 'Clear all',
       list: {
         attributes: 'Attributes: ',
         add: 'Add filter',

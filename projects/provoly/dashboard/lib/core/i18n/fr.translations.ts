@@ -302,6 +302,7 @@ export const frTranslations = {
       label: 'Paramétrer les filtres',
       noAttributes: "La présentation en cours ne dispose d'aucune attribut sur lequel filtrer",
       noFilters: "Vous n'avez pas encore paramétré de filtre.",
+      clear: 'Effacer',
       list: {
         attributes: 'Attributs: ',
         add: 'Créer un filtre',
