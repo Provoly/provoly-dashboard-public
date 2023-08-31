@@ -114,7 +114,6 @@ export interface MapGeoServerLayerOptions extends BaseWidgetMapLayerOptions {
 }
 
 export enum TooltipMode {
-  HOVER = 'hover',
   CLICK = 'click',
   NONE = 'none'
 }

@@ -224,9 +224,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         // auto determine layers parameters to provide a working view
         const autoOptions = JSON.parse(JSON.stringify({ relations: true, ...manifest.options })) as MapWidgetOptions;
         if (!autoOptions.tooltipMode) {
-          autoOptions.tooltipMode = TooltipMode.HOVER;
-        }
-        if (geoLayers.length > 0) {
           autoOptions.tooltipMode = TooltipMode.CLICK;
         }
         autoOptions.layers?.forEach((layer, i) => {
@@ -707,7 +704,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       this.map.addOverlay(this.interactionPopupOverlay);
     }
     if (this.optionsCopy.tooltipMode !== TooltipMode.NONE) {
-      const tooltip = this.optionsCopy.tooltipMode === TooltipMode.CLICK ? 'singleclick' : 'pointermove';
       if (!!this.interactionPopupMode && !!this.interactionPopupListener) {
         this.map.un(this.interactionPopupMode, this.interactionPopupListener);
       }
@@ -735,8 +731,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           this.getFeatureFromServer(wmsLayers, event.coordinate);
         }
       };
-      this.map.on(tooltip, this.interactionPopupListener);
-      this.interactionPopupMode = tooltip;
+      this.map.on('singleclick', this.interactionPopupListener);
+      this.interactionPopupMode = 'singleclick';
     }
   }
 
@@ -807,10 +803,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     } else {
       this.optionsCopy.layers?.forEach((layer) => delete layer.attribution);
     }
-  }
-
-  changeTooltipMode($event: 'hover' | 'click') {
-    this.optionsCopy.tooltipMode = $event === 'hover' ? TooltipMode.HOVER : TooltipMode.CLICK;
   }
 
   addLayer() {

@@ -227,7 +227,7 @@ const routes: Routes = [
             layout: { x: 1, y: 1, height: 12, width: 12 },
             options: {
               attributions: true,
-              tooltipMode: TooltipMode.HOVER,
+              tooltipMode: TooltipMode.CLICK,
               layers: [
                 {
                   type: 'point'

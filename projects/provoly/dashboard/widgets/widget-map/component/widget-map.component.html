@@ -39,42 +39,6 @@
         {{ '@pry.widget.map.attributions' | i18n }}
       </pry-checkbox>
 
-      <fieldset class="m-form-radio-group-wrapper">
-        <legend class="a-label">{{ '@pry.widget.map.tooltip.title' | i18n }}</legend>
-        <div class="m-form-radio-group">
-          <div class="m-form-radio-group__item">
-            <input
-              class="a-form-field"
-              type="radio"
-              id="click"
-              name="tooltip"
-              [ngModel]="optionsCopy.tooltipMode"
-              (ngModelChange)="changeTooltipMode('click')"
-              value="click"
-              [disabled]="((geoServerLayerDescriptions$ | async)?.length ?? 0) > 0"
-            />
-            <label for="click" class="a-label">
-              {{ '@pry.widget.map.tooltip.click' | i18n }}
-            </label>
-          </div>
-          <div class="m-form-radio-group__item">
-            <input
-              class="a-form-field"
-              type="radio"
-              id="hover"
-              name="tooltip"
-              [ngModel]="optionsCopy.tooltipMode"
-              (ngModelChange)="changeTooltipMode('hover')"
-              value="hover"
-              [disabled]="((geoServerLayerDescriptions$ | async)?.length ?? 0) > 0"
-            />
-            <label for="hover" class="a-label">
-              {{ '@pry.widget.map.tooltip.hover' | i18n }}
-            </label>
-          </div>
-        </div>
-      </fieldset>
-
       <div class="o-settings__popup__content__actions -has-separator">
         <button type="button" (click)="addLayer()" class="a-btn a-btn--icon-text -link-like">
           <pry-icon iconSvg="library_add"></pry-icon>

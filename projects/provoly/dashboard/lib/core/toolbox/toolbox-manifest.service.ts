@@ -32,7 +32,7 @@ export class ToolboxManifestService extends SubscriptionnerDirective {
             type: 'heatmap'
           }
         ],
-        tooltipMode: TooltipMode.HOVER
+        tooltipMode: TooltipMode.CLICK
       },
       datasource: USE_CURRENT_RESULTSET
     },
@@ -51,7 +51,7 @@ export class ToolboxManifestService extends SubscriptionnerDirective {
             type: 'bubble'
           }
         ],
-        tooltipMode: TooltipMode.HOVER
+        tooltipMode: TooltipMode.CLICK
       },
       datasource: USE_CURRENT_RESULTSET
     },
@@ -70,7 +70,7 @@ export class ToolboxManifestService extends SubscriptionnerDirective {
             type: 'marker'
           }
         ],
-        tooltipMode: TooltipMode.HOVER
+        tooltipMode: TooltipMode.CLICK
       },
       datasource: USE_CURRENT_RESULTSET
     },

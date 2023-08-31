@@ -94,7 +94,7 @@ describe('WidgetMapComponent', () => {
                   style: 'a-style',
                   layers: [{ type: 'heatmap' }, { type: 'marker' }, { type: 'point' }, { type: 'polygon' }],
                   fit: true,
-                  tooltipMode: TooltipMode.HOVER
+                  tooltipMode: TooltipMode.CLICK
                 } as MapWidgetOptions,
                 resultSet: 'rs'
               }
@@ -148,7 +148,7 @@ describe('WidgetMapComponent', () => {
         style: 'a-style',
         layers: [{ type: 'heatmap' }, { type: 'marker' }, { type: 'point' }, { type: 'polygon' }],
         fit: true,
-        tooltipMode: TooltipMode.HOVER
+        tooltipMode: TooltipMode.CLICK
       } as MapWidgetOptions,
       datasource: 'rs'
     });
@@ -166,7 +166,7 @@ describe('WidgetMapComponent', () => {
         style: 'a-style',
         layers: [{ type: 'heatmap' }],
         fit: true,
-        tooltipMode: TooltipMode.HOVER
+        tooltipMode: TooltipMode.CLICK
       } as MapWidgetOptions,
       datasource: 'rs'
     } as WidgetManifest);
@@ -187,7 +187,7 @@ describe('WidgetMapComponent', () => {
           ],
           fit: true,
           relations: true,
-          tooltipMode: TooltipMode.HOVER
+          tooltipMode: TooltipMode.CLICK
         }
       })
     );
@@ -206,7 +206,7 @@ describe('WidgetMapComponent', () => {
         ],
         fit: true,
         relations: true,
-        tooltipMode: TooltipMode.HOVER
+        tooltipMode: TooltipMode.CLICK
       });
     });
   });
@@ -231,7 +231,7 @@ describe('WidgetMapComponent', () => {
           ],
           fit: true,
           relations: true,
-          tooltipMode: TooltipMode.HOVER
+          tooltipMode: TooltipMode.CLICK
         }
       })
     );
@@ -248,7 +248,7 @@ describe('WidgetMapComponent', () => {
         ],
         fit: true,
         relations: true,
-        tooltipMode: TooltipMode.HOVER
+        tooltipMode: TooltipMode.CLICK
       });
     });
   });
@@ -275,7 +275,7 @@ describe('WidgetMapComponent', () => {
           ],
           fit: true,
           relations: true,
-          tooltipMode: TooltipMode.HOVER
+          tooltipMode: TooltipMode.CLICK
         }
       })
     );
@@ -294,7 +294,7 @@ describe('WidgetMapComponent', () => {
         ],
         fit: true,
         relations: true,
-        tooltipMode: TooltipMode.HOVER
+        tooltipMode: TooltipMode.CLICK
       });
     });
   });
@@ -316,7 +316,7 @@ describe('WidgetMapComponent', () => {
         options: {
           style: 'style1',
           fit: true,
-          tooltipMode: TooltipMode.HOVER,
+          tooltipMode: TooltipMode.CLICK,
           layers: [
             {
               intensityAsc: true,
