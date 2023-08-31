@@ -11,6 +11,7 @@ import {
   compareOperationFunctions,
   DEFAULT_ICON_URL,
   IconDefinitions,
+  IconOptions,
   IconPosition,
   IconRule
 } from '../store/config/icon-definitions.interface';
@@ -21,13 +22,25 @@ defaultImage.src = DEFAULT_ICON_URL;
 
 const SUB_ICON_SIZE_PERCENT = 0.25;
 
+export interface ImageCache {
+  [classId: string]: {
+    ruleSignature: string;
+    images: {
+      [rulesMatch: string]: Promise<HTMLCanvasElement>;
+    };
+    borderedImages: {
+      [rulesMatch: string]: Promise<HTMLCanvasElement>;
+    };
+  };
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class SymbolService {
   private definitions: IconDefinitions = {};
-
   private classes: Class[] = [];
+  private imageCache: ImageCache = {};
 
   constructor(
     private httpClient: HttpClient,
@@ -35,95 +48,142 @@ export class SymbolService {
     private sanitizer: DomSanitizer,
     private imageService: ImageService
   ) {
-    this.store.select(ConfigSelectors.iconDefinitions).subscribe((defs) => (this.definitions = defs));
     this.store.select(ClassSelectors.classes).subscribe((classes) => (this.classes = classes));
+    this.store.select(ConfigSelectors.iconDefinitions).subscribe((defs) => {
+      this.definitions = defs;
+
+      // For each class, generate all icons for ruleset
+      Object.keys(this.definitions).forEach((classId) => {
+        if (!this.imageCache[classId]) {
+          this.imageCache[classId] = { images: {}, borderedImages: {}, ruleSignature: '--init--' };
+        }
+        if (
+          !this.imageCache[classId] ||
+          this.imageCache[classId].ruleSignature !== JSON.stringify(this.definitions[classId])
+        ) {
+          this.imageCache[classId].ruleSignature = JSON.stringify(this.definitions[classId]);
+          this.imageCache[classId].images = this.generateAllRulesCombinaisonImages(this.definitions[classId]);
+          this.imageCache[classId].borderedImages = this.generateAllRulesCombinaisonImages(
+            this.definitions[classId],
+            '#8cd560'
+          );
+        }
+      });
+    });
   }
 
-  getSymbol(item: Item, borderColor?: string): Promise<HTMLCanvasElement> {
+  private generateAllRulesCombinaisonImages(definition: IconOptions[], borderColor?: string) {
+    return this.recursiveRuleMatches(definition)
+      .map((ruleMatch) => ({ [ruleMatch]: this.generateImageForRuleMatch(ruleMatch, definition, borderColor) }))
+      .reduce((p, c) => ({ ...p, ...c }), {});
+  }
+
+  recursiveRuleMatches(definition: IconOptions[]): string[] {
+    const [rule, ...otherRules] = definition;
+    if (!rule) {
+      return [''];
+    }
+    return this.recursiveRuleMatches(otherRules)
+      .map((rule: string) => ['0' + rule, '1' + rule])
+      .flat();
+  }
+
+  private generateImageForRuleMatch(
+    ruleMatch: string,
+    definition: IconOptions[],
+    borderColor?: string
+  ): Promise<HTMLCanvasElement> {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d') ?? (null as unknown as CanvasRenderingContext2D);
 
+    let applicableRules = definition.filter((_, idx) => ruleMatch[idx] === '1');
+    if (applicableRules.length === 0) {
+      // If no rule match, then apply default rule only
+      applicableRules = definition.filter((def) => !!def.isDefault);
+    }
+
+    const promiseImages = Promise.all(applicableRules.map((rule) => this.downloadImage(rule.iconUrl)));
+
     return new Promise((resolve, reject) => {
-      // First, we try to apply non-default rules
-      let appliableRules = (this.definitions[item.oClass] ?? this.definitions['default']).filter(
-        (def) => this.matchRule(item, def.rule) && !def.isDefault
-      );
+      promiseImages
+        .then((images) => {
+          canvas.width = 600;
+          canvas.height = 600;
+          const subSize = {
+            width: 600 * SUB_ICON_SIZE_PERCENT,
+            height: 600 * SUB_ICON_SIZE_PERCENT,
+            offsetToRight: 600 * (1 - SUB_ICON_SIZE_PERCENT),
+            offsetToBottom: 600 * (1 - SUB_ICON_SIZE_PERCENT)
+          };
 
-      if (appliableRules.length === 0) {
-        // If no rule match, then apply default rule
-        appliableRules = (this.definitions[item.oClass] ?? this.definitions['default']).filter(
-          (def) => !!def.isDefault
-        );
-      }
-
-      const promiseImages = Promise.all(appliableRules.map((rule) => this.downloadImage(rule.iconUrl)));
-
-      promiseImages.then((images) => {
-        canvas.width = 600;
-        canvas.height = 600;
-        const subSize = {
-          width: 600 * SUB_ICON_SIZE_PERCENT,
-          height: 600 * SUB_ICON_SIZE_PERCENT,
-          offsetToRight: 600 * (1 - SUB_ICON_SIZE_PERCENT),
-          offsetToBottom: 600 * (1 - SUB_ICON_SIZE_PERCENT)
-        };
-
-        // Then draw everything
-        appliableRules.forEach((def, idx, arr) => {
-          const image = images[idx];
-          switch (def.position) {
-            case IconPosition.BOTTOM_RIGHT:
-              ctx.globalCompositeOperation = 'source-over';
-              ctx.drawImage(image, subSize.offsetToRight, subSize.offsetToBottom, subSize.width, subSize.height);
-              break;
-            case IconPosition.BOTTOM_LEFT:
-              ctx.globalCompositeOperation = 'source-over';
-              ctx.drawImage(image, 0, subSize.offsetToBottom, subSize.width, subSize.height);
-              break;
-            case IconPosition.TOP_RIGHT:
-              ctx.globalCompositeOperation = 'source-over';
-              ctx.drawImage(image, subSize.offsetToRight, 0, subSize.width, subSize.height);
-              break;
-            case IconPosition.TOP_LEFT:
-              ctx.globalCompositeOperation = 'source-over';
-              ctx.drawImage(image, 0, 0, subSize.width, subSize.height);
-              break;
-            case IconPosition.FULL:
-            default:
-              if (!borderColor) {
-                // draw original image in normal mode
+          // Then draw everything
+          applicableRules.forEach((def, idx, arr) => {
+            const image = images[idx];
+            switch (def.position) {
+              case IconPosition.BOTTOM_RIGHT:
                 ctx.globalCompositeOperation = 'source-over';
-                ctx.drawImage(image, 0, 0, 600, 600);
-              } else {
-                let i = 0;
-                const dArr = [-1, -1, 0, -1, 1, -1, -1, 0, 1, 0, -1, 1, 0, 1, 1, 1]; // final y position
-                const strokeWidth = Math.round(600 * 0.05); // border width: 5% of image width
-                // draw images at offsets from the array scaled by s
-                for (; i < dArr.length; i += 2) {
-                  ctx.drawImage(
-                    image,
-                    strokeWidth + dArr[i] * strokeWidth,
-                    strokeWidth + dArr[i + 1] * strokeWidth,
-                    600,
-                    600
-                  );
+                ctx.drawImage(image, subSize.offsetToRight, subSize.offsetToBottom, subSize.width, subSize.height);
+                break;
+              case IconPosition.BOTTOM_LEFT:
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.drawImage(image, 0, subSize.offsetToBottom, subSize.width, subSize.height);
+                break;
+              case IconPosition.TOP_RIGHT:
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.drawImage(image, subSize.offsetToRight, 0, subSize.width, subSize.height);
+                break;
+              case IconPosition.TOP_LEFT:
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.drawImage(image, 0, 0, subSize.width, subSize.height);
+                break;
+              case IconPosition.FULL:
+              default:
+                if (!borderColor) {
+                  // draw original image in normal mode
+                  ctx.globalCompositeOperation = 'source-over';
+                  ctx.drawImage(image, 0, 0, 600, 600);
+                } else {
+                  let i = 0;
+                  const dArr = [-1, -1, 0, -1, 1, -1, -1, 0, 1, 0, -1, 1, 0, 1, 1, 1]; // final y position
+                  const strokeWidth = Math.round(600 * 0.05); // border width: 5% of image width
+                  // draw images at offsets from the array scaled by s
+                  for (; i < dArr.length; i += 2) {
+                    ctx.drawImage(
+                      image,
+                      strokeWidth + dArr[i] * strokeWidth,
+                      strokeWidth + dArr[i + 1] * strokeWidth,
+                      600,
+                      600
+                    );
+                  }
+
+                  // fill with color
+                  ctx.globalCompositeOperation = 'source-in';
+                  ctx.fillStyle = borderColor;
+                  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                  // draw original image in normal mode
+                  ctx.globalCompositeOperation = 'source-over';
+                  ctx.drawImage(image, strokeWidth, strokeWidth, 600, 600);
                 }
+            }
+          });
 
-                // fill with color
-                ctx.globalCompositeOperation = 'source-in';
-                ctx.fillStyle = borderColor;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                // draw original image in normal mode
-                ctx.globalCompositeOperation = 'source-over';
-                ctx.drawImage(image, strokeWidth, strokeWidth, 600, 600);
-              }
-          }
-        });
-
-        resolve(canvas);
-      });
+          resolve(canvas);
+        })
+        .catch((err) => reject(err));
     });
+  }
+
+  getSymbol(item: Item, bordered?: boolean): Promise<HTMLCanvasElement> {
+    // First, we try to apply non-default rules
+    let ruleMatch = (this.definitions[item.oClass] ?? this.definitions['default'])
+      .map((def) => (this.matchRule(item, def.rule) && !def.isDefault ? '1' : '0'))
+      .join('');
+
+    const imageSet = this.imageCache[item.oClass] ?? this.imageCache['default'];
+
+    return imageSet[bordered ? 'borderedImages' : 'images'][ruleMatch];
   }
 
   getSymbolOfClass(id: string): Promise<SafeUrl> {
@@ -145,9 +205,9 @@ export class SymbolService {
     });
   }
 
-  getSymbolAsIconStyle(item: Item, borderColor?: string): Promise<Style> {
+  getSymbolAsIconStyle(item: Item, bordered?: boolean): Promise<Style> {
     return new Promise<Style>((resolve, reject) => {
-      this.getSymbol(item, borderColor)
+      this.getSymbol(item, bordered)
         .then((canvas) => {
           const size = (this.definitions[item.oClass] ?? this.definitions['default'])[0].iconSize;
           const scale = [size[0] / canvas.width, size[1] / canvas.height];

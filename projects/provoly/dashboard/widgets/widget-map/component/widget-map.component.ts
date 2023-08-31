@@ -312,7 +312,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                 items.forEach((item) =>
                   Promise.all([
                     this.symbolService.getSymbolAsIconStyle(item),
-                    this.symbolService.getSymbolAsIconStyle(item, '#8cd560')
+                    this.symbolService.getSymbolAsIconStyle(item, true)
                   ]).then(([style, bStyle]) => {
                     result[item.id] = { classic: style, bordered: bStyle };
                     if (Object.keys(result).length >= total) {
