@@ -63,7 +63,14 @@
                 {{ version.version }}
                 <pry-icon *ngIf="version.state === 'ACTIVE' && first" iconSvg="check" class="check"></pry-icon>
               </td>
-              <td>{{ version.lastModified | sinceDate }}</td>
+              <td [pryTooltip]="dateTooltip">
+                {{ version.lastModified | sinceDate }}
+                <ng-template #dateTooltip>
+                  <div class="m-tooltip" aria-hidden="true" role="tooltip" id="dateTooltip">
+                    <span class="m-tooltip__text"> {{ version.lastModified | sinceDate : { onlyLocale: true } }}</span>
+                  </div>
+                </ng-template>
+              </td>
               <td *ngIf="version.state === 'ACTIVE' && first; else notActive">
                 {{ '@pry.dataset.version.currentlyActive' | i18n }}
                 <div class="info-icon">

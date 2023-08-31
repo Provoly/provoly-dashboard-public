@@ -71,27 +71,6 @@ describe('PipelineEffects', () => {
     expect(effects).toBeTruthy();
   });
 
-  /*
-  * To reactivate when rxjs7 will be ok with debounceTime pipes...
-  it('should call check service and get the response', () => {
-    const getSpy = jest.spyOn(pipelineService, 'check').mockReturnValue(of(response));
-    store.setState(initialState);
-
-    actions$ = hot('--a-', {
-      a: PipelineActions.check({ graph: {} })
-    });
-
-    const expected$ = cold('------------a-', {
-      a: PipelineActions.setResponse({ response: response })
-    });
-
-    expect(effects.callCheck$).toSatisfyOnFlush(() => {
-      console.log('RAAAAH');
-      expect(getSpy).toHaveBeenCalled();
-    });
-    expect(effects.callCheck$).toBeObservable(expected$);
-  }); */
-
   it('should call the list() service method and success action', () => {
     const getSpy = jest.spyOn(pipelineService, 'list');
     store.setState(initialState);

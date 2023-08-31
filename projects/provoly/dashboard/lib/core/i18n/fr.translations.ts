@@ -118,7 +118,7 @@ export const frTranslations = {
       },
       tile: 'Tuiles',
       now: "Aujourd'hui",
-      since_day: 'Il y a {{day}} jours',
+      since_day: 'Il y a {{day}} jour{{plural}}',
       layout: {
         '0': 'Composition libre',
         '0_detailled':

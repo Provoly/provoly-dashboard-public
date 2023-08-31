@@ -10,9 +10,7 @@ describe('SinceDatePipe', () => {
     { date: new Date(new Date().setDate(new Date().getDate() + -6)).toString(), string: '@pry.toolbox.since_day' },
     {
       date: new Date(new Date().setDate(-40)).toString(),
-      string: `${new Date(new Date().setDate(-40)).getDate()}/${`${
-        new Date(new Date().setDate(-40)).getMonth() + 1
-      }`.padStart(2, '0')}/${new Date(new Date().setDate(-40)).getFullYear()}`
+      string: new Date(new Date().setDate(-40)).toLocaleString()
     },
     { date: '', string: '' },
     { date: 'test', string: '' }
@@ -24,5 +22,10 @@ describe('SinceDatePipe', () => {
       is ${new Date(test.date)}`, () => {
       expect(pipe.transform(test.date)).toBe(test.string);
     });
+  });
+
+  it(`should display date localized (not as "since") when onlyLocale option is passed`, () => {
+    const date = new Date();
+    expect(pipe.transform(date.toString(), { onlyLocale: true })).toBe(date.toLocaleString());
   });
 });

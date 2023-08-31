@@ -118,7 +118,7 @@ export const enTranslations = {
       },
       tile: 'Tiles',
       now: 'Today',
-      since_day: 'Since {{day}} days',
+      since_day: 'Since {{day}} day{{plural}}',
       layout: {
         '0': 'Free layout',
         '0_detailled': 'Free mode display, rendering size and positioning fully customizable by the user.',

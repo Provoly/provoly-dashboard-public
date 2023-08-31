@@ -9,6 +9,17 @@ const schematicName = 'ng-add';
 describe(schematicName, () => {
   const runner = new SchematicTestRunner('schematics', path.join(__dirname, '../collection.json'));
   let tree: UnitTestTree;
+  let logFn = () => {};
+
+  beforeAll(() => {
+    // Deactivate logs
+    logFn = console.log;
+    console.log = () => {};
+  });
+
+  afterAll(() => {
+    console.log = logFn;
+  });
 
   beforeEach(async () => {
     tree = await runner.runExternalSchematic(
