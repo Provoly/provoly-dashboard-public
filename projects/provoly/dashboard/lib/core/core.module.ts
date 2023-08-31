@@ -42,6 +42,10 @@ import { RelationTypesEffects } from './store/relation-types/relation-types.effe
 import { relationTypeReducer, relationTypesFeatureKey } from './store/relation-types/relation-types.reducer';
 import { SearchEffects } from './store/search/search.effects';
 import { searchFeatureKey, searchReducer } from './store/search/search.reducer';
+import { AccordionComponent } from './components/accordion/accordion.component';
+import { AccordionItemComponent } from './components/accordion/accordion-item/accordion-item.component';
+import { CdkAccordionModule } from '@angular/cdk/accordion';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -55,7 +59,9 @@ import { searchFeatureKey, searchReducer } from './store/search/search.reducer';
     PryNqColorSelectorComponent,
     PryAccessDirective,
     PryUploadComponent,
-    PrySelectImageComponent
+    PrySelectImageComponent,
+    AccordionComponent,
+    AccordionItemComponent
   ],
   imports: [
     CommonModule,
@@ -83,7 +89,9 @@ import { searchFeatureKey, searchReducer } from './store/search/search.reducer';
     OverlayModule,
     PryOverlayModule,
     PryI18nModule,
-    PryModalStatusModule
+    PryModalStatusModule,
+    CdkAccordionModule,
+    FormsModule
   ],
   providers: [AsyncPipe, TranslateIdPipe, TranslateItemToSymbolPipe],
   exports: [
@@ -96,7 +104,9 @@ import { searchFeatureKey, searchReducer } from './store/search/search.reducer';
     PryNqColorSelectorComponent,
     PryAccessDirective,
     PryUploadComponent,
-    PrySelectImageComponent
+    PrySelectImageComponent,
+    AccordionComponent,
+    AccordionItemComponent
   ]
 })
 export class PryCoreModule {

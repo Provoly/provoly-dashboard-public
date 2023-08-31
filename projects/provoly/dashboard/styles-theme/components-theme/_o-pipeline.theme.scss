@@ -16,32 +16,6 @@
     border-right: 1px solid themed($theme-map, 'color', 'primary', 300);
   }
 
-  .o-accordion {
-    &__title {
-      border-bottom-color: themed($theme-map, 'color', 'primary', 300);
-
-      &__btn pry-icon {
-        color: themed($theme-map, 'color', 'accent', 600);
-      }
-    }
-
-    &__panel {
-      &[aria-hidden='false'] {
-        border-bottom-color: themed($theme-map, 'color', 'primary', 300);
-      }
-
-      .o-pipeline__components {
-        li {
-          border-top-color: themed($theme-map, 'color', 'primary', 300);
-
-          .a-icon {
-            color: themed($theme-map, 'color', 'primary', 500);
-          }
-        }
-      }
-    }
-  }
-
   .o-pipeline-editor__properties {
     border-left: 1px solid themed($theme-map, 'color', 'primary', 300);
 

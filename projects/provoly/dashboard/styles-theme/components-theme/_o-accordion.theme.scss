@@ -1,0 +1,30 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme organism - Accordion */
+
+.o-accordion {
+  &__title {
+    border-bottom-color: themed($theme-map, 'color', 'primary', 300);
+
+    &__btn pry-icon {
+      color: themed($theme-map, 'color', 'accent', 600);
+    }
+  }
+
+  &__panel {
+    &[aria-hidden='false'] {
+      border-bottom-color: themed($theme-map, 'color', 'primary', 300);
+    }
+
+    .o-pipeline__components {
+      li {
+        border-top-color: themed($theme-map, 'color', 'primary', 300);
+
+        .a-icon {
+          color: themed($theme-map, 'color', 'primary', 500);
+        }
+      }
+    }
+  }
+}

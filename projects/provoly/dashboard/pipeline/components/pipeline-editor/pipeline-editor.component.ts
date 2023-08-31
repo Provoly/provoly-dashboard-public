@@ -49,7 +49,6 @@ export class PryPipelineEditorComponent extends SubscriptionnerDirective impleme
   errors$: Observable<(NodePipelineError & { translated: string })[]>;
   disableEditing: boolean = false;
   images: { start: HTMLImageElement; after: HTMLImageElement };
-  categoryOpened: string = '';
   search$ = new BehaviorSubject<any>({});
 
   constructor(
@@ -362,11 +361,7 @@ export class PryPipelineEditorComponent extends SubscriptionnerDirective impleme
     this.goToConsult.emit(this.pipeline);
   }
 
-  toggle(category: string) {
-    this.categoryOpened = this.categoryOpened === category ? '' : category;
-  }
-
-  search(category: string, $event: any) {
-    this.search$.next({ ...this.search$.getValue(), [category]: $event });
+  search($event: any) {
+    this.search$.next({ ...$event });
   }
 }

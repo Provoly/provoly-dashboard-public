@@ -163,33 +163,11 @@
   }
 
   .o-accordion {
-    &__title {
-      position: relative;
-      border-bottom-style: solid;
-      border-bottom-width: toRem(1);
-
-      // Border left colored
-      &:before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 3px;
-      }
-
-      &:first-child {
+    pry-accordion-item:first-child {
+      .o-accordion__title {
         border-top-style: solid;
         border-top-width: toRem(1);
         margin-top: toRem(10);
-      }
-
-      &__btn {
-        width: 100%;
-        height: 70%;
-        padding: 0;
-        text-transform: uppercase;
-        text-align: left;
       }
     }
   }

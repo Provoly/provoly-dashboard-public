@@ -110,3 +110,5 @@ export * from './i18n/deep-merge.function';
 export * from './errors/http-error-interceptor.service';
 export * from './components/modal-status/modal-status.component';
 export * from './components/modal-status/modal-status.module';
+export * from './components/accordion/accordion.component';
+export * from './components/accordion/accordion-item/accordion-item.component';

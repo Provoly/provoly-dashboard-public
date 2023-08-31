@@ -37,7 +37,6 @@ export class PryRestitutionListComponent extends SubscriptionnerDirective {
   mode = ViewMode;
   selectedMode: ViewMode = ViewMode.CATALOG;
   categories = ['model', 'noModel'];
-  categoryOpened: string = '';
   PryVisibilityType = PryVisibilityType;
 
   constructor(
@@ -87,9 +86,5 @@ export class PryRestitutionListComponent extends SubscriptionnerDirective {
   closeRestitution() {
     this.selectedRestitution = null;
     this.selectMode(this.mode.CATALOG);
-  }
-
-  toggle(category: string) {
-    this.categoryOpened = this.categoryOpened === category ? '' : category;
   }
 }

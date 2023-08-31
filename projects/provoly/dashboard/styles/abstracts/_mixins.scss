@@ -303,6 +303,20 @@
   }
 }
 
+/**
+  Accordion panel border
+  themed($theme-map, 'color', 'primary', 400);
+ */
+@mixin panelBorderLeftColored($color: themed($theme-map, 'decoration', 'focus-visible', 'border-color-light')) {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: $color;
+}
+
 /*
 *  Effects
 *
