@@ -1,0 +1,21 @@
+=== Internationalisation `+i18n.service.ts+`
+
+Ce service est responsable de tout ce qui concerne la traduction, par exemple :
+
+- mise à jour de l'objet qui contient toutes les clés de traduction de l'application (les methodes `updateTranslations()`, `addLangObject()`),
+- la traduction d'une clé spécifique (la methode `instant()`)
+- specifying the language to be used by the application at all times (method `use()`)
+
+Par défaut, la langue de l'application dépend de la locale du navigateur de l'utilisateur. L'application changera de langue dynamiquement si le paramétrage de la locale change.
+Actuellement, les langues fournies par défaut sont le français et l'anglais. L'utilisateur peut rajouter d'autres langues en utilisant la methode `addLangObject()`.
+
+L'anglais est utilisé par défaut si la langue de la locale n'est pas disponible.
+
+Si l'application utilisant Provoly souhaite utiliser toujours la même langue (et ne pas l'adapter à la locale de l'utilisateur), il est possible de le faire en utilisant la methode `use()` dans le module racine de l'application dépendante, par exemple :
+[source,js]
+----
+// toujours utiliser le français
+constructor(private translateService: PryI18nService) {
+  this.translateService.use('fr');
+}
+----

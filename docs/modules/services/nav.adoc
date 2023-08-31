@@ -20,3 +20,4 @@
 ** xref:title.adoc[Titre]
 ** xref:dialog.adoc[Dialogue]
 ** xref:ws.adoc[Websocket]
+** xref:i18n.adoc[Internationalisation]

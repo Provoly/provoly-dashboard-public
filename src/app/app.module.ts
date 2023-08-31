@@ -260,7 +260,6 @@ import { SearchContainerComponent } from './search-container/search-container.co
 })
 export class AppModule {
   constructor(private translateService: PryI18nService) {
-    this.translateService.use('fr');
     this.translateService.addLangObject('fr', 'custom-grid', {
       '@pry': {
         toolbox: {
