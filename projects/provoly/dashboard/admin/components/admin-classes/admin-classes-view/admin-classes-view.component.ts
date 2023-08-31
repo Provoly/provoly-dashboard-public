@@ -197,6 +197,7 @@ export class AdminClassesViewComponent implements OnInit, OnDestroy {
     this.store.dispatch(AdminClassActions.selectAttribute({ attrExtended: attr }));
     this.store.dispatch(AdminActions.selectComponentType({ componentType: 'AdminAttributesSelectComponent' }));
     this.setAttributeActions(attr.id);
+    this.store.dispatch(AdminActions.fetchAttributeAssociations({ id: attr.id }));
   }
 
   dispatchCloseModal() {

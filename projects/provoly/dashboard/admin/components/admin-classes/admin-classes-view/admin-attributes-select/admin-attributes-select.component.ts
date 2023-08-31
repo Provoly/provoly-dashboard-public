@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AttributeExtended, BaseToolboxAction, Class } from '@provoly/dashboard';
+import {Associations, AttributeExtended, BaseToolboxAction, Class} from '@provoly/dashboard';
 import { combineLatestWith, Observable, Subscription } from 'rxjs';
 import { AdminActions } from '../../../../store/admin.actions';
 import { AdminClassActions } from '../../store/admin-class.actions';
 import { AdminClassSelectors } from '../../store/admin-class.selectors';
+import {AdminSelectors} from "../../../../store/admin.selectors";
 
 let nextCompId = 0;
 
@@ -18,6 +19,7 @@ export class AdminAttributesSelectComponent implements OnInit, OnDestroy {
   compId: number;
   selectedAttribute$: Observable<AttributeExtended | undefined>;
   sub = new Subscription();
+  associations$: Observable<Associations | undefined>;
 
   tab: number = 0;
   private classId?: string;
@@ -36,6 +38,7 @@ export class AdminAttributesSelectComponent implements OnInit, OnDestroy {
     this.interClass$ = this.store.select(AdminClassSelectors.interClass);
     this.interClassId$ = this.store.select(AdminClassSelectors.interClassId);
     this.compId = nextCompId++;
+    this.associations$ = this.store.select(AdminSelectors.selectedAssociation);
   }
 
   ngOnInit(): void {
@@ -93,5 +96,9 @@ export class AdminAttributesSelectComponent implements OnInit, OnDestroy {
         })
       );
     }
+  }
+
+  switch(number: number) {
+    this.tab = number;
   }
 }
