@@ -5,9 +5,10 @@ export const frTranslations = {
       search: 'Rechercher',
       date: 'Date',
       status: 'Statut',
-      data: 'Données',
       versionHistory: 'Historique de versions',
+      data: 'Données',
       table: 'Tableau',
+      map: 'Carte',
       export: 'Export',
       api: 'API',
       returnToList: 'Retour au catalogue',
@@ -18,7 +19,7 @@ export const frTranslations = {
         INACTIVE: 'Invalide',
         ERROR: 'En erreur',
         ACTIVE: 'Disponible',
-        currentlyActive: 'Active'
+        currentlyActive: 'Actif'
       },
       buttonAction: {
         ACTIVE: 'Invalider',

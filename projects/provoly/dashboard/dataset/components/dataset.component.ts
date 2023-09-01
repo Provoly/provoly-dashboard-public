@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
+  ClassActions,
   DashboardActions,
   Dataset,
   DataSourceActions,
   DataSourceSelectors,
+  FieldActions,
   SubscriptionnerDirective,
   ViewMode
 } from '@provoly/dashboard';
@@ -25,6 +27,8 @@ export class PryDatasetComponent extends SubscriptionnerDirective {
   constructor(protected store: Store<any>) {
     super();
     this.store.dispatch(DataSourceActions.load());
+    this.store.dispatch(ClassActions.load());
+    this.store.dispatch(FieldActions.load());
     this.datasets$ = this.store.select(DataSourceSelectors.datasets);
     this.store.dispatch(DashboardActions.fetchManifestsList());
     this.filteredDatasets$ = combineLatest([this.datasets$, this.search$]).pipe(

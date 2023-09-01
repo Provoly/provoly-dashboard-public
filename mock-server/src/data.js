@@ -4,7 +4,6 @@ const casual = require('casual');
 
 const classes = JSON.parse(fs.readFileSync('./data/classes.json', 'utf8'));
 const associations = JSON.parse(fs.readFileSync('./data/associations.json', 'utf8'));
-let datasetVersions = JSON.parse(fs.readFileSync('./data/datasetVersions.json', 'utf8'));
 const classesIds = classes.map((oClass) => oClass.id);
 let fields = JSON.parse(fs.readFileSync('./data/fields.json', 'utf8'));
 const categories = JSON.parse(fs.readFileSync('./data/categories.json', 'utf8'));
@@ -30,16 +29,6 @@ const widgetList = JSON.parse(fs.readFileSync('./data/catalog.json', 'utf8'));
 let datasets = JSON.parse(fs.readFileSync('./data/datasets.json', 'utf8'));
 let transfos = JSON.parse(fs.readFileSync('./data/transfos.json', 'utf8'));
 let departements = JSON.parse(fs.readFileSync('./data/departements.json', 'utf8'));
-
-datasetVersions = datasetVersions
-  .sort((ds1, ds2) => ds2.version - ds1.version)
-  .map((version, idx, arr) => ({
-    ...version,
-    lastModified:
-      idx === arr.length - 2
-        ? new Date(new Date() - 50 * (15 * 60 * 60 * 1000)).toISOString()
-        : new Date(new Date() - idx * (15 * 60 * 60 * 1000)).toISOString()
-  }));
 
 const itemsAsResultSet = (items) => {
   const classes = [...new Set(items.map((res) => res.oClass))];
@@ -257,6 +246,39 @@ const deleteDatasetMetadata = (datasetId, metadataId) => {
 const getFields = () => {
   return fields;
 };
+
+const generateDatasetVersions = () => {
+  return datasets
+    .map((dataset) => {
+      const versions = [];
+      const howMany = casual.integer((from = 5), (to = 10));
+      for (let i = 1; i < howMany; i++) {
+        versions.push({
+          id: casual.uuid,
+          dataset: dataset.id,
+          oClass: dataset.oClass,
+          lastModified: '2023-07-12T14:28:16.089390Z',
+          version: i,
+          state: i > howMany - 4 ? 'ACTIVE' : casual.random_element(['ACTIVE', 'ERROR', 'INDEXING', 'INACTIVE']),
+          withFile: false,
+          metadata: []
+        });
+      }
+      return versions;
+    })
+    .reduce((p, c) => [...p, ...c], [])
+    .sort((ds1, ds2) => ds2.version - ds1.version)
+    .map((version, idx, arr) => ({
+      ...version,
+      lastModified:
+        idx === arr.length - 2
+          ? new Date(new Date() - 50 * (15 * 60 * 60 * 1000)).toISOString()
+          : new Date(new Date() - idx * (15 * 60 * 60 * 1000)).toISOString()
+    }));
+};
+
+let datasetVersions = generateDatasetVersions();
+
 const getDatasetVersions = () => {
   return datasetVersions;
 };

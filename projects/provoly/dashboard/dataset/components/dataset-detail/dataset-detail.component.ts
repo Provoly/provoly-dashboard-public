@@ -22,12 +22,25 @@ let nextCompId = 0;
 export class PryDatasetDetailComponent implements OnInit {
   @Input() dataset!: Dataset;
   @Output() goToCatalog = new EventEmitter();
-  widgetManifest: WidgetManifest = {
-    type: 'table',
-    layout: { x: 1, y: 1, height: 10, width: 12 },
-    options: {},
-    datasource: ['']
-  };
+  widgetManifest = {
+    table: {
+      header: false,
+      type: 'table',
+      layout: { x: 1, y: 1, height: 12, width: 12 },
+      options: {},
+      datasource: ['']
+    },
+    map: {
+      header: false,
+      type: 'map',
+      layout: { x: 1, y: 1, height: 12, width: 12 },
+      options: {
+        layers: [{ type: 'marker' }],
+        fit: true
+      },
+      datasource: ['']
+    }
+  } as { [key: string]: WidgetManifest };
   protected readonly ViewMode = ViewMode;
   compId: number = 0;
   tab: number = 0;
@@ -37,6 +50,7 @@ export class PryDatasetDetailComponent implements OnInit {
   showModalStatus: boolean = false;
   selectedDatasetVersion?: DatasetVersion;
   selectedMode: ViewMode = ViewMode.CONSULT;
+  activeVersion$!: Observable<string | undefined>;
 
   constructor(private store: Store) {
     this.compId = nextCompId++;
@@ -49,7 +63,14 @@ export class PryDatasetDetailComponent implements OnInit {
     this.datasetVersions$ = this.store
       .select(DataSourceSelectors.matchingDatasetVersions(this.dataset.id))
       .pipe(map((res) => [...res].sort((a, b) => b.version - a.version)));
-    this.widgetManifest.datasource = [this.dataset.id];
+    this.widgetManifest['table'].datasource = [this.dataset.id];
+    this.widgetManifest['map'].datasource = [this.dataset.id];
+    this.activeVersion$ = this.datasetVersions$.pipe(
+      map(
+        (versions) =>
+          versions.sort((v1, v2) => v2.version - v1.version).find((version) => version.state === 'ACTIVE')?.id
+      )
+    );
   }
 
   goBack() {
@@ -99,5 +120,9 @@ export class PryDatasetDetailComponent implements OnInit {
         versionId: version.id
       })
     );
+  }
+
+  modify(type: string, { manifest }: { manifest: WidgetManifest }) {
+    this.widgetManifest[type] = manifest;
   }
 }

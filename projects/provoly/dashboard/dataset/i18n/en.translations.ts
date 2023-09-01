@@ -7,6 +7,8 @@ export const enTranslations = {
       status: 'Status',
       versionHistory: 'Version history',
       data: 'Data',
+      table: 'Table',
+      map: 'Map',
       export: 'Export',
       api: 'API',
       returnToList: 'Back to catalog',
