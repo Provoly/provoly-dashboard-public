@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { PrySelectModule } from '@provoly/dashboard';
+import { PryI18nService, PrySelectModule } from '@provoly/dashboard';
 import { metadata } from '../../../../../mock/data/mockItemAdmin';
 import { MockI18nPipe } from '../../../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../../../mock/pipe/mock-translate.pipe';
@@ -13,6 +13,7 @@ import { AdminService } from '../../../../store/admin.service';
 import { FormMetadataComponent } from './form-metadata.component';
 
 describe('FormMetadataComponent', () => {
+  PryI18nService.warn = false;
   let component: FormMetadataComponent;
   let fixture: ComponentFixture<FormMetadataComponent>;
   let router;

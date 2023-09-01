@@ -2,7 +2,7 @@ import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { PRY_ACCESS_GUARD, PryDefaultAccessGuard, PrySelectModule } from '@provoly/dashboard';
+import { PRY_ACCESS_GUARD, PryDefaultAccessGuard, PryI18nService, PrySelectModule } from '@provoly/dashboard';
 import { MockPryIconComponent } from '../../../../mock/components/mock-pry-icon.component';
 import { metadata, users } from '../../../../mock/data/mockItemAdmin';
 import { MockPryAccessDirective } from '../../../../mock/directive/mock-pry-access.directive';
@@ -15,6 +15,7 @@ import { AdminUserSelectors } from '../store/admin-user.selector';
 import { AdminUserSelectComponent } from './admin-user-select.component';
 
 describe('AdminUserSelectComponent', () => {
+  PryI18nService.warn = false;
   let component: AdminUserSelectComponent;
   let fixture: ComponentFixture<AdminUserSelectComponent>;
   let store: MockStore<any>;

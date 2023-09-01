@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { PRY_ACCESS_GUARD, PryDefaultAccessGuard, PrySelectModule } from '@provoly/dashboard';
+import { PRY_ACCESS_GUARD, PryDefaultAccessGuard, PryI18nService, PrySelectModule } from '@provoly/dashboard';
 import { envs } from '../../../../mock/data/mockItemAdmin';
 import { MockI18nPipe } from '../../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../../mock/pipe/mock-translate.pipe';
@@ -14,6 +14,7 @@ import { EnvironmentSelectors } from '../store/environment.selectors';
 import { AdminEnvironmentFormComponent } from './admin-environment-form.component';
 
 describe('AdminEnvironmentFormComponent', () => {
+  PryI18nService.warn = false;
   let component: AdminEnvironmentFormComponent;
   let fixture: ComponentFixture<AdminEnvironmentFormComponent>;
   let store: MockStore<any>;

@@ -9,6 +9,8 @@ import { MockTranslatePipe } from '@provoly/dashboard/mock/pipe/mock-translate.p
 import { MockPryRestitutionListCssComponent } from '@provoly/dashboard/mock/style/mock-pry-restitution-css';
 import { WidgetImageComponent } from '@provoly/dashboard/widgets/widget-image';
 import { PryRestitutionListComponent } from '../..';
+import { MockPryAccordionComponent } from '@provoly/dashboard/mock/mock-pry-accordion.component';
+import { MockPryAccordionItemComponent } from '@provoly/dashboard/mock/components/mock-pry-accordion-item.component';
 
 describe('PryRestitutionListComponent', () => {
   let component: PryRestitutionListComponent;
@@ -22,7 +24,9 @@ describe('PryRestitutionListComponent', () => {
         MockTranslatePipe,
         MockI18nPipe,
         MockPryRestitutionListCssComponent,
-        MockPryIconComponent
+        MockPryIconComponent,
+        MockPryAccordionComponent,
+        MockPryAccordionItemComponent
       ],
       providers: [
         provideMockStore({}),

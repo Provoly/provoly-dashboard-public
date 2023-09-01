@@ -2,7 +2,7 @@ import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { PRY_ACCESS_GUARD, PryDefaultAccessGuard, PrySelectModule } from '@provoly/dashboard';
+import { PRY_ACCESS_GUARD, PryDefaultAccessGuard, PryI18nService, PrySelectModule } from '@provoly/dashboard';
 import { field } from '../../../../mock/data/mockItemAdmin';
 import { MockI18nPipe } from '../../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../../mock/pipe/mock-translate.pipe';
@@ -11,6 +11,7 @@ import { FieldsActions } from '../store/fields.actions';
 import { AdminFieldsFormComponent } from './admin-fields-form.component';
 
 describe('AdminFieldsFormComponent', () => {
+  PryI18nService.warn = false;
   let component: AdminFieldsFormComponent;
   let fixture: ComponentFixture<AdminFieldsFormComponent>;
   let store: MockStore<any>;

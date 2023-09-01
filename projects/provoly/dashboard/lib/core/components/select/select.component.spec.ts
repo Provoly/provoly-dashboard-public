@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockNgModelDirective } from '../../../../mock/directive/mock-ng-model.directive';
 import { PrySelectComponent } from './select.component';
+import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
 
 @Component({
   selector: 'ng-select',
@@ -19,6 +20,7 @@ class MockNgSelectComponent {
   @Input() searchable?: any;
   @Input() placeholder: any;
   @Input() required: any;
+  @Input() clearAllText: any;
 }
 
 describe('SelectComponent', () => {
@@ -27,7 +29,7 @@ describe('SelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PrySelectComponent, MockNgSelectComponent, MockNgModelDirective]
+      declarations: [PrySelectComponent, MockNgSelectComponent, MockNgModelDirective, MockI18nPipe]
     }).compileComponents();
   });
 
