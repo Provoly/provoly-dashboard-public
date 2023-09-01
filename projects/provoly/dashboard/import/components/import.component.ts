@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Dataset, DataSourceActions, DataSourceSelectors, PryDatasetType, PryI18nService } from '@provoly/dashboard';
+import { Dataset, DatasetVersion, DataSourceActions, DataSourceSelectors, PryDatasetType } from '@provoly/dashboard';
 import { map, Observable } from 'rxjs';
-import { ImportActions, ImportError } from '../store/import.actions';
+import { ImportActions } from '../store/import.actions';
 import { ImportSelectors } from '../store/import.selectors';
 
 type FileExtension = 'csv' | 'zip';
@@ -16,10 +16,8 @@ export class PryImportComponent {
   file?: File;
   datasetSelected?: string;
   selectedFileType: FileExtension = 'csv';
-  uploadShapefile$: Observable<boolean>;
-  numberOfLine$: Observable<number | undefined>;
-  errors$: Observable<{ [p: string | number]: ImportError[] } | null>;
-  errorCount$: Observable<number | null>;
+  loading$: Observable<boolean>;
+  uploadedDataset$: Observable<Partial<DatasetVersion> | undefined>;
   fileTypes: { label: string; value: FileExtension }[] = [
     {
       label: 'Csv',
@@ -47,17 +45,8 @@ export class PryImportComponent {
             .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
         )
       );
-    this.uploadShapefile$ = store.select(ImportSelectors.upload);
-    this.numberOfLine$ = store.select(ImportSelectors.numberOfLines);
-    this.errors$ = store.select(ImportSelectors.errors);
-    this.errorCount$ = this.errors$.pipe(
-      map((errors) => {
-        if (errors) {
-          return Object.values(errors).flat().length;
-        }
-        return null;
-      })
-    );
+    this.loading$ = store.select(ImportSelectors.loading);
+    this.uploadedDataset$ = store.select(ImportSelectors.uploadedDataset);
   }
 
   sortObjectEntries(obj: any) {
@@ -96,10 +85,5 @@ export class PryImportComponent {
 
   onFileTypeChange(fileType: FileExtension) {
     this.selectedFileType = fileType;
-  }
-
-  getDatasetName(selectedId: string | undefined, datasets: Dataset[]): string | undefined {
-    const selectedDataset = datasets.find((dataset) => dataset.id === selectedId);
-    return selectedDataset ? selectedDataset.name : undefined;
   }
 }

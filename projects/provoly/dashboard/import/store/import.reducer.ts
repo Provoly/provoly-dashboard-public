@@ -1,36 +1,27 @@
 import { createReducer, on } from '@ngrx/store';
-import { ImportActions, ImportError } from './import.actions';
+import { ImportActions } from './import.actions';
+import { DatasetVersion } from '@provoly/dashboard';
 
 export const importFeatureKey = '@pry/import';
 
 export interface ImportState {
   loading: boolean;
-  errors: { [p: string]: ImportError[] } | null;
-  numberOfLines: number | undefined;
+  uploadedDataset?: Partial<DatasetVersion>;
 }
 
 export const initialImportState: ImportState = {
-  loading: false,
-  errors: null,
-  numberOfLines: 0
+  loading: false
 };
 
 export const importReducer = createReducer(
   initialImportState,
-  on(ImportActions.upload, (state, action) => ({
+  on(ImportActions.upload, (state) => ({
     ...state,
-    loading: true,
-    numberOfLines: 0,
-    errors: null
+    loading: true
   })),
   on(ImportActions.uploadSuccess, (state, action) => ({
     ...state,
     loading: false,
-    numberOfLines: action.numberOfLines
-  })),
-  on(ImportActions.uploadFailure, (state, action) => ({
-    ...state,
-    loading: false,
-    errors: action.errors
+    uploadedDataset: action.uploadedDataset
   }))
 );

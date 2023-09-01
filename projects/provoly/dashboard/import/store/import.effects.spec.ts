@@ -31,7 +31,7 @@ describe('ImportEffects', () => {
         {
           provide: ImportService,
           useValue: {
-            upload: (file: File, dataset: string) => of({ numberOfLines: 123 })
+            upload: (file: File, dataset: string) => of({})
           }
         },
         {
@@ -63,7 +63,7 @@ describe('ImportEffects', () => {
       });
 
       const expected$ = hot('--a-', {
-        a: ImportActions.uploadSuccess({ numberOfLines: 123 })
+        a: ImportActions.uploadSuccess({ uploadedDataset: {} })
       });
       expect(effects.upload$).toBeObservable(expected$);
       expect(effects.upload$).toSatisfyOnFlush(() => {
@@ -110,7 +110,7 @@ describe('ImportEffects', () => {
       });
 
       const expected$ = hot('--a-', {
-        a: ImportActions.uploadSuccess({ numberOfLines: 123 })
+        a: ImportActions.uploadSuccess({ uploadedDataset: {} })
       });
       expect(effects.upload$).toBeObservable(expected$);
       expect(effects.upload$).toSatisfyOnFlush(() => {

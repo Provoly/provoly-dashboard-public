@@ -155,35 +155,6 @@ const saveWidget = (widget) => {
   widgetList.push(widget);
 };
 
-const importData = (file, dataset, code) => {
-  const exampleErrors = [
-    {
-      numberOfLines: 0,
-      itemErrors: { 0: [{ code: 'FILE_MANDATORY' }] }
-    },
-    {
-      numberOfLines: 1000,
-      itemErrors: {
-        1: [{ code: 'CAST', params: { name: 'a2', type: 'integer' } }]
-      }
-    },
-    {
-      numberOfLines: 1,
-      itemErrors: {
-        0: [{ code: 'NB_ATTRIBUTES' }, { code: 'UNRECOGNIZED', params: { name: 'bad column name' } }]
-      }
-    },
-    {
-      numberOfLines: 0,
-      itemErrors: {
-        0: [{ code: 'ELASTIC_SEARCH', params: { elasticError: 'For input string: "a2"' } }]
-      }
-    }
-  ];
-  return code === 200
-    ? { numberOfLines: 145, itemErrors: [] }
-    : exampleErrors[Math.floor(Math.random() * exampleErrors.length)];
-};
 const getAssociations = (id) => {
   return associations.find((association) => association.id === id);
 };
@@ -343,7 +314,6 @@ module.exports = {
   itemsAsResultSetWithRelationsTo,
   customClassParams,
   updateCustomClassParams,
-  importData,
   widgets: {
     get: getWidgets,
     save: saveWidget

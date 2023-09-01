@@ -1,12 +1,9 @@
 import { ImportActions } from './import.actions';
 import { importReducer, ImportState } from './import.reducer';
-import { HttpErrorResponse } from '@angular/common/http';
 
 describe('Import Reducer', () => {
   const initialState: ImportState = {
-    loading: false,
-    errors: null,
-    numberOfLines: 0
+    loading: false
   };
 
   describe('an unknown action', () => {
@@ -47,31 +44,14 @@ describe('Import Reducer', () => {
       const result = importReducer(
         initialState,
         ImportActions.uploadSuccess({
-          numberOfLines: 145
+          uploadedDataset: {}
         })
       );
 
       expect(result).toEqual({
         ...initialState,
         loading: false,
-        numberOfLines: 145
-      });
-    });
-  });
-
-  describe('upload action failed', () => {
-    it('should not change state', () => {
-      const error = new HttpErrorResponse({
-        error: { numberOfLines: null, itemErrors: [] },
-        status: 400,
-        statusText: 'Bad Request'
-      });
-      const result = importReducer(initialState, ImportActions.uploadFailure({ errors: error.error.itemErrors }));
-
-      expect(result).toEqual({
-        ...initialState,
-        loading: false,
-        errors: error.error.itemErrors
+        uploadedDataset: {}
       });
     });
   });

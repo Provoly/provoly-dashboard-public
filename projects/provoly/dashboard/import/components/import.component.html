@@ -55,41 +55,16 @@
         </button>
       </div>
     </div>
-    <ng-container *ngIf="numberOfLine$ | async as lineImported; else errors">
-      <div *ngIf="lineImported > 0; else errors" class="o-import__result">
-        <h2>{{ '@pry.import.successTitle' | i18n }}</h2>
-        <div>
-          <h3>{{ lineImported }} {{ '@pry.import.importedLines' | i18n }}</h3>
-        </div>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="(uploadShapefile$ | async) && (datasets$ | async) as datasets">
+    <ng-container *ngIf="uploadedDataset$ | async">
       <div class="o-import__result">
         <h1>
-          {{ '@pry.import.consultDataset' | i18n : { parameter: getDatasetName(datasetSelected, datasets) } }}
+          {{
+            '@pry.import.consultDataset'
+              | i18n
+                : { parameter: datasetSelected ?? '' | translateId : { type: 'datasource', output: 'name' } | async }
+          }}
         </h1>
       </div>
     </ng-container>
   </div>
 </div>
-<ng-template #errors>
-  <div class="o-import__result" *ngIf="errors$ | async as errors">
-    <h2 class="a-h2">{{ '@pry.import.errorTitle' | i18n }}</h2>
-    <div>
-      <h3>{{ errorCount$ | async }} {{ '@pry.import.errors' | i18n }}</h3>
-      <div *ngFor="let error of errors | keyvalue : sortObjectEntries" class="o-import__result__error">
-        <p *ngIf="error.key === '0'; else withLine">
-          {{ '@pry.import.withoutLine' | i18n }}
-        </p>
-        <ng-template #withLine>
-          {{ '@pry.import.line' | i18n : { line: error.key } }}
-        </ng-template>
-        <ul *ngIf="error.value">
-          <li *ngFor="let lineError of error.value">
-            {{ '@pry.import.code.' + lineError.code | i18n : lineError.params }}
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</ng-template>

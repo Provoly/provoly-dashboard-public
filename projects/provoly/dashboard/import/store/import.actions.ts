@@ -1,21 +1,8 @@
 import { createAction, props } from '@ngrx/store';
-
-export interface ImportError {
-  code: string;
-  params?: {
-    name?: string;
-    type?: string;
-    elasticError?: string;
-  };
-}
-
-export interface ImportResponse {
-  numberOfLines: number;
-  itemErrors: { [p: string]: ImportError[] } | null;
-}
+import { DatasetVersion } from '@provoly/dashboard';
 
 export const ImportActions = {
   upload: createAction('[Import] import data', props<{ file: File; dataset: string; fileType: string }>()),
-  uploadSuccess: createAction('[Import] import data successful', props<{ numberOfLines?: number }>()),
+  uploadSuccess: createAction('[Import] import data successful', props<{ uploadedDataset: Partial<DatasetVersion> }>()),
   uploadFailure: createAction('[Import] import data failure', props<{ errors: any }>())
 };

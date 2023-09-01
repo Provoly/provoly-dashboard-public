@@ -950,8 +950,7 @@ router.on(['OPTIONS'], '/data/imports/dataset/id/:id', (req, res, params) => {
   makeResponseOk(res, {}, 204);
 });
 router.on(['POST'], '/data/imports/dataset/id/:id', (req, res, params) => {
-  const code = casual.coin_flip ? 200 : 400;
-  makeResponseOk(res, dataModule.importData(params.file, params.dataset, code), code);
+  makeResponseOk(res, {}, 204);
 });
 const server = http.createServer((req, res) => {
   router.lookup(req, res);

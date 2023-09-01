@@ -13,8 +13,8 @@ export class ImportEffects {
       ofType(ImportActions.upload),
       mergeMap((action) =>
         this.service.upload(action.file, action.dataset, action.fileType).pipe(
-          map((data) => {
-            return ImportActions.uploadSuccess({ numberOfLines: data.numberOfLines });
+          map((uploadedDataset) => {
+            return ImportActions.uploadSuccess({ uploadedDataset: uploadedDataset });
           }),
           catchError((error: HttpErrorResponse) => {
             if (error.status === 400 || error.status === 500) {
