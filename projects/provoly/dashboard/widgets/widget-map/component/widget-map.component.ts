@@ -49,7 +49,6 @@ import {
   WIDGET_HEADER_HEIGHT,
   widgetMapConfig
 } from '@provoly/dashboard';
-import { InteractionManager } from '@provoly/dashboard/widgets/widget-map/interaction/interaction-manager.class';
 import equal from 'fast-deep-equal/es6';
 import { Feature, Map, Overlay, View } from 'ol';
 import { applyBackground, applyStyle } from 'ol-mapbox-style';
@@ -81,6 +80,7 @@ import {
   of,
   startWith
 } from 'rxjs';
+import { InteractionManager } from '../interaction/interaction-manager.class';
 import { MapFormatsReader } from '../reader/map-formats-reader.class';
 import { AddressSearchedEvent } from '../search-bar/search-bar.control';
 import {
