@@ -347,7 +347,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
     this.mapStyleLayer$ = combineLatest([this.mapStyle$, this.mapUrl$]).pipe(
       map(([style, url]) => {
-        if (!style) {
+        if (!style || style === 'none') {
           return [];
         }
         const layer = new VectorTileLayer({ declutter: true });
