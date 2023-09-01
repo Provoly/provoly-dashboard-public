@@ -1,15 +1,12 @@
 import { ContextMenuActions, TooltipMode } from '@provoly/dashboard';
-import { WidgetMapComponent } from '@provoly/dashboard/widgets/widget-map';
-import { SelectionInteraction } from '@provoly/dashboard/widgets/widget-map/interaction/selection-interaction.class';
-import {
-  AddressSearchedEvent,
-  SearchBarControl
-} from '@provoly/dashboard/widgets/widget-map/search-bar/search-bar.control';
 import { Feature, MapBrowserEvent, Overlay } from 'ol';
 import LayerSwitcher from 'ol-layerswitcher';
 import { ScaleLine } from 'ol/control';
 import { Circle, Point } from 'ol/geom';
 import { toLonLat } from 'ol/proj';
+import { WidgetMapComponent } from '../component/widget-map.component';
+import { AddressSearchedEvent, SearchBarControl } from '../search-bar/search-bar.control';
+import { SelectionInteraction } from './selection-interaction.class';
 
 export class InteractionManager {
   interactionPopupOverlay?: Overlay;
