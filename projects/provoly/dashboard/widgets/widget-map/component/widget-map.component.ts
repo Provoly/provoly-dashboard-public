@@ -19,7 +19,6 @@ import {
   ClassSelectors,
   ConfigActions,
   ConfigSelectors,
-  ContextMenuActions,
   DashboardActions,
   DashboardSelectors,
   Dataset,
@@ -50,18 +49,18 @@ import {
   WIDGET_HEADER_HEIGHT,
   widgetMapConfig
 } from '@provoly/dashboard';
+import { InteractionManager } from '@provoly/dashboard/widgets/widget-map/interaction/interaction-manager.class';
 import equal from 'fast-deep-equal/es6';
-import { Feature, Map, MapBrowserEvent, Overlay, View } from 'ol';
-import LayerSwitcher from 'ol-layerswitcher';
-import { apply } from 'ol-mapbox-style';
-import { Attribution, Control, ScaleLine } from 'ol/control';
+import { Feature, Map, Overlay, View } from 'ol';
+import { applyBackground, applyStyle } from 'ol-mapbox-style';
 import { boundingExtent, createEmpty } from 'ol/extent';
 import { Circle, Geometry, Point } from 'ol/geom';
 import { Tile } from 'ol/layer';
 import BaseLayer from 'ol/layer/Base';
 import VectorLayer from 'ol/layer/Vector';
+import VectorTileLayer from 'ol/layer/VectorTile';
 import { Pixel } from 'ol/pixel';
-import { fromLonLat, get as getProjection, toLonLat, transform } from 'ol/proj';
+import { fromLonLat, get as getProjection, transform } from 'ol/proj';
 
 import { register } from 'ol/proj/proj4';
 import { TileWMS } from 'ol/source';
@@ -80,12 +79,10 @@ import {
   mergeMap,
   Observable,
   of,
-  startWith,
-  tap
+  startWith
 } from 'rxjs';
-import { SelectionInteraction } from '../interaction/selection-interaction.class';
 import { MapFormatsReader } from '../reader/map-formats-reader.class';
-import { AddressSearchedEvent, SearchBarControl } from '../search-bar/search-bar.control';
+import { AddressSearchedEvent } from '../search-bar/search-bar.control';
 import {
   DEFAULT_MAP_CENTER,
   DEFAULT_ZOOM_MAX,
@@ -124,13 +121,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   selectedIds$: Observable<string[]>;
   bottomLeft$: Observable<string>;
   layers$!: Observable<BaseLayer[]>;
-  selectionInteraction = new SelectionInteraction();
   map!: Map;
-  map$!: Observable<Map>;
   additionalLayers$ = new BehaviorSubject<VectorLayer<VectorSource<Geometry>>[]>([]);
   private overlayRef?: OverlayRef;
-  searchBarControl?: SearchBarControl;
-  layerSwitchControl?: LayerSwitcher;
   styles$: Observable<{ identifier: string; label: string }[]>;
   WIDGET_HEADER_HEIGHT = WIDGET_HEADER_HEIGHT;
   i = 0;
@@ -138,7 +131,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   height$: Observable<number>;
   actions$ = widgetMapConfig.actions$;
   private wmsFeatures$: Observable<any[]>;
-  private classicFeatures$: BehaviorSubject<any> = new BehaviorSubject([]);
+  classicFeatures$: BehaviorSubject<any> = new BehaviorSubject([]);
   geoServerLayerDescriptions$: Observable<MapGeoServerLayerOptions[]>;
   legendTabOpen = false;
   legendTab = 0;
@@ -148,16 +141,17 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   imageNotProvided: boolean[] = [];
   basicActions$: Observable<('click' | 'lasso' | 'rectangle' | 'zoom' | 'move' | 'export' | 'upload')[]>;
   zoomAndCenter$ = new BehaviorSubject<{ zoom?: { start: number; min: number; max: number }; center?: number[] }>({});
-  interactionPopupOverlay?: Overlay;
-  interactionPopupListener?: (event: MapBrowserEvent<MouseEvent>) => void;
-  interactionPopupMode?: 'singleclick' | 'pointermove';
+  fitOption$!: Observable<boolean>;
+  mapStyle$!: Observable<string>;
+  interactionManager: InteractionManager = new InteractionManager();
+  mapStyleLayer$!: Observable<VectorTileLayer[]>;
 
   constructor(
     store: Store<any>,
     private snackBar: PrySnackbarService,
-    private translateService: PryI18nService,
+    public translateService: PryI18nService,
     private tooltipFactoryService: TooltipFactoryService,
-    private geocodingService: GeocodingService,
+    public geocodingService: GeocodingService,
     private overlay: cdkOverlay,
     private viewContainerRef: ViewContainerRef,
     private symbolService: SymbolService,
@@ -339,75 +333,66 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     );
   }
 
+  initInteractionManager() {
+    return this.interactionManager.init(this);
+  }
+
   ngAfterViewInit(): void {
-    this.map$ = combineLatest([this.mapUrl$, this.options$, this.itemStyles$, this.widgetSize$]).pipe(
-      debounceTime(300),
-      mergeMap(([mapUrl, options, rs]) => {
-        if (!this.map) {
-          this.map = new Map({ target: this.mapRef.nativeElement });
+    this.map = new Map({ target: this.mapRef.nativeElement });
+    this.interactionManager = this.initInteractionManager();
+    this.mapStyle$ = this.options$.pipe(
+      map((options) => options.style),
+      distinctUntilChanged()
+    );
+
+    this.mapStyleLayer$ = combineLatest([this.mapStyle$, this.mapUrl$]).pipe(
+      map(([style, url]) => {
+        if (!style) {
+          return [];
         }
-
-        this.map.setTarget(undefined);
-        const rect = this.mapRef.nativeElement.getBoundingClientRect();
-        if (rect.height === 0 || rect.width === 0) {
-          console.warn('Map size problem. Resize map');
-        }
-
-        let mapPromise = new Promise<Map>((resolve) => resolve(this.map));
-        if (options.style !== 'none') {
-          mapPromise = apply(this.map, `${mapUrl}/styles/${options.style}/style.json`) as Promise<Map>;
-        }
-
-        return from(mapPromise).pipe(
-          tap((map) => {
-            this.map.setTarget(this.mapRef.nativeElement);
-            this.map.setView(
-              new View({
-                center: fromLonLat(options.center ?? DEFAULT_MAP_CENTER),
-                maxZoom: options.zoom?.max ?? DEFAULT_ZOOM_MAX,
-                minZoom: options.zoom?.min ?? DEFAULT_ZOOM_MIN,
-                zoom: options.zoom?.start ?? DEFAULT_ZOOM_START
-              })
-            );
-            if (!options.attributions) {
-              this.map.getControls().forEach((control: Control) => {
-                if (control instanceof Attribution) {
-                  this.map.removeControl(control);
-                }
-              });
-            }
-
-            this.map.addInteraction(this.selectionInteraction.init(this.store));
-
-            this.addContextMenuInteraction();
-            this.addDropInteraction();
-            this.addOverlayOnInteraction();
-            this.addSearchBarControl();
-            this.addLayerSwitcher();
-            this.addScaleControl();
-            this.addUpdateZoomAndCenter();
-
-            this.fitMapForObjects(options);
-          })
+        const layer = new VectorTileLayer({ declutter: true });
+        applyStyle(layer, `${url}/styles/${style}/style.json`).catch((err) =>
+          console.warn('Style application problem', err)
         );
+        applyBackground(layer, `${url}/styles/${style}/style.json`).catch((err) =>
+          console.warn('Background application problem', err)
+        );
+        return [layer];
       })
     );
 
+    this.options$
+      .pipe(
+        map((options) => ({
+          center: fromLonLat(options.center ?? DEFAULT_MAP_CENTER),
+          maxZoom: options.zoom?.max ?? DEFAULT_ZOOM_MAX,
+          minZoom: options.zoom?.min ?? DEFAULT_ZOOM_MIN,
+          zoom: options.zoom?.start ?? DEFAULT_ZOOM_START
+        })),
+        distinctUntilChanged()
+      )
+      .subscribe((view) => this.map.setView(new View(view)));
+
+    this.fitOption$ = this.options$.pipe(
+      map((options) => !!options.fit),
+      distinctUntilChanged()
+    );
+
+    this.fitOption$.subscribe((fit) => this.fitMapForObjects(fit));
+
     this.layers$ = combineLatest([
       this.resultSet$,
-      this.usedDatasources$,
       this.options$,
       this.classes$,
       this.additionalLayers$,
       this.itemStyles$,
-      this.store.select(ConfigSelectors.geoServerUrl),
-      this.map$
+      this.store.select(ConfigSelectors.geoServerUrl)
     ]).pipe(
       filter(
-        ([resultSet, dataSources, options, classes, additionalLayers, itemStyles, geoServerUrl, map]) =>
-          !!resultSet && !!options && !!classes && !!map
+        ([resultSet, options, classes, additionalLayers, itemStyles, geoServerUrl]) =>
+          !!resultSet && !!options && !!classes
       ),
-      map(([resultSet, dataSources, options, classes, additionalLayers, itemStyles, geoServerUrl]) => {
+      map(([resultSet, options, classes, additionalLayers, itemStyles, geoServerUrl]) => {
         let hasRelationLayer = null as unknown as VectorLayer<VectorSource<any>>;
 
         const layers = (options?.layers || [])
@@ -523,39 +508,33 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     );
 
     this.subscriptions.add(
-      combineLatest([
-        this.mapUrl$,
-        this.map$,
-        this.layers$,
-        this.options$,
-        this.selectedIds$,
-        this.additionalLayers$
-      ]).subscribe(([mapUrl, map, layers, options, selectedIds]) => {
-        this.map.setLayers(layers);
-        this.map
-          .getAllLayers()
-          .filter((layer) => !(layer instanceof Tile))
-          .forEach((layer) => {
-            (layer.getSource() as VectorSource)?.getFeatures().forEach((feature: any) => {
-              const type = feature.get('type');
-              if (['bubble', 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].includes(type)) {
-                feature.setStyle(
-                  feature.get(selectedIds.includes(feature.get('id')) ? 'selectedStyle' : 'classicStyle')
-                );
+      combineLatest([this.mapStyleLayer$, this.layers$, this.fitOption$, this.selectedIds$]).subscribe(
+        ([mapStyleLayer, layers, fit, selectedIds]) => {
+          const toApplyLayers = [...layers, ...mapStyleLayer];
+          this.map.setLayers(toApplyLayers);
+          this.map
+            .getAllLayers()
+            .filter((layer) => !(layer instanceof Tile))
+            .forEach((layer) => {
+              const getFeatures = (layer.getSource() as VectorSource)?.getFeatures;
+              if (typeof getFeatures === 'function') {
+                (layer.getSource() as VectorSource)?.getFeatures().forEach((feature: any) => {
+                  const type = feature.get('type');
+                  if (['bubble', 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].includes(type)) {
+                    feature.setStyle(
+                      feature.get(selectedIds.includes(feature.get('id')) ? 'selectedStyle' : 'classicStyle')
+                    );
+                  }
+                });
               }
             });
-          });
 
-        setTimeout(() => {
-          if (options.style !== 'none') {
-            apply(this.map, `${mapUrl}/styles/${options.style}/style.json`).then((map) => {
-              this.map.setTarget(this.mapRef.nativeElement);
-            });
-          }
-          this.fitMapForObjects(options, selectedIds);
-          this.map.updateSize();
-        }, 200);
-      })
+          setTimeout(() => {
+            this.fitMapForObjects(fit, selectedIds);
+            this.map.updateSize();
+          }, 200);
+        }
+      )
     );
     this.subscriptions.add(
       combineLatest([this.wmsFeatures$, this.classicFeatures$]).subscribe(([wmsFeatures, classicFeatures]) => {
@@ -641,8 +620,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     layer.title = idx + 1 + ' - ' + this.translateService.instant(`@pry.widget.map.layerType.${layer.type}`);
   }
 
-  fitMapForObjects(options: MapWidgetOptions, selectedIds?: string[]) {
-    if (!!options?.fit) {
+  fitMapForObjects(fit: boolean, selectedIds?: string[]) {
+    if (fit) {
       let extent = createEmpty();
       const listOfMarkers = [] as any[];
 
@@ -692,70 +671,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       if (extent[0] !== Infinity && extent[1] !== Infinity && extent[2] !== -Infinity && extent[3] !== -Infinity) {
         this.map.getView().fit(extent, { padding: [20, 20, 70, 70], duration: 200 });
       }
-    }
-  }
-
-  private addOverlayOnInteraction() {
-    if (!this.interactionPopupOverlay) {
-      this.interactionPopupOverlay = new Overlay({
-        element: this.popup.nativeElement,
-        offset: [9, 9]
-      });
-      this.map.addOverlay(this.interactionPopupOverlay);
-    }
-    if (this.optionsCopy.tooltipMode !== TooltipMode.NONE) {
-      if (!!this.interactionPopupMode && !!this.interactionPopupListener) {
-        this.map.un(this.interactionPopupMode, this.interactionPopupListener);
-      }
-      this.interactionPopupListener = (event: MapBrowserEvent<MouseEvent>) => {
-        const values = this.map.getFeaturesAtPixel(event.pixel, { hitTolerance: 5 }) as (
-          | Feature<Circle>
-          | Feature<Point>
-        )[];
-        const valuesToDisplay = [
-          ...new Set(
-            values
-              .map((value) => value.get('id'))
-              .filter((id) => !!id)
-              .map((id) => values.find((value) => value.get('id') === id))
-              .map((value) => ({
-                oClass: value?.get('oClass'),
-                coordinates: event.coordinate,
-                values: value?.getKeys().reduce((p, c) => ({ ...p, [c]: value.get(c) }), {})
-              }))
-          )
-        ];
-        this.classicFeatures$.next(valuesToDisplay);
-        const wmsLayers = this.getWMSLayers();
-        if (wmsLayers) {
-          this.getFeatureFromServer(wmsLayers, event.coordinate);
-        }
-      };
-      this.map.on('singleclick', this.interactionPopupListener);
-      this.interactionPopupMode = 'singleclick';
-    }
-  }
-
-  private addContextMenuInteraction() {
-    if (this.manifest.contextMenu !== false) {
-      this.map.getViewport().addEventListener('contextmenu', (e: MouseEvent) => {
-        const mapCoordinates = this.map.getEventPixel(e);
-        const itemId = this.map.forEachFeatureAtPixel(mapCoordinates, (feature: any) => feature.get('id'));
-        this.store.dispatch(
-          ContextMenuActions.open({
-            itemId,
-            clientX: e.clientX,
-            clientY: e.clientY,
-            resultSet: Array.isArray(this.manifest.datasource) ? this.manifest.datasource[0] : this.manifest.datasource,
-            from: 'map',
-            coordinates: toLonLat(
-              this.map.getCoordinateFromPixel(mapCoordinates),
-              this.map.getView().getProjection()
-            ).reverse()
-          })
-        );
-        e.preventDefault();
-      });
     }
   }
 
@@ -972,13 +887,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     }
   }
 
-  private addDropInteraction() {
-    this.map.getViewport().addEventListener('drop', (e: DragEvent) => {
-      this.import(e);
-      e.preventDefault();
-    });
-  }
-
   changeClustered(layer: MapWidgetMarkerLayerOptions, $event: boolean) {
     layer.clustered = $event;
     if (layer.clustered) {
@@ -991,68 +899,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     layer.clusterDistance = $event.currentTarget?.value;
   }
 
-  private addScaleControl() {
-    this.map.addControl(
-      new ScaleLine({
-        units: 'metric',
-        bar: true,
-        steps: 4,
-        text: true,
-        minWidth: 140
-      })
-    );
-  }
-
-  private addSearchBarControl() {
-    this.searchBarControl = new SearchBarControl({}).withGeocodingService(this.geocodingService);
-    this.map.addControl(this.searchBarControl);
-
-    const addressOverlay = new Overlay({
-      element: this.address.nativeElement,
-      offset: [9, 9]
-    });
-    this.map.addOverlay(addressOverlay);
-
-    // @ts-ignore
-    this.map.on('searched-address', (evt: AddressSearchedEvent) => {
-      this.address.nativeElement.innerHTML = `<div>
-        <div>${this.translateService.instant('@pry.widget.map.address')}: ${evt.address}</div>
-        <div>${this.translateService.instant('@pry.widget.map.addressCoords')}: ${evt.latLon}</div>
-        </div>`;
-      this.address.nativeElement.style.display = '';
-      addressOverlay.setPosition(evt.coordinates);
-      this.map.getView().setCenter(evt.coordinates);
-      this.map.getView().setZoom(this.map.getView().getMaxZoom());
-    });
-  }
-
-  private addLayerSwitcher() {
-    this.layerSwitchControl = new LayerSwitcher({
-      activationMode: 'click',
-      reverse: false
-    });
-    this.map.addControl(this.layerSwitchControl);
-
-    // @ts-ignore
-    this.layerSwitchControl.on('show', () => {
-      this.legendTabOpen = false;
-    });
-  }
-
   hideAddress() {
     this.address.nativeElement.style.display = 'none';
-  }
-
-  private addUpdateZoomAndCenter() {
-    this.map.on('moveend', () => {
-      this.optionsCopy.zoom = {
-        start: this.map.getView().getZoom() ?? this.optionsCopy.zoom?.start ?? this.map.getView().getMinZoom(),
-        min: this.map.getView().getMinZoom(),
-        max: this.map.getView().getMaxZoom()
-      };
-      this.optionsCopy.center = toLonLat(this.map.getView().getCenter() ?? [0, 0]) ?? this.optionsCopy.center;
-      this.zoomAndCenter$.next({ zoom: this.optionsCopy.zoom, center: this.optionsCopy.center });
-    });
   }
 
   changeOpacity(layer: MapWidgetLayerOptions, $event: string) {
@@ -1098,7 +946,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     return !!this.getWMSLayers().find((wmsLayer) => wmsLayer.get('title') === layer.title);
   }
 
-  private getFeatureFromServer(wmsLayers: any[], pixel: Pixel) {
+  getFeatureFromServer(wmsLayers: any[], pixel: Pixel) {
     proj4.defs(
       'EPSG:2154',
       '+proj=lcc +lat_0=46.5 +lon_0=3 +lat_1=49 +lat_2=44 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs'
@@ -1138,6 +986,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   toggleLegendWindow() {
     this.legendTabOpen = !this.legendTabOpen;
-    this.layerSwitchControl?.hidePanel();
+    this.interactionManager.layerSwitchControl?.hidePanel();
   }
 }

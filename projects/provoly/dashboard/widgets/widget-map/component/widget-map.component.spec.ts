@@ -386,7 +386,7 @@ describe('WidgetMapComponent', () => {
 
   it('should provide fit operation', () => {
     try {
-      component.fitMapForObjects({ style: 'none' }, []);
+      component.fitMapForObjects(true, []);
     } catch (e) {
       fail('');
     }

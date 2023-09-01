@@ -53,10 +53,7 @@ export class BaseWidgetComponent extends SubscriptionnerDirective implements OnD
     return this.widgetIndex$.getValue();
   }
 
-  constructor(
-    protected store: Store<any>,
-    protected el: ElementRef
-  ) {
+  constructor(public store: Store<any>, protected el: ElementRef) {
     super();
     this.manifest$ = this.observableList$.pipe(
       combineLatestWith(this.staticManifest$),

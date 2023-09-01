@@ -11,6 +11,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { Store } from '@ngrx/store';
+import equal from 'fast-deep-equal/es6';
 import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable, Subscription } from 'rxjs';
 import { v4 } from 'uuid';
 import { UNKNOWN_DATASOURCE } from '../../../../core/components/translate-id/translate-id.pipe';
@@ -116,7 +117,7 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
     super();
     this.windowManifest$ = this.store
       .select(DashboardSelectors.windowManifest)
-      .pipe(distinctUntilChanged((p, c) => JSON.stringify(p) === JSON.stringify(c)));
+      .pipe(distinctUntilChanged((p, c) => equal(p, c)));
 
     this.targetIndexes$ = this.store.select(DashboardSelectors.targetTenantsIndexes);
     this.subscriptions.add(

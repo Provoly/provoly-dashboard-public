@@ -15,14 +15,16 @@ import equal from 'fast-deep-equal/es6';
 import {
   BehaviorSubject,
   combineLatest,
+  delay,
   distinctUntilChanged,
+  map,
   Observable,
   of,
   Subject,
   Subscription,
   switchMap
 } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { withLatestFrom } from 'rxjs/operators';
 import { WidgetManifest } from '../../../../core/model/manifest.interface';
 import { DashboardActions } from '../../../store/dashboard.actions';
 import { DashboardSelectors } from '../../../store/dashboard.selectors';
@@ -82,34 +84,41 @@ export class WidgetInstanciatorComponent extends SubscriptionnerDirective implem
     );
 
     this.subscriptions.add(
-      this.widgetManifest$.subscribe((widgetManifest) => {
-        this.componentRef.clear();
-        this.instanceSubscription?.unsubscribe();
+      this.widgetManifest$
+        .pipe(
+          map((widgetManifest) => ({ type: widgetManifest.type, layout: widgetManifest.layout })),
+          distinctUntilChanged((p, c) => equal(p, c)),
+          withLatestFrom(this.widgetManifest$),
+          map(([triggering, widgetManifest]) => widgetManifest)
+        )
+        .subscribe((widgetManifest) => {
+          this.componentRef.clear();
+          this.instanceSubscription?.unsubscribe();
 
-        this.widgetFactoryService
-          .resolveComponent(widgetManifest)
-          .pipe(delay(1))
-          .subscribe((component) => {
-            this.instanciatedComponent = !!component
-              ? this.componentRef.createComponent(component)
-              : this.componentRef.createComponent(WidgetPlaceholderComponent);
-            this.instanciatedComponent.instance._manifest$ = this.widgetManifest$;
-            this.instanciatedComponent.instance.widgetIndex = this._widgetIndex$.getValue();
-            this.instanciatedComponent.instance.open$ = this.open$;
-            this.instanceSubscription = this.instanciatedComponent.instance.manifestModified.subscribe(
-              (manifest: { widgetIndex: number; manifest: WidgetManifest }) => {
-                if (!this.standalone) {
-                  // Impact store global manifest
-                  this.store.dispatch(
-                    DashboardActions.updateWidgetManifest({ ...manifest, index: manifest.widgetIndex })
-                  );
+          this.widgetFactoryService
+            .resolveComponent(widgetManifest)
+            .pipe(delay(1))
+            .subscribe((component) => {
+              this.instanciatedComponent = !!component
+                ? this.componentRef.createComponent(component)
+                : this.componentRef.createComponent(WidgetPlaceholderComponent);
+              this.instanciatedComponent.instance._manifest$ = this.widgetManifest$;
+              this.instanciatedComponent.instance.widgetIndex = this._widgetIndex$.getValue();
+              this.instanciatedComponent.instance.open$ = this.open$;
+              this.instanceSubscription = this.instanciatedComponent.instance.manifestModified.subscribe(
+                (manifest: { widgetIndex: number; manifest: WidgetManifest }) => {
+                  if (!this.standalone) {
+                    // Impact store global manifest
+                    this.store.dispatch(
+                      DashboardActions.updateWidgetManifest({ ...manifest, index: manifest.widgetIndex })
+                    );
+                  }
+                  this.manifestModified.emit(manifest);
                 }
-                this.manifestModified.emit(manifest);
-              }
-            );
-            this.widgetInstance.emit(this.instanciatedComponent.instance);
-          });
-      })
+              );
+              this.widgetInstance.emit(this.instanciatedComponent.instance);
+            });
+        })
     );
   }
 

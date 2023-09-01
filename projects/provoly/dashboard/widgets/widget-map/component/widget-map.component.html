@@ -310,8 +310,8 @@
       <button
         type="button"
         class="a-btn a-btn--icon-only"
-        (click)="selectionInteraction.changeSelection(action)"
-        [class.-selected]="selectionInteraction.selectionType === action"
+        (click)="interactionManager.selectionInteraction.changeSelection(action)"
+        [class.-selected]="interactionManager.selectionInteraction.selectionType === action"
         [pryTooltip]="infoTooltipAction"
         pryTooltipPosition="bottom"
         aria-describedby="infoTooltipAction"
