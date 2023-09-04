@@ -233,24 +233,24 @@ export class AdminService {
   addMetadataRules(metadataRules: MetadataRulesCreate): Observable<void> {
     return this.store
       .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.post<void>(encodeURI(`${url}/meta-provisionning`), metadataRules)));
+      .pipe(mergeMap((url) => this.httpClient.post<void>(encodeURI(`${url}/meta-provisioning`), metadataRules)));
   }
 
   getMetadataRulesList(): Observable<MetadataRules[]> {
     return this.store
       .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.get<MetadataRules[]>(`${url}/meta-provisionning`)));
+      .pipe(mergeMap((url) => this.httpClient.get<MetadataRules[]>(`${url}/meta-provisioning`)));
   }
 
   getMetadataRules(id: string): Observable<MetadataRules> {
     return this.store
       .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.get<MetadataRules>(`${url}/meta-provisionning/id/${id}`)));
+      .pipe(mergeMap((url) => this.httpClient.get<MetadataRules>(`${url}/meta-provisioning/id/${id}`)));
   }
 
   deleteMetadataRules(id: string) {
     return this.store
       .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.delete<MetadataRules>(`${url}/meta-provisionning/id/${id}`)));
+      .pipe(mergeMap((url) => this.httpClient.delete<MetadataRules>(`${url}/meta-provisioning/id/${id}`)));
   }
 }

@@ -367,11 +367,11 @@ router.on(
   '/ref/metadata'
 );
 
-router.on(['OPTIONS', 'GET'], '/ref/meta-provisionning', (req, res, params) => {
+router.on(['OPTIONS', 'GET'], '/ref/meta-provisioning', (req, res, params) => {
   makeResponseOk(res, dataModule.rulesMetadatas);
 });
 
-router.on(['OPTIONS', 'GET'], '/ref/meta-provisionning/id/:uuid', (req, res, params) => {
+router.on(['OPTIONS', 'GET'], '/ref/meta-provisioning/id/:uuid', (req, res, params) => {
   makeResponseOk(
     res,
     dataModule.rulesMetadatas.find((x) => x.id === params.uuid)
@@ -403,10 +403,10 @@ router.on(
       makeResponseOk(res);
     });
   },
-  '/ref/meta-provisionning'
+  '/ref/meta-provisioning'
 );
 
-router.on(['DELETE'], '/ref/meta-provisionning/id/:id', (req, res, params) => {
+router.on(['DELETE'], '/ref/meta-provisioning/id/:id', (req, res, params) => {
   const toDeleteIndex = dataModule.rulesMetadatas.findIndex((nq) => nq.id === params.id);
   if (toDeleteIndex >= 0) {
     dataModule.rulesMetadatas.splice(toDeleteIndex, 1);
