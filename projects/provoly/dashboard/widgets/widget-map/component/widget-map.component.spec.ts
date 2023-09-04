@@ -44,6 +44,17 @@ describe('WidgetMapComponent', () => {
   let store: MockStore;
   let snack: PrySnackbarService;
 
+  let warn: any;
+
+  beforeAll(() => {
+    warn = console.warn;
+    console.warn = () => {};
+  });
+
+  afterAll(() => {
+    console.warn = warn;
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [

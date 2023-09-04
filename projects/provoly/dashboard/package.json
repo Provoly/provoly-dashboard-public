@@ -4,7 +4,7 @@
   "type": "commonjs",
   "scripts": {
     "build": "tsc --module commonjs -p tsconfig.schematics.json",
-    "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json ../../../dist/@provoly/dashboard/"
+    "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json schematics/migration.json ../../../dist/@provoly/dashboard/"
   },
   "peerDependencies": {
     "@angular/common": "15.x || 16.x",
@@ -47,6 +47,10 @@
   },
   "schematics": "./schematics/collection.json",
   "ng-add": {
+    "save": true
+  },
+  "ng-update": {
+    "migrations": "./schematics/migration.json",
     "save": true
   }
 }
