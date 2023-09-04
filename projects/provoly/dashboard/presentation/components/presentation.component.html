@@ -76,6 +76,7 @@
                     type="button"
                     class="a-btn a-btn--icon-only"
                     (click)="default(presentation.id, presentation.name)"
+                    *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'default' }"
                   >
                     <pry-icon
                       [iconSvg]="presentation.default ? 'home-fill' : 'home-line'"
