@@ -115,6 +115,7 @@ import { AdminUserComponent } from './components/admin-user/admin-user.component
 import { AdminUserEffects } from './components/admin-user/store/admin-user.effects';
 import { adminUserFeatureKey, adminUserReducer } from './components/admin-user/store/admin-user.reducer';
 import { PryAdminComponent } from './components/admin.component';
+import { PryAssociationComponent } from './components/association/association.component';
 import { enTranslations } from './i18n/en.translations';
 import { frTranslations } from './i18n/fr.translations';
 import { AdminEffects } from './store/admin.effects';
@@ -194,7 +195,8 @@ import { adminFeatureKey, adminReducer } from './store/admin.reducer';
     AdminFormDatasetComponent,
     AdminClassesCustomizeComponent,
     AdminClassesCustomizeTooltipComponent,
-    AdminClassesCustomizeSymbolComponent
+    AdminClassesCustomizeSymbolComponent,
+    PryAssociationComponent
   ],
   imports: [
     CommonModule,

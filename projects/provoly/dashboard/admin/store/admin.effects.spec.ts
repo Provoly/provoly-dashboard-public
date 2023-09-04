@@ -10,6 +10,7 @@ import { AdminActions } from './admin.actions';
 import { AdminEffects } from './admin.effects';
 import { AdminState, initialAdminState } from './admin.reducer';
 import { AdminService } from './admin.service';
+import { associations } from '@provoly/dashboard/mock/data/mockItemAdmin';
 
 const buildState = (state: Partial<AdminState>) =>
   Object.assign({}, { '@pry/admin': JSON.parse(JSON.stringify({ ...initialAdminState, ...state })) });
@@ -21,18 +22,6 @@ const predicates: Predicate[] = [
     value: 'value'
   }
 ];
-
-const associations: Associations = {
-  id: 'Attribute123',
-  associations: [
-    {
-      id: '12345',
-      name: 'test association Attribute',
-      type: 'dataset'
-    }
-  ],
-  usedElsewhere: true
-};
 
 describe('AdminEffects', () => {
   let actions$: Observable<any>;

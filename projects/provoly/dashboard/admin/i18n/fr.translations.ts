@@ -320,6 +320,16 @@ export const frTranslations = {
         attributeDestination: 'Attribut de destination',
         relationType: 'Type de relation',
         selectRelationType: 'Selectionnez un type de relation'
+      },
+      association: {
+        ABAC: 'Règle ABAC',
+        LINK: 'Relation',
+        NAMED_QUERY: 'Requête nommée',
+        WIDGET: 'Restitution',
+        DATASET: 'Jeu de données',
+        OCLASS: 'Modèle de données',
+        DASHBOARD: 'Présentation',
+        FIELD: 'Type métier'
       }
     },
     tooltip: {

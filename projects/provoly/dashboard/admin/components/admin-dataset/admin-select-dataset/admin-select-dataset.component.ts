@@ -17,7 +17,7 @@ import { MetadataActions } from '../../admin-metadata/store/metadata.action';
 import { MetadataSelectors } from '../../admin-metadata/store/metadata.selector';
 import { AdminDatasetActions } from '../store/admin-dataset.actions';
 import { AdminDatasetSelectors } from '../store/admin-dataset.selector';
-import {AdminSelectors} from "../../../store/admin.selectors";
+import { AdminSelectors } from '../../../store/admin.selectors';
 
 let nextCompId = 0;
 

@@ -4,6 +4,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { Associations, ConfigSelectors, IMetadata, Predicate, VARIABLE_TYPE } from '@provoly/dashboard';
 
 import { AdminService } from './admin.service';
+import {associations} from "@provoly/dashboard/mock/data/mockItemAdmin";
 
 describe('Admin Service', () => {
   let service: AdminService;
@@ -125,105 +126,69 @@ describe('Admin Service', () => {
     };
 
     it('should get associations for a class', () => {
-      let associations: Associations | undefined;
+      let association: Associations | undefined;
 
       service.getClassAssociations(classId).subscribe((_associations) => {
-        associations = _associations;
+        association = _associations;
       });
 
       const req = httpTestingController.expectOne(`ref/model/class/${classId}/associations`);
       expect(req.request.method).toBe('GET');
 
-      req.flush(mockAssociations);
+      req.flush(associations);
 
-      expect(associations).toBeDefined();
+      expect(association).toBeDefined();
     });
   });
   describe('getAssociationsDataset', () => {
     const datasetId = 'dataset123';
-    const mockAssociations: {} = {
-      id: 'dataset123',
-      associations: [
-        {
-          id: '12345',
-          name: 'test association dataset',
-          type: 'dataset'
-        }
-      ],
-      usedElsewhere: true
-    };
-
     it('should get associations for a dataset', () => {
-      let associations: Associations | undefined;
+      let association: Associations | undefined;
 
       service.getDatasetAssociations(datasetId).subscribe((_associations) => {
-        associations = _associations;
+        association = _associations;
       });
 
       const req = httpTestingController.expectOne(`ref/datasets/${datasetId}/associations`);
       expect(req.request.method).toBe('GET');
 
-      req.flush(mockAssociations);
+      req.flush(associations);
 
-      expect(associations).toBeDefined();
+      expect(association).toBeDefined();
     });
   });
   describe('getAssociationsField', () => {
     const fieldId = 'field123';
-    const mockAssociations: {} = {
-      id: 'field123',
-      associations: [
-        {
-          id: '12345',
-          name: 'test association field',
-          type: 'dataset'
-        }
-      ],
-      usedElsewhere: true
-    };
-
     it('should get associations for a field', () => {
-      let associations: Associations | undefined;
+      let association: Associations | undefined;
 
       service.getFieldAssociations(fieldId).subscribe((_associations) => {
-        associations = _associations;
+        association = _associations;
       });
 
       const req = httpTestingController.expectOne(`ref/model/fields/${fieldId}/associations`);
       expect(req.request.method).toBe('GET');
 
-      req.flush(mockAssociations);
+      req.flush(associations);
 
-      expect(associations).toBeDefined();
+      expect(association).toBeDefined();
     });
   });
   describe('getAssociationsAttribute', () => {
     const AttributeId = 'Attribute123';
-    const mockAssociations: {} = {
-      id: 'Attribute123',
-      associations: [
-        {
-          id: '12345',
-          name: 'test association Attribute',
-          type: 'dataset'
-        }
-      ],
-      usedElsewhere: true
-    };
-
     it('should get associations for a Attribute', () => {
-      let associations: Associations | undefined;
+      let association: Associations | undefined;
 
       service.getAttributeAssociations(AttributeId).subscribe((_associations) => {
-        associations = _associations;
+        association = _associations;
       });
 
       const req = httpTestingController.expectOne(`ref/model/attribute/${AttributeId}/associations`);
       expect(req.request.method).toBe('GET');
 
-      req.flush(mockAssociations);
+      req.flush(associations);
 
-      expect(associations).toBeDefined();
+      expect(association).toBeDefined();
     });
   });
 });

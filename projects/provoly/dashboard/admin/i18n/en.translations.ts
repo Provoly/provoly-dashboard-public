@@ -319,6 +319,16 @@ export const enTranslations = {
         attributeDestination: 'Destination attribute',
         relationType: 'Relation type',
         selectRelationType: 'Select relation type'
+      },
+      association: {
+        ABAC: 'ABAC Rule',
+        LINK: 'Relation',
+        NAMED_QUERY: 'Named query',
+        WIDGET: 'Widget',
+        DATASET: 'Dataset',
+        OCLASS: 'Data model',
+        DASHBOARD: 'Dashboard',
+        FIELD: 'Data type'
       }
     },
     tooltip: {

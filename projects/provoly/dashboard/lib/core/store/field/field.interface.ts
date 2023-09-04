@@ -12,7 +12,9 @@ export enum FieldType {
   MULTILINE = 'MultiLineString',
   POLYGON = 'Polygon',
   MULTIPOLYGON = 'MultiPolygon',
-  GEOMETRYCOLLECTION = 'GeometryCollection'
+  GEOMETRYCOLLECTION = 'GeometryCollection',
+  OCLASS= 'modèle de données',
+  DATASET= 'test'
 }
 
 export interface Field {

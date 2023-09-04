@@ -34,4 +34,50 @@
       padding-right: toRem(20);
     }
   }
+  .a-container-type {
+    display: flex;
+    align-items: center;
+  }
+
+  .a-label-type{
+    color: #4f4f4f;
+    background-color: #c6fffd;
+    border-radius: toRem(20);
+    padding: toRem(10);
+    width: max-content;
+    font-size: 10px;
+    margin-right: 5px;
+  }
+
+  .a-label-type.DATASET{
+    background-color: #f9e0ff;
+  }
+
+  .a-label-type.FIELD{
+    background-color: #cce8fa;
+  }
+
+  .a-label-type.OCLASS{
+    background-color: #ecffc9;
+  }
+
+  .a-label-type.DASHBOARD{
+    background-color: #ffd9d9;
+  }
+
+  .a-label-type.ABAC{
+    background-color: #ffe0f6;
+  }
+
+  .a-label-type.LINK{
+    background-color: #cefacc;
+  }
+
+  .a-label-type.NAMED_QUERY{
+    background-color: #fdf8d5;
+  }
+
+  .a-label-type.WIDGET{
+    background-color: #ffedd9;
+  }
 }

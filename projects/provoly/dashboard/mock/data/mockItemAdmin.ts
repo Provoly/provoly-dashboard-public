@@ -15,7 +15,8 @@ import {
   Predicate,
   RelationType,
   UserInfo,
-  VARIABLE_TYPE
+  VARIABLE_TYPE,
+  Associations
 } from '@provoly/dashboard';
 
 export const envs: Environment[] = [{ type: VARIABLE_TYPE.STRING, name: 'myEnv', value: 'value' }];
@@ -135,3 +136,15 @@ export const datasetMetadata: DatasetMetadata[] = [
     value: '2022-05-12'
   }
 ];
+
+export const associations: Associations = {
+  id: 'Attribute123',
+  associations: [
+    {
+      id: '12345',
+      name: 'test association Attribute',
+      type: 'dataset'
+    }
+  ],
+  usedElsewhere: true
+};

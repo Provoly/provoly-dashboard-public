@@ -1,6 +1,7 @@
 import * as fromAdmin from './admin.reducer';
 import { AdminState, initialAdminState } from './admin.reducer';
 import { AdminSelectors } from './admin.selectors';
+import {associations} from "@provoly/dashboard/mock/data/mockItemAdmin";
 
 describe('Admin Selectors', () => {
   const initialState = Object.assign({}, initialAdminState);
@@ -29,17 +30,7 @@ describe('Admin Selectors', () => {
   });
   describe('selectedAssociation', () => {
     it('should return selected association', () => {
-      const selectedAssociation = {
-        id: 'Attribute123',
-        associations: [
-          {
-            id: '12345',
-            name: 'test association Attribute',
-            type: 'dataset'
-          }
-        ],
-        usedElsewhere: true
-      };
+      const selectedAssociation = associations;
       const mockStateWithAssociation = {
         ...initialState,
         selectedAssociation: selectedAssociation

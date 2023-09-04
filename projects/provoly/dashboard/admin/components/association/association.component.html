@@ -1,0 +1,11 @@
+<div *ngFor="let association of associations?.associations" class="a-container-type">
+  <p class="a-label-type {{ association.type }}">
+    <strong>{{ '@pry.admin.association.' + association.type | i18n }}</strong>
+  </p>
+  <p>
+    {{ association.name }}
+  </p>
+</div>
+<p *ngIf="associations?.usedElsewhere === true" class="a-p">
+  <strong>{{ '@pry.admin.classes.usedElsewhere' | i18n }}</strong>
+</p>
