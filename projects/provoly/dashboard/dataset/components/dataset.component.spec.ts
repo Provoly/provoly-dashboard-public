@@ -10,6 +10,7 @@ import { MockPryTooltipDirective } from '@provoly/dashboard/mock/directive/mock-
 import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
 import { MockPryPresentationCssComponent } from '@provoly/dashboard/mock/style/mock-pry-presentation-css';
 import { PryPresentationComponent } from '@provoly/dashboard/presentation';
+import { combineLatest, map, of } from 'rxjs';
 
 describe('PryPresentationComponent', () => {
   let component: PryPresentationComponent;
@@ -90,5 +91,22 @@ describe('PryPresentationComponent', () => {
     expect(component.modalOpened).toBe(true);
     component.toggleModal(presentation);
     expect(component.modalOpened).toBe(false);
+  });
+  it('should filter and sort datasets alphabetically', () => {
+    const mockDatasets = [{ name: 'Z named dataset' }, { name: 'A named dataset' }, { name: 'C named dataset' }];
+    const mockSearch = of('a');
+    const searchResult = [{ name: 'A named dataset' }];
+
+    combineLatest([of(mockDatasets), mockSearch])
+      .pipe(
+        map(([datasets, search]) =>
+          datasets
+            .filter((dataset) => search.length === 0 || dataset.name.toLowerCase().includes(search.toLowerCase()))
+            .sort((a, b) => a.name.localeCompare(b.name))
+        )
+      )
+      .subscribe((res) => {
+        expect(res).toEqual(searchResult);
+      });
   });
 });
