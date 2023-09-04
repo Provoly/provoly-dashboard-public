@@ -33,6 +33,7 @@ export interface DatasetMessage {
   name: string;
   recordID: string;
   datasetVersionId: string;
+  level: 'ERROR' | 'WARNING';
 }
 
 export interface DatasetPreview {

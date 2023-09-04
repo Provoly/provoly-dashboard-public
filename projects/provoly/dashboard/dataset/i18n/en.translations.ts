@@ -25,6 +25,7 @@ export const enTranslations = {
         ACTIVE: 'Invalidate',
         INACTIVE: 'Validate',
         ERROR: 'Consult errors',
+        WARNING: 'Consult warnings',
         LOADING: '',
         INDEXING: ''
       },

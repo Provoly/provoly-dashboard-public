@@ -33,4 +33,5 @@ export interface DatasetVersion {
   state: string;
   withFile: boolean;
   metadata: any[];
+  hasWarnings: boolean;
 }

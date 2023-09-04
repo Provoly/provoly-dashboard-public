@@ -97,7 +97,7 @@
                 </div>
               </td>
               <td>
-                <div *ngIf="version.state !== 'LOADING' && version.state !== 'INDEXING'">
+                <ng-container *ngIf="version.state !== 'LOADING' && version.state !== 'INDEXING'">
                   <button
                     type="button"
                     class="a-btn a-btn--primary a-btn--icon-text ng-star-inserted"
@@ -105,7 +105,16 @@
                   >
                     {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
                   </button>
-                </div>
+                </ng-container>
+                <ng-container *ngIf="version.hasWarnings">
+                  <button
+                    type="button"
+                    class="a-btn a-btn--secondary a-btn--icon-text ng-star-inserted"
+                    (click)="consultErrors()"
+                  >
+                    {{ '@pry.dataset.buttonAction.WARNING' | i18n }}
+                  </button>
+                </ng-container>
               </td>
             </tr>
           </tbody>

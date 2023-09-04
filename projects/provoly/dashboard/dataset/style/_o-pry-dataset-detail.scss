@@ -64,3 +64,9 @@ pry-dataset-detail {
 .o-manifest-layout__content {
   padding-left: 2rem;
 }
+
+td {
+  .a-btn + .a-btn {
+    margin-left: toRem(10);
+  }
+}

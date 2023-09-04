@@ -32,7 +32,8 @@ describe('Dataset Reducer', () => {
       available: true,
       version: 1,
       state: 'OK',
-      withFile: false
+      withFile: false,
+      hasWarnings: false
     },
     {
       id: 'CCCC-BBBB-AAAA',
@@ -43,7 +44,8 @@ describe('Dataset Reducer', () => {
       available: true,
       version: 2,
       state: 'OK',
-      withFile: false
+      withFile: false,
+      hasWarnings: false
     }
   ];
 

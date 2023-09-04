@@ -28,16 +28,11 @@ export class PryModalStatusComponent {
   @Input() set version(version: DatasetVersion | undefined) {
     this._version = version;
     if (!!version) {
-      this.store.dispatch(DataSourceActions.dataset.previews.getById({ id: version.id }));
       this.datasetPreviews$ = this.store
         .select(DataSourceSelectors.datasetPreviews)
         .pipe(
           map((previews) =>
-            previews
-              .map((preview) =>
-                preview.messages.map((message) => ({ ...message, level: preview.level, count: preview.count }))
-              )
-              .flat()
+            previews.map((preview) => preview.messages.map((message) => ({ ...message, count: preview.count }))).flat()
           )
         );
     }

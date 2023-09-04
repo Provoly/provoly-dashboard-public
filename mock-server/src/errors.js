@@ -6,10 +6,12 @@ const generateErrors = (listOfCodes = errorCodes) => {
   const errors = [];
 
   for (let i = 0; i < howMany; i++) {
+    const level = casual.coin_flip ? 'ERROR' : 'WARNING';
     errors.push({
-      level: casual.coin_flip ? 'ERROR' : 'WARNING',
+      level,
       messages: [
         {
+          level,
           extractErrorCode: listOfCodes[casual.integer((from = 0), (to = listOfCodes.length - 1))],
           type: casual.sentence,
           name: casual.sentence,

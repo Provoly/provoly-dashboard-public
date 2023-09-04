@@ -25,6 +25,7 @@ export const frTranslations = {
         ACTIVE: 'Invalider',
         INACTIVE: 'Valider',
         ERROR: 'Consulter erreurs',
+        WARNING: 'Consulter warnings',
         LOADING: '',
         INDEXING: ''
       },
