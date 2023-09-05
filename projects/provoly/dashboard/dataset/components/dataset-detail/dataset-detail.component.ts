@@ -24,7 +24,8 @@ export class PryDatasetDetailComponent implements OnInit {
   @Output() goToCatalog = new EventEmitter();
   widgetManifest = {
     table: {
-      header: false,
+      header: true,
+      locked: true,
       type: 'table',
       layout: { x: 1, y: 1, height: 12, width: 12 },
       options: {},
