@@ -88,7 +88,7 @@
               />
             </div>
 
-            <div class="m-form-label-field">
+            <div class="m-form-label-field" *ngIf="layer.type !== 'geoserver'">
               <label class="a-label" for="map_layerType">{{ '@pry.widget.map.layerType.title' | i18n }}</label>
               <pry-select
                 (ngModelChange)="changeLayerType($event, i)"
@@ -97,7 +97,6 @@
                 [items]="layerTypes"
                 [labelTranslate]="true"
                 [ngModel]="layer.type"
-                [disabled]="layer.type === 'geoserver'"
                 baseTranslate="@pry.widget.map.layerType."
                 class="a-pry-select"
                 id="map_layerType"
@@ -198,7 +197,6 @@
         <fieldset
           *ngIf="
             layer.type === 'wms' ||
-            layer.type === 'geoserver' ||
             layer.type === 'wmts' ||
             layer.type === 'featurelayer' ||
             layer.type === 'vectortile' ||
@@ -213,22 +211,17 @@
               class="a-form-field"
               type="text"
               (input)="changeUrl($event, layer)"
-              [disabled]="layer.type === 'geoserver'"
               [value]="layer.url"
             />
           </div>
 
-          <div
-            class="m-form-label-field"
-            *ngIf="layer.type === 'wms' || layer.type === 'geoserver' || layer.type === 'wmts'"
-          >
+          <div class="m-form-label-field" *ngIf="layer.type === 'wms' || layer.type === 'wmts'">
             <label class="a-label" for="map_wms_paramLayer">{{ '@pry.widget.map.wms.paramLayer' | i18n }}</label>
             <input
               id="map_wms_paramLayer"
               class="a-form-field"
               type="text"
               (input)="changeParamLayer($event, layer)"
-              [disabled]="layer.type === 'geoserver'"
               [value]="layer.paramLayer"
             />
           </div>

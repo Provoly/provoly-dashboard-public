@@ -617,7 +617,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   setDefaultLayerTitle(layer: MapWidgetLayerOptions, idx: number) {
-    layer.title = idx + 1 + ' - ' + this.translateService.instant(`@pry.widget.map.layerType.${layer.type}`);
+    layer.title =
+      idx + 1 + ' - ' + this.translateService.instant(`@pry.widget.map.layerType.${layer.type}`, { ...layer });
   }
 
   fitMapForObjects(fit: boolean, selectedIds?: string[]) {
@@ -817,10 +818,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     layer.attribution = $event.currentTarget?.value;
   }
 
-  changeParamLayer(
-    $event: Event,
-    layer: MapWMSLayerLayerOptions | MapWMTSLayerLayerOptions | MapGeoServerLayerOptions
-  ) {
+  changeParamLayer($event: Event, layer: MapWMSLayerLayerOptions | MapWMTSLayerLayerOptions) {
     // @ts-ignore
     layer.paramLayer = $event.currentTarget?.value;
   }
