@@ -10,3 +10,5 @@ Les actions disponibles sont:
 - Enregistrer une nouvelle présentation
 - Remettre à zéro la présentation
 - Changer le format de la présentation (plein écran, 1/2 écran, …)
+- Actualiser les jeux de données utilisés par la presentation,
+- Paramétrer les taux de rafraîchissement de chaque jeu de données utilisé par la presentation

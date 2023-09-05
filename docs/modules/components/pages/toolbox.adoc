@@ -1,0 +1,26 @@
+=== Toolbox (pry-toolbox)
+
+Le composant `+Toolbox+` permet d'afficher une barre d'action
+à partir d'un tableau d'actions fourni en entrée.
+La liste des actions par défaut peut être consultée <<../../modules/pages/toolbox.adoc#_toolbox, ici>>.
+Les actions par défaut sont responsables de la gestion et de la modification de la disposition
+de la présentation.
+
+Les paramètres d’entrée du composant sont les suivants :
+
+- `actions`: un tableau d'objets de type `ToolboxActions` qui correspondent aux actions
+affichées dans la barre. L'interface `ToolboxAction` a 4 propriétés :
+  *  `name`,
+  * `component` - le composant qui sera affiché dans la barre,
+(le composant doit hériter du `ToolboxActionComponent` qui est
+présent dans le même module),
+  * `visible` - permet l'affichage conditionnel de l'action,
+  * `access` - permet de spécifier les droits d'accès à l'action
+en utilisant la directive `pryAccess`,
+
+- `dropdownActions`: un tableau d'objets qui permet de ranger les actions
+spécifiées dans une liste déroulante ordonnée. Les objets de ce tableau ont
+les propriétés suivantes :
+  * `name` - correspond à la propriété `ToolboxAction.name`,
+  * `order` - permet de spécifier l'ordre spécifique de l'action dans la liste déroulante,
+- `displayLabels` - permet de  entre l'affichage des étiquettes ou seulement des icônes des actions.
