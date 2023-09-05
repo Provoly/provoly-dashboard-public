@@ -31,7 +31,7 @@ export interface DatasetMessage {
   extractErrorCode: string;
   type: string;
   name: string;
-  recordID: string;
+  recordId: string;
   datasetVersionId: string;
   level: 'ERROR' | 'WARNING';
 }

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
-import { DatasetMessage } from '../../model/dataset.interface';
+import { DatasetMessage, DatasetPreview } from '../../model/dataset.interface';
 import { DataSourceActions } from '../../store/data-source/data-source.actions';
 import { DatasetVersion } from '../../store/data-source/data-source.model';
 import { DataSourceSelectors } from '../../store/data-source/data-source.selectors';
@@ -19,15 +19,17 @@ export class PryModalStatusComponent {
       extractErrorCode: string;
       level: 'ERROR' | 'WARNING';
       name: string;
-      recordID: string;
+      recordId: string;
       type: string;
     }[]
   >;
+  messageCount$?: Observable<number>;
   _version?: DatasetVersion;
 
   @Input() set version(version: DatasetVersion | undefined) {
     this._version = version;
     if (!!version) {
+      this.store.dispatch(DataSourceActions.dataset.previews.getById({ id: version.id }));
       this.datasetPreviews$ = this.store
         .select(DataSourceSelectors.datasetPreviews)
         .pipe(
@@ -35,6 +37,11 @@ export class PryModalStatusComponent {
             previews.map((preview) => preview.messages.map((message) => ({ ...message, count: preview.count }))).flat()
           )
         );
+      this.messageCount$ = this.datasetPreviews$.pipe(
+        map((previews) => {
+          return previews.map((preview) => preview.count).reduce((p, c) => p + c, 0);
+        })
+      );
     }
   }
 
@@ -42,5 +49,16 @@ export class PryModalStatusComponent {
 
   goBack() {
     this.gotoConsult.emit(this.version);
+  }
+
+  getModalTitle() {
+    if (this._version?.state !== 'ERROR' && this._version?.hasWarnings) {
+      return 'WARNING';
+    }
+    return 'ERROR';
+  }
+
+  getErrorCodeParam(code: string, name: string, recordId: string) {
+    return code === 'UNRECOGNIZED' || code === 'CAST' ? { name } : { recordId };
   }
 }

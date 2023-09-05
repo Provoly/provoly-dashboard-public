@@ -91,7 +91,7 @@ export class PryDatasetDetailComponent implements OnInit {
     this.selectedDatasetVersion = version;
     switch (version.state) {
       case 'ERROR':
-        this.consultErrors();
+        this.consultErrors(version);
         break;
       case 'ACTIVE':
         this.deactivateVersion(version);
@@ -104,7 +104,8 @@ export class PryDatasetDetailComponent implements OnInit {
     }
   }
 
-  consultErrors() {
+  consultErrors(version: DatasetVersion) {
+    this.selectedDatasetVersion = version;
     this.showModalStatus = true;
   }
 

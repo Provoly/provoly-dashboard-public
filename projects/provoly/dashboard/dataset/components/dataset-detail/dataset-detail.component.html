@@ -105,11 +105,11 @@
                     {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
                   </button>
                 </ng-container>
-                <ng-container *ngIf="version.hasWarnings">
+                <ng-container *ngIf="version.hasWarnings && version.state !== 'ERROR'">
                   <button
                     type="button"
                     class="a-btn a-btn--secondary a-btn--icon-text ng-star-inserted"
-                    (click)="consultErrors()"
+                    (click)="consultErrors(version)"
                   >
                     {{ '@pry.dataset.buttonAction.WARNING' | i18n }}
                   </button>

@@ -1,7 +1,9 @@
 <div class="o-modal-wrapper">
   <div class="o-modal__top">
     <div class="o-modal__top__title">
-      <h2 class="a-h2">{{ '@pry.dataset.error.title' | i18n }}</h2>
+      <h2 class="a-h2">
+        {{ '@pry.dataset.error.modalTitle.' + getModalTitle() | i18n }} ({{ messageCount$ | async }})
+      </h2>
     </div>
     <div class="o-modal__top__close">
       <button class="a-btn a-btn--icon-only" (click)="goBack()">
@@ -13,8 +15,7 @@
   <table class="a-table">
     <thead>
       <tr>
-        <th>Type</th>
-        <th>{{ '@pry.dataset.error.code' | i18n }}</th>
+        <th>{{ '@pry.dataset.error.type' | i18n }}</th>
         <th>{{ '@pry.dataset.error.elements' | i18n }}</th>
         <th>{{ '@pry.dataset.error.message' | i18n }}</th>
       </tr>
@@ -22,16 +23,16 @@
     <tbody>
       <tr *ngFor="let preview of datasetPreviews$ | async | slice : 0 : 5">
         <td>
-          {{ preview.level }}
+          {{ '@pry.dataset.error.level.' + preview.level | i18n }}
         </td>
         <td>
-          {{ preview.extractErrorCode }}
+          {{ preview.recordId }}
         </td>
         <td>
-          {{ preview.count }}
-        </td>
-        <td>
-          {{ preview.name }}
+          {{
+            '@pry.dataset.error.code.' + preview.extractErrorCode
+              | i18n : getErrorCodeParam(preview.extractErrorCode, preview.name, preview.recordId)
+          }}
         </td>
       </tr>
     </tbody>

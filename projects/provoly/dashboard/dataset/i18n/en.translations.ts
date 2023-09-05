@@ -30,8 +30,25 @@ export const enTranslations = {
         INDEXING: ''
       },
       error: {
-        title: 'List of errors',
-        close: 'Close'
+        type: 'Type',
+        elements: 'Elements',
+        message: 'Message',
+        close: 'Fermer',
+        modalTitle: {
+          ERROR: 'List of errors',
+          WARNING: 'List of warnings'
+        },
+        level: {
+          ERROR: 'Error',
+          WARNING: 'Warning'
+        },
+        code: {
+          UNRECOGNIZED: 'Unrecognized attribute {{name}}',
+          FORMAT: 'Wrong format for attribute {{name}}',
+          ELASTIC_SEARCH: 'Insertion error for element {{recordId}}',
+          NO_VALUES: 'No value for {{recordId}} line',
+          FORMAT_FILE_ERROR: 'Unsupported file format'
+        }
       }
     }
   }
