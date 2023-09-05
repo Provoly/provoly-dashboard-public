@@ -5,8 +5,8 @@
 .o-pry-dataset {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-evenly;
   gap: toRem(60);
-  padding-left: toRem(30);
 
   &__search {
     position: relative;
@@ -23,4 +23,11 @@
   pry-dataset-card {
     min-width: toRem(360);
   }
+}
+.o-dataset-layout {
+  overflow: hidden;
+  height: 100%;
+}
+.o-manifest-layout__content {
+  padding-left: 2rem;
 }

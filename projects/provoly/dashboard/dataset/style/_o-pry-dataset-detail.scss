@@ -3,14 +3,20 @@
 /* Organism - pry-dataset-detail */
 
 pry-dataset-detail {
+  height: 100%;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  flex: 1 1;
+
+  .dataset-detail {
+    overflow: auto;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1;
+    padding: toRem(25);
+  }
 
   .dashboard-container {
-    overflow: auto;
-    height: 50vh;
+    flex: 1 1;
   }
     pry-icon {
       position: relative;
@@ -47,7 +53,9 @@ pry-dataset-detail {
   padding-right: 2rem;
 }
 
-.o-manifest-layout__content {
+.dataset-layout__content {
+  overflow:hidden;
+  height: 100%;
   padding-left: 2rem;
 }
 
