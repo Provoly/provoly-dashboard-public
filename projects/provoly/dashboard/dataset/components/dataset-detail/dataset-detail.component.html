@@ -1,11 +1,9 @@
-<div class="o-manifest-layout__content">
+<div class="o-manifest-layout__toolbox">
   <button class="a-btn a-btn--primary" (click)="goBack()">{{ '@pry.dataset.returnToList' | i18n }}</button>
 </div>
 
-<div class="o-pry-dataset-detail">
-  <div class="o-manifest-layout__content">
-    <h1 class="a-h1">{{ dataset.name }}</h1>
-  </div>
+<div class="o-manifest-layout__content">
+  <h1 class="a-h1">{{ dataset.name }}</h1>
   <div class="dataset-detail">
     <div class="o-tabs">
       <div class="o-tabs__list" role="tablist" [attr.aria-labelledby]="'tab-custo'">
@@ -51,6 +49,7 @@
       <div class="dashboard-container">
         <pry-dashboard [staticDashboard]="{ widgets: [widgetManifest[tab === 0 ? 'table' : 'map']] }"></pry-dashboard>
       </div>
+
     </ng-container>
     <ng-container *ngIf="tab === 2">
       <div class="table-container">

@@ -8,30 +8,16 @@ pry-dataset-detail {
   flex-direction: column;
   flex: 1 1;
 
-  .o-pry-dataset-detail {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1;
-
-    .dataset-detail {
-      display: flex;
-      flex-direction: column;
-      flex: 1 1;
-
-      .dashboard-container {
-        overflow: auto;
-        height: 50vh;
-      }
-    }
-
-    .table-container {
-      flex: 1 1;
-    }
-
+  .dashboard-container {
+    overflow: auto;
+    height: 50vh;
+  }
     pry-icon {
       position: relative;
       top: toRem(5);
     }
+  .table-container {
+    flex: 1 1;
   }
 
   .state-button {
