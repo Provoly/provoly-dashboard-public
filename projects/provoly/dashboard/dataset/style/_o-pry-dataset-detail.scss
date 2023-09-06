@@ -36,11 +36,12 @@ pry-dataset-detail {
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-  background-color: #ccc;
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 .info-text {
@@ -63,4 +64,37 @@ td {
   .a-btn + .a-btn {
     margin-left: toRem(10);
   }
+}
+
+.description:after {
+  content:"";
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 48px;
+  z-index: 1;
+  pointer-events:initial;
+}
+
+.description:hover:after{
+  cursor: pointer;
+}
+
+.description-tooltip {
+  position: absolute;
+  max-width: 50vw;
+  visibility: hidden;
+  padding: 20px;
+  -webkit-box-shadow: 0 0 50px 0 rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 2;
+}
+
+.description:hover + .description-tooltip {
+  visibility: visible;
+  transition: opacity 0.2s ease;
+  opacity: 1;
 }

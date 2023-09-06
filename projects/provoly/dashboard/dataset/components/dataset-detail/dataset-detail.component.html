@@ -49,7 +49,6 @@
       <div class="dashboard-container">
         <pry-dashboard [staticDashboard]="{ widgets: [widgetManifest[tab === 0 ? 'table' : 'map']] }"></pry-dashboard>
       </div>
-
     </ng-container>
     <ng-container *ngIf="tab === 2">
       <div class="table-container">
@@ -91,9 +90,37 @@
                     : '@pry.dataset.version.' + version.state
                   ) | i18n
                 }}
-                <div class="info-icon">
-                  <span class="info-text">i</span>
-                </div>
+                <ng-container>
+                  <div class="info-icon description-container description">
+                    <span class="info-text">i</span>
+                  </div>
+                  <div class="description-tooltip">
+                    <p class="a-p">
+                      <ng-container [ngSwitch]="version.state">
+                        <ng-container *ngSwitchCase="'ERROR'">
+                          {{ '@pry.dataset.tooltip.error' | i18n }}
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'ACTIVE'">
+                          {{
+                            ((activeVersion$ | async) === version.id
+                              ? '@pry.dataset.tooltip.active'
+                              : '@pry.dataset.tooltip.inactive'
+                            ) | i18n
+                          }}
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'LOADING'">
+                          {{ '@pry.dataset.tooltip.loading' | i18n }}
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'INDEXING'">
+                          {{ '@pry.dataset.tooltip.loading' | i18n }}
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'INACTIVE'">
+                          {{ '@pry.dataset.tooltip.invalid' | i18n }}
+                        </ng-container>
+                      </ng-container>
+                    </p>
+                  </div>
+                </ng-container>
               </td>
               <td>
                 <ng-container *ngIf="version.state !== 'LOADING' && version.state !== 'INDEXING'">
@@ -104,6 +131,21 @@
                   >
                     {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
                   </button>
+                  <ng-container *ngIf="version.state === 'ACTIVE' || version.state === 'INACTIVE'">
+                    <div class="info-icon description-container description">
+                      <span class="info-text">i</span>
+                    </div>
+                    <div class="description-tooltip validate-tooltip">
+                      <p class="a-p">
+                        {{
+                          (version.state === 'ACTIVE'
+                            ? '@pry.dataset.tooltip.inValidateButton'
+                            : '@pry.dataset.tooltip.validateButton'
+                          ) | i18n
+                        }}
+                      </p>
+                    </div>
+                  </ng-container>
                 </ng-container>
                 <ng-container *ngIf="version.hasWarnings && version.state !== 'ERROR'">
                   <button
