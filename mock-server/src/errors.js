@@ -12,7 +12,7 @@ const generateErrors = (listOfCodes = errorCodes) => {
       messages: [
         {
           level,
-          extractErrorCode: listOfCodes[casual.integer((from = 0), (to = listOfCodes.length - 1))],
+          extractMessageCode: listOfCodes[casual.integer((from = 0), (to = listOfCodes.length - 1))],
           type: casual.sentence,
           name: casual.sentence,
           recordId: casual.uuid,

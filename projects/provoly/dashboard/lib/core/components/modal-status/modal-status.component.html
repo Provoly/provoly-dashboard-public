@@ -30,8 +30,8 @@
         </td>
         <td>
           {{
-            '@pry.dataset.error.code.' + preview.extractErrorCode
-              | i18n : getErrorCodeParam(preview.extractErrorCode, preview.name, preview.recordId)
+            '@pry.dataset.error.code.' + preview.extractMessageCode
+              | i18n : getErrorCodeParam(preview.extractMessageCode, preview.name, preview.recordId)
           }}
         </td>
       </tr>

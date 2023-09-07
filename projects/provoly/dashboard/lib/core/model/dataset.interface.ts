@@ -28,7 +28,7 @@ export enum GeoMetadata {
 }
 
 export interface DatasetMessage {
-  extractErrorCode: string;
+  extractMessageCode: string;
   type: string;
   name: string;
   recordId: string;

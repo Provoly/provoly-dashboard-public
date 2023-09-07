@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
-import { DatasetMessage, DatasetPreview } from '../../model/dataset.interface';
 import { DataSourceActions } from '../../store/data-source/data-source.actions';
 import { DatasetVersion } from '../../store/data-source/data-source.model';
 import { DataSourceSelectors } from '../../store/data-source/data-source.selectors';
@@ -16,7 +15,7 @@ export class PryModalStatusComponent {
     {
       count: number;
       datasetVersionId: string;
-      extractErrorCode: string;
+      extractMessageCode: string;
       level: 'ERROR' | 'WARNING';
       name: string;
       recordId: string;
