@@ -1,13 +1,20 @@
 // noinspection AngularMissingOrInvalidDeclarationInModule
 
-import { Component, Input } from '@angular/core';
-import { ControlValueAccessor } from '@angular/forms';
+import { Component, forwardRef, Input } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PryVisibility } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
 
 @Component({
   selector: 'pry-share',
-  template: '<p>pry mock</p>'
+  template: '<p>pry mock</p>',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => MockPryShareComponent),
+      multi: true
+    }
+  ]
 })
 export class MockPryShareComponent implements ControlValueAccessor {
   private _onChange = (_: any) => {};
