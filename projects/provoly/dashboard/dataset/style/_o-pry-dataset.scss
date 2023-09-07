@@ -5,8 +5,9 @@
 .o-pry-dataset {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: space-around;
   gap: toRem(60);
+  padding-bottom: toRem(90);
 
   &__search {
     position: relative;
