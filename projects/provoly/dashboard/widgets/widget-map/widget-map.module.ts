@@ -23,8 +23,10 @@ import { GeometryFieldsForPipe } from './pipe/widget-map-geometry-fields-for.pip
 import { WidgetMapLegendUrlPipe } from './pipe/widget-map-legend-url.pipe';
 import { PryWidgetMapCssComponent } from './style/css.component';
 
+const components = [WidgetMapComponent, GeometryFieldsForPipe, PryWidgetMapCssComponent, WidgetMapLegendUrlPipe];
+
 @NgModule({
-  declarations: [WidgetMapComponent, GeometryFieldsForPipe, PryWidgetMapCssComponent, WidgetMapLegendUrlPipe],
+  declarations: [...components],
   imports: [
     CommonModule,
     FormsModule,
@@ -39,7 +41,7 @@ import { PryWidgetMapCssComponent } from './style/css.component';
     PryI18nModule,
     PryRangeModule
   ],
-  exports: [WidgetMapComponent]
+  exports: [...components]
 })
 export class WidgetMapModule extends BaseWidgetModule {
   constructor(private pryTranslateService: PryI18nService) {
