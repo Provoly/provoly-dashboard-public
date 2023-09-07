@@ -1,8 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
-import { BaseWidgetComponent, IframeWidgetOptions } from '@provoly/dashboard';
-import { combineLatest, fromEvent, map, Observable } from 'rxjs';
+import { BaseWidgetComponent, IframeWidgetOptions, WIDGET_HEADER_HEIGHT } from '@provoly/dashboard';
+import { combineLatest, debounceTime, delay, fromEvent, map, Observable } from 'rxjs';
 import { PryIframeMessageType } from '../messaging/iframe-message-type.interface';
 import { IframeMessagingService } from '../messaging/iframe-messaging.service';
 
@@ -13,7 +13,9 @@ import { IframeMessagingService } from '../messaging/iframe-messaging.service';
 export class WidgetIframeComponent extends BaseWidgetComponent {
   options$: Observable<IframeWidgetOptions>;
   src$: Observable<SafeResourceUrl | undefined>;
+  height$: Observable<number>;
   optionsCopy: IframeWidgetOptions = {};
+  WIDGET_HEADER_HEIGHT = WIDGET_HEADER_HEIGHT;
   @ViewChild('iframe') iframe?: ElementRef;
 
   constructor(
@@ -23,12 +25,18 @@ export class WidgetIframeComponent extends BaseWidgetComponent {
     el: ElementRef
   ) {
     super(store, el);
-    this.options$ = this.manifest$.pipe(map((manifest) => ({ src: '', ...manifest.options }) as IframeWidgetOptions));
+    this.options$ = this.manifest$.pipe(map((manifest) => ({ src: '', ...manifest.options } as IframeWidgetOptions)));
     this.src$ = this.options$.pipe(
       map((options) =>
         !!options && !!options.src ? domSanitizer.bypassSecurityTrustResourceUrl(options.src) : undefined
       )
     );
+
+    this.height$ = combineLatest([this.widgetSize$.pipe(debounceTime(100)), this.displayHeader$]).pipe(
+      map(([size, display]) => (size.height ?? 100) - (display ? WIDGET_HEADER_HEIGHT : 0)),
+      delay(10)
+    );
+
     this.subscriptions.add(
       this.options$.subscribe((options) => (this.optionsCopy = JSON.parse(JSON.stringify(options))))
     );

@@ -12,6 +12,7 @@
   >
     <pry-settings
       (saveTriggered)="emitManifest()"
+      (changeTitle)="changeWidgetTitle($event)"
       [headerPresent]="displayHeader$ | async"
       [widgetIndex]="widgetIndex"
       [open$]="open$"

@@ -1,10 +1,22 @@
 <pry-widget-iframe-css></pry-widget-iframe-css>
-<div class="o-widget--iframe">
-  <div class="o-widget--iframe__settings">
-    <ng-container *ngIf="!(src$ | async)">
-      <p>{{ '@pry.widget.iframe.defineSrc' | i18n }}</p>
-    </ng-container>
-    <pry-settings [widgetIndex]="widgetIndex" (saveTriggered)="emitManifest()" [open$]="open$" class="o-settings">
+<div class="o-widget o-widget--iframe">
+  <pry-widget-header
+    *ngIf="displayHeader$ | async"
+    [widgetIndex]="widgetIndex"
+    [manifest]="manifest"
+    (manifestModified)="manifestModified.emit($event)"
+    #header
+    [headerOptions]="(displayHeader$ | async) ?? {}"
+  >
+    <pry-settings
+      (saveTriggered)="emitManifest()"
+      (changeTitle)="changeWidgetTitle($event)"
+      [headerPresent]="displayHeader$ | async"
+      [widgetIndex]="widgetIndex"
+      [header]="header"
+      [open$]="open$"
+      class="o-settings"
+    >
       <div class="o-settings__fields">
         <div class="m-form-label-field">
           <label class="a-label" for="iframe_src">{{ '@pry.widget.iframe.label' | i18n }}</label>
@@ -18,8 +30,10 @@
         </div>
       </div>
     </pry-settings>
-  </div>
+  </pry-widget-header>
   <ng-container *ngIf="src$ | async as src">
-    <iframe [src]="src" #iframe></iframe>
+    <div [style.height.px]="height$ | async">
+      <iframe [src]="src" #iframe></iframe>
+    </div>
   </ng-container>
 </div>

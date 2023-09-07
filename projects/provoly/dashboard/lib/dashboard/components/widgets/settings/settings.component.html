@@ -26,6 +26,16 @@
     </div>
 
     <div class="o-settings__popup__content">
+      <div class="m-form-label-field">
+        <label class="a-label" for="widget_title">{{ '@pry.widget.settings.changeTitle' | i18n }}</label>
+        <input
+          class="a-form-field"
+          id="widget_title"
+          type="text"
+          [value]="manifest?.title ?? ''"
+          (input)="emitTitle($event)"
+        />
+      </div>
       <ng-content></ng-content>
     </div>
 

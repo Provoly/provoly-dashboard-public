@@ -80,4 +80,8 @@ export class BaseWidgetComponent extends SubscriptionnerDirective implements OnD
   toImage(): Promise<string> {
     return Promise.reject('Not yet implemented');
   }
+
+  changeWidgetTitle($event: string) {
+    this.manifest.title = $event;
+  }
 }

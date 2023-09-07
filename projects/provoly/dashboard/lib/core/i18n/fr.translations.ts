@@ -10,6 +10,7 @@ export const frTranslations = {
       updatedInView: 'La restitution a été mise à jour sur la page n°{{index}}',
       settings: {
         title: 'Paramétrage',
+        changeTitle: 'Titre du widget',
         validateUpdating: 'Valider la modification'
       },
       defineCatalog: 'Définissez votre entrée de catalogue',

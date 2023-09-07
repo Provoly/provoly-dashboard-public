@@ -10,6 +10,7 @@ export const enTranslations = {
       updatedInView: 'Restitution has been updated on tab n°{{index}}',
       settings: {
         title: 'Settings',
+        changeTitle: 'Widget title',
         validateUpdating: 'Validate-Updating'
       },
       defineCatalog: 'Define catalog entry',

@@ -6,6 +6,7 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
+  OnInit,
   Output,
   TemplateRef,
   ViewChild,
@@ -15,13 +16,18 @@ import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { ConfigActions } from '../../../../core/store/config/config.actions';
 import { PryWidgetHeaderComponent } from '../header/widget-header.component';
+import { WidgetManifest } from '../../../../core/model/manifest.interface';
+import { DashboardSelectors } from '../../../store/dashboard.selectors';
+import { SubscriptionnerDirective } from '../../subscriptionner.directive';
 
 @Component({
   selector: 'pry-settings',
   templateUrl: './settings.component.html'
 })
-export class SettingsComponent implements OnDestroy {
+export class SettingsComponent extends SubscriptionnerDirective implements OnInit, OnDestroy {
   _widgetIndex$ = new BehaviorSubject<number>(0);
+  manifest$?: Observable<WidgetManifest>;
+  manifest?: WidgetManifest;
   private openSub?: Subscription;
 
   @Input() set widgetIndex(widgetIndex: number) {
@@ -44,16 +50,21 @@ export class SettingsComponent implements OnDestroy {
   @Output() saveTriggered = new EventEmitter<void>();
   open = false;
 
+  @Output() changeTitle = new EventEmitter<string>();
+
   private overlayRef?: OverlayRef;
   @ViewChild('template', { read: TemplateRef }) template!: TemplateRef<any>;
   @ViewChild('cross') cross!: ElementRef<HTMLButtonElement>;
   @ViewChild('validate') validate!: ElementRef<HTMLButtonElement>;
 
-  constructor(
-    private store: Store<any>,
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef
-  ) {}
+  constructor(private store: Store<any>, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
+    super();
+  }
+
+  ngOnInit() {
+    this.manifest$ = this.store.select(DashboardSelectors.widgetManifest(this._widgetIndex$.value));
+    this.subscriptions.add(this.manifest$.subscribe((manifest) => (this.manifest = manifest)));
+  }
 
   toggle() {
     this.open = !this.open;
@@ -97,7 +108,13 @@ export class SettingsComponent implements OnDestroy {
     this.validate.nativeElement.focus();
   }
 
-  ngOnDestroy(): void {
+  emitTitle($event: Event) {
+    // @ts-ignore
+    this.changeTitle.emit($event.currentTarget.value || undefined);
+  }
+
+  override ngOnDestroy(): void {
     this.openSub?.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 }
