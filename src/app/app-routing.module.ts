@@ -75,6 +75,14 @@ const routes: Routes = [
                   type: 'geoserver',
                   key: 'fntp:submersion',
                   opacity: 50
+                },
+                {
+                  type: 'wms',
+                  title: 'Parcelles cadastralles',
+                  opacity: 50,
+                  paramLayer: 'CADASTRALPARCELS.PARCELLAIRE_EXPRESS',
+                  url: 'https://wxs.ign.fr/parcellaire/geoportail/r/wms',
+                  paramTiled: true
                 }
               ],
               fit: true

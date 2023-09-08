@@ -376,14 +376,14 @@
         [class.-hidden]="!legendTabOpen || legendTab !== index || !isLayerRendered(geoLayer)"
         [style.max-height.px]="legendHeight$ | async"
       >
-        <ng-container *ngIf="!imageNotProvided[index] && (geoLayer | legendUrl)">
+        <ng-container *ngIf="geoLayer | legendUrl | async as url">
           <img
-            [src]="geoLayer | legendUrl"
+            [src]="url"
             [alt]="'@pry.widget.map.legend' | i18n : { layer: geoLayer.title }"
             (error)="imageNotProvided[index] = true"
           />
         </ng-container>
-        <ng-container *ngIf="imageNotProvided[index]">
+        <ng-container *ngIf="!(geoLayer | legendUrl | async)">
           <p class="m-layer-legend__error">{{ '@pry.widget.map.legendNotProvided' | i18n }}</p>
         </ng-container>
       </div>
