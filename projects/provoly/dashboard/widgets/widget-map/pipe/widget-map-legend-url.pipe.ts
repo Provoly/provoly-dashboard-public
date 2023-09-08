@@ -41,7 +41,12 @@ export class WidgetMapLegendUrlPipe implements PipeTransform {
                 if (Capabilities) {
                   const Layer = XMLUtils.find(Capabilities.childNodes, 'Layer');
                   if (Layer) {
-                    const matchingLayer = XMLUtils.findWith(Layer.childNodes, 'Name', geoLayer.paramLayer);
+                    let matchingLayer = XMLUtils.findWith(Layer.childNodes, 'Name', geoLayer.paramLayer);
+                    const split = geoLayer.paramLayer.split(':');
+                    if (!matchingLayer && split.length >= 2) {
+                      // Try again, splitting on ":" in the name to ignore namespace if present
+                      matchingLayer = XMLUtils.findWith(Layer.childNodes, 'Name', split[split.length - 1]);
+                    }
                     if (matchingLayer) {
                       const matchingStyle = XMLUtils.find(matchingLayer.childNodes, 'Style');
                       if (matchingStyle) {

@@ -83,6 +83,14 @@ const routes: Routes = [
                   paramLayer: 'CADASTRALPARCELS.PARCELLAIRE_EXPRESS',
                   url: 'https://wxs.ign.fr/parcellaire/geoportail/r/wms',
                   paramTiled: true
+                },
+                {
+                  title: 'Classifications des sols',
+                  type: 'wms',
+                  opacity: 10,
+                  paramLayer: 'ac:243300316_072022',
+                  url: 'https://geo.demo.pangee.ovh/geoserver/alter-carbon/wms',
+                  paramTiled: true
                 }
               ],
               fit: true
