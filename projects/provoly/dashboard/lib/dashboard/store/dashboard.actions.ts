@@ -13,6 +13,7 @@ import {
 import { Relation } from '../../core/model/relation.interface';
 import { OrderValue } from '../../core/model/result-order.interface';
 import { ResultSet, ResultSets } from '../../core/model/result-set.interface';
+import { DisplayMode, DisplayOptions } from '../../core/model/display-options.interface';
 
 export type DashboardCellParams = {
   gridWidth: number;
@@ -234,5 +235,9 @@ export const DashboardActions = {
     '[Widget map] Get Wms layer features',
     props<{ url: string; oClass: string; coordinates: number[] }>()
   ),
-  addWmsFeatures: createAction('[Widget map] Set Wms layer features', props<{ features: any }>())
+  addWmsFeatures: createAction('[Widget map] Set Wms layer features', props<{ features: any }>()),
+  updateDisplayOptions: createAction(
+    '[Dashboard/Display] Update displayed dashboard management features',
+    props<{ mode: DisplayMode; customDisplay?: DisplayOptions }>()
+  )
 };

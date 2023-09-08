@@ -9,7 +9,7 @@
       </li>
     </ng-container>
   </ng-container>
-  <ng-container *ngIf="dropdownActions.length > 0">
+  <ng-container *ngIf="showDropdownButton$ | async">
     <li class="m-actions-list__item">
       <button
         type="button"
@@ -43,11 +43,13 @@
             class="o-draggable-menu__list__item"
             [style.order]="getOrder(action.name)"
           >
-            <pry-toolbox-action-instanciator
-              [action]="action"
-              [displayLabels]="displayLabels"
-              (closeOptions)="closeDropdown($event)"
-            ></pry-toolbox-action-instanciator>
+            <ng-container *ngIf="action.visible">
+              <pry-toolbox-action-instanciator
+                [action]="action"
+                [displayLabels]="displayLabels"
+                (closeOptions)="closeDropdown($event)"
+              ></pry-toolbox-action-instanciator>
+            </ng-container>
           </li>
         </ul>
       </div>

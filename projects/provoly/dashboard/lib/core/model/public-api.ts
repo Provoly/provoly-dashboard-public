@@ -22,3 +22,4 @@ export * from './result-order.interface';
 export * from './dataset.interface';
 export * from './filter.interface';
 export * from './admin-api.model';
+export * from './display-options.interface';

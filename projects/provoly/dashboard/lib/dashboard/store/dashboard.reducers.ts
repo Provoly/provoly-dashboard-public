@@ -20,6 +20,7 @@ import {
   DEFAULT_ROW_HEIGHT_PX,
   DEFAULT_ROWS_NUMBER
 } from './dashboard.contants';
+import { DisplayOptions, getDisplayOptions } from '../../core/model/display-options.interface';
 
 export const dashboardFeatureKey = '@pry/dashboard';
 
@@ -53,6 +54,7 @@ export interface DashboardState {
     editionMode: boolean;
   };
   wmsFeatures: any[];
+  display?: DisplayOptions;
 }
 
 export const dashboardInitialState: DashboardState = {
@@ -730,6 +732,12 @@ const internalReducer = createReducer<DashboardState>(
         ...state.manifests,
         loading: false
       }
+    };
+  }),
+  on(DashboardActions.updateDisplayOptions, (state, action) => {
+    return {
+      ...state,
+      display: action.customDisplay ? action.customDisplay : getDisplayOptions(action.mode)
     };
   })
 );

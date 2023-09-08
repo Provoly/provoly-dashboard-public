@@ -5,7 +5,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Input,
+  Input, OnInit,
   Output,
   TemplateRef,
   ViewChild,
@@ -50,6 +50,7 @@ import { DashboardSelectors } from '../store/dashboard.selectors';
 import { solveCollisions } from './solve-collisions.function';
 import { SubscriptionnerDirective } from './subscriptionner.directive';
 import { BaseWidgetComponent } from './widgets/base-widget.component';
+import { DisplayMode, DisplayOptions } from '../../core/model/display-options.interface';
 
 export const MIME_TYPE_WIDGET_MANIFEST = 'application/widget-manifest';
 export const MIME_TYPE_WIDGET_TYPE = 'application/widget-type-';
@@ -59,7 +60,7 @@ export const MIME_TYPE_WIDGET_SIZE = 'application/widget-size-';
   selector: 'pry-dashboard',
   templateUrl: './dashboard.component.html'
 })
-export class DashboardComponent extends SubscriptionnerDirective implements AfterViewInit {
+export class DashboardComponent extends SubscriptionnerDirective implements OnInit, AfterViewInit {
   manifest: DashboardManifest | null = null;
   windowManifest$: Observable<DashboardManifest>;
   modeEdition = false;
@@ -79,6 +80,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements Afte
   }
 
   @Input() CloseOnDragOut = true;
+  @Input() displayOptions?: DisplayOptions;
 
   @ViewChild('grid') gridRef!: ElementRef;
   private canCalculateView = false;
@@ -282,6 +284,13 @@ export class DashboardComponent extends SubscriptionnerDirective implements Afte
             ? []
             : WidgetPlacementUtils.getLayoutSize(layout, { rows: 1, columns: 1 })
         )
+      );
+  }
+
+  ngOnInit() {
+    if (this.displayOptions)
+      this.store.dispatch(
+        DashboardActions.updateDisplayOptions({ mode: DisplayMode.CUSTOM, customDisplay: this.displayOptions })
       );
   }
 

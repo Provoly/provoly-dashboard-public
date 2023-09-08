@@ -152,6 +152,7 @@ const datasourceFilters = createSelector(feature, (state: DashboardState) =>
     : {}
 );
 const wmsFeatures = createSelector(feature, (state: DashboardState) => state?.wmsFeatures);
+const displayOptions = createSelector(feature, (state: DashboardState) => state?.display);
 
 export const DashboardSelectors = {
   feature,
@@ -188,5 +189,6 @@ export const DashboardSelectors = {
   savePresentationActive,
   filters,
   datasourceFilters,
-  wmsFeatures
+  wmsFeatures,
+  displayOptions
 };

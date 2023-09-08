@@ -13,7 +13,8 @@ import {
   PryVisibility,
   PryVisibilityType,
   SubscriptionnerDirective,
-  ViewMode
+  ViewMode,
+  DisplayMode
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, debounceTime, map, Observable, take } from 'rxjs';
 import { v4 } from 'uuid';
@@ -128,6 +129,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
           })
         );
       });
+    this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: DisplayMode.CONSULT }));
     this.store.dispatch(DashboardActions.followManifestRoute());
     this.ngZone.run(() => {
       this.router?.navigateByUrl(this.consultStartUrl);
@@ -148,6 +150,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
       viewMode: ViewMode.CREATION
     };
     this.store.dispatch(DashboardActions.selectPresentation(newPresentation));
+    this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: DisplayMode.CREATE }));
   }
 
   edit(presentation: ManifestDescription) {
@@ -157,6 +160,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
       DashboardActions.selectPresentation({ presentation: this.selectedPresentation, viewMode: ViewMode.EDITION })
     );
     this.store.dispatch(DashboardActions.fetchStaticManifest({ id: presentation.id }));
+    this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: DisplayMode.EDIT }));
   }
 
   delete(id: string) {

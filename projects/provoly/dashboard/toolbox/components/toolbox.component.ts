@@ -17,6 +17,7 @@ export class ToolboxComponent implements OnInit {
   allActions$!: Observable<ToolboxAction[]>;
   mainActions$!: Observable<ToolboxAction[]>;
   dropdownActions$!: Observable<ToolboxAction[]>;
+  showDropdownButton$!: Observable<boolean>;
   isDropdownOpen = false;
 
   constructor(store: Store) {
@@ -46,6 +47,10 @@ export class ToolboxComponent implements OnInit {
       map((actions) =>
         actions.filter((action) => !!this.dropdownActions.find((dropdownAction) => action.name === dropdownAction.name))
       )
+    );
+
+    this.showDropdownButton$ = this.dropdownActions$.pipe(
+      map((actions) => actions.length > 0 && actions.filter((action) => action.visible).length > 0)
     );
   }
 
