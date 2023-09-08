@@ -26,7 +26,7 @@ export class PrySelectComponent implements ControlValueAccessor {
   @Input() clearable = false;
   @Input() multiple = false;
   @Input() multipleClearRight = false;
-
+  @Input() closeOnSelect= false;
   @Input() placeholder?: string;
   @Input() isForm = false;
   @Input() required?: any;
