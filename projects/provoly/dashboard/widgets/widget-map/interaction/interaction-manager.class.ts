@@ -5,13 +5,11 @@ import { ScaleLine } from 'ol/control';
 import { Circle, Point } from 'ol/geom';
 import { toLonLat } from 'ol/proj';
 import { WidgetMapComponent } from '../component/widget-map.component';
-import { AddressSearchedEvent, SearchBarControl } from '../search-bar/search-bar.control';
 import { SelectionInteraction } from './selection-interaction.class';
 
 export class InteractionManager {
   interactionPopupOverlay?: Overlay;
   private component!: WidgetMapComponent;
-  searchBarControl?: SearchBarControl;
   layerSwitchControl?: LayerSwitcher;
   scaleControl?: ScaleLine;
   selectionInteraction = new SelectionInteraction();
@@ -22,7 +20,6 @@ export class InteractionManager {
     this.addContextMenuInteraction();
     this.addDropInteraction();
     this.addOverlayOnInteraction();
-    this.addSearchBarControl();
     this.addLayerSwitcher();
     this.addScaleControl();
     this.addUpdateZoomAndCenter();
@@ -119,31 +116,10 @@ export class InteractionManager {
     }
   }
 
-  private addSearchBarControl() {
-    this.searchBarControl = new SearchBarControl({}).withGeocodingService(this.component.geocodingService);
-    this.component.map.addControl(this.searchBarControl);
-
-    const addressOverlay = new Overlay({
-      element: this.component.address.nativeElement,
-      offset: [9, 9]
-    });
-    this.component.map.addOverlay(addressOverlay);
-
-    // @ts-ignore
-    this.component.map.on('searched-address', (evt: AddressSearchedEvent) => {
-      this.component.address.nativeElement.innerHTML = `<div>
-        <div>${this.component.translateService.instant('@pry.widget.map.address')}: ${evt.address}</div>
-        <div>${this.component.translateService.instant('@pry.widget.map.addressCoords')}: ${evt.latLon}</div>
-        </div>`;
-      this.component.address.nativeElement.style.display = '';
-      addressOverlay.setPosition(evt.coordinates);
-      this.component.map.getView().setCenter(evt.coordinates);
-      this.component.map.getView().setZoom(this.component.map.getView().getMaxZoom());
-    });
-  }
-
   private addLayerSwitcher() {
     this.layerSwitchControl = new LayerSwitcher({
+      tipLabel: this.component.translateService.instant('@pry.widget.map.selectLayers'),
+      collapseTipLabel: this.component.translateService.instant('@pry.widget.map.selectLayers'),
       activationMode: 'click',
       reverse: false
     });

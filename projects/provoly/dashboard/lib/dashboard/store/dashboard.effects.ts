@@ -426,24 +426,6 @@ export class DashboardEffects {
     )
   );
 
-  searchAddress$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(DashboardActions.searchAddressForPoint),
-      mergeMap((action) =>
-        this.geocodingService.fromLatLong(action.coordinates).pipe(
-          map((address) => DashboardActions.displayAddress({ address })),
-          catchError((error) => {
-            this.snackBar.open({
-              type: 'error',
-              message: this.translateService.instant('@pry.context.errorSearchAddress')
-            });
-            return throwError(error);
-          })
-        )
-      )
-    )
-  );
-
   detailAsLoadInWidget$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.detail),

@@ -73,7 +73,9 @@ export const enTranslations = {
         export: 'Export map',
         import: 'Import layer',
         legend: 'Legend of layer {{layer}}',
-        legendNotProvided: 'Legend not provided by server'
+        legendNotProvided: 'Legend not provided by server',
+        selectLayers: 'Select layers',
+        legends: 'Display legend'
       }
     }
   }

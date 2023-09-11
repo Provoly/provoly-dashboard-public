@@ -1008,24 +1008,4 @@ describe('DashboardEffects', () => {
       });
     });
   });
-
-  describe('searchAddress$', () => {
-    it('should return searched address', () => {
-      const serviceSpy = jest
-        .spyOn(geocodingService, 'fromLatLong')
-        .mockImplementation((id) => of({ latLon: [2, 4], pointAddress: '28 rue de la paix 33290' }));
-
-      actions$ = hot('--a-', {
-        a: DashboardActions.searchAddressForPoint({ coordinates: [2, 4] })
-      });
-
-      const expected$ = hot('--a-', {
-        a: DashboardActions.displayAddress({ address: { latLon: [2, 4], pointAddress: '28 rue de la paix 33290' } })
-      });
-      expect(effects.searchAddress$).toBeObservable(expected$);
-      expect(effects.searchAddress$).toSatisfyOnFlush(() => {
-        expect(serviceSpy).toHaveBeenNthCalledWith(1, [2, 4]);
-      });
-    });
-  });
 });

@@ -26,7 +26,6 @@ import {
   DataWidgetComponent,
   Field,
   FieldSelectors,
-  GeocodingService,
   GeoMetadata,
   ItemUtils,
   MapFeatureLayerOptions,
@@ -82,7 +81,6 @@ import {
 } from 'rxjs';
 import { InteractionManager } from '../interaction/interaction-manager.class';
 import { MapFormatsReader } from '../reader/map-formats-reader.class';
-import { AddressSearchedEvent } from '../search-bar/search-bar.control';
 import {
   DEFAULT_MAP_CENTER,
   DEFAULT_ZOOM_MAX,
@@ -155,7 +153,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     private snackBar: PrySnackbarService,
     public translateService: PryI18nService,
     private tooltipFactoryService: TooltipFactoryService,
-    public geocodingService: GeocodingService,
     private overlay: cdkOverlay,
     private viewContainerRef: ViewContainerRef,
     private symbolService: SymbolService,
@@ -268,22 +265,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         this.optionsCopy = JSON.parse(JSON.stringify(options));
       })
     );
-    this.subscriptions.add(
-      this.store
-        .select(DashboardSelectors.address)
-        .pipe(filter((addr) => !!addr && !!addr.pointAddress))
-        .subscribe((addr) => {
-          this.map?.dispatchEvent(
-            new AddressSearchedEvent({
-              type: 'searched-address',
-              latLon: addr.latLon,
-              coordinates: fromLonLat([...addr.latLon].reverse(), this.map.getView().getProjection()),
-              query: addr.latLon,
-              address: addr.pointAddress
-            })
-          );
-        })
-    );
 
     this.mapUrl$ = this.store.select(ConfigSelectors.mapUrl);
     this.wmsFeatures$ = this.store.select(DashboardSelectors.wmsFeatures);
@@ -327,7 +308,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       delay(10)
     );
 
-    this.legendTop$ = this.displayHeader$.pipe(map((display) => 225 - (display ? 0 : WIDGET_HEADER_HEIGHT)));
+    this.legendTop$ = this.displayHeader$.pipe(map((display) => 181 - (display ? 0 : WIDGET_HEADER_HEIGHT)));
 
     this.legendHeight$ = combineLatest([this.widgetSize$.pipe(debounceTime(100)), this.legendTop$]).pipe(
       map(([size, top]) => {

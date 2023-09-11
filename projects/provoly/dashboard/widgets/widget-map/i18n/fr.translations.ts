@@ -73,7 +73,9 @@ export const frTranslations = {
         export: 'Exporter la carte',
         import: 'Importer une couche',
         legend: 'Légende de la couche {{layer}}',
-        legendNotProvided: 'Légende non fournie par le serveur'
+        legendNotProvided: 'Légende non fournie par le serveur',
+        selectLayers: 'Sélectionner les couches',
+        legends: 'Afficher la légende'
       }
     }
   }

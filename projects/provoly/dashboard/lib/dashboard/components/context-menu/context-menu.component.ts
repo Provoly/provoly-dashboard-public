@@ -128,11 +128,6 @@ export class ContextMenuComponent extends SubscriptionnerDirective {
     this.hide();
   }
 
-  addressFromLoc() {
-    this.store.dispatch(DashboardActions.searchAddressForPoint({ coordinates: this.coordinates ?? [0, 0] }));
-    this.hide();
-  }
-
   flyingDetail() {
     this.detailManifest.options.itemIds = [this.itemId ?? ''];
     this.overlayDetailRef = this.overlay.create(

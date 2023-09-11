@@ -80,10 +80,6 @@ const defaultDatasourceNames = createSelector(results, (results) => results.defa
 const selectedItemIds = createSelector(results, (results) => results.selectedItems ?? ([] as string[]));
 const objectDetails = createSelector(results, (results) => results.objectDetails ?? ({} as { [id: string]: Item }));
 const quickOrder = createSelector(results, (results) => results.quickOrder ?? ({} as { [id: string]: ResultOrder }));
-const address = createSelector(
-  results,
-  (results) => (results.address ?? {}) as { latLon: number[]; pointAddress: string }
-);
 const allItems = createSelector(results, (results) =>
   Object.keys(results.resultSets)
     .map((rsKey) =>
@@ -168,7 +164,6 @@ export const DashboardSelectors = {
   tenants,
   resultSets,
   resultSetsParams,
-  address,
   namedQueriesNames,
   namedQueriesUses,
   availableNamedQueries,

@@ -1,4 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
+import { DisplayOptions, getDisplayOptions } from '../../core/model/display-options.interface';
 import { Filter } from '../../core/model/filter.interface';
 import { Item } from '../../core/model/item.interface';
 import {
@@ -20,7 +21,6 @@ import {
   DEFAULT_ROW_HEIGHT_PX,
   DEFAULT_ROWS_NUMBER
 } from './dashboard.contants';
-import { DisplayOptions, getDisplayOptions } from '../../core/model/display-options.interface';
 
 export const dashboardFeatureKey = '@pry/dashboard';
 
@@ -46,7 +46,6 @@ export interface DashboardState {
     defaultDatasource: string[];
     selectedItems: string[];
     objectDetails: { [id: string]: Item };
-    address: { latLon: number[]; pointAddress: string } | undefined;
     quickOrder: { [id: string]: ResultOrder | undefined };
   };
   dashboard: {
@@ -88,7 +87,6 @@ export const dashboardInitialState: DashboardState = {
     defaultDatasource: ['current'],
     selectedItems: [],
     objectDetails: {},
-    address: undefined,
     quickOrder: {}
   },
   dashboard: {
@@ -457,15 +455,6 @@ const internalReducer = createReducer<DashboardState>(
             relations: [] as Relation[]
           }
         }
-      }
-    };
-  }),
-  on(DashboardActions.displayAddress, (state, action) => {
-    return {
-      ...state,
-      results: {
-        ...state.results,
-        address: action.address
       }
     };
   }),

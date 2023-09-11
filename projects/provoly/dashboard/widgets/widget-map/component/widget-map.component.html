@@ -353,7 +353,7 @@
     *ngIf="((legendLayers$ | async)?.length ?? 0) > 0"
     [style.top.px]="legendTop$ | async"
   >
-    <button class="m-layer-legend__toggle" (click)="toggleLegendWindow()">
+    <button class="m-layer-legend__toggle" (click)="toggleLegendWindow()" [title]="'@pry.widget.map.legends' | i18n">
       <pry-icon iconSvg="legend" [width]="22" [height]="22"></pry-icon>
     </button>
     <ng-container *ngFor="let geoLayer of legendLayers$ | async; let index = index">

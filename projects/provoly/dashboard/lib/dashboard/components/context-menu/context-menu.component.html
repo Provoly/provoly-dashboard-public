@@ -53,13 +53,6 @@
         <pry-object-creation (closed)="hide()" [object]="true" [menu]="true"></pry-object-creation>
       </li>
     </ng-container>
-    <ng-container *ngIf="from === 'map'">
-      <li class="m-context-menu__list__item">
-        <button type="button" class="a-btn -link-like" (click)="addressFromLoc()">
-          {{ '@pry.context.addressFromLoc' | i18n }}
-        </button>
-      </li>
-    </ng-container>
   </ul>
 </ng-template>
 <ng-template #detailTemplate>

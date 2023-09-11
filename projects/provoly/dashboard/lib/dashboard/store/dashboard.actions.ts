@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { PryVisibility } from '../../core/components/share/share.model';
 import { PrySnackMessage } from '../../core/components/snackbar/snack.interface';
+import { DisplayMode, DisplayOptions } from '../../core/model/display-options.interface';
 import { Filter } from '../../core/model/filter.interface';
 import { Item } from '../../core/model/item.interface';
 import {
@@ -13,7 +14,6 @@ import {
 import { Relation } from '../../core/model/relation.interface';
 import { OrderValue } from '../../core/model/result-order.interface';
 import { ResultSet, ResultSets } from '../../core/model/result-set.interface';
-import { DisplayMode, DisplayOptions } from '../../core/model/display-options.interface';
 
 export type DashboardCellParams = {
   gridWidth: number;
@@ -207,11 +207,6 @@ export const DashboardActions = {
   explore: createAction('[Dashboard] (bus) isolate in data set', props<{ id: string }>()),
   detail: createAction('[Dashboard] (bus) add detail view', props<{ ids: string[] }>()),
   proximity: createAction('[Dashboard] proximity search', props<{ id: string; targetResultSet: string }>()),
-  searchAddressForPoint: createAction('[Dashboard] address search', props<{ coordinates: number[] }>()),
-  displayAddress: createAction(
-    '[Dashboard] display adress',
-    props<{ address: { latLon: number[]; pointAddress: string } }>()
-  ),
   multiSnackBar: createAction('[Dashboard] (bus) display snack message', props<{ message: PrySnackMessage }>()),
   quickOrder: createAction(
     '[Dashboard] (bus) quick order',
