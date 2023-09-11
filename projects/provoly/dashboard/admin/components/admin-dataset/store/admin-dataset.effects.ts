@@ -24,7 +24,8 @@ export class AdminDatasetEffects {
       mergeMap((action) => {
         return [
           DataSourceActions.dataset.getDatasetById({ id: action.datasetId }),
-          AdminDatasetActions.isEditable({ editable: false })
+          AdminDatasetActions.isEditable({ editable: false }),
+          DataSourceActions.dataset.loadDataset()
         ];
       })
     )
@@ -48,14 +49,12 @@ export class AdminDatasetEffects {
       mergeMap((action) => {
         return [
           DataSourceActions.dataset.getDatasetById({ id: action.datasetId }),
-          AdminDatasetActions.isEditable({ editable: false })
+          AdminDatasetActions.isEditable({ editable: false }),
+          DataSourceActions.dataset.loadDataset()
         ];
       })
     )
   );
 
-  constructor(
-    private actions$: Actions,
-    private dataSourceService: DataSourceService
-  ) {}
+  constructor(private actions$: Actions, private dataSourceService: DataSourceService) {}
 }
