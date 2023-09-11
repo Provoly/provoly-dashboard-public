@@ -2,9 +2,9 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angu
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { UNKNOWN_DATASOURCE } from '../../../../core/components/translate-id/translate-id.pipe';
-import { Dataset, GeoMetadata } from '../../../../core/model/dataset.interface';
+import { GeoMetadata } from '../../../../core/model/dataset.interface';
 import { WidgetManifest } from '../../../../core/model/manifest.interface';
-import { DataSource, NamedQuery } from '../../../../core/store/data-source/data-source.model';
+import { Dataset, DataSource, NamedQuery } from '../../../../core/store/data-source/data-source.model';
 import { DataSourceSelectors } from '../../../../core/store/data-source/data-source.selectors';
 import { SubscriptionnerDirective } from '../../subscriptionner.directive';
 

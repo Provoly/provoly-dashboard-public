@@ -72,10 +72,10 @@ describe('PryPresentationComponent', () => {
     expect(component.selectedMode).toEqual(ViewMode.EDITION);
     expect(spy).toHaveBeenCalledWith(DashboardActions.fetchStaticManifest({ id: presentation.id }));
   });
-  it('should delete is called', () => {
+  it('should call confirmManifestDeletion', () => {
     const spy = jest.spyOn(store, 'dispatch');
     component.delete(presentation.id);
-    expect(spy).toHaveBeenCalledWith(DashboardActions.deleteManifest({ id: presentation.id }));
+    expect(spy).toHaveBeenCalledWith(DashboardActions.confirmManifestDeletion({ id: presentation.id }));
   });
   it('should default is called', () => {
     const spy = jest.spyOn(store, 'dispatch');

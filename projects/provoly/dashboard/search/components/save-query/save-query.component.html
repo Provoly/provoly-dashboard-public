@@ -13,7 +13,7 @@
         </h2>
       </div>
       <div class="o-modal__top__close">
-        <button class="a-btn a-btn--icon-only" #cross (keydown.shift.tab)="focusValidation()" (click)="onClose()">
+        <button class="a-btn a-btn--icon-only" #cross (keydown.shift.tab)="focusElement(this.save)" (click)="onClose()">
           <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
           <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
         </button>
@@ -41,7 +41,7 @@
         (click)="onSave()"
         class="a-btn a-btn--primary"
         [disabled]="saveDisabled"
-        (keydown.tab)="focusCrossElement()"
+        (keydown.tab)="focusElement(this.cross)"
       >
         {{ '@pry.toolbox.manifest.check' | i18n }}
       </button>

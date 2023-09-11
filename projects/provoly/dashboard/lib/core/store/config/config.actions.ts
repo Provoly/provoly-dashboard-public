@@ -61,6 +61,7 @@ export const ConfigActions = {
   defineBreakpoint: createAction('[Config] (bus) defining breakpoint', props<{ breakpoint: number }>()),
   defaultViewGuardUsed: createAction('[Config] (bus) default view guard used'),
   saveWidget: createAction('[Config] (bus) defining widget', props<{ widget: Widget }>()),
+  confirmRestitutionDeletion: createAction('[Config] (bus) confirm Restitution deletion', props<{ id: string }>()),
   deleteRestitution: createAction('[Config] (bus) delete Restitution', props<{ id: string }>()),
   loadWidgets: createAction('[Config] (bus) loading widgets'),
   loadedWidgets: createAction('[Config] (bus) loaded widgets', props<{ widgets: Widget[] }>()),

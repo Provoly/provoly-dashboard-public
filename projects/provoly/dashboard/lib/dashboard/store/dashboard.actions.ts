@@ -153,6 +153,7 @@ export const DashboardActions = {
   loadManifest: createAction('[Dashboard] (bus) load manifest', props<{ id: string }>()),
   loadAndActivateManifest: createAction('[Dashboard] (bus) load and activate manifest', props<{ id: string }>()),
   downloadManifest: createAction('[Dashboard] download manifest', props<{ id: string; name: string }>()),
+  confirmManifestDeletion: createAction('[Dashboard] confirm manifest deletion', props<{ id: string }>()),
   deleteManifest: createAction('[Dashboard] deleting manifest', props<{ id: string }>()),
   saveManifest: createAction(
     '[Dashboard] save manifest',

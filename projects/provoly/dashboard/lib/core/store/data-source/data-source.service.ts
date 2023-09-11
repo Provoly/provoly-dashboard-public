@@ -4,11 +4,11 @@ import { Store } from '@ngrx/store';
 import { map, mergeMap, Observable, of, switchMap } from 'rxjs';
 import { PryI18nService } from '../../i18n/i18n.service';
 import { DatasetMetadata } from '../../model/admin-api.model';
-import { Dataset, DatasetPreview } from '../../model/dataset.interface';
+import { DatasetPreview } from '../../model/dataset.interface';
 import { ConfigState } from '../config/config.reducer';
 import { ConfigSelectors } from '../config/config.selectors';
 import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from '../search/search.constants';
-import { DatasetVersion, NamedQuery } from './data-source.model';
+import { Dataset, DatasetVersion, NamedQuery } from './data-source.model';
 import { DataSourceState } from './data-source.reducer';
 
 export interface ResponseRequest {

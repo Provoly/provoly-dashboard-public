@@ -16,7 +16,7 @@
       <button
         type="button"
         #cross
-        (keydown.shift.tab)="focusValidation()"
+        (keydown.shift.tab)="focusElement(this.validate)"
         (click)="toggle()"
         class="a-btn a-btn--icon-only -close"
       >
@@ -44,7 +44,7 @@
         (click)="saveAndClose()"
         [class.btn-primary__disable]="isDisable"
         [disabled]="isDisable"
-        (keydown.tab)="focusCrossElement()"
+        (keydown.tab)="focusElement(this.cross)"
         class="a-btn a-btn--primary"
         #validate
       >

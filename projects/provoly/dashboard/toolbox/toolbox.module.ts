@@ -29,6 +29,7 @@ import { ToolboxActionInstanciatorComponent } from './components/toolbox-action-
 import { ToolboxActionComponent } from './components/toolbox-action/toolbox-action.component';
 import { RefreshDatasetsComponent } from './components/refresh-datasets/refresh-datasets.component';
 import { AutomateRefreshComponent } from './components/automate-refresh/automate-refresh.component';
+import { A11yModule } from '@angular/cdk/a11y';
 
 const components = [
   ToolboxActionComponent,
@@ -65,7 +66,8 @@ const components = [
     PryI18nModule,
     CdkDropList,
     CdkDrag,
-    CdkDragHandle
+    CdkDragHandle,
+    A11yModule
   ],
   exports: [...components]
 })

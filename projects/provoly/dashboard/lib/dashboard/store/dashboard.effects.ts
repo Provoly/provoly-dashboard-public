@@ -25,6 +25,7 @@ import { GeocodingService } from './geocoding.service';
 import { ManifestService } from './manifest.service';
 import { RefreshService } from './refresh.service';
 import { PryTitleService } from './title.service';
+import { PryDialogConfirmComponent, PryDialogConfirmData, PryDialogService } from '@provoly/dashboard';
 
 @Injectable()
 export class DashboardEffects {
@@ -385,6 +386,32 @@ export class DashboardEffects {
     )
   );
 
+  confirmManifestDeletion$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(DashboardActions.confirmManifestDeletion),
+        tap((action) => {
+          const data: PryDialogConfirmData = {
+            title: '@pry.widget.modalTitle',
+            actions: [
+              {
+                id: 0,
+                label: '@pry.toolbox.manifest.validate',
+                actions: [DashboardActions.deleteManifest({ id: action.id })]
+              },
+              {
+                id: 1,
+                label: '@pry.toolbox.manifest.close',
+                color: 'secondary'
+              }
+            ]
+          };
+          this.pryDialog.open(PryDialogConfirmComponent, { data });
+        })
+      ),
+    { dispatch: false }
+  );
+
   deleteManifest$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.deleteManifest),
@@ -675,7 +702,8 @@ export class DashboardEffects {
     private refreshService: RefreshService,
     private toolboxManifestService: ToolboxManifestService,
     private busService: BusService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private pryDialog: PryDialogService
   ) {
     dashboardInitService.init();
     refreshService.start();

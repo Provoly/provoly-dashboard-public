@@ -1,19 +1,7 @@
-import { DescriptionQuery } from '../store/data-source/data-source.model';
-import { DatasetMetadata } from './admin-api.model';
-
 export enum PryDatasetType {
   OPEN = 'OPEN',
   CLOSED = 'CLOSED',
   MODIFIABLE = 'MODIFIABLE'
-}
-
-export interface Dataset extends DescriptionQuery {
-  sourceType: 'dataset';
-  id: string;
-  name: string;
-  oClass: string;
-  type: PryDatasetType;
-  metadata: DatasetMetadata[];
 }
 
 export interface DatasetCount {

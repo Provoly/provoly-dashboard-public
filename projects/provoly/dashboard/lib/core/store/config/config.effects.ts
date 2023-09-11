@@ -17,6 +17,7 @@ import {
 } from './config.service';
 import { ChartOptionDefault } from './config.widget.constants';
 import { OpenMapTilesService } from './open-map-tiles.service';
+import { PryDialogConfirmComponent, PryDialogConfirmData, PryDialogService } from '@provoly/dashboard';
 
 @Injectable()
 export class ConfigEffects {
@@ -160,6 +161,32 @@ export class ConfigEffects {
     )
   );
 
+  confirmRestitutionDeletion$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(ConfigActions.confirmRestitutionDeletion),
+        tap((action) => {
+          const data: PryDialogConfirmData = {
+            title: '@pry.widget.modalTitle',
+            actions: [
+              {
+                id: 0,
+                label: '@pry.toolbox.manifest.validate',
+                actions: [ConfigActions.deleteRestitution({ id: action.id })]
+              },
+              {
+                id: 1,
+                label: '@pry.toolbox.manifest.close',
+                color: 'secondary'
+              }
+            ]
+          };
+          this.pryDialog.open(PryDialogConfirmComponent, { data });
+        })
+      ),
+    { dispatch: false }
+  );
+
   deleteRestitution$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ConfigActions.deleteRestitution),
@@ -198,6 +225,7 @@ export class ConfigEffects {
     private store: Store,
     private configService: ConfigService,
     private snackBar: PrySnackbarService,
-    private translateService: PryI18nService
+    private translateService: PryI18nService,
+    private pryDialog: PryDialogService
   ) {}
 }

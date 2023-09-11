@@ -1,6 +1,7 @@
-import { Dataset, PryDatasetType } from '../../model/dataset.interface';
+import { PryDatasetType } from '../../model/dataset.interface';
 import { dataSourceFeatureKey, initialDataSourceState } from './data-source.reducer';
 import { DataSourceSelectors } from './data-source.selectors';
+import { Dataset } from '@provoly/dashboard';
 
 describe('Dataset Selectors', () => {
   const initialState = { ...initialDataSourceState };

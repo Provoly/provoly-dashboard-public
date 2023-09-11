@@ -100,6 +100,9 @@ export class SettingsComponent extends SubscriptionnerDirective implements OnIni
     this.overlayRef.attach(new TemplatePortal(this.template, this.viewContainerRef));
   }
 
+  focusElement(element: HTMLButtonElement) {
+    element.focus();
+  }
   focusCrossElement() {
     this.cross.nativeElement.focus();
   }

@@ -30,16 +30,7 @@ export class PryDialogConfirmComponent {
     private dialog: PryDialogRef<PryDialogConfirmComponent>,
     @Inject(PRY_DIALOG_DATA) public data: PryDialogConfirmData,
     private store: Store
-  ) {
-    setTimeout(() => {
-      this.cross.nativeElement.focus();
-      this.buttonAction.nativeElement.parentElement?.children[1].addEventListener('keydown', (event: Event) => {
-        if ((event as KeyboardEvent).key === 'Tab') {
-          this.focusCrossElement();
-        }
-      });
-    }, 10);
-  }
+  ) {}
 
   onClick(action?: PryDialogConfirmAction) {
     if (action) {

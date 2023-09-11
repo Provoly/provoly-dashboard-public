@@ -79,7 +79,7 @@ import {
   of,
   startWith
 } from 'rxjs';
-import { InteractionManager } from '../interaction/interaction-manager.class';
+import { InteractionManager } from '@provoly/dashboard/widgets/widget-map';
 import { MapFormatsReader } from '../reader/map-formats-reader.class';
 import {
   DEFAULT_MAP_CENTER,

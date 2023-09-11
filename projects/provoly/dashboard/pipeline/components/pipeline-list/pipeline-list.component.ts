@@ -152,13 +152,8 @@ export class PryPipelineListComponent {
     }
   }
 
-  focusCrossElement() {
-    this.cross.nativeElement.focus();
+  focusElement(element: HTMLButtonElement) {
+    element.focus();
   }
-
-  focusValidation() {
-    this.confirm.nativeElement.focus();
-  }
-
   protected readonly ExecutionState = ExecutionState;
 }

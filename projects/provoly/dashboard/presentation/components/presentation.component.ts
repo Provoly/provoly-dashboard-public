@@ -4,7 +4,6 @@ import { Component, ElementRef, Input, NgZone, TemplateRef, ViewChild, ViewConta
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
-  ConfigActions,
   DashboardActions,
   DashboardManifest,
   DashboardSelectors,
@@ -33,14 +32,11 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   @ViewChild('modal', { read: TemplateRef }) template!: TemplateRef<any>;
   @ViewChild('templateModal', { read: TemplateRef }) templateModal!: TemplateRef<any>;
   @ViewChild('openModal') openModal!: ElementRef<HTMLButtonElement>;
-  @ViewChild('cancelRemove') cancelRemove!: ElementRef<HTMLButtonElement>;
   @ViewChild('confirm') confirm!: ElementRef<HTMLButtonElement>;
   @ViewChild('submit') submit!: ElementRef<HTMLButtonElement>;
   @ViewChild('cross') cross!: ElementRef<HTMLButtonElement>;
   @ViewChild('crossVisibility') crossVisibility!: ElementRef<HTMLButtonElement>;
   @ViewChild('visibilityModal') visibilityModal!: ElementRef;
-  @ViewChild('deleteModal') deleteModal!: ElementRef;
-  private confirmRemoveRef?: OverlayRef;
   overlayRef?: OverlayRef;
   visibility: PryVisibility = { type: PryVisibilityType.PRIVATE };
   PryVisibilityType = PryVisibilityType;
@@ -164,10 +160,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   }
 
   delete(id: string) {
-    this.store.dispatch(DashboardActions.deleteManifest({ id }));
-    this.confirmRemoveRef?.dispose();
-    this.confirmRemoveRef = undefined;
-    this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name + '-modal' }));
+    this.store.dispatch(DashboardActions.confirmManifestDeletion({ id }));
   }
 
   default(id: string, name: string) {
@@ -215,37 +208,6 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
       );
     }
     this.toggleModal(this.selectedPresentation);
-  }
-
-  toggleRemoveConfirm($event: any, presentation?: ManifestDescription) {
-    if (!this.confirmRemoveRef) {
-      this.presentation = presentation;
-      this.confirmRemoveRef = this.overlay.create(
-        new OverlayConfig({
-          hasBackdrop: true,
-          panelClass: ['o-modal-wrapper'],
-          backdropClass: 'backdrop'
-        })
-      );
-      this.store.dispatch(ConfigActions.addingOverlay({ id: this.constructor.name + '-modal' }));
-      this.confirmRemoveRef.backdropClick().subscribe(() => this.toggleRemoveConfirm($event, presentation));
-      this.confirmRemoveRef.attach(new TemplatePortal(this.templateModal, this.viewContainerRef));
-      setTimeout(() => {
-        const focus = this.deleteModal.nativeElement.children[0].children[1].firstElementChild as HTMLButtonElement;
-        focus.focus();
-      }, 10);
-    } else {
-      this.confirmRemoveRef.dispose();
-      this.confirmRemoveRef = undefined;
-      this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name + '-modal' }));
-      this.openModal.nativeElement.focus();
-    }
-  }
-
-  cancelRemoveConfirm() {
-    this.confirmRemoveRef?.dispose();
-    this.confirmRemoveRef = undefined;
-    this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name + '-modal' }));
   }
 
   focusCrossElement() {

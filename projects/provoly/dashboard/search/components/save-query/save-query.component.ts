@@ -109,13 +109,8 @@ export class PrySaveQueryComponent implements OnInit {
       this.onClose();
     }
   }
-
-  focusCrossElement() {
-    this.cross.nativeElement.focus();
-  }
-
-  focusValidation() {
-    this.save.nativeElement.focus();
+  focusElement(element: HTMLButtonElement) {
+    element.focus();
   }
 
   onClose() {

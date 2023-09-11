@@ -20,6 +20,7 @@ import { PryPresentationComponent } from './components/presentation.component';
 import { enTranslations } from './i18n/en.translations';
 import { frTranslations } from './i18n/fr.translations';
 import { PryPresentationCssComponent } from './style/css.component';
+import { A11yModule } from '@angular/cdk/a11y';
 
 @NgModule({
   providers: [],
@@ -42,7 +43,8 @@ import { PryPresentationCssComponent } from './style/css.component';
     PryI18nModule,
     PryToolboxModule,
     PryCheckboxModule,
-    CommonModule
+    CommonModule,
+    A11yModule
   ],
   exports: [
     PryPresentationComponent,

@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
-import { Dataset, DatasetPreview } from '../../model/dataset.interface';
+import { DatasetPreview } from '../../model/dataset.interface';
 import { DataSourceActions } from './data-source.actions';
-import { DatasetVersion, NamedQuery } from './data-source.model';
+import { Dataset, DatasetVersion, NamedQuery } from './data-source.model';
 
 export const dataSourceFeatureKey = '@pry/datasources';
 

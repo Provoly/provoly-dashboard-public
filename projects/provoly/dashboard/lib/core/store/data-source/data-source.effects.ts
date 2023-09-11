@@ -9,12 +9,11 @@ import { PryDialogConfirmComponent, PryDialogConfirmData } from '../../component
 import { PryDialogService } from '../../components/overlay/dialog.service';
 import { PrySnackbarService } from '../../components/snackbar/snackbar.service';
 import { PryI18nService } from '../../i18n/i18n.service';
-import { Dataset } from '../../model/dataset.interface';
 import { ConfigSelectors } from '../config/config.selectors';
 import { SearchActions } from '../search/search.actions';
 import { SearchService } from '../search/search.service';
 import { DataSourceActions } from './data-source.actions';
-import { NamedQuery } from './data-source.model';
+import { Dataset, NamedQuery } from './data-source.model';
 import { DataSourceSelectors } from './data-source.selectors';
 import { DataSourceService } from './data-source.service';
 

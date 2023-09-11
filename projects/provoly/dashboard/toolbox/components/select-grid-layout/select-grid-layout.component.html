@@ -15,18 +15,15 @@
     aria-labelledby="dialog_title"
     id="grid-layout"
     (keydown.escape)="toggleGridChoiceModal()"
+    cdkTrapFocus
+    [cdkTrapFocusAutoCapture]="true"
   >
     <div class="o-modal__top">
       <div class="o-modal__top__title">
         <h2 class="a-h2" id="dialog_title">{{ '@pry.toolbox.chooseGrid' | i18n }}</h2>
       </div>
       <div class="o-modal__top__close">
-        <button
-          class="a-btn a-btn--icon-only"
-          #cross
-          (keydown.shift.tab)="focusValidation()"
-          (click)="toggleGridChoiceModal()"
-        >
+        <button class="a-btn a-btn--icon-only" (click)="toggleGridChoiceModal()">
           <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
           <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
         </button>
@@ -58,7 +55,7 @@
       <button (click)="toggleGridChoiceModal()" class="a-btn a-btn--secondary">
         {{ '@pry.toolbox.manifest.close' | i18n }}
       </button>
-      <button (click)="validate()" class="a-btn a-btn--primary" #confirm (keydown.tab)="focusCrossElement()">
+      <button (click)="validate()" class="a-btn a-btn--primary">
         {{ '@pry.toolbox.manifest.validated' | i18n }}
       </button>
     </div>

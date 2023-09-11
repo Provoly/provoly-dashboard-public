@@ -24,8 +24,6 @@ export class SelectGridLayoutComponent extends ToolboxActionComponent {
   @ViewChild('template', { read: TemplateRef }) template!: TemplateRef<any>;
   @ViewChild('firstButton') firstButton!: ElementRef<HTMLButtonElement>;
   @ViewChild('openModal') openModal!: ElementRef<HTMLButtonElement>;
-  @ViewChild('cross') cross!: ElementRef<HTMLButtonElement>;
-  @ViewChild('confirm') confirm!: ElementRef<HTMLButtonElement>;
   modalOpened: boolean = false;
   overlayRef?: OverlayRef;
 
@@ -99,13 +97,5 @@ export class SelectGridLayoutComponent extends ToolboxActionComponent {
       this.store.dispatch(DashboardActions.setGridLayout({ layout: this.chosenLayout }));
     }
     this.toggleGridChoiceModal();
-  }
-
-  focusCrossElement() {
-    this.cross.nativeElement.focus();
-  }
-
-  focusValidation() {
-    this.confirm.nativeElement.focus();
   }
 }

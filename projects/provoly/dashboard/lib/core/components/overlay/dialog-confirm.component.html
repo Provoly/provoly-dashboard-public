@@ -4,6 +4,8 @@
   aria-modal="true"
   aria-labelledby="dialog_confirmDelete"
   (keydown.escape)="onClick()"
+  cdkTrapFocus
+  [cdkTrapFocusAutoCapture]="true"
 >
   <div class="o-modal">
     <div class="o-modal__top">

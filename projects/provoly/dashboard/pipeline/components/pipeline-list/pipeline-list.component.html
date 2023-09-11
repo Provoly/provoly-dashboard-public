@@ -166,7 +166,7 @@
         <button
           class="a-btn a-btn--icon-only"
           #cross
-          (keydown.shift.tab)="focusValidation()"
+          (keydown.shift.tab)="focusElement(this.confirm)"
           (click)="cancelRemoveConfirm()"
         >
           <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
@@ -184,7 +184,7 @@
         id="confirm"
         class="a-btn a-btn--primary"
         (click)="confirmExecution(selectedTransfo)"
-        (keydown.tab)="focusCrossElement()"
+        (keydown.tab)="focusElement(this.cross)"
       >
         {{ '@pry.toolbox.manifest.validate' | i18n }}
       </button>

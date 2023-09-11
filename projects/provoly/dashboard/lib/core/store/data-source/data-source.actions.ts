@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
 import { PryVisibility } from '../../components/share/share.model';
-import { Dataset, DatasetPreview } from '../../model/dataset.interface';
+import { DatasetPreview } from '../../model/dataset.interface';
 import { MonoClassSearchPayload } from '../../model/search-mono-class.model';
 import { FullTextSearchPayload, MultiClassSearchPayload } from '../../model/search-multi-class.model';
-import { DatasetVersion, NamedQuery } from './data-source.model';
+import { Dataset, DatasetVersion, NamedQuery } from './data-source.model';
 
 export const DataSourceActions = {
   load: createAction('[Datasource] load'),

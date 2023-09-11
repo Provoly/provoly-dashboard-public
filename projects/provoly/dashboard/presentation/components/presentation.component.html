@@ -89,7 +89,7 @@
                   <button
                     class="a-btn a-btn--icon-only"
                     (click)="edit(presentation)"
-                    [disabled]="presentation.owner === false"
+                    [disabled]="!presentation.owner"
                     *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'edit' }"
                   >
                     <pry-icon iconSvg="edit" [pryTooltip]="change"></pry-icon>
@@ -101,7 +101,7 @@
                     (click)="toggleModal(presentation)"
                     class="a-btn a-btn--icon-only"
                     aria-haspopup="dialog"
-                    [disabled]="presentation.owner === false"
+                    [disabled]="!presentation.owner"
                     *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'share' }"
                   >
                     <pry-icon iconSvg="share" [pryTooltip]="share"></pry-icon>
@@ -112,8 +112,8 @@
                   <button
                     class="a-btn a-btn--icon-only"
                     #openModal
-                    (click)="toggleRemoveConfirm($event, presentation)"
-                    [disabled]="presentation.owner === false"
+                    (click)="delete(presentation.id)"
+                    [disabled]="!presentation.owner"
                     *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'delete' }"
                   >
                     <pry-icon iconSvg="delete" [pryTooltip]="erase"></pry-icon>
@@ -184,51 +184,6 @@
         (click)="changeVisibility()"
       >
         {{ '@pry.toolbox.manifest.check' | i18n }}
-      </button>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #templateModal>
-  <div
-    class="o-modal"
-    *ngIf="presentation"
-    (keydown.escape)="toggleRemoveConfirm($event, presentation)"
-    #deleteModal
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="dialog confirm delete presentation"
-  >
-    <div class="o-modal__top">
-      <div class="o-modal__top__title">
-        <h2 class="a-h2">
-          {{ '@pry.widget.modalTitle' | i18n }}
-        </h2>
-      </div>
-      <div class="o-modal__top__close">
-        <button
-          class="a-btn a-btn--icon-only"
-          #cross
-          (keydown.shift.tab)="focusValidation()"
-          (click)="cancelRemoveConfirm()"
-        >
-          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
-          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
-        </button>
-      </div>
-    </div>
-    <div class="m-btn-group">
-      <button type="button" #cancelRemove (click)="cancelRemoveConfirm()" class="a-btn a-btn--secondary">
-        {{ '@pry.toolbox.manifest.close' | i18n }}
-      </button>
-      <button
-        type="submit"
-        class="a-btn a-btn--primary"
-        #confirm
-        (click)="delete(presentation.id)"
-        (keydown.tab)="focusCrossElement()"
-      >
-        {{ '@pry.toolbox.manifest.validate' | i18n }}
       </button>
     </div>
   </div>
