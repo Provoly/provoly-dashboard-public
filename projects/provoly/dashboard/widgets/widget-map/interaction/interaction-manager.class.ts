@@ -15,6 +15,7 @@ export class InteractionManager {
   layerSwitchControl?: LayerSwitcher;
   scaleControl?: ScaleLine;
   selectionInteraction = new SelectionInteraction();
+  public tooltipEvent?: MapBrowserEvent<MouseEvent>;
 
   init(component: WidgetMapComponent) {
     this.component = component;
@@ -79,6 +80,7 @@ export class InteractionManager {
       if (wmsLayers) {
         this.component.getFeatureFromServer(wmsLayers, event.coordinate);
       }
+      this.tooltipEvent = event;
     }
   };
 

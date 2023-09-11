@@ -98,6 +98,8 @@ import {
 } from '../utils/widget-map.utils';
 import { WidgetMapLayerService } from './widget-map-layer.service';
 
+export const TOOLTIP_PADDING = 15;
+
 @Component({
   selector: 'pry-widget-map',
   templateUrl: './widget-map.component.html'
@@ -537,36 +539,48 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       )
     );
     this.subscriptions.add(
-      combineLatest([this.wmsFeatures$, this.classicFeatures$]).subscribe(([wmsFeatures, classicFeatures]) => {
-        if (this.map) {
-          const popupOverlay = new Overlay({
-            element: this.popup.nativeElement,
-            offset: [9, 9]
-          });
-          this.map.addOverlay(popupOverlay);
-          this.popupContent.clear();
-          const componentPromises = [] as Promise<ComponentRef<BaseTooltipComponent> | null>[];
-          wmsFeatures.forEach((value) => {
-            componentPromises.push(this.generateTooltip(value));
-          });
-          classicFeatures.forEach((value: any) => {
-            componentPromises.push(this.generateTooltip(value));
-          });
+      combineLatest([this.wmsFeatures$, this.classicFeatures$, this.widgetSize$, this.displayHeader$]).subscribe(
+        ([wmsFeatures, classicFeatures, size, header]) => {
+          if (this.map) {
+            const popupOverlay = new Overlay({
+              element: this.popup.nativeElement,
+              offset: [9, 9]
+            });
+            this.map.addOverlay(popupOverlay);
+            this.popupContent.clear();
+            const componentPromises = [] as Promise<ComponentRef<BaseTooltipComponent> | null>[];
+            wmsFeatures.forEach((value) => {
+              componentPromises.push(this.generateTooltip(value));
+            });
+            classicFeatures.forEach((value: any) => {
+              componentPromises.push(this.generateTooltip(value));
+            });
 
-          Promise.all(componentPromises).then((promises) => {
-            const realComponents = promises.filter((component) => !!component);
-            if (realComponents.length <= 0) {
-              this.popup.nativeElement.hidden = true;
-              popupOverlay.setPosition([-9999999999, -9999999999]);
-            } else {
-              this.popup.nativeElement.hidden = false;
-              popupOverlay.setPosition(
-                wmsFeatures.length > 0 ? wmsFeatures[0].coordinates : classicFeatures[0].coordinates
-              );
-            }
-          });
+            Promise.all(componentPromises).then((promises) => {
+              const realComponents = promises.filter((component) => !!component);
+              if (realComponents.length <= 0) {
+                this.popup.nativeElement.hidden = true;
+                popupOverlay.setPosition([-9999999999, -9999999999]);
+              } else {
+                this.popup.nativeElement.hidden = false;
+                // Do not go outside the map
+                const rect = {
+                  height: 200 + (header ? WIDGET_HEADER_HEIGHT : 0) + TOOLTIP_PADDING,
+                  width: 300 + TOOLTIP_PADDING
+                };
+                let pixel = this.interactionManager.tooltipEvent?.pixel;
+                if (!!pixel && pixel[0] + rect.width > size.width) {
+                  pixel[0] = size.width - rect.width;
+                }
+                if (!!pixel && pixel[1] + rect.height > size.height) {
+                  pixel[1] = size.height - rect.height;
+                }
+                popupOverlay.setPosition(this.map.getCoordinateFromPixel(pixel ?? [0, 0]));
+              }
+            });
+          }
         }
-      })
+      )
     );
   }
 

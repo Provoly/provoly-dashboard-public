@@ -2,11 +2,11 @@
   <h3 class="a-h3 -attribute">
     <img
       [src]="data.item | translateItemToSymbol | async"
-      [alt]="data.item.oClass | translateId: { type: 'class', output: 'name' } | async"
+      [alt]="data.item.oClass | translateId : { type: 'class', output: 'name' } | async"
       width="32"
       aria-hidden="true"
     />
-    <span>{{ data.item.oClass | translateId: { type: 'class', output: 'name' } | async }}</span>
+    <span>{{ data.item.oClass | translateId : { type: 'class', output: 'name' } | async }}</span>
   </h3>
   <ng-container *ngFor="let attribute of context.attributes">
     <p>
