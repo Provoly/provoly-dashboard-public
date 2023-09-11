@@ -147,6 +147,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   mapStyle$!: Observable<string>;
   interactionManager: InteractionManager = new InteractionManager();
   mapStyleLayer$!: Observable<VectorTileLayer[]>;
+  tooltipIndex = 0;
+  tooltipNumber = 0;
 
   constructor(
     store: Store<any>,
@@ -542,6 +544,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       combineLatest([this.wmsFeatures$, this.classicFeatures$, this.widgetSize$, this.displayHeader$]).subscribe(
         ([wmsFeatures, classicFeatures, size, header]) => {
           if (this.map) {
+            this.tooltipIndex = 0;
+            this.tooltipMove(0);
+
             const popupOverlay = new Overlay({
               element: this.popup.nativeElement,
               offset: [9, 9]
@@ -558,6 +563,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
             Promise.all(componentPromises).then((promises) => {
               const realComponents = promises.filter((component) => !!component);
+              this.tooltipNumber = realComponents.length;
               if (realComponents.length <= 0) {
                 this.popup.nativeElement.hidden = true;
                 popupOverlay.setPosition([-9999999999, -9999999999]);
@@ -999,5 +1005,27 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   toggleLegendWindow() {
     this.legendTabOpen = !this.legendTabOpen;
     this.interactionManager.layerSwitchControl?.hidePanel();
+  }
+
+  tooltipMove(number: number) {
+    if (this.tooltipCanMove(number)) {
+      this.setStyleAsync(this.tooltipIndex, 'none');
+      this.tooltipIndex = this.tooltipIndex + number;
+      this.setStyleAsync(this.tooltipIndex, 'block');
+    }
+  }
+
+  tooltipCanMove(number: number) {
+    return this.tooltipIndex + number >= 0 && this.tooltipIndex + number < this.tooltipNumber;
+  }
+
+  private setStyleAsync(idx: number, value: string) {
+    setTimeout(() => {
+      const targetContainer = this.popupContent.get(idx);
+      if (targetContainer) {
+        // @ts-ignore
+        targetContainer.rootNodes[0].style.display = value;
+      }
+    }, 100);
   }
 }

@@ -416,7 +416,18 @@
   </ng-template>
 
   <div #popup class="m-tooltip m-tooltip--popup" [hidden]="true" role="tooltip">
-    <div #popupContent></div>
+    <div class="m-tooltip--popup__header">
+      <p>{{ this.tooltipIndex + 1 }} / {{ this.tooltipNumber }}</p>
+      <button class="a-btn a-btn--primary a-btn--icon-only" (click)="tooltipMove(-1)" [disabled]="!tooltipCanMove(-1)">
+        <pry-icon iconSvg="arrow_back"></pry-icon>
+      </button>
+      <button class="a-btn a-btn--primary a-btn--icon-only" (click)="tooltipMove(1)" [disabled]="!tooltipCanMove(1)">
+        <pry-icon iconSvg="arrow_right"></pry-icon>
+      </button>
+    </div>
+    <div class="m-tooltip--popup__container">
+      <ng-container #popupContent></ng-container>
+    </div>
   </div>
   <div
     #address

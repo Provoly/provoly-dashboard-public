@@ -42,6 +42,23 @@
         background: transparent;
       }
     }
+
+    &__header {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+      width: 100%;
+
+      > p {
+        flex: 1 1;
+      }
+    }
+
+    &__container {
+      > * {
+        display: none;
+      }
+    }
   }
 
   &--example {
