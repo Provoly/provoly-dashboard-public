@@ -12,6 +12,7 @@ export interface MapWidgetOptions {
   fit?: boolean;
   attributions?: boolean;
   tooltipMode?: TooltipMode;
+  singleLayer?: boolean;
 }
 
 export type MapWidgetLayerOptions =

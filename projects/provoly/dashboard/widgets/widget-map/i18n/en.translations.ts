@@ -75,7 +75,8 @@ export const enTranslations = {
         legend: 'Legend of layer {{layer}}',
         legendNotProvided: 'Legend not provided by server',
         selectLayers: 'Select layers',
-        legends: 'Display legend'
+        legends: 'Display legend',
+        singleLayer: 'Single layer mode'
       }
     }
   }

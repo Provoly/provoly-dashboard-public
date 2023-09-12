@@ -32,6 +32,10 @@
         ></pry-select>
       </div>
 
+      <pry-checkbox (ngModelChange)="changeSingleLayer($event)" [ngModel]="optionsCopy.singleLayer ?? false">
+        {{ '@pry.widget.map.singleLayer' | i18n }}
+      </pry-checkbox>
+
       <pry-checkbox (ngModelChange)="changeFit($event)" [ngModel]="optionsCopy.fit ?? false">
         {{ '@pry.widget.map.fit' | i18n }}
       </pry-checkbox>
@@ -349,6 +353,38 @@
   </div>
 
   <div
+    class="ol-control m-layer-switcher"
+    *ngIf="((layers$ | async)?.length ?? 0) > 0"
+    [style.top.px]="layersTop$ | async"
+  >
+    <button
+      class="m-layer-switcher__toggle"
+      (click)="toggleLayersWindow()"
+      [title]="'@pry.widget.map.selectLayers' | i18n"
+    >
+      <pry-icon iconSvg="layers" [width]="22" [height]="22"></pry-icon>
+    </button>
+    <ng-container *ngFor="let layer of mapLayers; let index = index">
+      <div class="m-layer-switcher__title" [class.-hidden]="!layersTabOpen">
+        {{ layer.get('title') }}
+        <ng-container *ngIf="!(options$ | async)?.singleLayer; else singleLayer">
+          <pry-checkbox [ngModel]="layer.getVisible()" (change)="changeVisibility(layer)"></pry-checkbox>
+        </ng-container>
+        <ng-template #singleLayer>
+          <input
+            type="radio"
+            name="layer"
+            [id]="'radio-layer-' + layer.get('title').split(' ')[0]"
+            [ngModel]="layerVisibleIdx"
+            [value]="index"
+            (change)="changeVisibility(layer)"
+          />
+        </ng-template>
+      </div>
+    </ng-container>
+  </div>
+
+  <div
     class="ol-control m-layer-legend"
     *ngIf="((legendLayers$ | async)?.length ?? 0) > 0"
     [style.top.px]="legendTop$ | async"
@@ -393,7 +429,7 @@
 
   <div [style.height.px]="height$ | async" class="o-map-wrapper">
     <div class="o-map">
-      <div #map id="map"></div>
+      <div #mapRef id="map"></div>
     </div>
   </div>
 

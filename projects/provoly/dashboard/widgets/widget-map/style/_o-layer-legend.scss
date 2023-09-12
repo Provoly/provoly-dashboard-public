@@ -41,3 +41,48 @@
     color: #c74646;
   }
 }
+
+.m-layer-switcher {
+  z-index: 2;
+  left: toRem(8);
+  overflow: hidden;
+
+  &.ol-control {
+    border: 1px solid #bccad8;
+  }
+
+  button {
+    background-color: #fafafa !important;
+    color: black;
+  }
+
+  .-hidden {
+    display: none;
+  }
+
+  &__toggle {
+    width: toRem(30);
+    height: toRem(30);
+  }
+
+  &__title {
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    justify-content: space-between;
+    gap: toRem(10);
+    margin-left: toRem(35);
+    padding: 5px;
+  }
+
+  &__image {
+    background: white;
+    overflow: scroll;
+  }
+
+  &__error {
+    font-style: italic;
+    color: #c74646;
+  }
+
+}

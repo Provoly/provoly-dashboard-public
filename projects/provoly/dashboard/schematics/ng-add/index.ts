@@ -32,8 +32,6 @@ function addDependencies(tree: Tree, options: ProjectSetupOptions) {
   if (options.widgets.includes('widget-map')) {
     console.log('...Adding provoly dependencies for map');
     dependencies.push({ type: NodeDependencyType.Default, version: '^7.0.0', name: 'ol' });
-    dependencies.push({ type: NodeDependencyType.Default, version: '^4.1.0', name: 'ol-layerswitcher' });
-    dependencies.push({ type: NodeDependencyType.Default, version: '^10.6.0', name: 'ol-mapbox-style' });
     dependencies.push({ type: NodeDependencyType.Default, version: '^10.6.0', name: 'ol-mapbox-style' });
     dependencies.push({ type: NodeDependencyType.Default, version: '^2.9.0', name: 'proj4' });
     dependencies.push({ type: NodeDependencyType.Default, version: '^4.0.2', name: 'shpjs' });

@@ -104,7 +104,7 @@ export const TOOLTIP_PADDING = 15;
 })
 export class WidgetMapComponent extends DataWidgetComponent implements AfterViewInit {
   mapUrl$: Observable<string>;
-  @ViewChild('map') mapRef!: ElementRef;
+  @ViewChild('mapRef') mapRef!: ElementRef;
   @ViewChild('popup') popup!: ElementRef;
   @ViewChild('popupContent', { read: ViewContainerRef }) popupContent!: ViewContainerRef;
   @ViewChild('exportTypeTemplate', { read: TemplateRef }) exportTypeTemplate!: TemplateRef<any>;
@@ -134,9 +134,11 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   classicFeatures$: BehaviorSubject<any> = new BehaviorSubject([]);
   geoServerLayerDescriptions$: Observable<MapGeoServerLayerOptions[]>;
   legendTabOpen = false;
+  layersTabOpen = false;
   legendTab = 0;
   legendLayers$!: Observable<(MapGeoServerLayerOptions | MapWMSLayerLayerOptions)[]>;
   legendTop$: Observable<number>;
+  layersTop$: Observable<number>;
   legendHeight$: Observable<number>;
   imageNotProvided: boolean[] = [];
   basicActions$: Observable<('click' | 'lasso' | 'rectangle' | 'zoom' | 'move' | 'export' | 'upload')[]>;
@@ -308,7 +310,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       delay(10)
     );
 
-    this.legendTop$ = this.displayHeader$.pipe(map((display) => 181 - (display ? 0 : WIDGET_HEADER_HEIGHT)));
+    this.layersTop$ = this.displayHeader$.pipe(map((display) => 140 - (display ? 0 : WIDGET_HEADER_HEIGHT)));
+    this.legendTop$ = this.displayHeader$.pipe(map((display) => 180 - (display ? 0 : WIDGET_HEADER_HEIGHT)));
 
     this.legendHeight$ = combineLatest([this.widgetSize$.pipe(debounceTime(100)), this.legendTop$]).pipe(
       map(([size, top]) => {
@@ -335,7 +338,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         if (!style || style === 'none') {
           return [];
         }
-        const layer = new VectorTileLayer({ declutter: true });
+        const layer = new VectorTileLayer({
+          declutter: true,
+          properties: { title: 'background' }
+        });
         applyStyle(layer, `${url}/styles/${style}/style.json`).catch((err) =>
           console.warn('Style application problem', err)
         );
@@ -476,6 +482,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         }
         layers.push(...additionalLayers);
         layers.forEach((layer, index, arr) => layer.set('zIndex', arr.length - index));
+
+        if (options.singleLayer) {
+          layers.forEach((layer, idx) => {
+            layer.setVisible(idx === 0);
+          });
+        }
 
         return layers;
       })
@@ -945,6 +957,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     return !!this.getWMSLayers().find((wmsLayer) => wmsLayer.get('title') === layer.title);
   }
 
+  isLayerVisible(layer: any) {
+    return !!this.getWMSLayers()
+      .find((wmsLayer) => wmsLayer.get('title') === layer.title)
+      ?.getVisible();
+  }
+
   getFeatureFromServer(wmsLayers: any[], pixel: Pixel) {
     proj4.defs(
       'EPSG:2154',
@@ -985,7 +1003,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   toggleLegendWindow() {
     this.legendTabOpen = !this.legendTabOpen;
-    this.interactionManager.layerSwitchControl?.hidePanel();
+    this.layersTabOpen = false;
+  }
+
+  toggleLayersWindow() {
+    this.layersTabOpen = !this.layersTabOpen;
+    this.legendTabOpen = false;
   }
 
   tooltipMove(number: number) {
@@ -1008,5 +1031,30 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         targetContainer.rootNodes[0].style.display = value;
       }
     }, 100);
+  }
+
+  get mapLayers() {
+    return this.map
+      .getLayers()
+      .getArray()
+      .filter((layer) => layer.get('title') !== 'background');
+  }
+
+  changeVisibility(layer: BaseLayer) {
+    if (this.optionsCopy.singleLayer) {
+      this.mapLayers.forEach((layer) => layer.setVisible(false));
+      layer.setVisible(true);
+    } else {
+      layer.setVisible(!layer.getVisible());
+    }
+    this.map.updateSize();
+  }
+
+  changeSingleLayer($event: any) {
+    this.optionsCopy.singleLayer = $event;
+  }
+
+  get layerVisibleIdx() {
+    return this.mapLayers.map((layer, idx) => (layer.getVisible() ? idx : 0)).reduce((a, b) => a + b);
   }
 }

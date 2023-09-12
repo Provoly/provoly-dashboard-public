@@ -1,6 +1,5 @@
 import { ContextMenuActions, TooltipMode } from '@provoly/dashboard';
 import { Feature, MapBrowserEvent, Overlay } from 'ol';
-import LayerSwitcher from 'ol-layerswitcher';
 import { ScaleLine } from 'ol/control';
 import { Circle, Point } from 'ol/geom';
 import { toLonLat } from 'ol/proj';
@@ -10,7 +9,6 @@ import { SelectionInteraction } from './selection-interaction.class';
 
 export class InteractionManager {
   interactionPopupOverlay?: Overlay;
-  layerSwitchControl?: LayerSwitcher;
   scaleControl?: ScaleLine;
   selectionInteraction = new SelectionInteraction();
   public tooltipEvent?: MapBrowserEvent<MouseEvent>;
@@ -21,7 +19,6 @@ export class InteractionManager {
     this.addContextMenuInteraction();
     this.addDropInteraction();
     this.addOverlayOnInteraction();
-    this.addLayerSwitcher();
     this.addScaleControl();
     this.addUpdateZoomAndCenter();
     this.component.map.addInteraction(this.selectionInteraction.init(this.component.store));
@@ -115,21 +112,6 @@ export class InteractionManager {
       });
       this.component.map.addControl(this.scaleControl);
     }
-  }
-
-  private addLayerSwitcher() {
-    this.layerSwitchControl = new LayerSwitcher({
-      tipLabel: this.component.translateService.instant('@pry.widget.map.selectLayers'),
-      collapseTipLabel: this.component.translateService.instant('@pry.widget.map.selectLayers'),
-      activationMode: 'click',
-      reverse: false
-    });
-    this.component.map.addControl(this.layerSwitchControl);
-
-    // @ts-ignore
-    this.layerSwitchControl.on('show', () => {
-      this.component.legendTabOpen = false;
-    });
   }
 
   private addUpdateZoomAndCenter() {
