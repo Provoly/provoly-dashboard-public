@@ -13,7 +13,7 @@ import { ResultOrder } from '../../core/model/result-order.interface';
 import { ResultSet, ResultSets } from '../../core/model/result-set.interface';
 import { DashboardCellParams, ViewMode } from './dashboard.actions';
 import { DashboardState } from './dashboard.reducers';
-import { ManifestService } from './manifest.service';
+import { ManifestUtils } from './manifest-utils.class';
 
 const NEW_WINDOW_TARGET = -1;
 
@@ -27,7 +27,7 @@ const globalManifest = createSelector(
   (manifests) => ({ windows: [], ...manifests?.manifest } ?? ({ windows: [] } as GlobalManifest))
 );
 const manifestDatasources = createSelector(globalManifest, (manifest) =>
-  ManifestService.getDatasourcesUsedByManifest(manifest)
+  ManifestUtils.getDatasourcesUsedByManifest(manifest)
 );
 const staticManifest = createSelector(
   manifests,

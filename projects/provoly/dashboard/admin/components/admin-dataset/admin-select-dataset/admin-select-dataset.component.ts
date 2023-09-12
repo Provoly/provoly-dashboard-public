@@ -5,19 +5,19 @@ import { Store } from '@ngrx/store';
 import {
   Associations,
   Dataset,
-  DatasetMetadata,
   DataSourceActions,
   DataSourceSelectors,
   IMetadata,
+  MetadataValue,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
 import { combineLatest, map, Observable, Subscription } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
+import { AdminSelectors } from '../../../store/admin.selectors';
 import { MetadataActions } from '../../admin-metadata/store/metadata.action';
 import { MetadataSelectors } from '../../admin-metadata/store/metadata.selector';
 import { AdminDatasetActions } from '../store/admin-dataset.actions';
 import { AdminDatasetSelectors } from '../store/admin-dataset.selector';
-import { AdminSelectors } from '../../../store/admin.selectors';
 
 let nextCompId = 0;
 
@@ -33,7 +33,7 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
   sub = new Subscription();
   currentTypeTranslation = '';
   tab: number = 0;
-  datasetMetadata$: Observable<DatasetMetadata[]>;
+  datasetMetadata$: Observable<MetadataValue[]>;
   metadata$: Observable<IMetadata[]>;
   availableMetadata$?: Observable<IMetadata[]>;
   form: FormGroup;
@@ -165,13 +165,13 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
     }
   }
 
-  removeMetadata(metadata: DatasetMetadata) {
+  removeMetadata(metadata: MetadataValue) {
     this.store.dispatch(
       AdminDatasetActions.deleteDatasetMetadata({ datasetId: this.datasetId, metadataId: metadata.metadataDef.id })
     );
   }
 
-  editMetadata(currentMetadata: DatasetMetadata) {
+  editMetadata(currentMetadata: MetadataValue) {
     this.store.dispatch(AdminDatasetActions.isEditable({ editable: true }));
     let value = currentMetadata.value;
     let datasetMetadataDef = currentMetadata.metadataDef;

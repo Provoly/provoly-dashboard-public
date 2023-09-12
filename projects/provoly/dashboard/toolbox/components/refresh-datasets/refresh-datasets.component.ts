@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { DashboardSelectors, GlobalManifest, ManifestService, SearchActions } from '@provoly/dashboard';
+import { DashboardSelectors, GlobalManifest, ManifestUtils, SearchActions } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
@@ -35,7 +35,7 @@ export class RefreshDatasetsComponent extends ToolboxActionComponent {
 
   refresh() {
     if (this.manifest) {
-      ManifestService.getDatasourcesUsedByManifest(this.manifest).forEach((datasetId) => {
+      ManifestUtils.getDatasourcesUsedByManifest(this.manifest).forEach((datasetId) => {
         if (datasetId) {
           this.store.dispatch(SearchActions.getDatasourceItems({ id: datasetId }));
         }

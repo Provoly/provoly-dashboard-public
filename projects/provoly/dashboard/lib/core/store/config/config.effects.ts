@@ -3,6 +3,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, throwError } from 'rxjs';
 import { filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { PryDialogConfirmComponent, PryDialogConfirmData } from '../../components/overlay/dialog-confirm.component';
+import { PryDialogService } from '../../components/overlay/dialog.service';
 import { PrySnackbarService } from '../../components/snackbar/snackbar.service';
 import { PryI18nService } from '../../i18n/i18n.service';
 import { ConfigActions } from './config.actions';
@@ -17,7 +19,6 @@ import {
 } from './config.service';
 import { ChartOptionDefault } from './config.widget.constants';
 import { OpenMapTilesService } from './open-map-tiles.service';
-import { PryDialogConfirmComponent, PryDialogConfirmData, PryDialogService } from '@provoly/dashboard';
 
 @Injectable()
 export class ConfigEffects {

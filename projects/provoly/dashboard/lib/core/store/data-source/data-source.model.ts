@@ -1,5 +1,5 @@
 import { PryVisibility } from '../../components/share/share.model';
-import { DatasetMetadata } from '../../model/admin-api.model';
+import { MetadataValue } from '../../model/admin-api.model';
 import { PryDatasetType } from '../../model/dataset.interface';
 import { MonoClassSearchPayload } from '../../model/search-mono-class.model';
 import { FullTextSearchPayload, MultiClassSearchPayload } from '../../model/search-multi-class.model';
@@ -20,7 +20,7 @@ export interface DescriptionQuery {
   name: string;
   description?: string;
   visibility?: PryVisibility;
-  metadata?: DatasetMetadata[];
+  metadata?: MetadataValue[];
 }
 
 export interface Dataset extends DescriptionQuery {
@@ -29,7 +29,7 @@ export interface Dataset extends DescriptionQuery {
   name: string;
   oClass: string;
   type: PryDatasetType;
-  metadata: DatasetMetadata[];
+  metadata: MetadataValue[];
 }
 
 export interface DatasetVersion {

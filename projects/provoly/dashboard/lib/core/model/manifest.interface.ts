@@ -1,4 +1,5 @@
 import { PryVisibility } from '../components/share/share.model';
+import { MetadataValue } from './admin-api.model';
 import { Filter } from './filter.interface';
 import { ChartAggregatedWidgetOptions } from './widget-aggregated-chart-manifest.interface';
 import { ChartWidgetOptions } from './widget-chart-manifest.interface';
@@ -24,6 +25,7 @@ export interface ManifestDescription {
   visibility: PryVisibility;
   owner: boolean;
   datasource: string[];
+  metadata: MetadataValue[];
 }
 
 export interface WidgetLayout {

@@ -3,7 +3,6 @@ export * from './component/widget-map.component';
 export * from './component/widget-map-layer.service';
 export * from './pipe/widget-map-geometry-fields-for.pipe';
 export * from './pipe/widget-map-legend-url.pipe';
-export * from './interaction/interaction-manager.class';
 export * from './interaction/selection-interaction.class';
 export * from './utils/widget-map.utils';
 export * from './style/css.component';

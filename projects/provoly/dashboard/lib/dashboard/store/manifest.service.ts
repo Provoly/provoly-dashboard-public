@@ -10,6 +10,7 @@ import { PryI18nService } from '../../core/i18n/i18n.service';
 import { GlobalManifest, ManifestDescription } from '../../core/model/manifest.interface';
 import { ConfigSelectors } from '../../core/store/config/config.selectors';
 import { DashboardSelectors } from './dashboard.selectors';
+import { ManifestUtils } from './manifest-utils.class';
 
 @Injectable({
   providedIn: 'root'
@@ -83,7 +84,7 @@ export class ManifestService {
             image,
             visibility,
             cover,
-            datasource: ManifestService.getDatasourcesUsedByManifest(manifest)
+            datasource: ManifestUtils.getDatasourcesUsedByManifest(manifest)
           }
         )
       )
@@ -112,16 +113,5 @@ export class ManifestService {
         }
       })
     );
-  }
-
-  public static getDatasourcesUsedByManifest(manifest: GlobalManifest): string[] {
-    return [
-      ...new Set<string>(
-        manifest.windows
-          .map((window) => window.widgets.map((widget) => widget.datasource))
-          .flat(3)
-          .filter((dataset) => !!dataset) as string[]
-      )
-    ];
   }
 }

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map, mergeMap, Observable, of, switchMap } from 'rxjs';
 import { PryI18nService } from '../../i18n/i18n.service';
-import { DatasetMetadata } from '../../model/admin-api.model';
+import { MetadataValue } from '../../model/admin-api.model';
 import { DatasetPreview } from '../../model/dataset.interface';
 import { ConfigState } from '../config/config.reducer';
 import { ConfigSelectors } from '../config/config.selectors';
@@ -120,10 +120,10 @@ export class DataSourceService {
       .pipe(mergeMap((url) => this.httpClient.get<Dataset>(`${url}/datasets/id/${id}`)));
   }
 
-  getDatasetMetadata(id: string): Observable<DatasetMetadata[]> {
+  getDatasetMetadata(id: string): Observable<MetadataValue[]> {
     return this.store
       .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.get<DatasetMetadata[]>(`${url}/datasets/id/${id}/metadata`)));
+      .pipe(mergeMap((url) => this.httpClient.get<MetadataValue[]>(`${url}/datasets/id/${id}/metadata`)));
   }
 
   addDatasetMetadata(datasetId: string, metadataId: string, value: any): Observable<void> {

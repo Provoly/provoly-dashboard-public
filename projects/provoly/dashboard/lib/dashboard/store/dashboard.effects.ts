@@ -4,6 +4,11 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { combineLatest, merge, of, throwError } from 'rxjs';
 import { catchError, debounceTime, delay, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import {
+  PryDialogConfirmComponent,
+  PryDialogConfirmData
+} from '../../core/components/overlay/dialog-confirm.component';
+import { PryDialogService } from '../../core/components/overlay/dialog.service';
 import { PryVisibilityType } from '../../core/components/share/share.model';
 import { PrySnackbarService } from '../../core/components/snackbar/snackbar.service';
 import { PryI18nService } from '../../core/i18n/i18n.service';
@@ -25,7 +30,6 @@ import { GeocodingService } from './geocoding.service';
 import { ManifestService } from './manifest.service';
 import { RefreshService } from './refresh.service';
 import { PryTitleService } from './title.service';
-import { PryDialogConfirmComponent, PryDialogConfirmData, PryDialogService } from '@provoly/dashboard';
 
 @Injectable()
 export class DashboardEffects {

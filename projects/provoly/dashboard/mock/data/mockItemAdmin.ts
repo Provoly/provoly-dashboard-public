@@ -1,10 +1,10 @@
 import {
+  Associations,
   Attribute,
   BusinessData,
   Category,
   Class,
   DatasetCount,
-  DatasetMetadata,
   Environment,
   Field,
   FieldType,
@@ -12,11 +12,11 @@ import {
   Link,
   LinkDetails,
   MetadataUser,
+  MetadataValue,
   Predicate,
   RelationType,
   UserInfo,
-  VARIABLE_TYPE,
-  Associations
+  VARIABLE_TYPE
 } from '@provoly/dashboard';
 
 export const envs: Environment[] = [{ type: VARIABLE_TYPE.STRING, name: 'myEnv', value: 'value' }];
@@ -126,7 +126,7 @@ export const links: Link[] = [
   }
 ];
 
-export const datasetMetadata: DatasetMetadata[] = [
+export const datasetMetadata: MetadataValue[] = [
   {
     metadataDef: {
       id: 'e1e55abd-2fb7-4e3b-9372-92c7c9d6c5c4',

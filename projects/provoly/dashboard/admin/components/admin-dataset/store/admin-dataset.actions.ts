@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { DatasetMetadata } from '@provoly/dashboard';
+import { MetadataValue } from '@provoly/dashboard';
 
 export const AdminDatasetActions = {
   isEditable: createAction(`[Admin/Datasource] Is editable`, props<{ editable: boolean }>()),
@@ -10,7 +10,7 @@ export const AdminDatasetActions = {
   ),
   loadDatasetMetadataSuccess: createAction(
     `[Admin/Datasource] Load Metadata of selected Datasets Success`,
-    props<{ metadata: DatasetMetadata[] }>()
+    props<{ metadata: MetadataValue[] }>()
   ),
   loadDatasetMetadataFailure: createAction(
     `[Admin/Datasource] Load Metadata of selected Datasets Failure`,

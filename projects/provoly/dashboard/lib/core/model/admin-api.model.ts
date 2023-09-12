@@ -100,7 +100,7 @@ export interface MetadataUser {
   value: string;
 }
 
-export interface DatasetMetadata {
+export interface MetadataValue {
   metadataDef: IMetadata;
   value: string;
 }
