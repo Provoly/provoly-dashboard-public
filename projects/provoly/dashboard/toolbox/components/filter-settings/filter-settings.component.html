@@ -119,6 +119,7 @@
             [labelTranslate]="false"
             [itemsAsOption]="true"
             [multiple]="true"
+            [closeOnSelect]="false"
             [items]="attributes$ | async"
             [ngModel]="filter.attributes"
             (ngModelChange)="selectAttribute($event)"

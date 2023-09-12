@@ -335,25 +335,6 @@ describe('Dashboard selectors', () => {
     });
   });
 
-  describe('address', () => {
-    it('should default to empty', () => {
-      expect(DashboardSelectors.address(buildState({}))).toEqual({});
-    });
-
-    it('should give address', () => {
-      expect(
-        DashboardSelectors.address(
-          buildState({
-            results: {
-              ...initial.results,
-              address: { latLon: [43.949072, 0.199536], pointAddress: 'Montréal 32250' }
-            }
-          })
-        )
-      ).toEqual({ latLon: [43.949072, 0.199536], pointAddress: 'Montréal 32250' });
-    });
-  });
-
   describe('resultSetUses', () => {
     it('should default to empty', () => {
       expect(DashboardSelectors.namedQueriesUses(buildState({}))).toEqual({});

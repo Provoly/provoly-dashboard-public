@@ -25,6 +25,7 @@
           [itemsAsOption]="true"
           [items]="classes$ | async"
           [multiple]="true"
+          [closeOnSelect]="false"
           [ngModel]="optionsCopy.classes"
           bindLabel="name"
           bindValue="id"

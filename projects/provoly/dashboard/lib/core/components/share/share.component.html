@@ -25,6 +25,7 @@
       [itemsAsOption]="true"
       [items]="users$ | async"
       [multiple]="true"
+      [closeOnSelect]="false"
       [ngModel]="value?.users"
       [disabled]="_disabled"
       [bindLabel]="labelProperty"

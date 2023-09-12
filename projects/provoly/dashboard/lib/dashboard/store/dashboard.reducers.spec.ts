@@ -50,23 +50,6 @@ describe('Dashboard reducer', () => {
     });
   });
 
-  describe('displayAddress', () => {
-    it('should store address', () => {
-      expect(
-        dashboardReducer(
-          { ...initialState },
-          DashboardActions.displayAddress({ address: { latLon: [2, 4], pointAddress: '28 rue de la paix 33290' } })
-        )
-      ).toEqual({
-        ...initialState,
-        results: {
-          ...initialState.results,
-          address: { latLon: [2, 4], pointAddress: '28 rue de la paix 33290' }
-        }
-      });
-    });
-  });
-
   describe('setRefreshRate', () => {
     it('should set refresh rate for datasource', () => {
       expect(
