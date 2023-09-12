@@ -1,4 +1,5 @@
 export interface DisplayOptions {
+  presentationTitle: boolean;
   search: boolean;
   catalog: boolean;
   useFilters: boolean;
@@ -26,6 +27,7 @@ export enum DisplayMode {
 
 export function getDisplayOptions(mode: DisplayMode): DisplayOptions {
   const displayOptions: DisplayOptions = {
+    presentationTitle: true,
     search: false,
     catalog: false,
     useFilters: false,
@@ -51,8 +53,9 @@ export function getDisplayOptions(mode: DisplayMode): DisplayOptions {
     case DisplayMode.SEARCH:
       return {
         ...displayOptions,
+        presentationTitle: false,
         search: true,
-        toolbox: { ...displayOptions.toolbox, refresh_datasets: true }
+        toolbox: { ...displayOptions.toolbox, clear_view: true, default_size: true, refresh_datasets: true }
       };
 
     case DisplayMode.EDIT:
