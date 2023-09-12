@@ -16,7 +16,7 @@ describe(schematicName, () => {
     );
   });
 
-  it(`should change version`, async () => {
+  it(`should remove click option`, async () => {
     tree.create(
       '/app-routing.module.ts',
       `const routes: Routes = [
@@ -160,5 +160,14 @@ describe(schematicName, () => {
     expect(actual).not.toMatch(/tooltipMode\s*:\s*'TooltipMode.HOVER/);
     expect(actual).toMatch(/tooltipMode\s*:\s*'click'/);
     expect(actual).toMatch(/tooltipMode\s*:\s*TooltipMode.CLICK/);
+  });
+
+  it(`should change type`, async () => {
+    tree.create('/some-app.component.ts', `const datasetsMeta : DatasetMetadata[] = [];`);
+
+    await runner.runSchematic('migration-v0.13', {}, tree);
+    const actual = tree.readContent('/some-app.component.ts');
+    expect(actual).not.toMatch(/DatasetMetadata/);
+    expect(actual).toMatch(/MetadataValue/);
   });
 });

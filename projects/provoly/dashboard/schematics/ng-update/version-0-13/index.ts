@@ -22,9 +22,27 @@ function removeWidgetMapHoverOption() {
   };
 }
 
+function changeTypeDatasetMetadataToMetadataValue() {
+  return function (tree: Tree, context: SchematicContext) {
+    tree.visit((path, entry) => {
+      if (path.includes('.ts')) {
+        const buffer = tree.read(path);
+        if (buffer) {
+          tree.overwrite(path, buffer.toString().replace(/DatasetMetadata/g, 'MetadataValue'));
+        }
+      }
+    });
+    return undefined;
+  };
+}
+
 export function updateTo0_13(): Rule {
   return (_tree: Tree, context: SchematicContext): Rule => {
     context.addTask(new NodePackageInstallTask());
-    return chain([removeWidgetMapHoverOption(), onMigrationComplete('0.13', context)]);
+    return chain([
+      removeWidgetMapHoverOption(),
+      changeTypeDatasetMetadataToMetadataValue(),
+      onMigrationComplete('0.13', context)
+    ]);
   };
 }
