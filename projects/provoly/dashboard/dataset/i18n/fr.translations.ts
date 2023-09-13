@@ -49,7 +49,8 @@ export const frTranslations = {
           FORMAT: "Format d'attribut {{name}} incorrect",
           ELASTIC_SEARCH: "Erreur d'insertion pour l'élément {{recordId}}",
           NO_VALUES: 'Pas de valeur pour la ligne {{recordId}}',
-          FORMAT_FILE_ERROR: "Le format du fichier transmis n'est pas géré"
+          FORMAT_FILE_ERROR: "Le format du fichier transmis n'est pas géré",
+          NO_ATTRIBUTES: "Les données importés ne correspondent pas au modèle de données indiquer en cible de l'import"
         }
       },
       tooltip: {

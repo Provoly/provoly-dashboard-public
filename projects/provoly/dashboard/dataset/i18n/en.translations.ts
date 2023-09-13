@@ -47,7 +47,8 @@ export const enTranslations = {
           FORMAT: 'Wrong format for attribute {{name}}',
           ELASTIC_SEARCH: 'Insertion error for element {{recordId}}',
           NO_VALUES: 'No value for {{recordId}} line',
-          FORMAT_FILE_ERROR: 'Unsupported file format'
+          FORMAT_FILE_ERROR: 'Unsupported file format',
+          NO_ATTRIBUTES: 'The imported data does not correspond to the data model indicated in the import target'
         }
       },
       tooltip: {
