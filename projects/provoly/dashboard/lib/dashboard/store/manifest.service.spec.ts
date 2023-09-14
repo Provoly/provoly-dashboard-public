@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { PrySnackbarService } from '../../core/components/snackbar/snackbar.service';
 import { PryI18nService } from '../../core/i18n/i18n.service';
-
 import { ManifestService } from './manifest.service';
 
 describe('ManifestService', () => {

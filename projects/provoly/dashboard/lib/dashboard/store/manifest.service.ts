@@ -9,8 +9,8 @@ import { PrySnackbarService } from '../../core/components/snackbar/snackbar.serv
 import { PryI18nService } from '../../core/i18n/i18n.service';
 import { GlobalManifest, ManifestDescription } from '../../core/model/manifest.interface';
 import { ConfigSelectors } from '../../core/store/config/config.selectors';
-import { DashboardSelectors } from './dashboard.selectors';
 import { ManifestUtils } from './manifest-utils.class';
+import { DashboardSelectors } from './dashboard.selectors';
 
 @Injectable({
   providedIn: 'root'
@@ -101,7 +101,7 @@ export class ManifestService {
     return this.store.select(ConfigSelectors.refUrl).pipe(
       withLatestFrom(this.store.select(DashboardSelectors.manifestsList)),
       mergeMap(([url, manifests]) => {
-        const actual = manifests.find((manifest) => manifest.id === id);
+        const actual = manifests.find((manifest: { id: string }) => manifest.id === id);
         if (!!actual && !actual.default) {
           return this.httpClient
             .put<ArrayBuffer>(encodeURI(`${url}/users/me/dashboards/id/${id}/default`), {})
