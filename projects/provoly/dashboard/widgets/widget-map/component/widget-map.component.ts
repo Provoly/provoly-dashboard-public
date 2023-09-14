@@ -538,8 +538,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         ([wmsFeatures, classicFeatures, size, header]) => {
           if (this.map) {
             this.tooltipIndex = 0;
-            this.tooltipMove(0);
-
             const popupOverlay = new Overlay({
               element: this.popup.nativeElement,
               offset: [9, 9]
@@ -574,6 +572,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                 if (!!pixel && pixel[1] + rect.height > size.height) {
                   pixel[1] = size.height - rect.height;
                 }
+                setTimeout(() => {
+                  this.tooltipMove(0);
+                }, 10);
                 popupOverlay.setPosition(this.map.getCoordinateFromPixel(pixel ?? [0, 0]));
               }
             });
