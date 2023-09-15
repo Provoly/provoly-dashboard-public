@@ -952,6 +952,9 @@ router.on(['OPTIONS'], '/data/imports/dataset/id/:id', (req, res, params) => {
 router.on(['POST'], '/data/imports/dataset/id/:id', (req, res, params) => {
   makeResponseOk(res, {}, 204);
 });
+router.on(['OPTIONS', 'GET'], '/external/style.json', (req, res, params) => {
+  makeResponseOk(res, JSON.parse(fs.readFileSync('./data/style.json', 'utf8')));
+});
 const server = http.createServer((req, res) => {
   router.lookup(req, res);
 });

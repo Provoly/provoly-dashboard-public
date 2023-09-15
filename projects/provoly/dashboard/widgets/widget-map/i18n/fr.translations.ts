@@ -6,6 +6,8 @@ export const frTranslations = {
         attributions: 'Afficher les crédits',
         style: 'Style du fond de carte',
         noStyle: 'Aucun fond de carte',
+        styleFromUrl: 'Style depuis une URL absolue',
+        styleUrl: 'URL',
         fit: 'Adapter la taille aux données',
         addLayer: 'Ajouter une couche',
         layer: 'Couche n°{{index}}',

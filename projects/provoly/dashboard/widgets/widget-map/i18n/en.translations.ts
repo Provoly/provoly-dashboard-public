@@ -6,6 +6,8 @@ export const enTranslations = {
         attributions: 'Display credits',
         style: 'Map style',
         noStyle: 'Empty map',
+        styleFromUrl: 'Style from URL',
+        styleUrl: 'URL',
         fit: 'Fit data',
         addLayer: 'Add layer',
         layer: 'Layer n°{{index}}',

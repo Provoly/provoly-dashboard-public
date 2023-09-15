@@ -144,11 +144,13 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   basicActions$: Observable<('click' | 'lasso' | 'rectangle' | 'zoom' | 'move' | 'export' | 'upload')[]>;
   zoomAndCenter$ = new BehaviorSubject<{ zoom?: { start: number; min: number; max: number }; center?: number[] }>({});
   fitOption$!: Observable<boolean>;
-  mapStyle$!: Observable<string>;
+  mapStyleUrl$!: Observable<string | null>;
   interactionManager: InteractionManager = new InteractionManager();
   mapStyleLayer$!: Observable<VectorTileLayer[]>;
   tooltipIndex = 0;
   tooltipNumber = 0;
+  STYLE_FROM_URL = '_url';
+  NO_STYLE = 'none';
 
   constructor(
     store: Store<any>,
@@ -174,10 +176,16 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.fields$ = this.store.select(FieldSelectors.fields);
     this.styles$ = this.store.select(ConfigSelectors.mapStyles).pipe(
       map((styles) =>
-        styles.concat({
-          identifier: 'none',
-          label: this.translateService.instant('@pry.widget.map.noStyle')
-        })
+        styles.concat(
+          {
+            identifier: this.NO_STYLE,
+            label: this.translateService.instant('@pry.widget.map.noStyle')
+          },
+          {
+            identifier: this.STYLE_FROM_URL,
+            label: this.translateService.instant('@pry.widget.map.styleFromUrl')
+          }
+        )
       )
     );
     this.selectedIds$ = this.store.select(DashboardSelectors.selectedItemIds);
@@ -328,26 +336,31 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   ngAfterViewInit(): void {
     this.map = new Map({ target: this.mapRef.nativeElement });
     this.interactionManager = this.initInteractionManager();
-    this.mapStyle$ = this.options$.pipe(
-      map((options) => options.style),
+    this.mapStyleUrl$ = combineLatest([this.options$, this.mapUrl$]).pipe(
+      map(([options, url]) => {
+        switch (options.style) {
+          case this.NO_STYLE:
+            return null;
+          case this.STYLE_FROM_URL:
+            return options.styleURL ?? '';
+          default:
+            return `${url}/styles/${options.style}/style.json`;
+        }
+      }),
       distinctUntilChanged()
     );
 
-    this.mapStyleLayer$ = combineLatest([this.mapStyle$, this.mapUrl$]).pipe(
-      map(([style, url]) => {
-        if (!style || style === 'none') {
+    this.mapStyleLayer$ = this.mapStyleUrl$.pipe(
+      map((styleUrl) => {
+        if (!styleUrl) {
           return [];
         }
         const layer = new VectorTileLayer({
           declutter: true,
           properties: { title: 'background' }
         });
-        applyStyle(layer, `${url}/styles/${style}/style.json`).catch((err) =>
-          console.warn('Style application problem', err)
-        );
-        applyBackground(layer, `${url}/styles/${style}/style.json`).catch((err) =>
-          console.warn('Background application problem', err)
-        );
+        applyStyle(layer, styleUrl).catch((err) => console.warn('Style application problem', err));
+        applyBackground(layer, styleUrl).catch((err) => console.warn('Background application problem', err));
         return [layer];
       })
     );
@@ -720,6 +733,14 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   changeStyle($event: any) {
     this.optionsCopy.style = $event;
+    if (this.optionsCopy.style !== this.STYLE_FROM_URL) {
+      delete this.optionsCopy.styleURL;
+    }
+  }
+
+  changeStyleURL($event: Event) {
+    // @ts-ignore
+    this.optionsCopy.styleURL = $event.currentTarget?.value;
   }
 
   changeFit($event: boolean) {

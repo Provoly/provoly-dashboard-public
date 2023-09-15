@@ -32,6 +32,17 @@
         ></pry-select>
       </div>
 
+      <div class="m-form-label-field" *ngIf="optionsCopy.style === STYLE_FROM_URL">
+        <label class="a-label" for="style_URL">{{ '@pry.widget.map.styleUrl' | i18n }}</label>
+        <input
+          id="style_URL"
+          class="a-form-field"
+          type="text"
+          (input)="changeStyleURL($event)"
+          [value]="optionsCopy.styleURL ?? ''"
+        />
+      </div>
+
       <pry-checkbox (ngModelChange)="changeSingleLayer($event)" [ngModel]="optionsCopy.singleLayer ?? false">
         {{ '@pry.widget.map.singleLayer' | i18n }}
       </pry-checkbox>

@@ -39,6 +39,8 @@ const routes: Routes = [
               width: 12
             },
             options: {
+              style: '_url',
+              styleURL: 'http://localhost:8081/external/style.json',
               attributions: true,
               tooltipMode: TooltipMode.CLICK,
               layers: [

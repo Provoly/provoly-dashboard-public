@@ -8,6 +8,7 @@ export interface MapWidgetOptions {
     max: number;
   };
   style: string;
+  styleURL?: string;
   layers?: MapWidgetLayerOptions[];
   fit?: boolean;
   attributions?: boolean;
