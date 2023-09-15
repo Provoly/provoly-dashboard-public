@@ -3,14 +3,15 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { Associations, Predicate, RelationTypesActions } from '@provoly/dashboard';
+import { IMetadata, Predicate, RelationTypesActions, VARIABLE_TYPE } from '@provoly/dashboard';
+import { MetadataActions, MetadataService } from '@provoly/dashboard/components/metadata-editor';
+import { associations } from '@provoly/dashboard/mock/data/mockItemAdmin';
 import { hot } from 'jest-marbles';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AdminActions } from './admin.actions';
 import { AdminEffects } from './admin.effects';
 import { AdminState, initialAdminState } from './admin.reducer';
 import { AdminService } from './admin.service';
-import { associations } from '@provoly/dashboard/mock/data/mockItemAdmin';
 
 const buildState = (state: Partial<AdminState>) =>
   Object.assign({}, { '@pry/admin': JSON.parse(JSON.stringify({ ...initialAdminState, ...state })) });
@@ -23,10 +24,19 @@ const predicates: Predicate[] = [
   }
 ];
 
+const metadata: Array<IMetadata> = [
+  {
+    name: 'name1',
+    id: '1',
+    type: VARIABLE_TYPE.UUID
+  }
+];
+
 describe('AdminEffects', () => {
   let actions$: Observable<any>;
   let effects: AdminEffects;
   let adminService: AdminService;
+  let metadataService: MetadataService;
   const initialState = initialAdminState;
   let store: MockStore<any>;
   let router: Router;
@@ -58,12 +68,21 @@ describe('AdminEffects', () => {
                 usedElsewhere: true
               })
           }
+        },
+        {
+          provide: MetadataService,
+          useValue: {
+            getMetadataList: () => of(metadata),
+            getMetadata: () => of(metadata[0]),
+            postMetadata: () => of(null)
+          }
         }
       ]
     });
 
     effects = TestBed.inject(AdminEffects);
     adminService = TestBed.inject<AdminService>(AdminService);
+    metadataService = TestBed.inject<MetadataService>(MetadataService);
     store = TestBed.inject(MockStore);
     router = TestBed.inject(Router);
   });
@@ -215,6 +234,18 @@ describe('AdminEffects', () => {
           AdminActions.fetchAssociationsSuccess({ association: associations })
         );
       });
+    });
+  });
+  describe('routing', () => {
+    it('should route to load editView', () => {
+      actions$ = hot('--a-', {
+        a: MetadataActions.goToNewMetadata({ route: '/admin/metadata/new' })
+      });
+
+      const expected$ = hot('--a-', {
+        a: AdminActions.routeTo({ path: '/admin/metadata/new' })
+      });
+      expect(effects.goToNewMetadata$).toBeObservable(expected$);
     });
   });
 });

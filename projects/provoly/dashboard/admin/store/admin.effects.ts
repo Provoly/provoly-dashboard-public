@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Associations, DataSourceActions, RelationTypesActions } from '@provoly/dashboard';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { DataSourceActions, RelationTypesActions } from '@provoly/dashboard';
+import { MetadataActions } from '@provoly/dashboard/components/metadata-editor';
+import { catchError, map, mergeMap } from 'rxjs';
 import { AdminActions } from './admin.actions';
 import { AdminService } from './admin.service';
-import { Observable, switchMap } from 'rxjs';
 
 @Injectable()
 export class AdminEffects {
@@ -15,6 +15,15 @@ export class AdminEffects {
       mergeMap((action) => {
         this.router.navigate([action.path], { queryParams: action.params });
         return action.path === this.router.url ? [] : [AdminActions.resetActions()];
+      })
+    )
+  );
+
+  goToNewMetadata$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MetadataActions.goToNewMetadata),
+      map((action) => {
+        return AdminActions.routeTo({ path: action.route });
       })
     )
   );

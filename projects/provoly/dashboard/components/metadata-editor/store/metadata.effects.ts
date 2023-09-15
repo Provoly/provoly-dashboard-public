@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { DataSourceActions, DataSourceService } from '@provoly/dashboard';
 import { catchError, map, mergeMap } from 'rxjs/operators';
-import { AdminActions } from '../../../admin/store/admin.actions';
 import { MetadataActions } from './metadata.action';
 import { MetadataService } from './metadata.service';
 
@@ -17,15 +16,6 @@ export class MetadataEffects {
           catchError((error) => [MetadataActions.loadMetadataFailure({ error: error })])
         )
       )
-    )
-  );
-
-  goToNewMetadata$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(MetadataActions.goToNewMetadata),
-      map((action) => {
-        return AdminActions.routeTo({ path: action.route });
-      })
     )
   );
 

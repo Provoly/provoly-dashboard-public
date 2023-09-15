@@ -7,7 +7,6 @@ import { DataSourceService, IMetadata, VARIABLE_TYPE } from '@provoly/dashboard'
 import { MetadataService } from '@provoly/dashboard/components/metadata-editor';
 import { hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { AdminActions } from '../../../admin/store/admin.actions';
 import { MetadataActions } from './metadata.action';
 import { MetadataEffects } from './metadata.effects';
 import { initialMetadataState, MetadataState } from './metadata.reducer';
@@ -155,41 +154,6 @@ describe('MetadataEffects', () => {
     });
   });
 
-  describe('routing', () => {
-    it('should route to load editView', () => {
-      actions$ = hot('--a-', {
-        a: MetadataActions.goToNewMetadata({ route: '/admin/metadata/new' })
-      });
-
-      const expected$ = hot('--a-', {
-        a: AdminActions.routeTo({ path: '/admin/metadata/new' })
-      });
-      expect(effects.goToNewMetadata$).toBeObservable(expected$);
-    });
-
-    it('should route to load detailsView', () => {
-      const getSpy = jest.spyOn(metadataService, 'getMetadata');
-      store.setState(
-        buildState({
-          ...initialState,
-          metadata: metadata
-        })
-      );
-      actions$ = hot('--a-', {
-        a: MetadataActions.goToDetailsView({ id: '1' })
-      });
-
-      const expected$ = hot('--a-', {
-        a: MetadataActions.goToDetailsViewSuccess({ metadata: metadata[0] })
-      });
-      expect(effects.goToDetailsView$).toBeObservable(expected$);
-      expect(effects.goToDetailsView$).toSatisfyOnFlush(() => {
-        expect(getSpy).toHaveBeenCalled();
-      });
-      expect(effects.goToDetailsView$).toBeObservable(expected$);
-    });
-  });
-
   describe('addDatasetMetadata$', () => {
     it('should call addDatasetMetadataSuccess on successful PUT', () => {
       const getSpy = jest.spyOn(datasourceService, 'addDatasetMetadata');
@@ -277,6 +241,30 @@ describe('MetadataEffects', () => {
       expect(effects.deleteDatasetMetadata$).toSatisfyOnFlush(() => {
         expect(getSpy).toHaveBeenCalled();
       });
+    });
+  });
+
+  describe('routing', () => {
+    it('should route to load detailsView', () => {
+      const getSpy = jest.spyOn(metadataService, 'getMetadata');
+      store.setState(
+        buildState({
+          ...initialState,
+          metadata
+        })
+      );
+      actions$ = hot('--a-', {
+        a: MetadataActions.goToDetailsView({ id: '1' })
+      });
+
+      const expected$ = hot('--a-', {
+        a: MetadataActions.goToDetailsViewSuccess({ metadata: metadata[0] })
+      });
+      expect(effects.goToDetailsView$).toBeObservable(expected$);
+      expect(effects.goToDetailsView$).toSatisfyOnFlush(() => {
+        expect(getSpy).toHaveBeenCalled();
+      });
+      expect(effects.goToDetailsView$).toBeObservable(expected$);
     });
   });
 });

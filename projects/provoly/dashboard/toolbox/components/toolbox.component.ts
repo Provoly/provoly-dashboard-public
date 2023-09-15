@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { DashboardGridLayout, DashboardSelectors } from '@provoly/dashboard';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { ACTIONS, ToolboxAction } from '../toolbox.model';
 
 @Component({
@@ -9,8 +9,8 @@ import { ACTIONS, ToolboxAction } from '../toolbox.model';
   templateUrl: './toolbox.component.html'
 })
 export class ToolboxComponent implements OnInit {
-  @Input() actions: ToolboxAction[] = ACTIONS;
-  @Input() dropdownActions: { name: string; order: number }[] = [];
+  actions$ = new BehaviorSubject<ToolboxAction[]>(ACTIONS);
+  _dropdownActions$ = new BehaviorSubject<{ name: string; order: number }[]>([]);
   @Input() displayLabels = true;
   hasInitialPresentation$: Observable<boolean>;
   isManualMode$: Observable<boolean>;
@@ -20,6 +20,14 @@ export class ToolboxComponent implements OnInit {
   showDropdownButton$!: Observable<boolean>;
   isDropdownOpen = false;
 
+  @Input() set actions(actions: ToolboxAction[]) {
+    this.actions$.next(actions);
+  }
+
+  @Input() set dropdownActions(dropdownActions: { name: string; order: number }[]) {
+    this._dropdownActions$.next(dropdownActions);
+  }
+
   constructor(store: Store) {
     this.hasInitialPresentation$ = store.select(DashboardSelectors.presentation).pipe(map((pres) => !!pres.initial));
     this.isManualMode$ = store
@@ -28,24 +36,24 @@ export class ToolboxComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.allActions$ = this.hasInitialPresentation$.pipe(
-      map((hasInitialPresentation) => {
-        return this.actions.map((action) => {
+    this.allActions$ = combineLatest([this.actions$, this.hasInitialPresentation$]).pipe(
+      map(([actions, hasInitialPresentation]) => {
+        return actions.map((action) => {
           if (action.name === 'save_view') {
-            action = { ...action, visible: hasInitialPresentation };
+            action = { ...action, visible: action.visible && hasInitialPresentation };
           }
           return action;
         });
       })
     );
-    this.mainActions$ = this.allActions$.pipe(
-      map((actions) =>
-        actions.filter((action) => !this.dropdownActions.find((dropdownAction) => action.name === dropdownAction.name))
+    this.mainActions$ = combineLatest([this._dropdownActions$, this.allActions$]).pipe(
+      map(([dropdownActions, actions]) =>
+        actions.filter((action) => !dropdownActions.find((dropdownAction) => action.name === dropdownAction.name))
       )
     );
-    this.dropdownActions$ = this.allActions$.pipe(
-      map((actions) =>
-        actions.filter((action) => !!this.dropdownActions.find((dropdownAction) => action.name === dropdownAction.name))
+    this.dropdownActions$ = combineLatest([this._dropdownActions$, this.allActions$]).pipe(
+      map(([dropdownActions, actions]) =>
+        actions.filter((action) => !!dropdownActions.find((dropdownAction) => action.name === dropdownAction.name))
       )
     );
 
@@ -65,6 +73,6 @@ export class ToolboxComponent implements OnInit {
   }
 
   getOrder(actionName: string) {
-    return this.dropdownActions.find((action) => actionName === action.name)?.order;
+    return this._dropdownActions$.getValue().find((action) => actionName === action.name)?.order;
   }
 }

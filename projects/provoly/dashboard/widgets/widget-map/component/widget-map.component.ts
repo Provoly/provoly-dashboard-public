@@ -48,7 +48,6 @@ import {
   WIDGET_HEADER_HEIGHT,
   widgetMapConfig
 } from '@provoly/dashboard';
-import { CqlUtils } from '@provoly/dashboard/widgets/widget-map/utils/cql-utils.class';
 import equal from 'fast-deep-equal/es6';
 import { Feature, Map, Overlay, View } from 'ol';
 import { applyBackground, applyStyle } from 'ol-mapbox-style';
@@ -82,6 +81,7 @@ import {
 } from 'rxjs';
 import { InteractionManager } from '../interaction/interaction-manager.class';
 import { MapFormatsReader } from '../reader/map-formats-reader.class';
+import { CqlUtils } from '../utils/cql-utils.class';
 import {
   DEFAULT_MAP_CENTER,
   DEFAULT_ZOOM_MAX,
