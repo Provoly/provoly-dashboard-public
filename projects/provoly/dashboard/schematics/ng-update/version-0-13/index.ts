@@ -1,5 +1,6 @@
 import { chain, Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
+import { removePackageJsonDependency } from '@schematics/angular/utility/dependencies';
 import { onMigrationComplete } from '../utils/complete.function';
 
 function removeWidgetMapHoverOption() {
@@ -36,8 +37,13 @@ function changeTypeDatasetMetadataToMetadataValue() {
   };
 }
 
+function removeLayerSwitcher(tree: Tree) {
+  removePackageJsonDependency(tree, 'ol-layerswitcher');
+}
+
 export function updateTo0_13(): Rule {
   return (_tree: Tree, context: SchematicContext): Rule => {
+    removeLayerSwitcher(_tree);
     context.addTask(new NodePackageInstallTask());
     return chain([
       removeWidgetMapHoverOption(),
