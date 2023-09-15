@@ -5,6 +5,7 @@ import {
   DashboardActions,
   DashboardComponent,
   DashboardSelectors,
+  Filter,
   GlobalManifest,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
@@ -21,10 +22,7 @@ export class DashboardContainerComponent extends SubscriptionnerDirective {
   @ViewChild('dashboard') dashboard!: DashboardComponent;
   DEBUG_EXPORT = false;
 
-  constructor(
-    private route: ActivatedRoute,
-    private store: Store<any>
-  ) {
+  constructor(private route: ActivatedRoute, private store: Store<any>) {
     super();
     this.globalManifest$ = this.store.select(DashboardSelectors.globalManifest);
     this.subscriptions.add(
@@ -40,6 +38,11 @@ export class DashboardContainerComponent extends SubscriptionnerDirective {
               DashboardActions.updateDashboardManifest({
                 manifest: data['manifest']
               })
+            );
+          }
+          if (data['filters']) {
+            data['filters'].forEach((filter: Filter) =>
+              this.store.dispatch(DashboardActions.updateFilters({ filter: filter }))
             );
           }
         })

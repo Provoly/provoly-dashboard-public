@@ -113,6 +113,7 @@ export interface MapGeoServerLayerOptions extends BaseWidgetMapLayerOptions {
   paramTiled: boolean;
   url: string;
   oClass: string;
+  datasourceId: string;
 }
 
 export enum TooltipMode {

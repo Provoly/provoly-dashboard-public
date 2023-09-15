@@ -48,6 +48,7 @@ import {
   WIDGET_HEADER_HEIGHT,
   widgetMapConfig
 } from '@provoly/dashboard';
+import { CqlUtils } from '@provoly/dashboard/widgets/widget-map/utils/cql-utils.class';
 import equal from 'fast-deep-equal/es6';
 import { Feature, Map, Overlay, View } from 'ol';
 import { applyBackground, applyStyle } from 'ol-mapbox-style';
@@ -210,7 +211,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
               opacity: parseInt(metadatas[GeoMetadata.OPACITY] ?? 100, 10),
               title: metadatas[GeoMetadata.NAMESPACE] + ':' + metadatas[GeoMetadata.KEY],
               oClass: ds.oClass,
-              key: metadatas[GeoMetadata.NAMESPACE] + ':' + metadatas[GeoMetadata.KEY]
+              key: metadatas[GeoMetadata.NAMESPACE] + ':' + metadatas[GeoMetadata.KEY],
+              datasourceId: ds.id
             };
           })
           .map((layer) => layer as MapGeoServerLayerOptions);
@@ -390,13 +392,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       this.classes$,
       this.additionalLayers$,
       this.itemStyles$,
-      this.store.select(ConfigSelectors.geoServerUrl)
+      this.store.select(DashboardSelectors.datasourceFilters)
     ]).pipe(
       filter(
-        ([resultSet, options, classes, additionalLayers, itemStyles, geoServerUrl]) =>
-          !!resultSet && !!options && !!classes
+        ([resultSet, options, classes, additionalLayers, itemStyles, filters]) => !!resultSet && !!options && !!classes
       ),
-      map(([resultSet, options, classes, additionalLayers, itemStyles, geoServerUrl]) => {
+      map(([resultSet, options, classes, additionalLayers, itemStyles, filters]) => {
         let hasRelationLayer = null as unknown as VectorLayer<VectorSource<any>>;
 
         const layers = (options?.layers || [])
@@ -465,6 +466,16 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                 hasRelationLayer = resultLayer as unknown as VectorLayer<VectorSource>;
               }
               resultLayer.set('title', layer.title);
+
+              if (layer.type === 'geoserver') {
+                const cql_filter = CqlUtils.getCQLParamsFor(layer.datasourceId, filters, classes);
+
+                if (cql_filter) {
+                  // Adding CQL query to geoserver layers
+                  (resultLayer as Tile<TileWMS>).getSource()!.updateParams({ cql_filter });
+                }
+              }
+
               return resultLayer;
             } else {
               console.error(`Layer type ${layer.type} is unknown`);

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardManifest, DefaultViewGuard, PRY_ACCESS_GUARD, TooltipMode } from '@provoly/dashboard';
+import { DashboardManifest, DefaultViewGuard, Filter, PRY_ACCESS_GUARD, TooltipMode } from '@provoly/dashboard';
 import { PryImportComponent } from '@provoly/dashboard/import';
 import { PryPipelineListComponent } from '@provoly/dashboard/pipeline';
 import { PryPresentationComponent } from '@provoly/dashboard/presentation';
@@ -100,7 +100,52 @@ const routes: Routes = [
             datasource: ['29061554-298f-4f56-8cd2-51ccec998303', 's6406e7e-37cd-41ce-b5fc-36d233e6ae5c']
           }
         ]
-      } as DashboardManifest
+      } as DashboardManifest,
+      filters: [
+        {
+          id: '6ce14ac6-39a9-43c0-96b5-ef11fb47bf82',
+          name: 'sub',
+          type: 'text',
+          operator: 'EQUALS',
+          value: 'SUBMERSION',
+          attributes: [
+            {
+              id: '4c87f8bc-f30e-4875-b03b-9c4fa97d7288',
+              name: 'id',
+              label: 'id / Submersion / tronçon_de_route',
+              datasource: 's6406e7e-37cd-41ce-b5fc-36d233e6ae5c'
+            },
+            {
+              id: '4c87f8bc-f30e-4875-b03b-9c4fa97d7289',
+              name: 'id2',
+              label: 'id2 / Submersion / tronçon_de_route',
+              datasource: 's6406e7e-37cd-41ce-b5fc-36d233e6ae5c'
+            }
+          ]
+        },
+        {
+          id: '3bc03f8a-6f8c-4cc1-ad58-7ea1ec5adeaa',
+          name: 'aze',
+          type: 'date',
+          operator: 'INSIDE',
+          hasDateRange: true,
+          value: '2023-09-06,2023-09-09',
+          attributes: [
+            {
+              id: '4c87f8bc-f30e-4875-b03b-9c4fa97d7281',
+              name: 'id',
+              label: 'id / Submersion / tronçon_de_route',
+              datasource: 's6406e7e-37cd-41ce-b5fc-36d233e6ae5c'
+            },
+            {
+              id: '4c87f8bc-f30e-4875-b03b-9c4fa97d7282',
+              name: 'id2',
+              label: 'id2 / Submersion / tronçon_de_route',
+              datasource: 's6406e7e-37cd-41ce-b5fc-36d233e6ae5c'
+            }
+          ]
+        }
+      ] as Filter[]
     }
   },
   {

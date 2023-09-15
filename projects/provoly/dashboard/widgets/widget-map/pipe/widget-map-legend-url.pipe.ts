@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Pipe, PipeTransform } from '@angular/core';
 import { MapGeoServerLayerOptions, MapWMSLayerLayerOptions } from '@provoly/dashboard';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
-import { XMLUtils } from './xml-utils.class';
+import { XMLUtils } from '../utils/xml-utils.class';
 
 @Pipe({
   name: 'legendUrl'
