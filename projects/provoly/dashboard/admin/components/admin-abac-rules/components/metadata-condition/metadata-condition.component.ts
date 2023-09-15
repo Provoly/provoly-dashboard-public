@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IMetadata } from '@provoly/dashboard';
+import { MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
 import { filter, Observable, of, switchMap } from 'rxjs';
 import { AdminMetadataUserSelectors } from '../../../admin-metadata-user/store/admin-metadata-user.selector';
-import { MetadataSelectors } from '../../../admin-metadata/store/metadata.selector';
 import { AbacRulesActions } from '../../store/abac-rules.actions';
 import { NormalizedCondition, OperatorType } from '../../store/abac-rules.model';
 import { AbacRulesSelectors } from '../../store/abac-rules.selectors';

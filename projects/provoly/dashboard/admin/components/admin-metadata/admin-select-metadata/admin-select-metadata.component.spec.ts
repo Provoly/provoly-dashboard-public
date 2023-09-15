@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { PRY_ACCESS_GUARD, PryDefaultAccessGuard } from '@provoly/dashboard';
+import { MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
 import { MockTranslatePipe } from '../../../../mock/pipe/mock-translate.pipe';
 import { routes } from '../../../admin-routing.module';
-import { MetadataSelectors } from '../store/metadata.selector';
 import { AdminSelectMetadataComponent } from './admin-select-metadata.component';
 
 describe('AdminSelectImetadataComponent', () => {

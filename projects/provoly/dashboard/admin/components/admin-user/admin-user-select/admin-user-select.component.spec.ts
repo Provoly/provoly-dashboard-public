@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { PRY_ACCESS_GUARD, PryDefaultAccessGuard, PryI18nService, PrySelectModule } from '@provoly/dashboard';
 import { MockPryIconComponent } from '../../../../mock/components/mock-pry-icon.component';
-import { metadata, users } from '../../../../mock/data/mockItemAdmin';
+import { users } from '../../../../mock/data/mockItemAdmin';
 import { MockPryAccessDirective } from '../../../../mock/directive/mock-pry-access.directive';
 import { MockI18nPipe } from '../../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../../mock/pipe/mock-translate.pipe';
@@ -70,18 +70,13 @@ describe('AdminUserSelectComponent', () => {
 
   it('should add new metadata', fakeAsync(() => {
     const spyStore = jest.spyOn(store, 'dispatch');
-    component.metaForm.patchValue({
-      metadata: metadata[0],
-      value: 'string'
-    });
-    component.addMetadataUser();
-    expect(component.metaForm.valid).toEqual(true);
+    component.addMetadataUser({ id: 'id', metadataId: 'metadataId', value: '3' });
     expect(spyStore.mock.calls).toEqual([
       [
         AdminUserActions.addMetadataUser({
-          userId: 'idBuffy',
-          metaId: 'id',
-          value: 'string'
+          userId: 'id',
+          metaId: 'metadataId',
+          value: '3'
         })
       ]
     ]);

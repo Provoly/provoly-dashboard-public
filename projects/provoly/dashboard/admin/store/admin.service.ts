@@ -44,24 +44,6 @@ export class AdminService {
       .pipe(mergeMap((url) => this.httpClient.get<Predicate>(`${url}/predicates/id/${id}`)));
   }
 
-  getMetadataList(): Observable<any> {
-    return this.store
-      .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.get<any>(`${url}/metadata`)));
-  }
-
-  getMetadata(id: string): Observable<IMetadata> {
-    return this.store
-      .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.get<IMetadata>(`${url}/metadata/id/${id}`)));
-  }
-
-  postMetadata(metadata: IMetadata): Observable<void> {
-    return this.store
-      .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.post<void>(`${url}/metadata`, metadata)));
-  }
-
   getUserMetadata(): Observable<any> {
     return this.store
       .select(ConfigSelectors.refUrl)

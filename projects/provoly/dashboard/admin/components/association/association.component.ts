@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Associations } from '@provoly/dashboard';
 
 @Component({
@@ -6,10 +6,6 @@ import { Associations } from '@provoly/dashboard';
   templateUrl: './association.component.html',
   changeDetection: ChangeDetectionStrategy.Default
 })
-export class PryAssociationComponent implements OnInit {
+export class PryAssociationComponent {
   @Input() associations?: Associations;
-
-  ngOnInit() {
-    console.log(this.associations);
-  }
 }

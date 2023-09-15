@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ClassActions, FieldActions } from '@provoly/dashboard';
+import { MetadataActions } from '@provoly/dashboard/components/metadata-editor';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminMetadataUserActions } from '../../admin-metadata-user/store/admin-metadata-user.action';
-import { MetadataActions } from '../../admin-metadata/store/metadata.action';
 import { PredicatesActions } from '../../admin-predicates/store/predicates.actions';
 import { AbacRulesActions } from '../store/abac-rules.actions';
 
@@ -13,11 +13,7 @@ import { AbacRulesActions } from '../store/abac-rules.actions';
   templateUrl: './admin-abac-rules-edit.component.html'
 })
 export class AdminAbacRulesEditComponent implements OnInit, OnDestroy {
-  constructor(
-    private store: Store<any>,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.store.dispatch(ClassActions.load());
     this.store.dispatch(FieldActions.load());
     this.store.dispatch(PredicatesActions.loadPredicates());

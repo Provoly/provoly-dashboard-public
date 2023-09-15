@@ -2,12 +2,11 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IMetadata, PryI18nService } from '@provoly/dashboard';
+import { MetadataActions, MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AdminActions } from '../../store/admin.actions';
 import { IConfigHeader } from './shared/list-metadata/pry-list-metadata.component';
-import { MetadataActions } from './store/metadata.action';
-import { MetadataSelectors } from './store/metadata.selector';
 
 @Component({
   selector: 'pry-admin-metadata',

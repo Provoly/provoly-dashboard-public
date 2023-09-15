@@ -2,20 +2,22 @@ import { createReducer, on } from '@ngrx/store';
 import { IMetadata } from '@provoly/dashboard';
 import { MetadataActions } from './metadata.action';
 
-export const metadataFeatureKey = '@pry/admin/metadata';
+export const metadataFeatureKey = '@pry/metadata';
 
 export interface MetadataState {
   metadata: IMetadata[];
   selectedMetadata: string | null;
   loading: boolean;
   errors: any;
+  editable: boolean;
 }
 
 export const initialMetadataState: MetadataState = {
   metadata: [],
   selectedMetadata: null,
   loading: false,
-  errors: null
+  errors: null,
+  editable: false
 };
 
 /**
@@ -39,7 +41,6 @@ export const metadataReducer = createReducer(
       errors: action.error
     })
   ),
-
   on(MetadataActions.unselectMetadata, (state) => ({
     ...state,
     selectedMetadata: null
@@ -53,9 +54,12 @@ export const metadataReducer = createReducer(
     metadata: [...state.metadata, action.metadata],
     loading: false
   })),
-
   on(MetadataActions.goToDetailsView, (state, action) => ({
     ...state,
     selectedMetadata: action.id
+  })),
+  on(MetadataActions.isEditable, (state, action) => ({
+    ...state,
+    editable: action.editable
   }))
 );

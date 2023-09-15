@@ -11,7 +11,7 @@
     ],
     "metadata": [
       {
-        "metadataUserDef": {
+        "userProfile": {
           "id": "9d9aba2c-fc3a-44d7-a508-287ad2d8cbb0",
           "name": "_class",
           "type": "UUID"
@@ -19,7 +19,7 @@
         "value": "fdfdf"
       },
       {
-        "metadataUserDef": {
+        "userProfile": {
           "id": "8ca1f298-d412-421c-8f46-6f425bfe2cda",
           "name": "zzz",
           "type": "DOUBLE",
@@ -29,7 +29,7 @@
         "value": "3.1"
       },
       {
-        "metadataUserDef": {
+        "userProfile": {
           "id": "b8c01013-fba1-4e96-874a-9ce5e1d0f5ab",
           "name": "NIVEAU_HABILITATION",
           "type": "LIST",
@@ -56,7 +56,7 @@
     ],
     "metadata": [
       {
-        "metadataUserDef": {
+        "userProfile": {
           "id": "9d9aba2c-fc3a-44d7-a508-287ad2d8cbb0",
           "name": "_class",
           "type": "UUID"
@@ -64,7 +64,7 @@
         "value": "\"z'(\"'z"
       },
       {
-        "metadataUserDef": {
+        "userProfile": {
           "id": "8ca1f298-d412-421c-8f46-6f425bfe2cda",
           "name": "zzz",
           "type": "DOUBLE",
@@ -86,7 +86,7 @@
     ],
     "metadata": [
       {
-        "metadataUserDef": {
+        "userProfile": {
           "id": "9d9aba2c-fc3a-44d7-a508-287ad2d8cbb0",
           "name": "_class",
           "type": "UUID",

@@ -17,6 +17,7 @@ import {
   PryToggleModule
 } from '@provoly/dashboard';
 import { PryCheckboxModule } from '@provoly/dashboard/components/checkbox';
+import { PryExpandPanelModule } from '@provoly/dashboard/components/metadata-editor';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminAbacRulesEditComponent } from './components/admin-abac-rules/admin-abac-rules-edit/admin-abac-rules-edit.component';
 import { AdminAbacRulesFormComponent } from './components/admin-abac-rules/admin-abac-rules-form/admin-abac-rules-form.component';
@@ -50,8 +51,6 @@ import { AdminEditDatasetComponent } from './components/admin-dataset/admin-edit
 import { AdminNewDatasetComponent } from './components/admin-dataset/admin-new-dataset/admin-new-dataset.component';
 import { AdminSelectDatasetComponent } from './components/admin-dataset/admin-select-dataset/admin-select-dataset.component';
 import { AdminFormDatasetComponent } from './components/admin-dataset/shared/admin-form-dataset/admin-form-dataset.component';
-import { AdminDatasetEffects } from './components/admin-dataset/store/admin-dataset.effects';
-import { adminDatasetFeatureKey, adminDatasetReducer } from './components/admin-dataset/store/admin-dataset.reducer';
 import { AdminEnvironmentFormComponent } from './components/admin-environment/admin-environment-form/admin-environment-form.component';
 import { AdminEnvironmentNewComponent } from './components/admin-environment/admin-environment-new/admin-environment-new.component';
 import { AdminEnvironmentSelectComponent } from './components/admin-environment/admin-environment-select/admin-environment-select.component';
@@ -97,8 +96,6 @@ import { AdminNewMetadataComponent } from './components/admin-metadata/admin-new
 import { AdminSelectMetadataComponent } from './components/admin-metadata/admin-select-metadata/admin-select-metadata.component';
 import { FormMetadataComponent } from './components/admin-metadata/shared/form-metadata/form-metadata.component';
 import { PryListMetadataModule } from './components/admin-metadata/shared/list-metadata/list-metadata.module';
-import { MetadataEffects } from './components/admin-metadata/store/metadata.effects';
-import { metadataFeatureKey, metadataReducer } from './components/admin-metadata/store/metadata.reducer';
 import { AdminPredicatesFormComponent } from './components/admin-predicates/admin-predicates-form/admin-predicates-form.component';
 import { AdminPredicatesNewComponent } from './components/admin-predicates/admin-predicates-new/admin-predicates-new.component';
 import { AdminPredicatesSelectComponent } from './components/admin-predicates/admin-predicates-select/admin-predicates-select.component';
@@ -204,7 +201,6 @@ import { adminFeatureKey, adminReducer } from './store/admin.reducer';
     AdminRoutingModule,
     StoreModule.forFeature(adminFeatureKey, adminReducer),
     StoreModule.forFeature(predicatesFeatureKey, predicateReducer),
-    StoreModule.forFeature(metadataFeatureKey, metadataReducer),
     StoreModule.forFeature(abacRulesFeatureKey, abacRuleReducer),
     StoreModule.forFeature(environmentFeatureKey, environmentReducer),
     StoreModule.forFeature(adminMetadataUserFeatureKey, adminMetadataUserReducer),
@@ -213,10 +209,8 @@ import { adminFeatureKey, adminReducer } from './store/admin.reducer';
     StoreModule.forFeature(fieldsFeatureKey, fieldReducer),
     StoreModule.forFeature(adminUserFeatureKey, adminUserReducer),
     StoreModule.forFeature(linksFeatureKey, linkReducer),
-    StoreModule.forFeature(adminDatasetFeatureKey, adminDatasetReducer),
     EffectsModule.forFeature([AdminEffects]),
     EffectsModule.forFeature([PredicatesEffects]),
-    EffectsModule.forFeature([MetadataEffects]),
     EffectsModule.forFeature([EnvironmentEffects]),
     EffectsModule.forFeature([AbacRulesEffects]),
     EffectsModule.forFeature([AdminMetadataUserEffects]),
@@ -225,7 +219,6 @@ import { adminFeatureKey, adminReducer } from './store/admin.reducer';
     EffectsModule.forFeature([AdminUserEffects]),
     EffectsModule.forFeature([LinksEffects]),
     EffectsModule.forFeature([AdminMetadataRulesEffects]),
-    EffectsModule.forFeature([AdminDatasetEffects]),
     PryIconModule,
     FormsModule,
     ReactiveFormsModule,
@@ -238,7 +231,8 @@ import { adminFeatureKey, adminReducer } from './store/admin.reducer';
     OverlayModule,
     PryOverlayModule,
     DragDropModule,
-    PryI18nModule
+    PryI18nModule,
+    PryExpandPanelModule
   ]
 })
 export class PryAdminModule {

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
-import { MetadataSelectors } from '../../../admin-metadata/store/metadata.selector';
+import { MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
 import { SelectMetadataComponent } from './select-metadata.component';
 
 describe('SelectMetadataComponent', () => {

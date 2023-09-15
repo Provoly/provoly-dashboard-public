@@ -5,11 +5,11 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { PRY_ACCESS_GUARD, PryDefaultAccessGuard } from '@provoly/dashboard';
+import { MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
 import { MockPryMetadataFormComponent } from '../../../../mock/components/admin/metadata/mock-pry-metadata-form.component';
 import { MockI18nPipe } from '../../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../../mock/pipe/mock-translate.pipe';
 import { routes } from '../../../admin-routing.module';
-import { MetadataSelectors } from '../store/metadata.selector';
 import { AdminNewMetadataComponent } from './admin-new-metadata.component';
 
 describe('AdminNewMetadataComponent', () => {

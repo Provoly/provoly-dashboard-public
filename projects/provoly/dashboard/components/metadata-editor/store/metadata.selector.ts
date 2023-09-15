@@ -14,11 +14,14 @@ const selectedMetadataId = createSelector(selectedMetadata, (metadata) => metada
 const selectMetadataById = (id: string) =>
   createSelector(metadata, (metadata: IMetadata[]) => metadata?.find((m) => m.id === id));
 
+const editable = createSelector(feature, (state) => state.editable);
+
 export const MetadataSelectors = {
   feature,
   loading,
   metadata,
   selectedMetadata,
   selectedMetadataId,
-  selectMetadataById
+  selectMetadataById,
+  editable
 };

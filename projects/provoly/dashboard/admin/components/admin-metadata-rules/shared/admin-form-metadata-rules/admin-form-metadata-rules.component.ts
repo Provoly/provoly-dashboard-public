@@ -3,15 +3,13 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IMetadata, MetadataRules } from '@provoly/dashboard';
+import { MetadataActions, MetadataSelectors, MetadataState } from '@provoly/dashboard/components/metadata-editor';
 import { Observable, Subscription } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { AdminActions } from '../../../../store/admin.actions';
 import { AdminMetadataUserActions } from '../../../admin-metadata-user/store/admin-metadata-user.action';
 import { AdminMetadataUserState } from '../../../admin-metadata-user/store/admin-metadata-user.reducer';
 import { AdminMetadataUserSelectors } from '../../../admin-metadata-user/store/admin-metadata-user.selector';
-import { MetadataActions } from '../../../admin-metadata/store/metadata.action';
-import { MetadataState } from '../../../admin-metadata/store/metadata.reducer';
-import { MetadataSelectors } from '../../../admin-metadata/store/metadata.selector';
 import { AdminMetadataRulesActions } from '../../store/metadata-rules.actions';
 import { MetadataRulesState } from '../../store/metadata-rules.reducer';
 import { MetadataRulesSelectors } from '../../store/metadata-rules.selectors';

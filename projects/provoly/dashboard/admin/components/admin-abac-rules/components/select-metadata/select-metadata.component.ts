@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IMetadata } from '@provoly/dashboard';
+import { MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
 import { Observable } from 'rxjs';
-import { MetadataSelectors } from '../../../admin-metadata/store/metadata.selector';
 
 @Component({
   selector: 'pry-abac-select-metadata',

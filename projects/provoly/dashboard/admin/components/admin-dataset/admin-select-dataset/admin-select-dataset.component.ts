@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
@@ -7,17 +6,13 @@ import {
   Dataset,
   DataSourceActions,
   DataSourceSelectors,
-  IMetadata,
   MetadataValue,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
-import { combineLatest, map, Observable, Subscription } from 'rxjs';
+import { MetadataActions, MetadataSelectors, MetaEventType } from '@provoly/dashboard/components/metadata-editor';
+import { Observable, Subscription } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminSelectors } from '../../../store/admin.selectors';
-import { MetadataActions } from '../../admin-metadata/store/metadata.action';
-import { MetadataSelectors } from '../../admin-metadata/store/metadata.selector';
-import { AdminDatasetActions } from '../store/admin-dataset.actions';
-import { AdminDatasetSelectors } from '../store/admin-dataset.selector';
 
 let nextCompId = 0;
 
@@ -34,39 +29,22 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
   currentTypeTranslation = '';
   tab: number = 0;
   datasetMetadata$: Observable<MetadataValue[]>;
-  metadata$: Observable<IMetadata[]>;
-  availableMetadata$?: Observable<IMetadata[]>;
-  form: FormGroup;
-  isSubmitted = false;
   editable$: Observable<boolean>;
-  datasetId = '';
 
-  constructor(
-    private store: Store<any>,
-    private router: Router,
-    private route: ActivatedRoute,
-    private formBuilder: FormBuilder
-  ) {
+  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     super();
     this.store.dispatch(MetadataActions.loadMetadata());
     this.selectedDataset$ = this.store.select(DataSourceSelectors.selectedDataset);
     this.datasetMetadata$ = this.store.select(DataSourceSelectors.selectedDatasetMetadata);
     this.associations$ = this.store.select(AdminSelectors.selectedAssociation);
-    this.metadata$ = this.store.select(MetadataSelectors.metadata);
-    this.editable$ = this.store.select(AdminDatasetSelectors.editable);
+    this.editable$ = this.store.select(MetadataSelectors.editable);
     this.compId = nextCompId++;
-
-    this.form = this.formBuilder.group({
-      metadata: [{}, [Validators.required]],
-      value: ['', [Validators.required, Validators.pattern('^[+-]?[0-9]*$')]]
-    });
   }
 
   ngOnInit(): void {
     this.subscriptions.add(
       this.selectedDataset$.subscribe((dataset) => {
         if (dataset) {
-          this.datasetId = dataset.id;
           const editPath = this.router.createUrlTree(['.', 'dataset', 'edit', dataset.id], {
             relativeTo: this.route
           });
@@ -99,25 +77,6 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
         }
       })
     );
-    this.subscriptions.add(
-      this.selectedDataset$.subscribe((dataset) => {
-        if (dataset) {
-          this.availableMetadata$?.subscribe((meta) => {
-            this.form.patchValue({
-              metadata: meta[0]
-            });
-            this.onMetaChange(meta[0]);
-            this.form.patchValue({ value: '' });
-          });
-        }
-      })
-    );
-    this.availableMetadata$ = combineLatest([this.datasetMetadata$, this.metadata$]).pipe(
-      map(([datasetMetadata, metaDefs]) => {
-        let datasetMetadataIds = datasetMetadata?.map((u) => u.metadataDef.id);
-        return metaDefs.filter((meta) => !datasetMetadataIds?.includes(meta.id));
-      })
-    );
   }
 
   closePanel() {
@@ -140,50 +99,23 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
     );
   }
 
-  addDatasetMetadata() {
-    this.isSubmitted = true;
-    if (this.form.valid) {
-      this.isSubmitted = false;
-      let payload = {
-        datasetId: this.datasetId,
-        metadataId: this.form.value['metadata']['id'],
-        value: this.form.value['value']
-      };
-      this.store.dispatch(AdminDatasetActions.addDatasetMetadata(payload));
-    }
+  switch(number: number) {
+    this.tab = number;
   }
 
-  onMetaChange(metadata: IMetadata) {
-    if (metadata) {
-      if (metadata.type === 'INTEGER') {
-        this.form.controls['value'].setValidators([Validators.required, Validators.pattern('^[+-]?[0-9]*$')]);
-      } else if (metadata.type === 'DOUBLE') {
-        this.form.controls['value'].setValidators([Validators.required, Validators.pattern('[+-]?([0-9]*[.])?[0-9]+')]);
-      } else {
-        this.form.controls['value'].setValidators([Validators.required]);
-      }
-    }
-  }
-
-  removeMetadata(metadata: MetadataValue) {
+  removeMetadata(metadata: MetaEventType) {
     this.store.dispatch(
-      AdminDatasetActions.deleteDatasetMetadata({ datasetId: this.datasetId, metadataId: metadata.metadataDef.id })
+      MetadataActions.deleteDatasetMetadata({ datasetId: metadata.id, metadataId: metadata.metadataId })
     );
   }
 
-  editMetadata(currentMetadata: MetadataValue) {
-    this.store.dispatch(AdminDatasetActions.isEditable({ editable: true }));
-    let value = currentMetadata.value;
-    let datasetMetadataDef = currentMetadata.metadataDef;
-
-    this.form.patchValue({
-      metadata: datasetMetadataDef,
-      value: value
-    });
-    this.onMetaChange(datasetMetadataDef);
-  }
-
-  switch(number: number) {
-    this.tab = number;
+  addDatasetMetadata(metadata: MetaEventType) {
+    this.store.dispatch(
+      MetadataActions.addDatasetMetadata({
+        datasetId: metadata.id,
+        metadataId: metadata.metadataId,
+        value: metadata.value
+      })
+    );
   }
 }

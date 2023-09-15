@@ -3,11 +3,11 @@ import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGr
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IMetadata, META_OPTIONS } from '@provoly/dashboard';
+import { MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
 import { combineLatest, map, Observable, Subscription } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import { AdminActions } from '../../../../store/admin.actions';
 import { AdminMetadataUserSelectors } from '../../../admin-metadata-user/store/admin-metadata-user.selector';
-import { MetadataSelectors } from '../../store/metadata.selector';
 
 @Component({
   selector: 'pry-form-metadata',

@@ -63,4 +63,15 @@ describe('Metadata Selectors', () => {
       expect(result).toEqual(true);
     });
   });
+
+  describe('editable', () => {
+    it('should return false', () => {
+      const result = MetadataSelectors.editable.projector({ ...initialState, editable: false });
+      expect(result).toEqual(false);
+    });
+    it('should return true', () => {
+      const result = MetadataSelectors.editable.projector({ ...initialState, editable: true });
+      expect(result).toEqual(true);
+    });
+  });
 });

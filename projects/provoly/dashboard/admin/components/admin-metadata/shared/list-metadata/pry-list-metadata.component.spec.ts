@@ -3,13 +3,13 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
 import { IMetadata, PrySortModule, VARIABLE_TYPE } from '@provoly/dashboard';
+import { MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
 import { MockPryCheckboxComponent } from '../../../../../mock/components/mock-pry-checkbox.component';
 import { MockPryIconComponent } from '../../../../../mock/components/mock-pry-icon.component';
 import { MockPryModalComponent } from '../../../../../mock/components/mock-pry-modal.component';
 import { MockPrySelectComponent } from '../../../../../mock/components/mock-pry-select.component';
 import { MockI18nPipe } from '../../../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../../../mock/pipe/mock-translate.pipe';
-import { MetadataSelectors } from '../../store/metadata.selector';
 import { IConfigHeader, PryListMetadataComponent } from './pry-list-metadata.component';
 
 const metadata: Array<IMetadata> = [

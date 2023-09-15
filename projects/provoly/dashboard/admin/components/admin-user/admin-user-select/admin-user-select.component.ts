@@ -1,8 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { IMetadata, MetadataUser, UserInfo } from '@provoly/dashboard';
-import { combineLatest, map, Observable, Subscription } from 'rxjs';
+import { MetaEventType } from '@provoly/dashboard/components/metadata-editor';
+import { Observable, Subscription } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminMetadataUserActions } from '../../admin-metadata-user/store/admin-metadata-user.action';
 import { AdminMetadataUserSelectors } from '../../admin-metadata-user/store/admin-metadata-user.selector';
@@ -24,9 +24,7 @@ export class AdminUserSelectComponent implements OnInit, OnDestroy {
   editable$: Observable<boolean>;
 
   metadata$: Observable<IMetadata[]>;
-  metadataAvailable$?: Observable<IMetadata[]>;
 
-  metaForm: UntypedFormGroup;
   tab: number = 0;
   sub = new Subscription();
   editable = false;
@@ -35,10 +33,7 @@ export class AdminUserSelectComponent implements OnInit, OnDestroy {
 
   @Input() profil: boolean = false;
 
-  constructor(
-    private store: Store<AdminUserSelectComponent>,
-    private formBuilder: UntypedFormBuilder
-  ) {
+  constructor(private store: Store<AdminUserSelectComponent>) {
     this.store.dispatch(AdminMetadataUserActions.loadMetadata());
 
     this.selectedUser$ = this.store.select(AdminUserSelectors.selectedUser);
@@ -47,11 +42,6 @@ export class AdminUserSelectComponent implements OnInit, OnDestroy {
     this.editable$ = this.store.select(AdminUserSelectors.editable);
 
     this.compId = nextCompId++;
-
-    this.metaForm = this.formBuilder.group({
-      metadata: [{}, [Validators.required]],
-      value: ['', [Validators.required, Validators.pattern('^[+-]?[0-9]*$')]]
-    });
   }
 
   ngOnInit(): void {
@@ -64,23 +54,6 @@ export class AdminUserSelectComponent implements OnInit, OnDestroy {
     );
 
     this.sub.add(this.editable$.subscribe((edit) => (this.editable = edit)));
-
-    this.metadataAvailable$ = combineLatest([this.userMetadata$, this.metadata$]).pipe(
-      map(([userMetas, metaDefs]) => {
-        let userMetaIds = userMetas?.map((u) => u.userProfile.id);
-        return metaDefs.filter((meta) => !userMetaIds?.includes(meta.id));
-      })
-    );
-
-    this.sub.add(
-      this.metadataAvailable$.subscribe((meta) => {
-        this.metaForm.patchValue({
-          metadata: meta[0]
-        });
-        this.onMetaChange(meta[0]);
-        this.metaForm.patchValue({ value: '' });
-      })
-    );
   }
 
   ngOnDestroy() {
@@ -92,50 +65,18 @@ export class AdminUserSelectComponent implements OnInit, OnDestroy {
     this.store.dispatch(AdminUserActions.unselectUser());
   }
 
-  addMetadataUser() {
-    this.isSubmitted = true;
-    if (this.metaForm.valid) {
-      this.isSubmitted = false;
-      let payload = {
-        userId: this.userId,
-        metaId: this.metaForm.value['metadata']['id'],
-        value: this.metaForm.value['value']
-      };
-      this.store.dispatch(AdminUserActions.addMetadataUser(payload));
-    }
-  }
-
-  onMetaChange(metadata: IMetadata) {
-    if (metadata) {
-      if (metadata.type === 'INTEGER') {
-        this.metaForm.controls['value'].setValidators([Validators.required, Validators.pattern('^[+-]?[0-9]*$')]);
-      } else if (metadata.type === 'DOUBLE') {
-        this.metaForm.controls['value'].setValidators([
-          Validators.required,
-          Validators.pattern('[+-]?([0-9]*[.])?[0-9]+')
-        ]);
-      } else {
-        this.metaForm.controls['value'].setValidators([Validators.required]);
-      }
-    }
-  }
-
-  removeMetadata(metadata: MetadataUser) {
+  addMetadataUser(metadata: MetaEventType) {
     this.store.dispatch(
-      AdminUserActions.deleteMetadataUser({ userId: this.userId, metadataId: metadata.userProfile.id })
+      AdminUserActions.addMetadataUser({
+        userId: metadata.id,
+        metaId: metadata.metadataId,
+        value: metadata.value
+      })
     );
   }
 
-  editMetadata(currentMetadata: MetadataUser) {
-    this.store.dispatch(AdminUserActions.isEditable({ editable: true }));
-    let value = currentMetadata.value;
-    let userProfile = currentMetadata.userProfile;
-
-    this.metaForm.patchValue({
-      metadata: userProfile,
-      value: value
-    });
-    this.onMetaChange(userProfile);
+  removeMetadata(metadata: MetaEventType) {
+    this.store.dispatch(AdminUserActions.deleteMetadataUser({ userId: this.userId, metadataId: metadata.metadataId }));
   }
 
   switch(number: number) {

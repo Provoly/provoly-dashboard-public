@@ -2,10 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IMetadata, META_OPTIONS } from '@provoly/dashboard';
+import { MetadataActions, MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
 import { Observable, Subscription } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
-import { MetadataActions } from '../store/metadata.action';
-import { MetadataSelectors } from '../store/metadata.selector';
 
 let nextCompId = 0;
 
@@ -23,11 +22,7 @@ export class AdminSelectMetadataComponent implements OnInit, OnDestroy {
   currentTypeTranslation = '';
   tab: number = 0;
 
-  constructor(
-    private store: Store<any>,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.metadata$ = this.store.select(MetadataSelectors.selectedMetadata);
     this.sub.add(
       this.metadata$.subscribe((meta) => {

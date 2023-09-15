@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IMetadata } from '@provoly/dashboard';
-import { MetadataActions } from '../store/metadata.action';
+import { MetadataActions } from '@provoly/dashboard/components/metadata-editor';
 
 @Component({
   selector: 'pry-admin-new-metadata',

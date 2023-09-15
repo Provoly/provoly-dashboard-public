@@ -1,8 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ClassActions, FieldActions } from '@provoly/dashboard';
+import { MetadataActions } from '@provoly/dashboard/components/metadata-editor';
 import { AdminMetadataUserActions } from '../../admin-metadata-user/store/admin-metadata-user.action';
-import { MetadataActions } from '../../admin-metadata/store/metadata.action';
 import { PredicatesActions } from '../../admin-predicates/store/predicates.actions';
 import { AbacRulesActions } from '../store/abac-rules.actions';
 import { AbacRulesService } from '../store/abac-rules.service';
@@ -12,10 +12,7 @@ import { AbacRulesService } from '../store/abac-rules.service';
   templateUrl: './admin-abac-rules-new.component.html'
 })
 export class AdminAbacRulesNewComponent implements OnDestroy {
-  constructor(
-    private store: Store<any>,
-    private abacRuleService: AbacRulesService
-  ) {
+  constructor(private store: Store<any>, private abacRuleService: AbacRulesService) {
     this.store.dispatch(ClassActions.load());
     this.store.dispatch(FieldActions.load());
     this.store.dispatch(PredicatesActions.loadPredicates());

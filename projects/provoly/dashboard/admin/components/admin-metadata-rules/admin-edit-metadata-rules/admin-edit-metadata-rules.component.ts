@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MetadataRules } from '@provoly/dashboard';
+import { MetadataState } from '@provoly/dashboard/components/metadata-editor';
 import { Observable } from 'rxjs';
-import { MetadataState } from '../../admin-metadata/store/metadata.reducer';
 import { AdminMetadataRulesActions } from '../store/metadata-rules.actions';
 import { MetadataRulesSelectors } from '../store/metadata-rules.selectors';
 
