@@ -49,15 +49,4 @@ export class PryModalStatusComponent {
   goBack() {
     this.gotoConsult.emit(this.version);
   }
-
-  getModalTitle() {
-    if (this._version?.state !== 'ERROR' && this._version?.hasWarnings) {
-      return 'WARNING';
-    }
-    return 'ERROR';
-  }
-
-  getErrorCodeParam(code: string, name: string, recordId: string) {
-    return code === 'UNRECOGNIZED' || code === 'CAST' ? { name } : { recordId };
-  }
 }
