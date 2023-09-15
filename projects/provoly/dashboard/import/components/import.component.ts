@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Dataset, DatasetVersion, DataSourceActions, DataSourceSelectors, PryDatasetType } from '@provoly/dashboard';
 import { map, Observable } from 'rxjs';
@@ -11,13 +11,12 @@ type FileExtension = 'csv' | 'zip';
   selector: 'pry-import',
   templateUrl: './import.component.html'
 })
-export class PryImportComponent {
+export class PryImportComponent implements OnDestroy {
   datasets$: Observable<Dataset[]>;
   file?: File;
   datasetSelected?: string;
   selectedFileType: FileExtension = 'csv';
   loading$: Observable<boolean>;
-  uploadedDataset$: Observable<Partial<DatasetVersion> | undefined>;
   fileTypes: { label: string; value: FileExtension }[] = [
     {
       label: 'Csv',
@@ -33,9 +32,9 @@ export class PryImportComponent {
     csv: '.csv',
     zip: '.zip'
   };
+  showMessage: boolean = false;
   constructor(private store: Store) {
     store.dispatch(DataSourceActions.dataset.loadDataset());
-
     this.datasets$ = store
       .select(DataSourceSelectors.datasets)
       .pipe(
@@ -46,7 +45,9 @@ export class PryImportComponent {
         )
       );
     this.loading$ = store.select(ImportSelectors.loading);
-    this.uploadedDataset$ = store.select(ImportSelectors.uploadedDataset);
+  }
+  ngOnDestroy() {
+    this.showMessage = false;
   }
 
   sortObjectEntries(obj: any) {
@@ -66,6 +67,7 @@ export class PryImportComponent {
       this.store.dispatch(
         ImportActions.upload({ file: this.file, dataset: this.datasetSelected, fileType: this.selectedFileType })
       );
+      this.showMessage = true;
       this.file = undefined;
     }
   }
