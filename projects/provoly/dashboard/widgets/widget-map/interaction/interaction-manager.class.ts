@@ -17,7 +17,6 @@ export class InteractionManager {
   init(component: WidgetMapComponent) {
     this.component = component;
     this.addContextMenuInteraction();
-    this.addDropInteraction();
     this.addOverlayOnInteraction();
     this.addScaleControl();
     this.addUpdateZoomAndCenter();
@@ -48,10 +47,6 @@ export class InteractionManager {
         e.preventDefault();
       }
     },
-    drop: (e: DragEvent) => {
-      this.component.import(e);
-      e.preventDefault();
-    },
     popup: (event: MapBrowserEvent<MouseEvent>) => {
       const values = this.component.map.getFeaturesAtPixel(event.pixel, { hitTolerance: 5 }) as (
         | Feature<Circle>
@@ -81,10 +76,6 @@ export class InteractionManager {
 
   private addContextMenuInteraction() {
     this.component.map.getViewport().addEventListener('contextmenu', this.listeners.contextMenu);
-  }
-
-  private addDropInteraction() {
-    this.component.map.getViewport().addEventListener('drop', this.listeners.drop);
   }
 
   private addOverlayOnInteraction() {

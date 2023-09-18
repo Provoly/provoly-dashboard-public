@@ -344,23 +344,9 @@
       aria-describedby="infoTooltipDown_widgetMap"
       *ngIf="(actions$ | async)?.includes('export')"
     >
-      <pry-icon iconSvg="file_download" (click)="displayExportType($event)"></pry-icon>
+      <pry-icon iconSvg="file_download" (click)="export()"></pry-icon>
       <span class="u-visually-hidden">{{ '@pry.widget.map.export' | i18n }}</span>
     </button>
-
-    <button
-      type="button"
-      class="a-btn a-btn--icon-only"
-      (click)="uploader.click()"
-      [pryTooltip]="infoTooltipLoad"
-      aria-describedby="infoTooltipLoad_widgetMap"
-      pryTooltipPosition="bottom"
-      *ngIf="(actions$ | async)?.includes('upload')"
-    >
-      <pry-icon iconSvg="file_upload"></pry-icon>
-      <span class="u-visually-hidden">{{ '@pry.widget.map.import' | i18n }}</span>
-    </button>
-    <input hidden type="file" #uploader (change)="import($event)" />
   </div>
 
   <div
@@ -456,12 +442,6 @@
     </div>
   </ng-template>
 
-  <ng-template #infoTooltipLoad>
-    <div class="m-tooltip" role="tooltip" id="infoTooltipLoad_widgetMap" aria-hidden="true">
-      <span class="m-tooltip__text">{{ '@pry.widget.map.import' | i18n }}</span>
-    </div>
-  </ng-template>
-
   <div #popup class="m-tooltip m-tooltip--popup" [hidden]="true" role="tooltip">
     <div class="m-tooltip--popup__header">
       <p>{{ this.tooltipIndex + 1 }} / {{ this.tooltipNumber }}</p>
@@ -482,32 +462,4 @@
     [style.display]="'none'"
     (click)="hideAddress()"
   ></div>
-  <ng-template
-    #exportTypeTemplate
-    class="m-context-menu-wrapper"
-    id="export_type"
-    aria-hidden="true"
-    aria-label="TODO-access"
-    aria-labelledby="export_card"
-  >
-    <div class="m-context-menu">
-      <ul class="m-context-menu__list">
-        <li class="m-context-menu__list__item">
-          <button type="button" class="a-btn -link-like" (click)="export('png')">
-            <span class="u-visually-hidden">{{ '@pry.action.exportAsFormat' | i18n }} </span> PNG
-          </button>
-        </li>
-        <li class="m-context-menu__list__item">
-          <button type="button" class="a-btn -link-like" (click)="export('kml')">
-            <span class="u-visually-hidden">{{ '@pry.action.exportAsFormat' | i18n }} </span> KML
-          </button>
-        </li>
-        <li class="m-context-menu__list__item">
-          <button type="button" class="a-btn -link-like" (click)="export('geoJSON')">
-            <span class="u-visually-hidden">{{ '@pry.action.exportAsFormat' | i18n }} </span> GeoJSON
-          </button>
-        </li>
-      </ul>
-    </div>
-  </ng-template>
 </div>

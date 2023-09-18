@@ -388,13 +388,6 @@ describe('WidgetMapComponent', () => {
     expect(layer.url).toEqual('http://url');
   });
 
-  it('should allow importing', () => {
-    const snackSpy = jest.spyOn(snack, 'open').mockReturnValue(null);
-    expect(component.optionsCopy.layers?.length).toEqual(4);
-    component.import({ target: { files: [new File([new ArrayBuffer(1)], 'file.jpg')] } } as unknown as Event);
-    expect(snackSpy).toHaveBeenCalledWith({ message: '@pry.widget.map.importStart', type: 'info' });
-  });
-
   it('should provide fit operation', () => {
     try {
       component.fitMapForObjects(true, []);

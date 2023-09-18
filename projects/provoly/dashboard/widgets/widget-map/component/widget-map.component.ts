@@ -1,5 +1,4 @@
-import { Overlay as cdkOverlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
+import { Overlay as cdkOverlay, OverlayRef } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
   Component,
@@ -18,7 +17,6 @@ import {
   BaseWidgetMapLayerOptions,
   Class,
   ClassSelectors,
-  ConfigActions,
   ConfigSelectors,
   DashboardActions,
   DashboardSelectors,
@@ -80,18 +78,14 @@ import {
   of,
   startWith
 } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { InteractionManager } from '../interaction/interaction-manager.class';
-import { MapFormatsReader } from '../reader/map-formats-reader.class';
 import { CqlUtils } from '../utils/cql-utils.class';
 import {
   DEFAULT_MAP_CENTER,
   DEFAULT_ZOOM_MAX,
   DEFAULT_ZOOM_MIN,
   DEFAULT_ZOOM_START,
-  exportMapAsGeoJSON,
   exportMapAsImage,
-  exportMapAsKML,
   getLinkFeature,
   getMapAsPng,
   populateIntensityAttribute,
@@ -531,36 +525,33 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     );
 
     this.subscriptions.add(
-      combineLatest([
-        this.mapStyleLayer$,
-        this.layers$,
-        this.fitOption$,
-        this.selectedIds$
-      ]).subscribe(([mapStyleLayer, layers, fit, selectedIds]) => {
-        const toApplyLayers = [...layers, ...mapStyleLayer];
-        this.map.setLayers(toApplyLayers);
-        this.map
-          .getAllLayers()
-          .filter((layer) => !(layer instanceof Tile))
-          .forEach((layer) => {
-            const getFeatures = (layer.getSource() as VectorSource)?.getFeatures;
-            if (typeof getFeatures === 'function') {
-              (layer.getSource() as VectorSource)?.getFeatures().forEach((feature: any) => {
-                const type = feature.get('type');
-                if (['bubble', 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].includes(type)) {
-                  feature.setStyle(
-                    feature.get(selectedIds.includes(feature.get('id')) ? 'selectedStyle' : 'classicStyle')
-                  );
-                }
-              });
-            }
-          });
+      combineLatest([this.mapStyleLayer$, this.layers$, this.fitOption$, this.selectedIds$]).subscribe(
+        ([mapStyleLayer, layers, fit, selectedIds]) => {
+          const toApplyLayers = [...layers, ...mapStyleLayer];
+          this.map.setLayers(toApplyLayers);
+          this.map
+            .getAllLayers()
+            .filter((layer) => !(layer instanceof Tile))
+            .forEach((layer) => {
+              const getFeatures = (layer.getSource() as VectorSource)?.getFeatures;
+              if (typeof getFeatures === 'function') {
+                (layer.getSource() as VectorSource)?.getFeatures().forEach((feature: any) => {
+                  const type = feature.get('type');
+                  if (['bubble', 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].includes(type)) {
+                    feature.setStyle(
+                      feature.get(selectedIds.includes(feature.get('id')) ? 'selectedStyle' : 'classicStyle')
+                    );
+                  }
+                });
+              }
+            });
 
-        setTimeout(() => {
-          this.fitMapForObjects(fit, selectedIds);
-          this.map.updateSize();
-        }, 200);
-      })
+          setTimeout(() => {
+            this.fitMapForObjects(fit, selectedIds);
+            this.map.updateSize();
+          }, 200);
+        }
+      )
     );
     this.subscriptions.add(
       combineLatest([this.wmsFeatures$, this.classicFeatures$, this.widgetSize$, this.displayHeader$]).subscribe(
@@ -888,52 +879,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     layer.style = $event.currentTarget?.value;
   }
 
-  export(type: string) {
-    switch (type) {
-      case 'png':
-        exportMapAsImage(this.map, 'map.png');
-        break;
-      case 'kml':
-        exportMapAsKML(this.map, 'map.kml');
-        break;
-      case 'geoJSON':
-        exportMapAsGeoJSON(this.map, 'map.geojson');
-        break;
-      default:
-        console.error('Unknown format');
-    }
-    this.hideExportType();
+  export() {
+    exportMapAsImage(this.map, 'map.png');
   }
 
   override toImage(): Promise<string> {
     return getMapAsPng(this.map);
-  }
-
-  import(event: Event | DragEvent) {
-    const reader = new MapFormatsReader(this.map);
-    const input = event instanceof DragEvent ? event.dataTransfer : (event.target as HTMLInputElement);
-    if (!!input && !!input.files && input.files.length > 0) {
-      const filename = input.files[0].name;
-      this.snackBar.open({
-        type: 'info',
-        message: this.translateService.instant('@pry.widget.map.importStart', { filename })
-      });
-      reader
-        .decodeFile(input.files[0])
-        .then((layer) => {
-          this.additionalLayers$.next([...this.additionalLayers$.getValue(), layer]);
-          this.snackBar.open({
-            type: 'success',
-            message: this.translateService.instant('@pry.widget.map.importOk', { filename })
-          });
-        })
-        .catch((err) =>
-          this.snackBar.open({ type: 'error', message: this.translateService.instant(err.msg, err.val) })
-        );
-    }
-    if (!!input && !(input instanceof DataTransfer)) {
-      input.value = null as unknown as string;
-    }
   }
 
   changeClustered(layer: MapWidgetMarkerLayerOptions, $event: boolean) {
@@ -955,30 +906,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   changeOpacity(layer: MapWidgetLayerOptions, $event: string) {
     // @ts-ignore
     layer.opacity = parseInt($event, 10);
-  }
-
-  displayExportType($event: MouseEvent) {
-    this.overlayRef = this.overlay.create(
-      new OverlayConfig({
-        hasBackdrop: true,
-        panelClass: ['m-context-menu-wrapper'],
-        backdropClass: 'backdrop'
-      })
-    );
-    this.store.dispatch(ConfigActions.addingOverlay({ id: this.constructor.name }));
-    this.overlayRef.backdropClick().subscribe((_) => this.hideExportType());
-    this.overlayRef.attach(new TemplatePortal(this.exportTypeTemplate, this.viewContainerRef));
-
-    const contextMenu = document.querySelector('div.m-context-menu-wrapper') as HTMLDivElement;
-    if (!!contextMenu) {
-      contextMenu.style.left = $event.clientX - 10 + 'px';
-      contextMenu.style.top = $event.clientY - 10 - contextMenu.clientHeight + 'px';
-    }
-  }
-
-  hideExportType() {
-    this.overlayRef?.dispose();
-    this.store.dispatch(ConfigActions.addingOverlay({ id: this.constructor.name }));
   }
 
   getWMSLayers() {

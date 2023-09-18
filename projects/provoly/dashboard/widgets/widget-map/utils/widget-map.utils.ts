@@ -12,12 +12,8 @@ import {
   Relation,
   ResultSet
 } from '@provoly/dashboard';
-// @ts-ignore
-import tokml from 'geojson-to-kml';
 import { Feature, Map } from 'ol';
-import { GeoJSON } from 'ol/format';
 import { Circle, LineString, Point } from 'ol/geom';
-import VectorSource from 'ol/source/Vector';
 import { Style } from 'ol/style';
 
 export type LatLonCandidate = {
@@ -232,52 +228,6 @@ export const exportMapAsImage = (map: Map, filename: string) => {
     const link = document.createElement('a');
     link.download = filename;
     link.href = data;
-    link.click();
-  });
-};
-
-const exportMapAsGeoJSONString = (map: Map): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const format = new GeoJSON();
-    const features = [] as Feature<any>[];
-    const promises = map
-      .getAllLayers()
-      .filter((layer) => !!layer.getSource && !!layer.getSource() && !!(layer.getSource() as VectorSource).getFeatures)
-      .map((layer) => (layer.getSource() as VectorSource).getFeatures())
-      .filter((promise) => !!promise);
-    Promise.all(promises)
-      .then((featuresOfLayer) => {
-        featuresOfLayer.forEach((feature) => {
-          features.push(...feature);
-        });
-        resolve(format.writeFeatures(features) as string);
-      })
-      .catch((err) => reject(err));
-  });
-};
-
-export const exportMapAsGeoJSON = (map: Map, filename: string) => {
-  exportMapAsGeoJSONString(map).then((output) => {
-    const link = document.createElement('a');
-    link.download = filename;
-    const blob = new Blob([output], {
-      type: 'application /geo+json'
-    });
-    link.href = URL.createObjectURL(blob);
-    link.click();
-  });
-};
-
-export const exportMapAsKML = (map: Map, filename: string) => {
-  exportMapAsGeoJSONString(map).then((output) => {
-    const geoJSON = JSON.parse(output);
-    const kml = tokml(geoJSON);
-    const link = document.createElement('a');
-    link.download = filename;
-    const blob = new Blob([kml], {
-      type: 'application/vnd.google-earth.kml+xml'
-    });
-    link.href = URL.createObjectURL(blob);
     link.click();
   });
 };

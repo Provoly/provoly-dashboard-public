@@ -34,9 +34,6 @@ function addDependencies(tree: Tree, options: ProjectSetupOptions) {
     dependencies.push({ type: NodeDependencyType.Default, version: '^7.0.0', name: 'ol' });
     dependencies.push({ type: NodeDependencyType.Default, version: '^10.6.0', name: 'ol-mapbox-style' });
     dependencies.push({ type: NodeDependencyType.Default, version: '^2.9.0', name: 'proj4' });
-    dependencies.push({ type: NodeDependencyType.Default, version: '^4.0.2', name: 'shpjs' });
-    dependencies.push({ type: NodeDependencyType.Default, version: '^0.0.1', name: 'geojson-to-kml' });
-    dependencies.push({ type: NodeDependencyType.Default, version: '^3.7.1', name: 'jszip' });
 
     dependencies.push({ type: NodeDependencyType.Dev, version: '^6.5.3', name: '@types/ol' });
     dependencies.push({ type: NodeDependencyType.Dev, version: '^2.5.2', name: '@types/proj4' });

@@ -37,13 +37,16 @@ function changeTypeDatasetMetadataToMetadataValue() {
   };
 }
 
-function removeLayerSwitcher(tree: Tree) {
+function removeUselessDeps(tree: Tree) {
   removePackageJsonDependency(tree, 'ol-layerswitcher');
+  removePackageJsonDependency(tree, 'geojson-to-kml');
+  removePackageJsonDependency(tree, 'jszip');
+  removePackageJsonDependency(tree, 'shpjs');
 }
 
 export function updateTo0_13(): Rule {
   return (_tree: Tree, context: SchematicContext): Rule => {
-    removeLayerSwitcher(_tree);
+    removeUselessDeps(_tree);
     context.addTask(new NodePackageInstallTask());
     return chain([
       removeWidgetMapHoverOption(),
