@@ -227,6 +227,7 @@ export const DashboardActions = {
     '[Dashboard] (bus) update filter value',
     props<{ id: string; value: any; datasourceId: string }>()
   ),
+  resetWmsFeatures: createAction('[Widget map] Reset Wms layer features'),
   getWmsFeatures: createAction(
     '[Widget map] Get Wms layer features',
     props<{ url: string; oClass: string; coordinates: number[] }>()

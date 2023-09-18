@@ -693,7 +693,7 @@ const internalReducer = createReducer<DashboardState>(
       }
     };
   }),
-  on(DashboardActions.getWmsFeatures, (state, action) => ({
+  on(DashboardActions.getWmsFeatures, DashboardActions.resetWmsFeatures, (state, action) => ({
     ...state,
     wmsFeatures: []
   })),

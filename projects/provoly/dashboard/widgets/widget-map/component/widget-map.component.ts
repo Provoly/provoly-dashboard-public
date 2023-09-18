@@ -6,6 +6,7 @@ import {
   ComponentRef,
   ElementRef,
   Injector,
+  OnDestroy,
   TemplateRef,
   ViewChild,
   ViewContainerRef
@@ -79,6 +80,7 @@ import {
   of,
   startWith
 } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { InteractionManager } from '../interaction/interaction-manager.class';
 import { MapFormatsReader } from '../reader/map-formats-reader.class';
 import { CqlUtils } from '../utils/cql-utils.class';
@@ -103,7 +105,7 @@ export const TOOLTIP_PADDING = 15;
   selector: 'pry-widget-map',
   templateUrl: './widget-map.component.html'
 })
-export class WidgetMapComponent extends DataWidgetComponent implements AfterViewInit {
+export class WidgetMapComponent extends DataWidgetComponent implements AfterViewInit, OnDestroy {
   mapUrl$: Observable<string>;
   @ViewChild('mapRef') mapRef!: ElementRef;
   @ViewChild('popup') popup!: ElementRef;
@@ -387,12 +389,15 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.fitOption$.subscribe((fit) => this.fitMapForObjects(fit));
 
     this.layers$ = combineLatest([
-      this.resultSet$,
-      this.options$,
-      this.classes$,
-      this.additionalLayers$,
-      this.itemStyles$,
-      this.store.select(DashboardSelectors.datasourceFilters)
+      this.resultSet$.pipe(tap((v) => console.log('rs', v))),
+      this.options$.pipe(tap((v) => console.log('options', v))),
+      this.classes$.pipe(tap((v) => console.log('class', v))),
+      this.additionalLayers$.pipe(tap((v) => console.log('add lay', v))),
+      this.itemStyles$.pipe(tap((v) => console.log('style', v))),
+      this.store.select(DashboardSelectors.datasourceFilters).pipe(
+        distinctUntilChanged((p, c) => equal(p, c)),
+        tap((v) => console.log('filters', v))
+      )
     ]).pipe(
       filter(
         ([resultSet, options, classes, additionalLayers, itemStyles, filters]) => !!resultSet && !!options && !!classes
@@ -529,33 +534,36 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     );
 
     this.subscriptions.add(
-      combineLatest([this.mapStyleLayer$, this.layers$, this.fitOption$, this.selectedIds$]).subscribe(
-        ([mapStyleLayer, layers, fit, selectedIds]) => {
-          const toApplyLayers = [...layers, ...mapStyleLayer];
-          this.map.setLayers(toApplyLayers);
-          this.map
-            .getAllLayers()
-            .filter((layer) => !(layer instanceof Tile))
-            .forEach((layer) => {
-              const getFeatures = (layer.getSource() as VectorSource)?.getFeatures;
-              if (typeof getFeatures === 'function') {
-                (layer.getSource() as VectorSource)?.getFeatures().forEach((feature: any) => {
-                  const type = feature.get('type');
-                  if (['bubble', 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].includes(type)) {
-                    feature.setStyle(
-                      feature.get(selectedIds.includes(feature.get('id')) ? 'selectedStyle' : 'classicStyle')
-                    );
-                  }
-                });
-              }
-            });
+      combineLatest([
+        this.mapStyleLayer$.pipe(tap((v) => console.log('style', v))),
+        this.layers$.pipe(tap((v) => console.log('layers', v))),
+        this.fitOption$.pipe(tap((v) => console.log('fit', v))),
+        this.selectedIds$.pipe(tap((v) => console.log('sel', v)))
+      ]).subscribe(([mapStyleLayer, layers, fit, selectedIds]) => {
+        const toApplyLayers = [...layers, ...mapStyleLayer];
+        this.map.setLayers(toApplyLayers);
+        this.map
+          .getAllLayers()
+          .filter((layer) => !(layer instanceof Tile))
+          .forEach((layer) => {
+            const getFeatures = (layer.getSource() as VectorSource)?.getFeatures;
+            if (typeof getFeatures === 'function') {
+              (layer.getSource() as VectorSource)?.getFeatures().forEach((feature: any) => {
+                const type = feature.get('type');
+                if (['bubble', 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].includes(type)) {
+                  feature.setStyle(
+                    feature.get(selectedIds.includes(feature.get('id')) ? 'selectedStyle' : 'classicStyle')
+                  );
+                }
+              });
+            }
+          });
 
-          setTimeout(() => {
-            this.fitMapForObjects(fit, selectedIds);
-            this.map.updateSize();
-          }, 200);
-        }
-      )
+        setTimeout(() => {
+          this.fitMapForObjects(fit, selectedIds);
+          this.map.updateSize();
+        }, 200);
+      })
     );
     this.subscriptions.add(
       combineLatest([this.wmsFeatures$, this.classicFeatures$, this.widgetSize$, this.displayHeader$]).subscribe(
@@ -1089,5 +1097,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   get layerVisibleIdx() {
     return this.mapLayers.map((layer, idx) => (layer.getVisible() ? idx : 0)).reduce((a, b) => a + b);
+  }
+
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    this.store.dispatch(DashboardActions.resetWmsFeatures());
   }
 }
