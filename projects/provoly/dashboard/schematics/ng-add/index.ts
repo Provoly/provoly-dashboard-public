@@ -37,7 +37,6 @@ function addDependencies(tree: Tree, options: ProjectSetupOptions) {
 
     dependencies.push({ type: NodeDependencyType.Dev, version: '^6.5.3', name: '@types/ol' });
     dependencies.push({ type: NodeDependencyType.Dev, version: '^2.5.2', name: '@types/proj4' });
-    dependencies.push({ type: NodeDependencyType.Dev, version: '^3.4.1', name: '@types/shpjs' });
   }
 
   if (options.widgets.includes('widget-aggregated-chart')) {

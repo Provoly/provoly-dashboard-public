@@ -42,6 +42,7 @@ function removeUselessDeps(tree: Tree) {
   removePackageJsonDependency(tree, 'geojson-to-kml');
   removePackageJsonDependency(tree, 'jszip');
   removePackageJsonDependency(tree, 'shpjs');
+  removePackageJsonDependency(tree, '@types/shpjs');
 }
 
 export function updateTo0_13(): Rule {
