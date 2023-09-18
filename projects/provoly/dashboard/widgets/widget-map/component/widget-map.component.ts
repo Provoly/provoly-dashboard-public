@@ -389,15 +389,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.fitOption$.subscribe((fit) => this.fitMapForObjects(fit));
 
     this.layers$ = combineLatest([
-      this.resultSet$.pipe(tap((v) => console.log('rs', v))),
-      this.options$.pipe(tap((v) => console.log('options', v))),
-      this.classes$.pipe(tap((v) => console.log('class', v))),
-      this.additionalLayers$.pipe(tap((v) => console.log('add lay', v))),
-      this.itemStyles$.pipe(tap((v) => console.log('style', v))),
-      this.store.select(DashboardSelectors.datasourceFilters).pipe(
-        distinctUntilChanged((p, c) => equal(p, c)),
-        tap((v) => console.log('filters', v))
-      )
+      this.resultSet$,
+      this.options$,
+      this.classes$,
+      this.additionalLayers$,
+      this.itemStyles$,
+      this.store.select(DashboardSelectors.datasourceFilters).pipe(distinctUntilChanged((p, c) => equal(p, c)))
     ]).pipe(
       filter(
         ([resultSet, options, classes, additionalLayers, itemStyles, filters]) => !!resultSet && !!options && !!classes
