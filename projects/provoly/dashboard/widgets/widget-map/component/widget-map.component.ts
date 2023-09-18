@@ -532,10 +532,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
     this.subscriptions.add(
       combineLatest([
-        this.mapStyleLayer$.pipe(tap((v) => console.log('style', v))),
-        this.layers$.pipe(tap((v) => console.log('layers', v))),
-        this.fitOption$.pipe(tap((v) => console.log('fit', v))),
-        this.selectedIds$.pipe(tap((v) => console.log('sel', v)))
+        this.mapStyleLayer$,
+        this.layers$,
+        this.fitOption$,
+        this.selectedIds$
       ]).subscribe(([mapStyleLayer, layers, fit, selectedIds]) => {
         const toApplyLayers = [...layers, ...mapStyleLayer];
         this.map.setLayers(toApplyLayers);
