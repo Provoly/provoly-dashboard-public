@@ -3,11 +3,11 @@
 /* Organism - pry-dataset */
 
 .o-pry-dataset {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  gap: toRem(60);
-  padding-bottom: toRem(90);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(toRem(330), 0fr));
+  grid-auto-rows: toRem(200);
+  grid-gap: toRem(10);
+  gap: 1.5rem;
 
   &__search {
     position: relative;
@@ -22,7 +22,9 @@
   }
 
   pry-dataset-card {
-    min-width: toRem(360);
+    margin: 2rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 .o-dataset-layout {
