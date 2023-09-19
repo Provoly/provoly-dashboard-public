@@ -97,11 +97,12 @@ export class PryMetadataEditorComponent extends SubscriptionnerDirective {
   removeMetadata(metadata: MetadataUser | MetadataValue) {
     this.removeMeta.emit({ id: this.targetId, metadataId: this.metaDefinition(metadata).id });
   }
+
   addDatasetMetadata() {
     this.isSubmitted = true;
     if (this.form.valid) {
       this.isSubmitted = false;
-      this.removeMeta.emit({
+      this.addMeta.emit({
         id: this.targetId,
         metadataId: this.form.value['metadata']['id'],
         value: this.form.value['value']

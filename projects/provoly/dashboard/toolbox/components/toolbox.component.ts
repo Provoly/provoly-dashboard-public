@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnInit, Optional } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { DashboardGridLayout, DashboardSelectors, PRY_ACCESS_TOKEN, PryBaseAccess } from '@provoly/dashboard';
-import { BehaviorSubject, combineLatest, map, Observable, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { ACTIONS, ToolboxAction } from '../toolbox.model';
 
 @Component({
@@ -37,7 +37,6 @@ export class ToolboxComponent implements OnInit {
 
   ngOnInit() {
     this.allActions$ = combineLatest([this.actions$, this.hasInitialPresentation$]).pipe(
-      tap((v) => console.log(v)),
       switchMap(([actions, hasInitialPresentation]) =>
         combineLatest(
           actions.map((action) =>
@@ -60,8 +59,7 @@ export class ToolboxComponent implements OnInit {
                 } as ToolboxAction)
           )
         )
-      ),
-      tap((v) => console.log(v))
+      )
     );
     this.mainActions$ = combineLatest([this._dropdownActions$, this.allActions$]).pipe(
       map(([dropdownActions, actions]) =>
