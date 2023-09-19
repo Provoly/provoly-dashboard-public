@@ -1,13 +1,13 @@
 import { Type } from '@angular/core';
-import { ToolboxActionComponent } from './components/toolbox-action/toolbox-action.component';
+import { PryAccessCheck } from '@provoly/dashboard';
+import { AutomateRefreshComponent } from './components/automate-refresh/automate-refresh.component';
+import { ClearViewComponent } from './components/clear-view/clear-view.component';
 import { PryFilterSettingsComponent } from './components/filter-settings/filter-settings.component';
 import { LaunchTabComponent } from './components/launch-tab/launch-tab.component';
-import { SaveViewComponent } from './components/save-view/save-view.component';
-import { ClearViewComponent } from './components/clear-view/clear-view.component';
-import { SelectGridLayoutComponent } from './components/select-grid-layout/select-grid-layout.component';
 import { RefreshDatasetsComponent } from './components/refresh-datasets/refresh-datasets.component';
-import { AutomateRefreshComponent } from './components/automate-refresh/automate-refresh.component';
-import { PryAccessCheck } from '@provoly/dashboard';
+import { SaveViewComponent } from './components/save-view/save-view.component';
+import { SelectGridLayoutComponent } from './components/select-grid-layout/select-grid-layout.component';
+import { ToolboxActionComponent } from './components/toolbox-action/toolbox-action.component';
 
 export interface ToolboxAction {
   name: string;
@@ -27,13 +27,13 @@ export const ACTIONS: ToolboxAction[] = [
     name: 'save_view',
     component: SaveViewComponent,
     visible: true,
-    access: { module: 'dashboard', page: 'toolbox', action: 'save_view' }
+    access: { module: 'dashboard', page: 'toolbox', action: 'save' }
   },
   {
     name: 'save_view_as',
     component: SaveViewComponent,
     visible: true,
-    access: { module: 'dashboard', page: 'toolbox', action: 'save_view_as' }
+    access: { module: 'dashboard', page: 'toolbox', action: 'save' }
   },
   {
     name: 'new_tab',

@@ -28,7 +28,6 @@
     "ol-mapbox-style": "^10.6.0",
     "proj4": "^2.9.0",
     "rxjs": "^7.4.0",
-    "tslib": "^2.3.0",
     "vega": "^5.21.0",
     "vega-embed": "^6.20.5",
     "vega-lite": "^5.2.0",

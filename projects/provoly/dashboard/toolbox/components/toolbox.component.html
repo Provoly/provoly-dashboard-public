@@ -38,19 +38,17 @@
     >
       <div class="o-draggable-menu" aria-labelledby="">
         <ul class="o-draggable-menu__list">
-          <li
-            *ngFor="let action of dropdownActions$ | async"
-            class="o-draggable-menu__list__item"
-            [style.order]="getOrder(action.name)"
-          >
+          <ng-container *ngFor="let action of dropdownActions$ | async">
             <ng-container *ngIf="action.visible">
-              <pry-toolbox-action-instanciator
-                [action]="action"
-                [displayLabels]="displayLabels"
-                (closeOptions)="closeDropdown($event)"
-              ></pry-toolbox-action-instanciator>
+              <li class="o-draggable-menu__list__item" [style.order]="getOrder(action.name)">
+                <pry-toolbox-action-instanciator
+                  [action]="action"
+                  [displayLabels]="displayLabels"
+                  (closeOptions)="closeDropdown($event)"
+                ></pry-toolbox-action-instanciator>
+              </li>
             </ng-container>
-          </li>
+          </ng-container>
         </ul>
       </div>
     </ng-template>

@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, Optional } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { DashboardGridLayout, DashboardSelectors } from '@provoly/dashboard';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { DashboardGridLayout, DashboardSelectors, PRY_ACCESS_TOKEN, PryBaseAccess } from '@provoly/dashboard';
+import { BehaviorSubject, combineLatest, map, Observable, of, switchMap, tap } from 'rxjs';
 import { ACTIONS, ToolboxAction } from '../toolbox.model';
 
 @Component({
@@ -28,7 +28,7 @@ export class ToolboxComponent implements OnInit {
     this._dropdownActions$.next(dropdownActions);
   }
 
-  constructor(store: Store) {
+  constructor(store: Store, @Optional() @Inject(PRY_ACCESS_TOKEN) private role: PryBaseAccess) {
     this.hasInitialPresentation$ = store.select(DashboardSelectors.presentation).pipe(map((pres) => !!pres.initial));
     this.isManualMode$ = store
       .select(DashboardSelectors.windowManifest)
@@ -37,14 +37,31 @@ export class ToolboxComponent implements OnInit {
 
   ngOnInit() {
     this.allActions$ = combineLatest([this.actions$, this.hasInitialPresentation$]).pipe(
-      map(([actions, hasInitialPresentation]) => {
-        return actions.map((action) => {
-          if (action.name === 'save_view') {
-            action = { ...action, visible: action.visible && hasInitialPresentation };
-          }
-          return action;
-        });
-      })
+      tap((v) => console.log(v)),
+      switchMap(([actions, hasInitialPresentation]) =>
+        combineLatest(
+          actions.map((action) =>
+            this.role
+              ? this.role.hasRole(null, action.access.module, action.access.page, action.access.action).pipe(
+                  map(
+                    (hasRole) =>
+                      ({
+                        ...action,
+                        visible:
+                          action.visible &&
+                          (action.name !== 'save_view' || hasInitialPresentation) &&
+                          (!this.role || hasRole)
+                      } as ToolboxAction)
+                  )
+                )
+              : of({
+                  ...action,
+                  visible: action.visible && (action.name !== 'save_view' || hasInitialPresentation)
+                } as ToolboxAction)
+          )
+        )
+      ),
+      tap((v) => console.log(v))
     );
     this.mainActions$ = combineLatest([this._dropdownActions$, this.allActions$]).pipe(
       map(([dropdownActions, actions]) =>
@@ -58,7 +75,7 @@ export class ToolboxComponent implements OnInit {
     );
 
     this.showDropdownButton$ = this.dropdownActions$.pipe(
-      map((actions) => actions.length > 0 && actions.filter((action) => action.visible).length > 0)
+      map((actions) => actions.filter((action) => action.visible).length > 0)
     );
   }
 
