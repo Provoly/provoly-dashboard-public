@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
+  DashboardActions,
   DashboardSelectors,
   Dataset,
   DatasetVersion,
   DataSourceActions,
   DataSourceSelectors,
+  GlobalManifest,
   ResultSets,
   SearchActions,
   ViewMode,
@@ -45,21 +47,20 @@ export class PryDatasetDetailComponent implements OnInit {
   protected readonly ViewMode = ViewMode;
   compId: number = 0;
   tab: number = 0;
-
   datasetItems$: Observable<ResultSets | null> | undefined;
   public datasetVersions$!: Observable<DatasetVersion[]>;
   showModalStatus: boolean = false;
   selectedDatasetVersion?: DatasetVersion;
   selectedMode: ViewMode = ViewMode.CONSULT;
   activeVersion$!: Observable<string | undefined>;
-
   constructor(private store: Store) {
     this.compId = nextCompId++;
   }
 
   ngOnInit() {
-    this.store.dispatch(SearchActions.getDatasourceItems({ id: this.dataset.id }));
     this.store.dispatch(DataSourceActions.dataset.listVersionsByDatasetId({ id: this.dataset.id }));
+    this.store.dispatch(DashboardActions.removeFilters());
+    this.store.dispatch(SearchActions.getDatasourceItems({ id: this.dataset.id }));
     this.datasetItems$ = this.store.select(DashboardSelectors.resultSets);
     this.datasetVersions$ = this.store
       .select(DataSourceSelectors.matchingDatasetVersions(this.dataset.id))

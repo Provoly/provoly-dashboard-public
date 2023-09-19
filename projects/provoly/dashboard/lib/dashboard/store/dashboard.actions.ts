@@ -223,6 +223,7 @@ export const DashboardActions = {
   setFilters: createAction('[Dashboard] (bus) set datasource filters', props<{ filters: Filter[] }>()),
   updateFilters: createAction('[Dashboard] (bus) update datasource filters', props<{ filter: Filter }>()),
   removeFilter: createAction('[Dashboard] (bus) remove filter in presentation', props<{ id: string }>()),
+  removeFilters: createAction('[Dashboard] (bus) remove filters'),
   updateFilterValue: createAction(
     '[Dashboard] (bus) update filter value',
     props<{ id: string; value: any; datasourceId: string }>()

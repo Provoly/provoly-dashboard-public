@@ -670,6 +670,16 @@ const internalReducer = createReducer<DashboardState>(
       }
     }
   })),
+  on(DashboardActions.removeFilters, (state) => ({
+    ...state,
+    manifests: {
+      ...state.manifests,
+      manifest: {
+        ...state.manifests.manifest,
+        filters: []
+      }
+    }
+  })),
   on(DashboardActions.updateFilterValue, (state, action) => {
     const filters = JSON.parse(JSON.stringify(state.manifests.manifest.filters ?? [])) as Filter[];
 
