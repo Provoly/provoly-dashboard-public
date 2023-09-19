@@ -35,7 +35,6 @@ export class AdminClassesCustomizeTooltipComponent extends SubscriptionnerDirect
   currentClassConfig: TooltipOfClass = { type: 'default' };
   possibleTooltipTypes$: Observable<{ value: string; label: string }[]>;
   advancedTooltip: boolean = false;
-  attributesForTooltip: string[] = [];
   possibleAttributes: Attribute[] = [];
   possibleNonAttributesFields = [
     {

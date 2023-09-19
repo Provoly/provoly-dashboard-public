@@ -6,7 +6,7 @@
   >
     <div class="m-rule__header">
       <h3 class="a-h3">
-        {{ '@pry.admin.rule' | i18n: { id: i + 1 } }}
+        {{ '@pry.admin.rule' | i18n : { id: i + 1 } }}
         <span>{{ definition.isDefault ? ('@pry.admin.defaultRule' | i18n) : '' }}</span>
       </h3>
 
@@ -49,7 +49,7 @@
             [itemsAsOption]="true"
             [items]="sizes"
             [ngModel]="definition.iconSize[0]"
-            [labelTranslate]="true"
+            [labelTranslate]="false"
             bindLabel="label"
             bindValue="value"
             class="a-pry-select"
