@@ -12,6 +12,8 @@ import { MockTranslatePipe } from '../../../../mock/pipe/mock-translate.pipe';
 import { routes } from '../../../admin-routing.module';
 import { EnvironmentSelectors } from '../store/environment.selectors';
 import { AdminEnvironmentSelectComponent } from './admin-environment-select.component';
+import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
+import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/mock-pry-tab-group.component';
 
 describe('AdminEnvironmentSelectComponent', () => {
   let component: AdminEnvironmentSelectComponent;
@@ -22,7 +24,14 @@ describe('AdminEnvironmentSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AdminEnvironmentSelectComponent, MockTranslatePipe, MockPryIconComponent, MockI18nPipe],
+      declarations: [
+        AdminEnvironmentSelectComponent,
+        MockTranslatePipe,
+        MockPryIconComponent,
+        MockI18nPipe,
+        MockPryTabComponent,
+        MockPryTabGroupComponent
+      ],
       providers: [
         { provide: PRY_ACCESS_GUARD, useClass: PryDefaultAccessGuard },
         provideMockStore({

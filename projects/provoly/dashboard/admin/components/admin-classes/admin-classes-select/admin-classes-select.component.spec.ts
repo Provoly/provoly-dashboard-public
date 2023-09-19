@@ -12,6 +12,8 @@ import { AdminClassActions } from '../store/admin-class.actions';
 import { AdminClassSelectors } from '../store/admin-class.selectors';
 
 import { AdminClassesSelectComponent } from './admin-classes-select.component';
+import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
+import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/mock-pry-tab-group.component';
 
 describe('AdminClassesSelectComponent', () => {
   let component: AdminClassesSelectComponent;
@@ -25,7 +27,9 @@ describe('AdminClassesSelectComponent', () => {
         MockTranslatePipe,
         MockPryIconComponent,
         MockTranslateIdPipe,
-        MockI18nPipe
+        MockI18nPipe,
+        MockPryTabComponent,
+        MockPryTabGroupComponent
       ],
       providers: [
         provideMockStore({

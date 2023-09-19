@@ -12,6 +12,8 @@ import { IntegrationError } from '../../../store/supervision-api.model';
 import { SupervisionActions } from '../../../store/supervision.actions';
 import { SupervisionSelectors } from '../../../store/supervision.selectors';
 import { SupervisionIntegrationErrorsSelectComponent } from './supervision-integration-errors-select.component';
+import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
+import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/mock-pry-tab-group.component';
 
 describe('SupervisionIntegrationErrorsSelectComponent', () => {
   let component: SupervisionIntegrationErrorsSelectComponent;
@@ -42,7 +44,9 @@ describe('SupervisionIntegrationErrorsSelectComponent', () => {
         MockTranslatePipe,
         MockTranslateIdPipe,
         MockPryIconComponent,
-        MockI18nPipe
+        MockI18nPipe,
+        MockPryTabComponent,
+        MockPryTabGroupComponent
       ],
       providers: [
         provideMockStore({

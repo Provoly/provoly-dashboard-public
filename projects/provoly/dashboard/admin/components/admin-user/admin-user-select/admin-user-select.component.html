@@ -4,88 +4,45 @@
   [attr.aria-labelledby]="'button-user-' + user.id"
   class="o-panel"
 >
-  <div>
-    <div class="o-panel__header">
-      <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
-        <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
-        <pry-icon iconSvg="close"></pry-icon>
-      </button>
+  <div class="o-panel__header">
+    <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
+      <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
+      <pry-icon iconSvg="close"></pry-icon>
+    </button>
 
-      <h3 [id]="'tab-title-' + compId" class="a-h3">
-        {{ '@pry.admin.userInfo.info' | i18n }}
-      </h3>
-    </div>
+    <h3 [id]="'tab-title-' + compId" class="a-h3">
+      {{ '@pry.admin.userInfo.info' | i18n }}
+    </h3>
   </div>
 
-  <div class="o-tabs">
-    <div class="o-tabs__list" role="tablist" [attr.aria-labelledby]="'tab-title-' + compId">
-      <button
-        type="button"
-        class="o-tabs__list__btn"
-        role="tab"
-        [id]="'tab-' + compId + '-0'"
-        [attr.aria-selected]="tab === 0"
-        [attr.tabindex]="tab === 0 ? 0 : -1"
-        [attr.aria-controls]="'tabpanel-' + compId + '-0'"
-        (click)="switch(0)"
-      >
-        {{ '@pry.admin.userInfo.profile' | i18n }}
-      </button>
+  <pry-tab-group translationStringBase="@pry.admin.">
+    <pry-tab [templateRef]="userProfile" name="userInfo.profile"></pry-tab>
+    <pry-tab [templateRef]="userDetails" name="details"></pry-tab>
+  </pry-tab-group>
 
-      <button
-        type="button"
-        class="o-tabs__list__btn"
-        [id]="'tab-' + compId + '-1'"
-        role="tab"
-        [attr.aria-selected]="tab === 1"
-        [attr.tabindex]="tab === 1 ? 0 : -1"
-        [attr.aria-controls]="'tabpanel-' + compId + '-1'"
-        (click)="switch(1)"
-      >
-        {{ '@pry.admin.details' | i18n }}
-      </button>
-    </div>
+  <ng-template #userProfile>
+    <pry-metadata-editor
+      [targetId]="(selectedUser$ | async)?.id ?? ''"
+      [editable]="(editable$ | async) ?? false"
+      [metadata]="(userMetadata$ | async) ?? []"
+      (removeMeta)="removeMetadata($event)"
+      (addMeta)="addMetadataUser($event)"
+    ></pry-metadata-editor>
+  </ng-template>
 
-    <div class="o-tabs__panels">
-      <div
-        class="o-tabs__panels__item"
-        [class.is-hidden]="tab !== 0"
-        [id]="'tabpanel-' + compId + '-0'"
-        role="tabpanel"
-        [attr.aria-labelledby]="'tab-' + compId + '-0'"
-        tabindex="0"
-      >
-        <pry-metadata-editor
-          [targetId]="(selectedUser$ | async)?.id ?? ''"
-          [editable]="(editable$ | async) ?? false"
-          [metadata]="(userMetadata$ | async) ?? []"
-          (removeMeta)="removeMetadata($event)"
-          (addMeta)="addMetadataUser($event)"
-        ></pry-metadata-editor>
-      </div>
-
-      <div
-        class="o-tabs__panels__item"
-        [class.is-hidden]="tab !== 1"
-        [id]="'tabpanel-' + compId + '-1'"
-        role="tabpanel"
-        [attr.aria-labelledby]="'tab-' + compId + '-1'"
-        tabindex="0"
-      >
-        <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
-        <p class="a-p">
-          {{ '@pry.admin.userInfo.name' | i18n }} :
-          <strong>{{ user?.name }}</strong>
-        </p>
-        <p class="a-p">
-          {{ '@pry.admin.userInfo.familyName' | i18n }} :
-          <strong>{{ user.familyName }}</strong>
-        </p>
-        <p class="a-p">
-          {{ '@pry.admin.userInfo.email' | i18n }} :
-          <strong>{{ user.email }}</strong>
-        </p>
-      </div>
-    </div>
-  </div>
+  <ng-template #userDetails>
+    <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
+    <p class="a-p">
+      {{ '@pry.admin.userInfo.name' | i18n }} :
+      <strong>{{ user?.name }}</strong>
+    </p>
+    <p class="a-p">
+      {{ '@pry.admin.userInfo.familyName' | i18n }} :
+      <strong>{{ user.familyName }}</strong>
+    </p>
+    <p class="a-p">
+      {{ '@pry.admin.userInfo.email' | i18n }} :
+      <strong>{{ user.email }}</strong>
+    </p>
+  </ng-template>
 </div>

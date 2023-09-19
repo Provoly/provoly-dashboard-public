@@ -6,6 +6,8 @@ import { PRY_ACCESS_GUARD, PryDefaultAccessGuard } from '@provoly/dashboard';
 import { routes } from '../../../admin-routing.module';
 import { AdminMetadataUserSelectors } from '../store/admin-metadata-user.selector';
 import { AdminUserSelectMetadataComponent } from './admin-user-select-metadata.component';
+import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
+import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/mock-pry-tab-group.component';
 
 describe('AdminUserSelectMetadataComponent', () => {
   let component: AdminUserSelectMetadataComponent;
@@ -15,7 +17,7 @@ describe('AdminUserSelectMetadataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AdminUserSelectMetadataComponent],
+      declarations: [AdminUserSelectMetadataComponent, MockPryTabComponent, MockPryTabGroupComponent],
       providers: [
         { provide: PRY_ACCESS_GUARD, useClass: PryDefaultAccessGuard },
         provideMockStore({

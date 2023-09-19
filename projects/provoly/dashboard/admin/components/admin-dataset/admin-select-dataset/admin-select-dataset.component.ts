@@ -14,20 +14,16 @@ import { Observable, Subscription } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminSelectors } from '../../../store/admin.selectors';
 
-let nextCompId = 0;
-
 @Component({
   selector: 'pry-admin-select-dataset',
   templateUrl: './admin-select-dataset.component.html'
 })
 export class AdminSelectDatasetComponent extends SubscriptionnerDirective implements OnInit, OnDestroy {
   static id = 'AdminSelectDatasetComponent';
-  compId: number;
   selectedDataset$: Observable<Dataset | null>;
   associations$: Observable<Associations | undefined>;
   sub = new Subscription();
   currentTypeTranslation = '';
-  tab: number = 0;
   datasetMetadata$: Observable<MetadataValue[]>;
   editable$: Observable<boolean>;
 
@@ -38,7 +34,6 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
     this.datasetMetadata$ = this.store.select(DataSourceSelectors.selectedDatasetMetadata);
     this.associations$ = this.store.select(AdminSelectors.selectedAssociation);
     this.editable$ = this.store.select(MetadataSelectors.editable);
-    this.compId = nextCompId++;
   }
 
   ngOnInit(): void {
@@ -97,10 +92,6 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
         ]
       })
     );
-  }
-
-  switch(number: number) {
-    this.tab = number;
   }
 
   removeMetadata(metadata: MetaEventType) {

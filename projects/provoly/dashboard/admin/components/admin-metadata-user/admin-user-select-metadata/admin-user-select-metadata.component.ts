@@ -7,26 +7,17 @@ import { AdminActions } from '../../../store/admin.actions';
 import { AdminMetadataUserActions } from '../store/admin-metadata-user.action';
 import { AdminMetadataUserSelectors } from '../store/admin-metadata-user.selector';
 
-let nextCompId = 0;
-
 @Component({
   selector: 'pry-admin-user-select-metadata',
   templateUrl: './admin-user-select-metadata.component.html'
 })
 export class AdminUserSelectMetadataComponent implements OnInit, OnDestroy {
   static id = 'AdminUserSelectMetadataComponent';
-  compId: number;
-
   metadata$: Observable<IMetadata | undefined>;
   sub = new Subscription();
   currentTypeTranslation = '';
-  tab: number = 0;
 
-  constructor(
-    private store: Store<any>,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.metadata$ = this.store.select(AdminMetadataUserSelectors.selectedMetadata);
     this.sub.add(
       this.metadata$.subscribe((meta) => {
@@ -34,8 +25,6 @@ export class AdminUserSelectMetadataComponent implements OnInit, OnDestroy {
         this.currentTypeTranslation = type ? type.translation : META_OPTIONS[0].translation;
       })
     );
-
-    this.compId = nextCompId++;
   }
 
   ngOnInit(): void {

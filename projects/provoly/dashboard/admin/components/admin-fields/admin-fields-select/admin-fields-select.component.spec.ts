@@ -12,6 +12,8 @@ import { AdminActions } from '../../../store/admin.actions';
 import { FieldsActions } from '../store/fields.actions';
 import { FieldsSelectors } from '../store/fields.selectors';
 import { AdminFieldsSelectComponent } from './admin-fields-select.component';
+import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
+import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/mock-pry-tab-group.component';
 
 describe('AdminFieldsSelectComponent', () => {
   let component: AdminFieldsSelectComponent;
@@ -20,7 +22,14 @@ describe('AdminFieldsSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AdminFieldsSelectComponent, MockTranslatePipe, MockPryIconComponent, MockI18nPipe],
+      declarations: [
+        AdminFieldsSelectComponent,
+        MockTranslatePipe,
+        MockPryIconComponent,
+        MockI18nPipe,
+        MockPryTabComponent,
+        MockPryTabGroupComponent
+      ],
       providers: [
         { provide: PRY_ACCESS_GUARD, useClass: PryDefaultAccessGuard },
         provideMockStore({

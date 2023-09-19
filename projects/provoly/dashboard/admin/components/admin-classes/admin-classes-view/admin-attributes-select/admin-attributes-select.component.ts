@@ -1,14 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {Associations, AttributeExtended, BaseToolboxAction, Class} from '@provoly/dashboard';
+import { Associations, AttributeExtended, BaseToolboxAction, Class } from '@provoly/dashboard';
 import { combineLatestWith, Observable, Subscription } from 'rxjs';
 import { AdminActions } from '../../../../store/admin.actions';
 import { AdminClassActions } from '../../store/admin-class.actions';
 import { AdminClassSelectors } from '../../store/admin-class.selectors';
-import {AdminSelectors} from "../../../../store/admin.selectors";
-
-let nextCompId = 0;
+import { AdminSelectors } from '../../../../store/admin.selectors';
 
 @Component({
   selector: 'pry-admin-attribute-select',
@@ -16,7 +14,6 @@ let nextCompId = 0;
 })
 export class AdminAttributesSelectComponent implements OnInit, OnDestroy {
   static id = 'AdminAttributesSelectComponent';
-  compId: number;
   selectedAttribute$: Observable<AttributeExtended | undefined>;
   sub = new Subscription();
   associations$: Observable<Associations | undefined>;
@@ -28,16 +25,11 @@ export class AdminAttributesSelectComponent implements OnInit, OnDestroy {
   interClass$: Observable<Class | undefined>;
   interClass?: Class;
 
-  constructor(
-    private store: Store<any>,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.selectedAttribute$ = this.store.select(AdminClassSelectors.selectedAttribute);
     this.selectedClassId$ = this.store.select(AdminClassSelectors.selectedClassId);
     this.interClass$ = this.store.select(AdminClassSelectors.interClass);
     this.interClassId$ = this.store.select(AdminClassSelectors.interClassId);
-    this.compId = nextCompId++;
     this.associations$ = this.store.select(AdminSelectors.selectedAssociation);
   }
 
@@ -96,9 +88,5 @@ export class AdminAttributesSelectComponent implements OnInit, OnDestroy {
         })
       );
     }
-  }
-
-  switch(number: number) {
-    this.tab = number;
   }
 }

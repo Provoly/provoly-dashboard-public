@@ -6,6 +6,7 @@
   display: flex;
   flex-direction: column;
   height: auto;
+  padding: 0 toRem(16) toRem(19) toRem(16);
 
   &__list {
     display: flex;
@@ -36,73 +37,56 @@
     }
   }
 
-  &__panels {
-    &__item {
-      @include outlineOnFocus($border-radius: 3px);
+  &__panel {
+    height: 100%;
+    overflow: scroll;
+    @include outlineOnFocus($border-radius: 3px);
 
-      .a-h4 {
-        margin-bottom: toRem(14);
-        font-size: toRem(14);
-      }
+    .a-h4 {
+      margin-bottom: toRem(14);
+      font-size: toRem(14);
+    }
 
-      .a-p {
-        strong {
-          font-weight: 500;
-        }
-      }
-
-      &__content {
-        &__actions {
-          position: relative;
-          display: flex;
-          justify-content: space-between;
-          width: 100%;
-          padding: toRem(10) 0;
-
-          &:before {
-            @extend %contentBeforeAbsoluteFull;
-            left: -10px;
-            right: -10px;
-          }
-
-          &__text {
-            position: relative;
-            z-index: 1;
-            display: inline-flex;
-            align-items: center;
-            gap: toRem(5);
-            padding-right: toRem(10);
-          }
-
-          &__buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: toRem(5);
-            cursor: pointer;
-          }
-        }
-      }
-
-      &.is-hidden {
-        display: none;
+    .a-p {
+      strong {
+        font-weight: 500;
       }
     }
 
-    .form-group {
-      &::before {
-        content: '';
-        position: absolute;
-        top: toRem(-22);
+    &__content {
+      &__actions {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
         width: 100%;
-        border-top-width: 1px;
-        border-top-style: solid;
-      }
+        padding: toRem(10) 0;
 
-      .a-btn[type='submit'] {
-        float: right;
-        clear: both;
-        margin-top: 15px;
+        &:before {
+          @extend %contentBeforeAbsoluteFull;
+          left: -10px;
+          right: -10px;
+        }
+
+        &__text {
+          position: relative;
+          z-index: 1;
+          display: inline-flex;
+          align-items: center;
+          gap: toRem(5);
+          padding-right: toRem(10);
+        }
+
+        &__buttons {
+          display: flex;
+          justify-content: flex-end;
+          gap: toRem(5);
+          cursor: pointer;
+        }
       }
+    }
+
+    &.is-hidden {
+      display: none;
     }
   }
 }

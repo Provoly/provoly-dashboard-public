@@ -13,6 +13,8 @@ import { AdminActions } from '../../../store/admin.actions';
 import { AdminUserActions } from '../store/admin-user.action';
 import { AdminUserSelectors } from '../store/admin-user.selector';
 import { AdminUserSelectComponent } from './admin-user-select.component';
+import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
+import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/mock-pry-tab-group.component';
 
 describe('AdminUserSelectComponent', () => {
   PryI18nService.warn = false;
@@ -27,7 +29,9 @@ describe('AdminUserSelectComponent', () => {
         MockTranslatePipe,
         MockPryIconComponent,
         MockPryAccessDirective,
-        MockI18nPipe
+        MockI18nPipe,
+        MockPryTabComponent,
+        MockPryTabGroupComponent
       ],
       providers: [
         { provide: PRY_ACCESS_GUARD, useClass: PryDefaultAccessGuard },

@@ -46,23 +46,28 @@ import { AccordionComponent } from './components/accordion/accordion.component';
 import { AccordionItemComponent } from './components/accordion/accordion-item/accordion-item.component';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { FormsModule } from '@angular/forms';
+import { TabGroupComponent } from './components/tabs/tab-group.component';
+import { TabComponent } from './components/tabs/tab.component';
+
+const SELECTORS = [
+  TranslateIdPipe,
+  TranslateItemToSymbolPipe,
+  GetSecuredImagePipe,
+  BaseLayoutComponent,
+  BaseMenuComponent,
+  BaseToolboxComponent,
+  PryNqColorSelectorComponent,
+  PryAccessDirective,
+  PryUploadComponent,
+  PrySelectImageComponent,
+  AccordionComponent,
+  AccordionItemComponent,
+  TabGroupComponent,
+  TabComponent
+];
 
 @NgModule({
-  declarations: [
-    TranslateIdPipe,
-    TranslateItemToSymbolPipe,
-    GetSecuredImagePipe,
-    BaseLayoutComponent,
-    BaseMenuComponent,
-    BaseToolboxComponent,
-    BaseToolboxActionComponent,
-    PryNqColorSelectorComponent,
-    PryAccessDirective,
-    PryUploadComponent,
-    PrySelectImageComponent,
-    AccordionComponent,
-    AccordionItemComponent
-  ],
+  declarations: [...SELECTORS, BaseToolboxActionComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -94,20 +99,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ],
   providers: [AsyncPipe, TranslateIdPipe, TranslateItemToSymbolPipe],
-  exports: [
-    TranslateIdPipe,
-    TranslateItemToSymbolPipe,
-    GetSecuredImagePipe,
-    BaseLayoutComponent,
-    BaseMenuComponent,
-    BaseToolboxComponent,
-    PryNqColorSelectorComponent,
-    PryAccessDirective,
-    PryUploadComponent,
-    PrySelectImageComponent,
-    AccordionComponent,
-    AccordionItemComponent
-  ]
+  exports: [...SELECTORS]
 })
 export class PryCoreModule {
   constructor(private pryTranslateService: PryI18nService) {

@@ -7,27 +7,18 @@ import { AdminActions } from '../../../store/admin.actions';
 import { AdminMetadataRulesActions } from '../store/metadata-rules.actions';
 import { MetadataRulesSelectors } from '../store/metadata-rules.selectors';
 
-let nextCompId = 0;
-
 @Component({
   selector: 'pry-admin-select-metadata-rules',
   templateUrl: './admin-select-metadata-rules.component.html'
 })
 export class AdminSelectMetadataRulesComponent implements OnInit, OnDestroy {
   static id = 'AdminSelectMetadataRulesComponent';
-  compId: number;
   metadataRulesSelected$: Observable<MetadataRules | null>;
   sub = new Subscription();
   currentTypeTranslation = '';
-  tab: number = 0;
 
-  constructor(
-    private store: Store<any>,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.metadataRulesSelected$ = this.store.select(MetadataRulesSelectors.metadataRulesSelected);
-    this.compId = nextCompId++;
   }
 
   ngOnInit(): void {

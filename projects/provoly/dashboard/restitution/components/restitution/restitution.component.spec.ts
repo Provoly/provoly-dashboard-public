@@ -2,7 +2,7 @@ import { Overlay } from '@angular/cdk/overlay';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { PryI18nService, ToolboxMenuService } from '@provoly/dashboard';
-import { MockPryDatasourceSelectorComponent } from '@provoly/dashboard/mock/components/mock-pry-datasource-selector.omponent';
+import { MockPryDatasourceSelectorComponent } from '@provoly/dashboard/mock/components/mock-pry-datasource-selector.component';
 import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pry-icon.component';
 import { MockPrySelectComponent } from '@provoly/dashboard/mock/components/mock-pry-select.component';
 import { MockPryShareComponent } from '@provoly/dashboard/mock/components/mock-pry-share.component';

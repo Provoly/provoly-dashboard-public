@@ -7,27 +7,17 @@ import { AdminActions } from '../../../store/admin.actions';
 import { EnvironmentActions } from '../store/environment.actions';
 import { EnvironmentSelectors } from '../store/environment.selectors';
 
-let nextCompId = 0;
-
 @Component({
   selector: 'pry-admin-environment-select',
   templateUrl: './admin-environment-select.component.html'
 })
 export class AdminEnvironmentSelectComponent implements OnInit, OnDestroy {
   static id = 'AdminEnvironmentSelectComponent';
-
-  compId: number;
-
   currentEnv$: Observable<Environment | undefined>;
   sub = new Subscription();
-  tab: number = 0;
   currentTypeTranslation = '';
 
-  constructor(
-    private store: Store<any>,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.currentEnv$ = this.store.select(EnvironmentSelectors.currentEnv);
     this.sub.add(
       this.currentEnv$.subscribe((ce) => {
@@ -35,7 +25,6 @@ export class AdminEnvironmentSelectComponent implements OnInit, OnDestroy {
         this.currentTypeTranslation = type ? type.translation : ENV_OPTIONS[0].translation;
       })
     );
-    this.compId = nextCompId++;
   }
 
   ngOnInit(): void {
@@ -100,9 +89,5 @@ export class AdminEnvironmentSelectComponent implements OnInit, OnDestroy {
         ]
       })
     );
-  }
-
-  switch(number: number) {
-    this.tab = number;
   }
 }

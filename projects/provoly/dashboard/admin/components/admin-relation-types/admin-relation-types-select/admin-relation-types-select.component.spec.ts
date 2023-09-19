@@ -14,6 +14,8 @@ import { MockTranslatePipe } from '../../../../mock/pipe/mock-translate.pipe';
 import { routes } from '../../../admin-routing.module';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminRelationTypesSelectComponent } from './admin-relation-types-select.component';
+import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
+import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/mock-pry-tab-group.component';
 
 describe('AdminLinksSelectComponent', () => {
   let component: AdminRelationTypesSelectComponent;
@@ -21,7 +23,14 @@ describe('AdminLinksSelectComponent', () => {
   let store: MockStore<AdminRelationTypesSelectComponent>;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AdminRelationTypesSelectComponent, MockTranslatePipe, MockPryIconComponent, MockI18nPipe],
+      declarations: [
+        AdminRelationTypesSelectComponent,
+        MockTranslatePipe,
+        MockPryIconComponent,
+        MockI18nPipe,
+        MockPryTabComponent,
+        MockPryTabGroupComponent
+      ],
       providers: [
         { provide: PRY_ACCESS_GUARD, useClass: PryDefaultAccessGuard },
         provideMockStore({

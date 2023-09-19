@@ -7,5 +7,5 @@ import { Associations } from '@provoly/dashboard';
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class PryAssociationComponent {
-  @Input() associations?: Associations;
+  @Input() associations?: Associations | null;
 }

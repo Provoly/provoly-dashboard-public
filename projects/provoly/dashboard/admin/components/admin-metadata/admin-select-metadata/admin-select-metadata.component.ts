@@ -6,21 +6,15 @@ import { MetadataActions, MetadataSelectors } from '@provoly/dashboard/component
 import { Observable, Subscription } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 
-let nextCompId = 0;
-
 @Component({
   selector: 'pry-select-metadata',
   templateUrl: './admin-select-metadata.component.html'
 })
 export class AdminSelectMetadataComponent implements OnInit, OnDestroy {
   static id = 'AdminSelectMetadataComponent';
-
-  compId: number;
-
   metadata$: Observable<IMetadata | undefined>;
   sub = new Subscription();
   currentTypeTranslation = '';
-  tab: number = 0;
 
   constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.metadata$ = this.store.select(MetadataSelectors.selectedMetadata);
@@ -30,7 +24,6 @@ export class AdminSelectMetadataComponent implements OnInit, OnDestroy {
         this.currentTypeTranslation = type ? type.translation : META_OPTIONS[0].translation;
       })
     );
-    this.compId = nextCompId++;
   }
 
   ngOnInit(): void {

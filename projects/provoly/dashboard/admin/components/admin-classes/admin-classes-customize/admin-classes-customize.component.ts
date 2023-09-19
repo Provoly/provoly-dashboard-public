@@ -26,18 +26,12 @@ export class AdminClassesCustomizeComponent extends SubscriptionnerDirective imp
   otherAttributes: string[] = [];
   currentPropertiesConfig$: Observable<string[]>;
   currentTilePropertiesConfig$: Observable<string[]>;
-  currentRuleModifiedIndex: number = -1;
   classes$: Observable<Class[]> = of([]);
-  tab = 0;
   defaultTileAttributes: string[] = [];
   otherTileAttributes: string[] = [];
   maxTilesAttributes = 5;
 
-  constructor(
-    private store: Store<any>,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     super();
     this.subscriptions.add(
       this.route.params.subscribe((params) =>

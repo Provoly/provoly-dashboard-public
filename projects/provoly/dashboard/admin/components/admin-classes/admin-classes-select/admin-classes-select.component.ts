@@ -9,16 +9,12 @@ import { AdminClassActions } from '../store/admin-class.actions';
 import { AdminClassSelectors } from '../store/admin-class.selectors';
 import { AdminSelectors } from '../../../store/admin.selectors';
 
-let nextCompId = 0;
-
 @Component({
   selector: 'pry-admin-classes-select',
   templateUrl: './admin-classes-select.component.html'
 })
 export class AdminClassesSelectComponent implements OnInit, OnDestroy {
   static id = 'AdminClassesSelectComponent';
-  compId: number;
-  tab: number = 0;
   sub = new Subscription();
   currentClass$: Observable<Class | undefined>;
   linkedObjects$: Observable<any[]>;
@@ -27,7 +23,6 @@ export class AdminClassesSelectComponent implements OnInit, OnDestroy {
   constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.currentClass$ = this.store.select(AdminClassSelectors.selectedClass);
     this.associations$ = this.store.select(AdminSelectors.selectedAssociation);
-    this.compId = nextCompId++;
     this.linkedObjects$ = this.currentClass$.pipe(
       concatLatestFrom((clazz) => this.store.select(DataSourceSelectors.datasets)),
       map(([clazz, datasets]) => datasets.filter((dataset) => dataset.oClass === clazz?.id))
@@ -88,10 +83,6 @@ export class AdminClassesSelectComponent implements OnInit, OnDestroy {
         }
       })
     );
-  }
-
-  switch(number: number) {
-    this.tab = number;
   }
 
   ngOnDestroy(): void {

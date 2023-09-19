@@ -4,65 +4,39 @@
   [attr.aria-labelledby]="'button-meta-' + metadata.id"
   class="o-panel"
 >
-  <div>
-    <div class="o-panel__header">
-      <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
-        <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
-        <pry-icon iconSvg="close"></pry-icon>
-      </button>
+  <div class="o-panel__header">
+    <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
+      <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
+      <pry-icon iconSvg="close"></pry-icon>
+    </button>
 
-      <h3 [id]="'tab-title-' + compId" class="a-h3">
-        {{ '@pry.admin.metadata.details' | i18n }}
-      </h3>
-    </div>
-
-    <div class="o-tabs">
-      <div class="o-tabs__list" role="tablist" [attr.aria-labelledby]="'tab-title-' + compId">
-        <button
-          type="button"
-          class="o-tabs__list__btn"
-          role="tab"
-          [id]="'tab-' + compId + '-0'"
-          [attr.aria-selected]="tab === 0"
-          [attr.tabindex]="tab === 0 ? 0 : -1"
-          [attr.aria-controls]="'tabpanel-' + compId + '-0'"
-        >
-          {{ '@pry.admin.details' | i18n }}
-        </button>
-      </div>
-
-      <div class="o-tabs__panels">
-        <div
-          class="o-tabs__panels__item"
-          [class.is-hidden]="tab !== 0"
-          [id]="'tabpanel-' + compId + '-0'"
-          role="tabpanel"
-          [attr.aria-labelledby]="'tab-' + compId + '-0'"
-          tabindex="0"
-        >
-          <div class="o-tabs__panels__item__content">
-            <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
-            <p class="a-p">
-              {{ '@pry.admin.metadata.label' | i18n }} :
-              <strong>{{ metadata.name }}</strong>
-            </p>
-            <p class="a-p">
-              {{ '@pry.admin.metadata.description' | i18n }} :
-              <strong>{{ metadata.description ? metadata.description : '' }}</strong>
-            </p>
-            <p class="a-p">
-              {{ '@pry.admin.metadata.type' | i18n }} :
-              <strong>{{ currentTypeTranslation | i18n }}</strong>
-            </p>
-
-            <ng-container *ngIf="metadata.allowedValues">
-              <ng-container *ngFor="let item of metadata.allowedValues">
-                <p>{{ item }}</p>
-              </ng-container>
-            </ng-container>
-          </div>
-        </div>
-      </div>
-    </div>
+    <h3 class="a-h3">
+      {{ '@pry.admin.metadata.details' | i18n }}
+    </h3>
   </div>
+  <pry-tab-group translationStringBase="@pry.admin.">
+    <pry-tab [templateRef]="metadataDetails" name="details"></pry-tab>
+  </pry-tab-group>
+
+  <ng-template #metadataDetails>
+    <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
+    <p class="a-p">
+      {{ '@pry.admin.metadata.label' | i18n }} :
+      <strong>{{ metadata.name }}</strong>
+    </p>
+    <p class="a-p">
+      {{ '@pry.admin.metadata.description' | i18n }} :
+      <strong>{{ metadata.description ? metadata.description : '' }}</strong>
+    </p>
+    <p class="a-p">
+      {{ '@pry.admin.metadata.type' | i18n }} :
+      <strong>{{ currentTypeTranslation | i18n }}</strong>
+    </p>
+
+    <ng-container *ngIf="metadata.allowedValues">
+      <ng-container *ngFor="let item of metadata.allowedValues">
+        <p>{{ item }}</p>
+      </ng-container>
+    </ng-container>
+  </ng-template>
 </div>

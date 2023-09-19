@@ -1,14 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Associations, Predicate } from '@provoly/dashboard';
+import { Predicate } from '@provoly/dashboard';
 import { Observable, Subscription } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { PredicatesActions } from '../store/predicates.actions';
 import { PredicatesSelectors } from '../store/predicates.selectors';
-import { AdminSelectors } from '../../../store/admin.selectors';
-
-let nextCompId = 0;
 
 @Component({
   selector: 'pry-admin-predicates-select',
@@ -16,14 +13,11 @@ let nextCompId = 0;
 })
 export class AdminPredicatesSelectComponent implements OnInit, OnDestroy {
   static id = 'AdminPredicatesSelectComponent';
-  compId: number;
   currentPredicate$: Observable<Predicate | undefined>;
-  tab: number = 0;
   sub = new Subscription();
 
   constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.currentPredicate$ = this.store.select(PredicatesSelectors.currentPredicate);
-    this.compId = nextCompId++;
   }
 
   ngOnInit(): void {

@@ -9,8 +9,6 @@ import { FieldsActions } from '../store/fields.actions';
 import { FieldsSelectors } from '../store/fields.selectors';
 import { AdminSelectors } from '../../../store/admin.selectors';
 
-let nextCompId = 0;
-
 @Component({
   selector: 'pry-admin-fields-select',
   templateUrl: './admin-fields-select.component.html'
@@ -19,15 +17,12 @@ export class AdminFieldsSelectComponent implements OnInit, OnDestroy {
   static id = 'AdminFieldsSelectComponent';
   currentField$: Observable<Field | undefined>;
   associations$: Observable<Associations | undefined>;
-  compId: number;
-  tab: number = 0;
   sub = new Subscription();
   attributes$: Observable<{ name: string; classId: string }[]>;
 
   constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.currentField$ = this.store.select(FieldsSelectors.selectedField);
     this.associations$ = this.store.select(AdminSelectors.selectedAssociation);
-    this.compId = nextCompId++;
     this.attributes$ = combineLatest([this.currentField$, store.select(ClassSelectors.classes)]).pipe(
       map(([field, classes]) => {
         return classes
@@ -75,10 +70,6 @@ export class AdminFieldsSelectComponent implements OnInit, OnDestroy {
         }
       })
     );
-  }
-
-  switch(number: number) {
-    this.tab = number;
   }
 
   getTranslationType(type: string) {

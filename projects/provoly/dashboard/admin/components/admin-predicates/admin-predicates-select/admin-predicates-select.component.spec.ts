@@ -14,6 +14,8 @@ import { AdminActions } from '../../../store/admin.actions';
 import { PredicatesActions } from '../store/predicates.actions';
 import { PredicatesSelectors } from '../store/predicates.selectors';
 import { AdminPredicatesSelectComponent } from './admin-predicates-select.component';
+import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
+import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/mock-pry-tab-group.component';
 
 describe('AdminPredicatesSelectComponent', () => {
   let component: AdminPredicatesSelectComponent;
@@ -24,7 +26,14 @@ describe('AdminPredicatesSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AdminPredicatesSelectComponent, MockTranslatePipe, MockPryIconComponent, MockI18nPipe],
+      declarations: [
+        AdminPredicatesSelectComponent,
+        MockTranslatePipe,
+        MockPryIconComponent,
+        MockI18nPipe,
+        MockPryTabComponent,
+        MockPryTabGroupComponent
+      ],
       providers: [
         { provide: PRY_ACCESS_GUARD, useClass: PryDefaultAccessGuard },
         provideMockStore({

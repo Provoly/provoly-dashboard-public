@@ -4,19 +4,6 @@
 .o-panel {
   width: 100%;
   height: 100%;
-  overflow: auto;
-
-  > div {
-    // height: 100%;
-
-    &:nth-child(1) {
-      padding: toRem(19) toRem(16) 0 toRem(16);
-    }
-
-    &:nth-child(n + 2) {
-      padding: 0 toRem(16) toRem(19) toRem(16);
-    }
-  }
 
   &__header {
     display: flex;
@@ -24,6 +11,7 @@
     align-items: flex-start;
     flex-direction: row-reverse;
     margin-bottom: toRem(20);
+    padding: toRem(19) toRem(16) 0 toRem(16);
 
     .a-btn {
       transform: translateY(2px);
