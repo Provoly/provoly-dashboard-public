@@ -192,7 +192,7 @@ const internalReducer = createReducer<DashboardState>(
   on(DashboardActions.updateWidgetManifest, (state, action) => {
     const myRank = state.manifests.tenants.indexOf(state.manifests.sender);
     const newWindows = JSON.parse(JSON.stringify(state.manifests.manifest.windows));
-    newWindows[myRank].widgets[action.index] = action.manifest;
+    (newWindows[myRank] ?? { widgets: [] }).widgets[action.index] = action.manifest;
 
     return {
       ...state,

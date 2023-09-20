@@ -12,8 +12,8 @@ export const SearchActions = {
 
   // result Search
   searchSuccess: createAction(
-    '[Search Api] Search Success',
+    '[Search Api] (bus) Search Success',
     props<{ resultSet: ResultSet; id?: string; params?: string }>()
   ),
-  searchFailure: createAction('[Search Api] Search Failure', props<{ error: any; id?: string }>())
+  searchFailure: createAction('[Search Api] (bus) Search Failure', props<{ error: any; id?: string }>())
 };
