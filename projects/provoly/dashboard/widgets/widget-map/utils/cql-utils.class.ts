@@ -18,7 +18,7 @@ export class CqlUtils {
 
         const attributeName = attributesReference.find((attr) => attr.id === cond.attribute)?.name;
 
-        if (attributeName) {
+        if (attributeName && cond.value && cond.value.length > 0) {
           switch (cond.operator) {
             case 'EQUALS':
               conditions.push(`${attributeName}=${cond.value}`);
