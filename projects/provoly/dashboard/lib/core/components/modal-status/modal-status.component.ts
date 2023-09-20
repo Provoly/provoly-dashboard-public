@@ -13,7 +13,6 @@ export class PryModalStatusComponent {
   @Output() gotoConsult = new EventEmitter<DatasetVersion>();
   datasetPreviews$?: Observable<
     {
-      count: number;
       datasetVersionId: string;
       extractMessageCode: string;
       level: 'ERROR' | 'WARNING';
@@ -31,12 +30,8 @@ export class PryModalStatusComponent {
       this.store.dispatch(DataSourceActions.dataset.previews.getById({ id: version.id }));
       this.datasetPreviews$ = this.store
         .select(DataSourceSelectors.datasetPreviews)
-        .pipe(
-          map((previews) =>
-            previews.map((preview) => preview.messages.map((message) => ({ ...message, count: preview.count }))).flat()
-          )
-        );
-      this.messageCount$ = this.datasetPreviews$.pipe(
+        .pipe(map((previews) => previews.map((preview) => preview.messages).flat()));
+      this.messageCount$ = this.store.select(DataSourceSelectors.datasetPreviews).pipe(
         map((previews) => {
           return previews.map((preview) => preview.count).reduce((p, c) => p + c, 0);
         })
