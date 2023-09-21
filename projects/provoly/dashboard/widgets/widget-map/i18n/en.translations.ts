@@ -27,7 +27,7 @@ export const enTranslations = {
           rastertile: 'Raster tile',
           point: 'Points',
           line: 'Lines',
-          geoserver: 'Geoserver ({{key}})',
+          geoserver: 'Geoserver ({{name}})',
           'multi-line': 'Multi-lines',
           'multi-polygon': 'Multi-polygons'
         },

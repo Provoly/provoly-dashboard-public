@@ -27,7 +27,7 @@ export const frTranslations = {
           rastertile: 'Raster tile',
           point: 'Points',
           line: 'Lignes',
-          geoserver: 'Geoserver ({{key}})',
+          geoserver: 'Geoserver ({{name}})',
           'multi-line': 'Multi-lignes',
           'multi-polygon': 'Multi-polygone'
         },

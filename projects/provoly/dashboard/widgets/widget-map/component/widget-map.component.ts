@@ -205,9 +205,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
               paramLayer: metadatas[GeoMetadata.KEY],
               paramTiled: true,
               opacity: parseInt(metadatas[GeoMetadata.OPACITY] ?? 100, 10),
-              title: metadatas[GeoMetadata.NAMESPACE] + ':' + metadatas[GeoMetadata.KEY],
               oClass: ds.oClass,
               key: metadatas[GeoMetadata.NAMESPACE] + ':' + metadatas[GeoMetadata.KEY],
+              name: ds.name,
               datasourceId: ds.id
             };
           })
@@ -235,9 +235,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           if (autoOptions.attributions) {
             layer.attribution = layer.attribution ?? '';
           }
-          if (!layer.title) {
-            this.setDefaultLayerTitle(layer, i);
-          }
         });
 
         const actualLayerKeys = (autoOptions.layers ?? [])
@@ -256,6 +253,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           }),
           ...geoLayers.filter((layer) => !actualLayerKeys.includes(layer.key))
         ].filter((layer) => !!layer);
+
+        autoOptions.layers.forEach((layer, i) => {
+          if (!layer.title) {
+            this.setDefaultLayerTitle(layer, i);
+          }
+        });
 
         if (
           !!mapStyles &&
