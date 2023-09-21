@@ -19,7 +19,7 @@
           ></pry-select>
         </div>
         <label class="a-h3" for="upload_input">
-          {{ ('@pry.import.uploadTitle' | i18n) + selectedFileType }}
+          {{ ('@pry.import.uploadTitle' + selectedFileType | i18n) }}
         </label>
         <div class="o-file-input">
           <div *ngIf="file" class="o-import__container__input__file">

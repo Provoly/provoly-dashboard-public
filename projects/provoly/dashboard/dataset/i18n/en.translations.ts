@@ -1,6 +1,7 @@
 export const enTranslations = {
   '@pry': {
     dataset: {
+      consult: 'View',
       title: 'Dataset catalog',
       search: 'Search',
       date: 'Date',

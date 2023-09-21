@@ -1,6 +1,7 @@
 export const frTranslations = {
   '@pry': {
     dataset: {
+      consult: 'Consulter',
       title: 'Catalogue des jeux de données',
       search: 'Rechercher',
       date: 'Date',

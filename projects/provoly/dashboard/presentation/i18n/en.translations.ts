@@ -17,7 +17,7 @@ export const enTranslations = {
         or: 'or',
         categories: 'Categories',
         categoryInput: 'Add categories',
-        grid: 'Actual grid: ',
+        grid: 'Current grid: ',
         cover: 'Image will cover the whole presentation card'
       },
       share: 'Share',

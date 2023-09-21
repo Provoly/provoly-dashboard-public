@@ -37,7 +37,11 @@ export const enTranslations = {
       lock: 'Private restitution',
       update: 'Edit information',
       cover: 'Image will cover the whole restitution card',
-      noDataSourceSelected: 'No data source selected'
+      noDataSourceSelected: 'No data source selected',
+      catalogTabs: {
+        model: 'Restitution models',
+        noModel: 'Restitutions catalog'
+      }
     }
   }
 };

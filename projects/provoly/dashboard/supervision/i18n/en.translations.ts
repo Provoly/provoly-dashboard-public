@@ -8,8 +8,8 @@ export const enTranslations = {
       acknowledgeErrors: 'Acknowledge errors',
       menus: {
         infrastructures: 'Infrastructures',
-        flow: 'Incoming flows',
-        'business-data': 'Business datas',
+        'input-flows': 'Incoming flows',
+        'business-datas': 'Business data',
         'integration-errors': 'Data import errors'
       },
       infrastructures: {

@@ -30,7 +30,7 @@ export const enTranslations = {
         delete: 'Delete',
         maximize: 'Maximize',
         none_auto: 'Insert restitutions here',
-        none_manual: 'Drag n drop',
+        none_manual: "Drag 'n' drop",
         loading: 'Loading'
       },
       namedQuery: {
@@ -119,7 +119,7 @@ export const enTranslations = {
       },
       tile: 'Tiles',
       now: 'Today',
-      since_day: 'Since {{day}} day{{plural}}',
+      since_day: '{{day}} day{{plural}} ago',
       layout: {
         '0': 'Free layout',
         '0_detailled': 'Free mode display, rendering size and positioning fully customizable by the user.',
