@@ -75,19 +75,17 @@ const routes: Routes = [
                 },
                 {
                   type: 'geoserver',
-                  key: 'fntp:submersion',
+                  key: 'CKDo:NappePhréatique',
                   opacity: 50
                 },
                 {
                   type: 'wms',
-                  title: 'Parcelles cadastralles',
                   opacity: 50,
                   paramLayer: 'CADASTRALPARCELS.PARCELLAIRE_EXPRESS',
                   url: 'https://wxs.ign.fr/parcellaire/geoportail/r/wms',
                   paramTiled: true
                 },
                 {
-                  title: 'Classifications des sols',
                   type: 'wms',
                   opacity: 10,
                   paramLayer: 'ac:243300316_072022',

@@ -47,6 +47,7 @@ import {
   WIDGET_HEADER_HEIGHT,
   widgetMapConfig
 } from '@provoly/dashboard';
+import { GetCapabilitiesResponse, WmsService, XMLUtils } from '@provoly/dashboard/widgets/widget-map';
 import equal from 'fast-deep-equal/es6';
 import { Feature, Map, Overlay, View } from 'ol';
 import { applyBackground, applyStyle } from 'ol-mapbox-style';
@@ -76,7 +77,8 @@ import {
   mergeMap,
   Observable,
   of,
-  startWith
+  startWith,
+  switchMap
 } from 'rxjs';
 import { InteractionManager } from '../interaction/interaction-manager.class';
 import { CqlUtils } from '../utils/cql-utils.class';
@@ -148,6 +150,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   tooltipNumber = 0;
   STYLE_FROM_URL = '_url';
   NO_STYLE = 'none';
+  wmsCapabilities$: Observable<(GetCapabilitiesResponse | null)[]>;
 
   constructor(
     store: Store<any>,
@@ -159,7 +162,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     private symbolService: SymbolService,
     private injector: Injector,
     private widgetMapLayerService: WidgetMapLayerService,
-    el: ElementRef
+    el: ElementRef,
+    private wmsService: WmsService
   ) {
     super(store, el);
 
@@ -202,11 +206,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
             return {
               type: 'geoserver',
               url: geoServerUrl + '/' + metadatas[GeoMetadata.NAMESPACE] + '/wms?SERVICE=WMS&VERSION=1.3.0',
-              paramLayer: metadatas[GeoMetadata.KEY],
               paramTiled: true,
               opacity: parseInt(metadatas[GeoMetadata.OPACITY] ?? 100, 10),
               oClass: ds.oClass,
               key: metadatas[GeoMetadata.NAMESPACE] + ':' + metadatas[GeoMetadata.KEY],
+              namespace: metadatas[GeoMetadata.NAMESPACE],
+              paramLayer: metadatas[GeoMetadata.KEY],
               name: ds.name,
               datasourceId: ds.id
             };
@@ -215,15 +220,41 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       })
     );
 
+    this.wmsCapabilities$ = combineLatest([
+      this.manifest$.pipe(
+        map(
+          (manifest) =>
+            ((manifest.options ?? { layers: [] }) as MapWidgetOptions).layers?.filter((layer) =>
+              ['wms', 'geoserver'].includes(layer.type)
+            ) as (MapGeoServerLayerOptions | MapWMSLayerLayerOptions)[]
+        )
+      ),
+      this.geoServerLayerDescriptions$
+    ]).pipe(
+      map(([wmsLayers, geoServerLayerDescriptions]) =>
+        wmsLayers.map(
+          (layer) =>
+            ({
+              ...layer,
+              // @ts-ignore
+              ...geoServerLayerDescriptions.find((layerDescr) => layerDescr.key === layer.key)
+            } as MapGeoServerLayerOptions | MapWMSLayerLayerOptions)
+        )
+      ),
+      distinctUntilChanged((p, c) => equal(p, c)),
+      switchMap((wmsLayers) => combineLatest(wmsLayers.map((layer) => wmsService.getCapabilities(layer))))
+    );
+
     this.options$ = combineLatest([
       this.manifest$,
       this.resultSet$,
       this.classes$,
       this.fields$,
       this.styles$,
-      this.geoServerLayerDescriptions$
+      this.geoServerLayerDescriptions$,
+      this.wmsCapabilities$
     ]).pipe(
-      map(([manifest, resultSet, classes, fields, mapStyles, geoLayers]) => {
+      map(([manifest, resultSet, classes, fields, mapStyles, geoLayers, capabilities]) => {
         // auto determine layers parameters to provide a working view
         const autoOptions = JSON.parse(JSON.stringify({ relations: true, ...manifest.options })) as MapWidgetOptions;
         if (!autoOptions.tooltipMode) {
@@ -254,10 +285,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           ...geoLayers.filter((layer) => !actualLayerKeys.includes(layer.key))
         ].filter((layer) => !!layer);
 
-        autoOptions.layers.forEach((layer, i) => {
-          if (!layer.title) {
-            this.setDefaultLayerTitle(layer, i);
-          }
+        autoOptions.layers.forEach((layer) => {
+          this.setDefaultLayerTitle(layer, capabilities);
         });
 
         if (
@@ -271,6 +300,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         return autoOptions;
       })
     );
+
     this.subscriptions.add(
       this.options$.pipe(filter((opt) => !!opt)).subscribe((options) => {
         this.optionsCopy = JSON.parse(JSON.stringify(options));
@@ -656,9 +686,25 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     });
   }
 
-  setDefaultLayerTitle(layer: MapWidgetLayerOptions, idx: number) {
-    layer.title =
-      idx + 1 + ' - ' + this.translateService.instant(`@pry.widget.map.layerType.${layer.type}`, { ...layer });
+  setDefaultLayerTitle(layer: MapWidgetLayerOptions, capabilities: (GetCapabilitiesResponse | null)[]) {
+    if (!layer.title) {
+      if (['geoserver', 'wms'].includes(layer.type)) {
+        const geoLayer = layer as MapGeoServerLayerOptions | MapWMSLayerLayerOptions;
+        const layerCapabilities = capabilities.find((cap) => cap?.paramLayer === geoLayer.paramLayer);
+
+        if (layerCapabilities) {
+          const matchingLayer = WmsService.getMatchingLayer(geoLayer.paramLayer, layerCapabilities.doc);
+          if (matchingLayer) {
+            const matchingTitle = XMLUtils.find(matchingLayer.childNodes, 'Title');
+            if (matchingTitle) {
+              layer.title = matchingTitle.textContent ?? undefined;
+            }
+          }
+        }
+      } else {
+        layer.title = this.translateService.instant(`@pry.widget.map.layerType.${layer.type}`, { ...layer });
+      }
+    }
   }
 
   fitMapForObjects(fit: boolean, selectedIds?: string[]) {

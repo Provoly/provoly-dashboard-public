@@ -1,9 +1,11 @@
 export class XMLUtils {
   static find(childs: NodeListOf<ChildNode>, name: string) {
-    for (let i = 0; i < childs.length; i++) {
-      const node = childs[i];
-      if (node.nodeName === name) {
-        return node;
+    if (!!childs) {
+      for (let i = 0; i < childs.length; i++) {
+        const node = childs[i];
+        if (node.nodeName === name) {
+          return node;
+        }
       }
     }
     return null;

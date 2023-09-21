@@ -87,7 +87,7 @@
   },
   {
     "id": "s6406e7e-37cd-41ce-b5fc-36d233e6ae5c",
-    "name": "Submersion",
+    "name": "CKDo:NappePhréatique",
     "oClass": "123456789-69a6-474e-8f46-7cc8796ed151",
     "type": "OPEN",
     "metadata": [
@@ -97,7 +97,7 @@
           "name": "_geoNamespace",
           "type": "string"
         },
-        "value": "fntp"
+        "value": "CKDo"
       },
       {
         "metadataDef": {
@@ -105,7 +105,7 @@
           "name": "_geoKey",
           "type": "string"
         },
-        "value": "submersion"
+        "value": "NappePhréatique"
       },
       {
         "metadataDef": {

@@ -134,7 +134,7 @@ import { SearchContainerComponent } from './search-container/search-container.co
         mapUrl: 'https://map.yap.pangee.ovh',
         pryUrl: 'http://localhost:8081',
         wsUrl: 'ws://localhost:8082',
-        geoServerUrl: 'https://geo.proto.pangee.ovh/geoserver'
+        geoServerUrl: 'https://geo.dev.pangee.ovh/geoserver'
       },
       {
         attribute: {
