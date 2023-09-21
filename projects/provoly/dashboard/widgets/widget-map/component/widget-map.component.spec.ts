@@ -8,7 +8,6 @@ import {
   DashboardSelectors,
   DataSourceSelectors,
   FieldSelectors,
-  GeocodingService,
   MapWidgetOptions,
   MapWMSLayerLayerOptions,
   PryDatasetType,
@@ -23,6 +22,7 @@ import {
 } from '@provoly/dashboard';
 import { MockNgModelDirective } from '@provoly/dashboard/mock/directive/mock-ng-model.directive';
 import { MockPryTooltipDirective } from '@provoly/dashboard/mock/directive/mock-pry-tooltip.directive';
+import { WmsService } from '@provoly/dashboard/widgets/widget-map';
 import { hot } from 'jest-marbles';
 import { of } from 'rxjs';
 import { MockPryIconComponent } from '../../../mock/components/mock-pry-icon.component';
@@ -124,7 +124,7 @@ describe('WidgetMapComponent', () => {
           ]
         }),
         { provide: TranslateIdPipe, useValue: { transform: () => undefined } },
-        { provide: GeocodingService, useValue: { search: () => undefined } },
+        { provide: WmsService, useValue: { getCapabilities: () => of(null) } },
         { provide: PrySnackbarService, useValue: { open: jest.fn() } },
         {
           provide: Overlay,
