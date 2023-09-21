@@ -7,7 +7,7 @@ import { XMLUtils } from '../utils/xml-utils.class';
   name: 'legendUrl'
 })
 export class WidgetMapLegendUrlPipe implements PipeTransform {
-  constructor(private wmsService: WmsService) {}
+  constructor() {}
 
   parser = new DOMParser();
 
