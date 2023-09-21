@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MapGeoServerLayerOptions, MapWMSLayerLayerOptions } from '@provoly/dashboard';
-import { XMLUtils } from '@provoly/dashboard/widgets/widget-map';
 import { map, Observable, of } from 'rxjs';
+import { XMLUtils } from '../utils/xml-utils.class';
 
 export type GetCapabilitiesResponse = { url: string; paramLayer: string; doc: Document };
 

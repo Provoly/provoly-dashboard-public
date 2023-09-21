@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { MapGeoServerLayerOptions, MapWMSLayerLayerOptions } from '@provoly/dashboard';
-import { GetCapabilitiesResponse, WmsService } from '@provoly/dashboard/widgets/widget-map';
+import { GetCapabilitiesResponse, WmsService } from '../component/wms.service';
 import { XMLUtils } from '../utils/xml-utils.class';
 
 @Pipe({

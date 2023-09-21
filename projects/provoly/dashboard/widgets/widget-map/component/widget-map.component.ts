@@ -47,7 +47,6 @@ import {
   WIDGET_HEADER_HEIGHT,
   widgetMapConfig
 } from '@provoly/dashboard';
-import { GetCapabilitiesResponse, WmsService, XMLUtils } from '@provoly/dashboard/widgets/widget-map';
 import equal from 'fast-deep-equal/es6';
 import { Feature, Map, Overlay, View } from 'ol';
 import { applyBackground, applyStyle } from 'ol-mapbox-style';
@@ -93,7 +92,9 @@ import {
   populateIntensityAttribute,
   populateLocationAttribute
 } from '../utils/widget-map.utils';
+import { XMLUtils } from '../utils/xml-utils.class';
 import { WidgetMapLayerService } from './widget-map-layer.service';
+import { GetCapabilitiesResponse, WmsService } from './wms.service';
 
 export const TOOLTIP_PADDING = 15;
 
