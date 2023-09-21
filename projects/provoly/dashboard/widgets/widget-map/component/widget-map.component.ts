@@ -525,33 +525,36 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     );
 
     this.subscriptions.add(
-      combineLatest([this.mapStyleLayer$, this.layers$, this.fitOption$, this.selectedIds$]).subscribe(
-        ([mapStyleLayer, layers, fit, selectedIds]) => {
-          const toApplyLayers = [...layers, ...mapStyleLayer];
-          this.map.setLayers(toApplyLayers);
-          this.map
-            .getAllLayers()
-            .filter((layer) => !(layer instanceof Tile))
-            .forEach((layer) => {
-              const getFeatures = (layer.getSource() as VectorSource)?.getFeatures;
-              if (typeof getFeatures === 'function') {
-                (layer.getSource() as VectorSource)?.getFeatures().forEach((feature: any) => {
-                  const type = feature.get('type');
-                  if (['bubble', 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].includes(type)) {
-                    feature.setStyle(
-                      feature.get(selectedIds.includes(feature.get('id')) ? 'selectedStyle' : 'classicStyle')
-                    );
-                  }
-                });
-              }
-            });
+      combineLatest([
+        this.mapStyleLayer$,
+        this.layers$,
+        this.fitOption$,
+        this.selectedIds$.pipe(distinctUntilChanged((p, c) => equal(p, c)))
+      ]).subscribe(([mapStyleLayer, layers, fit, selectedIds]) => {
+        const toApplyLayers = [...layers, ...mapStyleLayer];
+        this.map.setLayers(toApplyLayers);
+        this.map
+          .getAllLayers()
+          .filter((layer) => !(layer instanceof Tile))
+          .forEach((layer) => {
+            const getFeatures = (layer.getSource() as VectorSource)?.getFeatures;
+            if (typeof getFeatures === 'function') {
+              (layer.getSource() as VectorSource)?.getFeatures().forEach((feature: any) => {
+                const type = feature.get('type');
+                if (['bubble', 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].includes(type)) {
+                  feature.setStyle(
+                    feature.get(selectedIds.includes(feature.get('id')) ? 'selectedStyle' : 'classicStyle')
+                  );
+                }
+              });
+            }
+          });
 
-          setTimeout(() => {
-            this.fitMapForObjects(fit, selectedIds);
-            this.map.updateSize();
-          }, 200);
-        }
-      )
+        setTimeout(() => {
+          this.fitMapForObjects(fit, selectedIds);
+          this.map.updateSize();
+        }, 200);
+      })
     );
     this.subscriptions.add(
       combineLatest([this.wmsFeatures$, this.classicFeatures$, this.widgetSize$, this.displayHeader$]).subscribe(
