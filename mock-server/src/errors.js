@@ -1,6 +1,6 @@
 const casual = require('casual');
 
-const errorCodes = ['CAST', 'ELASTIC_SEARCH', 'UNRECOGNIZED', 'NO_VALUES', 'NO_ATTRIBUTES', 'FORMAT_FILE_ERROR'];
+const errorCodes = ['ELASTIC_SEARCH', 'UNRECOGNIZED', 'NO_VALUES', 'NO_ATTRIBUTES', 'FORMAT_FILE_ERROR'];
 const generateErrors = (listOfCodes = errorCodes) => {
   const howMany = casual.integer((from = 1), (to = 6));
   const errors = [];

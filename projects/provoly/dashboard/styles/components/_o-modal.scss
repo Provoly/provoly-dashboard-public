@@ -12,6 +12,11 @@
   overflow-y: auto;
   padding: toRem(18) toRem(26) toRem(36) toRem(26);
   transform: translate(-50%, -50%);
+
+  &.-extra-large {
+    max-width: toRem(880);
+    padding: toRem(36) toRem(48) toRem(48) toRem(48);
+  }
 }
 
 .o-modal {
