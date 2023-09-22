@@ -193,7 +193,7 @@ describe('WidgetMapComponent', () => {
               attribute: 'loc',
               intensityAttribute: 'intensity',
               intensityAsc: true,
-              title: '1 - @pry.widget.map.layerType.heatmap'
+              title: '@pry.widget.map.layerType.heatmap'
             }
           ],
           fit: true,
@@ -212,7 +212,7 @@ describe('WidgetMapComponent', () => {
             attribute: 'loc',
             intensityAttribute: 'intensity',
             intensityAsc: true,
-            title: '1 - @pry.widget.map.layerType.heatmap'
+            title: '@pry.widget.map.layerType.heatmap'
           }
         ],
         fit: true,
@@ -237,7 +237,7 @@ describe('WidgetMapComponent', () => {
             {
               type: 'marker',
               attribute: 'loc',
-              title: '1 - @pry.widget.map.layerType.marker'
+              title: '@pry.widget.map.layerType.marker'
             }
           ],
           fit: true,
@@ -254,7 +254,7 @@ describe('WidgetMapComponent', () => {
           {
             type: 'marker',
             attribute: 'loc',
-            title: '1 - @pry.widget.map.layerType.marker'
+            title: '@pry.widget.map.layerType.marker'
           }
         ],
         fit: true,
@@ -281,7 +281,7 @@ describe('WidgetMapComponent', () => {
               attribute: 'loc',
               intensityAttribute: 'intensity',
               intensityAsc: true,
-              title: '1 - @pry.widget.map.layerType.bubble'
+              title: '@pry.widget.map.layerType.bubble'
             }
           ],
           fit: true,
@@ -300,7 +300,7 @@ describe('WidgetMapComponent', () => {
             attribute: 'loc',
             intensityAttribute: 'intensity',
             intensityAsc: true,
-            title: '1 - @pry.widget.map.layerType.bubble'
+            title: '@pry.widget.map.layerType.bubble'
           }
         ],
         fit: true,
@@ -334,7 +334,7 @@ describe('WidgetMapComponent', () => {
               intensityAttribute: 'intensity',
               attribute: 'loc',
               type: 'heatmap',
-              title: '1 - @pry.widget.map.layerType.heatmap'
+              title: '@pry.widget.map.layerType.heatmap'
             }
           ],
           relations: true

@@ -253,7 +253,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       this.fields$,
       this.styles$,
       this.geoServerLayerDescriptions$,
-      this.wmsCapabilities$
+      this.wmsCapabilities$.pipe(startWith([]))
     ]).pipe(
       map(([manifest, resultSet, classes, fields, mapStyles, geoLayers, capabilities]) => {
         // auto determine layers parameters to provide a working view
