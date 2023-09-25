@@ -293,7 +293,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           autoOptions.style = lightStyles.length > 0 ? lightStyles[0].identifier : mapStyles[0].identifier;
         }
         return autoOptions;
-      })
+      }),
+      distinctUntilChanged((p, c) => equal(p, c))
     );
 
     this.subscriptions.add(
