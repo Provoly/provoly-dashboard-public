@@ -226,22 +226,15 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         map(
           (manifest) =>
             ((manifest.options ?? { layers: [] }) as MapWidgetOptions).layers?.filter((layer) =>
-              ['wms', 'geoserver'].includes(layer.type)
-            ) as (MapGeoServerLayerOptions | MapWMSLayerLayerOptions)[]
+              ['wms'].includes(layer.type)
+            ) as MapWMSLayerLayerOptions[]
         )
       ),
       this.geoServerLayerDescriptions$
     ]).pipe(
-      map(([wmsLayers, geoServerLayerDescriptions]) =>
-        wmsLayers.map(
-          (layer) =>
-            ({
-              ...layer,
-              // @ts-ignore
-              ...geoServerLayerDescriptions.find((layerDescr) => layerDescr.key === layer.key)
-            } as MapGeoServerLayerOptions | MapWMSLayerLayerOptions)
-        )
-      ),
+      map(([wmsLayers, geoServerLayerDescriptions]) => {
+        return [...wmsLayers, ...geoServerLayerDescriptions];
+      }),
       distinctUntilChanged((p, c) => equal(p, c)),
       switchMap((wmsLayers) => combineLatest(wmsLayers.map((layer) => wmsService.getCapabilities(layer)))),
       startWith([])

@@ -15,10 +15,7 @@ export class BusService {
   controlChannel: BroadcastChannel;
   buffer: Action[];
 
-  constructor(
-    private store: Store<any>,
-    private zone: NgZone
-  ) {
+  constructor(private store: Store<any>, private zone: NgZone) {
     this.sender = uuid();
     this.dataChannel = new BroadcastChannel('data');
     this.controlChannel = new BroadcastChannel('control');
