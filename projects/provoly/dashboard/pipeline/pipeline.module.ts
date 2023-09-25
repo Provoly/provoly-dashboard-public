@@ -21,6 +21,7 @@ import { frTranslations } from './i18n/fr.translations';
 import { PipelineEffects } from './store/pipeline.effects';
 import { pipelineFeatureKey, pipelineReducer } from './store/pipeline.reducer';
 import { PryPipelineCssComponent } from './style/css.component';
+import { A11yModule } from '@angular/cdk/a11y';
 
 const components = [
   PryPipelineEditorComponent,
@@ -42,7 +43,8 @@ const components = [
     PryToggleModule,
     PrySinceDateModule,
     ReactiveFormsModule,
-    OverlayModule
+    OverlayModule,
+    A11yModule
   ],
   declarations: [...components],
   exports: [...components]

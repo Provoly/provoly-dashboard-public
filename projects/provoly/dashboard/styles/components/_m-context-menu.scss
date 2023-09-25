@@ -46,6 +46,10 @@
           left: 0;
           right: 0;
         }
+
+        &:disabled {
+          opacity: 0.4;
+        }
       }
     }
   }

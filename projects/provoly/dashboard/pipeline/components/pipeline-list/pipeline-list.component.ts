@@ -54,13 +54,16 @@ export class PryPipelineListComponent {
         this.toggleActions.nativeElement.focus();
       }, 10);
       const modal = document.querySelector('div.modal') as HTMLDivElement;
-      // const displayedElement = document.querySelector('div.pipelineList-dropdown__actions') as HTMLDivElement;
-      const displayedElement = document.querySelector('.m-context-menu') as HTMLDivElement;
       if (!!modal) {
-        modal.style.left =
-          Math.max(0, Math.min(window.innerWidth - displayedElement.clientWidth, $event.clientX - 150)) + 'px';
-        modal.style.top =
-          Math.max(0, Math.min(window.innerHeight - displayedElement.clientHeight, $event.clientY - 10)) + 'px';
+        if ($event.pointerType === 'mouse') {
+          modal.style.left = $event.clientX - 150 + 'px';
+          modal.style.top = $event.clientY - 10 + 'px';
+        } else {
+          const toggleMenuButton = document.querySelector('#' + $event.target.id);
+          const rect = toggleMenuButton?.getBoundingClientRect();
+          modal.style.left = (rect?.left ?? 0) - (modal?.clientWidth ?? 0) + 'px';
+          modal.style.top = (rect?.top ?? 0) + 'px';
+        }
       }
     } else {
       this.overlayRef?.dispose();
@@ -155,5 +158,14 @@ export class PryPipelineListComponent {
   focusElement(element: HTMLButtonElement) {
     element.focus();
   }
+
+  navigateContextMenu(button: HTMLButtonElement, nextButton: HTMLButtonElement) {
+    if (!nextButton.disabled) {
+      nextButton.tabIndex = 0;
+      nextButton.focus();
+      button.tabIndex = -1;
+    }
+  }
+
   protected readonly ExecutionState = ExecutionState;
 }

@@ -34,7 +34,7 @@
       </thead>
       <tbody>
         <tr
-          *ngFor="let transfo of transformation$ | async | prySortData: sortActive : sortDirection; let index = index"
+          *ngFor="let transfo of transformation$ | async | prySortData : sortActive : sortDirection; let index = index"
         >
           <td>
             <div *ngIf="transfo.active; else deactivated" class="container-state">
@@ -73,10 +73,10 @@
             <button
               class="a-btn a-btn--more"
               type="button"
-              id="actions"
+              id="actions-{{ index }}"
               #actions
               aria-controls="panelActions"
-              [attr.aria-expanded]="!!this.overlayRef"
+              [attr.aria-expanded]="!!overlayRef"
               (click)="toggleMoreDropdown($event, index, transfo)"
             >
               <pry-icon iconSvg="more_horiz"></pry-icon>
@@ -117,28 +117,39 @@
     *ngIf="selectedTransfo"
     (click)="$event.stopPropagation()"
     (keydown.escape)="closeDropdown()"
+    cdkTrapFocus
+    [cdkTrapFocusAutoCapture]="true"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dialog panelActions"
   >
-    <ul class="m-context-menu__list" role="dialog" aria-modal="true" aria-labelledby="dialog panelActions">
-      <li class="m-context-menu__list__item" role="none" tabindex="-1">
+    <ul class="m-context-menu__list">
+      <li class="m-context-menu__list__item" role="none">
         <button
-          type="button"
           #toggleActions
+          type="button"
           class="a-btn"
           role="menuitem"
           (click)="toggleState(selectedTransfo)"
-          (keydown.tab)="disableSelectedTranso()"
+          (keydown.arrowDown)="navigateContextMenu(activate, execute)"
+          (keydown.arrowUp)="navigateContextMenu(activate, execute)"
+          tabindex="0"
+          #activate
         >
           <span>{{ (selectedTransfo.active ? '@pry.pipeline.deactivate' : '@pry.pipeline.activate') | i18n }}</span>
         </button>
       </li>
-      <li class="m-context-menu__list__item" role="none" tabindex="-1">
+      <li class="m-context-menu__list__item" role="none">
         <button
+          #execute
           type="button"
           role="menuitem"
           id="execute"
           class="a-btn"
-          (keydown.tab)="closeDropdown()"
-          [disabled]="selectedTransfo.active === false"
+          tabindex="-1"
+          (keydown.arrowDown)="navigateContextMenu(execute, activate)"
+          (keydown.arrowUp)="navigateContextMenu(execute, activate)"
+          [disabled]="!selectedTransfo.active"
           (click)="toggleExecuteConfirm()"
         >
           <span>{{ '@pry.pipeline.execute' | i18n }}</span>
@@ -166,7 +177,7 @@
         <button
           class="a-btn a-btn--icon-only"
           #cross
-          (keydown.shift.tab)="focusElement(this.confirm)"
+          (keydown.shift.tab)="focusElement(confirm)"
           (click)="cancelRemoveConfirm()"
         >
           <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
@@ -184,7 +195,7 @@
         id="confirm"
         class="a-btn a-btn--primary"
         (click)="confirmExecution(selectedTransfo)"
-        (keydown.tab)="focusElement(this.cross)"
+        (keydown.tab)="focusElement(cross)"
       >
         {{ '@pry.toolbox.manifest.validate' | i18n }}
       </button>
