@@ -243,7 +243,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         )
       ),
       distinctUntilChanged((p, c) => equal(p, c)),
-      switchMap((wmsLayers) => combineLatest(wmsLayers.map((layer) => wmsService.getCapabilities(layer))))
+      switchMap((wmsLayers) => combineLatest(wmsLayers.map((layer) => wmsService.getCapabilities(layer)))),
+      startWith([])
     );
 
     this.options$ = combineLatest([
