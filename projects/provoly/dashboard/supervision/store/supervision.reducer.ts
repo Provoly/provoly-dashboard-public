@@ -25,12 +25,7 @@ export interface SupervisionState {
 
 export const initialSupervisionState: SupervisionState = {
   highlightedMenu: 'infrastructures',
-  menus: [
-    { menu: 'infrastructures', module: 'supervision', page: 'infrastructures' },
-    { menu: 'input-flows', module: 'supervision', page: 'input_flows' },
-    { menu: 'business-datas', module: 'supervision', page: 'business_datas' },
-    { menu: 'integration-errors', module: 'supervision', page: 'integration_errors' }
-  ],
+  menus: [{ menu: 'integration-errors', module: 'supervision', page: 'integration_errors' }],
   menuOpen: true,
   actions: [],
   subActions: [],
