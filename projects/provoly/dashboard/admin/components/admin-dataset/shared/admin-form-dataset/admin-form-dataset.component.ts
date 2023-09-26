@@ -71,8 +71,6 @@ export class AdminFormDatasetComponent implements OnInit, OnDestroy {
             oClass: dataset.oClass,
             type: dataset.type
           });
-          this.form.controls['oClass'].disable();
-          this.form.controls['type'].disable();
         }
       })
     );

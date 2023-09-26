@@ -35,6 +35,7 @@
       bindLabel="name"
       [isForm]="true"
       aria-labelledby="item-label"
+      [readonly]="dataset$ ? true : false"
     ></pry-select>
   </div>
 
@@ -51,6 +52,7 @@
       [isForm]="true"
       [labelTranslate]="true"
       aria-labelledby="user-label"
+      [readonly]="dataset$ ? true : false"
     ></pry-select>
   </div>
 
