@@ -6,7 +6,7 @@ import { PryI18nService } from '../../i18n/i18n.service';
 import { Class } from '../../store/class/class.interface';
 import { ClassSelectors } from '../../store/class/class.selectors';
 import { ConfigSelectors } from '../../store/config/config.selectors';
-import { DEFAULT_ICON_URL, IconDefinitions } from '../../store/config/icon-definitions.interface';
+import { IconDefinitions } from '../../store/config/icon-definitions.interface';
 import { DataSource, NamedQuery } from '../../store/data-source/data-source.model';
 import { DataSourceSelectors } from '../../store/data-source/data-source.selectors';
 import { NamedQueryTypes } from '../../store/data-source/named-query-types.model';
@@ -22,7 +22,7 @@ export const UNKNOWN_DATASOURCE = (id: string) =>
     color: '#FFFFFF',
     name: id,
     request: { fullSearch: { value: '???' } }
-  }) as NamedQuery;
+  } as NamedQuery);
 
 @Pipe({
   name: 'translateId'
@@ -35,11 +35,12 @@ export class TranslateIdPipe implements PipeTransform {
     private symbolService: SymbolService
   ) {}
 
-  transform(value: string | string[], ...args: unknown[]): Observable<string | string[] | SafeUrl> {
+  transform(value: string | string[], ...args: unknown[]): Observable<string | string[] | SafeUrl | null> {
     const config = args[0] as
       | { type: 'field' }
       | { type: 'class'; output: 'icon' | 'name' }
-      | { type: 'datasource'; output: 'icon' | 'name' | 'color' };
+      | { type: 'datasource'; output: 'name' | 'color' }
+      | { type: 'datasource'; output: 'icon'; noDefault?: boolean };
     switch (config.type) {
       case 'field':
         return this.store
@@ -95,7 +96,7 @@ export class TranslateIdPipe implements PipeTransform {
               map(([oDs, iconDefs, classes]) => {
                 if (oDs.sourceType === 'dataset') {
                   return {
-                    promise: this.symbolService.getSymbolOfClass(oDs.oClass),
+                    promise: this.symbolService.getSymbolOfClass(oDs.oClass, config.noDefault),
                     url: ''
                   };
                 }
@@ -103,20 +104,21 @@ export class TranslateIdPipe implements PipeTransform {
                   switch (oDs.request.type) {
                     case NamedQueryTypes.MONO_CLASS:
                       return {
-                        promise: this.symbolService.getSymbolOfClass(oDs.request.oClass),
+                        promise: this.symbolService.getSymbolOfClass(oDs.request.oClass, config.noDefault),
                         url: ''
                       };
-                    case NamedQueryTypes.MULTI_CLASS:
+                    default:
                       if (oDs.request.fullSearch) {
                         return { promise: null, url: 'assets/svgs/save-line.svg' };
                       } else {
-                        return { promise: null, url: 'assets/svgs/graph.svg' };
+                        return {
+                          promise: null,
+                          url: oDs.request.type === NamedQueryTypes.MULTI_CLASS ? 'assets/svgs/save-line.svg' : ''
+                        };
                       }
-                    default:
-                      return { promise: null, url: DEFAULT_ICON_URL };
                   }
                 } else {
-                  return { promise: null, url: DEFAULT_ICON_URL };
+                  return { promise: null, url: '' };
                 }
               }),
               mergeMap((info) => {

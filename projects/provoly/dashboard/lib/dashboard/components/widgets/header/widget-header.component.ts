@@ -15,10 +15,12 @@ import equal from 'fast-deep-equal/es6';
 import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable, Subscription } from 'rxjs';
 import { v4 } from 'uuid';
 import { UNKNOWN_DATASOURCE } from '../../../../core/components/translate-id/translate-id.pipe';
+import { GeoMetadata } from '../../../../core/model/dataset.interface';
 import { DashboardGridLayout, DashboardManifest, WidgetManifest } from '../../../../core/model/manifest.interface';
 import { Widget } from '../../../../core/model/widget.interface';
 import { ConfigActions } from '../../../../core/store/config/config.actions';
-import { DataSource } from '../../../../core/store/data-source/data-source.model';
+import { DEFAULT_ICON_URL } from '../../../../core/store/config/icon-definitions.interface';
+import { Dataset, DataSource, NamedQuery } from '../../../../core/store/data-source/data-source.model';
 import { DataSourceSelectors } from '../../../../core/store/data-source/data-source.selectors';
 import { LibraryTypes } from '../../../../core/store/image/image.service';
 import { ToolboxMenuService } from '../../../../core/toolbox/toolbox-menu.service';
@@ -479,4 +481,10 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
       this.selectedDataSourceIds$.next(ids);
     }
   }
+
+  isGeo(ds: NamedQuery | Dataset) {
+    return ds.metadata?.find((m) => m.metadataDef.name === GeoMetadata.NAMESPACE) !== undefined;
+  }
+
+  protected readonly DEFAULT_ICON_URL = DEFAULT_ICON_URL;
 }

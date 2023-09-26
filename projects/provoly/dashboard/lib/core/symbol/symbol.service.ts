@@ -186,9 +186,13 @@ export class SymbolService {
     return imageSet[bordered ? 'borderedImages' : 'images'][ruleMatch];
   }
 
-  getSymbolOfClass(id: string): Promise<SafeUrl> {
+  getSymbolOfClass(id: string, noDefault = false): Promise<SafeUrl | null> {
     const definitionsForClass = (this.definitions[id] || []).find((def) => def.isDefault);
-    return this.downloadAsUrl(definitionsForClass?.iconUrl ?? DEFAULT_ICON_URL);
+    const url = definitionsForClass?.iconUrl ?? DEFAULT_ICON_URL;
+    if (url === DEFAULT_ICON_URL && noDefault) {
+      return Promise.resolve(null);
+    }
+    return this.downloadAsUrl(url);
   }
 
   downloadAsUrl(url: string): Promise<string> {

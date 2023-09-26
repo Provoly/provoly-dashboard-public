@@ -6,15 +6,13 @@
     <ng-template #querySelector>
       <div *ngFor="let ds of usedDatasources$ | async" class="o-widget__header__content__query">
         <pry-nq-color-selector [disabled]="true" [datasource]="ds"></pry-nq-color-selector>
-        <img
-          [height]="20"
-          [src]="ds.id | translateId : { type: 'datasource', output: 'icon' } | async"
-          [width]="20"
-          alt=""
-          class="o-widget__header__content__query__icon"
-        />
+        <ng-container
+          *ngIf="ds.id | translateId : { type: 'datasource', output: 'icon', noDefault: true } | async as url"
+        >
+          <img [height]="20" [src]="url" [width]="20" alt="" class="o-widget__header__content__query__icon" />
+        </ng-container>
         <h3 class="o-widget__header__content__query__name">{{ ds.name }}</h3>
-        <h3 class="o-widget__header__content__query__name" *ngIf="displayCount">
+        <h3 class="o-widget__header__content__query__name" *ngIf="displayCount && !isGeo(ds)">
           ({{ (selectedDataSourceIds$ | async) ?? [] | resultSetSize | async }})
         </h3>
       </div>
