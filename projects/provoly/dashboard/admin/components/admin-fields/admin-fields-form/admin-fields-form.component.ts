@@ -2,12 +2,13 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Field, FIELD_OPTIONS, FieldActions, FieldSelectors } from '@provoly/dashboard';
-import { combineLatest, map, Observable, Subscription } from 'rxjs';
+import { Field, FIELD_OPTIONS, FieldActions, FieldSelectors, PryI18nService } from '@provoly/dashboard';
+import { combineLatest, map, Observable, startWith, Subscription } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import { noWhitespaceValidator } from '../../../components/admin.component';
 import { AdminActions } from '../../../store/admin.actions';
 import { FieldsActions } from '../store/fields.actions';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'pry-admin-fields-form',
@@ -18,32 +19,38 @@ export class AdminFieldsFormComponent implements OnInit, OnDestroy {
   nameAlreadyExists$?: Observable<boolean>;
   sub = new Subscription();
 
-  fieldType = FIELD_OPTIONS;
   fieldForm: UntypedFormGroup;
   goBackPath: string;
   goBackPathEdit: string;
   isSubmitted = false;
-
+  fieldTypeTranslations: { [key: string]: string }[] = [];
+  selectedFieldTypeDescription$?: Observable<string>;
   @Input() currentField?: Field;
 
   constructor(
     private store: Store<any>,
     private router: Router,
     private route: ActivatedRoute,
-    private formBuilder: UntypedFormBuilder
+    private formBuilder: UntypedFormBuilder,
+    private i18nService: PryI18nService
   ) {
+    this.fieldTypeTranslations = FIELD_OPTIONS.map((translate) => ({
+      varType: translate.varType,
+      translation: this.i18nService.instant(translate.translation),
+      description: this.i18nService.instant(translate.description)
+    }));
+    this.fieldTypeTranslations.sort((a, b) => a['translation'].localeCompare(b['translation']));
+    this.store.dispatch(FieldActions.load());
     this.goBackPath = this.router.createUrlTree(['..'], { relativeTo: this.route }).toString();
     this.goBackPathEdit = this.router.createUrlTree(['../..'], { relativeTo: this.route }).toString();
-
     this.fieldForm = this.formBuilder.group({
       id: [uuid()],
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100), noWhitespaceValidator]],
-      type: [this.fieldType[0].varType]
+      type: [this.fieldTypeTranslations[0]['varType']]
     });
   }
 
   ngOnInit(): void {
-    this.store.dispatch(FieldActions.load());
     this.fieldNames$ = this.store
       .select(FieldSelectors.fields)
       .pipe(map((fields: Field[]) => fields.map((field: Field) => field.name.toLowerCase())));
@@ -69,6 +76,16 @@ export class AdminFieldsFormComponent implements OnInit, OnDestroy {
       });
       this.fieldForm.controls['type'].disable();
     }
+    // @ts-ignore
+    this.selectedFieldTypeDescription$ = this.fieldForm.get('type').valueChanges.pipe(
+      startWith(this.fieldTypeTranslations[0]['varType']),
+      distinctUntilChanged(),
+      map(
+        (selectedType: string) =>
+          this.fieldTypeTranslations.find((translation) => translation['varType'] === selectedType)?.['description'] ??
+          ''
+      )
+    );
   }
 
   ngOnDestroy() {

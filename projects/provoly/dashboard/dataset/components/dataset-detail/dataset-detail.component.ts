@@ -7,7 +7,6 @@ import {
   DatasetVersion,
   DataSourceActions,
   DataSourceSelectors,
-  GlobalManifest,
   ResultSets,
   SearchActions,
   ViewMode,

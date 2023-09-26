@@ -117,6 +117,7 @@ import { enTranslations } from './i18n/en.translations';
 import { frTranslations } from './i18n/fr.translations';
 import { AdminEffects } from './store/admin.effects';
 import { adminFeatureKey, adminReducer } from './store/admin.reducer';
+import { PrySinceDateModule } from '@provoly/dashboard/components/sinceDate';
 
 @NgModule({
   providers: [DatePipe],
@@ -232,7 +233,8 @@ import { adminFeatureKey, adminReducer } from './store/admin.reducer';
     PryOverlayModule,
     DragDropModule,
     PryI18nModule,
-    PryExpandPanelModule
+    PryExpandPanelModule,
+    PrySinceDateModule
   ]
 })
 export class PryAdminModule {

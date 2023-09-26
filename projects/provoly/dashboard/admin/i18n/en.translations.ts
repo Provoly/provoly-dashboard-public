@@ -271,7 +271,8 @@ export const enTranslations = {
           long: 'Long number',
           decimal: 'Double number',
           string: 'Text',
-          keyword: 'Keyword',
+          keyword:
+            'Keyword',
           instant: 'date',
           raw: 'Raw',
           point: 'Point',
@@ -279,7 +280,27 @@ export const enTranslations = {
           line: 'Line',
           multiline: 'Multi-lines',
           polygon: 'Polygon',
-          multipolygon: 'Multi-polygons'
+          multipolygon: 'Multi-polygons',
+          information: {
+            int: 'Allows you to store integer numeric data less than 2^32',
+            long: 'Allows you to store integer numeric data that can exceed 2^32',
+            decimal: 'Allows you to store numeric data with decimal places',
+            string:
+              'Allows you to store data in alphanumeric format. This data is not indexed: it is possible to search on it but no aggregation',
+            keyword: 'Keyword',
+            instant: 'Allows you to store a date',
+            raw: 'allows you to store image or file type data',
+            point: 'Allows you to store geographic coordinates of an object represented by a point (geo-json format)',
+            multipoint:
+              'Allows you to store geographic coordinates of an object composed of several unconnected points (geo-json format)',
+            line: 'Allows you to store geographic coordinates of an object represented as a line (geo-json format)',
+            multiline:
+              'Allows you to store geographic coordinates of an object represented with several unconnected lines (longitude and latitude geo-json format)',
+            polygon:
+              'Allows you to store geographic coordinates of an object represented by a polygon (geo-json format)',
+            multipolygon:
+              'Allows you to store geographic coordinates of an object represented by several polygons nested or not (geo-json format)'
+          }
         },
         rawMethods: {
           http: 'From external url',

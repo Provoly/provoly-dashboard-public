@@ -23,10 +23,10 @@
         <span *ngIf="fieldForm.get('name')?.hasError('same-name')">{{ '@pry.admin.exists' | i18n }}</span>
         <span *ngIf="fieldForm.get('name')?.hasError('required')">{{ '@pry.admin.required' | i18n }}</span>
         <span *ngIf="fieldForm.get('name')?.hasError('minlength')">{{
-          '@pry.admin.minLength' | i18n: { len: 3 }
+          '@pry.admin.minLength' | i18n : { len: 3 }
         }}</span>
         <span *ngIf="fieldForm.get('name')?.hasError('maxlength')">{{
-          '@pry.admin.maxLength' | i18n: { len: 100 }
+          '@pry.admin.maxLength' | i18n : { len: 100 }
         }}</span>
         <span *ngIf="fieldForm.get('name')?.hasError('whitespace') && !fieldForm.get('name')?.hasError('minlength')">{{
           '@pry.admin.noWhitespace' | i18n
@@ -39,16 +39,26 @@
         {{ '@pry.admin.fields.type' | i18n }} *
         <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
       </label>
-      <pry-select
-        class="a-pry-select"
-        formControlName="type"
-        [labelTranslate]="true"
-        [items]="fieldType"
-        [itemsAsOption]="true"
-        bindValue="varType"
-        bindLabel="translation"
-        [isForm]="true"
-      ></pry-select>
+      <div class="title-container">
+        <pry-select
+          class="a-pry-select -width-sm"
+          formControlName="type"
+          [labelTranslate]="true"
+          [items]="fieldTypeTranslations"
+          [itemsAsOption]="true"
+          bindValue="varType"
+          bindLabel="translation"
+          [isForm]="true"
+        ></pry-select>
+        <ng-container>
+          <div class="info-icon description-container description">
+            <span class="info-text">i</span>
+          </div>
+          <div class="description-tooltip title-tooltip">
+            <p class="a-p -date">{{ selectedFieldTypeDescription$ | async }}</p>
+          </div>
+        </ng-container>
+      </div>
     </div>
 
     <div class="m-btn-group -width-sm">

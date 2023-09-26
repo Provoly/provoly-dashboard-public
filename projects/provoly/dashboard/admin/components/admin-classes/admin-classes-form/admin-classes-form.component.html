@@ -23,7 +23,7 @@
       <span *ngIf="classForm.get('name')?.hasError('required')">{{ '@pry.admin.required' | i18n }}</span>
       <span *ngIf="classForm.get('name')?.hasError('minlength')">{{ '@pry.admin.minLength' | i18n: { len: 3 } }}</span>
       <span *ngIf="classForm.get('name')?.hasError('maxlength')">{{
-        '@pry.admin.maxLength' | i18n: { len: 100 }
+        '@pry.admin.maxLength' | i18n : { len: 100 }
       }}</span>
       <span *ngIf="classForm.get('name')?.hasError('whitespace')">{{ '@pry.admin.noWhitespace' | i18n }}</span>
     </label>

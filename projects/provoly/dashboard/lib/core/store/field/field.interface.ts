@@ -13,8 +13,8 @@ export enum FieldType {
   POLYGON = 'Polygon',
   MULTIPOLYGON = 'MultiPolygon',
   GEOMETRYCOLLECTION = 'GeometryCollection',
-  OCLASS= 'modèle de données',
-  DATASET= 'test'
+  OCLASS = 'modèle de données',
+  DATASET = 'test'
 }
 
 export interface Field {

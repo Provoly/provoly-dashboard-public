@@ -272,15 +272,36 @@ export const frTranslations = {
           long: 'Nombre entier long',
           decimal: 'Nombre décimal',
           string: 'Texte',
-          keyword: 'Mot clé',
-          instant: 'date',
+          keyword: 'Texte indexé',
+          instant: 'Date',
           raw: 'Donnée non structurée',
           point: 'Point',
           multipoint: 'Multi-points',
           line: 'Ligne',
           multiline: 'Multi-lignes',
           polygon: 'Polygone',
-          multipolygon: 'Multi-polygones'
+          multipolygon: 'Multi-polygones',
+          information: {
+            int: 'Permet de stocker des données numériques entières inférieures à 2^32',
+            long: 'Permet de stocker des données numériques entières pouvant dépasser 2^32',
+            decimal: 'Permet de stocker des données numériques avec des décimales',
+            string:
+              "Permet de stocker des données au format alphanumérique. Ces données ne sont pas indexées : il est possible de faire une recherche dessus mais pas d'agrégation",
+            keyword: 'Texte indexé',
+            instant: 'Permet de stocker une date',
+            raw: 'permet de stocker des données de type image ou fichier',
+            point:
+              "Permet de stocker des coordonnées géographiques d'un objet représenté par un point (format géojson)",
+            multipoint:
+              "Permet de stocker des coordonnées géographiques d'un objet composé de plusieurs points non reliés (format géojson)",
+            line: "Permet de stocker des coordonnées géographiques d'un objet représenté comme une ligne (format géojson)",
+            multiline:
+              "Permet de stocker des coordonnées géographiques d'un objet représenté avec plusieurs lignes non reliées entre elles (longitude et latitude format géojson)",
+            polygon:
+              "Permet de stocker des coordonnées géographiques d'un objet représenté par un polygone (format géojson)",
+            multipolygon:
+              "Permet de stocket des coordonnées géographiques d'un objet représenté par plusieurs polygones imbriqués ou non (format géojson)"
+          }
         },
         rawMethods: {
           http: 'Depuis une url',

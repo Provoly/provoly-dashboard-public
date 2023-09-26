@@ -77,22 +77,75 @@ export interface AttributeExtended {
 export interface FieldOption {
   varType: FieldType;
   translation: string;
+  description: string;
 }
 
 export const FIELD_OPTIONS: FieldOption[] = [
-  { varType: FieldType.INTEGER, translation: '@pry.admin.fields.fieldType.int' },
-  { varType: FieldType.LONG, translation: '@pry.admin.fields.fieldType.long' },
-  { varType: FieldType.DECIMAL, translation: '@pry.admin.fields.fieldType.decimal' },
-  { varType: FieldType.STRING, translation: '@pry.admin.fields.fieldType.string' },
-  { varType: FieldType.KEYWORD, translation: '@pry.admin.fields.fieldType.keyword' },
-  { varType: FieldType.INSTANT, translation: '@pry.admin.fields.fieldType.instant' },
-  { varType: FieldType.RAW, translation: '@pry.admin.fields.fieldType.raw' },
-  { varType: FieldType.POINT, translation: '@pry.admin.fields.fieldType.point' },
-  { varType: FieldType.MULTIPOINT, translation: '@pry.admin.fields.fieldType.multipoint' },
-  { varType: FieldType.LINE, translation: '@pry.admin.fields.fieldType.line' },
-  { varType: FieldType.MULTILINE, translation: '@pry.admin.fields.fieldType.multiline' },
-  { varType: FieldType.POLYGON, translation: '@pry.admin.fields.fieldType.polygon' },
-  { varType: FieldType.MULTIPOLYGON, translation: '@pry.admin.fields.fieldType.multipolygon' }
+  {
+    varType: FieldType.INTEGER,
+    translation: '@pry.admin.fields.fieldType.int',
+    description: '@pry.admin.fields.fieldType.information.int'
+  },
+  {
+    varType: FieldType.LONG,
+    translation: '@pry.admin.fields.fieldType.long',
+    description: '@pry.admin.fields.fieldType.information.long'
+  },
+  {
+    varType: FieldType.DECIMAL,
+    translation: '@pry.admin.fields.fieldType.decimal',
+    description: '@pry.admin.fields.fieldType.information.decimal'
+  },
+  {
+    varType: FieldType.STRING,
+    translation: '@pry.admin.fields.fieldType.string',
+    description: '@pry.admin.fields.fieldType.information.string'
+  },
+  {
+    varType: FieldType.KEYWORD,
+    translation: '@pry.admin.fields.fieldType.keyword',
+    description: '@pry.admin.fields.fieldType.information.keyword'
+  },
+  {
+    varType: FieldType.INSTANT,
+    translation: '@pry.admin.fields.fieldType.instant',
+    description: '@pry.admin.fields.fieldType.information.instant'
+  },
+  {
+    varType: FieldType.RAW,
+    translation: '@pry.admin.fields.fieldType.raw',
+    description: '@pry.admin.fields.fieldType.information.raw'
+  },
+  {
+    varType: FieldType.POINT,
+    translation: '@pry.admin.fields.fieldType.point',
+    description: '@pry.admin.fields.fieldType.information.point'
+  },
+  {
+    varType: FieldType.MULTIPOINT,
+    translation: '@pry.admin.fields.fieldType.multipoint',
+    description: '@pry.admin.fields.fieldType.information.multipoint'
+  },
+  {
+    varType: FieldType.LINE,
+    translation: '@pry.admin.fields.fieldType.line',
+    description: '@pry.admin.fields.fieldType.information.line'
+  },
+  {
+    varType: FieldType.MULTILINE,
+    translation: '@pry.admin.fields.fieldType.multiline',
+    description: '@pry.admin.fields.fieldType.information.multiline'
+  },
+  {
+    varType: FieldType.POLYGON,
+    translation: '@pry.admin.fields.fieldType.polygon',
+    description: '@pry.admin.fields.fieldType.information.polygon'
+  },
+  {
+    varType: FieldType.MULTIPOLYGON,
+    translation: '@pry.admin.fields.fieldType.multipolygon',
+    description: '@pry.admin.fields.fieldType.information.multipolygon'
+  }
 ];
 
 export interface MetadataUser {

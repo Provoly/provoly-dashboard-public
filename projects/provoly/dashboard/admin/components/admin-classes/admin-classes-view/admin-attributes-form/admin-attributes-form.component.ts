@@ -13,10 +13,22 @@ import {
   ConfigActions,
   DEFAULT_CATEGORY_UUID,
   Field,
+  FIELD_OPTIONS,
   FieldActions,
-  FieldSelectors
+  FieldSelectors,
+  PryI18nService
 } from '@provoly/dashboard';
-import { BehaviorSubject, combineLatest, map, Observable, of, Subscription } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  distinctUntilChanged,
+  map,
+  Observable,
+  of,
+  startWith,
+  Subscription,
+  switchMap
+} from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import { noWhitespaceValidator } from '../../../../components/admin.component';
 import { AdminActions } from '../../../../store/admin.actions';
@@ -32,6 +44,8 @@ export class AdminAttributesFormComponent implements OnInit, OnDestroy {
   nameAlreadyExists$?: Observable<boolean>;
   attributeNames?: string[];
   fields$: Observable<Field[]>;
+  selectedFieldTypeDescription$?: Observable<string | undefined>;
+  fieldTypeDescription = FIELD_OPTIONS;
   categories$: Observable<Category[]>;
   nameAlreadyExists = false;
   isShowedCategory = false;
@@ -51,7 +65,8 @@ export class AdminAttributesFormComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private formBuilder: UntypedFormBuilder,
     private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef
+    private viewContainerRef: ViewContainerRef,
+    private i18nService: PryI18nService
   ) {
     this.store.dispatch(FieldActions.load());
     this.fields$ = this.store.select(FieldSelectors.fields);
@@ -83,11 +98,9 @@ export class AdminAttributesFormComponent implements OnInit, OnDestroy {
           id: this.selectedAttribute.id,
           name: this.selectedAttribute.name,
           field: this.selectedAttribute.field,
-          category: this.selectedAttribute.category,
-          multiValued: this.selectedAttribute.multiValued
+          category: this.selectedAttribute.category
         });
         this.attrForm.controls['field'].disable();
-        this.attrForm.controls['multiValued'].disable();
       }
     }
 
@@ -100,6 +113,21 @@ export class AdminAttributesFormComponent implements OnInit, OnDestroy {
       );
       this.sub.add(this.nameAlreadyExists$.subscribe((value) => (this.nameAlreadyExists = value)));
     }
+
+    this.selectedFieldTypeDescription$ = this.attrForm.get('field')?.valueChanges.pipe(
+      startWith(this.attrForm.get('field')?.value),
+      distinctUntilChanged(),
+      switchMap((selectedFieldId) => {
+        return this.fields$.pipe(
+          map((fields) => {
+            const fieldDescription = this.fieldTypeDescription.find(
+              (fieldType) => fieldType.varType === fields.find((field) => field.id === selectedFieldId)?.type
+            );
+            return fieldDescription ? this.i18nService.instant(fieldDescription.description) : '';
+          })
+        );
+      })
+    );
   }
 
   ngOnDestroy(): void {

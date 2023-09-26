@@ -11,12 +11,12 @@
       </div>
       <div *ngIf="attrForm.get('name')?.hasError('minlength')">
         <label class="a-label a-label--help -error" for="attr_name">{{
-          '@pry.admin.minLength' | i18n: { len: 3 }
+          '@pry.admin.minLength' | i18n : { len: 3 }
         }}</label>
       </div>
       <div *ngIf="attrForm.get('name')?.hasError('maxlength')">
         <label class="a-label a-label--help -error" for="attr_name">{{
-          '@pry.admin.maxLength' | i18n: { len: 100 }
+          '@pry.admin.maxLength' | i18n : { len: 100 }
         }}</label>
       </div>
       <div *ngIf="attrForm.get('name')?.hasError('whitespace') && !attrForm.get('name')?.hasError('minlength')">
@@ -27,17 +27,27 @@
 
   <div class="m-form-label-field -width-sm">
     <label class="a-label" for="type">{{ '@pry.admin.classes.attributes.field' | i18n }}</label>
-    <pry-select
-      id="type"
-      class="a-pry-select"
-      formControlName="field"
-      [labelTranslate]="true"
-      [items]="fields$ | async"
-      bindValue="id"
-      bindLabel="name"
-      [isForm]="true"
-      required="true"
-    ></pry-select>
+    <div class="title-container">
+      <pry-select
+        id="type"
+        class="a-pry-select"
+        formControlName="field"
+        [labelTranslate]="true"
+        [items]="fields$ | async"
+        bindValue="id"
+        bindLabel="name"
+        [isForm]="true"
+        required="true"
+      ></pry-select>
+      <ng-container *ngIf="selectedFieldTypeDescription$ | async as description">
+        <div class="info-icon description-container description">
+          <span class="info-text">i</span>
+        </div>
+        <div class="description-tooltip title-tooltip">
+          <p class="a-p -date">{{ description }}</p>
+        </div>
+      </ng-container>
+    </div>
     <div *ngIf="attrForm.get('field')?.invalid">
       <div *ngIf="attrForm.get('field')?.hasError('required')">
         <label class="a-label a-label--help -error">{{ '@pry.admin.required' | i18n }}</label>
@@ -59,12 +69,6 @@
       [isForm]="true"
       [readonly]="true"
     ></pry-select>
-  </div>
-
-  <div class="m-form-label-field -width-sm">
-    <pry-checkbox formControlName="multiValued" ngDefaultControl>{{
-      '@pry.admin.classes.attributes.multiValued' | i18n
-    }}</pry-checkbox>
   </div>
 
   <div class="m-btn-group -width-sm">
