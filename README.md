@@ -1,4 +1,4 @@
-# PovolyDashboard
+# ProvolyDashboard
 
 ## Lancement du sample de la lib
 
@@ -24,7 +24,7 @@ Se reporter au README placés dans le répertoire mock-server
 
 ## Utilisation de la lib dans un autre projet sans pour autant déployer une version dans le registry
 
-`npm run build:lib ; cp -rf ./dist/provoly/dashboard ../<projet>/node_modules/@provoly/ ; rm -rf ../<projet>/.angular`
+`rm -rf ./dist ./angular ; npm run build:lib ; cp -rf ./dist/provoly/dashboard ../<projet>/node_modules/@provoly/ ; rm -rf ../<projet>/.angular`
 
 ## Utilisation de la lib
 Voir dans le README de la lib elle-même
