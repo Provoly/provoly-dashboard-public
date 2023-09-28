@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { combineLatest, merge, of, throwError } from 'rxjs';
+import { combineLatest, merge, of, startWith, throwError } from 'rxjs';
 import { catchError, debounceTime, delay, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 import {
   PryDialogConfirmComponent,
@@ -26,10 +26,10 @@ import { ResultsetUtils } from '../resultset-utils';
 import { DashboardInitService } from './dashboard-init.service';
 import { DashboardActions } from './dashboard.actions';
 import { DashboardSelectors } from './dashboard.selectors';
-import { GeocodingService } from './geocoding.service';
 import { ManifestService } from './manifest.service';
 import { RefreshService } from './refresh.service';
 import { PryTitleService } from './title.service';
+import { WmsService } from './wms.service';
 
 @Injectable()
 export class DashboardEffects {
@@ -667,10 +667,27 @@ export class DashboardEffects {
     )
   );
 
+  getCapability$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DashboardActions.getCapability),
+      debounceTime(100),
+      withLatestFrom(this.store.select(DashboardSelectors.capabilities)),
+      filter(
+        ([action, capabilities]) => (!!capabilities && !!action.url && !capabilities[action.url]) || !!action.force
+      ),
+      mergeMap(([action, _]) =>
+        this.wmsService.getCapabilities(action.url).pipe(
+          map((capability) => DashboardActions.updateCapability({ url: action.url, capability })),
+          startWith(DashboardActions.updateCapability({ url: action.url, capability: null }))
+        )
+      )
+    )
+  );
+
   getWmsFeatures = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.getWmsFeatures),
-      mergeMap((action) => combineLatest([of(action), this.geocodingService.getWmsFeatures(action.url)])),
+      mergeMap((action) => combineLatest([of(action), this.wmsService.getWmsFeatures(action.url)])),
       map(([action, json]) => {
         return DashboardActions.addWmsFeatures({
           features: json.features.map((feature: any) => {
@@ -702,12 +719,12 @@ export class DashboardEffects {
     private translateService: PryI18nService,
     private snackBar: PrySnackbarService,
     private router: Router,
-    private geocodingService: GeocodingService,
     private refreshService: RefreshService,
     private toolboxManifestService: ToolboxManifestService,
     private busService: BusService,
     private searchService: SearchService,
-    private pryDialog: PryDialogService
+    private pryDialog: PryDialogService,
+    private wmsService: WmsService
   ) {
     dashboardInitService.init();
     refreshService.start();

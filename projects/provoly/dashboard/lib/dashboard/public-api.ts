@@ -12,7 +12,7 @@ export * from './store/title.service';
 export * from './store/dashboard.actions';
 export * from './store/dashboard.selectors';
 export * from './store/dashboard.reducers';
-export * from './store/geocoding.service';
+export * from './store/wms.service';
 export * from './store/manifest.service';
 export * from './store/manifest-utils.class';
 export * from './guard/default-view.guard';

@@ -27,6 +27,7 @@ import {
   FieldSelectors,
   GeoMetadata,
   GeometricFieldTypes,
+  GetCapabilitiesResponse,
   ItemUtils,
   MapAutoLayerOptions,
   MapFeatureLayerOptions,
@@ -78,8 +79,7 @@ import {
   mergeMap,
   Observable,
   of,
-  startWith,
-  switchMap
+  startWith
 } from 'rxjs';
 import { InteractionManager } from '../interaction/interaction-manager.class';
 import { CqlUtils } from '../utils/cql-utils.class';
@@ -96,7 +96,6 @@ import {
 } from '../utils/widget-map.utils';
 import { XMLUtils } from '../utils/xml-utils.class';
 import { WidgetMapLayerService } from './widget-map-layer.service';
-import { GetCapabilitiesResponse, WmsService } from './wms.service';
 
 export const TOOLTIP_PADDING = 15;
 
@@ -153,7 +152,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   tooltipNumber = 0;
   STYLE_FROM_URL = '_url';
   NO_STYLE = 'none';
-  wmsCapabilities$: Observable<(GetCapabilitiesResponse | null)[]>;
+  wmsCapabilities$: Observable<{ [p: string]: GetCapabilitiesResponse | null } | undefined>;
   autoDatasetLayers$: Observable<MapAutoLayerOptions[]>;
 
   constructor(
@@ -166,8 +165,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     private symbolService: SymbolService,
     private injector: Injector,
     private widgetMapLayerService: WidgetMapLayerService,
-    el: ElementRef,
-    private wmsService: WmsService
+    el: ElementRef
   ) {
     super(store, el);
 
@@ -196,9 +194,13 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.selectedIds$ = this.store.select(DashboardSelectors.selectedItemIds);
 
     this.geoServerLayerDescriptions$ = combineLatest([
-      this.usedDatasources$.pipe(startWith([])),
-      this.store.select(ConfigSelectors.geoServerUrl).pipe(debounceTime(10), startWith(undefined))
+      this.usedDatasources$.pipe(
+        startWith([]),
+        distinctUntilChanged((p, c) => equal(p, c))
+      ),
+      this.store.select(ConfigSelectors.geoServerUrl).pipe(startWith(undefined))
     ]).pipe(
+      debounceTime(100),
       map(([dataSources, geoServerUrl]) => {
         if (!geoServerUrl) return [];
         return dataSources
@@ -221,7 +223,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
             };
           })
           .map((layer) => layer as MapGeoServerLayerOptions);
-      })
+      }),
+      distinctUntilChanged((p, c) => equal(p, c))
     );
 
     this.autoDatasetLayers$ = combineLatest([
@@ -257,24 +260,26 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       )
     );
 
-    this.wmsCapabilities$ = combineLatest([
-      this.manifest$.pipe(
-        map(
-          (manifest) =>
-            ((manifest.options ?? { layers: [] }) as MapWidgetOptions).layers?.filter((layer) =>
-              ['wms'].includes(layer.type)
-            ) as MapWMSLayerLayerOptions[]
+    this.subscriptions.add(
+      this.manifest$
+        .pipe(
+          map((manifest) =>
+            (
+              ((manifest.options ?? { layers: [] }) as MapWidgetOptions).layers?.filter((layer) =>
+                ['wms'].includes(layer.type)
+              ) as MapWMSLayerLayerOptions[]
+            ).map((layer) => layer.url)
+          )
         )
-      ),
-      this.geoServerLayerDescriptions$
-    ]).pipe(
-      map(([wmsLayers, geoServerLayerDescriptions]) => {
-        return [...wmsLayers, ...geoServerLayerDescriptions];
-      }),
-      distinctUntilChanged((p, c) => equal(p, c)),
-      switchMap((wmsLayers) => combineLatest(wmsLayers.map((layer) => wmsService.getCapabilities(layer)))),
-      startWith([])
+        .subscribe((urls) => urls.forEach((url) => this.store.dispatch(DashboardActions.getCapability({ url }))))
     );
+    this.subscriptions.add(
+      this.geoServerLayerDescriptions$
+        .pipe(map((layers) => layers.map((layer) => layer.url)))
+        .subscribe((urls) => urls.forEach((url) => this.store.dispatch(DashboardActions.getCapability({ url }))))
+    );
+
+    this.wmsCapabilities$ = this.store.select(DashboardSelectors.capabilities);
 
     this.options$ = combineLatest([
       this.manifest$,
@@ -283,7 +288,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       this.fields$,
       this.styles$,
       this.geoServerLayerDescriptions$,
-      this.wmsCapabilities$.pipe(startWith([])),
+      this.wmsCapabilities$,
       this.autoDatasetLayers$
     ]).pipe(
       map(([manifest, resultSet, classes, fields, mapStyles, geoLayers, capabilities, autoDatasetLayers]) => {
@@ -757,14 +762,17 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     });
   }
 
-  setDefaultLayerTitle(layer: MapWidgetLayerOptions, capabilities: (GetCapabilitiesResponse | null)[]) {
+  setDefaultLayerTitle(
+    layer: MapWidgetLayerOptions,
+    capabilities: { [p: string]: GetCapabilitiesResponse | null } | undefined
+  ) {
     if (!layer.title) {
       if (['geoserver', 'wms'].includes(layer.type)) {
         const geoLayer = layer as MapGeoServerLayerOptions | MapWMSLayerLayerOptions;
-        const layerCapabilities = capabilities.find((cap) => cap?.paramLayer === geoLayer.paramLayer);
+        const layerCapabilities = capabilities ? capabilities[geoLayer.url] : undefined;
 
         if (layerCapabilities) {
-          const matchingLayer = WmsService.getMatchingLayer(geoLayer.paramLayer, layerCapabilities.doc);
+          const matchingLayer = XMLUtils.getMatchingLayer(geoLayer.paramLayer, layerCapabilities.doc);
           if (matchingLayer) {
             const matchingTitle = XMLUtils.find(matchingLayer.childNodes, 'Title');
             if (matchingTitle) {

@@ -32,4 +32,24 @@ export class XMLUtils {
     }
     return null;
   }
+
+  static getMatchingLayer(paramLayer: string, doc: Document) {
+    const WMSCapability = XMLUtils.find(doc.childNodes, 'WMS_Capabilities');
+    if (WMSCapability) {
+      const Capabilities = XMLUtils.find(WMSCapability.childNodes, 'Capability');
+      if (Capabilities) {
+        const Layer = XMLUtils.find(Capabilities.childNodes, 'Layer');
+        if (Layer) {
+          let matchingLayer = XMLUtils.findWith(Layer.childNodes, 'Name', paramLayer);
+          const split = paramLayer.split(':');
+          if (!matchingLayer && split.length >= 2) {
+            // Try again, splitting on ":" in the name to ignore namespace if present
+            matchingLayer = XMLUtils.findWith(Layer.childNodes, 'Name', split[split.length - 1]);
+          }
+          return matchingLayer;
+        }
+      }
+    }
+    return null;
+  }
 }

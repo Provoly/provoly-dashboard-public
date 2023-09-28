@@ -21,6 +21,7 @@ import {
   DEFAULT_ROW_HEIGHT_PX,
   DEFAULT_ROWS_NUMBER
 } from './dashboard.contants';
+import { GetCapabilitiesResponse } from './wms.service';
 
 export const dashboardFeatureKey = '@pry/dashboard';
 
@@ -54,6 +55,7 @@ export interface DashboardState {
   };
   wmsFeatures: any[];
   display?: DisplayOptions;
+  capabilities: { [url: string]: GetCapabilitiesResponse | null };
 }
 
 export const dashboardInitialState: DashboardState = {
@@ -104,7 +106,8 @@ export const dashboardInitialState: DashboardState = {
     },
     editionMode: false
   },
-  wmsFeatures: []
+  wmsFeatures: [],
+  capabilities: {}
 };
 
 const internalReducer = createReducer<DashboardState>(
@@ -737,6 +740,15 @@ const internalReducer = createReducer<DashboardState>(
     return {
       ...state,
       display: action.customDisplay ? action.customDisplay : getDisplayOptions(action.mode)
+    };
+  }),
+  on(DashboardActions.updateCapability, (state, action) => {
+    return {
+      ...state,
+      capabilities: {
+        ...state.capabilities,
+        [action.url]: action.capability
+      }
     };
   })
 );

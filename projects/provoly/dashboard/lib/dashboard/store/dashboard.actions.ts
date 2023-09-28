@@ -14,6 +14,7 @@ import {
 import { Relation } from '../../core/model/relation.interface';
 import { OrderValue } from '../../core/model/result-order.interface';
 import { ResultSet, ResultSets } from '../../core/model/result-set.interface';
+import { GetCapabilitiesResponse } from './wms.service';
 
 export type DashboardCellParams = {
   gridWidth: number;
@@ -237,5 +238,10 @@ export const DashboardActions = {
   updateDisplayOptions: createAction(
     '[Dashboard/Display] Update displayed dashboard management features',
     props<{ mode: DisplayMode; customDisplay?: DisplayOptions }>()
+  ),
+  getCapability: createAction('[Widget map] Get Wms capability', props<{ url: string; force?: boolean }>()),
+  updateCapability: createAction(
+    '[Widget map] Store Wms capability',
+    props<{ url: string; capability: GetCapabilitiesResponse | null }>()
   )
 };

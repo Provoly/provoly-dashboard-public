@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { MapGeoServerLayerOptions, MapWMSLayerLayerOptions } from '@provoly/dashboard';
-import { GetCapabilitiesResponse, WmsService } from '../component/wms.service';
+import { GetCapabilitiesResponse, MapGeoServerLayerOptions, MapWMSLayerLayerOptions } from '@provoly/dashboard';
 import { XMLUtils } from '../utils/xml-utils.class';
 
 @Pipe({
@@ -13,11 +12,11 @@ export class WidgetMapLegendUrlPipe implements PipeTransform {
 
   transform(
     geoLayer: MapGeoServerLayerOptions | MapWMSLayerLayerOptions,
-    ...args: [{ capabilities: (GetCapabilitiesResponse | null)[] | null }]
+    ...args: [{ capabilities: { [p: string]: GetCapabilitiesResponse | null } | undefined | null }]
   ): string {
-    const capability = args[0].capabilities?.find((capa) => capa?.paramLayer === geoLayer.paramLayer);
+    const capability = (args[0].capabilities ?? {})[geoLayer.url];
     if (capability) {
-      const matchingLayer = WmsService.getMatchingLayer(geoLayer.paramLayer, capability.doc);
+      const matchingLayer = XMLUtils.getMatchingLayer(geoLayer.paramLayer, capability.doc);
       if (matchingLayer) {
         const matchingStyle = XMLUtils.find(matchingLayer.childNodes, 'Style');
         if (matchingStyle) {
