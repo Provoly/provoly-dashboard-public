@@ -14,6 +14,8 @@ export interface MapWidgetOptions {
   attributions?: boolean;
   tooltipMode?: TooltipMode;
   singleLayer?: boolean;
+  ignoreAutoLayer?: string[];
+  automaticLayers?: boolean;
 }
 
 export type MapWidgetLayerOptions =
@@ -26,6 +28,7 @@ export type MapWidgetLayerOptions =
   | MapVectorTileLayerOptions
   | MapRasterTileLayerOptions
   | MapGeoServerLayerOptions
+  | MapAutoLayerOptions
   | MapWMTSLayerLayerOptions
   | MapWidgetGeometryLayerOptions;
 
@@ -116,6 +119,15 @@ export interface MapGeoServerLayerOptions extends BaseWidgetMapLayerOptions {
   datasourceId: string;
   namespace: string;
   name: string;
+}
+
+export interface MapAutoLayerOptions extends BaseWidgetMapLayerOptions {
+  type: 'auto';
+  oClass: string;
+  key: string;
+  subType: string;
+  attribute: string;
+  classes?: string[];
 }
 
 export enum TooltipMode {

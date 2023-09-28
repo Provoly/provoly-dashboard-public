@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
   Attribute,
+  FieldType,
   ItemUtils,
+  MapAutoLayerOptions,
   MapFeatureLayerOptions,
   MapGeoServerLayerOptions,
   MapRasterTileLayerOptions,
@@ -92,9 +94,38 @@ export class WidgetMapLayerService {
   }
 
   dontNeedLocation = ['relation', 'wms', 'wmts', 'geoserver', 'featurelayer', 'vectortile', 'rastertile'];
-  dontNeedIntensity = [...this.dontNeedLocation, 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'];
+  dontNeedIntensity = [
+    ...this.dontNeedLocation,
+    'marker',
+    'point',
+    'line',
+    'polygon',
+    'multi-line',
+    'multi-polygon',
+    'auto'
+  ];
 
   layersImplementation = {
+    auto: (
+      layer: MapAutoLayerOptions,
+      attributesForClass: AttributesForClass,
+      layerClassesId: string[],
+      resultSet: ResultSet,
+      range: { min: number; max: number },
+      itemStyles: ItemStyles,
+      map: Map
+    ) => {
+      return this.layersImplementation[WidgetMapLayerService.translateFieldTypeToLayerType(layer.subType)](
+        // @ts-ignore
+        layer,
+        attributesForClass,
+        layerClassesId,
+        resultSet,
+        range,
+        itemStyles,
+        map
+      ) as BaseLayer;
+    },
     heatmap: (
       layer: MapWidgetHeatMapLayerOptions,
       attributesForClass: AttributesForClass,
@@ -508,5 +539,23 @@ export class WidgetMapLayerService {
     });
 
     return layer;
+  }
+
+  static translateFieldTypeToLayerType(subType: string) {
+    switch (subType) {
+      case FieldType.POINT:
+        return 'marker';
+      case FieldType.LINE:
+        return 'line';
+      case FieldType.POLYGON:
+        return 'polygon';
+      case FieldType.MULTILINE:
+        return 'multi-line';
+      case FieldType.MULTIPOLYGON:
+        return 'multi-polygon';
+      default:
+        console.warn(`wrong type ${subType} for auto options`);
+        return 'marker';
+    }
   }
 }

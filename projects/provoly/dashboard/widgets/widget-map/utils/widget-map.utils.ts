@@ -12,6 +12,7 @@ import {
   Relation,
   ResultSet
 } from '@provoly/dashboard';
+import { WidgetMapLayerService } from '@provoly/dashboard/widgets/widget-map';
 import { Feature, Map } from 'ol';
 import { Circle, LineString, Point } from 'ol/geom';
 import { Style } from 'ol/style';
@@ -30,7 +31,9 @@ export const populateLocationAttribute = (
   fields: Field[]
 ) => {
   if (
-    ['heatmap', 'marker', 'bubble', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].includes(layer.type) &&
+    ['heatmap', 'marker', 'bubble', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon', 'auto'].includes(
+      layer.type
+    ) &&
     !!resultSet &&
     !!classesNotFiltered &&
     classesNotFiltered.length > 0
@@ -65,9 +68,9 @@ export const populateLocationAttribute = (
         // We don't have any items to display, so allow all corresponding geometry fields
         candidates = classesNotFiltered
           .map((clazz) => clazz.attributes)
-          .reduce((p, c) => [...p, ...c], [])
-          .map((attr) => fields.filter((field) => field?.type === geometry).map((field) => ({ attr, field })))
-          .reduce((p, c) => [...p, ...c], []);
+          .flat()
+          .map((attr) => ({ attr, field: fields.find((field) => field.id === attr.field) }))
+          .filter(({ attr, field }) => field?.type === geometry);
       }
 
       if (candidates.length > 0) {
@@ -165,8 +168,10 @@ export const getLinkFeature = (
   return new Feature({
     ...relation,
     geometry: new LineString([
-      featureSource.getGeometry()?.getCoordinates() ?? [0, 0],
-      featureDestination.getGeometry()?.getCoordinates() ?? [0, 0]
+      // @ts-ignore
+      featureSource.getGeometry()?.getCoordinates() ?? featureSource.getGeometry()?.getCenter() ?? [0, 0],
+      // @ts-ignore
+      featureDestination.getGeometry()?.getCoordinates() ?? featureDestination.getGeometry()?.getCenter() ?? [0, 0]
     ]),
     source: featureSource,
     destination: featureDestination,
@@ -232,7 +237,7 @@ export const exportMapAsImage = (map: Map, filename: string) => {
   });
 };
 
-export const geometryForLayer = (layer: MapWidgetLayerOptions) => {
+export const geometryForLayer = (layer: MapWidgetLayerOptions): string => {
   switch (layer.type) {
     case 'marker':
     case 'heatmap':
@@ -247,6 +252,10 @@ export const geometryForLayer = (layer: MapWidgetLayerOptions) => {
       return FieldType.MULTILINE;
     case 'multi-polygon':
       return FieldType.MULTIPOLYGON;
+    case 'auto':
+      return geometryForLayer({
+        type: WidgetMapLayerService.translateFieldTypeToLayerType(layer.subType)
+      } as MapWidgetLayerOptions);
     default:
       return FieldType.POINT;
   }
@@ -258,4 +267,3 @@ export const DEFAULT_ZOOM_MIN = 3;
 export const DEFAULT_ZOOM_START = 10;
 export const DEFAULT_ZOOM_MAX = 18;
 export const DEFAULT_MAP_CENTER = [2.2827217347381525, 48.864706031557716];
-export const EMPTY_MAP_STYLE = { layers: [] };

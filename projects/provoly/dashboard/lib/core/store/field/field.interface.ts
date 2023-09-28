@@ -22,3 +22,13 @@ export interface Field {
   name: string;
   type: FieldType;
 }
+
+export const GeometricFieldTypes = [
+  FieldType.POINT,
+  FieldType.MULTIPOINT,
+  FieldType.LINE,
+  FieldType.MULTILINE,
+  FieldType.POLYGON,
+  FieldType.MULTIPOLYGON,
+  FieldType.GEOMETRYCOLLECTION
+] as string[];

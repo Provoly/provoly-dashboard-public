@@ -37,8 +37,9 @@ export class PryDatasetDetailComponent implements OnInit {
       type: 'map',
       layout: { x: 1, y: 1, height: 12, width: 12 },
       options: {
-        layers: [{ type: 'marker' }],
-        fit: true
+        layers: [],
+        fit: true,
+        automaticLayers: true
       },
       datasource: ['']
     }
@@ -52,6 +53,7 @@ export class PryDatasetDetailComponent implements OnInit {
   selectedDatasetVersion?: DatasetVersion;
   selectedMode: ViewMode = ViewMode.CONSULT;
   activeVersion$!: Observable<string | undefined>;
+
   constructor(private store: Store) {
     this.compId = nextCompId++;
   }

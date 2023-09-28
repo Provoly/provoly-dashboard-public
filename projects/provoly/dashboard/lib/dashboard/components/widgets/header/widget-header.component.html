@@ -13,7 +13,7 @@
         </ng-container>
         <h3 class="o-widget__header__content__query__name">{{ ds.name }}</h3>
         <h3 class="o-widget__header__content__query__name" *ngIf="displayCount && !isGeo(ds)">
-          ({{ (selectedDataSourceIds$ | async) ?? [] | resultSetSize | async }})
+          ({{ [ds.id] | resultSetSize | async }})
         </h3>
       </div>
       <div *ngIf="((usedDatasources$ | async) ?? []).length === 0" class="o-widget__header__content__no-data">

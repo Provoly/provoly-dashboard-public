@@ -45,28 +45,18 @@ const routes: Routes = [
               tooltipMode: TooltipMode.CLICK,
               layers: [
                 {
-                  type: 'marker',
-                  attribute: 'location',
-                  classes: []
+                  type: 'marker'
                 },
                 {
-                  type: 'marker',
-                  attribute: 'location-auto',
-                  classes: []
+                  type: 'marker'
                 },
                 {
-                  active: true,
                   type: 'heatmap',
-                  intensityAttribute: 'temperature_en_degre_c',
-                  intensityAsc: true,
                   classes: ['17b90da3-f448-4cc3-bfd8-74c8b8481590']
                 },
                 {
-                  active: true,
                   type: 'bubble',
                   classes: ['06406e7e-37cd-41ce-b5fc-36d233e5ae5c'],
-                  intensityAttribute: 'latitude',
-                  intensityAsc: true,
                   opacity: 50
                 },
                 {

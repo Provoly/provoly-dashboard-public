@@ -90,6 +90,7 @@ export const enTranslations = {
       heatmap: 'Heatmap',
       bubblemap: 'Bubbles',
       markermap: 'Markers',
+      simplemap: 'Map',
       map: 'Map',
       table: 'Table',
       detail: 'Detail',

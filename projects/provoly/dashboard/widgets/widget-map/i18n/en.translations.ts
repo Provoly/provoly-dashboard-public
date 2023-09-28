@@ -73,7 +73,8 @@ export const enTranslations = {
         legendNotProvided: 'Legend not provided by server',
         selectLayers: 'Select layers',
         legends: 'Display legend',
-        singleLayer: 'Single layer mode'
+        singleLayer: 'Single layer mode',
+        autoLayer: 'Automatic datasource layers configuration'
       }
     }
   }

@@ -14,6 +14,7 @@ describe('WidgetMapLayerService', () => {
 
   it('should show all implementations', () => {
     expect(service.implementationList).toEqual([
+      'auto',
       'heatmap',
       'marker',
       'point',

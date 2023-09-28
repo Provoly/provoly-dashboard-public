@@ -47,6 +47,10 @@
         {{ '@pry.widget.map.singleLayer' | i18n }}
       </pry-checkbox>
 
+      <pry-checkbox (ngModelChange)="changeAutoLayer($event)" [ngModel]="optionsCopy.automaticLayers ?? false">
+        {{ '@pry.widget.map.autoLayer' | i18n }}
+      </pry-checkbox>
+
       <pry-checkbox (ngModelChange)="changeFit($event)" [ngModel]="optionsCopy.fit ?? false">
         {{ '@pry.widget.map.fit' | i18n }}
       </pry-checkbox>
@@ -104,7 +108,7 @@
               />
             </div>
 
-            <div class="m-form-label-field" *ngIf="layer.type !== 'geoserver'">
+            <div class="m-form-label-field" *ngIf="!['geoserver', 'auto'].includes(layer.type)">
               <label class="a-label" for="map_layerType">{{ '@pry.widget.map.layerType.title' | i18n }}</label>
               <pry-select
                 (ngModelChange)="changeLayerType($event, i)"
@@ -127,7 +131,8 @@
                 layer.type !== 'geoserver' &&
                 layer.type !== 'featurelayer' &&
                 layer.type !== 'vectortile' &&
-                layer.type !== 'rastertile'
+                layer.type !== 'rastertile' &&
+                layer.type !== 'auto'
               "
               class="m-form-label-field"
             >
@@ -302,7 +307,7 @@
 
         <button
           type="button"
-          (click)="deleteLayer(i)"
+          (click)="deleteLayer(i, layer)"
           class="a-btn a-btn--icon-text -link-like"
           *ngIf="layer.type !== 'geoserver'"
           data-func="delete"

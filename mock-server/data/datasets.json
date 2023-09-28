@@ -87,7 +87,7 @@
   },
   {
     "id": "s6406e7e-37cd-41ce-b5fc-36d233e6ae5c",
-    "name": "CKDo:NappePhréatique",
+    "name": "CKDo:EquipementsPublics",
     "oClass": "123456789-69a6-474e-8f46-7cc8796ed151",
     "type": "OPEN",
     "metadata": [
@@ -105,7 +105,7 @@
           "name": "_geoKey",
           "type": "string"
         },
-        "value": "NappePhréatique"
+        "value": "EquipementsPublics"
       },
       {
         "metadataDef": {
@@ -148,5 +148,12 @@
         "value": "100"
       }
     ]
+  },
+  {
+    "id": "geospe-cifi-cdat-acd2-51ccec998307",
+    "name": "Geodata",
+    "oClass": "44444444-69a6-474e-8f46-7cc8796ed151",
+    "type": "OPEN",
+    "metadata": []
   }
 ]

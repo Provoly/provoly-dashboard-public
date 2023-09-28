@@ -5,7 +5,8 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Input, OnInit,
+  Input,
+  OnInit,
   Output,
   TemplateRef,
   ViewChild,
@@ -24,6 +25,7 @@ import {
   switchMap
 } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { DisplayMode, DisplayOptions } from '../../core/model/display-options.interface';
 import {
   DashboardGridLayout,
   DashboardManifest,
@@ -50,7 +52,6 @@ import { DashboardSelectors } from '../store/dashboard.selectors';
 import { solveCollisions } from './solve-collisions.function';
 import { SubscriptionnerDirective } from './subscriptionner.directive';
 import { BaseWidgetComponent } from './widgets/base-widget.component';
-import { DisplayMode, DisplayOptions } from '../../core/model/display-options.interface';
 
 export const MIME_TYPE_WIDGET_MANIFEST = 'application/widget-manifest';
 export const MIME_TYPE_WIDGET_TYPE = 'application/widget-type-';
@@ -140,7 +141,6 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
     this.windowManifest$ = this.store.select(DashboardSelectors.windowManifest).pipe(
       combineLatestWith(this.staticDashboard$),
       switchMap(([windowManifest, staticDashboard]) => (!staticDashboard ? of(windowManifest) : of(staticDashboard))),
-      distinctUntilChanged((p, c) => equal(p, c)),
       map((_wManifest) => {
         const wManifest = JSON.parse(JSON.stringify(_wManifest));
         if (wManifest.grid?.layout && wManifest.grid.layout !== DashboardGridLayout.MANUAL) {
@@ -169,7 +169,8 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
           }
         }
         return wManifest;
-      })
+      }),
+      distinctUntilChanged((p, c) => equal(p, c))
     );
     this.nonFillerWidgets$ = this.windowManifest$.pipe(
       map((wManifest) => wManifest.widgets.filter((w) => w.type !== 'filler').length)
@@ -758,7 +759,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
   }
 
   trackWidgets(index: number, widgetManifest: WidgetManifest) {
-    return widgetManifest.type + '-' + widgetManifest.datasource;
+    return index + '-' + widgetManifest.type + '-' + JSON.stringify(widgetManifest.layout);
   }
 
   updateInstance(widgetIndex: number, $event: BaseWidgetComponent) {

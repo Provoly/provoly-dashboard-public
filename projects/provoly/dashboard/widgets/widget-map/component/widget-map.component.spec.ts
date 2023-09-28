@@ -197,7 +197,6 @@ describe('WidgetMapComponent', () => {
             }
           ],
           fit: true,
-          relations: true,
           tooltipMode: TooltipMode.CLICK
         }
       })
@@ -216,7 +215,6 @@ describe('WidgetMapComponent', () => {
           }
         ],
         fit: true,
-        relations: true,
         tooltipMode: TooltipMode.CLICK
       });
     });
@@ -241,7 +239,6 @@ describe('WidgetMapComponent', () => {
             }
           ],
           fit: true,
-          relations: true,
           tooltipMode: TooltipMode.CLICK
         }
       })
@@ -258,7 +255,6 @@ describe('WidgetMapComponent', () => {
           }
         ],
         fit: true,
-        relations: true,
         tooltipMode: TooltipMode.CLICK
       });
     });
@@ -285,7 +281,6 @@ describe('WidgetMapComponent', () => {
             }
           ],
           fit: true,
-          relations: true,
           tooltipMode: TooltipMode.CLICK
         }
       })
@@ -304,7 +299,6 @@ describe('WidgetMapComponent', () => {
           }
         ],
         fit: true,
-        relations: true,
         tooltipMode: TooltipMode.CLICK
       });
     });
@@ -336,8 +330,7 @@ describe('WidgetMapComponent', () => {
               type: 'heatmap',
               title: '@pry.widget.map.layerType.heatmap'
             }
-          ],
-          relations: true
+          ]
         } as WidgetOptions,
         datasource: 'rs',
         type: 'map'
@@ -371,7 +364,7 @@ describe('WidgetMapComponent', () => {
 
   it('should allow deleting a layer', () => {
     expect(component.optionsCopy.layers?.length).toEqual(4);
-    component.deleteLayer(0);
+    component.deleteLayer(0, component.optionsCopy.layers![0]);
     expect(component.optionsCopy.layers?.length).toEqual(3);
   });
 

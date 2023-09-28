@@ -90,6 +90,7 @@ export const frTranslations = {
       heatmap: 'Fréquentation',
       bubblemap: 'Bulles',
       markermap: 'Marqueurs',
+      simplemap: 'Carte',
       map: 'Carte',
       table: 'Tableau',
       detail: 'Détail',

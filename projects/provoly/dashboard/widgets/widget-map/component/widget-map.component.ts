@@ -26,7 +26,9 @@ import {
   Field,
   FieldSelectors,
   GeoMetadata,
+  GeometricFieldTypes,
   ItemUtils,
+  MapAutoLayerOptions,
   MapFeatureLayerOptions,
   MapGeoServerLayerOptions,
   MapRasterTileLayerOptions,
@@ -152,6 +154,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   STYLE_FROM_URL = '_url';
   NO_STYLE = 'none';
   wmsCapabilities$: Observable<(GetCapabilitiesResponse | null)[]>;
+  autoDatasetLayers$: Observable<MapAutoLayerOptions[]>;
 
   constructor(
     store: Store<any>,
@@ -221,6 +224,39 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       })
     );
 
+    this.autoDatasetLayers$ = combineLatest([
+      this.classes$,
+      this.fields$,
+      this.usedDatasources$.pipe(
+        startWith([]),
+        map((datasources) => datasources.filter((ds) => ds.sourceType === 'dataset') as Dataset[])
+      )
+    ]).pipe(
+      map(
+        ([classes, fields, dataSets]) =>
+          dataSets
+            .map((ds) => {
+              const model = classes.find((clazz) => clazz.id === ds.oClass);
+              const geoAttributes = (
+                model?.attributes.map((attr) => ({ attr, field: fields.find((f) => attr.field === f.id) })) ?? []
+              ).filter(({ attr, field }) => !!field && GeometricFieldTypes.includes(field.type));
+              return geoAttributes.map(
+                (geo) =>
+                  ({
+                    type: 'auto',
+                    title: `${ds.name} - ${geo.attr.name} (${geo.field!.type})`,
+                    oClass: ds.oClass,
+                    key: ds.id,
+                    subType: geo.field!.type,
+                    classes: [ds.oClass],
+                    attribute: geo.attr.name
+                  } as MapAutoLayerOptions)
+              );
+            })
+            .flat() as MapAutoLayerOptions[]
+      )
+    );
+
     this.wmsCapabilities$ = combineLatest([
       this.manifest$.pipe(
         map(
@@ -247,14 +283,35 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       this.fields$,
       this.styles$,
       this.geoServerLayerDescriptions$,
-      this.wmsCapabilities$.pipe(startWith([]))
+      this.wmsCapabilities$.pipe(startWith([])),
+      this.autoDatasetLayers$
     ]).pipe(
-      map(([manifest, resultSet, classes, fields, mapStyles, geoLayers, capabilities]) => {
+      map(([manifest, resultSet, classes, fields, mapStyles, geoLayers, capabilities, autoDatasetLayers]) => {
         // auto determine layers parameters to provide a working view
-        const autoOptions = JSON.parse(JSON.stringify({ relations: true, ...manifest.options })) as MapWidgetOptions;
+        const autoOptions = JSON.parse(JSON.stringify(manifest.options)) as MapWidgetOptions;
         if (!autoOptions.tooltipMode) {
           autoOptions.tooltipMode = TooltipMode.CLICK;
         }
+
+        autoOptions.layers = [
+          ...(autoOptions.layers ?? []).filter((layer) => layer.type !== 'auto'),
+          ...(autoOptions.automaticLayers
+            ? autoDatasetLayers
+                .filter(
+                  (layer) =>
+                    !autoOptions.ignoreAutoLayer ||
+                    !autoOptions.ignoreAutoLayer.includes(layer.key + '-' + layer.subType)
+                )
+                .map((layer) => ({
+                  ...layer,
+                  ...((autoOptions.layers ?? []).find(
+                    // @ts-ignore
+                    (prevLayer) => prevLayer.key === layer.key && prevLayer.attribute === layer.attribute
+                  ) ?? {})
+                }))
+            : [])
+        ];
+
         autoOptions.layers?.forEach((layer, i) => {
           populateLocationAttribute(layer, resultSet, classes, fields);
           populateIntensityAttribute(layer, resultSet, classes, fields);
@@ -292,6 +349,24 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           const lightStyles = mapStyles.filter((style) => !(style.identifier ?? '-').includes('dark'));
           autoOptions.style = lightStyles.length > 0 ? lightStyles[0].identifier : mapStyles[0].identifier;
         }
+
+        if (autoOptions.ignoreAutoLayer) {
+          const base = autoOptions.ignoreAutoLayer;
+
+          // Remove from ignoreAutoLayers, values that are not necessary
+          const possibleIgnoreAutoLayerKeys = autoDatasetLayers.map((layer) => layer.key + '-' + layer.subType);
+          autoOptions.ignoreAutoLayer = (autoOptions.ignoreAutoLayer ?? []).filter((key) =>
+            possibleIgnoreAutoLayerKeys.includes(key)
+          );
+          if (autoOptions.ignoreAutoLayer.length === 0) {
+            delete autoOptions.ignoreAutoLayer;
+          }
+
+          if (!autoOptions.ignoreAutoLayer || base.length !== autoOptions.ignoreAutoLayer.length) {
+            this.emitManifest();
+          }
+        }
+
         return autoOptions;
       }),
       distinctUntilChanged((p, c) => equal(p, c))
@@ -693,7 +768,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           if (matchingLayer) {
             const matchingTitle = XMLUtils.find(matchingLayer.childNodes, 'Title');
             if (matchingTitle) {
-              layer.title = matchingTitle.textContent ?? undefined;
+              layer.title =
+                !!matchingTitle.textContent && matchingTitle.textContent.length > 0
+                  ? matchingTitle.textContent
+                  : undefined;
             }
           }
         }
@@ -877,8 +955,11 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     specificLayer.classes = $event;
   }
 
-  deleteLayer(i: number) {
+  deleteLayer(i: number, layer: MapWidgetLayerOptions) {
     this.optionsCopy?.layers?.splice(i, 1);
+    if (layer.type === 'auto') {
+      this.optionsCopy.ignoreAutoLayer = [...(this.optionsCopy.ignoreAutoLayer ?? []), layer.key + '-' + layer.subType];
+    }
   }
 
   invertLayers(idx: number, idxWith: number) {
@@ -1065,6 +1146,13 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   changeSingleLayer($event: any) {
     this.optionsCopy.singleLayer = $event;
+  }
+
+  changeAutoLayer($event: any) {
+    this.optionsCopy.automaticLayers = $event;
+    if (!this.optionsCopy.automaticLayers) {
+      delete this.optionsCopy.ignoreAutoLayer;
+    }
   }
 
   get layerVisibleIdx() {

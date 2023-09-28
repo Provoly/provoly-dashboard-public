@@ -73,7 +73,8 @@ export const frTranslations = {
         legendNotProvided: 'Légende non fournie par le serveur',
         selectLayers: 'Sélectionner les couches',
         legends: 'Afficher la légende',
-        singleLayer: 'Mode mono-couche'
+        singleLayer: 'Mode mono-couche',
+        autoLayer: 'Configuration automatique des sources de données'
       }
     }
   }

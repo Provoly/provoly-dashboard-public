@@ -562,6 +562,18 @@
         "multiValued": false
       },
       {
+        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08trajet",
+        "name": "multi-trajet",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-trajetM",
+        "multiValued": false
+      },
+      {
+        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08point",
+        "name": "position",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-point",
+        "multiValued": false
+      },
+      {
         "id": "347f6eca-6276-4993-bfeb-53cbbbba6f08zonei",
         "name": "velos_disponibles",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-velos_disponibles",

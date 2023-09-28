@@ -35,6 +35,7 @@ export const defaultMenuStructure: WidgetDescriptionMenu[] = [
     label: '@pry.toolbox.sub.map',
     opened: false,
     sub: [
+      { icon: 'map', label: '@pry.toolbox.simplemap', type: 'simplemap' },
       { icon: 'bubble-chart-line', label: '@pry.toolbox.heatmap', type: 'heatmap' },
       { icon: 'bulles', label: '@pry.toolbox.bubblemap', type: 'bubblemap' },
       { icon: 'place', label: '@pry.toolbox.markermap', type: 'markermap' }
@@ -112,7 +113,7 @@ export class ToolboxMenuService {
                 sub: menu.sub
                   .filter((sub) => reference[this.toolboxManifestService.get(sub.type).type])
                   .map((entry) => ({ ...entry, icon: 'assets/svgs/' + entry.icon + '.svg' })) as CatalogEntry[]
-              }) as WidgetDescriptionMenu
+              } as WidgetDescriptionMenu)
           )
           // User defined widget configurations
           .concat({

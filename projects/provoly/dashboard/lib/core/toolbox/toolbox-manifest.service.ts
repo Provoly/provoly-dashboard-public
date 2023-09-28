@@ -17,6 +17,22 @@ export const USE_CURRENT_RESULTSET = 'use-current-resultset';
 })
 export class ToolboxManifestService extends SubscriptionnerDirective {
   initialManifests$ = new BehaviorSubject<{ [key: string]: WidgetManifest }>({
+    simplemap: {
+      type: 'map',
+      layout: {
+        x: 1,
+        y: 1,
+        height: 2,
+        width: 3
+      },
+      options: {
+        fit: true,
+        automaticLayers: true,
+        layers: [],
+        tooltipMode: TooltipMode.CLICK
+      },
+      datasource: USE_CURRENT_RESULTSET
+    },
     heatmap: {
       type: 'map',
       layout: {
