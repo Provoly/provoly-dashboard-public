@@ -11,21 +11,23 @@ import { PryImportRoutingModule } from './import-routing.module';
 import { ImportEffects } from './store/import.effects';
 import { importFeatureKey, importReducer } from './store/import.reducer';
 import { PryImportCssComponent } from './style/css.component';
+import {PryCheckboxModule} from "@provoly/dashboard/components/checkbox";
 
 @NgModule({
   providers: [DatePipe],
   declarations: [PryImportComponent, PryImportCssComponent],
-  imports: [
-    PryCoreModule,
-    PrySelectModule,
-    PryI18nModule,
-    CommonModule,
-    PryIconModule,
-    FormsModule,
-    PryImportRoutingModule,
-    StoreModule.forFeature(importFeatureKey, importReducer),
-    EffectsModule.forFeature([ImportEffects])
-  ],
+    imports: [
+        PryCoreModule,
+        PrySelectModule,
+        PryI18nModule,
+        CommonModule,
+        PryIconModule,
+        FormsModule,
+        PryImportRoutingModule,
+        StoreModule.forFeature(importFeatureKey, importReducer),
+        EffectsModule.forFeature([ImportEffects]),
+        PryCheckboxModule
+    ],
   exports: [PryImportComponent]
 })
 export class PryImportModule {

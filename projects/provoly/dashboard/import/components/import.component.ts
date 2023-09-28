@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Dataset, DatasetVersion, DataSourceActions, DataSourceSelectors, PryDatasetType } from '@provoly/dashboard';
+import { Dataset, DataSourceActions, DataSourceSelectors, PryDatasetType } from '@provoly/dashboard';
 import { map, Observable } from 'rxjs';
 import { ImportActions } from '../store/import.actions';
 import { ImportSelectors } from '../store/import.selectors';
@@ -17,6 +17,7 @@ export class PryImportComponent implements OnDestroy {
   datasetSelected?: string;
   selectedFileType: FileExtension = 'csv';
   loading$: Observable<boolean>;
+  normalizeGeoShape = false;
   fileTypes: { label: string; value: FileExtension }[] = [
     {
       label: 'Csv',
@@ -65,7 +66,12 @@ export class PryImportComponent implements OnDestroy {
   submit() {
     if (this.file && this.datasetSelected && this.selectedFileType) {
       this.store.dispatch(
-        ImportActions.upload({ file: this.file, dataset: this.datasetSelected, fileType: this.selectedFileType })
+        ImportActions.upload({
+          file: this.file,
+          dataset: this.datasetSelected,
+          fileType: this.selectedFileType,
+          normalizeGeo: this.normalizeGeoShape
+        })
       );
       this.showMessage = true;
       this.file = undefined;

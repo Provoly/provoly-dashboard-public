@@ -19,7 +19,7 @@
           ></pry-select>
         </div>
         <label class="a-h3" for="upload_input">
-          {{ ('@pry.import.uploadTitle' + selectedFileType | i18n) }}
+          {{ '@pry.import.uploadTitle' + selectedFileType | i18n }}
         </label>
         <div class="o-file-input">
           <div *ngIf="file" class="o-import__container__input__file">
@@ -49,6 +49,7 @@
           bindLabel="name"
         ></pry-select>
       </div>
+      <pry-checkbox [(ngModel)]="normalizeGeoShape">{{ '@pry.import.normalize' | i18n }}</pry-checkbox>
       <div class="o-import__container__input__actions">
         <button class="a-btn a-btn--primary" (click)="submit()" [disabled]="isSubmitDisabled()">
           {{ '@pry.import.import' | i18n }}

@@ -10,7 +10,7 @@ import { mergeMap } from 'rxjs';
 export class ImportService {
   constructor(private httpClient: HttpClient, private store: Store<any>) {}
 
-  upload(file: File, datasetId: string, fileType: string) {
+  upload(file: File, datasetId: string, fileType: string, normalizeGeo: boolean = false) {
     const formData = new FormData();
     let mimeType = '';
 
@@ -20,6 +20,7 @@ export class ImportService {
       mimeType = 'application/shp';
     }
     formData.append('file', new Blob([file], { type: mimeType }), file.name);
+    formData.append('normalizeGeo', normalizeGeo.toString());
 
     return this.store.select(ConfigSelectors.dataUrl).pipe(
       mergeMap((url) =>

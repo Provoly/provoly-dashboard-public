@@ -12,7 +12,7 @@ export class ImportEffects {
     this.actions$.pipe(
       ofType(ImportActions.upload),
       mergeMap((action) =>
-        this.service.upload(action.file, action.dataset, action.fileType).pipe(
+        this.service.upload(action.file, action.dataset, action.fileType, action.normalizeGeo).pipe(
           map((uploadedDataset) => {
             return ImportActions.uploadSuccess({ uploadedDataset: uploadedDataset });
           }),

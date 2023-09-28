@@ -24,7 +24,8 @@ export const enTranslations = {
           'The number of columns in the file does not match the number of attributes in the chosen dataset',
         CAST: 'Value {{name}} could not be casted to type "{{type}}"',
         ELASTIC_SEARCH: 'Elastic Search error: {{elasticError}}'
-      }
+      },
+      normalize: 'Standardize geographic shapes'
     }
   }
 };

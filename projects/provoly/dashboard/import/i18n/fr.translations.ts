@@ -26,7 +26,8 @@ export const frTranslations = {
           "Le nombre des colonnes dans le fichier fourni ne correspond pas au nombre d'attributs dans le jeu de données choisi",
         CAST: "La valeur «\u00A0{{name}}\u00A0», n'a pas pu être convertie en type «\u00A0{{type}}\u00A0»,",
         ELASTIC_SEARCH: 'Elastic Search stack trace error: {{elasticError}}'
-      }
+      },
+      normalize: 'Normaliser les formes géographiques'
     }
   }
 };
