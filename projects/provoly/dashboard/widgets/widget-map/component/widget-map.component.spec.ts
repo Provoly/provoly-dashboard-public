@@ -22,7 +22,6 @@ import {
 } from '@provoly/dashboard';
 import { MockNgModelDirective } from '@provoly/dashboard/mock/directive/mock-ng-model.directive';
 import { MockPryTooltipDirective } from '@provoly/dashboard/mock/directive/mock-pry-tooltip.directive';
-import { WmsService } from '@provoly/dashboard/widgets/widget-map';
 import { hot } from 'jest-marbles';
 import { of } from 'rxjs';
 import { MockPryIconComponent } from '../../../mock/components/mock-pry-icon.component';
@@ -37,6 +36,7 @@ import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 import { mapUtilsData } from '../utils/widget-map.utils.spec';
 
 import { WidgetMapComponent } from './widget-map.component';
+import { WmsService } from './wms.service';
 
 describe('WidgetMapComponent', () => {
   let component: WidgetMapComponent;

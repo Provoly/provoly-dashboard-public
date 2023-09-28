@@ -1,5 +1,5 @@
-import { WidgetMapLayerService } from '@provoly/dashboard/widgets/widget-map';
 import { Map } from 'ol';
+import { WidgetMapLayerService } from './widget-map-layer.service';
 
 describe('WidgetMapLayerService', () => {
   let service: WidgetMapLayerService;

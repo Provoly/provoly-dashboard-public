@@ -12,10 +12,10 @@ import {
   Relation,
   ResultSet
 } from '@provoly/dashboard';
-import { WidgetMapLayerService } from '@provoly/dashboard/widgets/widget-map';
 import { Feature, Map } from 'ol';
 import { Circle, LineString, Point } from 'ol/geom';
 import { Style } from 'ol/style';
+import { WidgetMapLayerService } from '../component/widget-map-layer.service';
 
 export type LatLonCandidate = {
   min: number;
