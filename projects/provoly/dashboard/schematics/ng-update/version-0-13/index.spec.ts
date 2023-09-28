@@ -170,4 +170,16 @@ describe(schematicName, () => {
     expect(actual).not.toMatch(/DatasetMetadata/);
     expect(actual).toMatch(/MetadataValue/);
   });
+
+  it(`should remove obsolete dependencies`, async () => {
+    if (tree.exists('/package.json')) {
+      await runner.runSchematic('migration-v0.13', {}, tree);
+      const actual = tree.readContent('/package.json');
+      expect(actual).not.toMatch(/ol-layerswitcher/);
+      expect(actual).not.toMatch(/geojson-to-kml/);
+      expect(actual).not.toMatch(/jszip/);
+      expect(actual).not.toMatch(/shpjs/);
+      expect(actual).not.toMatch(/@types\/shpjs/);
+    }
+  });
 });
