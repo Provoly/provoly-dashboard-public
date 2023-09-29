@@ -13,5 +13,12 @@ jobs:
         uses: actions/checkout@v3
       - name: Export sonar URL
         run: export SONAR_HOST_URL=$SONAR_URL
+      - name: Running Tests & coverage
+        run: npm run test:lib:coverage:ci
       - name: Analysis
         run: sonar-scanner -Dsonar.login=$SONAR_ADMIN_TOKEN
+      - name: Upload coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report
+          path: coverage/**
