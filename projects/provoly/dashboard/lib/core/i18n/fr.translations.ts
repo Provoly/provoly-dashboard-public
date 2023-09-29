@@ -221,7 +221,8 @@ export const frTranslations = {
       upload: 'Ajouter une image',
       next: 'Suivant',
       back: 'Retour',
-      filterByType: 'Filtrer par type'
+      filterByType: 'Filtrer par type',
+      editMetadata: 'Modifier la métadonnée'
     },
     snack: {
       default: 'Vega a rencontré une erreur en utilisant vos données et paramétrage.',

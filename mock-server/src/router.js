@@ -752,6 +752,20 @@ router.on('DELETE', '/ref/users/me/dashboards/id/:id', (req, res, params) => {
   makeResponseOk(res);
 });
 
+router.on(
+  ['OPTIONS', 'PUT'],
+  '/ref/users/me/dashboards/id/:presentationId/metadata/id/:metadataId',
+  (req, res, params) => {
+    readPayload(req).then((payload) => {
+      makeResponseOk(res);
+    });
+  }
+);
+
+router.on(['DELETE'], '/ref/users/me/dashboards/id/:presentationId/metadata/id/:metadataId', (req, res, params) => {
+  makeResponseOk(res);
+});
+
 router.on(['OPTIONS', 'POST'], '/monitor/replicas/:any?', (req, res, params) => {
   makeResponseOk(res);
 });

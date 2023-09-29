@@ -14,6 +14,7 @@ import {
   ViewMode
 } from '@provoly/dashboard';
 import { combineLatest, debounceTime, Observable, take } from 'rxjs';
+import { MetadataActions, MetaEventType } from '@provoly/dashboard/components/metadata-editor';
 
 @Component({
   selector: 'pry-add-edit-presentation',
@@ -32,6 +33,7 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
 
   constructor(private store: Store, @Optional() protected router: Router) {
     super();
+    this.store.dispatch(MetadataActions.loadMetadata());
     this.store.dispatch(DashboardActions.setGridLayout({ layout: DashboardGridLayout.FULL }));
     this.staticManifest$ = this.store.select(DashboardSelectors.staticManifest);
     combineLatest([this.staticManifest$, this.store.select(DashboardSelectors.gridLayout)]).subscribe(
@@ -136,6 +138,25 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
           this.router?.navigateByUrl(this.editionStartUrl);
         });
     }
+  }
+
+  addMetadata(metadata: MetaEventType) {
+    this.store.dispatch(
+      DashboardActions.addManifestMetadata({
+        presentationId: this.selectedPresentation.id,
+        metadataId: metadata.metadataId,
+        value: metadata.value ?? ''
+      })
+    );
+  }
+
+  removeMetadata(metadata: MetaEventType) {
+    this.store.dispatch(
+      DashboardActions.deleteManifestMetadata({
+        presentationId: this.selectedPresentation.id,
+        metadataId: metadata.metadataId
+      })
+    );
   }
 
   close() {

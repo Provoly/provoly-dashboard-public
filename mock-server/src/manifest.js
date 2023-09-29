@@ -8,6 +8,8 @@ const manifests = JSON.parse(fs.readFileSync('./data/manifests.json', 'utf8')).m
   return manifest;
 });
 
+const metadatas = JSON.parse(fs.readFileSync('./data/metadatas.json', 'utf8'));
+
 let defaultManifest = '--no--default--manifest';
 
 module.exports = {
@@ -32,6 +34,16 @@ module.exports = {
               .flat(3)
               .filter((dataset) => !!dataset)
           )
+        ],
+        metadata: [
+          {
+            metadataDef: {
+              ...metadatas.find((metadata) => metadata.name === '_theme')
+            },
+            value: metadatas.find((metadata) => metadata.name === '_theme').allowedValues[
+              casual.integer(0, metadatas.find((metadata) => metadata.name === '_theme').allowedValues.length - 1)
+            ]
+          }
         ]
       };
     });

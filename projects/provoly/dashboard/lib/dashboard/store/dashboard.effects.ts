@@ -709,6 +709,28 @@ export class DashboardEffects {
     )
   );
 
+  addManifestMetadata = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DashboardActions.addManifestMetadata),
+      mergeMap((action) =>
+        this.manifestService
+          .addMetadata(action.presentationId, action.metadataId, action.value)
+          .pipe(map(() => DashboardActions.fetchManifestsList()))
+      )
+    )
+  );
+
+  deleteManifestMetadata = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DashboardActions.deleteManifestMetadata),
+      mergeMap((action) =>
+        this.manifestService
+          .deleteMetadata(action.presentationId, action.metadataId)
+          .pipe(map(() => DashboardActions.fetchManifestsList()))
+      )
+    )
+  );
+
   constructor(
     private dashboardInitService: DashboardInitService,
     private actions$: Actions,

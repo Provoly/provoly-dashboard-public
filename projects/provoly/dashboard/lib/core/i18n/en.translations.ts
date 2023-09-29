@@ -218,7 +218,8 @@ export const enTranslations = {
       upload: 'Add image',
       next: 'Next',
       back: 'Back',
-      filterByType: 'Filter by type'
+      filterByType: 'Filter by type',
+      editMetadata: 'Edit metadata'
     },
     snack: {
       default: 'Vega encountered an error using your data and settings.',

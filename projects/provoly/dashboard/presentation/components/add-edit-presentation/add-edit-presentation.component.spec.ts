@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { DashboardActions, DashboardSelectors } from '@provoly/dashboard';
+import { DashboardActions, DashboardSelectors, ManifestDescription } from '@provoly/dashboard';
 import { MockPryCheckboxComponent } from '@provoly/dashboard/mock/components/mock-pry-checkbox.component';
 import { MockPrySelectGridLayoutComponent } from '@provoly/dashboard/mock/components/mock-pry-select-grid-layout.component';
 import { MockPrySelectImageComponent } from '@provoly/dashboard/mock/components/mock-pry-select-image.component';
@@ -13,6 +13,7 @@ import { MockPryUploadComponent } from '../../../mock/components/mock-pry-upload
 import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 import { PryAddEditPresentationComponent } from './add-edit-presentation.component';
+import { MockPryMetadataEditorComponent } from '@provoly/dashboard/mock/components/mock-pry-metadata-editor.component';
 
 describe('PryAddEditPresentationComponent', () => {
   let component: PryAddEditPresentationComponent;
@@ -32,7 +33,8 @@ describe('PryAddEditPresentationComponent', () => {
         MockI18nPipe,
         MockPrySelectImageComponent,
         MockPrySelectGridLayoutComponent,
-        MockPryCheckboxComponent
+        MockPryCheckboxComponent,
+        MockPryMetadataEditorComponent
       ],
       providers: [
         provideMockStore({
@@ -68,6 +70,16 @@ describe('PryAddEditPresentationComponent', () => {
     fixture = TestBed.createComponent(PryAddEditPresentationComponent);
     store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
+    component.selectedPresentation = {
+      id: '1',
+      name: 'test',
+      description: 'test descr',
+      cover: false,
+      manifestUrl: '/dashboard/manifest/test',
+      creationDate: '2022-01-01',
+      modificationDate: '2022-01-01',
+      default: false
+    } as ManifestDescription;
     fixture.detectChanges();
   });
 
@@ -76,6 +88,7 @@ describe('PryAddEditPresentationComponent', () => {
   });
 
   it('should dispatch save action on submit', () => {
+    component.selectedPresentation = {} as ManifestDescription;
     fixture.detectChanges();
     let date = '2020-01-01T10:10:00';
     jest.useFakeTimers().setSystemTime(new Date(date));

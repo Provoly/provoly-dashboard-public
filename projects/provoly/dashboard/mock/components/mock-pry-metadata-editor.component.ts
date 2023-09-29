@@ -1,9 +1,14 @@
 // noinspection AngularMissingOrInvalidDeclarationInModule
 
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'pry-metadata-editor',
   template: '<p>Mock metadata editor/p>'
 })
-export class MockPryMetadataEditorComponent {}
+export class MockPryMetadataEditorComponent {
+  @Input() targetId = '';
+  @Input() editable = false;
+  @Input() metadata = '';
+  @Input() initialMetadataSelection = '';
+}

@@ -38,7 +38,6 @@ describe(schematicName, () => {
     `
     );
 
-    console.log(tree.readContent('/example.component.ts'));
     await runner.runSchematic('migration-v0.14', {}, tree);
     const actual = tree.readContent('/example.component.ts');
 

@@ -114,4 +114,29 @@ export class ManifestService {
       })
     );
   }
+
+  addMetadata(presentationId: string, metadataId: string, value: string): Observable<void> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(
+        mergeMap((url) =>
+          this.httpClient.put<void>(
+            encodeURI(`${url}/users/me/dashboards/id/${presentationId}/metadata/id/${metadataId}`),
+            { value }
+          )
+        )
+      );
+  }
+
+  deleteMetadata(presentationId: string, metadataId: string): Observable<void> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(
+        mergeMap((url) =>
+          this.httpClient.delete<void>(
+            encodeURI(`${url}/users/me/dashboards/id/${presentationId}/metadata/id/${metadataId}`)
+          )
+        )
+      );
+  }
 }

@@ -243,5 +243,13 @@ export const DashboardActions = {
   updateCapability: createAction(
     '[Widget map] Store Wms capability',
     props<{ url: string; capability: GetCapabilitiesResponse | null }>()
+  ),
+  addManifestMetadata: createAction(
+    '[Dashboard] Add manifest metadata',
+    props<{ presentationId: string; metadataId: string; value: string }>()
+  ),
+  deleteManifestMetadata: createAction(
+    '[Dashboard] Add manifest metadata',
+    props<{ presentationId: string; metadataId: string }>()
   )
 };

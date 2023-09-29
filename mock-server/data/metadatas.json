@@ -45,5 +45,18 @@
       "1",
       "1"
     ]
+  },
+  {
+    "id": "f34754e6-be23-43c0-bb78-3d351e26c033",
+    "name": "_theme",
+    "type": "LIST",
+    "description": "init metadata system _theme",
+    "allowedValues": [
+      "Énergies",
+      "Environnements",
+      "Fluides",
+      "Biodiversités et Paysages",
+      "Mobilités"
+    ]
   }
 ]
