@@ -28,10 +28,13 @@
     box-sizing: border-box;
   }
 }
+
 .o-dataset-layout {
   overflow: hidden;
   height: 100%;
+
+  .o-manifest-layout__toolbox {
+    justify-content: flex-start;
+  }
 }
-.o-manifest-layout__content {
-  padding-left: 2rem;
-}
+

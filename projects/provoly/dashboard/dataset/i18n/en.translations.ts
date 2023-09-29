@@ -13,6 +13,7 @@ export const enTranslations = {
       export: 'Export',
       api: 'API',
       returnToList: 'Back to catalog',
+      refresh: 'Refresh',
       version: {
         title: 'Title',
         INDEXING: 'Loading',

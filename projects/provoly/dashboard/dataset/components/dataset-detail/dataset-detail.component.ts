@@ -80,6 +80,10 @@ export class PryDatasetDetailComponent implements OnInit {
     this.goToCatalog.emit();
   }
 
+  refresh() {
+    SearchActions.getDatasourceItems({ id: this.dataset.id });
+  }
+
   goToConsult(version: DatasetVersion | undefined): void {
     this.selectedDatasetVersion = version;
     this.showModalStatus = false;

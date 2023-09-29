@@ -26,13 +26,13 @@ pry-dataset-detail {
     height: 100%;
   }
 
-  pry-icon {
-    position: relative;
-    top: toRem(5);
-  }
-
   .table-container {
     flex: 1 1;
+
+    pry-icon {
+      position: relative;
+      top: toRem(5);
+    }
   }
 
   .state-button {
@@ -64,10 +64,11 @@ pry-dataset-detail {
   height: 100%;
 }
 
-.dataset-layout__content {
+.o-dataset-layout__content {
   overflow:hidden;
   height: 100%;
   padding-left: 2rem;
+  padding-top: toRem(20);
 }
 
 td {

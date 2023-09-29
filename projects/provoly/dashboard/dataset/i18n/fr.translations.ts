@@ -13,6 +13,7 @@ export const frTranslations = {
       export: 'Export',
       api: 'API',
       returnToList: 'Retour au catalogue',
+      refresh: 'Actualiser',
       version: {
         title: 'Intitulé',
         INDEXING: 'En chargement',

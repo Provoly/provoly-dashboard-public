@@ -1,8 +1,12 @@
 <div class="o-manifest-layout__toolbox">
   <button class="a-btn a-btn--primary" (click)="goBack()">{{ '@pry.dataset.returnToList' | i18n }}</button>
+  <button class="a-btn a-btn--secondary" (click)="refresh()">
+    {{ '@pry.dataset.refresh' | i18n }}
+    <pry-icon iconSvg="synchro"></pry-icon>
+  </button>
 </div>
 
-<div class="dataset-layout__content">
+<div class="o-dataset-layout__content">
   <h1 class="a-h1">{{ dataset.name }}</h1>
   <div class="dataset-detail">
     <pry-tab-group translationStringBase="@pry.dataset.">
