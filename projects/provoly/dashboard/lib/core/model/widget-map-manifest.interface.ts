@@ -84,6 +84,7 @@ export interface MapWMSLayerLayerOptions extends BaseWidgetMapLayerOptions {
   paramLayer: string;
   paramTiled: boolean;
   oClass: string;
+  getFeatureInfoAdditionalParameters?: any;
 }
 
 export interface MapWMTSLayerLayerOptions extends BaseWidgetMapLayerOptions {

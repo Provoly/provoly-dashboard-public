@@ -334,7 +334,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         // Get all previous layers, without geoserver layers that are not requested anymore, then add new geoserver layers (potentially with a preconfig from manifest).
         autoOptions.layers = [
           ...(autoOptions.layers ?? []).map((layer) => {
-            const geoLayer = geoLayers.find((layer) => layer.key === layer.key) ?? null;
+            // @ts-ignore
+            const geoLayer = geoLayers.find((geoLayer) => layer.key === geoLayer.key) ?? null;
             return layer.type === 'geoserver'
               ? geoLayer
                 ? { ...geoLayer, ...layer }
@@ -1082,7 +1083,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           .getSource()
           .getFeatureInfoUrl(transform(pixel, projGeo, projLambert), this.map.getView().getResolution(), 'EPSG:2154', {
             INFO_FORMAT: 'application/json',
-            FEATURE_COUNT: 10
+            FEATURE_COUNT: 10,
+            ...layer.getProperties()['getFeatureInfoAdditionalParameters']
           });
         if (url) {
           this.store.dispatch(

@@ -338,6 +338,7 @@ export class WidgetMapLayerService {
         })
       });
       impl.set('oClass', layer.oClass);
+      impl.set('getFeatureInfoAdditionalParameters', layer.getFeatureInfoAdditionalParameters ?? {});
       return impl;
     },
     wmts: (
