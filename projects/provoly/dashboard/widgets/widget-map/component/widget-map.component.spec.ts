@@ -18,7 +18,8 @@ import {
   TooltipMode,
   TranslateIdPipe,
   WidgetManifest,
-  WidgetOptions
+  WidgetOptions,
+  WmsService
 } from '@provoly/dashboard';
 import { MockNgModelDirective } from '@provoly/dashboard/mock/directive/mock-ng-model.directive';
 import { MockPryTooltipDirective } from '@provoly/dashboard/mock/directive/mock-pry-tooltip.directive';
@@ -36,7 +37,6 @@ import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 import { mapUtilsData } from '../utils/widget-map.utils.spec';
 
 import { WidgetMapComponent } from './widget-map.component';
-import { WmsService } from './wms.service';
 
 describe('WidgetMapComponent', () => {
   let component: WidgetMapComponent;
@@ -119,7 +119,57 @@ describe('WidgetMapComponent', () => {
             },
             {
               selector: DataSourceSelectors.getDataSources,
+              value: [
+                {
+                  id: 'rs',
+                  name: 'resultset',
+                  oClass: '',
+                  type: PryDatasetType.CLOSED,
+                  metadata: [],
+                  sourceType: 'dataset'
+                },
+                {
+                  id: 'geo',
+                  name: 'resultsetGeo',
+                  oClass: 'geoClass',
+                  type: PryDatasetType.CLOSED,
+                  sourceType: 'dataset',
+                  metadata: [
+                    {
+                      metadataDef: {
+                        id: '9d9aba2c-fc3a-44d7-a508-287ad2d8cbb0',
+                        name: '_geoNamespace',
+                        type: 'string'
+                      },
+                      value: 'geoNamespace'
+                    },
+                    {
+                      metadataDef: {
+                        id: '7ce12610-e031-403c-a6e0-b8147979f657',
+                        name: '_geoKey',
+                        type: 'string'
+                      },
+                      value: 'geoKey'
+                    },
+                    {
+                      metadataDef: {
+                        id: '7ce12610-e031-403c-a6e0-b8147979f657',
+                        name: '_geoOpacity',
+                        type: 'number'
+                      },
+                      value: '50'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              selector: DashboardSelectors.capabilities,
               value: []
+            },
+            {
+              selector: ConfigSelectors.geoServerUrl,
+              value: 'http://geoserver.url'
             }
           ]
         }),
@@ -387,5 +437,113 @@ describe('WidgetMapComponent', () => {
     } catch (e) {
       fail('');
     }
+  });
+
+  afterEach(() => {
+    // don't forget to reset the timers
+    jest.useRealTimers();
+  });
+
+  it('should allow preconfiguration of layers', () => {
+    jest.useFakeTimers();
+
+    component.staticManifest = {
+      options: {
+        style: 'a-style',
+        layers: [{ type: 'geoserver', opacity: 60, key: 'a' }],
+        fit: true
+      } as MapWidgetOptions,
+      datasource: 'geo'
+    } as WidgetManifest;
+
+    const results = [] as MapWidgetOptions[];
+    component.options$.subscribe((options) => results.push(options));
+
+    fixture.detectChanges();
+
+    jest.advanceTimersByTime(10_000);
+    jest.runOnlyPendingTimers();
+
+    expect(results[results.length - 1]).toEqual({
+      fit: true,
+      layers: [
+        {
+          datasourceId: 'geo',
+          key: 'geoNamespace:geoKey',
+          name: 'resultsetGeo',
+          namespace: 'geoNamespace',
+          oClass: 'geoClass',
+          opacity: 50,
+          paramLayer: 'geoKey',
+          paramTiled: true,
+          type: 'geoserver',
+          url: 'http://geoserver.url/geoNamespace/wms?SERVICE=WMS&VERSION=1.3.0'
+        }
+      ],
+      style: 'style1',
+      tooltipMode: 'click'
+    });
+  });
+
+  it('should propose automatic configuration', () => {
+    jest.useFakeTimers();
+
+    component.staticManifest = {
+      options: {
+        style: 'a-style',
+        layers: [],
+        fit: true,
+        automaticLayers: true
+      } as MapWidgetOptions,
+      datasource: 'geo'
+    } as WidgetManifest;
+
+    const results = [] as MapWidgetOptions[];
+    component.options$.subscribe((options) => results.push(options));
+
+    fixture.detectChanges();
+
+    jest.advanceTimersByTime(10_000);
+    jest.runOnlyPendingTimers();
+
+    expect(results[results.length - 1]).toEqual({
+      fit: true,
+      layers: [
+        {
+          attribute: 'loc',
+          classes: ['geoClass'],
+          key: 'geo',
+          oClass: 'geoClass',
+          subType: 'Point',
+          title: 'resultsetGeo - loc (Point)',
+          type: 'auto'
+        },
+        {
+          attribute: 'zone',
+          classes: ['geoClass'],
+          key: 'geo',
+          oClass: 'geoClass',
+          subType: 'MultiPolygon',
+          title: 'resultsetGeo - zone (MultiPolygon)',
+          type: 'auto'
+        },
+        {
+          datasourceId: 'geo',
+          key: 'geoNamespace:geoKey',
+          name: 'resultsetGeo',
+          namespace: 'geoNamespace',
+          oClass: 'geoClass',
+          opacity: 50,
+          paramLayer: 'geoKey',
+          paramTiled: true,
+          type: 'geoserver',
+          url: 'http://geoserver.url/geoNamespace/wms?SERVICE=WMS&VERSION=1.3.0'
+        }
+      ],
+
+      style: 'style1',
+      tooltipMode: 'click',
+      automaticLayers: true
+    });
   });
 });

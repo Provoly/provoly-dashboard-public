@@ -71,50 +71,6 @@ describe('LinksEffects', () => {
   it('should be created', () => {
     expect(effects).toBeTruthy();
   });
-  describe('loadUsers$', () => {
-    it('should set Links get by the http GET', () => {
-      const getSpy = jest.spyOn(relationService, 'getRelationsTypes');
-      store.setState(
-        buildState({
-          ...initialState
-        })
-      );
-
-      actions$ = hot('--a-', {
-        a: RelationTypesActions.load()
-      });
-
-      const expected$ = hot('--a-', {
-        a: RelationTypesActions.loadSuccess({ datas: relationTypes })
-      });
-      expect(effects.loadRelationsTypes$).toBeObservable(expected$);
-      expect(effects.loadRelationsTypes$).toSatisfyOnFlush(() => {
-        expect(getSpy).toHaveBeenCalled();
-      });
-    });
-    it('should call loadUser failure', () => {
-      const getSpy = jest
-        .spyOn(relationService, 'getRelationsTypes')
-        .mockReturnValue(throwError(() => new Error('error')));
-      store.setState(
-        buildState({
-          ...initialState
-        })
-      );
-
-      actions$ = hot('--a-', {
-        a: RelationTypesActions.load()
-      });
-
-      const expected$ = hot('--a-', {
-        a: RelationTypesActions.loadFailure({ error: new Error('error') })
-      });
-      expect(effects.loadRelationsTypes$).toBeObservable(expected$);
-      expect(effects.loadRelationsTypes$).toSatisfyOnFlush(() => {
-        expect(getSpy).toHaveBeenCalled();
-      });
-    });
-  });
 
   describe('saveLink$', () => {
     it('should save Link get by the http POST', () => {

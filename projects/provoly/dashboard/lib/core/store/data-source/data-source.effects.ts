@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
-import { filter, map, mergeMap, switchMap, tap } from 'rxjs';
+import { debounceTime, filter, map, mergeMap, switchMap, tap } from 'rxjs';
 import { catchError, withLatestFrom } from 'rxjs/operators';
 import { DashboardActions } from '../../../dashboard/store/dashboard.actions';
 import { DashboardSelectors } from '../../../dashboard/store/dashboard.selectors';
@@ -66,6 +66,7 @@ export class DataSourceEffects {
   getNamedQuery$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DataSourceActions.namedQuery.load),
+      debounceTime(100),
       switchMap(() => this.dataSourceService.get()),
       map((namedQueryList: NamedQuery[]) => DataSourceActions.namedQuery.loaded({ list: namedQueryList })),
       catchError((error) => [DataSourceActions.namedQuery.failure({ error })])
@@ -180,6 +181,7 @@ export class DataSourceEffects {
   loadDataset$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DataSourceActions.load),
+      debounceTime(100),
       mergeMap((action) => [DataSourceActions.namedQuery.load(), DataSourceActions.dataset.loadDataset()])
     )
   );

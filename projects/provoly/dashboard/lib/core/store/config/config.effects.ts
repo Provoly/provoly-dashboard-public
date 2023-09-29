@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, throwError } from 'rxjs';
+import { catchError, debounceTime, throwError } from 'rxjs';
 import { filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 import { PryDialogConfirmComponent, PryDialogConfirmData } from '../../components/overlay/dialog-confirm.component';
 import { PryDialogService } from '../../components/overlay/dialog.service';
@@ -80,6 +80,7 @@ export class ConfigEffects {
   getCustomization$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ConfigActions.loadCustomization),
+      debounceTime(100),
       mergeMap((action) =>
         this.configService.getAllClassParams().pipe(
           mergeMap((allDefinitions) => {

@@ -226,7 +226,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           })
           .map((layer) => layer as MapGeoServerLayerOptions);
       }),
-      distinctUntilChanged((p, c) => equal(p, c))
+      distinctUntilChanged((p, c) => equal(p, c)),
+      startWith([])
     );
 
     this.autoDatasetLayers$ = combineLatest([

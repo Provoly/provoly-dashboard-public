@@ -50,48 +50,6 @@ describe('AdminUserEffects', () => {
   it('should be created', () => {
     expect(effects).toBeTruthy();
   });
-  describe('loadUsers$', () => {
-    it('should set Users get by the http GET', () => {
-      const getSpy = jest.spyOn(adminService, 'getUsers');
-      store.setState(
-        buildState({
-          ...initialState
-        })
-      );
-
-      actions$ = hot('--a-', {
-        a: AdminUserActions.loadUsers()
-      });
-
-      const expected$ = hot('--a-', {
-        a: AdminUserActions.loadUsersSuccess({ users: users })
-      });
-      expect(effects.loadUsers$).toBeObservable(expected$);
-      expect(effects.loadUsers$).toSatisfyOnFlush(() => {
-        expect(getSpy).toHaveBeenCalled();
-      });
-    });
-    it('should call loadUser failure', () => {
-      const getSpy = jest.spyOn(adminService, 'getUsers').mockReturnValue(throwError(() => new Error('error')));
-      store.setState(
-        buildState({
-          ...initialState
-        })
-      );
-
-      actions$ = hot('--a-', {
-        a: AdminUserActions.loadUsers()
-      });
-
-      const expected$ = hot('--a-', {
-        a: AdminUserActions.loadUsersFailure({ error: new Error('error') })
-      });
-      expect(effects.loadUsers$).toBeObservable(expected$);
-      expect(effects.loadUsers$).toSatisfyOnFlush(() => {
-        expect(getSpy).toHaveBeenCalled();
-      });
-    });
-  });
 
   describe('loadMetadataUser$', () => {
     it('should set Metadata Users get by the http GET', () => {

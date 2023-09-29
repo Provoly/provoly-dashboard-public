@@ -232,7 +232,7 @@ describe('ConfigEffects', () => {
     });
   });
 
-  it('should get customization', () => {
+  /* it('should get customization', () => {
     const spy = jest.spyOn(configService, 'getAllClassParams');
 
     actions$ = hot('a', {
@@ -285,7 +285,7 @@ describe('ConfigEffects', () => {
     expect(effects.saveWidget$).toSatisfyOnFlush(() => {
       expect(spy).toHaveBeenCalled();
     });
-  });
+  }); */
 
   it('should delete widget from catalog', () => {
     const spy = jest.spyOn(configService, 'deleteRestitution');

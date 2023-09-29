@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { debounceTime } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { DashboardActions } from '../../../dashboard/store/dashboard.actions';
 import { PryDialogConfirmComponent, PryDialogConfirmData } from '../../components/overlay/dialog-confirm.component';
@@ -13,6 +14,7 @@ export class RelationTypesEffects {
   loadRelationsTypes$ = createEffect(() =>
     this.actions$.pipe(
       ofType(RelationTypesActions.load),
+      debounceTime(100),
       mergeMap((action) =>
         this.service.getRelationsTypes().pipe(
           map((datas) => RelationTypesActions.loadSuccess({ datas })),

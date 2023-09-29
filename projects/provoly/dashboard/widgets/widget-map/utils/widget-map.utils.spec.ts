@@ -49,6 +49,17 @@ const classes = [
       { id: 'lng', name: 'lng', field: 'lng-xxxx' },
       { id: 'intensity', name: 'intensity', field: 'intensity-xxxx' }
     ]
+  },
+  {
+    id: 'geoClass',
+    name: 'geoClassName',
+    attributes: [
+      { id: 'loc', name: 'loc', field: 'loc-xxxx' },
+      { id: 'lat', name: 'lat', field: 'lat-xxxx' },
+      { id: 'lng', name: 'lng', field: 'lng-xxxx' },
+      { id: 'zone', name: 'zone', field: 'zone' },
+      { id: 'intensity', name: 'intensity', field: 'intensity-xxxx' }
+    ]
   }
 ] as Class[];
 
@@ -56,6 +67,7 @@ const fields = [
   { id: 'loc-xxxx', type: FieldType.POINT },
   { id: 'lat-xxxx', type: 'decimal' },
   { id: 'lng-xxxx', type: 'decimal' },
+  { id: 'zone', type: FieldType.MULTIPOLYGON },
   {
     id: 'intensity-xxxx',
     type: 'decimal'

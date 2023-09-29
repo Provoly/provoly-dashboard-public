@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { SearchService } from '@provoly/dashboard';
+import { SearchService, WmsService } from '@provoly/dashboard';
 import { hot } from 'jest-marbles';
 import { Observable, of } from 'rxjs';
 import { PrySnackbarService } from '../../core/components/snackbar/snackbar.service';
@@ -18,7 +18,6 @@ import { DashboardActions } from './dashboard.actions';
 import { DashboardEffects } from './dashboard.effects';
 import { dashboardInitialState, DashboardState } from './dashboard.reducers';
 import { DashboardSelectors } from './dashboard.selectors';
-import { GeocodingService } from './geocoding.service';
 import { ManifestService } from './manifest.service';
 import { PryTitleService } from './title.service';
 
@@ -38,7 +37,6 @@ describe('DashboardEffects', () => {
   let title: PryTitleService;
   let translateService: PryI18nService;
   let snackbarService: PrySnackbarService;
-  let geocodingService: GeocodingService;
   let store: MockStore<any>;
   let router: Router;
   const initialState = dashboardInitialState;
@@ -81,13 +79,6 @@ describe('DashboardEffects', () => {
           }
         },
         {
-          provide: GeocodingService,
-          useValue: {
-            fromAddress: () => of({}),
-            fromLatLong: () => of({})
-          }
-        },
-        {
           provide: PryTitleService,
           useValue: {
             changeTitle: () => undefined
@@ -116,6 +107,10 @@ describe('DashboardEffects', () => {
         {
           provide: SearchService,
           useValue: { getItemsSerializedParams: (id: string, quickOrder: any) => 'filter=someFilter' }
+        },
+        {
+          provide: WmsService,
+          useValue: {}
         }
       ]
     });
@@ -128,7 +123,6 @@ describe('DashboardEffects', () => {
     title = TestBed.inject<PryTitleService>(PryTitleService);
     translateService = TestBed.inject<PryI18nService>(PryI18nService);
     snackbarService = TestBed.inject<PrySnackbarService>(PrySnackbarService);
-    geocodingService = TestBed.inject<GeocodingService>(GeocodingService);
     store = TestBed.inject(MockStore);
     router = TestBed.inject(Router);
   });
