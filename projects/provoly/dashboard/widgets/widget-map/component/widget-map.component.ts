@@ -55,7 +55,7 @@ import { Feature, Map, Overlay, View } from 'ol';
 import { applyBackground, applyStyle } from 'ol-mapbox-style';
 import { boundingExtent, createEmpty } from 'ol/extent';
 import { Circle, Geometry, Point } from 'ol/geom';
-import { Tile } from 'ol/layer';
+import { Layer, Tile } from 'ol/layer';
 import BaseLayer from 'ol/layer/Base';
 import VectorLayer from 'ol/layer/Vector';
 import VectorTileLayer from 'ol/layer/VectorTile';
@@ -111,11 +111,13 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   @ViewChild('exportTypeTemplate', { read: TemplateRef }) exportTypeTemplate!: TemplateRef<any>;
   @ViewChild('address') address!: ElementRef;
   options$: Observable<MapWidgetOptions>;
-  layerTypes = this.widgetMapLayerService.implementationList.sort((a, b) =>
-    this.translateService
-      .instant('@pry.widget.map.layerType.' + a)
-      .localeCompare(this.translateService.instant('@pry.widget.map.layerType.' + b))
-  );
+  layerTypes = this.widgetMapLayerService.implementationList
+    .filter((type) => type !== 'auto')
+    .sort((a, b) =>
+      this.translateService
+        .instant('@pry.widget.map.layerType.' + a)
+        .localeCompare(this.translateService.instant('@pry.widget.map.layerType.' + b))
+    );
   optionsCopy: MapWidgetOptions = {} as MapWidgetOptions;
   classes$: Observable<Class[]>;
   fields$: Observable<Field[]>;
@@ -1045,7 +1047,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     layer.opacity = parseInt($event, 10);
   }
 
-  getWMSLayers() {
+  getWMSLayers(): Layer<any>[] {
     return !this.map
       ? []
       : this.map
@@ -1065,7 +1067,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       ?.getVisible();
   }
 
-  getFeatureFromServer(wmsLayers: any[], pixel: Pixel) {
+  getFeatureFromServer(wmsLayers: Layer<any>[], pixel: Pixel) {
     proj4.defs(
       'EPSG:2154',
       '+proj=lcc +lat_0=46.5 +lon_0=3 +lat_1=49 +lat_2=44 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs'
@@ -1086,7 +1088,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           this.store.dispatch(
             DashboardActions.getWmsFeatures({
               url,
-              oClass: layer.getProperties().oClass ?? '',
+              oClass: layer.getProperties()['oClass'] ?? '',
               coordinates: pixel
             })
           );
