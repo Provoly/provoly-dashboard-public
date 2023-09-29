@@ -29,7 +29,6 @@ import { WidgetManifest } from '../../../../core/model/manifest.interface';
 import { DashboardActions } from '../../../store/dashboard.actions';
 import { DashboardSelectors } from '../../../store/dashboard.selectors';
 import { SubscriptionnerDirective } from '../../subscriptionner.directive';
-import { BaseWidgetComponent } from '../base-widget.component';
 import { WidgetPlaceholderComponent } from '../widget-placeholder/widget-placeholder.component';
 import { WidgetFactoryService } from './widget-factory.service';
 
@@ -62,8 +61,6 @@ export class WidgetInstanciatorComponent extends SubscriptionnerDirective implem
   instanciatedComponent!: ComponentRef<any>;
   instanceSubscription?: Subscription;
   @Input() open$: Observable<void> | Subject<void> = new Subject<void>();
-
-  @Output() widgetInstance = new EventEmitter<BaseWidgetComponent>();
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -116,7 +113,6 @@ export class WidgetInstanciatorComponent extends SubscriptionnerDirective implem
                   this.manifestModified.emit(manifest);
                 }
               );
-              this.widgetInstance.emit(this.instanciatedComponent.instance);
             });
         })
     );

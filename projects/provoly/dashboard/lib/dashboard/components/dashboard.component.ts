@@ -8,8 +8,10 @@ import {
   Input,
   OnInit,
   Output,
+  QueryList,
   TemplateRef,
   ViewChild,
+  ViewChildren,
   ViewContainerRef
 } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -51,7 +53,7 @@ import {
 import { DashboardSelectors } from '../store/dashboard.selectors';
 import { solveCollisions } from './solve-collisions.function';
 import { SubscriptionnerDirective } from './subscriptionner.directive';
-import { BaseWidgetComponent } from './widgets/base-widget.component';
+import { WidgetInstanciatorComponent } from './widgets/widget-instanciator/widget-instanciator.component';
 
 export const MIME_TYPE_WIDGET_MANIFEST = 'application/widget-manifest';
 export const MIME_TYPE_WIDGET_TYPE = 'application/widget-type-';
@@ -73,8 +75,12 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
   @ViewChild('templateModal', { read: TemplateRef }) templateModal!: TemplateRef<any>;
   separators$: Observable<WidgetLayout[]>;
   nonFillerWidgets$: Observable<number>;
-  widgetsInstances: Array<BaseWidgetComponent> = [];
   loading$: Observable<boolean>;
+  @ViewChildren(WidgetInstanciatorComponent) instanciators?: QueryList<WidgetInstanciatorComponent>;
+
+  get widgetsInstances() {
+    return this.instanciators?.map((instanciator) => instanciator.instanciatedComponent.instance) ?? [];
+  }
 
   @Input() set staticDashboard(window: DashboardManifest) {
     this.staticDashboard$.next(window);
@@ -760,9 +766,5 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
 
   trackWidgets(index: number, widgetManifest: WidgetManifest) {
     return index + '-' + widgetManifest.type + '-' + JSON.stringify(widgetManifest.layout);
-  }
-
-  updateInstance(widgetIndex: number, $event: BaseWidgetComponent) {
-    this.widgetsInstances[widgetIndex] = $event;
   }
 }
