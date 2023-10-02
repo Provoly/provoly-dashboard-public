@@ -82,7 +82,7 @@
       <div class="o-presentation__metadata-editor">
         <pry-metadata-editor
           [targetId]="selectedPresentation.id"
-          [editable]="true"
+          [isModification]="true"
           [metadata]="selectedPresentation.metadata"
           initialMetadataSelection="_theme"
           (removeMeta)="removeMetadata($event)"

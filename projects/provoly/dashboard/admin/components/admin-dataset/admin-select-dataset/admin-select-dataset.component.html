@@ -23,7 +23,7 @@
   <ng-template #datasetMetadata>
     <pry-metadata-editor
       [targetId]="(selectedDataset$ | async)?.id ?? ''"
-      [editable]="(editable$ | async) ?? false"
+      [isModification]="(editable$ | async) ?? false"
       [metadata]="(datasetMetadata$ | async) ?? []"
       (removeMeta)="removeMetadata($event)"
       (addMeta)="addDatasetMetadata($event)"

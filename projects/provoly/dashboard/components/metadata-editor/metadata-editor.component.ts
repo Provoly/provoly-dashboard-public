@@ -20,7 +20,7 @@ export class PryMetadataEditorComponent extends SubscriptionnerDirective {
   form: FormGroup;
   isSubmitted = false;
   @Input() targetId = '';
-  @Input() editable = false;
+  @Input() isModification = false;
   metadataDefs$: Observable<IMetadata[]>;
   availableMetadata$: Observable<IMetadata[]>;
   type: 'meta' | 'user' = 'meta';
@@ -94,6 +94,9 @@ export class PryMetadataEditorComponent extends SubscriptionnerDirective {
       } else {
         this.form.controls['value'].setValidators([Validators.required]);
       }
+      this.isModification = true;
+    } else {
+      this.isModification = false;
     }
   }
 

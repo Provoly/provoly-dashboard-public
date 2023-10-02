@@ -33,39 +33,38 @@
 </div>
 
 <ng-container *pryAccess="{ module: 'admin', page: 'dataset', action: 'write' }">
-  <ng-container *ngIf="form.value.metadata">
-    <form class="o-form -border-top" [formGroup]="form" (ngSubmit)="addDatasetMetadata()">
-      <fieldset>
-        <legend class="u-visually-hidden">{{ '@pry.action.editProfil' | i18n }}</legend>
+  <form class="o-form -border-top" [formGroup]="form" (ngSubmit)="addDatasetMetadata()">
+    <fieldset>
+      <legend class="u-visually-hidden">{{ '@pry.action.editProfil' | i18n }}</legend>
 
-        <div class="m-form-label-field">
-          <label for="metadata" id="metadata-label" class="a-label">Data</label>
-          <pry-select
-            id="metadata"
-            class="a-pry-select"
-            formControlName="metadata"
-            [items]="availableMetadata$ | async"
-            (ngModelChange)="onMetaChange($event)"
-            [isForm]="true"
-            [itemsAsOption]="true"
-            bindLabel="name"
-            [readonly]="editable"
-            [attr.aria-labelledby]="
-              isSubmitted && form.get('metadata')?.invalid ? 'metadata-label metadata-error' : 'metadata-label'
-            "
-            [attr.aria-invalid]="isSubmitted && form.get('metadata')?.invalid"
-          >
-          </pry-select>
-          <label
-            *ngIf="isSubmitted && form.get('metadata')?.invalid"
-            id="metadata-error"
-            for="metadata"
-            class="a-label a-label--help -error"
-          >
-            {{ '@pry.admin.required' | i18n }}
-          </label>
-        </div>
+      <div class="m-form-label-field">
+        <label for="metadata" id="metadata-label" class="a-label">Data</label>
+        <pry-select
+          id="metadata"
+          class="a-pry-select"
+          formControlName="metadata"
+          [items]="availableMetadata$ | async"
+          (ngModelChange)="onMetaChange($event)"
+          [isForm]="true"
+          [itemsAsOption]="true"
+          bindLabel="name"
+          [attr.aria-labelledby]="
+            isSubmitted && form.get('metadata')?.invalid ? 'metadata-label metadata-error' : 'metadata-label'
+          "
+          [attr.aria-invalid]="isSubmitted && form.get('metadata')?.invalid"
+        >
+        </pry-select>
+        <label
+          *ngIf="isSubmitted && form.get('metadata')?.invalid"
+          id="metadata-error"
+          for="metadata"
+          class="a-label a-label--help -error"
+        >
+          {{ '@pry.admin.required' | i18n }}
+        </label>
+      </div>
 
+      <ng-container *ngIf="form.value.metadata">
         <ng-container *ngIf="form.value['metadata']['type'] === 'DATE'; else inputList">
           <div class="m-form-label-field">
             <label id="form_date-label" for="form_date" class="a-label">
@@ -145,13 +144,13 @@
             </label>
           </div>
         </ng-template>
-      </fieldset>
+      </ng-container>
+    </fieldset>
 
-      <div class="m-btn-group -end">
-        <button type="submit" class="a-btn a-btn--primary">
-          {{ (editable ? '@pry.action.editMetadata' : '@pry.action.addMetadata') | i18n }}
-        </button>
-      </div>
-    </form>
-  </ng-container>
+    <div class="m-btn-group -end">
+      <button type="submit" class="a-btn a-btn--primary">
+        {{ (isModification ? '@pry.action.editMetadata' : '@pry.action.addMetadata') | i18n }}
+      </button>
+    </div>
+  </form>
 </ng-container>
