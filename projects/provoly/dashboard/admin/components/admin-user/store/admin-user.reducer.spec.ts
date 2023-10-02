@@ -1,6 +1,6 @@
-import { adminUserReducer, initialAdminUserState } from './admin-user.reducer';
+import { users } from '../../../../mock/data/mockItemAdmin';
 import { AdminUserActions } from './admin-user.action';
-import { metadataUser, users } from '../../../../mock/data/mockItemAdmin';
+import { adminUserReducer, initialAdminUserState } from './admin-user.reducer';
 
 describe('User Reducer', () => {
   const initialState = Object.assign({}, initialAdminUserState);
@@ -61,22 +61,6 @@ describe('User Reducer', () => {
       ).toEqual({
         ...initialState,
         selectedUser: undefined
-      });
-    });
-  });
-
-  describe('loadMetadataUserSuccess', () => {
-    it('should load metadata User', () => {
-      expect(
-        adminUserReducer(
-          {
-            ...initialState
-          },
-          AdminUserActions.loadMetadataUserSuccess({ metadata: metadataUser })
-        )
-      ).toEqual({
-        ...initialState,
-        selectedMetadataUser: metadataUser
       });
     });
   });

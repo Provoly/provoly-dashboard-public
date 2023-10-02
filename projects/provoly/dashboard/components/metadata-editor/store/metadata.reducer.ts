@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { IMetadata } from '@provoly/dashboard';
+import { IMetadata, MetadataUser } from '@provoly/dashboard';
+import { AdminMetadataUserActions } from '../../../admin/components/admin-metadata-user/store/admin-metadata-user.action';
 import { MetadataActions } from './metadata.action';
 
 export const metadataFeatureKey = '@pry/metadata';
@@ -10,6 +11,8 @@ export interface MetadataState {
   loading: boolean;
   errors: any;
   editable: boolean;
+  selectedUserProfile: Array<MetadataUser>;
+  userProfile: Array<IMetadata>;
 }
 
 export const initialMetadataState: MetadataState = {
@@ -17,7 +20,9 @@ export const initialMetadataState: MetadataState = {
   selectedMetadata: null,
   loading: false,
   errors: null,
-  editable: false
+  editable: false,
+  selectedUserProfile: [],
+  userProfile: []
 };
 
 /**
@@ -61,5 +66,23 @@ export const metadataReducer = createReducer(
   on(MetadataActions.isEditable, (state, action) => ({
     ...state,
     editable: action.editable
+  })),
+  on(MetadataActions.loadMetadataUserSuccess, (state, action) => ({
+    ...state,
+    selectedUserProfile: action.metadata
+  })),
+  on(MetadataActions.loadUserProfile, AdminMetadataUserActions.updateMetadata, (state) => ({
+    ...state,
+    loading: true
+  })),
+  on(MetadataActions.loadUserProfileSuccess, (state, action) => ({
+    ...state,
+    userProfile: [...action.userProfile],
+    loading: false
+  })),
+  on(MetadataActions.loadUserProfileFailure, (state, action) => ({
+    ...state,
+    loading: false,
+    errors: action.error
   }))
 );

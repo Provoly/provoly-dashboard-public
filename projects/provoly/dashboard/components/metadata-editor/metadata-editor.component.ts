@@ -10,6 +10,7 @@ export type MetaEventType = { id: string; metadataId: string; value?: string };
 
 export const INTEGER_REGEXP_PATTERN = '^[+-]?[0-9]*$';
 export const DOUBLE_REGEXP_PATTERN = '[+-]?([0-9]*[.])?[0-9]+';
+
 @Component({
   selector: 'pry-metadata-editor',
   templateUrl: 'metadata-editor.component.html'
@@ -19,22 +20,20 @@ export class PryMetadataEditorComponent extends SubscriptionnerDirective {
   _initialMetadataSelection$ = new BehaviorSubject<string>('');
   form: FormGroup;
   isSubmitted = false;
-  @Input() targetId = '';
   @Input() isModification = false;
   metadataDefs$: Observable<IMetadata[]>;
   availableMetadata$: Observable<IMetadata[]>;
-  type: 'meta' | 'user' = 'meta';
+  _type$ = new BehaviorSubject<'meta' | 'user'>('meta');
   @Output() addMeta = new EventEmitter<MetaEventType>();
   @Output() removeMeta = new EventEmitter<MetaEventType>();
+  userProfileDefs$: Observable<Array<IMetadata> | undefined>;
+  @Input() targetId = '';
+
+  @Input() set type(type: 'meta' | 'user') {
+    this._type$.next(type);
+  }
 
   @Input() set metadata(metadata: MetadataValue[] | MetadataUser[]) {
-    // @ts-ignore
-    const isUserProfile = metadata.length >= 1 && metadata[0].userProfile !== undefined;
-    if (isUserProfile) {
-      this.type = 'user';
-    } else {
-      this.type = 'meta';
-    }
     this._metadata$.next(metadata);
   }
 
@@ -51,12 +50,21 @@ export class PryMetadataEditorComponent extends SubscriptionnerDirective {
     });
 
     this.metadataDefs$ = this.store.select(MetadataSelectors.metadata);
-    this.availableMetadata$ = combineLatest([this._metadata$, this.metadataDefs$]).pipe(
-      map(([metadata, metaDefs]) => {
-        let datasetMetadataIds = metadata?.map((u) =>
-          this.type === 'meta' ? (u as MetadataValue).metadataDef.id : (u as MetadataUser).userProfile
-        );
-        return metaDefs.filter((meta) => !datasetMetadataIds?.includes(meta.id));
+    this.userProfileDefs$ = this.store.select(MetadataSelectors.userProfile);
+    this.availableMetadata$ = combineLatest([
+      this._type$,
+      this._metadata$,
+      this.metadataDefs$,
+      this.userProfileDefs$
+    ]).pipe(
+      map(([type, metadata, metaDefs, userProfileDefs]) => {
+        if (type === 'meta') {
+          let datasetMetadataIds = metadata?.map((u) => (u as MetadataValue).metadataDef.id);
+          return metaDefs.filter((meta) => !datasetMetadataIds?.includes(meta.id));
+        } else {
+          let userProfileIds = metadata?.map((u) => (u as MetadataUser).userProfile.id);
+          return (userProfileDefs ?? []).filter((meta) => !userProfileIds?.includes(meta.id));
+        }
       })
     );
 
@@ -113,7 +121,9 @@ export class PryMetadataEditorComponent extends SubscriptionnerDirective {
   }
 
   metaDefinition(metadata: MetadataUser | MetadataValue) {
-    return this.type === 'user' ? (metadata as MetadataUser).userProfile : (metadata as MetadataValue).metadataDef;
+    return this._type$.getValue() === 'user'
+      ? (metadata as MetadataUser).userProfile
+      : (metadata as MetadataValue).metadataDef;
   }
 
   removeMetadata(metadata: MetadataUser | MetadataValue) {

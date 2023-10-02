@@ -136,5 +136,6 @@ export class AdminEffects {
       )
     )
   );
+
   constructor(private actions$: Actions, private service: AdminService, private router: Router) {}
 }

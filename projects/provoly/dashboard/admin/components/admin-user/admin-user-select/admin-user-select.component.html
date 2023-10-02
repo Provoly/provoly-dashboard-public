@@ -27,6 +27,7 @@
       [metadata]="(userMetadata$ | async) ?? []"
       (removeMeta)="removeMetadata($event)"
       (addMeta)="addMetadataUser($event)"
+      [type]="'user'"
     ></pry-metadata-editor>
   </ng-template>
 

@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IMetadata, MetadataValue } from '@provoly/dashboard';
+import { IMetadata, MetadataUser, MetadataValue } from '@provoly/dashboard';
 
 export const MetadataActions = {
   loadMetadata: createAction(`[Metadata] Load Metadata`),
@@ -54,5 +54,44 @@ export const MetadataActions = {
   loadDatasetMetadataFailure: createAction(
     `[Metadata] Load Metadata of selected Datasets Failure`,
     props<{ error: any }>()
-  )
+  ),
+
+  loadMetadataUser: createAction(`[Metadata/User] Load Metadata of selected Users`, props<{ userId: string }>()),
+  loadMetadataUserSuccess: createAction(
+    `[Metadata/User] Load Metadata of selected Users Success`,
+    props<{ metadata: Array<MetadataUser> }>()
+  ),
+  loadMetadataUserFailure: createAction(
+    `[Metadata/User] Load Metadata of selected Users Failure`,
+    props<{ error: any }>()
+  ),
+
+  addMetadataUser: createAction(
+    `[Metadata/User] Add Metadata of selected Users`,
+    props<{ userId: string; metaId: string; value: any }>()
+  ),
+  addMetadataUserSuccess: createAction(
+    `[Metadata/User] Add Metadata of selected Users Success`,
+    props<{ userId: string }>()
+  ),
+  addMetadataUserFailure: createAction(
+    `[Metadata/User] Add Metadata of selected Users Failure`,
+    props<{ error: any }>()
+  ),
+
+  deleteMetadataUser: createAction(
+    `[Metadata/User] Delete Metadata of selected Users`,
+    props<{ userId: string; metadataId: string }>()
+  ),
+  deleteMetadataUserSuccess: createAction(
+    `[Metadata/User] Delete Metadata of selected Users Success`,
+    props<{ userId: string }>()
+  ),
+  deleteMetadataUserFailure: createAction(
+    `[Metadata/User] Delete Metadata of selected Users Failure`,
+    props<{ error: any }>()
+  ),
+  loadUserProfile: createAction(`[Metadata/User] Load Metadata`),
+  loadUserProfileSuccess: createAction(`[Metadata/User] Load Success`, props<{ userProfile: Array<IMetadata> }>()),
+  loadUserProfileFailure: createAction(`[Metadata/User] Load Failure`, props<{ error: any }>())
 };

@@ -1,3 +1,4 @@
+<pry-metadata-editor-css></pry-metadata-editor-css>
 <div *ngFor="let metadata of (_metadata$ | async) ?? []">
   <div class="o-tabs__panel__content__actions">
     <div class="o-tabs__panel__content__actions__text">
@@ -37,11 +38,11 @@
     <fieldset>
       <legend class="u-visually-hidden">{{ '@pry.action.editProfil' | i18n }}</legend>
 
-      <div class="m-form-label-field">
+      <div class="m-form-label-field o-metadata-editor__container">
         <label for="metadata" id="metadata-label" class="a-label">Data</label>
         <pry-select
           id="metadata"
-          class="a-pry-select"
+          class="a-pry-select o-metadata-editor"
           formControlName="metadata"
           [items]="availableMetadata$ | async"
           (ngModelChange)="onMetaChange($event)"

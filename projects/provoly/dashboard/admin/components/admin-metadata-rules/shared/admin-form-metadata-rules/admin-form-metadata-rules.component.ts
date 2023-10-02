@@ -7,9 +7,7 @@ import { MetadataActions, MetadataSelectors, MetadataState } from '@provoly/dash
 import { Observable, Subscription } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { AdminActions } from '../../../../store/admin.actions';
-import { AdminMetadataUserActions } from '../../../admin-metadata-user/store/admin-metadata-user.action';
 import { AdminMetadataUserState } from '../../../admin-metadata-user/store/admin-metadata-user.reducer';
-import { AdminMetadataUserSelectors } from '../../../admin-metadata-user/store/admin-metadata-user.selector';
 import { AdminMetadataRulesActions } from '../../store/metadata-rules.actions';
 import { MetadataRulesState } from '../../store/metadata-rules.reducer';
 import { MetadataRulesSelectors } from '../../store/metadata-rules.selectors';
@@ -46,7 +44,7 @@ export class AdminFormMetadataRulesComponent implements OnInit, OnDestroy {
     private formBuilder: UntypedFormBuilder
   ) {
     this.metadataList$ = this.store.select(MetadataSelectors.metadata);
-    this.metadataUserList$ = this.store.select(AdminMetadataUserSelectors.metadata);
+    this.metadataUserList$ = this.store.select(MetadataSelectors.userProfile);
     this.metadataRulesList$ = this.store.select(MetadataRulesSelectors.metadataRulesList);
     this.form = this.formBuilder.group({
       id: [uuidv4()],
@@ -61,7 +59,7 @@ export class AdminFormMetadataRulesComponent implements OnInit, OnDestroy {
     this.isSameName = false;
     this.store.dispatch(AdminMetadataRulesActions.load());
     this.store.dispatch(MetadataActions.loadMetadata());
-    this.store.dispatch(AdminMetadataUserActions.loadMetadata());
+    this.store.dispatch(MetadataActions.loadUserProfile());
     this.sub = this.metadataList$.subscribe((metadataList) => {
       this.metadataList = metadataList;
     });

@@ -5,8 +5,10 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DataSourceService, IMetadata, VARIABLE_TYPE } from '@provoly/dashboard';
 import { MetadataService } from '@provoly/dashboard/components/metadata-editor';
+import { metadataUser } from '@provoly/dashboard/mock/data/mockItemAdmin';
 import { hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
+import { AdminUserActions } from '../../../admin/components/admin-user/store/admin-user.action';
 import { MetadataActions } from './metadata.action';
 import { MetadataEffects } from './metadata.effects';
 import { initialMetadataState, MetadataState } from './metadata.reducer';
@@ -265,6 +267,210 @@ describe('MetadataEffects', () => {
         expect(getSpy).toHaveBeenCalled();
       });
       expect(effects.goToDetailsView$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadMetadataUser$', () => {
+    it('should set Metadata Users get by the http GET', () => {
+      const getSpy = jest.spyOn(metadataService, 'getMetadataUser');
+      store.setState(
+        buildState({
+          ...initialState
+        })
+      );
+
+      actions$ = hot('--a-', {
+        a: MetadataActions.loadMetadataUser({ userId: 'idBuffy' })
+      });
+
+      const expected$ = hot('--a-', {
+        a: MetadataActions.loadMetadataUserSuccess({ metadata: metadataUser })
+      });
+      expect(effects.loadMetadataUser$).toBeObservable(expected$);
+      expect(effects.loadMetadataUser$).toSatisfyOnFlush(() => {
+        expect(getSpy).toHaveBeenCalled();
+      });
+    });
+    it('should call loadMetadataUser failure', () => {
+      const getSpy = jest
+        .spyOn(metadataService, 'getMetadataUser')
+        .mockReturnValue(throwError(() => new Error('error')));
+      store.setState(
+        buildState({
+          ...initialState
+        })
+      );
+
+      actions$ = hot('--a-', {
+        a: MetadataActions.loadMetadataUser({ userId: 'idBuffy' })
+      });
+
+      const expected$ = hot('--a-', {
+        a: MetadataActions.loadMetadataUserFailure({ error: new Error('error') })
+      });
+      expect(effects.loadMetadataUser$).toBeObservable(expected$);
+      expect(effects.loadMetadataUser$).toSatisfyOnFlush(() => {
+        expect(getSpy).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('addMetadataUser$', () => {
+    it('should add Metadata Users get by the http PUT', () => {
+      const getSpy = jest.spyOn(metadataService, 'addMetadataUser');
+      store.setState(
+        buildState({
+          ...initialState
+        })
+      );
+
+      actions$ = hot('--a-', {
+        a: MetadataActions.addMetadataUser({
+          userId: 'idBuffy',
+          metaId: metadataUser[0].userProfile.id,
+          value: 'toto'
+        })
+      });
+
+      const expected$ = hot('--a-', {
+        a: MetadataActions.addMetadataUserSuccess({ userId: 'idBuffy' })
+      });
+      expect(effects.addMetadataUser$).toBeObservable(expected$);
+      expect(effects.addMetadataUser$).toSatisfyOnFlush(() => {
+        expect(getSpy).toHaveBeenCalled();
+      });
+    });
+    it('should call addMetadataUser failure', () => {
+      const getSpy = jest
+        .spyOn(metadataService, 'addMetadataUser')
+        .mockReturnValue(throwError(() => new Error('error')));
+      store.setState(
+        buildState({
+          ...initialState
+        })
+      );
+
+      actions$ = hot('--a-', {
+        a: MetadataActions.addMetadataUser({
+          userId: 'idBuffy',
+          metaId: metadataUser[0].userProfile.id,
+          value: 'toto'
+        })
+      });
+
+      const expected$ = hot('--a-', {
+        a: MetadataActions.addMetadataUserFailure({ error: new Error('error') })
+      });
+      expect(effects.addMetadataUser$).toBeObservable(expected$);
+      expect(effects.addMetadataUser$).toSatisfyOnFlush(() => {
+        expect(getSpy).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('addMetadataUserSuccess$', () => {
+    it('should set Metadata Users get by the http GET', () => {
+      store.setState(
+        buildState({
+          ...initialState,
+          selectedMetadataUser: []
+        })
+      );
+
+      actions$ = hot('--a-', {
+        a: MetadataActions.addMetadataUserSuccess({ userId: 'idBuffy' })
+      });
+
+      const expected$ = hot('--(ab)-', {
+        a: MetadataActions.loadMetadataUser({ userId: 'idBuffy' }),
+        b: MetadataActions.isEditable({ editable: false })
+      });
+      expect(effects.addMetadataUserSuccess$).toBeObservable(expected$);
+    });
+  });
+
+  describe('deleteMetadataUser$', () => {
+    it('should add Metadata Users get by the http PUT', () => {
+      const getSpy = jest.spyOn(metadataService, 'deleteMetadataUser');
+      store.setState(
+        buildState({
+          ...initialState
+        })
+      );
+
+      actions$ = hot('--a-', {
+        a: MetadataActions.deleteMetadataUser({ userId: 'idBuffy', metadataId: metadataUser[0].userProfile.id })
+      });
+
+      const expected$ = hot('--a-', {
+        a: MetadataActions.deleteMetadataUserSuccess({ userId: 'idBuffy' })
+      });
+      expect(effects.deleteMetadataUser$).toBeObservable(expected$);
+      expect(effects.deleteMetadataUser$).toSatisfyOnFlush(() => {
+        expect(getSpy).toHaveBeenCalled();
+      });
+    });
+    it('should call deleteMetadataUser failure', () => {
+      const getSpy = jest
+        .spyOn(metadataService, 'deleteMetadataUser')
+        .mockReturnValue(throwError(() => new Error('error')));
+      store.setState(
+        buildState({
+          ...initialState
+        })
+      );
+
+      actions$ = hot('--a-', {
+        a: MetadataActions.deleteMetadataUser({ userId: 'idBuffy', metadataId: metadataUser[0].userProfile.id })
+      });
+
+      const expected$ = hot('--a-', {
+        a: MetadataActions.deleteMetadataUserFailure({ error: new Error('error') })
+      });
+      expect(effects.deleteMetadataUser$).toBeObservable(expected$);
+      expect(effects.deleteMetadataUser$).toSatisfyOnFlush(() => {
+        expect(getSpy).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('deleteMetadataUserSuccess$', () => {
+    it('should set Metadata Users get by the http GET', () => {
+      store.setState(
+        buildState({
+          ...initialState,
+          selectedMetadataUser: []
+        })
+      );
+
+      actions$ = hot('--a-', {
+        a: MetadataActions.deleteMetadataUserSuccess({ userId: 'idBuffy' })
+      });
+
+      const expected$ = hot('--(ab)-', {
+        a: MetadataActions.loadMetadataUser({ userId: 'idBuffy' }),
+        b: MetadataActions.isEditable({ editable: false })
+      });
+      expect(effects.deleteMetadataUserSuccess$).toBeObservable(expected$);
+    });
+  });
+
+  describe('selectUser$', () => {
+    it('should set Metadata Users get by the http GET', () => {
+      store.setState(
+        buildState({
+          ...initialState
+        })
+      );
+
+      actions$ = hot('--a-', {
+        a: AdminUserActions.selectUser({ userId: 'idBuffy' })
+      });
+
+      const expected$ = hot('--a-', {
+        a: MetadataActions.loadMetadataUser({ userId: 'idBuffy' })
+      });
+      expect(effects.selectUser$).toBeObservable(expected$);
     });
   });
 });

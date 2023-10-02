@@ -27,6 +27,7 @@
       [metadata]="(datasetMetadata$ | async) ?? []"
       (removeMeta)="removeMetadata($event)"
       (addMeta)="addDatasetMetadata($event)"
+      [type]="'meta'"
     ></pry-metadata-editor>
   </ng-template>
 

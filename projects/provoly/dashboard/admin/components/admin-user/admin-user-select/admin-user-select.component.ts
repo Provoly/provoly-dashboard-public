@@ -1,11 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IMetadata, MetadataUser, UserInfo } from '@provoly/dashboard';
-import { MetaEventType } from '@provoly/dashboard/components/metadata-editor';
+import { MetadataActions, MetadataSelectors, MetaEventType } from '@provoly/dashboard/components/metadata-editor';
 import { Observable, Subscription } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
-import { AdminMetadataUserActions } from '../../admin-metadata-user/store/admin-metadata-user.action';
-import { AdminMetadataUserSelectors } from '../../admin-metadata-user/store/admin-metadata-user.selector';
 import { AdminUserActions } from '../store/admin-user.action';
 import { AdminUserSelectors } from '../store/admin-user.selector';
 
@@ -34,11 +32,11 @@ export class AdminUserSelectComponent implements OnInit, OnDestroy {
   @Input() profil: boolean = false;
 
   constructor(private store: Store<AdminUserSelectComponent>) {
-    this.store.dispatch(AdminMetadataUserActions.loadMetadata());
+    this.store.dispatch(MetadataActions.loadUserProfile());
 
     this.selectedUser$ = this.store.select(AdminUserSelectors.selectedUser);
-    this.userMetadata$ = this.store.select(AdminUserSelectors.selectedMetadataUser);
-    this.metadata$ = this.store.select(AdminMetadataUserSelectors.metadata);
+    this.userMetadata$ = this.store.select(MetadataSelectors.selectedUserProfile);
+    this.metadata$ = this.store.select(MetadataSelectors.userProfile);
     this.editable$ = this.store.select(AdminUserSelectors.editable);
 
     this.compId = nextCompId++;
@@ -67,7 +65,7 @@ export class AdminUserSelectComponent implements OnInit, OnDestroy {
 
   addMetadataUser(metadata: MetaEventType) {
     this.store.dispatch(
-      AdminUserActions.addMetadataUser({
+      MetadataActions.addMetadataUser({
         userId: metadata.id,
         metaId: metadata.metadataId,
         value: metadata.value
@@ -76,7 +74,7 @@ export class AdminUserSelectComponent implements OnInit, OnDestroy {
   }
 
   removeMetadata(metadata: MetaEventType) {
-    this.store.dispatch(AdminUserActions.deleteMetadataUser({ userId: this.userId, metadataId: metadata.metadataId }));
+    this.store.dispatch(MetadataActions.deleteMetadataUser({ userId: this.userId, metadataId: metadata.metadataId }));
   }
 
   switch(number: number) {

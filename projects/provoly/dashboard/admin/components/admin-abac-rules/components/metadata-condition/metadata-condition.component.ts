@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { IMetadata } from '@provoly/dashboard';
 import { MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
 import { filter, Observable, of, switchMap } from 'rxjs';
-import { AdminMetadataUserSelectors } from '../../../admin-metadata-user/store/admin-metadata-user.selector';
 import { AbacRulesActions } from '../../store/abac-rules.actions';
 import { NormalizedCondition, OperatorType } from '../../store/abac-rules.model';
 import { AbacRulesSelectors } from '../../store/abac-rules.selectors';
@@ -34,7 +33,7 @@ export class MetadataConditionComponent {
   ]);
 
   constructor(private store: Store<any>) {
-    this.metadataUsers$ = this.store.select(AdminMetadataUserSelectors.metadata);
+    this.metadataUsers$ = this.store.select(MetadataSelectors.userProfile);
   }
 
   private assignObservables(): void {

@@ -13,7 +13,6 @@ import {
   LinkDetails,
   MetadataRules,
   MetadataRulesCreate,
-  MetadataUser,
   Predicate,
   UserInfo
 } from '@provoly/dashboard';
@@ -174,30 +173,6 @@ export class AdminService {
     return this.store
       .select(ConfigSelectors.refUrl)
       .pipe(mergeMap((url) => this.httpClient.get<UserInfo[]>(`${url}/users`)));
-  }
-
-  getMetadataUser(userId: string): Observable<MetadataUser[]> {
-    return this.store
-      .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.get<MetadataUser[]>(`${url}/users/id/${userId}/metadata`)));
-  }
-
-  addMetadataUser(userId: string, metaId: string, value: any): Observable<void> {
-    return this.store.select(ConfigSelectors.refUrl).pipe(
-      mergeMap((url) =>
-        this.httpClient.put<void>(encodeURI(`${url}/users/id/${userId}/metadata/id/${metaId}`), {
-          value: value
-        })
-      )
-    );
-  }
-
-  deleteMetadataUser(userId: string, metaId: string): Observable<void> {
-    return this.store
-      .select(ConfigSelectors.refUrl)
-      .pipe(
-        mergeMap((url) => this.httpClient.delete<void>(encodeURI(`${url}/users/id/${userId}/metadata/id/${metaId}`)))
-      );
   }
 
   getLinks(): Observable<LinkDetails[]> {

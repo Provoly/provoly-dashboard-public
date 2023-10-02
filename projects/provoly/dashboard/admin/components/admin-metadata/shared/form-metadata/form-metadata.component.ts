@@ -7,7 +7,6 @@ import { MetadataSelectors } from '@provoly/dashboard/components/metadata-editor
 import { combineLatest, map, Observable, Subscription } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import { AdminActions } from '../../../../store/admin.actions';
-import { AdminMetadataUserSelectors } from '../../../admin-metadata-user/store/admin-metadata-user.selector';
 
 @Component({
   selector: 'pry-form-metadata',
@@ -50,7 +49,7 @@ export class FormMetadataComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.isMetaUser) {
       this.metadataNames$ = this.store
-        .select(AdminMetadataUserSelectors.metadata)
+        .select(MetadataSelectors.userProfile)
         .pipe(map((metadata) => metadata.map((metadata) => metadata.name.toLowerCase())));
     } else {
       this.metadataNames$ = this.store

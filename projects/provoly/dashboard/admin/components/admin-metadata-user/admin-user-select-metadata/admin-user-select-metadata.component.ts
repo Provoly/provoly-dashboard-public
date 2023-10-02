@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IMetadata, META_OPTIONS } from '@provoly/dashboard';
-import { Observable, Subscription } from 'rxjs';
+import { MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
+import { combineLatest, map, Observable, Subscription } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminMetadataUserActions } from '../store/admin-metadata-user.action';
 import { AdminMetadataUserSelectors } from '../store/admin-metadata-user.selector';
@@ -18,7 +19,10 @@ export class AdminUserSelectMetadataComponent implements OnInit, OnDestroy {
   currentTypeTranslation = '';
 
   constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
-    this.metadata$ = this.store.select(AdminMetadataUserSelectors.selectedMetadata);
+    this.metadata$ = combineLatest([
+      this.store.select(AdminMetadataUserSelectors.selectedMetadataId),
+      this.store.select(MetadataSelectors.userProfile)
+    ]).pipe(map(([id, metas]) => metas.find((meta) => meta.id === id)));
     this.sub.add(
       this.metadata$.subscribe((meta) => {
         const type = META_OPTIONS.find((el) => el.varType === meta?.type);

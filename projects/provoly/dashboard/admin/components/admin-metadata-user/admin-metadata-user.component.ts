@@ -2,8 +2,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IMetadata, PryI18nService } from '@provoly/dashboard';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { MetadataActions, MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
+import { combineLatest, filter, Observable, Subject, takeUntil } from 'rxjs';
 import { AdminActions } from '../../store/admin.actions';
 import { IConfigHeader } from '../admin-metadata/shared/list-metadata/pry-list-metadata.component';
 import { AdminMetadataUserActions } from './store/admin-metadata-user.action';
@@ -17,7 +17,7 @@ export class AdminMetadataUserComponent {
   @ViewChild('input') input!: ElementRef;
 
   metadata$: Observable<Array<IMetadata>>;
-  selectedMetadataId$: Observable<string>;
+  selectedMetadataId$: Observable<string | null>;
 
   sortActive? = 'name';
 
@@ -39,18 +39,17 @@ export class AdminMetadataUserComponent {
       { headerType: 'label', label: this.translateService.instant('@pry.admin.user.label') },
       { headerType: 'label', label: this.translateService.instant('@pry.admin.user.type') }
     ];
-    this.metadata$ = this.store.select(AdminMetadataUserSelectors.metadata);
+    this.metadata$ = this.store.select(MetadataSelectors.userProfile);
     this.selectedMetadataId$ = this.store.select(AdminMetadataUserSelectors.selectedMetadataId);
     this.store.dispatch(AdminMetadataUserActions.unselectMetadata());
-    this.store.dispatch(AdminMetadataUserActions.loadMetadata());
-    this.store
-      .select(AdminMetadataUserSelectors.selectedMetadata)
+    this.store.dispatch(MetadataActions.loadUserProfile());
+    combineLatest([this.store.select(AdminMetadataUserSelectors.selectedMetadataId), this.metadata$])
       .pipe(
-        filter((x) => !!x),
+        filter(([x]) => !!x),
         takeUntil(this.unsubscribe$)
       )
-      .subscribe((selectedMetadata) => {
-        this.value = selectedMetadata.name;
+      .subscribe(([id, metas]) => {
+        this.value = metas.find((meta) => meta.id === id)?.name ?? '';
       });
     const path = this.router.createUrlTree(['.', 'new'], { relativeTo: this.route });
     this.store.dispatch(

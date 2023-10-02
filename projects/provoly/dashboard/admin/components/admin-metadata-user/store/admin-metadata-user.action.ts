@@ -5,10 +5,6 @@ const BASE = '[Admin/User]';
 const BASEAPI = '[Admin/User Api]';
 
 export const AdminMetadataUserActions = {
-  loadMetadata: createAction(`${BASE} Load Metadata`),
-  loadMetadataSuccess: createAction(`${BASEAPI} Load Metadata Success`, props<{ metadata: Array<IMetadata> }>()),
-  loadMetadataFailure: createAction(`${BASEAPI} Load Metadata Failure`, props<{ error: any }>()),
-
   selectMetadata: createAction(`${BASE} Select Metadata`, props<{ id: string }>()),
   unselectMetadata: createAction(`${BASE} unSelect Metadata`),
 

@@ -15,6 +15,8 @@ const selectMetadataById = (id: string) =>
   createSelector(metadata, (metadata: IMetadata[]) => metadata?.find((m) => m.id === id));
 
 const editable = createSelector(feature, (state) => state.editable);
+const selectedUserProfile = createSelector(feature, (state) => state?.selectedUserProfile);
+const userProfile = createSelector(feature, (state) => state?.userProfile ?? []);
 
 export const MetadataSelectors = {
   feature,
@@ -23,5 +25,7 @@ export const MetadataSelectors = {
   selectedMetadata,
   selectedMetadataId,
   selectMetadataById,
-  editable
+  editable,
+  selectedUserProfile,
+  userProfile
 };

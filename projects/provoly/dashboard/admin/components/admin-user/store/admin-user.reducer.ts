@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { MetadataUser, UserInfo } from '@provoly/dashboard';
+import { UserInfo } from '@provoly/dashboard';
 import { AdminUserActions } from './admin-user.action';
 
 export const adminUserFeatureKey = '@pry/admin/user';
@@ -7,13 +7,11 @@ export const adminUserFeatureKey = '@pry/admin/user';
 export interface AdminUserState {
   users: Array<UserInfo>;
   selectedUser?: UserInfo;
-  selectedMetadataUser: Array<MetadataUser>;
   editable: boolean;
 }
 
 export const initialAdminUserState: AdminUserState = {
   users: [],
-  selectedMetadataUser: [],
   editable: false
 };
 
@@ -30,12 +28,7 @@ export const adminUserReducer = createReducer(
   })),
   on(AdminUserActions.unselectUser, (state, action) => ({
     ...state,
-    selectedUser: undefined,
-    selectedMetadataUser: []
-  })),
-  on(AdminUserActions.loadMetadataUserSuccess, (state, action) => ({
-    ...state,
-    selectedMetadataUser: action.metadata
+    selectedUser: undefined
   })),
   on(AdminUserActions.isEditable, (state, action) => ({
     ...state,

@@ -1,0 +1,15 @@
+@use '../../../styles/abstracts/index' as *;
+
+/* Organism - widget tile */
+/* Extends o-widget */
+
+.o-metadata-editor {
+  ng-select {
+    position: absolute;
+    width: 80%;
+  }
+
+  &__container {
+    min-height: toRem(55);
+  }
+}

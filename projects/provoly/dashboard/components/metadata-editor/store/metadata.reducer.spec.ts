@@ -1,4 +1,5 @@
 import { IMetadata, VARIABLE_TYPE } from '@provoly/dashboard';
+import { metadataUser } from '@provoly/dashboard/mock/data/mockItemAdmin';
 import { MetadataActions } from './metadata.action';
 import { initialMetadataState, metadataReducer } from './metadata.reducer';
 
@@ -64,6 +65,21 @@ describe('Metadata Reducer', () => {
         ...initialState,
         loading: false,
         errors: 'error'
+      });
+    });
+  });
+  describe('loadMetadataUserSuccess', () => {
+    it('should load metadata User', () => {
+      expect(
+        metadataReducer(
+          {
+            ...initialState
+          },
+          MetadataActions.loadMetadataUserSuccess({ metadata: metadataUser })
+        )
+      ).toEqual({
+        ...initialState,
+        selectedUserProfile: metadataUser
       });
     });
   });

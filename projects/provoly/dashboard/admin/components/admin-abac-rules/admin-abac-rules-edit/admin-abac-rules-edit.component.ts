@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { ClassActions, FieldActions } from '@provoly/dashboard';
 import { MetadataActions } from '@provoly/dashboard/components/metadata-editor';
 import { AdminActions } from '../../../store/admin.actions';
-import { AdminMetadataUserActions } from '../../admin-metadata-user/store/admin-metadata-user.action';
 import { PredicatesActions } from '../../admin-predicates/store/predicates.actions';
 import { AbacRulesActions } from '../store/abac-rules.actions';
 
@@ -18,7 +17,7 @@ export class AdminAbacRulesEditComponent implements OnInit, OnDestroy {
     this.store.dispatch(FieldActions.load());
     this.store.dispatch(PredicatesActions.loadPredicates());
     this.store.dispatch(MetadataActions.loadMetadata());
-    this.store.dispatch(AdminMetadataUserActions.loadMetadata());
+    this.store.dispatch(MetadataActions.loadUserProfile());
   }
 
   ngOnInit(): void {

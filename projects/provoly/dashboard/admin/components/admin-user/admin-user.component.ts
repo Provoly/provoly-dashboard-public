@@ -17,11 +17,7 @@ export class AdminUserComponent {
   sortActive? = 'name';
   sortDirection? = 'asc';
 
-  constructor(
-    private store: Store<AdminUserComponent>,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store: Store<AdminUserComponent>, private router: Router, private route: ActivatedRoute) {
     this.store.dispatch(AdminUserActions.unselectUser());
     this.store.dispatch(AdminUserActions.loadUsers());
     this.users$ = this.store.select(AdminUserSelectors.users);
