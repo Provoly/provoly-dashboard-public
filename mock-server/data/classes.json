@@ -328,8 +328,8 @@
       },
       {
         "id": "3c84e66a-461b-4857-ad55-64863b0a2354",
-        "name": "uuid",
-        "field": "79f91495-02e9-4208-8166-149a7a28e613",
+        "name": "seriesname",
+        "field": "fezhr255-9e67-41e6-89a2-1c1bd5a0a5ce",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false
       }

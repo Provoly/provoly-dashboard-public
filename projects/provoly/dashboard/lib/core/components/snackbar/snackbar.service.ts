@@ -24,10 +24,7 @@ export class PrySnackbarService {
 
   private messageEvents$ = new Subject<PrySnackMessage>();
 
-  constructor(
-    private overlay: Overlay,
-    private translate: PryI18nService
-  ) {
+  constructor(private overlay: Overlay, private translate: PryI18nService) {
     // Allows to access snackbar from javascript, for example to manage Vega errors
     document.addEventListener(
       PRY_CUSTOMEVENT_TYPE,

@@ -8765,57 +8765,6 @@
     },
     "relations": []
   },
-  "15061554-298f-4f56-8cd2-52ccec998307": {
-    "items": {
-      "5032106e-ca16-4742-a8f9-a43757c99d67": [
-        {
-          "oClass": "5032106e-ca16-4742-a8f9-a43757c99d67",
-          "id": "5032106e-ca16-4742-a8f9-a43757c991295ee17-e76c-466e-8198-25283011d6ac",
-          "metadata": {
-            "_class": "5032106e-ca16-4742-a8f9-a43757c99d67"
-          },
-          "attributes": {
-            "nb_spots": {
-              "value": 11,
-              "type": "VALUE",
-              "metadata": {},
-              "visible": true
-            },
-            "parked_cars": {
-              "value": 7,
-              "type": "VALUE",
-              "metadata": {},
-              "visible": true
-            },
-            "uuid": {
-              "value": "aaaa-bbbb-cccc-dddd",
-              "type": "VALUE",
-              "metadata": {},
-              "visible": true
-            }
-          }
-        }
-      ],
-      "8923749e-ca16-4742-a8f9-a43757c99d67": [
-        {
-          "oClass": "8923749e-ca16-4742-a8f9-a43757c99d67",
-          "id": "8923749e-ca16-4742-a8f9-a43757c99d671295ee17-e76c-466e-8198-25283011d6ac",
-          "metadata": {
-            "_class": "8923749e-ca16-4742-a8f9-a43757c99d67"
-          },
-          "attributes": {
-            "illegal_parking": {
-              "value": 3,
-              "type": "VALUE",
-              "metadata": {},
-              "visible": true
-            }
-          }
-        }
-      ]
-    },
-    "relations": []
-  },
   "25061554-298f-4f56-8cd2-52ccec998307": {
     "items": {
       "2032106e-ca16-4742-a8f9-a43757c99d67": [

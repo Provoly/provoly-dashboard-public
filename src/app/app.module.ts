@@ -127,6 +127,11 @@ import { SearchContainerComponent } from './search-container/search-container.co
           name: 'tile',
           load: () =>
             import('@provoly/dashboard/widgets/widget-tile').then((module) => widgetLoader(module, 'WidgetTileModule'))
+        },
+        vega: {
+          name: 'vega',
+          load: () =>
+            import('@provoly/dashboard/widgets/widget-vega').then((module) => widgetLoader(module, 'WidgetVegaModule'))
         }
       },
       {

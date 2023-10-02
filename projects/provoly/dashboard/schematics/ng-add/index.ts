@@ -39,7 +39,7 @@ function addDependencies(tree: Tree, options: ProjectSetupOptions) {
     dependencies.push({ type: NodeDependencyType.Dev, version: '^2.5.2', name: '@types/proj4' });
   }
 
-  if (options.widgets.includes('widget-aggregated-chart')) {
+  if (options.widgets.includes('widget-aggregated-chart') || options.widgets.includes('widget-vega')) {
     console.log('...Adding provoly dependencies for charts');
     dependencies.push({ type: NodeDependencyType.Default, version: '^5.21.0', name: 'vega' });
     dependencies.push({ type: NodeDependencyType.Default, version: '^6.20.5', name: 'vega-embed' });
@@ -121,6 +121,12 @@ function widgetImports(options: ProjectSetupOptions, context: SchematicContext, 
       path: '@provoly/dashboard/widgets/widget-tile',
       moduleName: 'WidgetTileModule',
       type: 'tile'
+    },
+    {
+      name: 'widget-vega',
+      path: '@provoly/dashboard/widgets/widget-vega',
+      moduleName: 'WidgetVegaModule',
+      type: 'vega'
     }
   ];
   let imports: string[] = [];

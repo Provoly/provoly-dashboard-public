@@ -1,0 +1,6 @@
+@use '../../../styles/abstracts' as *;
+
+textarea.a-form-field.a-text-area {
+  overflow: unset;
+  height: toRem(500);
+}

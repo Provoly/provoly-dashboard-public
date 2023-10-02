@@ -22,7 +22,8 @@
           "widget-map",
           "widget-table",
           "widget-template",
-          "widget-tile"
+          "widget-tile",
+          "widget-vega"
         ]
       },
       "default": []

@@ -12,6 +12,7 @@ import {
 } from '../../projects/provoly/dashboard/restitution';
 import { DashboardContainerComponent } from './dashboard-container/dashboard-container.component';
 import { SearchContainerComponent } from './search-container/search-container.component';
+import { vegaExampleSpec } from './vega-example-spec.constant';
 
 const routes: Routes = [
   /* In a real app, do not make routes like these ones */
@@ -299,6 +300,25 @@ const routes: Routes = [
               fit: true
             },
             datasource: 'geospe-cifi-cdat-acd2-51ccec998307'
+          }
+        ]
+      } as DashboardManifest
+    }
+  },
+  {
+    path: 'vega',
+    component: DashboardContainerComponent,
+    data: {
+      manifest: {
+        widgets: [
+          {
+            type: 'vega',
+            layout: { x: 1, y: 1, height: 12, width: 12 },
+            options: {
+              baseSpec: vegaExampleSpec,
+              placeData: ['data', 0, 'values']
+            },
+            datasource: '15061554-298f-4f56-8cd2-52ccec998307'
           }
         ]
       } as DashboardManifest

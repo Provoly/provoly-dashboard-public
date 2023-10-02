@@ -11,6 +11,7 @@ import { MapWidgetOptions } from './widget-map-manifest.interface';
 import { TableWidgetOptions } from './widget-table-manifest.interface';
 import { TemplateWidgetOptions } from './widget-template-manifest.interface';
 import { TileWidgetOptions } from './widget-tile-manifest.interface';
+import { VegaWidgetOptions } from './widget-vega-manifest.interface';
 
 export interface ManifestDescription {
   id: string;
@@ -102,4 +103,5 @@ export type WidgetOptions =
   | GraphWidgetOptions
   | TemplateWidgetOptions
   | TileWidgetOptions
+  | VegaWidgetOptions
   | CustomWidgetOptions;

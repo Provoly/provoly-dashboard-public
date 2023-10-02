@@ -13,6 +13,7 @@ export * from './widget-detail-manifest.interface';
 export * from './widget-image-manifest.interface';
 export * from './widget-template-manifest.interface';
 export * from './widget-tile-manifest.interface';
+export * from './widget-vega-manifest.interface';
 export * from './manifest.interface';
 export * from './widget.interface';
 export * from './mimetype-resultset.constant';

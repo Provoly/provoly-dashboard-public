@@ -62,6 +62,13 @@
     ]
   },
   {
+    "id": "15061554-298f-4f56-8cd2-52ccec998307",
+    "name": "data-parking",
+    "oClass": "5032106e-ca16-4742-a8f9-a43757c99d67",
+    "type": "CLOSED",
+    "metadata": []
+  },
+  {
     "id": "06406e7e-37cd-41ce-b5fc-36d233e6ae5c",
     "name": "Tronçon de route",
     "oClass": "123456789-69a6-474e-8f46-7cc8796ed151",
