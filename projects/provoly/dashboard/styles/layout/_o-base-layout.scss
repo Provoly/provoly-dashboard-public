@@ -86,7 +86,7 @@
   .o-base-layout__panel {
     position: relative;
     overflow: auto;
-    width: 0%;
+    width: 0;
     height: 100%;
 
     &__content {
@@ -107,6 +107,13 @@
 
       .o-base-layout__panel__content {
         display: block;
+      }
+
+      &.-model {
+        width: 30rem;
+        .o-base-layout__panel__content {
+          width: 30rem;
+        }
       }
     }
   }

@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ComponentRef, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { BaseLayoutComponent, BaseToolboxAction } from '@provoly/dashboard';
-import { Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { AdminActions } from '../../store/admin.actions';
 import { AdminSelectors } from '../../store/admin.selectors';
 import { AdminClassesSelectComponent } from '../admin-classes/admin-classes-select/admin-classes-select.component';
@@ -44,8 +44,9 @@ export class AdminLayoutComponent extends BaseLayoutComponent implements AfterVi
   sub = new Subscription();
   @ViewChild('adminPanel', { static: true, read: ViewContainerRef }) adminPanel!: ViewContainerRef;
   componentRef?: ComponentRef<any>;
+  limit$ = new BehaviorSubject<string | undefined>(undefined);
 
-  constructor(store: Store<any>, router: Router) {
+  constructor(store: Store<any>, router: Router, private route: ActivatedRoute) {
     super(store, router);
     this.baseToolboxTranslation = '@pry.admin.';
     this.actions$ = this.store.select(AdminSelectors.actions);
@@ -56,6 +57,7 @@ export class AdminLayoutComponent extends BaseLayoutComponent implements AfterVi
         this.store.dispatch(AdminActions.togglePanel({ panelOpen: !!ct }));
       })
     );
+    this.subscriptions.add(this.route.data.subscribe((data) => this.limit$?.next(data['limitMenu'])));
   }
 
   override init(): void {

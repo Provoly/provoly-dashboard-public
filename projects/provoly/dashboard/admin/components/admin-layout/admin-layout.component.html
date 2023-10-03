@@ -13,7 +13,11 @@
       <router-outlet></router-outlet>
     </div>
 
-    <div class="o-base-layout__panel" [class.is-open]="panelOpen$ | async">
+    <div
+      class="o-base-layout__panel"
+      [class.is-open]="panelOpen$ | async"
+      [class.-model]="(limit$ | async) === 'model'"
+    >
       <div class="o-base-layout__panel__content">
         <ng-template #adminPanel></ng-template>
       </div>
