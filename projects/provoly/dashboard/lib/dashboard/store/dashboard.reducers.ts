@@ -156,7 +156,9 @@ const internalReducer = createReducer<DashboardState>(
           resultSets: !!action.resultSets
             ? { ...state.results.resultSets, ...action.resultSets }
             : state.results.resultSets
-        }
+        },
+        // @ts-ignore
+        display: action.display ?? state.display
       };
     }
   ),

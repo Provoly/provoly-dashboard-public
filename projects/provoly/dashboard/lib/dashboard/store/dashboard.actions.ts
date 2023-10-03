@@ -94,6 +94,7 @@ export const DashboardActions = {
       manifestId?: string;
       selectedIds: string[];
       presentation?: { current?: ManifestDescription; initial?: GlobalManifest; viewMode?: ViewMode };
+      display?: DisplayOptions;
     }>()
   ),
   updateManifestAfterTenantLeave: createAction(
@@ -236,7 +237,7 @@ export const DashboardActions = {
   ),
   addWmsFeatures: createAction('[Widget map] Set Wms layer features', props<{ features: any }>()),
   updateDisplayOptions: createAction(
-    '[Dashboard/Display] Update displayed dashboard management features',
+    '[Dashboard/Display] (bus) Update displayed dashboard management features',
     props<{ mode: DisplayMode; customDisplay?: DisplayOptions }>()
   ),
   getCapability: createAction('[Widget map] Get Wms capability', props<{ url: string; force?: boolean }>()),

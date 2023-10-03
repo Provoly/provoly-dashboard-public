@@ -42,10 +42,11 @@ export class DashboardEffects {
         this.store.select(DashboardSelectors.globalManifest),
         this.store.select(DashboardSelectors.resultSets),
         this.store.select(DashboardSelectors.selectedItemIds),
-        this.store.select(DashboardSelectors.presentation)
+        this.store.select(DashboardSelectors.presentation),
+        this.store.select(DashboardSelectors.displayOptions)
       ),
-      filter(([action, rank, tenants, manifest, resultSets]) => rank === 0),
-      map(([action, rank, tenants, manifest, resultSets, selectedIds, presentation]) =>
+      filter(([action, rank, tenants, manifest, resultSets, display]) => rank === 0),
+      map(([action, rank, tenants, manifest, resultSets, selectedIds, presentation, display]) =>
         DashboardActions.updateManifestAfterTenantJoin({
           tenants, // we already have added tenant in the reduce of the "join" action
           manifest: {
@@ -55,7 +56,8 @@ export class DashboardEffects {
           resultSets,
           selectedIds,
           joining: true,
-          presentation
+          presentation,
+          display
         })
       )
     )

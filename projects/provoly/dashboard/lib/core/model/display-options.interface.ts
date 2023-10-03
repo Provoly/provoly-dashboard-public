@@ -25,7 +25,7 @@ export enum DisplayMode {
   CUSTOM = 'CUSTOM'
 }
 
-export function getDisplayOptions(mode: DisplayMode): DisplayOptions {
+export function getDisplayOptions(mode?: DisplayMode): DisplayOptions {
   const displayOptions: DisplayOptions = {
     presentationTitle: true,
     search: false,
