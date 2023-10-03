@@ -28,9 +28,17 @@ export class PryModalStatusComponent {
     this._version = version;
     if (!!version) {
       this.store.dispatch(DataSourceActions.dataset.previews.getById({ id: version.id }));
-      this.datasetPreviews$ = this.store
-        .select(DataSourceSelectors.datasetPreviews)
-        .pipe(map((previews) => previews.map((preview) => preview.messages).flat()));
+      this.datasetPreviews$ = this.store.select(DataSourceSelectors.datasetPreviews).pipe(
+        map((previews) =>
+          previews
+            .map((preview) => preview.messages)
+            .flat()
+            .map((preview) => ({
+              ...preview,
+              name: preview.name.split(',').join(', ')
+            }))
+        )
+      );
       this.messageCount$ = this.store.select(DataSourceSelectors.datasetPreviews).pipe(
         map((previews) => {
           return previews.map((preview) => preview.count).reduce((p, c) => p + c, 0);

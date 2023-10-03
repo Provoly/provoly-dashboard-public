@@ -35,7 +35,7 @@
         <td>
           {{
             '@pry.dataset.error.code.' + preview.extractMessageCode
-              | i18n : { name: preview.name, recordId: preview.recordId }
+              | i18n : { plural: preview.name.includes(',') ? 's' : '', name: preview.name, recordId: preview.recordId }
           }}
         </td>
       </tr>

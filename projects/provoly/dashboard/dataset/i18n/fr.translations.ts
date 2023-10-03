@@ -47,7 +47,7 @@ export const frTranslations = {
           WARNING: 'Warning'
         },
         code: {
-          UNRECOGNIZED: 'Attribut {{name}} non reconnu',
+          UNRECOGNIZED: 'Attribut{{plural}} {{name}} non reconnu{{plural}}',
           FORMAT: "Format d'attribut {{name}} incorrect",
           ELASTIC_SEARCH: "Erreur d'insertion pour l'élément {{recordId}}",
           NO_VALUES: 'Pas de valeur pour la ligne {{recordId}}',
