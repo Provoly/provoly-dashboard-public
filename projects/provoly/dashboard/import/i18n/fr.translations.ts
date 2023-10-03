@@ -14,6 +14,9 @@ export const frTranslations = {
       shapefileState: ' pour vérifier son état',
       error: "Erreur lors de l'import: {{msg}}",
       errors: 'erreur(s)',
+      errorCode: {
+        409: 'Import déjà en cours, veuillez réessayer plus tard.'
+      },
       line: 'Ligne {{line}}: ',
       withoutLine: 'Erreurs globales: ',
       dataset: 'Jeu de données',

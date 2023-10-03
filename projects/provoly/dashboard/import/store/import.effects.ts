@@ -19,6 +19,12 @@ export class ImportEffects {
           catchError((error: HttpErrorResponse) => {
             if (error.status === 400 || error.status === 500) {
               return [ImportActions.uploadFailure({ errors: error.error.itemErrors })];
+            } else if (error.status === 409) {
+              this.snackbar.open({
+                type: 'error',
+                message: this.translateService.instant('@pry.import.errorCode.' + error.status)
+              });
+              return [ImportActions.uploadFailure({ errors: error.error.itemErrors })];
             }
             this.snackbar.open({
               type: 'error',

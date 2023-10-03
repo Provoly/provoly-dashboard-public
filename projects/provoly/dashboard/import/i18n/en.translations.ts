@@ -13,6 +13,9 @@ export const enTranslations = {
       consultDataset: 'The import is in progress, see the {{ parameter }} dataset page to check its condition',
       errors: 'errors',
       error: 'Error on import: {{msg}}',
+      errorCode: {
+        409: 'Import already in progress, please try again later.'
+      },
       line: 'Line {{line}}: ',
       withoutLine: 'Global errors: ',
       dataset: 'Dataset',
