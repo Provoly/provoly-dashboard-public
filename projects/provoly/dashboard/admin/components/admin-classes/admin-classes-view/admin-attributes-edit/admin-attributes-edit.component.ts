@@ -12,11 +12,7 @@ export class AdminAttributesEditComponent implements OnInit {
   selectedClass$?: Observable<Class>;
   selectedAttribute$?: Observable<Attribute | undefined>;
 
-  constructor(
-    private store: Store<any>,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.store.dispatch(ClassActions.load());
   }
 

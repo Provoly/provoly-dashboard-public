@@ -11,7 +11,7 @@
       </div>
       <div *ngIf="attrForm.get('name')?.hasError('minlength')">
         <label class="a-label a-label--help -error" for="attr_name">{{
-          '@pry.admin.minLength' | i18n : { len: 3 }
+          '@pry.admin.minLength' | i18n : { len: 2 }
         }}</label>
       </div>
       <div *ngIf="attrForm.get('name')?.hasError('maxlength')">

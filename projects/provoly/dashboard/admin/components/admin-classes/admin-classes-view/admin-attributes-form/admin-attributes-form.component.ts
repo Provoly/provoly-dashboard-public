@@ -79,7 +79,7 @@ export class AdminAttributesFormComponent implements OnInit, OnDestroy {
 
     this.attrForm = this.formBuilder.group({
       id: [uuid()],
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100), noWhitespaceValidator]],
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100), noWhitespaceValidator]],
       description: [{ value: '', disabled: true }],
       field: ['', [Validators.required]],
       category: [DEFAULT_CATEGORY_UUID],
