@@ -99,6 +99,13 @@ import { WidgetMapLayerService } from './widget-map-layer.service';
 
 export const TOOLTIP_PADDING = 15;
 
+// Define Lambert Projection
+proj4.defs(
+  'EPSG:2154',
+  '+proj=lcc +lat_0=46.5 +lon_0=3 +lat_1=49 +lat_2=44 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs'
+);
+register(proj4);
+
 @Component({
   selector: 'pry-widget-map',
   templateUrl: './widget-map.component.html'
@@ -493,8 +500,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       distinctUntilChanged()
     );
 
-    this.fitOption$.subscribe((fit) => this.fitMapForObjects(fit));
-
     this.layers$ = combineLatest([
       this.resultSet$,
       this.options$,
@@ -642,8 +647,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         this.mapStyleLayer$,
         this.layers$,
         this.fitOption$,
-        this.selectedIds$.pipe(distinctUntilChanged((p, c) => equal(p, c)))
-      ]).subscribe(([mapStyleLayer, layers, fit, selectedIds]) => {
+        this.selectedIds$.pipe(distinctUntilChanged((p, c) => equal(p, c))),
+        this.wmsCapabilities$
+      ]).subscribe(([mapStyleLayer, layers, fit, selectedIds, capabilities]) => {
         const toApplyLayers = [...layers, ...mapStyleLayer];
         this.map.setLayers(toApplyLayers);
         this.map
@@ -664,7 +670,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           });
 
         setTimeout(() => {
-          this.fitMapForObjects(fit, selectedIds);
+          this.fitMapForObjects(fit, capabilities, selectedIds);
           this.map.updateSize();
         }, 200);
       })
@@ -793,7 +799,11 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     }
   }
 
-  fitMapForObjects(fit: boolean, selectedIds?: string[]) {
+  fitMapForObjects(
+    fit: boolean,
+    wmsCapabilities?: { [p: string]: GetCapabilitiesResponse | null },
+    selectedIds?: string[]
+  ) {
     if (fit) {
       let extent = createEmpty();
       const listOfMarkers = [] as any[];
@@ -831,7 +841,21 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           });
         });
 
-      const selectedExtent = boundingExtent(listOfMarkers.filter((coord) => !!coord));
+      const wmsLayersAvailableExtents = this.map
+        .getAllLayers()
+        .filter((layer) => layer.getSource() instanceof TileWMS)
+        .map((layer) =>
+          XMLUtils.getLayerExtent(
+            layer.getProperties()['paramLayer'],
+            this.map,
+            wmsCapabilities![layer.getProperties()['url']]?.doc
+          )
+        )
+        .filter((extent) => !!extent);
+
+      const selectedExtent = boundingExtent(
+        listOfMarkers.filter((coord) => !!coord).concat(...wmsLayersAvailableExtents)
+      );
       if (
         selectedExtent[0] !== Infinity &&
         selectedExtent[1] !== Infinity &&
@@ -1070,11 +1094,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   getFeatureFromServer(wmsLayers: Layer<any>[], pixel: Pixel) {
-    proj4.defs(
-      'EPSG:2154',
-      '+proj=lcc +lat_0=46.5 +lon_0=3 +lat_1=49 +lat_2=44 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs'
-    );
-    register(proj4);
     const projGeo = getProjection('EPSG:3857');
     const projLambert = getProjection('EPSG:2154');
 

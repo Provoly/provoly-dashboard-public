@@ -1,3 +1,6 @@
+import { Map } from 'ol';
+import { get as getProjection, transform } from 'ol/proj';
+
 export class XMLUtils {
   static find(childs: NodeListOf<ChildNode>, name: string) {
     if (!!childs) {
@@ -47,6 +50,36 @@ export class XMLUtils {
             matchingLayer = XMLUtils.findWith(Layer.childNodes, 'Name', split[split.length - 1]);
           }
           return matchingLayer;
+        }
+      }
+    }
+    return null;
+  }
+
+  static getLayerExtent(paramLayer: string, map: Map, doc?: Document) {
+    if (!doc) {
+      return null;
+    }
+    const matchingLayer = XMLUtils.getMatchingLayer(paramLayer, doc);
+    if (matchingLayer) {
+      const boundingBox = XMLUtils.find(matchingLayer.childNodes, 'BoundingBox');
+      if (boundingBox) {
+        // @ts-ignore
+        const attributes = boundingBox.attributes;
+        const projBox = getProjection(attributes.CRS.textContent ?? 'CRS:84');
+        if (projBox) {
+          return [
+            transform(
+              [parseFloat(attributes.minx.textContent), parseFloat(attributes.miny.textContent)],
+              projBox,
+              map.getView().getProjection()
+            ),
+            transform(
+              [parseFloat(attributes.maxx.textContent), parseFloat(attributes.maxy.textContent)],
+              projBox,
+              map.getView().getProjection()
+            )
+          ];
         }
       }
     }

@@ -337,6 +337,8 @@ export class WidgetMapLayerService {
           params: { LAYERS: layer.paramLayer, TILED: layer.paramTiled }
         })
       });
+      impl.set('url', layer.url);
+      impl.set('paramLayer', layer.paramLayer);
       impl.set('oClass', layer.oClass);
       impl.set('getFeatureInfoAdditionalParameters', layer.getFeatureInfoAdditionalParameters ?? {});
       return impl;

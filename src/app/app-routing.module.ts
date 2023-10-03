@@ -61,24 +61,8 @@ const routes: Routes = [
                   opacity: 50
                 },
                 {
-                  type: 'relation',
-                  active: false
-                },
-                {
-                  type: 'geoserver',
-                  key: 'CKDo:NappePhréatique',
-                  opacity: 50
-                },
-                {
                   type: 'wms',
-                  opacity: 50,
-                  paramLayer: 'CADASTRALPARCELS.PARCELLAIRE_EXPRESS',
-                  url: 'https://wxs.ign.fr/parcellaire/geoportail/r/wms',
-                  paramTiled: true
-                },
-                {
-                  type: 'wms',
-                  opacity: 10,
+                  opacity: 40,
                   paramLayer: 'ac:243300316_072022',
                   url: 'https://geo.demo.pangee.ovh/geoserver/alter-carbon/wms',
                   paramTiled: true
