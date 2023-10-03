@@ -21,7 +21,7 @@ export class CqlUtils {
         if (attributeName && cond.value && cond.value.length > 0) {
           switch (cond.operator) {
             case 'EQUALS':
-              conditions.push(`${attributeName}=${cond.value}`);
+              conditions.push(`${attributeName}='${cond.value}'`);
               break;
             case 'CONTAINS':
               conditions.push(`${attributeName} LIKE %${cond.value}%`);
