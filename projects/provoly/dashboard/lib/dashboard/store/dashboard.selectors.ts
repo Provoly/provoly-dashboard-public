@@ -126,7 +126,7 @@ const savePresentationActive = createSelector(
   presentation,
   globalManifest,
   (state, global) =>
-    !!state.current && state.current.owner && (state.viewMode === ViewMode.CREATION || !equal(global, state.initial))
+    !!state.current && state.current.owner &&  !equal(global, state.initial)
 );
 
 const filters = createSelector(feature, (state: DashboardState) => state?.manifests.manifest.filters ?? {});
@@ -182,8 +182,8 @@ export const DashboardSelectors = {
   loading,
   quickOrder,
   presentation,
-  savePresentationActive,
   filters,
+  savePresentationActive,
   datasourceFilters,
   wmsFeatures,
   displayOptions,

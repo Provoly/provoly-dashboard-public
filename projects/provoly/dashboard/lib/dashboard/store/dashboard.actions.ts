@@ -112,7 +112,7 @@ export const DashboardActions = {
     '[Dashboard] (bus) selectPresentation',
     props<{
       presentation: ManifestDescription | undefined;
-      viewMode: ViewMode;
+      viewMode?: ViewMode;
     }>()
   ),
   setInitialPresentation: createAction(

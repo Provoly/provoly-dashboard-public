@@ -82,7 +82,6 @@ export class SaveViewComponent extends ToolboxActionComponent {
 
   save() {
     this.store.dispatch(DashboardActions.requestAllRoutes());
-
     // Give time for routes to be updated
     setTimeout(() => {
       let presentation = {
@@ -91,7 +90,8 @@ export class SaveViewComponent extends ToolboxActionComponent {
         description: this.currentManifest!.description,
         image: this.currentManifest!.image,
         visibility: this.visibility,
-        cover: this.currentManifest?.cover ?? false
+        cover: this.currentManifest?.cover ?? false,
+        owner: this.currentManifest?.owner
       };
       if (this.mode == 'directSave') {
         if (this.currentManifest) {
@@ -102,8 +102,7 @@ export class SaveViewComponent extends ToolboxActionComponent {
       this.store.dispatch(DashboardActions.saveManifest(presentation));
       this.store.dispatch(
         DashboardActions.selectPresentation({
-          presentation: presentation as ManifestDescription,
-          viewMode: ViewMode.CATALOG
+          presentation: presentation as ManifestDescription
         })
       );
       this.mode = 'directSave';
