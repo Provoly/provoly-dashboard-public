@@ -3,6 +3,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { PRY_ACCESS_GUARD, PryDefaultAccessGuard, PryI18nService, PrySelectModule } from '@provoly/dashboard';
+import { MetadataActions, MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
+import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/mock-pry-tab-group.component';
+import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
 import { MockPryIconComponent } from '../../../../mock/components/mock-pry-icon.component';
 import { users } from '../../../../mock/data/mockItemAdmin';
 import { MockPryAccessDirective } from '../../../../mock/directive/mock-pry-access.directive';
@@ -13,8 +16,6 @@ import { AdminActions } from '../../../store/admin.actions';
 import { AdminUserActions } from '../store/admin-user.action';
 import { AdminUserSelectors } from '../store/admin-user.selector';
 import { AdminUserSelectComponent } from './admin-user-select.component';
-import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
-import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/mock-pry-tab-group.component';
 
 describe('AdminUserSelectComponent', () => {
   PryI18nService.warn = false;
@@ -42,7 +43,7 @@ describe('AdminUserSelectComponent', () => {
               value: users[0]
             },
             {
-              selector: AdminUserSelectors.selectedMetadataUser,
+              selector: MetadataSelectors.selectedUserProfile,
               value: []
             }
           ]
@@ -77,7 +78,7 @@ describe('AdminUserSelectComponent', () => {
     component.addMetadataUser({ id: 'id', metadataId: 'metadataId', value: '3' });
     expect(spyStore.mock.calls).toEqual([
       [
-        AdminUserActions.addMetadataUser({
+        MetadataActions.addMetadataUser({
           userId: 'id',
           metaId: 'metadataId',
           value: '3'

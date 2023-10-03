@@ -5,10 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 
 import { provideMockStore } from '@ngrx/store/testing';
 import { PryI18nService } from '@provoly/dashboard';
+import { MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
 import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { PryListMetadataModule } from '../admin-metadata/shared/list-metadata/list-metadata.module';
 import { AdminMetadataUserComponent } from './admin-metadata-user.component';
-import { AdminMetadataUserSelectors } from './store/admin-metadata-user.selector';
 
 @Pipe({ name: 'translate' })
 class MockTranslatePipe implements PipeTransform {
@@ -54,7 +54,7 @@ describe('AdminUtilisateurComponent', () => {
         provideMockStore({
           selectors: [
             {
-              selector: AdminMetadataUserSelectors.metadata,
+              selector: MetadataSelectors.userProfile,
               value: metadata
             }
           ]

@@ -1,5 +1,5 @@
 import { IMetadata, VARIABLE_TYPE } from '@provoly/dashboard';
-import { metadataUser } from '@provoly/dashboard/mock/data/mockItemAdmin';
+import { metadata, metadataUser } from '@provoly/dashboard/mock/data/mockItemAdmin';
 import { MetadataActions } from './metadata.action';
 import { initialMetadataState, metadataReducer } from './metadata.reducer';
 
@@ -80,6 +80,56 @@ describe('Metadata Reducer', () => {
       ).toEqual({
         ...initialState,
         selectedUserProfile: metadataUser
+      });
+    });
+  });
+
+  describe('loadUserProfile', () => {
+    it('should change loading', () => {
+      expect(
+        metadataReducer(
+          {
+            ...initialState
+          },
+          MetadataActions.loadUserProfile()
+        )
+      ).toEqual({
+        ...initialState,
+        loading: true
+      });
+    });
+  });
+  describe('loadMetadataSuccess', () => {
+    it('should set two metadata', () => {
+      expect(
+        metadataReducer(
+          {
+            ...initialState
+          },
+          MetadataActions.loadUserProfileSuccess({
+            userProfile: [metadata[0], { ...metadata[0], name: 'name2' }]
+          })
+        )
+      ).toEqual({
+        ...initialState,
+        userProfile: [metadata[0], { ...metadata[0], name: 'name2' }]
+      });
+    });
+  });
+  describe('loadInfrasFailure', () => {
+    it('should change loading', () => {
+      expect(
+        metadataReducer(
+          {
+            ...initialState,
+            loading: true
+          },
+          MetadataActions.loadUserProfileFailure({ error: 'error' })
+        )
+      ).toEqual({
+        ...initialState,
+        loading: false,
+        errors: 'error'
       });
     });
   });

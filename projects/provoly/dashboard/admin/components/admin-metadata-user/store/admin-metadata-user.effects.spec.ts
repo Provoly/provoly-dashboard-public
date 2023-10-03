@@ -52,48 +52,6 @@ describe('MetadataEffects', () => {
   it('should be created', () => {
     expect(effects).toBeTruthy();
   });
-  describe('loadMetadata$', () => {
-    it('should set metadata get by the http GET', () => {
-      const getSpy = jest.spyOn(adminService, 'getUserMetadata');
-      store.setState(
-        buildState({
-          ...initialState
-        })
-      );
-
-      actions$ = hot('--a-', {
-        a: AdminMetadataUserActions.loadMetadata()
-      });
-
-      const expected$ = hot('--a-', {
-        a: AdminMetadataUserActions.loadMetadataSuccess({ metadata: metadata })
-      });
-      expect(effects.loadMetadata$).toBeObservable(expected$);
-      expect(effects.loadMetadata$).toSatisfyOnFlush(() => {
-        expect(getSpy).toHaveBeenCalled();
-      });
-    });
-    it('should call loadMetadata failure', () => {
-      const getSpy = jest.spyOn(adminService, 'getUserMetadata').mockReturnValue(throwError(() => new Error('error')));
-      store.setState(
-        buildState({
-          ...initialState
-        })
-      );
-
-      actions$ = hot('--a-', {
-        a: AdminMetadataUserActions.loadMetadata()
-      });
-
-      const expected$ = hot('--a-', {
-        a: AdminMetadataUserActions.loadMetadataFailure({ error: new Error('error') })
-      });
-      expect(effects.loadMetadata$).toBeObservable(expected$);
-      expect(effects.loadMetadata$).toSatisfyOnFlush(() => {
-        expect(getSpy).toHaveBeenCalled();
-      });
-    });
-  });
 
   describe('updateMetadata$', () => {
     it('should call updateMetadata$', () => {
@@ -104,7 +62,7 @@ describe('MetadataEffects', () => {
         })
       );
 
-      AdminMetadataUserSelectors.selectedMetadata.setResult(metadata[0]);
+      AdminMetadataUserSelectors.selectedMetadataId.setResult(metadata[0].id);
 
       actions$ = hot('--a-', {
         a: AdminMetadataUserActions.updateMetadata({ metadata: metadata[0] })

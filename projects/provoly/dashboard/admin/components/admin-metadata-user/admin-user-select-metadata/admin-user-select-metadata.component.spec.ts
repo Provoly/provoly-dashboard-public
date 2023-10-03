@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { PRY_ACCESS_GUARD, PryDefaultAccessGuard } from '@provoly/dashboard';
-import { routes } from '../../../admin-routing.module';
-import { AdminMetadataUserSelectors } from '../store/admin-metadata-user.selector';
-import { AdminUserSelectMetadataComponent } from './admin-user-select-metadata.component';
-import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
+import { MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
 import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/mock-pry-tab-group.component';
+import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
+import { routes } from '../../../admin-routing.module';
+import { AdminUserSelectMetadataComponent } from './admin-user-select-metadata.component';
 
 describe('AdminUserSelectMetadataComponent', () => {
   let component: AdminUserSelectMetadataComponent;
@@ -23,7 +23,7 @@ describe('AdminUserSelectMetadataComponent', () => {
         provideMockStore({
           selectors: [
             {
-              selector: AdminMetadataUserSelectors.metadata,
+              selector: MetadataSelectors.userProfile,
               value: []
             }
           ]

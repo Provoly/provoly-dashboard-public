@@ -1,4 +1,5 @@
 import { IMetadata, VARIABLE_TYPE } from '@provoly/dashboard';
+import { metadataUser } from '@provoly/dashboard/mock/data/mockItemAdmin';
 import * as fromMetadata from './metadata.reducer';
 import { initialMetadataState } from './metadata.reducer';
 import { MetadataSelectors } from './metadata.selector';
@@ -72,6 +73,20 @@ describe('Metadata Selectors', () => {
     it('should return true', () => {
       const result = MetadataSelectors.editable.projector({ ...initialState, editable: true });
       expect(result).toEqual(true);
+    });
+  });
+
+  describe('selectedUserProfile', () => {
+    it('should return empty selectedUserProfile', () => {
+      const result = MetadataSelectors.selectedUserProfile.projector(initialState);
+      expect(result).toEqual([]);
+    });
+    it('should return selectedUserProfile', () => {
+      const result = MetadataSelectors.selectedUserProfile.projector({
+        ...initialState,
+        selectedUserProfile: metadataUser
+      });
+      expect(result[0]).toEqual(metadataUser[0]);
     });
   });
 });

@@ -1,4 +1,4 @@
-import { metadataUser, users } from '../../../../mock/data/mockItemAdmin';
+import { users } from '../../../../mock/data/mockItemAdmin';
 import * as fromAdminUser from './admin-user.reducer';
 import { initialAdminUserState } from './admin-user.reducer';
 import { AdminUserSelectors } from './admin-user.selector';
@@ -38,20 +38,6 @@ describe('User Selectors', () => {
         selectedUser: users[0]
       });
       expect(result).toEqual(users[0]);
-    });
-  });
-
-  describe('selectedMetadataUser', () => {
-    it('should return empty selectedMetadataUser', () => {
-      const result = AdminUserSelectors.selectedMetadataUser.projector(initialState);
-      expect(result).toEqual([]);
-    });
-    it('should return selectedMetadataUser', () => {
-      const result = AdminUserSelectors.selectedMetadataUser.projector({
-        ...initialState,
-        selectedUserProfile: metadataUser
-      });
-      expect(result[0]).toEqual(metadataUser[0]);
     });
   });
 });

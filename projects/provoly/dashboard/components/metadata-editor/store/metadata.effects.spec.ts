@@ -45,7 +45,11 @@ describe('MetadataEffects', () => {
           useValue: {
             getMetadataList: () => of(metadata),
             getMetadata: () => of(metadata[0]),
-            postMetadata: () => of(null)
+            postMetadata: () => of(null),
+            addMetadataUser: () => of(null),
+            deleteMetadataUser: () => of(null),
+            getUserMetadata: () => of(metadata),
+            getMetadataUser: () => of(metadataUser)
           }
         },
         {
@@ -373,7 +377,7 @@ describe('MetadataEffects', () => {
       store.setState(
         buildState({
           ...initialState,
-          selectedMetadataUser: []
+          selectedUserProfile: []
         })
       );
 
@@ -439,7 +443,7 @@ describe('MetadataEffects', () => {
       store.setState(
         buildState({
           ...initialState,
-          selectedMetadataUser: []
+          selectedUserProfile: []
         })
       );
 
@@ -471,6 +475,51 @@ describe('MetadataEffects', () => {
         a: MetadataActions.loadMetadataUser({ userId: 'idBuffy' })
       });
       expect(effects.selectUser$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadUserProfile$', () => {
+    it('should set metadata get by the http GET', () => {
+      const getSpy = jest.spyOn(metadataService, 'getUserMetadata');
+      store.setState(
+        buildState({
+          ...initialState
+        })
+      );
+
+      actions$ = hot('--a-', {
+        a: MetadataActions.loadUserProfile()
+      });
+
+      const expected$ = hot('--a-', {
+        a: MetadataActions.loadUserProfileSuccess({ userProfile: metadata })
+      });
+      expect(effects.loadUserProfile$).toBeObservable(expected$);
+      expect(effects.loadUserProfile$).toSatisfyOnFlush(() => {
+        expect(getSpy).toHaveBeenCalled();
+      });
+    });
+    it('should call loadMetadata failure', () => {
+      const getSpy = jest
+        .spyOn(metadataService, 'getUserMetadata')
+        .mockReturnValue(throwError(() => new Error('error')));
+      store.setState(
+        buildState({
+          ...initialState
+        })
+      );
+
+      actions$ = hot('--a-', {
+        a: MetadataActions.loadUserProfile()
+      });
+
+      const expected$ = hot('--a-', {
+        a: MetadataActions.loadUserProfileFailure({ error: new Error('error') })
+      });
+      expect(effects.loadUserProfile$).toBeObservable(expected$);
+      expect(effects.loadUserProfile$).toSatisfyOnFlush(() => {
+        expect(getSpy).toHaveBeenCalled();
+      });
     });
   });
 });
