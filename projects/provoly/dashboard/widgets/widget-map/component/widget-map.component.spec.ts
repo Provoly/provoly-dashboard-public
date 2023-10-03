@@ -433,7 +433,7 @@ describe('WidgetMapComponent', () => {
 
   it('should provide fit operation', () => {
     try {
-      component.fitMapForObjects(true, []);
+      component.fitMapForObjects(true);
     } catch (e) {
       fail('');
     }

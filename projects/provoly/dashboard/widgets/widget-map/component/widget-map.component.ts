@@ -801,7 +801,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   fitMapForObjects(
     fit: boolean,
-    wmsCapabilities?: { [p: string]: GetCapabilitiesResponse | null },
+    wmsCapabilities: { [p: string]: GetCapabilitiesResponse | null } = {},
     selectedIds?: string[]
   ) {
     if (fit) {
