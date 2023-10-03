@@ -4,10 +4,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PryCoreModule, PryI18nModule, PryIconModule, PrySelectModule } from '@provoly/dashboard';
-import { PryMetadataEditorCssComponent } from '@provoly/dashboard/components/metadata-editor/style/css.component';
 import { PryMetadataEditorComponent } from './metadata-editor.component';
 import { MetadataEffects } from './store/metadata.effects';
 import { metadataFeatureKey, metadataReducer } from './store/metadata.reducer';
+import { PryMetadataEditorCssComponent } from './style/css.component';
 
 const PRY_METADATA_EDITOR_COMPONENTS = [PryMetadataEditorComponent, PryMetadataEditorCssComponent];
 

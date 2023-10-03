@@ -5,3 +5,4 @@ export * from './store/metadata.reducer';
 export * from './store/metadata.effects';
 export * from './store/metadata.selector';
 export * from './store/metadata.service';
+export * from './style/css.component';

@@ -1,6 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
 import { IMetadata, MetadataUser } from '@provoly/dashboard';
-import { AdminMetadataUserActions } from '../../../admin/components/admin-metadata-user/store/admin-metadata-user.action';
 import { MetadataActions } from './metadata.action';
 
 export const metadataFeatureKey = '@pry/metadata';
@@ -71,7 +70,7 @@ export const metadataReducer = createReducer(
     ...state,
     selectedUserProfile: action.metadata
   })),
-  on(MetadataActions.loadUserProfile, AdminMetadataUserActions.updateMetadata, (state) => ({
+  on(MetadataActions.loadUserProfile, (state) => ({
     ...state,
     loading: true
   })),
