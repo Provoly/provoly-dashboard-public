@@ -19,6 +19,7 @@ import {
 } from './config.service';
 import { ChartOptionDefault } from './config.widget.constants';
 import { OpenMapTilesService } from './open-map-tiles.service';
+import { Versions } from './versions.interface';
 
 @Injectable()
 export class ConfigEffects {
@@ -218,6 +219,19 @@ export class ConfigEffects {
         };
         return ConfigActions.loadedChartOption({ chartOption });
       })
+    )
+  );
+  loadVersions$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ConfigActions.loadVersions),
+      mergeMap((action) =>
+        this.configService.getAllVersions().pipe(
+          map((versionsData: Versions) => {
+            return ConfigActions.loadVersionsSuccess({ versions: versionsData });
+          }),
+          catchError((error) => [ConfigActions.loadVersionsFailure({ error: error })])
+        )
+      )
     )
   );
 

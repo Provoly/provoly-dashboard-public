@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { forkJoin, mergeMap, Observable, of } from 'rxjs';
+import { combineLatest, forkJoin, map, mergeMap, Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { PrySnackbarService } from '../../components/snackbar/snackbar.service';
 import { PryI18nService } from '../../i18n/i18n.service';
 import { Widget } from '../../model/widget.interface';
 import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from '../search/search.constants';
 import { ConfigSelectors } from './config.selectors';
+import { BackendVersion, FrontendVersion, Versions } from './versions.interface';
 
 export interface ParamContent {
   domain: string;
@@ -118,6 +119,44 @@ export class ConfigService {
           }
         }
         return of([]);
+      })
+    );
+  }
+  getAllVersions(): Observable<Versions> {
+    return combineLatest([
+      this.store.select(ConfigSelectors.refUrl),
+      this.store.select(ConfigSelectors.dataUrl),
+      this.store.select(ConfigSelectors.replayUrl),
+      this.store.select(ConfigSelectors.execUrl),
+      this.store.select(ConfigSelectors.transfoUrl),
+      this.store.select(ConfigSelectors.monitorUrl)
+    ]).pipe(
+      mergeMap(([ref, data, replay, exec, transfo, monitor]) => {
+        const allVersions: Observable<BackendVersion | FrontendVersion>[] = [
+          this.httpClient.get<BackendVersion>(encodeURI(`${ref}/about/version`)),
+          this.httpClient.get<BackendVersion>(encodeURI(`${data}/about/version`)),
+          this.httpClient.get<BackendVersion>(encodeURI(`${replay}/about/version`)),
+          this.httpClient.get<BackendVersion>(encodeURI(`${exec}/about/version`)),
+          this.httpClient.get<BackendVersion>(encodeURI(`${transfo}/about/version`)),
+          this.httpClient.get<BackendVersion>(encodeURI(`${monitor}/about/version`)),
+          this.httpClient
+            .get<string>(encodeURI(`/assets/pry.version`))
+            .pipe(map((version) => ({ libVersion: version })))
+        ];
+        return forkJoin(allVersions).pipe(
+          map(([refVersion, dataVersion, replayVersion, execVersion, tranfoVersion, monitorVersion, frontend]) => {
+            const versions: Versions = {
+              ref: refVersion,
+              data: dataVersion,
+              replay: replayVersion,
+              exec: execVersion,
+              transfo: tranfoVersion,
+              monitor: monitorVersion,
+              front: frontend
+            };
+            return versions;
+          })
+        );
       })
     );
   }

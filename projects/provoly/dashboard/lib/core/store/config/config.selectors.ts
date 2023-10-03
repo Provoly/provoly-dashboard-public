@@ -43,7 +43,7 @@ const iconDefinitions = createSelector(
     (({
       default: [{ iconUrl: DEFAULT_ICON_URL, iconSize: [25, 25] }],
       ...addDefaultRuleIfNotPresent(config.iconDefinitions)
-    }) ?? {}) as IconDefinitions
+    } ?? {}) as IconDefinitions)
 );
 
 const tooltipDefinitions = createSelector(feature, (config) => config.tooltipDefinitions);
@@ -63,6 +63,7 @@ const defaultViewGuardUsed = createSelector(feature, (config) => config.defaultV
 const catalog = createSelector(feature, (config) => config.catalog);
 const chartOption = createSelector(feature, (config) => config.chartOption);
 const maxAttributesInTiles = createSelector(feature, (config) => config.maxAttributesInTiles);
+const selectVersions = createSelector(feature, (state) => state.versions);
 
 export const ConfigSelectors = {
   feature,
@@ -90,5 +91,6 @@ export const ConfigSelectors = {
   catalog,
   chartOption,
   maxAttributesInTiles,
-  execUrl
+  execUrl,
+  selectVersions
 };

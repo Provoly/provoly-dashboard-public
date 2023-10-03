@@ -3,6 +3,7 @@ import { TooltipOfClass } from '../../model/tooltip-of-class.interface';
 import { ChartOption } from '../../model/widget-chart-manifest.interface';
 import { Widget } from '../../model/widget.interface';
 import { IconDefinitions } from './icon-definitions.interface';
+import {Versions} from "./versions.interface";
 
 export const ConfigActions = {
   defineUrls: createAction(
@@ -68,5 +69,8 @@ export const ConfigActions = {
   loadChartOption: createAction('[Config] load chart option'),
   loadedChartOption: createAction('[config] loaded chart option', props<{ chartOption: ChartOption }>()),
   updateChartOption: createAction('[Config] update chart option', props<{ chartOption: Partial<ChartOption> }>()),
-  updateMaxAttributesInTiles: createAction('[Config] update max attributes in tiles', props<{ max: number }>())
+  updateMaxAttributesInTiles: createAction('[Config] update max attributes in tiles', props<{ max: number }>()),
+  loadVersions: createAction('[about] Load Versions'),
+  loadVersionsSuccess: createAction('[about] (bus) Load Versions Success', props<{ versions: Versions }>()),
+  loadVersionsFailure: createAction('[about] Load Versions Failure', props<{ error: string }>())
 };

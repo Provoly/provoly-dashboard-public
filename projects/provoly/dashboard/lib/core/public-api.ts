@@ -114,3 +114,5 @@ export * from './i18n/fr.translations';
 export * from './i18n/en.translations';
 export * from './i18n/deep-merge.function';
 export * from './errors/http-error-interceptor.service';
+export * from './components/about/pry-about.module';
+export * from './components/about/about.component';

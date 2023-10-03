@@ -1,0 +1,8 @@
+<div class="info-icon description-container description">
+  <span class="info-text">i</span>
+</div>
+<div class="description-tooltip title-tooltip">
+  <ul *ngFor="let version of (version$ | async) ?? {} | keyvalue">
+    <li>{{ '@pry.about.' + version.key | i18n }} {{ displayVersion(version.value) }}</li>
+  </ul>
+</div>

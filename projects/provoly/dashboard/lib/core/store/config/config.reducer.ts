@@ -6,6 +6,7 @@ import { Widget } from '../../model/widget.interface';
 import { ConfigActions } from './config.actions';
 import { ChartOptionDefault, defaultColors } from './config.widget.constants';
 import { IconDefinitions } from './icon-definitions.interface';
+import { Versions } from './versions.interface';
 
 export const configFeatureKey = '@pry/config';
 
@@ -27,6 +28,7 @@ export interface ConfigState {
   catalog: Widget[];
   chartOption: ChartOption;
   maxAttributesInTiles: number;
+  versions: Versions | null;
 }
 
 export const initialConfigState: ConfigState = {
@@ -46,7 +48,8 @@ export const initialConfigState: ConfigState = {
   defaultViewUsed: false,
   catalog: [],
   chartOption: ChartOptionDefault,
-  maxAttributesInTiles: 5
+  maxAttributesInTiles: 5,
+  versions: null
 };
 
 export const configReducer = createReducer(
@@ -164,5 +167,13 @@ export const configReducer = createReducer(
   on(ConfigActions.updateMaxAttributesInTiles, (state, action) => ({
     ...state,
     maxAttributesInTiles: action.max
+  })),
+  on(ConfigActions.loadVersionsSuccess, (state, { versions }) => ({
+    ...state,
+    versions: versions
+  })),
+  on(ConfigActions.loadVersionsFailure, (state) => ({
+    ...state,
+    versions: null
   }))
 );

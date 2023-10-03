@@ -1,5 +1,14 @@
 export const frTranslations = {
   '@pry': {
+    about: {
+      front: 'Librairie front version : ',
+      ref: 'Référentiel version : ',
+      data: 'Données version : ',
+      replay: 'Rejeu version : ',
+      exec: 'Exécution version : ',
+      transfo: 'Transformation version : ',
+      monitor: 'Supervision version : '
+    },
     header: {
       noCurrentPresentation: 'Présentation non sauvegardée'
     },

@@ -1,5 +1,14 @@
 export const enTranslations = {
   '@pry': {
+    about: {
+      front: 'Version Front Library : {{value}} ',
+      ref: 'Version repository : {{value}}',
+      data: 'Version data : {{value}}',
+      replay: 'Version replay : {{value}}',
+      exec: 'Version Execution : {{value}}',
+      transfo: 'Version Transformation : {{value}}',
+      monitor: 'Version Supervision : {{value}}'
+    },
     header: {
       noCurrentPresentation: 'Presentation not saved'
     },

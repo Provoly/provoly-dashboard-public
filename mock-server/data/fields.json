@@ -8,7 +8,8 @@
     "id": "59853619-9773-418a-ace5-70b80fd4dc74",
     "name": "location",
     "type": "Point"
-  },{
+  },
+  {
     "id": "59853619-9773-418a-ace5-70b80fd4dc75",
     "name": "latitude",
     "type": "decimal"

@@ -47,8 +47,5 @@ export class ClassEffects {
     )
   );
 
-  constructor(
-    private actions$: Actions,
-    private classService: ClassService
-  ) {}
+  constructor(private actions$: Actions, private classService: ClassService) {}
 }
