@@ -24,13 +24,13 @@ export class CqlUtils {
               conditions.push(`${attributeName}='${cond.value}'`);
               break;
             case 'CONTAINS':
-              conditions.push(`${attributeName} LIKE %${cond.value}%`);
+              conditions.push(`${attributeName} LIKE '%${cond.value}%'`);
               break;
             case 'START_WITH':
-              conditions.push(`${attributeName} LIKE ${cond.value}%`);
+              conditions.push(`${attributeName} LIKE '${cond.value}%'`);
               break;
             case 'END_WITH':
-              conditions.push(`${attributeName} LIKE %${cond.value}`);
+              conditions.push(`${attributeName} LIKE '%${cond.value}'`);
               break;
             case 'GREATER_THAN':
               conditions.push(`${attributeName}>${cond.value}`);
