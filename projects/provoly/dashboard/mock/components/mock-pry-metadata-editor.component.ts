@@ -8,7 +8,8 @@ import { Component, Input } from '@angular/core';
 })
 export class MockPryMetadataEditorComponent {
   @Input() targetId = '';
-  @Input() editable = false;
   @Input() metadata = '';
   @Input() initialMetadataSelection = '';
+  @Input() isModification = false;
+  @Input() type = 'meta';
 }

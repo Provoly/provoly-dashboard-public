@@ -10,7 +10,8 @@ import {
   ConfigActions,
   FieldSelectors,
   PRY_ACCESS_GUARD,
-  PryDefaultAccessGuard
+  PryDefaultAccessGuard,
+  PryI18nService
 } from '@provoly/dashboard';
 import { of } from 'rxjs';
 import { MockPryCheckboxComponent } from '../../../../../mock/components/mock-pry-checkbox.component';
@@ -79,6 +80,14 @@ describe('AdminAttributesFormComponent', () => {
       ],
       imports: [FormsModule, ReactiveFormsModule, RouterTestingModule.withRoutes(routes)]
     }).compileComponents();
+  });
+
+  beforeAll(() => {
+    PryI18nService.warn = false;
+  });
+
+  afterAll(() => {
+    PryI18nService.warn = false;
   });
 
   beforeEach(() => {

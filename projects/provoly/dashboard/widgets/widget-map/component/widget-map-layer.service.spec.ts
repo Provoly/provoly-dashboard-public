@@ -37,7 +37,7 @@ describe('WidgetMapLayerService', () => {
       expect(
         // @ts-ignore
         service.layersImplementation[impl](
-          {},
+          impl === 'auto' ? { subType: 'Point' } : {},
           { locationAttribute: 'test' },
           [],
           {},
