@@ -42,6 +42,16 @@
           ]
         },
         "value": "SD"
+      },
+      {
+        "userProfile": {
+          "id": "33f51131-6e67-438a-9aa1-8d9a50215326",
+          "name": "toto",
+          "type": "INTEGER",
+          "description": null,
+          "allowedValues": []
+        },
+        "value": "3"
       }
     ]
   },
