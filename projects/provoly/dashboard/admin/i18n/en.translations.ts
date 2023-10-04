@@ -271,8 +271,7 @@ export const enTranslations = {
           long: 'Long number',
           decimal: 'Double number',
           string: 'Text',
-          keyword:
-            'Keyword',
+          keyword: 'Keyword',
           instant: 'date',
           raw: 'Raw',
           point: 'Point',
@@ -287,7 +286,8 @@ export const enTranslations = {
             decimal: 'Allows you to store numeric data with decimal places',
             string:
               'Allows you to store data in alphanumeric format. This data is not indexed: it is possible to search on it but no aggregation',
-            keyword: 'Keyword',
+            keyword:
+              'Allows you to store data in alphanumeric format. This data is indexed: it is possible to search on it as well as aggregations.',
             instant: 'Allows you to store a date',
             raw: 'allows you to store image or file type data',
             point: 'Allows you to store geographic coordinates of an object represented by a point (geo-json format)',

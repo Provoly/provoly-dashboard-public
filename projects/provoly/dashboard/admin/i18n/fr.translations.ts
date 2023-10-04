@@ -271,7 +271,7 @@ export const frTranslations = {
           int: 'Nombre entier',
           long: 'Nombre entier long',
           decimal: 'Nombre décimal',
-          string: 'Texte',
+          string: 'Texte brut',
           keyword: 'Texte indexé',
           instant: 'Date',
           raw: 'Donnée non structurée',
@@ -287,7 +287,8 @@ export const frTranslations = {
             decimal: 'Permet de stocker des données numériques avec des décimales',
             string:
               "Permet de stocker des données au format alphanumérique. Ces données ne sont pas indexées : il est possible de faire une recherche dessus mais pas d'agrégation",
-            keyword: 'Texte indexé',
+            keyword:
+              'Permet de stocker des données au format alphanumérique. Ces données sont indexées : il est possible de faire une recherche dessus ainsi que des agrégations.',
             instant: 'Permet de stocker une date',
             raw: 'permet de stocker des données de type image ou fichier',
             point:
@@ -300,7 +301,7 @@ export const frTranslations = {
             polygon:
               "Permet de stocker des coordonnées géographiques d'un objet représenté par un polygone (format géojson)",
             multipolygon:
-              "Permet de stocket des coordonnées géographiques d'un objet représenté par plusieurs polygones imbriqués ou non (format géojson)"
+              "Permet de stocker des coordonnées géographiques d'un objet représenté par plusieurs polygones imbriqués ou non (format géojson)"
           }
         },
         rawMethods: {
