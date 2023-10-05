@@ -334,7 +334,7 @@ export class WidgetMapLayerService {
           attributions: [layer.attribution ?? ''],
           crossOrigin: 'anonymous',
           url: layer.url,
-          params: { LAYERS: layer.paramLayer, TILED: layer.paramTiled }
+          params: { LAYERS: layer.paramLayer, TILED: layer.paramTiled, ...(layer.additionalParameters ?? {}) }
         })
       });
       impl.set('url', layer.url);

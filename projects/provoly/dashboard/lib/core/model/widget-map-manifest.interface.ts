@@ -85,6 +85,7 @@ export interface MapWMSLayerLayerOptions extends BaseWidgetMapLayerOptions {
   paramTiled: boolean;
   oClass: string;
   getFeatureInfoAdditionalParameters?: any;
+  additionalParameters?: any;
 }
 
 export interface MapWMTSLayerLayerOptions extends BaseWidgetMapLayerOptions {
@@ -120,6 +121,7 @@ export interface MapGeoServerLayerOptions extends BaseWidgetMapLayerOptions {
   datasourceId: string;
   namespace: string;
   name: string;
+  additionalParameters?: any;
 }
 
 export interface MapAutoLayerOptions extends BaseWidgetMapLayerOptions {
