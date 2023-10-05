@@ -33,7 +33,6 @@ export const frTranslations = {
           title: 'Opération'
         },
         chooseParameters: "Merci de sélectionner les paramètres afin d'afficher le graphique",
-        series: 'Regroupement',
         type: 'Type de graphique',
         title: 'Titre du graphique',
         graphType: {

@@ -604,9 +604,13 @@ router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items/aggregate', (req,
 
       let series = [];
       if (query.groupBy) {
+        const groupByAttr = dataModule.classes
+          .map((clazz) => clazz.attributes.find((attr) => attr.id === query.groupBy))
+          .find((attr) => !!attr);
+        const groupByField = dataModule.fields.get().find((field) => field.id === groupByAttr?.field);
         const nbSeries = casual.integer((from = 3), (to = 7));
         for (let i = 0; i < nbSeries; i++) {
-          series[i] = casual.word;
+          series[i] = fieldGeneratorModule.generateFieldValue(groupByField);
         }
       }
 

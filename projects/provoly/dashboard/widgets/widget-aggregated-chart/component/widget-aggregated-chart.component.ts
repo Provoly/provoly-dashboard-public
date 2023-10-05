@@ -47,8 +47,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   fields$: Observable<Field[]>;
   classes$: Observable<Class[]>;
   attributeTypes$: Observable<{
-    ordinate: { vegaType: VegaType; fieldType: any };
-    abscissa: { vegaType: VegaType; fieldType: any };
+    ordinate: { vegaType: VegaType; fieldType: any; name: string };
+    abscissa: { vegaType: VegaType; fieldType: any; name: string };
+    groupBy: { vegaType?: VegaType; fieldType?: any; name: string };
   }>;
   aggregatedValues$: Observable<{ data: any; operation: any }>;
   WIDGET_HEADER_HEIGHT = WIDGET_HEADER_HEIGHT;
@@ -215,19 +216,30 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
         const ordinate = classes
           .map((clazz) => clazz.attributes.find((attr) => attr.id === options.ordinate.attribute))
           .find((attr) => !!attr);
+        const groupBy = classes
+          .map((clazz) => clazz.attributes.find((attr) => attr.id === options.groupBy?.attribute))
+          .find((attr) => !!attr);
         const abscissaFieldType = fields.find((field) => field.id === abscissa?.field)?.type ?? FieldType.STRING;
         const ordinateFieldType = fields.find((field) => field.id === ordinate?.field)?.type ?? FieldType.STRING;
+        const groupByFieldType = fields.find((field) => field.id === groupBy?.field)?.type ?? FieldType.STRING;
         return {
           abscissa: {
             fieldType: abscissaFieldType,
-            vegaType: this.translateToVegaType(abscissaFieldType, abscissa?.name ?? '')
+            vegaType: this.translateToVegaType(abscissaFieldType, abscissa?.name ?? ''),
+            name: abscissa?.name ?? ''
           },
           ordinate: {
             fieldType: ordinateFieldType,
             vegaType:
               options.ordinate.operation === Operation.COUNT || options.ordinate.operation === Operation.DISTINCT
                 ? VegaType.QUANTITATIVE
-                : this.translateToVegaType(ordinateFieldType, ordinate?.name ?? '')
+                : this.translateToVegaType(ordinateFieldType, ordinate?.name ?? ''),
+            name: ordinate?.name ?? ''
+          },
+          groupBy: {
+            fieldType: groupByFieldType,
+            vegaType: this.translateToVegaType(groupByFieldType, groupBy?.name),
+            name: groupBy?.name ?? ''
           }
         };
       })
@@ -278,6 +290,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       map(([options, types, values, size, display]) => {
         const isCircular = [GraphType.CIRCULAR, GraphType.DONUT].includes(options.graph.type);
         const stacked = options.graph.type.startsWith('bar') ? !options.graph.stacked : options.graph.stacked;
+        const legendTitle = this.translateService.instant(
+          options.groupBy ? types.groupBy.name ?? '' : '@pry.widget.chart.legendLabel'
+        );
         return mergeDeep(
           {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
@@ -344,9 +359,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                     : undefined,
                   theta: isCircular ? { field: 'value', type: types.ordinate.vegaType } : undefined,
                   color: {
-                    title: this.translateService.instant(
-                      options.groupBy ? '@pry.widget.chart.series' : '@pry.widget.chart.legendLabel'
-                    ),
+                    title: legendTitle,
                     field: !isCircular ? 'series' : 'key',
                     legend: options.graph.legend,
                     scale: options.graph.legend ? { scheme: options.groupBy?.color ?? this.schemes[0].id } : undefined
@@ -364,7 +377,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                           { field: 'value', type: types.ordinate.vegaType, title: options.ordinate.label },
                           {
                             field: 'series',
-                            title: this.translateService.instant('@pry.widget.chart.series'),
+                            title: legendTitle,
                             type: 'nominal'
                           }
                         ]
