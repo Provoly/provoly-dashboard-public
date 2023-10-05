@@ -67,7 +67,7 @@ export class PryI18nService {
     return response;
   }
 
-  instant(key: string, params?: { [key: string]: any }): string {
+  instant(key: string, params?: { [key: string]: any }, warn = true): string {
     let response = this.instantObject(key, params);
     if (typeof response === 'string') {
       const matches = response.match(this.parameterRegexp);
@@ -81,14 +81,14 @@ export class PryI18nService {
       });
       return response as string;
     } else {
-      if (PryI18nService.warn) {
+      if (PryI18nService.warn && warn) {
         console.warn(`Key ${key} has not been found in translations for lang ${this.currentLang}.`);
       }
       return key;
     }
   }
 
-  get(key: string, params?: { [key: string]: any }): Observable<string> {
-    return this.translations$.pipe(map((translations) => this.instant(key, params)));
+  get(key: string, params?: { [key: string]: any }, warn = false): Observable<string> {
+    return this.translations$.pipe(map((translations) => this.instant(key, params, warn)));
   }
 }

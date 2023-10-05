@@ -11,7 +11,7 @@ const menus = createSelector(feature, (state) => state.menus);
 const infrastructures = createSelector(feature, (state) => state.infrastructures);
 const lastInfraScale = createSelector(feature, (state) => state.lastInfraScale);
 const inputFlows = createSelector(feature, (state) => state.inputFlows);
-const integrationErrors = createSelector(feature, (state) => state.integrationErrors);
+const integrationErrors = createSelector(feature, (state) => state.integrationErrors ?? []);
 const currentIntegrationError = createSelector(feature, (state) => state.currentIntegrationError);
 const errorDetailsOpen = createSelector(feature, (state) => state.errorDetailsOpen);
 const selectedClasses = createSelector(feature, (state) => state.selectedClasses);

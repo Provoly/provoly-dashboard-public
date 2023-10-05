@@ -10,6 +10,6 @@ import { SupervisionState } from '../store/supervision.reducer';
 export class PrySupervisionComponent {
   constructor(private store: Store<SupervisionState>) {
     this.store.dispatch(SupervisionActions.resetActions());
-    this.store.dispatch(SupervisionActions.toggleErrorDetails({ error: null, errorDetailsOpen: false }));
+    this.store.dispatch(SupervisionActions.toggleErrorDetails({ error: undefined, errorDetailsOpen: false }));
   }
 }

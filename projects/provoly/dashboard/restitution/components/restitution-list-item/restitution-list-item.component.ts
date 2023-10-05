@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Store } from '@ngrx/store';
 import {
   CatalogEntry,
   ConfigSelectors,
@@ -11,7 +12,6 @@ import {
   Widget
 } from '@provoly/dashboard';
 import { map, Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'pry-catalog-item',
@@ -19,6 +19,7 @@ import { Store } from '@ngrx/store';
 })
 export class PryRestitutionListItemComponent extends SubscriptionnerDirective {
   @Input() widget!: CatalogEntry;
+  @Input() translate: boolean = true;
   @Output() selectRestitution = new EventEmitter<Widget>();
   catalog: Widget[] | undefined;
   automaticGridMode$: Observable<boolean>;

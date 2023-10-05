@@ -44,6 +44,6 @@ export class SupervisionLayoutComponent extends BaseLayoutComponent implements A
   }
 
   override ngOnDestroy() {
-    this.store.dispatch(SupervisionActions.toggleErrorDetails({ error: null, errorDetailsOpen: false }));
+    this.store.dispatch(SupervisionActions.toggleErrorDetails({ error: undefined, errorDetailsOpen: false }));
   }
 }

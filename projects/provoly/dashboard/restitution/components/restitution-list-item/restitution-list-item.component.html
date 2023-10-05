@@ -6,7 +6,7 @@
   aria-grabbed="false"
   aria-haspopup="true"
   tabindex="-1"
-  [title]="widget.description ?? widget.label | i18n"
+  [title]="widget.description ?? widget.label | i18n : { warn: false }"
   (dragstart)="dragStart($event, widget.type)"
 >
   <ng-container *ngIf="automaticGridMode$ | async">
@@ -21,7 +21,7 @@
     </button>
   </ng-container>
   <img
-    [alt]="widget.label | i18n"
+    [alt]="widget.label | i18n : { warn: false }"
     [src]="widget.icon | getSecuredImage : [600, 600] | async"
     [height]="widget.cover ? 600 : 53"
     [width]="widget.cover ? 600 : 53"
@@ -29,7 +29,7 @@
   />
   <p class="o-catalog__list__item__libelle" *ngIf="widget.isCustom; else translate">{{ widget.label }}</p>
   <ng-template #translate>
-    <p class="o-catalog__list__item__libelle">{{ widget.label | i18n }}</p>
+    <p class="o-catalog__list__item__libelle">{{ widget.label | i18n : { warn: false } }}</p>
   </ng-template>
   <ng-container *ngIf="widget.visibility?.type === PryVisibilityType.PRIVATE">
     <pry-icon iconSvg="private" [pryTooltip]="private" class="is-private" [height]="17" [width]="17"></pry-icon>

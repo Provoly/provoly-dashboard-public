@@ -8,22 +8,23 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import {
-    DashboardCellParams,
-    DEFAULT_COLUMNS_NUMBER,
-    DEFAULT_ROWS_NUMBER,
-    filterLoader, PryAboutModule,
-    PryCoreModule,
-    PryDashboardModule,
-    PryHiddenWhenOverlay,
-    PryHttpErrorInterceptorService,
-    PryI18nModule,
-    PryI18nService,
-    PryIconModule,
-    PrySelectModule,
-    tooltipLoader,
-    WidgetLayout,
-    widgetLoader,
-    WidgetManifest
+  DashboardCellParams,
+  DEFAULT_COLUMNS_NUMBER,
+  DEFAULT_ROWS_NUMBER,
+  filterLoader,
+  PryAboutModule,
+  PryCoreModule,
+  PryDashboardModule,
+  PryHiddenWhenOverlay,
+  PryHttpErrorInterceptorService,
+  PryI18nModule,
+  PryI18nService,
+  PryIconModule,
+  PrySelectModule,
+  tooltipLoader,
+  WidgetLayout,
+  widgetLoader,
+  WidgetManifest
 } from '@provoly/dashboard';
 import { PryCardModule } from '@provoly/dashboard/components/card';
 import { PryExpandPanelModule } from '@provoly/dashboard/components/expand-panel';
@@ -52,207 +53,207 @@ import { SearchContainerComponent } from './search-container/search-container.co
 
 @NgModule({
   declarations: [AppComponent, DashboardContainerComponent, SearchContainerComponent],
-    imports: [
-        BrowserModule,
-        RouterModule,
-        AppRoutingModule,
-        StoreModule.forRoot({}),
-        EffectsModule.forRoot([]),
-        StoreDevtoolsModule.instrument({maxAge: 200}),
-        PrySearchModule,
-        PryDashboardModule.forRoot(
+  imports: [
+    BrowserModule,
+    RouterModule,
+    AppRoutingModule,
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument({ maxAge: 200 }),
+    PrySearchModule,
+    PryDashboardModule.forRoot(
+      {
+        chart: {
+          name: 'chart',
+          load: () =>
+            import('@provoly/dashboard/widgets/widget-aggregated-chart').then((module) =>
+              widgetLoader(module, 'WidgetAggregatedChartModule')
+            )
+        },
+        'chart-legacy': {
+          name: 'chart-legacy',
+          load: () =>
+            import('@provoly/dashboard/widgets/widget-chart').then((module) =>
+              widgetLoader(module, 'WidgetChartModule')
+            )
+        },
+        detail: {
+          name: 'detail',
+          load: () =>
+            import('@provoly/dashboard/widgets/widget-detail').then((module) =>
+              widgetLoader(module, 'WidgetDetailModule')
+            )
+        },
+        graph: {
+          name: 'graph',
+          load: () =>
+            import('@provoly/dashboard/widgets/widget-graph').then((module) =>
+              widgetLoader(module, 'WidgetGraphModule')
+            )
+        },
+        iframe: {
+          name: 'iframe',
+          load: () =>
+            import('@provoly/dashboard/widgets/widget-iframe').then((module) =>
+              widgetLoader(module, 'WidgetIframeModule')
+            )
+        },
+        image: {
+          name: 'image',
+          load: () =>
+            import('@provoly/dashboard/widgets/widget-image').then((module) =>
+              widgetLoader(module, 'WidgetImageModule')
+            )
+        },
+        map: {
+          name: 'map',
+          load: () =>
+            import('@provoly/dashboard/widgets/widget-map').then((module) => widgetLoader(module, 'WidgetMapModule'))
+        },
+        table: {
+          name: 'table',
+          load: () =>
+            import('@provoly/dashboard/widgets/widget-table').then((module) =>
+              widgetLoader(module, 'WidgetTableModule')
+            )
+        },
+        template: {
+          name: 'template',
+          load: () =>
+            import('@provoly/dashboard/widgets/widget-template').then((module) =>
+              widgetLoader(module, 'WidgetTemplateModule')
+            )
+        },
+        tile: {
+          name: 'tile',
+          load: () =>
+            import('@provoly/dashboard/widgets/widget-tile').then((module) => widgetLoader(module, 'WidgetTileModule'))
+        },
+        vega: {
+          name: 'vega',
+          load: () =>
+            import('@provoly/dashboard/widgets/widget-vega').then((module) => widgetLoader(module, 'WidgetVegaModule'))
+        }
+      },
+      {
+        path: 'dashboard',
+        mapUrl: 'https://map.yap.pangee.ovh',
+        pryUrl: 'http://localhost:8081',
+        wsUrl: 'ws://localhost:8082',
+        geoServerUrl: 'https://geo.dev.pangee.ovh/geoserver'
+      },
+      {
+        attribute: {
+          name: 'attribute',
+          load: () =>
+            import('@provoly/dashboard/tooltips/attribute').then((module) =>
+              tooltipLoader(module, 'PryAttributeTooltipModule')
+            )
+        }
+      },
+      {
+        text: {
+          name: 'text',
+          load: () =>
+            import('@provoly/dashboard/filters/text').then((module) => filterLoader(module, 'PryTextFilterModule'))
+        },
+        date: {
+          name: 'date',
+          load: () =>
+            import('@provoly/dashboard/filters/date').then((module) => filterLoader(module, 'PryDateFilterModule'))
+        },
+        list: {
+          name: 'list',
+          load: () =>
+            import('@provoly/dashboard/filters/list').then((module) => filterLoader(module, 'PryListFilterModule'))
+        },
+        number: {
+          name: 'number',
+          load: () =>
+            import('@provoly/dashboard/filters/number').then((module) => filterLoader(module, 'PryNumberFilterModule'))
+        }
+      },
+      [
+        {
+          type: '2/1',
+          image: 'assets/svgs/grid_2_gauche_1_droite.svg',
+          sizeImpl: (
+            outLayout: { x: number; y: number; height: number; width: number },
+            params: Partial<DashboardCellParams>
+          ) => {
+            return [
+              {
+                ...outLayout,
+                height: Math.floor((params.rows ?? DEFAULT_ROWS_NUMBER) / 2),
+                width: Math.floor((params.columns ?? DEFAULT_COLUMNS_NUMBER) / 2)
+              },
+              {
+                ...outLayout,
+                height: Math.floor((params.rows ?? DEFAULT_ROWS_NUMBER) / 2),
+                width: Math.floor((params.columns ?? DEFAULT_COLUMNS_NUMBER) / 2)
+              },
+              {
+                ...outLayout,
+                height: params.rows ?? DEFAULT_ROWS_NUMBER,
+                width: Math.floor((params.columns ?? DEFAULT_COLUMNS_NUMBER) / 2)
+              }
+            ];
+          },
+          placementImpl: (
+            widgetToPlace: WidgetManifest,
+            sizes: WidgetLayout[],
+            params: Partial<DashboardCellParams>
+          ) => [
+            { ...widgetToPlace, layout: { ...widgetToPlace.layout, ...sizes[0], x: 1, y: 1 } },
             {
-                chart: {
-                    name: 'chart',
-                    load: () =>
-                        import('@provoly/dashboard/widgets/widget-aggregated-chart').then((module) =>
-                            widgetLoader(module, 'WidgetAggregatedChartModule')
-                        )
-                },
-                'chart-legacy': {
-                    name: 'chart-legacy',
-                    load: () =>
-                        import('@provoly/dashboard/widgets/widget-chart').then((module) =>
-                            widgetLoader(module, 'WidgetChartModule')
-                        )
-                },
-                detail: {
-                    name: 'detail',
-                    load: () =>
-                        import('@provoly/dashboard/widgets/widget-detail').then((module) =>
-                            widgetLoader(module, 'WidgetDetailModule')
-                        )
-                },
-                graph: {
-                    name: 'graph',
-                    load: () =>
-                        import('@provoly/dashboard/widgets/widget-graph').then((module) =>
-                            widgetLoader(module, 'WidgetGraphModule')
-                        )
-                },
-                iframe: {
-                    name: 'iframe',
-                    load: () =>
-                        import('@provoly/dashboard/widgets/widget-iframe').then((module) =>
-                            widgetLoader(module, 'WidgetIframeModule')
-                        )
-                },
-                image: {
-                    name: 'image',
-                    load: () =>
-                        import('@provoly/dashboard/widgets/widget-image').then((module) =>
-                            widgetLoader(module, 'WidgetImageModule')
-                        )
-                },
-                map: {
-                    name: 'map',
-                    load: () =>
-                        import('@provoly/dashboard/widgets/widget-map').then((module) => widgetLoader(module, 'WidgetMapModule'))
-                },
-                table: {
-                    name: 'table',
-                    load: () =>
-                        import('@provoly/dashboard/widgets/widget-table').then((module) =>
-                            widgetLoader(module, 'WidgetTableModule')
-                        )
-                },
-                template: {
-                    name: 'template',
-                    load: () =>
-                        import('@provoly/dashboard/widgets/widget-template').then((module) =>
-                            widgetLoader(module, 'WidgetTemplateModule')
-                        )
-                },
-                tile: {
-                    name: 'tile',
-                    load: () =>
-                        import('@provoly/dashboard/widgets/widget-tile').then((module) => widgetLoader(module, 'WidgetTileModule'))
-                },
-                vega: {
-                    name: 'vega',
-                    load: () =>
-                        import('@provoly/dashboard/widgets/widget-vega').then((module) => widgetLoader(module, 'WidgetVegaModule'))
-                }
+              ...widgetToPlace,
+              layout: {
+                ...widgetToPlace.layout,
+                ...sizes[1],
+                x: 1,
+                y: Math.floor((params.columns ?? DEFAULT_COLUMNS_NUMBER) / 2) + 1
+              }
             },
             {
-                path: 'dashboard',
-                mapUrl: 'https://map.yap.pangee.ovh',
-                pryUrl: 'http://localhost:8081',
-                wsUrl: 'ws://localhost:8082',
-                geoServerUrl: 'https://geo.dev.pangee.ovh/geoserver'
-            },
-            {
-                attribute: {
-                    name: 'attribute',
-                    load: () =>
-                        import('@provoly/dashboard/tooltips/attribute').then((module) =>
-                            tooltipLoader(module, 'PryAttributeTooltipModule')
-                        )
-                }
-            },
-            {
-                text: {
-                    name: 'text',
-                    load: () =>
-                        import('@provoly/dashboard/filters/text').then((module) => filterLoader(module, 'PryTextFilterModule'))
-                },
-                date: {
-                    name: 'date',
-                    load: () =>
-                        import('@provoly/dashboard/filters/date').then((module) => filterLoader(module, 'PryDateFilterModule'))
-                },
-                list: {
-                    name: 'list',
-                    load: () =>
-                        import('@provoly/dashboard/filters/list').then((module) => filterLoader(module, 'PryListFilterModule'))
-                },
-                number: {
-                    name: 'number',
-                    load: () =>
-                        import('@provoly/dashboard/filters/number').then((module) => filterLoader(module, 'PryNumberFilterModule'))
-                }
-            },
-            [
-                {
-                    type: '2/1',
-                    image: 'assets/svgs/grid_2_gauche_1_droite.svg',
-                    sizeImpl: (
-                        outLayout: { x: number; y: number; height: number; width: number },
-                        params: Partial<DashboardCellParams>
-                    ) => {
-                        return [
-                            {
-                                ...outLayout,
-                                height: Math.floor((params.rows ?? DEFAULT_ROWS_NUMBER) / 2),
-                                width: Math.floor((params.columns ?? DEFAULT_COLUMNS_NUMBER) / 2)
-                            },
-                            {
-                                ...outLayout,
-                                height: Math.floor((params.rows ?? DEFAULT_ROWS_NUMBER) / 2),
-                                width: Math.floor((params.columns ?? DEFAULT_COLUMNS_NUMBER) / 2)
-                            },
-                            {
-                                ...outLayout,
-                                height: params.rows ?? DEFAULT_ROWS_NUMBER,
-                                width: Math.floor((params.columns ?? DEFAULT_COLUMNS_NUMBER) / 2)
-                            }
-                        ];
-                    },
-                    placementImpl: (
-                        widgetToPlace: WidgetManifest,
-                        sizes: WidgetLayout[],
-                        params: Partial<DashboardCellParams>
-                    ) => [
-                        {...widgetToPlace, layout: {...widgetToPlace.layout, ...sizes[0], x: 1, y: 1}},
-                        {
-                            ...widgetToPlace,
-                            layout: {
-                                ...widgetToPlace.layout,
-                                ...sizes[1],
-                                x: 1,
-                                y: Math.floor((params.columns ?? DEFAULT_COLUMNS_NUMBER) / 2) + 1
-                            }
-                        },
-                        {
-                            ...widgetToPlace,
-                            layout: {
-                                ...widgetToPlace.layout,
-                                ...sizes[2],
-                                x: Math.floor((params.rows ?? DEFAULT_ROWS_NUMBER) / 2) + 1,
-                                y: 1
-                            }
-                        }
-                    ]
-                }
-            ]
-        ),
-        BrowserAnimationsModule,
-        PryToolboxModule,
-        PryCardModule,
-        PryExpandPanelModule,
-        FormsModule,
-        PryIconModule,
-        PryCoreModule.forRoot({
-            // accessProvider: { provide: PRY_ACCESS_TOKEN, useClass: PryDashboardRoleService },
-            // guardProvider: { provide: PRY_ACCESS_GUARD, useClass: PryDashboardAccessGuard }
-        }),
-        PryI18nModule,
-        PrySelectModule,
-        PrySearchModule,
-        PryNotificationModule,
-        PryHiddenWhenOverlay,
-        PryRestitutionModule,
-        PryImportModule,
-        PryPresentationModule,
-        PryPipelineModule,
-        PryPipelineSubgraphModule,
-        PryPipelineInputDatasetModule,
-        PryPipelineOutputDatasetModule,
-        PryPipelineFilterModule,
-        PryPipelineNoopModule,
-        PryDatasetModule,
-        PryAboutModule
-    ],
+              ...widgetToPlace,
+              layout: {
+                ...widgetToPlace.layout,
+                ...sizes[2],
+                x: Math.floor((params.rows ?? DEFAULT_ROWS_NUMBER) / 2) + 1,
+                y: 1
+              }
+            }
+          ]
+        }
+      ]
+    ),
+    BrowserAnimationsModule,
+    PryToolboxModule,
+    PryCardModule,
+    PryExpandPanelModule,
+    FormsModule,
+    PryIconModule,
+    PryCoreModule.forRoot({
+      // accessProvider: { provide: PRY_ACCESS_TOKEN, useClass: PryDashboardRoleService },
+      // guardProvider: { provide: PRY_ACCESS_GUARD, useClass: PryDashboardAccessGuard }
+    }),
+    PryI18nModule,
+    PrySelectModule,
+    PrySearchModule,
+    PryNotificationModule,
+    PryHiddenWhenOverlay,
+    PryRestitutionModule,
+    PryImportModule,
+    PryPresentationModule,
+    PryPipelineModule,
+    PryPipelineSubgraphModule,
+    PryPipelineInputDatasetModule,
+    PryPipelineOutputDatasetModule,
+    PryPipelineFilterModule,
+    PryPipelineNoopModule,
+    PryDatasetModule,
+    PryAboutModule
+  ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     {

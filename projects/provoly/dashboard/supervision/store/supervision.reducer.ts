@@ -16,7 +16,7 @@ export interface SupervisionState {
   inputFlows: InputFlow[];
   businessDatas: BusinessData[];
   integrationErrors: IntegrationError[];
-  currentIntegrationError?: IntegrationError | null;
+  currentIntegrationError?: IntegrationError;
   errorDetailsOpen: boolean;
   selectedClasses: string[];
   refreshInterval: number;
@@ -37,7 +37,8 @@ export const initialSupervisionState: SupervisionState = {
   errorDetailsOpen: false,
   selectedClasses: [],
   refreshInterval: 30000,
-  loading: false
+  loading: false,
+  currentIntegrationError: undefined
 };
 
 export const supervisionReducer = createReducer(

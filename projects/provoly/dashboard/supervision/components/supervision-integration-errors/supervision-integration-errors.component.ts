@@ -98,7 +98,7 @@ export class SupervisionIntegrationErrorsComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch(SupervisionActions.toggleErrorDetails({ error: null, errorDetailsOpen: false }));
+    this.store.dispatch(SupervisionActions.toggleErrorDetails({ error: undefined, errorDetailsOpen: false }));
     this.subscription.unsubscribe();
     this.store.dispatch(SupervisionActions.mainActions({ actions: [] }));
     this.store.dispatch(SupervisionActions.stopAutoRefresh());

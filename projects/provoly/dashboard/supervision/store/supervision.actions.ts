@@ -32,7 +32,7 @@ export const SupervisionActions = {
   ),
   toggleErrorDetails: createAction(
     '[Supervision/Errors] Toggle Side Panel With Error Details Of Chosen Class',
-    props<{ error: IntegrationError | null; errorDetailsOpen: boolean }>()
+    props<{ error?: IntegrationError; errorDetailsOpen: boolean }>()
   ),
   toggleClassSelection: createAction(
     '[Supervision/Errors] Select/Unselect Class for submission (Reload/Acknowledge)',

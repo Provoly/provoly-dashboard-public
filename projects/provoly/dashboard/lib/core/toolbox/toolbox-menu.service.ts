@@ -55,21 +55,6 @@ export const defaultMenuStructure: WidgetDescriptionMenu[] = [
     ]
   },
   {
-    icon: 'show_chart',
-    label: '@pry.toolbox.sub.chart',
-    opened: false,
-    sub: [
-      { icon: 'bar_chart', label: '@pry.toolbox.barchart', type: 'barchartLegacy' },
-      { icon: 'bar_chart', label: '@pry.toolbox.histogram', type: 'histogramLegacy' },
-      { icon: 'show_chart', label: '@pry.toolbox.linechart', type: 'linechartLegacy' },
-      { icon: 'auto_graph', label: '@pry.toolbox.pointchart', type: 'pointchartLegacy' },
-      { icon: 'area_chart', label: '@pry.toolbox.areachart', type: 'areachartLegacy' },
-      { icon: 'donut_large', label: '@pry.toolbox.arcchart', type: 'arcchartLegacy' },
-      { icon: 'radar_chart', label: '@pry.toolbox.radarchart', type: 'radarchartLegacy' },
-      { icon: 'bubble-chart-line', label: '@pry.toolbox.circlechart', type: 'circlechartLegacy' }
-    ]
-  },
-  {
     icon: 'toc',
     label: '@pry.toolbox.sub.other',
     opened: false,
