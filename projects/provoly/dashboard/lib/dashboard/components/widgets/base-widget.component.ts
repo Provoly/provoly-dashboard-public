@@ -74,7 +74,8 @@ export class BaseWidgetComponent extends SubscriptionnerDirective implements OnD
   }
 
   ngAfterViewChecked(): void {
-    this._widgetSize$.next({ width: this.el.nativeElement.offsetWidth, height: this.el.nativeElement.offsetHeight });
+    const boundingRect = this.el.nativeElement.getBoundingClientRect();
+    this._widgetSize$.next({ width: boundingRect.width, height: boundingRect.height });
   }
 
   toImage(): Promise<string> {

@@ -400,7 +400,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
             renderer: 'canvas',
             formatLocale: this.translateService.instantObject('@pry.widget.chart.numberLocale') as any,
             timeFormatLocale: this.translateService.instantObject('@pry.widget.chart.timeFormatLocale') as any
-          }).then((result) => (this.view = result.view));
+          })
+            .then((result) => (this.view = result.view))
+            .catch((err) => console.error('Cannot display chart', err));
         } else {
           setTimeout(() => this.trigger$.next(), 100);
         }
