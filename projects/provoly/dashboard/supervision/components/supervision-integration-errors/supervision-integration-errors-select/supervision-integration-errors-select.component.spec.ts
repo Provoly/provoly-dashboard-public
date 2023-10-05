@@ -80,7 +80,7 @@ describe('SupervisionIntegrationErrorsSelectComponent', () => {
     if (SupervisionActions) {
       expect(spyStore.mock.calls).toEqual([
         [SupervisionActions.loadIntegrationErrors()],
-        [SupervisionActions.toggleErrorDetails({ error: null, errorDetailsOpen: false })]
+        [SupervisionActions.toggleErrorDetails({ error: undefined, errorDetailsOpen: false })]
       ]);
     }
   });

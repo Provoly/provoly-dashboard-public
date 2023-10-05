@@ -715,9 +715,20 @@ export class DashboardEffects {
     this.actions$.pipe(
       ofType(DashboardActions.addManifestMetadata),
       mergeMap((action) =>
-        this.manifestService
-          .addMetadata(action.presentationId, action.metadataId, action.value)
-          .pipe(map(() => DashboardActions.fetchManifestsList()))
+        this.manifestService.addMetadata(action.presentationId, action.metadataId, action.value).pipe(
+          map(() => DashboardActions.fetchManifestsList()),
+          catchError((error) => {
+            if (error.status === 404) {
+              this.snackBar.open({
+                type: 'error',
+                message: this.translateService.instant('@pry.toolbox.manifest.saveErrorCode.SAVE_METADATA', {
+                  code: error.status
+                })
+              });
+            }
+            return throwError(() => error);
+          })
+        )
       )
     )
   );

@@ -129,7 +129,7 @@
   </ng-container>
   <ng-container *ngSwitchCase="ViewMode.CREATION">
     <pry-add-edit-presentation
-      [selectedPresentation]="selectedPresentation!"
+      [selectedPresentation]="selectedPresentation$ | async"
       (goBack)="closeRestitution()"
       [editionStartUrl]="editionStartUrl"
       [edition]="false"
@@ -137,7 +137,7 @@
   </ng-container>
   <ng-container *ngSwitchCase="ViewMode.EDITION">
     <pry-add-edit-presentation
-      [selectedPresentation]="selectedPresentation!"
+      [selectedPresentation]="selectedPresentation$ | async"
       (goBack)="closeRestitution()"
       [editionStartUrl]="editionStartUrl"
       [edition]="true"
@@ -153,7 +153,7 @@
     role="dialog"
     aria-modal="true"
     aria-labelledby="dialog change visibility"
-    *ngIf="selectedPresentation"
+    *ngIf="selectedPresentation$ | async as selectedPresentation"
   >
     <div class="o-modal__top">
       <div class="o-modal__top__title">
@@ -181,7 +181,7 @@
         class="a-btn a-btn--primary"
         #submit
         (keydown.tab)="focusCrossElement()"
-        (click)="changeVisibility()"
+        (click)="changeVisibility(selectedPresentation)"
       >
         {{ '@pry.toolbox.manifest.check' | i18n }}
       </button>

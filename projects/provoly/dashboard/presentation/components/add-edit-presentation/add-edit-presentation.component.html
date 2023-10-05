@@ -79,19 +79,22 @@
           <pry-select-grid-layout *ngIf="!edition"></pry-select-grid-layout>
         </div>
       </form>
-      <div class="o-presentation__metadata-editor">
+      <div class="o-presentation__metadata-editor" *ngIf="selectedPresentation$ | async as selectedPresentation">
         <pry-metadata-editor
           [targetId]="selectedPresentation.id"
           [isModification]="true"
           [metadata]="selectedPresentation.metadata"
-          initialMetadataSelection="_theme"
           (removeMeta)="removeMetadata($event)"
           (addMeta)="addMetadata($event)"
           [type]="'meta'"
         ></pry-metadata-editor>
       </div>
     </div>
-    <button class="a-btn a-btn--primary" (click)="configureDashboard(selectedPresentation!)" [disabled]="form.invalid">
+    <button
+      class="a-btn a-btn--primary"
+      (click)="configureDashboard(selectedPresentation$.value!)"
+      [disabled]="form.invalid"
+    >
       {{ '@pry.presentation.configuration' | i18n }}
     </button>
   </div>

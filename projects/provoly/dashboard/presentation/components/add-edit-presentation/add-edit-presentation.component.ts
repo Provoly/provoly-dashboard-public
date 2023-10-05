@@ -13,8 +13,9 @@ import {
   SubscriptionnerDirective,
   ViewMode
 } from '@provoly/dashboard';
-import { combineLatest, debounceTime, Observable, take } from 'rxjs';
+import { BehaviorSubject, combineLatest, debounceTime, Observable, take } from 'rxjs';
 import { MetadataActions, MetaEventType } from '@provoly/dashboard/components/metadata-editor';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'pry-add-edit-presentation',
@@ -22,7 +23,7 @@ import { MetadataActions, MetaEventType } from '@provoly/dashboard/components/me
 })
 export class PryAddEditPresentationComponent extends SubscriptionnerDirective implements OnInit, AfterViewInit {
   staticManifest$: Observable<GlobalManifest>;
-  @Input() selectedPresentation!: ManifestDescription;
+  selectedPresentation$ = new BehaviorSubject<ManifestDescription | null>(null);
   @Input() edition: boolean = false;
   @Input() editionStartUrl: string = '/';
   form!: FormGroup;
@@ -30,6 +31,10 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
   @Output() goBack = new EventEmitter<void>();
   type: LibraryTypes = LibraryTypes.ILLUSTRATION;
   chosenLayout?: string;
+
+  @Input() set selectedPresentation(presentation: ManifestDescription | null) {
+    this.selectedPresentation$.next(presentation);
+  }
 
   constructor(private store: Store, @Optional() protected router: Router) {
     super();
@@ -52,20 +57,19 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
       description: new FormControl(null, [Validators.maxLength(200)]),
       cover: new FormControl(false)
     });
-    this.image = this.selectedPresentation?.image ?? DEFAULT_RESTITUTION_ICON_URL;
+    this.image = this.selectedPresentation$.value?.image ?? DEFAULT_RESTITUTION_ICON_URL;
   }
 
   ngAfterViewInit() {
-    if (this.selectedPresentation) {
-      setTimeout(() => {
-        this.form.patchValue(this.selectedPresentation);
-      });
-    }
+    setTimeout(() => {
+      if (this.selectedPresentation$.value) this.form.patchValue(this.selectedPresentation$.value);
+    });
   }
 
   save() {
     const presentation = {
-      ...this.selectedPresentation!,
+      ...this.selectedPresentation$.value!,
+      id: this.selectedPresentation$.value?.id || uuidv4(),
       name: this.form.value.name ?? '',
       description: this.form.value.description ?? '',
       cover: this.form.value.cover ?? false,
@@ -83,7 +87,7 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
     );
     this.store.dispatch(
       DashboardActions.selectPresentation({
-        presentation: presentation,
+        presentation,
         viewMode: ViewMode.EDITION
       })
     );
@@ -93,7 +97,7 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
     this.store.dispatch(
       DashboardActions.selectPresentation({
         presentation: {
-          ...this.selectedPresentation!,
+          ...this.selectedPresentation$.value!,
           name: this.form.value.name ?? '',
           description: this.form.value.description ?? '',
           image: this.image ?? DEFAULT_RESTITUTION_ICON_URL,
@@ -143,7 +147,7 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
   addMetadata(metadata: MetaEventType) {
     this.store.dispatch(
       DashboardActions.addManifestMetadata({
-        presentationId: this.selectedPresentation.id,
+        presentationId: this.selectedPresentation$.value?.id!,
         metadataId: metadata.metadataId,
         value: metadata.value ?? ''
       })
@@ -153,7 +157,7 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
   removeMetadata(metadata: MetaEventType) {
     this.store.dispatch(
       DashboardActions.deleteManifestMetadata({
-        presentationId: this.selectedPresentation.id,
+        presentationId: this.selectedPresentation$.value?.id!,
         metadataId: metadata.metadataId
       })
     );

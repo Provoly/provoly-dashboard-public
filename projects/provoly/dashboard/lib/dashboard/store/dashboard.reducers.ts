@@ -382,6 +382,12 @@ const internalReducer = createReducer<DashboardState>(
     manifests: {
       ...state.manifests,
       list: action.manifests
+    },
+    presentation: {
+      ...state.presentation,
+      current: state.presentation.current
+        ? action.manifests.find((manifest) => manifest.id === state.presentation.current?.id)
+        : undefined
     }
   })),
   on(DashboardActions.updateStaticManifest, (state, action) => ({

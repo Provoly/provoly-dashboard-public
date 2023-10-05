@@ -539,7 +539,7 @@ describe('DashboardEffects', () => {
       );
 
       actions$ = hot('--a-', {
-        a: DashboardActions.saveManifest({ name: 'mId' })
+        a: DashboardActions.saveManifest({ name: 'mId', id: 'id' })
       });
 
       const expected$ = hot('--(ab)-', {
@@ -553,7 +553,7 @@ describe('DashboardEffects', () => {
           'mId',
           { windows: [] },
           { type: 'PRIVATE' },
-          undefined,
+          'id',
           undefined,
           undefined,
           undefined
@@ -563,7 +563,7 @@ describe('DashboardEffects', () => {
           'mId',
           { windows: [] },
           { type: 'PRIVATE' },
-          undefined,
+          'id',
           undefined,
           undefined,
           undefined
@@ -600,7 +600,7 @@ describe('DashboardEffects', () => {
       );
 
       actions$ = hot('--a-', {
-        a: DashboardActions.saveManifest({ name: 'name', manifest: { windows: [{ widgets: [] }] } })
+        a: DashboardActions.saveManifest({ name: 'name', id: 'id', manifest: { windows: [{ widgets: [] }] } })
       });
 
       const expected$ = hot('--(ab)-', {
@@ -614,7 +614,7 @@ describe('DashboardEffects', () => {
           'name',
           { windows: [{ widgets: [] }] },
           { type: 'PRIVATE' },
-          undefined,
+          'id',
           undefined,
           undefined,
           undefined
@@ -624,7 +624,7 @@ describe('DashboardEffects', () => {
           'name',
           { windows: [{ widgets: [] }] },
           { type: 'PRIVATE' },
-          undefined,
+          'id',
           undefined,
           undefined,
           undefined
@@ -699,7 +699,7 @@ describe('DashboardEffects', () => {
       );
 
       actions$ = hot('--a-', {
-        a: DashboardActions.saveManifest({ name: 'name', manifest: { windows: [{ widgets: [] }] } })
+        a: DashboardActions.saveManifest({ id: 'mId', name: 'name', manifest: { windows: [{ widgets: [] }] } })
       });
 
       const expected$ = hot('--(ab)-', {
@@ -713,7 +713,7 @@ describe('DashboardEffects', () => {
           'name',
           { windows: [{ widgets: [] }] },
           { type: 'PRIVATE' },
-          undefined,
+          'mId',
           undefined,
           undefined,
           undefined
@@ -723,7 +723,7 @@ describe('DashboardEffects', () => {
           'name',
           { windows: [{ widgets: [] }] },
           { type: 'PRIVATE' },
-          undefined,
+          'mId',
           undefined,
           undefined,
           undefined

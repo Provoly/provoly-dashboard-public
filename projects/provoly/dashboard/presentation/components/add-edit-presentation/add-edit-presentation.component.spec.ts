@@ -88,7 +88,7 @@ describe('PryAddEditPresentationComponent', () => {
   });
 
   it('should dispatch save action on submit', () => {
-    component.selectedPresentation = {} as ManifestDescription;
+    component.selectedPresentation$.next({ id: '1' } as ManifestDescription);
     fixture.detectChanges();
     let date = '2020-01-01T10:10:00';
     jest.useFakeTimers().setSystemTime(new Date(date));
@@ -97,6 +97,7 @@ describe('PryAddEditPresentationComponent', () => {
     expect(spy).toHaveBeenCalledWith(
       DashboardActions.saveManifest({
         name: '',
+        id: '1',
         description: '',
         cover: false,
         image: '/assets/svgs/default-restitution.svg',

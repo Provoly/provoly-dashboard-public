@@ -62,7 +62,8 @@ export const frTranslations = {
         saved: 'Présentation {{viewId}} sauvegardée',
         saveErrorCode: {
           FORBIDDEN: "Vous n'êtes pas le propriétaire de cette présentation ",
-          NAME_ALREADY_USED: 'Une présentation avec le nom "{{name}}" existe déjà, veuillez sélectionner un autre nom.'
+          NAME_ALREADY_USED: 'Une présentation avec le nom "{{name}}" existe déjà, veuillez sélectionner un autre nom.',
+          SAVE_METADATA: 'Veuillez sauvegarder la presentation avant de choisir une thématique.'
         },
         defaulted: 'Présentation {{viewId}} marquée par défaut',
         undefaulted: "La présentation {{viewId}} n'est plus marquée par défaut",

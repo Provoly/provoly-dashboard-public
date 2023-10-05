@@ -17,7 +17,6 @@ export const DOUBLE_REGEXP_PATTERN = '[+-]?([0-9]*[.])?[0-9]+';
 })
 export class PryMetadataEditorComponent extends SubscriptionnerDirective {
   _metadata$ = new BehaviorSubject<(MetadataValue | MetadataUser)[]>([]);
-  _initialMetadataSelection$ = new BehaviorSubject<string>('');
   form: FormGroup;
   isSubmitted = false;
   @Input() isModification = false;
@@ -35,10 +34,6 @@ export class PryMetadataEditorComponent extends SubscriptionnerDirective {
 
   @Input() set metadata(metadata: MetadataValue[] | MetadataUser[]) {
     this._metadata$.next(metadata);
-  }
-
-  @Input() set initialMetadataSelection(metadataName: string) {
-    this._initialMetadataSelection$.next(metadataName);
   }
 
   constructor(private store: Store, private formBuilder: FormBuilder) {
@@ -69,26 +64,12 @@ export class PryMetadataEditorComponent extends SubscriptionnerDirective {
     );
 
     this.subscriptions.add(
-      combineLatest([
-        this.metadataDefs$,
-        this.availableMetadata$,
-        this._metadata$,
-        this._initialMetadataSelection$
-      ]).subscribe(([allMeta, availableMeta, inputMeta, initiallySelectedMeta]) => {
-        let initiallySelectedMetaAvailable = availableMeta.find((metadata) => metadata.name === initiallySelectedMeta);
-        if (!!initiallySelectedMetaAvailable) {
-          this.form.patchValue({
-            metadata: initiallySelectedMetaAvailable ?? availableMeta[0]
-          });
-          this.onMetaChange(initiallySelectedMetaAvailable ?? availableMeta[0]);
-          this.form.patchValue({ value: '' });
-        } else {
-          this.store.dispatch(MetadataActions.isEditable({ editable: true }));
-          this.form.patchValue({
-            metadata: (allMeta ?? []).find((metadata) => metadata.name === initiallySelectedMeta),
-            value: (inputMeta ?? []).find((meta) => this.metaDefinition(meta).name === initiallySelectedMeta)?.value
-          });
-        }
+      this.availableMetadata$.subscribe((meta) => {
+        this.form.patchValue({
+          metadata: meta[0]
+        });
+        this.onMetaChange(meta[0]);
+        this.form.patchValue({ value: '' });
       })
     );
   }

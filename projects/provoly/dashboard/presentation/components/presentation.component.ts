@@ -24,7 +24,7 @@ import { v4 } from 'uuid';
 })
 export class PryPresentationComponent extends SubscriptionnerDirective {
   manifests$: Observable<ManifestDescription[]>;
-  selectedPresentation: ManifestDescription | null = null;
+  selectedPresentation$ = new BehaviorSubject<ManifestDescription | null>(null);
   presentation?: ManifestDescription;
   staticManifest$?: Observable<DashboardManifest>;
   selectedMode: ViewMode = ViewMode.CATALOG;
@@ -81,7 +81,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     this.subscriptions.add(
       this.store.select(DashboardSelectors.presentation).subscribe((presentation) => {
         if (!!presentation.current) {
-          this.selectedPresentation = presentation.current ?? null;
+          this.selectedPresentation$.next(presentation.current ?? null);
           this.selectedMode = presentation?.viewMode ?? this.ViewMode.CATALOG;
         }
       })
@@ -89,7 +89,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   }
 
   closeRestitution() {
-    this.selectedPresentation = null;
+    this.selectedPresentation$.next(null);
     this.selectedMode = ViewMode.CATALOG;
     this.store.dispatch(DashboardActions.selectPresentation({ presentation: undefined, viewMode: ViewMode.CATALOG }));
   }
@@ -151,10 +151,8 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
 
   edit(presentation: ManifestDescription) {
     this.selectedMode = ViewMode.EDITION;
-    this.selectedPresentation = presentation;
-    this.store.dispatch(
-      DashboardActions.selectPresentation({ presentation: this.selectedPresentation, viewMode: ViewMode.EDITION })
-    );
+    this.selectedPresentation$.next(presentation);
+    this.store.dispatch(DashboardActions.selectPresentation({ presentation, viewMode: ViewMode.EDITION }));
     this.store.dispatch(DashboardActions.fetchStaticManifest({ id: presentation.id }));
     this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: DisplayMode.EDIT }));
   }
@@ -170,10 +168,8 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   toggleModal(presentation?: ManifestDescription | null) {
     this.modalOpened = !this.modalOpened;
     if (this.modalOpened && presentation) {
-      this.selectedPresentation = presentation;
-      this.store.dispatch(
-        DashboardActions.selectPresentation({ presentation: this.selectedPresentation, viewMode: ViewMode.CATALOG })
-      );
+      this.selectedPresentation$.next(presentation);
+      this.store.dispatch(DashboardActions.selectPresentation({ presentation, viewMode: ViewMode.CATALOG }));
       /* we need to load manifest in order to be able to save it later */
       this.store.dispatch(DashboardActions.loadManifest({ id: presentation.id }));
       this.overlayRef = this.overlay.create(
@@ -191,23 +187,23 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
       }, 10);
     } else {
       this.overlayRef?.dispose();
-      this.selectedPresentation = null;
+      this.selectedPresentation$.next(null);
     }
   }
 
-  changeVisibility() {
-    if (this.selectedPresentation) {
+  changeVisibility(presentation?: ManifestDescription) {
+    if (presentation) {
       this.store.dispatch(
         DashboardActions.saveManifest({
-          id: this.selectedPresentation.id ?? '',
-          name: this.selectedPresentation.name ?? '',
-          description: this.selectedPresentation.description ?? '',
-          image: this.selectedPresentation.image ?? '',
+          id: presentation.id ?? '',
+          name: presentation.name ?? '',
+          description: presentation.description ?? '',
+          image: presentation.image ?? '',
           visibility: this.visibility
         })
       );
     }
-    this.toggleModal(this.selectedPresentation);
+    this.toggleModal(presentation);
   }
 
   focusCrossElement() {

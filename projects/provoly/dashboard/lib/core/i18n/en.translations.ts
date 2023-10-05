@@ -62,7 +62,8 @@ export const enTranslations = {
         saved: 'Presentation saved as {{viewId}}',
         saveErrorCode: {
           FORBIDDEN: 'You are not the owner of this presentation',
-          NAME_ALREADY_USED: 'A presentation called "{{name}}" already exists, please select another name.'
+          NAME_ALREADY_USED: 'A presentation called "{{name}}" already exists, please select another name.',
+          SAVE_METADATA: 'Save your presentation before choosing the theme.'
         },
         defaulted: 'Presentation {{viewId}} marked as favourite',
         undefaulted: 'Presentation {{viewId}} is no longer marked as favourite',

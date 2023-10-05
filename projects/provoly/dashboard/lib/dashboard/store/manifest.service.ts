@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { mergeMap, Observable, of } from 'rxjs';
 import { catchError, map, withLatestFrom } from 'rxjs/operators';
-import { v4 as uuidv4 } from 'uuid';
 import { PryVisibility } from '../../core/components/share/share.model';
 import { PrySnackbarService } from '../../core/components/snackbar/snackbar.service';
 import { PryI18nService } from '../../core/i18n/i18n.service';
@@ -67,7 +66,7 @@ export class ManifestService {
     name: string,
     manifest: GlobalManifest,
     visibility: PryVisibility,
-    id?: string,
+    id: string,
     description?: string,
     image?: string,
     cover?: boolean
@@ -77,7 +76,7 @@ export class ManifestService {
         this.httpClient.post<{ id: string; description: string; name: string; manifest: GlobalManifest }>(
           encodeURI(`${url}/users/me/dashboards`),
           {
-            id: id === undefined || id.length === 0 ? uuidv4() : id,
+            id,
             name,
             description,
             manifest,

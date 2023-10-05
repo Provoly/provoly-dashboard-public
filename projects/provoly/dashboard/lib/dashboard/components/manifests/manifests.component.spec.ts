@@ -88,6 +88,12 @@ describe('ManifestsComponent', () => {
 
     component.handleFileInput(event);
     expect(readAsTextSpy).toHaveBeenCalled();
-    expect(spy).toHaveBeenCalledWith(DashboardActions.saveManifest({ name: 'file', manifest: { windows: [] } }));
+    expect(spy).toHaveBeenCalledWith(
+      DashboardActions.saveManifest({
+        id: 'uuiduuid-this-isis-mock-eduuiduuidaa',
+        name: 'file',
+        manifest: { windows: [] }
+      })
+    );
   });
 });

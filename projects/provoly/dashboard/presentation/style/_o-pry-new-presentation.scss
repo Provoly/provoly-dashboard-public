@@ -42,6 +42,13 @@ pry-add-edit-presentation {
 
 .o-presentation__metadata-editor {
   flex: 1 50%;
+
+  pry-metadata-editor {
+    ng-select {
+      position: relative;
+      width: 100%;
+    }
+  }
 }
 
 .o-presentation-form {

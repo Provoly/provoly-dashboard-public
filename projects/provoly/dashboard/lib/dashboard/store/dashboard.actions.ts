@@ -162,7 +162,7 @@ export const DashboardActions = {
     props<{
       name: string;
       manifest?: GlobalManifest;
-      id?: string;
+      id: string;
       description?: string;
       image?: string;
       visibility?: PryVisibility;
@@ -250,7 +250,7 @@ export const DashboardActions = {
     props<{ presentationId: string; metadataId: string; value: string }>()
   ),
   deleteManifestMetadata: createAction(
-    '[Dashboard] Add manifest metadata',
+    '[Dashboard] Delete manifest metadata',
     props<{ presentationId: string; metadataId: string }>()
   )
 };

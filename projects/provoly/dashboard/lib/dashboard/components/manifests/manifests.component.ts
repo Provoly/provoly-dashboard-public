@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs';
 import { ManifestDescription } from '../../../core/model/manifest.interface';
 import { DashboardActions } from '../../store/dashboard.actions';
 import { DashboardSelectors } from '../../store/dashboard.selectors';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'pry-manifests',
@@ -44,6 +45,7 @@ export class ManifestsComponent {
         reader.onload = (evt) => {
           this.store.dispatch(
             DashboardActions.saveManifest({
+              id: uuidv4(),
               name: file.name.replace('.json', ''),
               manifest: JSON.parse(evt.target?.result?.toString() ?? '{}')
             })

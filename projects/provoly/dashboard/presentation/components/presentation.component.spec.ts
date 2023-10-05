@@ -50,14 +50,14 @@ describe('PryPresentationComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should test closeRestitution is called', () => {
-    component.selectedPresentation = {
+    component.selectedPresentation$.next({
       id: '1',
       name: 'presentation 1',
       description: 'test-presentation'
-    } as ManifestDescription;
+    } as ManifestDescription);
     component.selectedMode = ViewMode.CONSULT;
     component.closeRestitution();
-    expect(component.selectedPresentation).toBeNull();
+    expect(component.selectedPresentation$.value).toBeNull();
     expect(component.selectedMode).toEqual(ViewMode.CATALOG);
   });
   it('should fetch is called', () => {
