@@ -121,6 +121,7 @@ export const frTranslations = {
       radarchart: 'Radar',
       circlechart: 'Paquets de cercles',
       iframe: 'Application externe',
+      vega: 'Graphique avancé',
       graph: 'Relations',
       placeholder: '',
       sub: {

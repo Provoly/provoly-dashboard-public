@@ -121,6 +121,7 @@ export const enTranslations = {
       radarchart: 'Radar',
       circlechart: 'Circle packing',
       iframe: 'External application',
+      vega: 'Advanced chart',
       graph: 'Graph',
       placeholder: '',
       sub: {

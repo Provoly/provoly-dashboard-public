@@ -44,7 +44,7 @@ export const initialConfigState: ConfigState = {
   mapStyles: [],
   availableColors: defaultColors,
   overlayList: [],
-  breakpoint: 900,
+  breakpoint: 700,
   defaultViewUsed: false,
   catalog: [],
   chartOption: ChartOptionDefault,

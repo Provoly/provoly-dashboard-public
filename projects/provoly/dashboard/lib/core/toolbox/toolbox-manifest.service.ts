@@ -298,6 +298,20 @@ export class ToolboxManifestService extends SubscriptionnerDirective {
       },
       options: {},
       datasource: USE_CURRENT_RESULTSET
+    },
+    vega: {
+      type: 'vega',
+      layout: {
+        x: 1,
+        y: 1,
+        height: 2,
+        width: 3
+      },
+      options: {
+        placeData: ['data', 0, 'values'],
+        baseSpec: {}
+      },
+      datasource: USE_CURRENT_RESULTSET
     }
   });
 

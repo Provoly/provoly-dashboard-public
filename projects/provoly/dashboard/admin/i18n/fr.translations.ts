@@ -166,7 +166,7 @@ export const frTranslations = {
           status: 'Statut',
           statusActive: 'Actif',
           statusInactive: 'Inactif',
-          predicate: 'Prédicat de déclanchement',
+          predicate: 'Prédicat de déclenchement',
           type: 'Type',
           typeMetadata: 'Metadonnée',
           typeAttribute: 'Attribut',
