@@ -60,7 +60,9 @@
             [item]="category"
             [index]="index"
             translationStringBase="@pry.restitution.catalogTabs."
-            [length]="category === 'model' ? (nonCustomWidgets$ | async)?.length : (customWidgets$ | async)?.length"
+            [length]="
+              (category === 'model' ? (nonCustomWidgets$ | async)?.length : (customWidgets$ | async)?.length) ?? 0
+            "
           >
             <ul class="o-catalog__list" role="list" aria-live="polite">
               <ng-container *ngIf="category === 'model'">

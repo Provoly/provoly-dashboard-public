@@ -15,15 +15,19 @@ export class NotificationEffects {
     private notificationService: NotificationService
   ) {
     wsService.messages$('notification').subscribe((msg: wsMessage) => {
-      this.store.dispatch(
-        NotificationActions.add({
-          notification: {
-            text: msg.payload.text,
-            link: msg.payload.link,
-            creationDate: msg.payload.creationDate,
-            id: msg.id
-          }
-        })
+      setTimeout(
+        () =>
+          this.store.dispatch(
+            NotificationActions.add({
+              notification: {
+                text: msg.payload.text,
+                link: msg.payload.link,
+                creationDate: msg.payload.creationDate,
+                id: msg.id
+              }
+            })
+          ),
+        1
       );
     });
   }

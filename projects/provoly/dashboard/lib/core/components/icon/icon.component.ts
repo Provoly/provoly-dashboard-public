@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { DEFAULT_ICON_URL } from '../../store/config/icon-definitions.interface';
 
 @Component({
   selector: 'pry-icon',
@@ -72,6 +73,9 @@ export class PryIconComponent implements OnChanges {
     const iconSvg = changes['iconSvg'];
     if (iconSvg) {
       this._iconSvg = iconSvg.currentValue;
+      if (this._iconSvg === DEFAULT_ICON_URL) {
+        this._iconSvg = 'default';
+      }
     }
     const iconImage = changes['iconImage'];
     if (iconImage) {

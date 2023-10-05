@@ -85,8 +85,8 @@ export class PryMetadataEditorComponent extends SubscriptionnerDirective {
         } else {
           this.store.dispatch(MetadataActions.isEditable({ editable: true }));
           this.form.patchValue({
-            metadata: allMeta.find((metadata) => metadata.name === initiallySelectedMeta),
-            value: inputMeta.find((meta) => this.metaDefinition(meta).name === initiallySelectedMeta)?.value
+            metadata: (allMeta ?? []).find((metadata) => metadata.name === initiallySelectedMeta),
+            value: (inputMeta ?? []).find((meta) => this.metaDefinition(meta).name === initiallySelectedMeta)?.value
           });
         }
       })

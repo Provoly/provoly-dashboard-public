@@ -21,7 +21,7 @@
     </button>
   </ng-container>
   <img
-    [alt]="widget.label"
+    [alt]="widget.label | i18n"
     [src]="widget.icon | getSecuredImage : [600, 600] | async"
     [height]="widget.cover ? 600 : 53"
     [width]="widget.cover ? 600 : 53"
