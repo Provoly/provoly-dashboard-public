@@ -332,7 +332,7 @@ describe('WidgetAggregatedChartComponent', () => {
                 field: 'series',
                 legend: true,
                 scale: { scheme: 'my-color' },
-                title: '@pry.widget.chart.series'
+                title: 'field-name-3'
               },
               theta: undefined,
               x: {
@@ -356,7 +356,7 @@ describe('WidgetAggregatedChartComponent', () => {
               tooltip: [
                 { field: 'key', type: 'nominal', title: 'ABS' },
                 { field: 'value', type: 'nominal', title: 'ORD' },
-                { field: 'series', type: 'nominal', title: '@pry.widget.chart.series' }
+                { field: 'series', type: 'nominal', title: 'field-name-3' }
               ]
             }
           }
@@ -425,7 +425,7 @@ describe('WidgetAggregatedChartComponent', () => {
                 field: 'series',
                 legend: true,
                 scale: { scheme: 'my-color' },
-                title: '@pry.widget.chart.series'
+                title: 'field-name-3'
               },
               theta: undefined,
               x: {
@@ -448,7 +448,7 @@ describe('WidgetAggregatedChartComponent', () => {
               tooltip: [
                 { field: 'key', type: 'nominal', title: 'ABS' },
                 { field: 'value', type: 'nominal', title: 'ORD' },
-                { field: 'series', type: 'nominal', title: '@pry.widget.chart.series' }
+                { field: 'series', type: 'nominal', title: 'field-name-3' }
               ]
             }
           }
