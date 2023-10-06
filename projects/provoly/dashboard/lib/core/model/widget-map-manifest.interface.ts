@@ -149,3 +149,5 @@ export const widgetMapConfig = {
     'upload'
   ])
 };
+
+export const DEFAULT_PROJECTION = 'EPSG:4326';

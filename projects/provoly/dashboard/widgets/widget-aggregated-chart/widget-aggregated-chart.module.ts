@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import {
   BaseWidgetComponent,
   BaseWidgetModule,
+  PryAggregationService,
   PryCoreModule,
   PryDashboardModule,
   PryEditInputModule,
@@ -20,7 +21,6 @@ import { PryCheckboxModule } from '@provoly/dashboard/components/checkbox';
 import { WidgetAggregatedChartComponent } from './component/widget-aggregated-chart.component';
 import { enTranslations } from './i18n/en.translations';
 import { frTranslations } from './i18n/fr.translations';
-import { PryAggregationService } from './service/base-aggregation.service';
 import { PryWidgetAggregatedChartCssComponent } from './style/css.component';
 
 @NgModule({

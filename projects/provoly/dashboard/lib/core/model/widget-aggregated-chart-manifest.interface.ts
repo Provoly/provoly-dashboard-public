@@ -8,7 +8,8 @@ export enum Operation {
   Q1 = 'q1',
   Q3 = 'q3',
   MIN = 'min',
-  MAX = 'max'
+  MAX = 'max',
+  EXTENT = 'extent'
 }
 
 export enum GraphType {

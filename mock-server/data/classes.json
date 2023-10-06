@@ -643,5 +643,141 @@
         "multiValued": false
       }
     ]
+  },
+  {
+    "id": "0e745c78-4a74-4bfd-9789-06ec93f7d364",
+    "name": "Equipements publics",
+    "icon": null,
+    "attributes": [
+      {
+        "id": "63cca4b1-8c37-4ce9-bcdb-e84dc60af9be",
+        "name": "GeoShape",
+        "field": "7000506c-049b-47d3-b92d-a2e823b46b80",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "0ecf31fd48_geo-shape"
+      },
+      {
+        "id": "b75a5d48-c015-46bf-b627-b802289e45a0",
+        "name": "cat_dig",
+        "field": "872ff200-b4cc-47e6-a45b-fe3ea9c1ab9f",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "7811ee4dc5_cat_dig"
+      },
+      {
+        "id": "115c8764-aad9-4870-8f90-803a8d9bc0c2",
+        "name": "ident",
+        "field": "872ff200-b4cc-47e6-a45b-fe3ea9c1ab9f",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "1a5b25c617_ident"
+      },
+      {
+        "id": "12d28397-8d77-4c94-9148-904c57e2f764",
+        "name": "sstheme",
+        "field": "198955a5-3726-4f03-8907-57149d4b193e",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "bc6acd17df_sstheme"
+      },
+      {
+        "id": "ef366030-9e28-43f2-829e-dc7ef4c66abe",
+        "name": "acronyme",
+        "field": "198955a5-3726-4f03-8907-57149d4b193e",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "69eb8109a7_acronyme"
+      },
+      {
+        "id": "42db1458-2c90-4d4a-8b5a-5f14ab90dd41",
+        "name": "nom",
+        "field": "198955a5-3726-4f03-8907-57149d4b193e",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "70c1c6af69_nom"
+      },
+      {
+        "id": "7240bc76-31e0-40a0-8eee-e9b604a8c12f",
+        "name": "gid",
+        "field": "872ff200-b4cc-47e6-a45b-fe3ea9c1ab9f",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "29650f0c9a_git"
+      },
+      {
+        "id": "abc05be7-5378-4842-b9c1-fc57e2c9c12e",
+        "name": "GeoPoint",
+        "field": "4a641178-dca2-40ad-8ee4-063c69d5111d",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "c52f07500d_geo-point"
+      },
+      {
+        "id": "20f831f7-d38b-4197-8800-664425056958",
+        "name": "insee",
+        "field": "872ff200-b4cc-47e6-a45b-fe3ea9c1ab9f",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "cb42ed459c_insee"
+      },
+      {
+        "id": "e35a5627-d304-4d01-ac62-24fd64eb8200",
+        "name": "geom_o",
+        "field": "198955a5-3726-4f03-8907-57149d4b193e",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "db120db21d_geom_o"
+      },
+      {
+        "id": "d0392b6a-a640-4f40-9773-3883b3c67b6d",
+        "name": "theme",
+        "field": "198955a5-3726-4f03-8907-57149d4b193e",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "3c9d70ca97_theme"
+      },
+      {
+        "id": "f72f7d7b-b29e-4040-8b2a-dcf85030971f",
+        "name": "mdate",
+        "field": "3911440f-07b1-44c5-b328-fc61353980d5",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "a74a674de7_mdate"
+      },
+      {
+        "id": "f629ef8a-8773-4e3b-914b-6ab838d255bb",
+        "name": "statut",
+        "field": "198955a5-3726-4f03-8907-57149d4b193e",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "65f108a2a5_statut"
+      },
+      {
+        "id": "378921a5-fd32-41a9-8509-8d028d82b12d",
+        "name": "cdate",
+        "field": "3911440f-07b1-44c5-b328-fc61353980d5",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "e184ebbdc0_cdate"
+      },
+      {
+        "id": "0cac6a09-1860-48fe-a280-1fdb76b61166",
+        "name": "adrpost",
+        "field": "198955a5-3726-4f03-8907-57149d4b193e",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "fe90817974_adrpost"
+      },
+      {
+        "id": "f2fd758b-bcc6-4e2b-b08a-2d575f1262ed",
+        "name": "geom_err",
+        "field": "198955a5-3726-4f03-8907-57149d4b193e",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "c03f669468_geom_err"
+      }
+    ],
+    "slug": "49ed93ebbd_equipements-publics"
   }
 ]

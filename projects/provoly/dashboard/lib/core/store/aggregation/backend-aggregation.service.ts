@@ -64,24 +64,21 @@ export class PryBackendAggregationService extends PryAggregationService {
       });
     }
 
-    if (!options.abscissa || !options.ordinate) {
-      console.warn('Abscissa and ordinate must both be defined');
-      return of({ operation: 'none', values: [] } as AggregationResult);
-    }
-
     if (!targetDatasource) {
       console.warn('Aggregation needs a target datasource.');
       return of({ operation: options.ordinate.operation, values: [] } as AggregationResult);
     }
 
     let params = new HttpParams();
-    if (options.abscissa.attribute) {
+    if (options.abscissa && options.abscissa.attribute) {
       params = params.set('aggregatedBy', options.abscissa.attribute);
     } else {
       console.warn('Aggregation needs an aggregatedBy member.');
-      return of({ operation: options.ordinate.operation, values: [] } as AggregationResult);
+      if (options.ordinate.operation !== Operation.EXTENT) {
+        return of({ operation: options.ordinate.operation, values: [] } as AggregationResult);
+      }
     }
-    if (options.abscissa.limit) {
+    if (options.abscissa && options.abscissa.limit) {
       if (options.abscissa.limit.isTimeLimit) {
         params = params.set('dateInterval', options.abscissa.limit.interval);
       } else {

@@ -11,6 +11,7 @@ import {
   FieldType,
   GraphType,
   Operation,
+  PryAggregationService,
   PryI18nService,
   ValueType,
   VegaColorType,
@@ -23,13 +24,6 @@ import { View } from 'vega';
 import embed, { vega } from 'vega-embed';
 import { mergeDeep, TopLevelSpec } from 'vega-lite';
 import { fontConfig } from 'vega-lite/build/src/config';
-import { PryAggregationService } from '../service/base-aggregation.service';
-
-export type RadarValue = {
-  category: number;
-  key: string;
-  value: number;
-};
 
 vega.scheme('KO/W/OK', ['#C04D3F', '#FD9843', '#9ABE29']);
 

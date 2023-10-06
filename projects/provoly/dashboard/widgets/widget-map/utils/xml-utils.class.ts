@@ -1,3 +1,4 @@
+import { DEFAULT_PROJECTION } from '@provoly/dashboard';
 import { Map } from 'ol';
 import { get as getProjection, transform } from 'ol/proj';
 
@@ -66,7 +67,7 @@ export class XMLUtils {
       if (boundingBox) {
         // @ts-ignore
         const attributes = boundingBox.attributes;
-        const projBox = getProjection(attributes.CRS.textContent ?? 'CRS:84');
+        const projBox = getProjection(attributes.CRS.textContent ?? DEFAULT_PROJECTION);
         if (projBox) {
           return [
             transform(

@@ -3,20 +3,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import {
+  AggregationResult,
   ChartAggregatedWidgetOptions,
   ClassSelectors,
   DashboardSelectors,
   DataSourceSelectors,
   FieldSelectors,
   NamedQueryTypes,
+  PryAggregationService,
   PryI18nService,
   WidgetManifest
 } from '@provoly/dashboard';
-import {
-  AggregationResult,
-  PryAggregationService,
-  WidgetAggregatedChartComponent
-} from '@provoly/dashboard/widgets/widget-aggregated-chart';
+import { WidgetAggregatedChartComponent } from '@provoly/dashboard/widgets/widget-aggregated-chart';
 import { of } from 'rxjs';
 import { MockPryCheckboxComponent } from '../../../mock/components/mock-pry-checkbox.component';
 import { MockPrySelectComponent } from '../../../mock/components/mock-pry-select.component';

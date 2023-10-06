@@ -155,11 +155,6 @@
     "type": "long"
   },
   {
-    "id": "4a641178-dca2-40ad-8ee4-063c69d5111d",
-    "name": "denomination",
-    "type": "string"
-  },
-  {
     "id": "79f91495-02e9-4208-8166-149a7a28e610",
     "name": "quantite",
     "type": "integer"
@@ -283,5 +278,33 @@
     "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-zoneM",
     "name": "multi-zone",
     "type": "MultiPolygon"
+  },
+  {
+    "id": "7000506c-049b-47d3-b92d-a2e823b46b80",
+    "name": "position",
+    "type": "Point",
+    "slug": "8cecdcb4fd_position",
+    "crs": "CRS:84"
+  },
+  {
+    "id": "872ff200-b4cc-47e6-a45b-fe3ea9c1ab9f",
+    "name": "code alphanumérique",
+    "type": "keyword",
+    "slug": "ec6f9670ed_code-alphanumerique",
+    "crs": null
+  },
+  {
+    "id": "198955a5-3726-4f03-8907-57149d4b193e",
+    "name": "Mot clé",
+    "type": "keyword",
+    "slug": "be85021e7c_mot-cle",
+    "crs": null
+  },
+  {
+    "id": "3911440f-07b1-44c5-b328-fc61353980d5",
+    "name": "Date origine",
+    "type": "instant",
+    "slug": "14dc8df89b_date-origine",
+    "crs": null
   }
 ]

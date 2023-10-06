@@ -13,6 +13,8 @@ import {
   DEFAULT_ROWS_NUMBER,
   filterLoader,
   PryAboutModule,
+  PryAggregationService,
+  PryBackendAggregationService,
   PryCoreModule,
   PryDashboardModule,
   PryHiddenWhenOverlay,
@@ -41,10 +43,6 @@ import { PryPresentationModule } from '@provoly/dashboard/presentation';
 import { PryRestitutionModule } from '@provoly/dashboard/restitution';
 import { PrySearchModule } from '@provoly/dashboard/search';
 import { PryToolboxModule } from '@provoly/dashboard/toolbox';
-import {
-  PryAggregationService,
-  PryBackendAggregationService
-} from '@provoly/dashboard/widgets/widget-aggregated-chart';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './auth.interceptor';

@@ -21,6 +21,7 @@ export interface Field {
   id: string;
   name: string;
   type: FieldType;
+  crs?: string;
 }
 
 export const GeometricFieldTypes = [

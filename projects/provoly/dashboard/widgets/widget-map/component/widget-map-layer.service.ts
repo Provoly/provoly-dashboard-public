@@ -402,6 +402,7 @@ export class WidgetMapLayerService {
       );
       impl.set('title', layer.title);
       impl.set('oClass', layer.oClass);
+      impl.set('datasourceId', layer.datasourceId);
       return impl;
     },
     featurelayer: (

@@ -12,9 +12,11 @@ import {
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
+  AggregationResult,
   Attribute,
   BaseTooltipComponent,
   BaseWidgetMapLayerOptions,
+  ChartAggregatedWidgetOptions,
   Class,
   ClassSelectors,
   ConfigSelectors,
@@ -23,6 +25,7 @@ import {
   Dataset,
   DataSourceSelectors,
   DataWidgetComponent,
+  DEFAULT_PROJECTION,
   Field,
   FieldSelectors,
   GeoMetadata,
@@ -41,6 +44,8 @@ import {
   MapWidgetOptions,
   MapWMSLayerLayerOptions,
   MapWMTSLayerLayerOptions,
+  Operation,
+  PryAggregationService,
   PryI18nService,
   PrySnackbarService,
   ResultsetUtils,
@@ -53,6 +58,7 @@ import {
 import equal from 'fast-deep-equal/es6';
 import { Feature, Map, Overlay, View } from 'ol';
 import { applyBackground, applyStyle } from 'ol-mapbox-style';
+import { Coordinate } from 'ol/coordinate';
 import { boundingExtent, createEmpty } from 'ol/extent';
 import { Circle, Geometry, Point } from 'ol/geom';
 import { Layer, Tile } from 'ol/layer';
@@ -163,6 +169,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   NO_STYLE = 'none';
   wmsCapabilities$: Observable<{ [p: string]: GetCapabilitiesResponse | null } | undefined>;
   autoDatasetLayers$: Observable<MapAutoLayerOptions[]>;
+  aggregatedExtents$!: Observable<{ datasource: string; extent: Coordinate[] }[]>;
 
   constructor(
     store: Store<any>,
@@ -174,6 +181,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     private symbolService: SymbolService,
     private injector: Injector,
     private widgetMapLayerService: WidgetMapLayerService,
+    private pryAggregationService: PryAggregationService,
     el: ElementRef
   ) {
     super(store, el);
@@ -631,6 +639,71 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       })
     );
 
+    this.aggregatedExtents$ = combineLatest([this.geoServerLayerDescriptions$, this.classes$, this.fields$]).pipe(
+      mergeMap(([layers, classes, fields]) =>
+        combineLatest(
+          layers
+            .map((layer) =>
+              (
+                classes.find((clazz) => clazz.id === layer.oClass) ?? ({ attributes: [] } as unknown as Class)
+              ).attributes
+                .map((attr) => ({ attr, field: fields.find((field) => field.id === attr.field) }))
+                .filter(({ attr, field }) => GeometricFieldTypes.includes(field?.type ?? '----'))
+                .map(({ attr, field }) =>
+                  this.pryAggregationService
+                    .aggregate([layer.datasourceId], {
+                      ordinate: { operation: Operation.EXTENT, attribute: attr.id, label: attr.name, keep0: false }
+                    } as ChartAggregatedWidgetOptions)
+                    .pipe(
+                      map((extentResponse: AggregationResult) => {
+                        const projBox = getProjection(field!.crs ?? DEFAULT_PROJECTION);
+                        if (projBox) {
+                          return {
+                            datasource: layer.datasourceId,
+                            extent: [
+                              transform(
+                                [
+                                  parseFloat(
+                                    (extentResponse.values[0] as { value: { top_left: { lon: string } } }).value
+                                      .top_left.lon
+                                  ),
+                                  parseFloat(
+                                    (extentResponse.values[0] as { value: { top_left: { lat: string } } }).value
+                                      .top_left.lat
+                                  )
+                                ],
+                                projBox,
+                                this.map.getView().getProjection()
+                              ),
+                              transform(
+                                [
+                                  parseFloat(
+                                    (extentResponse.values[0] as { value: { bottom_right: { lon: string } } }).value
+                                      .bottom_right.lon
+                                  ),
+                                  parseFloat(
+                                    (extentResponse.values[0] as { value: { bottom_right: { lat: string } } }).value
+                                      .bottom_right.lat
+                                  )
+                                ],
+                                projBox,
+                                this.map.getView().getProjection()
+                              )
+                            ]
+                          };
+                        }
+                        return { datasource: layer.datasourceId, extent: [] };
+                      })
+                    )
+                )
+                .flat()
+            )
+            .flat()
+        )
+      ),
+      startWith([] as { datasource: string; extent: Coordinate[] }[])
+    );
+
     this.legendLayers$ = this.options$.pipe(
       map(
         (options) =>
@@ -648,8 +721,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         this.layers$,
         this.fitOption$,
         this.selectedIds$.pipe(distinctUntilChanged((p, c) => equal(p, c))),
-        this.wmsCapabilities$
-      ]).subscribe(([mapStyleLayer, layers, fit, selectedIds, capabilities]) => {
+        this.wmsCapabilities$,
+        this.aggregatedExtents$
+      ]).subscribe(([mapStyleLayer, layers, fit, selectedIds, capabilities, extents]) => {
         const toApplyLayers = [...layers, ...mapStyleLayer];
         this.map.setLayers(toApplyLayers);
         this.map
@@ -670,7 +744,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           });
 
         setTimeout(() => {
-          this.fitMapForObjects(fit, capabilities, selectedIds);
+          this.fitMapForObjects(fit, capabilities, selectedIds, extents);
           this.map.updateSize();
         }, 200);
       })
@@ -802,7 +876,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   fitMapForObjects(
     fit: boolean,
     wmsCapabilities: { [p: string]: GetCapabilitiesResponse | null } = {},
-    selectedIds?: string[]
+    selectedIds?: string[],
+    extents: { datasource: string; extent: Coordinate[] }[] = []
   ) {
     if (fit) {
       let extent = createEmpty();
@@ -841,21 +916,30 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           });
         });
 
-      const wmsLayersAvailableExtents = this.map
+      const capabilitiesExtents = this.map
         .getAllLayers()
         .filter((layer) => layer.getSource() instanceof TileWMS)
-        .map((layer) =>
-          XMLUtils.getLayerExtent(
+        .map((layer) => ({
+          datasource: layer.getProperties()['datasourceId'],
+          extent: XMLUtils.getLayerExtent(
             layer.getProperties()['paramLayer'],
             this.map,
             wmsCapabilities![layer.getProperties()['url']]?.doc
           )
+        }))
+        .filter((extent) => !!extent.extent) as { datasource: string; extent: Coordinate[] }[];
+
+      const singleExtentType = extents.concat(
+        ...capabilitiesExtents.filter(
+          (capabilityExtent) =>
+            !capabilityExtent.datasource || !extents.find((extent) => extent.datasource === capabilityExtent.datasource)
         )
-        .filter((extent) => !!extent);
+      );
 
       const selectedExtent = boundingExtent(
-        listOfMarkers.filter((coord) => !!coord).concat(...wmsLayersAvailableExtents)
+        listOfMarkers.filter((coord) => !!coord).concat(...singleExtentType.map((extent) => extent.extent))
       );
+
       if (
         selectedExtent[0] !== Infinity &&
         selectedExtent[1] !== Infinity &&

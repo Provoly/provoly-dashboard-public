@@ -590,6 +590,28 @@ router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items/aggregate', (req,
     makeResponseOk(res, null, 404);
   } else {
     setTimeout(() => {
+      if (query.operation === 'extent') {
+        makeResponseOk(res, {
+          operation: 'extent',
+          values: [
+            {
+              key: 'result',
+              value: {
+                bottom_right: {
+                  lon: -0.4505967056970596,
+                  lat: 44.739590024032775
+                },
+                top_left: {
+                  lon: -0.8907467289975025,
+                  lat: 45.044559749692354
+                }
+              }
+            }
+          ]
+        });
+        return;
+      }
+
       const abscissaAttr = dataModule.classes
         .map((clazz) => clazz.attributes.find((attr) => attr.id === query.aggregatedBy))
         .find((attr) => !!attr);

@@ -16,6 +16,13 @@ export interface AggregationResult {
           value: ValueType;
         }[];
       }
+    | {
+        key: ValueType;
+        value: {
+          bottom_right: { lon: string; lat: string };
+          top_left: { lon: string; lat: string };
+        };
+      }
   )[];
 }
 
