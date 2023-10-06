@@ -62,7 +62,7 @@ export class PryBackendAggregationService extends PryAggregationService {
 
     if (!targetDatasource) {
       console.warn('Aggregation needs a target datasource.');
-      return of({ operation: options.ordinate.operation, values: [] } as AggregationResult);
+      return of({ operation: options.ordinate?.operation ?? 'none', values: [] } as AggregationResult);
     }
 
     let params = new HttpParams();
