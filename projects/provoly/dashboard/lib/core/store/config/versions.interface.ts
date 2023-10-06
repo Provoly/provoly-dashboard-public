@@ -3,10 +3,10 @@ export interface Versions {
 }
 
 export interface BackendVersion {
-  chartVersion: string;
-  applicationVersion: string;
+  chartVersion?: string;
+  applicationVersion?: string;
 }
 
 export interface FrontendVersion {
-  libVersion: string;
+  libVersion?: string;
 }

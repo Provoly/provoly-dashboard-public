@@ -7,7 +7,8 @@ export const frTranslations = {
       replay: 'Rejeu version : ',
       exec: 'Exécution version : ',
       transfo: 'Transformation version : ',
-      monitor: 'Supervision version : '
+      monitor: 'Supervision version : ',
+      noVersion: 'Version non trouvée'
     },
     header: {
       noCurrentPresentation: 'Présentation non sauvegardée'

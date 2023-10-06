@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { combineLatest, forkJoin, map, mergeMap, Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, combineLatest, forkJoin, map, mergeMap, Observable, of, tap } from 'rxjs';
 import { PrySnackbarService } from '../../components/snackbar/snackbar.service';
 import { PryI18nService } from '../../i18n/i18n.service';
 import { Widget } from '../../model/widget.interface';
@@ -122,28 +121,34 @@ export class ConfigService {
       })
     );
   }
+
+  handleBackendVersionError(obs: Observable<BackendVersion>): Observable<BackendVersion> {
+    return obs.pipe(catchError(() => of({})));
+  }
+
   getAllVersions(): Observable<Versions> {
     return combineLatest([
-      this.store.select(ConfigSelectors.refUrl),
-      this.store.select(ConfigSelectors.dataUrl),
-      this.store.select(ConfigSelectors.replayUrl),
-      this.store.select(ConfigSelectors.execUrl),
-      this.store.select(ConfigSelectors.transfoUrl),
-      this.store.select(ConfigSelectors.monitorUrl)
+      this.store.select(ConfigSelectors.refUrl).pipe(tap((v) => console.log(v))),
+      this.store.select(ConfigSelectors.dataUrl).pipe(tap((v) => console.log(v))),
+      this.store.select(ConfigSelectors.replayUrl).pipe(tap((v) => console.log(v))),
+      this.store.select(ConfigSelectors.execUrl).pipe(tap((v) => console.log(v))),
+      this.store.select(ConfigSelectors.transfoUrl).pipe(tap((v) => console.log(v))),
+      this.store.select(ConfigSelectors.monitorUrl).pipe(tap((v) => console.log(v)))
     ]).pipe(
       mergeMap(([ref, data, replay, exec, transfo, monitor]) => {
         const allVersions: Observable<BackendVersion | FrontendVersion>[] = [
-          this.httpClient.get<BackendVersion>(encodeURI(`${ref}/about/version`)),
-          this.httpClient.get<BackendVersion>(encodeURI(`${data}/about/version`)),
-          this.httpClient.get<BackendVersion>(encodeURI(`${replay}/about/version`)),
-          this.httpClient.get<BackendVersion>(encodeURI(`${exec}/about/version`)),
-          this.httpClient.get<BackendVersion>(encodeURI(`${transfo}/about/version`)),
-          this.httpClient.get<BackendVersion>(encodeURI(`${monitor}/about/version`)),
-          this.httpClient
-            .get<string>(encodeURI(`/assets/pry.version`))
-            .pipe(map((version) => ({ libVersion: version })))
+          this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${ref}/about/version`))),
+          this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${data}/about/version`))),
+          this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${replay}/about/version`))),
+          this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${exec}/about/version`))),
+          this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${transfo}/about/version`))),
+          this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${monitor}/about/version`))),
+          this.httpClient.get<string>(encodeURI(`/assets/pry.version`)).pipe(
+            map((version) => (version ? { libVersion: version } : {})),
+            catchError(() => of({}))
+          )
         ];
-        return forkJoin(allVersions).pipe(
+        return combineLatest(allVersions).pipe(
           map(([refVersion, dataVersion, replayVersion, execVersion, tranfoVersion, monitorVersion, frontend]) => {
             const versions: Versions = {
               ref: refVersion,
