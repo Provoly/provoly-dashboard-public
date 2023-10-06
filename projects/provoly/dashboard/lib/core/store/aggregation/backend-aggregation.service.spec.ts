@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import {
+  AggregationResult,
   ChartAggregatedWidgetOptions,
   ClassSelectors,
   ConfigSelectors,
@@ -10,12 +11,12 @@ import {
   FieldSelectors,
   FilterContext,
   Operation,
+  PryBackendAggregationService,
   PryI18nService,
   PrySnackbarService,
   SearchService,
   ValueType
 } from '@provoly/dashboard';
-import { AggregationResult, PryBackendAggregationService } from '@provoly/dashboard/widgets/widget-aggregated-chart';
 
 const chartOptions = {
   abscissa: {

@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { combineLatest, map, Observable } from 'rxjs';
+import { ItemUtils } from '../../../dashboard/item-utils';
+import { ResultsetUtils } from '../../../dashboard/resultset-utils';
+import { DashboardSelectors } from '../../../dashboard/store/dashboard.selectors';
+import { Item, ValueType } from '../../model/item.interface';
 import {
   AtLimit,
   ChartAggregatedWidgetOptions,
-  ClassSelectors,
-  DashboardSelectors,
-  Item,
-  ItemUtils,
   Operation,
-  ResultsetUtils,
-  TimeLimit,
-  ValueType
-} from '@provoly/dashboard';
-import { combineLatest, map, Observable } from 'rxjs';
+  TimeLimit
+} from '../../model/widget-aggregated-chart-manifest.interface';
+import { ClassSelectors } from '../class/class.selectors';
 import { AggregationResult, PryAggregationService } from './base-aggregation.service';
 
 @Injectable({

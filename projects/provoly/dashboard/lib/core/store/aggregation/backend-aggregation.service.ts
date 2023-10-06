@@ -1,24 +1,20 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  ChartAggregatedWidgetOptions,
-  Class,
-  ClassSelectors,
-  ConfigSelectors,
-  DashboardSelectors,
-  DEFAULT_NAMED_QUERY_ID,
-  EXPLORE_NAMED_QUERY_ID,
-  Field,
-  FieldSelectors,
-  FilterContext,
-  Operation,
-  PryI18nService,
-  PrySnackbarService,
-  ResultSets,
-  SearchService
-} from '@provoly/dashboard';
 import { map, Observable, of, switchMap } from 'rxjs';
+import { DashboardSelectors } from '../../../dashboard/store/dashboard.selectors';
+import { PrySnackbarService } from '../../components/snackbar/snackbar.service';
+import { PryI18nService } from '../../i18n/i18n.service';
+import { FilterContext } from '../../model/filter.interface';
+import { ResultSets } from '../../model/result-set.interface';
+import { ChartAggregatedWidgetOptions, Operation } from '../../model/widget-aggregated-chart-manifest.interface';
+import { Class } from '../class/class.interface';
+import { ClassSelectors } from '../class/class.selectors';
+import { ConfigSelectors } from '../config/config.selectors';
+import { Field } from '../field/field.interface';
+import { FieldSelectors } from '../field/field.selectors';
+import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from '../search/search.constants';
+import { SearchService } from '../search/search.service';
 import { AggregationResult, PryAggregationService } from './base-aggregation.service';
 
 @Injectable({

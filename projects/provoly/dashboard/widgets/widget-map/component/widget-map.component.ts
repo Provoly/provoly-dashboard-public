@@ -1178,27 +1178,22 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   getFeatureFromServer(wmsLayers: Layer<any>[], pixel: Pixel) {
-    const projGeo = getProjection('EPSG:3857');
-    const projLambert = getProjection('EPSG:2154');
-
-    if (projLambert && projGeo) {
-      for (const layer of wmsLayers) {
-        const url = layer
-          .getSource()
-          .getFeatureInfoUrl(transform(pixel, projGeo, projLambert), this.map.getView().getResolution(), 'EPSG:2154', {
-            INFO_FORMAT: 'application/json',
-            FEATURE_COUNT: 10,
-            ...layer.getProperties()['getFeatureInfoAdditionalParameters']
-          });
-        if (url) {
-          this.store.dispatch(
-            DashboardActions.getWmsFeatures({
-              url,
-              oClass: layer.getProperties()['oClass'] ?? '',
-              coordinates: pixel
-            })
-          );
-        }
+    for (const layer of wmsLayers) {
+      const url = layer
+        .getSource()
+        .getFeatureInfoUrl(pixel, this.map.getView().getResolution(), this.map.getView().getProjection(), {
+          INFO_FORMAT: 'application/json',
+          FEATURE_COUNT: 10,
+          ...layer.getProperties()['getFeatureInfoAdditionalParameters']
+        });
+      if (url) {
+        this.store.dispatch(
+          DashboardActions.getWmsFeatures({
+            url,
+            oClass: layer.getProperties()['oClass'] ?? '',
+            coordinates: pixel
+          })
+        );
       }
     }
   }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ChartAggregatedWidgetOptions, Operation, ValueType } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
+import { ValueType } from '../../model/item.interface';
+import { ChartAggregatedWidgetOptions, Operation } from '../../model/widget-aggregated-chart-manifest.interface';
 
 export interface AggregationResult {
   operation: Operation;
