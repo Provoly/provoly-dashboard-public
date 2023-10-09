@@ -591,7 +591,8 @@ export class WidgetGraphComponent extends DataWidgetComponent implements AfterVi
             clientX: $event.clientX,
             clientY: $event.clientY,
             resultSet: Array.isArray(this.manifest.datasource) ? this.manifest.datasource[0] : this.manifest.datasource,
-            from: 'graph'
+            from: 'graph',
+            allowObjectCreation: false
           })
         );
       }

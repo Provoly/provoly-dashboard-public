@@ -41,7 +41,8 @@ export class InteractionManager {
             coordinates: toLonLat(
               this.component.map.getCoordinateFromPixel(mapCoordinates),
               this.component.map.getView().getProjection()
-            ).reverse()
+            ).reverse(),
+            allowObjectCreation: false
           })
         );
         e.preventDefault();

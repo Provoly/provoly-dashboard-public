@@ -21,7 +21,7 @@ describe('ContextMenu Reducer', () => {
           {
             ...initialState
           },
-          ContextMenuActions.open({ clientX: 12, clientY: 20, itemId: 'item-id', resultSet: 'rs', from: 'tests' })
+          ContextMenuActions.open({ clientX: 12, clientY: 20, itemId: 'item-id', resultSet: 'rs', from: 'tests', allowObjectCreation: false })
         )
       ).toEqual({
         ...initialState,

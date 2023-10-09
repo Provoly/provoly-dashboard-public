@@ -216,7 +216,8 @@ export class WidgetTableComponent extends DataWidgetComponent {
           clientX: $event.clientX,
           clientY: $event.clientY,
           resultSet: Array.isArray(this.manifest.datasource) ? this.manifest.datasource[0] : this.manifest.datasource,
-          from: 'table'
+          from: 'table',
+          allowObjectCreation: false
         })
       );
       this.contextMenuClickedId = item.id;

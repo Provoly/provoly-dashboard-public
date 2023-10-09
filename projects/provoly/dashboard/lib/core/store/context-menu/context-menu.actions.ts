@@ -10,6 +10,7 @@ export const ContextMenuActions = {
       resultSet?: string;
       from: string;
       coordinates?: number[];
+      allowObjectCreation: boolean;
     }>()
   ),
   hide: createAction('[ContextMenu] hide')

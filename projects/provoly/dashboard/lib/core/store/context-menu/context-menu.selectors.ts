@@ -9,6 +9,7 @@ const itemId = createSelector(feature, (state) => state.itemId);
 const from = createSelector(feature, (state) => state.from);
 const coordinates = createSelector(feature, (state) => state.coordinates);
 const resultSet = createSelector(feature, (state) => state.resultSet);
+const allowObjectCreation = createSelector(feature, (state) => state.allowObjectCreation);
 
 export const ContextMenuSelectors = {
   feature,
@@ -17,5 +18,6 @@ export const ContextMenuSelectors = {
   itemId,
   resultSet,
   from,
-  coordinates
+  coordinates,
+  allowObjectCreation
 };

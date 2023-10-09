@@ -90,7 +90,8 @@ export class WidgetTileComponent extends DataWidgetComponent {
           itemId: item.id,
           clientX: $event.clientX,
           clientY: $event.clientY,
-          from: 'tile'
+          from: 'tile',
+          allowObjectCreation: false
         })
       );
     }

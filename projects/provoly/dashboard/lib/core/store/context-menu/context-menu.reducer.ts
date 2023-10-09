@@ -11,6 +11,7 @@ export interface ContextMenuState {
   from: string;
   resultSet: string | undefined;
   coordinates: number[] | undefined;
+  allowObjectCreation: boolean;
 }
 
 export const initialContextMenuState: ContextMenuState = {
@@ -20,7 +21,8 @@ export const initialContextMenuState: ContextMenuState = {
   itemId: '',
   from: '',
   resultSet: undefined,
-  coordinates: undefined
+  coordinates: undefined,
+  allowObjectCreation: false
 };
 
 export const contextMenuReducer = createReducer(
@@ -33,7 +35,8 @@ export const contextMenuReducer = createReducer(
     itemId: action.itemId,
     resultSet: action.resultSet,
     from: action.from,
-    coordinates: action.coordinates
+    coordinates: action.coordinates,
+    allowObjectCreation: action.allowObjectCreation
   })),
   on(ContextMenuActions.hide, (state, action) => ({
     ...state,

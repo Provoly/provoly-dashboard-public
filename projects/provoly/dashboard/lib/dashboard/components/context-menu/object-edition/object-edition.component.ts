@@ -59,11 +59,7 @@ export class PryObjectEditionComponent extends SubscriptionnerDirective {
   selectedDatePicker: string = '';
   inversion: boolean = false;
 
-  constructor(
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
-    private store: Store
-  ) {
+  constructor(private overlay: Overlay, private viewContainerRef: ViewContainerRef, private store: Store) {
     super();
     this.itemId$ = this.store.select(ContextMenuSelectors.itemId);
     this.subscriptions.add(

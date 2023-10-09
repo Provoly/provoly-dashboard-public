@@ -17,6 +17,7 @@ import { WidgetFactoryService } from '../widgets/widget-instanciator/widget-fact
   templateUrl: './context-menu.component.html'
 })
 export class ContextMenuComponent extends SubscriptionnerDirective {
+  allowObjectCreation$: Observable<boolean | undefined>;
   opened$: Observable<boolean>;
   position$: Observable<{ clientX: number; clientY: number }>;
   itemId$: Observable<string>;
@@ -46,6 +47,7 @@ export class ContextMenuComponent extends SubscriptionnerDirective {
     public widgetFactoryService: WidgetFactoryService
   ) {
     super();
+    this.allowObjectCreation$ = this.store.select(ContextMenuSelectors.allowObjectCreation);
     this.opened$ = this.store.select(ContextMenuSelectors.opened);
     this.position$ = this.store.select(ContextMenuSelectors.position);
     this.itemId$ = this.store.select(ContextMenuSelectors.itemId);
@@ -73,28 +75,31 @@ export class ContextMenuComponent extends SubscriptionnerDirective {
         }
       })
     );
-
     this.widgetFactoryService.isModuleLoaded('detail').subscribe((loaded) => (this.isModuleLoaded['detail'] = loaded));
     this.widgetFactoryService.isModuleLoaded('graph').subscribe((loaded) => (this.isModuleLoaded['graph'] = loaded));
   }
 
   openWithTemplate(position: any) {
-    this.overlayRef = this.overlay.create(
-      new OverlayConfig({
-        hasBackdrop: true,
-        panelClass: ['m-context-menu'],
-        backdropClass: 'backdrop'
-      })
-    );
-    this.overlayRef.attach(new TemplatePortal(this.template, this.viewContainerRef));
-    this.store.dispatch(ConfigActions.addingOverlay({ id: this.constructor.name }));
-    this.overlayRef.backdropClick().subscribe(() => this.hide());
-    const contextMenu = document.querySelector('div.m-context-menu') as HTMLDivElement;
-    if (!!contextMenu) {
-      contextMenu.style.left =
-        Math.max(0, Math.min(window.innerWidth - contextMenu.clientWidth, position.clientX - 10)) + 'px';
-      contextMenu.style.top =
-        Math.max(0, Math.min(window.innerHeight - contextMenu.clientHeight, position.clientY - 10)) + 'px';
+    if (this.from !== 'map') {
+      this.overlayRef = this.overlay.create(
+        new OverlayConfig({
+          hasBackdrop: true,
+          panelClass: ['m-context-menu'],
+          backdropClass: 'backdrop'
+        })
+      );
+      this.overlayRef.attach(new TemplatePortal(this.template, this.viewContainerRef));
+      this.store.dispatch(ConfigActions.addingOverlay({ id: this.constructor.name }));
+      this.overlayRef.backdropClick().subscribe(() => this.hide());
+      const contextMenu = document.querySelector('div.m-context-menu') as HTMLDivElement;
+      if (!!contextMenu) {
+        contextMenu.style.left =
+          Math.max(0, Math.min(window.innerWidth - contextMenu.clientWidth, position.clientX - 10)) + 'px';
+        contextMenu.style.top =
+          Math.max(0, Math.min(window.innerHeight - contextMenu.clientHeight, position.clientY - 10)) + 'px';
+      }
+    } else {
+      this.hide();
     }
   }
 
