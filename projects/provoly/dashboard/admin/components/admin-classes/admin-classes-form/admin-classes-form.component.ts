@@ -7,6 +7,7 @@ import { combineLatest, map, Observable, Subscription } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import { noWhitespaceValidator } from '../../../components/admin.component';
 import { AdminClassActions } from '../store/admin-class.actions';
+import { AdminClassSelectors } from '../store/admin-class.selectors';
 
 @Component({
   selector: 'pry-admin-classes-form',
@@ -15,6 +16,7 @@ import { AdminClassActions } from '../store/admin-class.actions';
 export class AdminClassesFormComponent extends SubscriptionnerDirective implements OnInit, OnDestroy {
   classNames$?: Observable<string[]>;
   nameAlreadyExists$?: Observable<boolean>;
+  storageOptions$: Observable<string[]>;
 
   sub = new Subscription();
 
@@ -36,8 +38,11 @@ export class AdminClassesFormComponent extends SubscriptionnerDirective implemen
     this.classForm = this.formBuilder.group({
       id: [uuid()],
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100), noWhitespaceValidator]],
-      description: [{ value: '', disabled: true }]
+      description: [{ value: '', disabled: true }],
+      storage: ['elastic']
     });
+    this.store.dispatch(AdminClassActions.getStorageOptions());
+    this.storageOptions$ = this.store.select(AdminClassSelectors.storageOptions);
   }
 
   ngOnInit(): void {

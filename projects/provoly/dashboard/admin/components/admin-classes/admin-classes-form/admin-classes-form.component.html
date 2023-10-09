@@ -21,12 +21,38 @@
     >
       <span *ngIf="classForm.get('name')?.hasError('same-name')">{{ '@pry.admin.exists' | i18n }}</span>
       <span *ngIf="classForm.get('name')?.hasError('required')">{{ '@pry.admin.required' | i18n }}</span>
-      <span *ngIf="classForm.get('name')?.hasError('minlength')">{{ '@pry.admin.minLength' | i18n: { len: 3 } }}</span>
+      <span *ngIf="classForm.get('name')?.hasError('minlength')">{{ '@pry.admin.minLength' | i18n : { len: 3 } }}</span>
       <span *ngIf="classForm.get('name')?.hasError('maxlength')">{{
         '@pry.admin.maxLength' | i18n : { len: 100 }
       }}</span>
       <span *ngIf="classForm.get('name')?.hasError('whitespace')">{{ '@pry.admin.noWhitespace' | i18n }}</span>
     </label>
+  </div>
+  <div class="u-display-flex -row -no-gap -align-center">
+    <div class="m-form-label-field -width-sm">
+      <label class="a-label" for="storage_options">
+        {{ '@pry.admin.storage.label' | i18n }}
+        <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+      </label>
+      <pry-select
+        [items]="storageOptions$ | async"
+        [labelTranslate]="true"
+        baseTranslate="@pry.admin.storage.options."
+        [bindData]="true"
+        [itemsAsOption]="true"
+        formControlName="storage"
+        class="a-pry-select"
+        id="storage_options"
+      ></pry-select>
+    </div>
+    <div class="info-icon description-container description">
+      <span class="info-text">i</span>
+    </div>
+    <div class="description-tooltip">
+      <p class="a-p">
+        {{ '@pry.admin.storage.description.' + classForm.get('storage')?.value | i18n }}
+      </p>
+    </div>
   </div>
   <div class="m-btn-group -width-sm">
     <button

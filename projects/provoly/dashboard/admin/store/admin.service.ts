@@ -210,4 +210,10 @@ export class AdminService {
       .select(ConfigSelectors.refUrl)
       .pipe(mergeMap((url) => this.httpClient.delete<MetadataRules>(`${url}/meta-provisioning/id/${id}`)));
   }
+
+  getStorageOptions() {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(mergeMap((url) => this.httpClient.get<string[]>(`${url}/model/storage`)));
+  }
 }

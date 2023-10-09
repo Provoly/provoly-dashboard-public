@@ -67,5 +67,11 @@ export const AdminClassActions = {
       backPath: string;
       addAttrPath: string;
     }>()
-  )
+  ),
+  getStorageOptions: createAction('[Admin/Classes] Get Storage Options List'),
+  getStorageOptionsSuccess: createAction(
+    '[Admin/Classes] Get Storage Options List Success',
+    props<{ storageOptions: string[] }>()
+  ),
+  getStorageOptionsFailure: createAction('[Admin/Classes] Get Storage Options List Failure', props<{ error: any }>())
 };

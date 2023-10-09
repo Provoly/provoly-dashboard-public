@@ -250,6 +250,18 @@ export class AdminClassEffects {
     { dispatch: false }
   );
 
+  getStorageOptions = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AdminClassActions.getStorageOptions),
+      mergeMap(() => {
+        return this.adminService.getStorageOptions().pipe(
+          map((storageOptions) => AdminClassActions.getStorageOptionsSuccess({ storageOptions })),
+          catchError((error) => [AdminClassActions.getStorageOptionsFailure({ error: error })])
+        );
+      })
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private adminService: AdminService,

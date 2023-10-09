@@ -15,6 +15,7 @@ import { routes } from '../../../admin-routing.module';
 import { AdminClassActions } from '../store/admin-class.actions';
 
 import { AdminClassesFormComponent } from './admin-classes-form.component';
+import { MockPrySelectComponent } from '@provoly/dashboard/mock/components/mock-pry-select.component';
 
 jest.mock('uuid', () => ({ v4: () => 'adfd01fb-309b-4e1c-9117-44d003f5d7fc' }));
 
@@ -45,6 +46,7 @@ describe('AdminClassesFormComponent', () => {
         MockPryAccessDirective,
         MockTranslateIdPipe,
         MockGetSecuredImagePipe,
+        MockPrySelectComponent,
         MockI18nPipe
       ],
       providers: [
@@ -86,7 +88,8 @@ describe('AdminClassesFormComponent', () => {
     let classe = {
       id: 'idLieu',
       name: 'lieu',
-      description: ''
+      description: '',
+      storage: 'elastic'
     };
     let resultClass = {
       ...classe,

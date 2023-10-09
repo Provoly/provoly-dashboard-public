@@ -3,6 +3,7 @@ export interface Class {
   name: string;
   icon?: string;
   attributes: Attribute[];
+  storage?: string;
 }
 
 export interface Attribute {

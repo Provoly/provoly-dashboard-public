@@ -10,11 +10,13 @@ export interface AdminClassState {
   selectedAttribute?: AttributeExtended;
   interClass?: Class;
   openModal: boolean;
+  storageOptions: string[];
 }
 
 export const initialClassState: AdminClassState = {
   loading: false,
-  openModal: false
+  openModal: false,
+  storageOptions: []
 };
 
 export const classReducer = createReducer(
@@ -63,5 +65,9 @@ export const classReducer = createReducer(
   on(AdminClassActions.deleteAttributeForClass, (state) => ({
     ...state,
     selectedAttribute: undefined
+  })),
+  on(AdminClassActions.getStorageOptionsSuccess, (state, action) => ({
+    ...state,
+    storageOptions: action.storageOptions
   }))
 );

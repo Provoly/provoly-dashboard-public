@@ -11,6 +11,7 @@ const selectedAttributeId = createSelector(selectedAttribute, (state) => state?.
 const interClass = createSelector(feature, (state) => state?.interClass);
 const interClassId = createSelector(interClass, (state) => state?.id);
 const openModal = createSelector(feature, (state) => state.openModal);
+const storageOptions = createSelector(feature, (state) => state.storageOptions);
 
 export const AdminClassSelectors = {
   feature,
@@ -21,5 +22,6 @@ export const AdminClassSelectors = {
   selectedAttributeId,
   interClass,
   interClassId,
-  openModal
+  openModal,
+  storageOptions
 };

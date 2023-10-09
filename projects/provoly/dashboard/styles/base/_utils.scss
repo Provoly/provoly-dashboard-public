@@ -56,6 +56,10 @@
   &.-row {
     flex-direction: row;
   }
+
+  &.-no-gap {
+    gap: 0;
+  }
 }
 
 .u-self-center {

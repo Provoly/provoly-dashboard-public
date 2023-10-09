@@ -350,6 +350,19 @@ export const enTranslations = {
         OCLASS: 'Data model',
         DASHBOARD: 'Dashboard',
         FIELD: 'Data type'
+      },
+      storage: {
+        label: 'Base de stockage',
+        description: {
+          postgis:
+            'Recommended for storage of complex geographical data or for coordinate systems different from WGS 84. Recommended for storing classes with low estimated data volume.',
+          elastic:
+            'Recommended in case of high data volume expected for the class. If you want to store geographical data in this class, simple forms have to be used and the reference coordinate system must be WGS 84. This storage system is horizontally scalable.'
+        },
+        options: {
+          postgis: 'PostGIS',
+          elastic: 'ElasticSearch'
+        }
       }
     },
     tooltip: {
