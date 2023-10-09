@@ -82,6 +82,7 @@ export class PryDatasetDetailComponent implements OnInit {
 
   refresh() {
     this.store.dispatch(SearchActions.getDatasourceItems({ id: this.dataset.id }));
+    this.store.dispatch(DataSourceActions.dataset.listVersions());
   }
 
   goToConsult(version: DatasetVersion | undefined): void {
