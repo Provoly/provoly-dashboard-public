@@ -24,7 +24,7 @@ import {
   WIDGET_HEADER_HEIGHT
 } from '@provoly/dashboard';
 import equal from 'fast-deep-equal/es6';
-import { combineLatest, delay, Observable, take } from 'rxjs';
+import { auditTime, BehaviorSubject, combineLatest, Observable, take } from 'rxjs';
 import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
 
 @Component({
@@ -43,7 +43,7 @@ export class WidgetTableComponent extends DataWidgetComponent {
   selectedIds: string[] = [];
   WIDGET_HEADER_HEIGHT = WIDGET_HEADER_HEIGHT;
   private classes$: Observable<Class[]>;
-  properties$: Observable<string[]>;
+  properties$: Observable<{ label: string; property: string }[]>;
   isLoading$: Observable<boolean>;
   allSelected$: Observable<boolean>;
   areAllSelected: boolean = false;
@@ -51,14 +51,49 @@ export class WidgetTableComponent extends DataWidgetComponent {
   contextMenuClickedId: string = '';
   isContextMenuOpened$: Observable<boolean>;
   quickOrder$: Observable<ResultOrder | undefined>;
-
+  private _refresh$ = new BehaviorSubject<void>(undefined);
   constructor(store: Store<any>, el: ElementRef, private cdr: ChangeDetectorRef) {
     super(store, el);
-    this.options$ = this.manifest$.pipe(map((manifest) => manifest.options as TableWidgetOptions));
+
+    this.classes$ = this.store.select(ClassSelectors.classes);
+
+    this.fields$ = combineLatest([this.resultSet$, this.classes$, this.store.select(FieldSelectors.fields)]).pipe(
+      map(
+        ([resultSet, classes, fields]) =>
+          [
+            ...ItemUtils.getFieldsFromAvailabilityInResultSet(resultSet, classes, fields),
+            ...baseItemProperties.map((p) => ({ name: p, id: p } as Field))
+          ] as Field[]
+      ),
+      map((fields) => fields.filter((field) => field.type !== FieldType.RAW))
+    );
+
+    this.options$ = combineLatest([
+      this.manifest$.pipe(map((manifest) => manifest.options as TableWidgetOptions)),
+      this.resultSet$,
+      this.classes$,
+      this.fields$,
+      this.store.select(ConfigSelectors.tableDefaultAttributesDefinitions)
+    ]).pipe(
+      map(([options, resultSet, classes, fields, defs]) => {
+        if (!options.columns || options.columns.length === 0) {
+          const attributes = ItemUtils.getAttributesFromRs(resultSet, classes, fields, defs);
+          const uniqueProps = [...new Set(attributes.map((attr) => attr.name))];
+
+          options.columns = uniqueProps.map((property) => ({
+            property: property,
+            label: property,
+            attributeId: attributes.find((attr) => attr.name === property)?.id
+          })) as ColumnDefinition[];
+        }
+        return options;
+      })
+    );
 
     this.subscriptions.add(
       this.options$.pipe(filter((opt) => !!opt)).subscribe((options) => {
         this.optionsCopy = { ...(JSON.parse(JSON.stringify(options)) as TableWidgetOptions) };
+        this.refresh();
       })
     );
 
@@ -68,6 +103,11 @@ export class WidgetTableComponent extends DataWidgetComponent {
       map(([searchLoading, datasourceIds]) => {
         return (searchLoading ?? []).filter((id) => (datasourceIds ?? []).includes(id))?.length > 0;
       })
+    );
+
+    this.columns$ = this.options$.pipe(
+      map((options) => options?.columns ?? []),
+      tap(() => setTimeout(() => this.refresh(), 500))
     );
 
     this.isContextMenuOpened$ = this.store.select(ContextMenuSelectors.opened);
@@ -83,24 +123,11 @@ export class WidgetTableComponent extends DataWidgetComponent {
             if (!this.optionsCopy) {
               this.optionsCopy = {};
             }
-            this.optionsCopy.columns = undefined;
+            delete this.optionsCopy.columns;
             this.emitManifest();
           }
           this.currentClasses = classes;
         })
-    );
-
-    this.classes$ = this.store.select(ClassSelectors.classes);
-
-    this.fields$ = combineLatest([this.resultSet$, this.classes$, this.store.select(FieldSelectors.fields)]).pipe(
-      map(
-        ([resultSet, classes, fields]) =>
-          [
-            ...ItemUtils.getFieldsFromAvailabilityInResultSet(resultSet, classes, fields),
-            ...baseItemProperties.map((p) => ({ name: p, id: p } as Field))
-          ] as Field[]
-      ),
-      map((fields) => fields.filter((field) => field.type !== FieldType.RAW))
     );
 
     this.selectedIds$ = this.store.select(DashboardSelectors.selectedItemIds);
@@ -115,37 +142,9 @@ export class WidgetTableComponent extends DataWidgetComponent {
         const sortedProps = [...props];
         sortedProps.sort((pA, pB) => pA.toLocaleLowerCase().localeCompare(pB.toLocaleLowerCase()));
         return sortedProps;
-      })
-    );
-
-    this.columns$ = combineLatest([
-      this.options$,
-      this.resultSet$,
-      this.fields$,
-      this.classes$,
-      this.store.select(ConfigSelectors.tableDefaultAttributesDefinitions)
-    ]).pipe(
-      map(([options, resultSet, fields, classes, defs]) => {
-        if (!!options?.columns) {
-          return options.columns;
-        }
-
-        // Make unique set of all columns
-        const attributes = ItemUtils.getAttributesFromRs(resultSet, classes, fields, defs);
-        const uniqueProps = [...new Set(attributes.map((attr) => attr.name))];
-
-        return uniqueProps.map((property) => ({
-          property: property,
-          label: property,
-          attributeId: attributes.find((attr) => attr.name === property)?.id
-        })) as ColumnDefinition[];
-      })
-    );
-
-    this.subscriptions.add(
-      this.columns$.subscribe((columns) => {
-        this.optionsCopy = { columns: JSON.parse(JSON.stringify([...columns])) };
-      })
+      }),
+      map((props) => props.map((prop) => ({ label: prop, property: prop }))),
+      tap(() => setTimeout(() => this.refresh(), 500))
     );
 
     this.allSelected$ = combineLatest([this.selectedIds$, this.allItems$]).pipe(
@@ -160,7 +159,11 @@ export class WidgetTableComponent extends DataWidgetComponent {
       map(([order, nqs]) => (nqs.length === 1 ? order[nqs[0]] : undefined))
     );
 
-    this.subscriptions.add(this.properties$.pipe(delay(10)).subscribe(() => this.cdr.detectChanges()));
+    this.subscriptions.add(this._refresh$.pipe(auditTime(200)).subscribe(() => this.cdr.detectChanges()));
+  }
+
+  refresh() {
+    this._refresh$.next();
   }
 
   emitManifest() {
@@ -175,31 +178,26 @@ export class WidgetTableComponent extends DataWidgetComponent {
       this.optionsCopy = { columns: [] };
     }
     this.optionsCopy.columns?.push({ label: '', property: '' });
-    setTimeout(() => {
-      this.cdr.detectChanges();
-    }, 100);
+    this.refresh();
   }
 
   changePropertyName($event: any, columnDef: ColumnDefinition) {
     columnDef.property = $event;
-    setTimeout(() => {
-      this.cdr.detectChanges();
-    }, 100);
+    this.refresh();
   }
 
   changeLabel($event: Event, columnDef: ColumnDefinition) {
     // @ts-ignore
-    columnDef.label = $event.currentTarget.value;
-    setTimeout(() => {
-      this.cdr.detectChanges();
-    }, 100);
+    const newLabel = $event.currentTarget.value;
+    if (columnDef.label !== newLabel) {
+      columnDef.label = newLabel;
+      this.refresh();
+    }
   }
 
   deleteColumn(i: number) {
     this.optionsCopy?.columns?.splice(i, 1);
-    setTimeout(() => {
-      this.cdr.detectChanges();
-    }, 100);
+    this.refresh();
   }
 
   selection($event: MouseEvent, item: Item) {
@@ -230,9 +228,7 @@ export class WidgetTableComponent extends DataWidgetComponent {
       const tmp = this.optionsCopy.columns[idxWith];
       this.optionsCopy.columns[idxWith] = this.optionsCopy.columns[idx];
       this.optionsCopy.columns[idx] = tmp;
-      setTimeout(() => {
-        this.cdr.detectChanges();
-      }, 100);
+      this.refresh();
     }
   }
 

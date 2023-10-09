@@ -25,7 +25,10 @@
         </button>
       </div>
 
-      <div *ngFor="let columnDef of optionsCopy?.columns; let i = index" class="o-settings__popup__content__fields">
+      <div
+        *ngFor="let columnDef of optionsCopy?.columns ?? []; let i = index"
+        class="o-settings__popup__content__fields"
+      >
         <div class="o-settings__popup__content__fields__head">
           <div class="m-btn-group">
             <button type="button" class="a-btn a-btn--icon-only" (click)="invertLayers(i, i - 1)" *ngIf="i > 0">
@@ -49,11 +52,13 @@
             <label class="a-label" for="table_property">{{ '@pry.widget.table.property' | i18n }}</label>
             <pry-select
               (ngModelChange)="changePropertyName($event, columnDef)"
-              [itemsAsOption]="false"
+              [itemsAsOption]="true"
               [items]="properties$ | async"
               [ngModel]="columnDef.property"
-              class="a-pry-select"
+              bindLabel="label"
+              bindValue="property"
               id="table_property"
+              class="a-pry-select"
             ></pry-select>
           </div>
 
