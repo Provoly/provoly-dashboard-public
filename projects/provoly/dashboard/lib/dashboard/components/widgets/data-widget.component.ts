@@ -10,6 +10,7 @@ import { DataSourceSelectors } from '../../../core/store/data-source/data-source
 import { ResultsetUtils } from '../../resultset-utils';
 import { DashboardSelectors } from '../../store/dashboard.selectors';
 import { BaseWidgetComponent } from './base-widget.component';
+import { NamedQueryTypes } from '../../../core/store/data-source/named-query-types.model';
 
 @Component({ selector: 'pry-data-widget', template: '' })
 export class DataWidgetComponent extends BaseWidgetComponent {
@@ -44,7 +45,6 @@ export class DataWidgetComponent extends BaseWidgetComponent {
             .map((nq) => (typeof nq !== 'string' ? nq : UNKNOWN_DATASOURCE(nq))) as DataSource[]
       )
     );
-
     this.resultSet$ = this.initResultSet$();
 
     this.allItems$ = this.resultSet$.pipe(

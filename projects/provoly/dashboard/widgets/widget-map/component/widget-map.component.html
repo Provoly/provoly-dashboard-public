@@ -140,7 +140,7 @@
               <pry-select
                 (ngModelChange)="changeClasses($event, layer)"
                 [itemsAsOption]="true"
-                [items]="classes$ | async"
+                [items]="usedClasses$ | async"
                 [multiple]="true"
                 [ngModel]="layer.classes"
                 bindLabel="name"

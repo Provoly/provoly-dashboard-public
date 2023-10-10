@@ -44,6 +44,8 @@ import {
   MapWidgetOptions,
   MapWMSLayerLayerOptions,
   MapWMTSLayerLayerOptions,
+  MonoClassSearchPayload,
+  NamedQueryTypes,
   Operation,
   PryAggregationService,
   PryI18nService,
@@ -171,6 +173,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   autoDatasetLayers$: Observable<MapAutoLayerOptions[]>;
   aggregatedExtents$!: Observable<{ datasource: string; extent: Coordinate[] }[]>;
   datasourceFilters$: Observable<any>;
+  usedClasses$: Observable<any>;
 
   constructor(
     store: Store<any>,
@@ -194,6 +197,29 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.classes$ = this.store
       .select(ClassSelectors.classes)
       .pipe(map((classes) => classes.sort((a, b) => a.name.localeCompare(b.name))));
+    this.usedClasses$ = combineLatest([this.classes$, this.usedDatasources$]).pipe(
+      map(([classes, datasources]) => {
+        return classes.filter((classItem) =>
+          datasources.some((dataSource) => {
+            if (dataSource.sourceType === 'namedQuery' && 'type' in dataSource.request) {
+              if (
+                dataSource.request.type === NamedQueryTypes.MULTI_CLASS ||
+                dataSource.request.type === NamedQueryTypes.FULL_TEXT
+              ) {
+                return true;
+              }
+            }
+            return dataSource.sourceType === 'dataset'
+              ? dataSource.oClass === classItem.id
+              : dataSource.sourceType === 'namedQuery' && 'oClass' in dataSource.request
+              ? dataSource.request.oClass === classItem.id
+              : dataSource.sourceType === 'namedQuery' && 'type' in dataSource.request
+              ? dataSource.request.type === NamedQueryTypes.MONO_CLASS
+              : false;
+          })
+        );
+      })
+    );
     this.fields$ = this.store.select(FieldSelectors.fields);
     this.datasourceFilters$ = this.store
       .select(DashboardSelectors.datasourceFilters)
