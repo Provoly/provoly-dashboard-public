@@ -170,6 +170,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   wmsCapabilities$: Observable<{ [p: string]: GetCapabilitiesResponse | null } | undefined>;
   autoDatasetLayers$: Observable<MapAutoLayerOptions[]>;
   aggregatedExtents$!: Observable<{ datasource: string; extent: Coordinate[] }[]>;
+  datasourceFilters$: Observable<any>;
 
   constructor(
     store: Store<any>,
@@ -194,6 +195,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       .select(ClassSelectors.classes)
       .pipe(map((classes) => classes.sort((a, b) => a.name.localeCompare(b.name))));
     this.fields$ = this.store.select(FieldSelectors.fields);
+    this.datasourceFilters$ = this.store
+      .select(DashboardSelectors.datasourceFilters)
+      .pipe(distinctUntilChanged((p, c) => equal(p, c)));
     this.styles$ = this.store.select(ConfigSelectors.mapStyles).pipe(
       map((styles) =>
         styles.concat(
@@ -514,7 +518,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       this.classes$,
       this.additionalLayers$,
       this.itemStyles$,
-      this.store.select(DashboardSelectors.datasourceFilters).pipe(distinctUntilChanged((p, c) => equal(p, c)))
+      this.datasourceFilters$
     ]).pipe(
       filter(
         ([resultSet, options, classes, additionalLayers, itemStyles, filters]) => !!resultSet && !!options && !!classes
@@ -639,8 +643,13 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       })
     );
 
-    this.aggregatedExtents$ = combineLatest([this.geoServerLayerDescriptions$, this.classes$, this.fields$]).pipe(
-      mergeMap(([layers, classes, fields]) =>
+    this.aggregatedExtents$ = combineLatest([
+      this.geoServerLayerDescriptions$,
+      this.classes$,
+      this.fields$,
+      this.datasourceFilters$
+    ]).pipe(
+      mergeMap(([layers, classes, fields, filters]) =>
         combineLatest(
           layers
             .map((layer) =>
