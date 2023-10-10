@@ -28,7 +28,9 @@ export class AttributeTooltipComponent extends BaseTooltipComponent {
       }
     } else {
       // This is for other items, like WMSFeatures
-      return of(this.data.item.properties.find((prop: { key: string; value: string }) => prop.key === attribute).value);
+      return of(
+        this.data.item.properties.find((prop: { key: string; value: string }) => prop.key === attribute)?.value ?? ''
+      );
     }
   }
 }
