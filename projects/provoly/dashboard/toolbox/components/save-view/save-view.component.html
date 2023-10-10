@@ -12,7 +12,8 @@
         #directiveSave
         class="a-btn a-btn--primary -size-md"
         (click)="directSave()"
-        [hidden]="!(savePresentationActive$ | async)"
+        [disabled]="!(isCurrentPresentationModified$ | async)"
+        [hidden]="!(isCurrentPresentationOwner$ | async)"
       >
         <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.save' | i18n }} ({{ nbPages }})</ng-container>
       </button>

@@ -122,12 +122,12 @@ const namedQueriesUses = createSelector(globalManifest, (manifest) =>
     )
 );
 const presentation = createSelector(feature, (state: DashboardState) => state?.presentation);
-const savePresentationActive = createSelector(
+const isCurrentPresentationModified = createSelector(
   presentation,
   globalManifest,
-  (state, global) =>
-    !!state.current && state.current.owner &&  !equal(global, state.initial)
+  (state, global) => !equal(global, state.initial)
 );
+const isCurrentPresentationOwner = createSelector(presentation, (state) => !!state.current && state.current.owner);
 
 const filters = createSelector(feature, (state: DashboardState) => state?.manifests.manifest.filters ?? {});
 const datasourceFilters = createSelector(feature, (state: DashboardState) =>
@@ -183,7 +183,8 @@ export const DashboardSelectors = {
   quickOrder,
   presentation,
   filters,
-  savePresentationActive,
+  isCurrentPresentationModified,
+  isCurrentPresentationOwner,
   datasourceFilters,
   wmsFeatures,
   displayOptions,

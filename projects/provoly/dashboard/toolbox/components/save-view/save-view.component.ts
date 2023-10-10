@@ -38,7 +38,8 @@ export class SaveViewComponent extends ToolboxActionComponent {
   type: LibraryTypes = LibraryTypes.ILLUSTRATION;
   saveTypeOpened = false;
   currentManifest?: ManifestDescription;
-  savePresentationActive$: Observable<boolean>;
+  isCurrentPresentationModified$: Observable<boolean>;
+  isCurrentPresentationOwner$: Observable<boolean>;
   nbPages: number = 0;
   initialNbPages: number = 0;
   hasInitial: boolean = false;
@@ -56,7 +57,8 @@ export class SaveViewComponent extends ToolboxActionComponent {
         this.hasInitial = !!presentation.initial;
       })
     );
-    this.savePresentationActive$ = this.store.select(DashboardSelectors.savePresentationActive);
+    this.isCurrentPresentationModified$ = this.store.select(DashboardSelectors.isCurrentPresentationModified);
+    this.isCurrentPresentationOwner$ = this.store.select(DashboardSelectors.isCurrentPresentationOwner);
     this.subscriptions.add(
       this.store
         .select(DashboardSelectors.globalManifest)

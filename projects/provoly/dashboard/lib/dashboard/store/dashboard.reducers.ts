@@ -385,8 +385,9 @@ const internalReducer = createReducer<DashboardState>(
     },
     presentation: {
       ...state.presentation,
-      current: state.presentation.current
-        ? action.manifests.find((manifest) => manifest.id === state.presentation.current?.id)
+      current: !!state.presentation.current
+        ? action.manifests.find((manifest) => manifest.id === state.presentation.current?.id) ??
+          state.presentation.current
         : undefined
     }
   })),
