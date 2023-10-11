@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
@@ -42,12 +41,7 @@ export class SymbolService {
   private classes: Class[] = [];
   private imageCache: ImageCache = {};
 
-  constructor(
-    private httpClient: HttpClient,
-    private store: Store<any>,
-    private sanitizer: DomSanitizer,
-    private imageService: ImageService
-  ) {
+  constructor(private store: Store<any>, private sanitizer: DomSanitizer, private imageService: ImageService) {
     this.store.select(ClassSelectors.classes).subscribe((classes) => (this.classes = classes));
     this.store.select(ConfigSelectors.iconDefinitions).subscribe((defs) => {
       this.definitions = defs;

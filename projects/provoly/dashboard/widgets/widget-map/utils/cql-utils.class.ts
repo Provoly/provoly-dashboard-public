@@ -18,7 +18,7 @@ export class CqlUtils {
 
         const attributeName = attributesReference.find((attr) => attr.id === cond.attribute)?.name;
 
-        if (attributeName && cond.value && cond.value.length > 0) {
+        if (attributeName && cond.value && (typeof cond.value !== 'string' || cond.value.length > 0)) {
           switch (cond.operator) {
             case 'EQUALS':
               conditions.push(`${attributeName}='${cond.value}'`);
@@ -39,14 +39,14 @@ export class CqlUtils {
               conditions.push(`${attributeName}<${cond.value}`);
               break;
             case 'INSIDE':
-              const splitI = cond.value?.split(',');
+              const splitI = (cond.value as string)?.split(',');
               if (splitI && splitI.length > 1) {
                 conditions.push(`${attributeName}<${splitI[0]}`);
                 conditions.push(`${attributeName}>${splitI[1]}`);
               }
               break;
             case 'OUTSIDE':
-              const splitO = cond.value?.split(',');
+              const splitO = (cond.value as string)?.split(',');
               if (splitO && splitO.length > 1) {
                 conditions.push(`${attributeName}>${splitO[0]}`);
                 conditions.push(`${attributeName}<${splitO[1]}`);
