@@ -134,8 +134,4 @@ export class PryDatasetDetailComponent implements OnInit {
       })
     );
   }
-
-  modify(type: string, { manifest }: { manifest: WidgetManifest }) {
-    this.widgetManifest[type] = manifest;
-  }
 }
