@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { NamedQuery, NamedQueryTypes, NamedQueryUtils, PryDialogService } from '@provoly/dashboard';
+import { DatasourceUtils, NamedQuery, NamedQueryTypes, PryDialogService } from '@provoly/dashboard';
 import { SearchFulltextChange } from '../../search-fulltext/search-fulltext/search-fulltext.component';
 import { PrySaveQueryComponent } from '../save-query/save-query.component';
 
@@ -44,7 +44,7 @@ export class PrySaveQueryButtonComponent implements OnChanges {
       const save = true;
       const nq = this.currentEdit;
       const type = nq
-        ? NamedQueryUtils.getTypeFromPayload(nq.request)
+        ? DatasourceUtils.getTypeFromPayload(nq.request)
         : this.getNQType(this.isNotFulltext, this.isMonoSearch);
       const data = type === NamedQueryTypes.FULL_TEXT ? { save, type, payload: this.fulltextSearch } : { save, type };
       this.pryDialog.open(PrySaveQueryComponent, { data });

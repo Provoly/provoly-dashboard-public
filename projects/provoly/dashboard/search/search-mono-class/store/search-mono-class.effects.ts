@@ -5,13 +5,13 @@ import {
   ClassSelectors,
   DataSourceActions,
   DataSourceSelectors,
+  DatasourceUtils,
   DEFAULT_NAMED_QUERY_ID,
   FieldSelectors,
   FieldType,
   MonoClassSearchPayload,
   MultiClassSearchPayload,
   NamedQueryTypes,
-  NamedQueryUtils,
   NormalizedCondition,
   OrderValue,
   SearchActions,
@@ -176,7 +176,7 @@ export class SearchMonoClassEffects {
       mergeMap(([action, currentEdit]) => {
         const actions = [] as Action[];
         if (!!currentEdit) {
-          const type = NamedQueryUtils.getTypeFromPayload(currentEdit.request);
+          const type = DatasourceUtils.getTypeFromPayload(currentEdit.request);
           if (type === NamedQueryTypes.MULTI_CLASS) {
             actions.push(
               SearchMultiClassActions.loadExistingConditions({

@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/s
 import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from '../search/search.constants';
 import { DatasetVersion, DataSource } from './data-source.model';
 import { dataSourceFeatureKey, DataSourceState } from './data-source.reducer';
-import { NamedQueryUtils } from './named-query-utils';
+import { DatasourceUtils } from './datasource-utils';
 
 const selectFeature = createFeatureSelector<DataSourceState>(dataSourceFeatureKey);
 
@@ -22,7 +22,7 @@ const getNamedQuerySorted = createSelector(selectFeature, (state) => {
 });
 const editInProgress = createSelector(selectFeature, (state) => !!state.currentEdit);
 const currentEditType = createSelector(selectFeature, (state) =>
-  NamedQueryUtils.getTypeFromPayload(state.currentEdit?.request)
+  DatasourceUtils.getTypeFromPayload(state.currentEdit?.request)
 );
 const currentEdit = createSelector(selectFeature, (state) => state.currentEdit);
 const isRename = createSelector(selectFeature, (state) => state.isRename);

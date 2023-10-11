@@ -34,7 +34,7 @@ export * from './store/data-source/data-source.selectors';
 export * from './store/data-source/data-source.reducer';
 export * from './store/data-source/data-source.model';
 export * from './store/data-source/named-query-types.model';
-export * from './store/data-source/named-query-utils';
+export * from './store/data-source/datasource-utils';
 export * from './store/relation-types/relation-types.actions';
 export * from './store/relation-types/relation-types.service';
 export * from './store/relation-types/relation-types.selectors';

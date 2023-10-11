@@ -2,11 +2,11 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angu
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { UNKNOWN_DATASOURCE } from '../../../../core/components/translate-id/translate-id.pipe';
-import { GeoMetadata } from '../../../../core/model/dataset.interface';
 import { WidgetManifest } from '../../../../core/model/manifest.interface';
 import { Dataset, DataSource, NamedQuery } from '../../../../core/store/data-source/data-source.model';
 import { DataSourceSelectors } from '../../../../core/store/data-source/data-source.selectors';
 import { SubscriptionnerDirective } from '../../subscriptionner.directive';
+import { DatasourceUtils } from '../../../../core/store/data-source/datasource-utils';
 
 @Component({
   selector: 'pry-datasource-selector',
@@ -87,7 +87,7 @@ export class DatasourceSelectorComponent extends SubscriptionnerDirective {
   }
 
   isGeo(ds: NamedQuery | Dataset) {
-    return ds.metadata?.find((m) => m.metadataDef.name === GeoMetadata.NAMESPACE) !== undefined;
+    return DatasourceUtils.isGeo(ds);
   }
 
   search($event: any) {

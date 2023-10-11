@@ -19,11 +19,11 @@ import {
   DashboardSelectors,
   DataSourceActions,
   DataSourceSelectors,
+  DatasourceUtils,
   defaultMenuStructure,
   FullTextSearchPayload,
   NamedQuery,
   NamedQueryTypes,
-  NamedQueryUtils,
   PryDialogConfirmComponent,
   PryDialogConfirmData,
   PryDialogService,
@@ -209,7 +209,7 @@ export class PrySearchHomeComponent implements OnInit, OnDestroy {
     this.store.dispatch(DataSourceActions.namedQuery.openRename());
     this.store.dispatch(DataSourceActions.namedQuery.edit({ currentEdit: nq }));
     const save = false;
-    const type = NamedQueryUtils.getTypeFromPayload(nq.request);
+    const type = DatasourceUtils.getTypeFromPayload(nq.request);
     const data =
       type === NamedQueryTypes.FULL_TEXT
         ? { save, type, payload: this.extractPayload(nq.request as FullTextSearchPayload) }

@@ -24,6 +24,7 @@ import {
   DashboardSelectors,
   Dataset,
   DataSourceSelectors,
+  DatasourceUtils,
   DataWidgetComponent,
   DEFAULT_PROJECTION,
   Field,
@@ -44,7 +45,6 @@ import {
   MapWidgetOptions,
   MapWMSLayerLayerOptions,
   MapWMTSLayerLayerOptions,
-  MonoClassSearchPayload,
   NamedQueryTypes,
   Operation,
   PryAggregationService,
@@ -280,7 +280,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       this.fields$,
       this.usedDatasources$.pipe(
         startWith([]),
-        map((datasources) => datasources.filter((ds) => ds.sourceType === 'dataset') as Dataset[])
+        map(
+          (datasources) =>
+            datasources.filter((ds) => ds.sourceType === 'dataset' && !DatasourceUtils.isGeo(ds)) as Dataset[]
+        )
       )
     ]).pipe(
       map(

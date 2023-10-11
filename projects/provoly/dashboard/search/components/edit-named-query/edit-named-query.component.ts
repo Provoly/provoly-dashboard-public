@@ -4,10 +4,10 @@ import {
   DashboardActions,
   DataSourceActions,
   DataSourceSelectors,
+  DatasourceUtils,
   DEFAULT_NAMED_QUERY_ID,
   NamedQuery,
   NamedQueryTypes,
-  NamedQueryUtils,
   SearchActions,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
@@ -67,7 +67,7 @@ export class EditNamedQueryComponent extends SubscriptionnerDirective {
       description: this.currentEdit?.description,
       visibility: this.currentEdit?.visibility ?? undefined
     };
-    switch (NamedQueryUtils.getTypeFromPayload(this.currentEdit?.request)) {
+    switch (DatasourceUtils.getTypeFromPayload(this.currentEdit?.request)) {
       case NamedQueryTypes.FULL_TEXT:
         this.store.dispatch(
           searchFulltextActions.save({
