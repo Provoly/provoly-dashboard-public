@@ -243,16 +243,16 @@ function addPipelinesImport(options: ProjectSetupOptions, context: SchematicCont
         path: '@provoly/dashboard/pipeline'
       },
       {
-        name: 'PryPipelineInputDatasetDefinitionModule',
+        name: 'PryPipelineInputDatasetModule',
         path: '@provoly/dashboard/pipeline-components/input-datasource'
       },
       {
-        name: 'PryPipelineOutputDatasetDefinitionModule',
-        path: '@provoly/dashboard/pipeline'
+        name: 'PryPipelineOutputDatasetModule',
+        path: '@provoly/dashboard/pipeline-components/output-dataset'
       },
       {
         name: 'PryPipelineFilterModule',
-        path: '@provoly/dashboard/pipeline-components/output-dataset'
+        path: '@provoly/dashboard/pipeline-components/filter'
       }
     ];
 
