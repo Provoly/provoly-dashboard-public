@@ -42,7 +42,7 @@ function addDependencies(tree: Tree, options: ProjectSetupOptions) {
   if (options.widgets.includes('widget-aggregated-chart') || options.widgets.includes('widget-vega')) {
     console.log('...Adding provoly dependencies for charts');
     dependencies.push({ type: NodeDependencyType.Default, version: '^5.21.0', name: 'vega' });
-    dependencies.push({ type: NodeDependencyType.Default, version: '^6.20.5', name: 'vega-embed' });
+    dependencies.push({ type: NodeDependencyType.Default, version: '^6.23.0', name: 'vega-embed' });
     dependencies.push({ type: NodeDependencyType.Default, version: '^5.2.0', name: 'vega-lite' });
   }
 
