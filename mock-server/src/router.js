@@ -187,7 +187,7 @@ router.on(['OPTIONS', 'POST'], '/ref/model/field', (req, res, params) => {
         dataModule.fields.get()[fieldIndex].name = payload.name;
         dataModule.fields.get()[fieldIndex].type = payload.type;
       } else {
-        JSON.stringify(dataModule.fields.push(payload));
+        JSON.stringify(dataModule.fields.put(payload));
       }
       fs.writeFileSync('./data/fields.json', JSON.stringify(dataModule.fields.get(), null, 2));
     }

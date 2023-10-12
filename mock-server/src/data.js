@@ -259,6 +259,10 @@ const getFields = () => {
   return fields;
 };
 
+const putFields = (field) => {
+  return fields.push(field);
+};
+
 const generateDatasetVersions = () => {
   return datasets
     .map((dataset) => {
@@ -318,6 +322,7 @@ module.exports = {
   classesIds,
   fields: {
     get: getFields,
+    put: putFields,
     delete: deleteField
   },
   categories,
