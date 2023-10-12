@@ -357,14 +357,14 @@ export const frTranslations = {
       storage: {
         label: 'Base de stockage',
         description: {
-          postgis:
+          POSTGIS:
             "Ce stockage est conseillé en cas de stockage de données géographique complexes ou dans des systèmes de coordonnées différents de WGS 84. Il est recommandé de ne stocker dans cette base que des modèles métier dont la volumétrie de données estimée n'est pas trop élevée.",
-          elastic:
+          ELASTIC:
             'Ce stockage est conseillé en cas de forte volumétrie de données prévue pour ce modèle métier. Si vous souhaitez stocker des données géographiques dans ce modèle, des formes simples sont conseillées et le système de coordonnées de référence utilisé doit être WGS 84. Ce système de stockage offre une scalabilité horizontale.'
         },
         options: {
-          postgis: 'PostGIS',
-          elastic: 'ElasticSearch'
+          POSTGIS: 'PostGIS',
+          ELASTIC: 'ElasticSearch'
         }
       }
     },

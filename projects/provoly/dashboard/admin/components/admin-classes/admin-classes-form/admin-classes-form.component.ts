@@ -39,7 +39,7 @@ export class AdminClassesFormComponent extends SubscriptionnerDirective implemen
       id: [uuid()],
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100), noWhitespaceValidator]],
       description: [{ value: '', disabled: true }],
-      storage: ['elastic']
+      storage: ['ELASTIC']
     });
     this.store.dispatch(AdminClassActions.getStorageOptions());
     this.storageOptions$ = this.store.select(AdminClassSelectors.storageOptions);

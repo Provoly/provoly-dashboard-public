@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { Associations, AttributeExtended, Class} from '@provoly/dashboard';
+import { AttributeExtended, Class } from '@provoly/dashboard';
 import { AdminClassActions } from './admin-class.actions';
 
 export const classesFeatureKey = '@pry/admin/classes';
@@ -16,7 +16,7 @@ export interface AdminClassState {
 export const initialClassState: AdminClassState = {
   loading: false,
   openModal: false,
-  storageOptions: []
+  storageOptions: ['ELASTIC']
 };
 
 export const classReducer = createReducer(

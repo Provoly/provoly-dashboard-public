@@ -779,5 +779,21 @@
       }
     ],
     "slug": "49ed93ebbd_equipements-publics"
+  },
+  {
+    "id": "72340fb9-427f-4c02-88eb-7d5b4eea7d6f",
+    "name": "azd",
+    "description": "",
+    "storage": "ELASTIC",
+    "attributes": [
+      {
+        "id": "b801c4dd-4eee-4e35-bc01-a0b5c8f07e63",
+        "name": "azd",
+        "description": "",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-accroches_libres",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
+      }
+    ]
   }
 ]

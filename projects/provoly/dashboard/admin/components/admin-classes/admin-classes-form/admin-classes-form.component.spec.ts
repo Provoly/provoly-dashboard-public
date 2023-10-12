@@ -89,7 +89,7 @@ describe('AdminClassesFormComponent', () => {
       id: 'idLieu',
       name: 'lieu',
       description: '',
-      storage: 'elastic'
+      storage: 'ELASTIC'
     };
     let resultClass = {
       ...classe,
