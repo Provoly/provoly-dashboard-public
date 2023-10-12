@@ -187,7 +187,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
   }
 
   noDataSourceSelected() {
-    return this.form.selectedDataSource.length === 0;
+    return !this.form.selectedDataSource || this.form.selectedDataSource.length === 0;
   }
 
   goNext(stepper: PryStepperComponent) {
