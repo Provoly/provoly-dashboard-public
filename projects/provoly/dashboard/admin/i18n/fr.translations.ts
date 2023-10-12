@@ -256,6 +256,7 @@ export const frTranslations = {
       },
       fields: {
         add: 'Créer un nouveau type métier',
+        crs: 'CRS (code EPSG) :',
         info: 'Détail du type métier',
         list: 'Types métier',
         edit: 'Modifier le type métier',

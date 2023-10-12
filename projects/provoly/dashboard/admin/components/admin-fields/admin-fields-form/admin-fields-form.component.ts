@@ -1,14 +1,26 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Field, FIELD_OPTIONS, FieldActions, FieldSelectors, PryI18nService } from '@provoly/dashboard';
+import {
+  Field,
+  FIELD_OPTIONS,
+  FieldActions,
+  FieldSelectors,
+  GeometricFieldTypes,
+  PryI18nService
+} from '@provoly/dashboard';
 import { combineLatest, map, Observable, startWith, Subscription } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import { noWhitespaceValidator } from '../../../components/admin.component';
 import { AdminActions } from '../../../store/admin.actions';
 import { FieldsActions } from '../store/fields.actions';
 import { distinctUntilChanged } from 'rxjs/operators';
+
+export const CRS_OPTIONS = [
+  { label: 'WGS84 (EPSG:4326)', code: 'EPSG:4326' },
+  { label: 'Lambert93 (EPSG: 2154)', code: 'EPSG:2154' }
+];
 
 @Component({
   selector: 'pry-admin-fields-form',
@@ -86,6 +98,18 @@ export class AdminFieldsFormComponent implements OnInit, OnDestroy {
           ''
       )
     );
+
+    this.fieldForm.get('type')!.valueChanges.subscribe((type) => {
+      if (this.isGeographicType) {
+        this.fieldForm.addControl('crs', new FormControl(CRS_OPTIONS[0].code, [Validators.required]));
+      } else {
+        this.fieldForm.removeControl('crs');
+      }
+    });
+  }
+
+  get isGeographicType() {
+    return GeometricFieldTypes.includes(this.fieldForm.get('type')?.value);
   }
 
   ngOnDestroy() {
@@ -111,4 +135,6 @@ export class AdminFieldsFormComponent implements OnInit, OnDestroy {
   private getPath() {
     return this.currentField ? this.goBackPathEdit : this.goBackPath;
   }
+
+  protected readonly CRS_OPTIONS = CRS_OPTIONS;
 }

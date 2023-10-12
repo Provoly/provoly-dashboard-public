@@ -7,7 +7,8 @@
   {
     "id": "59853619-9773-418a-ace5-70b80fd4dc74",
     "name": "location",
-    "type": "Point"
+    "type": "Point",
+    "crs" : "EPSG:4326"
   },
   {
     "id": "59853619-9773-418a-ace5-70b80fd4dc75",
@@ -227,7 +228,8 @@
   {
     "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08-station_location",
     "name": "station_location",
-    "type": "Point"
+    "type": "Point",
+    "crs" : "EPSG:4326"
   },
   {
     "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08-geo_point_2d",
@@ -257,34 +259,39 @@
   {
     "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-point",
     "name": "position",
-    "type": "Point"
+    "type": "Point",
+    "crs" : "EPSG:4326"
   },
   {
     "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-trajet",
     "name": "trajet",
-    "type": "LineString"
+    "type": "LineString",
+    "crs" : "EPSG:4326"
   },
   {
     "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-trajetM",
     "name": "multi-trajet",
-    "type": "MultiLineString"
+    "type": "MultiLineString",
+    "crs" : "EPSG:4326"
   },
   {
     "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-zone",
     "name": "zone",
-    "type": "Polygon"
+    "type": "Polygon",
+    "crs" : "EPSG:4326"
   },
   {
     "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-zoneM",
     "name": "multi-zone",
-    "type": "MultiPolygon"
+    "type": "MultiPolygon",
+    "crs" : "EPSG:4326"
   },
   {
     "id": "7000506c-049b-47d3-b92d-a2e823b46b80",
     "name": "position",
     "type": "Point",
     "slug": "8cecdcb4fd_position",
-    "crs": "CRS:84"
+    "crs" : "EPSG:4326"
   },
   {
     "id": "872ff200-b4cc-47e6-a45b-fe3ea9c1ab9f",

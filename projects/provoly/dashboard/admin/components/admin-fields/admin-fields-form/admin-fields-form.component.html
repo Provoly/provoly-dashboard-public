@@ -61,6 +61,34 @@
       </div>
     </div>
 
+    <div class="m-form-label-field -width-sm" *ngIf="isGeographicType">
+      <label class="a-label">
+        {{ '@pry.admin.fields.crs' | i18n }} *
+        <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+      </label>
+      <div class="title-container">
+        <pry-select
+          class="a-pry-select -width-sm"
+          formControlName="crs"
+          [labelTranslate]="false"
+          [items]="CRS_OPTIONS"
+          [itemsAsOption]="true"
+          bindValue="code"
+          bindLabel="label"
+          [isForm]="true"
+          id="crs"
+        ></pry-select>
+      </div>
+      <label
+        *ngIf="isSubmitted && fieldForm.get('crs') && fieldForm.get('crs')?.invalid"
+        id="crs-error"
+        for="crs"
+        class="a-label a-label--help -error"
+      >
+        <span *ngIf="fieldForm.get('name')?.hasError('required')">{{ '@pry.admin.required' | i18n }}</span>
+      </label>
+    </div>
+
     <div class="m-btn-group -width-sm">
       <button
         type="button"

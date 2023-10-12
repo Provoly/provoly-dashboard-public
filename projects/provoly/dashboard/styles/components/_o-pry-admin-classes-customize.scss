@@ -178,3 +178,22 @@ pry-select {
 .list.cdk-drop-list-dragging .item:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+.aligned-option {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  * {
+    margin: 0;
+  }
+
+  .chips {
+    border-radius: toRem(20);
+    height: toRem(14);
+    line-height: toRem(10);
+    font-size: toRem(10);
+    padding: toRem(3);
+  }
+}

@@ -12,3 +12,8 @@
     }
   }
 }
+
+.chips {
+  color: themed($theme-map, 'color', 'accent', 'contrast', 600);
+  background-color: themed($theme-map, 'color', 'accent', 600);
+}
