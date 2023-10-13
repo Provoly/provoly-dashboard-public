@@ -123,7 +123,7 @@ describe('WidgetMapComponent', () => {
                 {
                   id: 'rs',
                   name: 'resultset',
-                  oClass: '',
+                  oClass: 'geoClass',
                   type: PryDatasetType.CLOSED,
                   metadata: [],
                   sourceType: 'dataset'
@@ -495,7 +495,7 @@ describe('WidgetMapComponent', () => {
         fit: true,
         automaticLayers: true
       } as MapWidgetOptions,
-      datasource: 'geo'
+      datasource: 'rs'
     } as WidgetManifest;
 
     const results = [] as MapWidgetOptions[];
@@ -512,35 +512,22 @@ describe('WidgetMapComponent', () => {
         {
           attribute: 'loc',
           classes: ['geoClass'],
-          key: 'geo',
+          key: 'rs',
           oClass: 'geoClass',
           subType: 'Point',
-          title: 'resultsetGeo - loc (Point)',
+          title: 'resultset - loc (Point)',
           type: 'auto'
         },
         {
           attribute: 'zone',
           classes: ['geoClass'],
-          key: 'geo',
+          key: 'rs',
           oClass: 'geoClass',
           subType: 'MultiPolygon',
-          title: 'resultsetGeo - zone (MultiPolygon)',
+          title: 'resultset - zone (MultiPolygon)',
           type: 'auto'
-        },
-        {
-          datasourceId: 'geo',
-          key: 'geoNamespace:geoKey',
-          name: 'resultsetGeo',
-          namespace: 'geoNamespace',
-          oClass: 'geoClass',
-          opacity: 50,
-          paramLayer: 'geoKey',
-          paramTiled: true,
-          type: 'geoserver',
-          url: 'http://geoserver.url/geoNamespace/wms?SERVICE=WMS&VERSION=1.3.0'
         }
       ],
-
       style: 'style1',
       tooltipMode: 'click',
       automaticLayers: true
