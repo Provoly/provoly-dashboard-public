@@ -15,6 +15,8 @@ import {
   MapWidgetRelationLayerOptions,
   MapWMSLayerLayerOptions,
   MapWMTSLayerLayerOptions,
+  PRY_GEOAUTH_TOKEN,
+  PryGeoAuthService,
   ResultSet
 } from '@provoly/dashboard';
 import { Feature, Map } from 'ol';
@@ -39,7 +41,6 @@ import {
   getCircleFeatureFromItem,
   getFeatureFromItem
 } from '../utils/widget-map.utils';
-import { PRY_GEOAUTH_TOKEN, PryGeoAuthService } from '../../../lib/core/auth/geoAuth.service';
 
 export type AttributesForClass = {
   [key: string]: {
@@ -55,6 +56,7 @@ export type ItemStyles = { [id: string]: { classic: Style; bordered: Style } };
 })
 export class WidgetMapLayerService {
   constructor(@Optional() @Inject(PRY_GEOAUTH_TOKEN) private geoAuthService: PryGeoAuthService) {}
+
   styleCache: any = {};
 
   circleStyle = new Style({
