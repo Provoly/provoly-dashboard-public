@@ -695,7 +695,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                     .pipe(
                       map((extentResponse: AggregationResult) => {
                         const projBox = getProjection(field!.crs ?? DEFAULT_PROJECTION);
-                        if (projBox) {
+                        if (projBox && extentResponse.values.length > 0) {
                           return {
                             datasource: layer.datasourceId,
                             extent: [

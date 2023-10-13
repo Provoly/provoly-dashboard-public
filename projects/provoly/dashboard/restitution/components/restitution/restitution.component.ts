@@ -30,7 +30,7 @@ import { RestitutionForm } from '../../model/restitution.model';
   templateUrl: './restitution.component.html'
 })
 export class PryRestitutionComponent extends SubscriptionnerDirective implements OnInit {
-  types$: Observable<{ icon: string; label: string; type: string }[]>;
+  types$: Observable<{ icon: string; label: string; type: string; manifest: WidgetManifest }[]>;
   classes$: Observable<Class[]>;
   customManifest: WidgetManifest = {
     type: 'detail',
@@ -60,6 +60,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
   @Input() isDataSourceSelected = false;
   @Input() bindId: any;
   image: string = DEFAULT_RESTITUTION_ICON_URL;
+  widgetTypes: { icon: string; label: string; type: string; manifest: WidgetManifest }[] = [];
 
   constructor(
     private toolboxManifestService: ToolboxManifestService,
@@ -75,6 +76,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
     this.types$ = this.toolboxMenuService.types$.pipe(
       map((type) => type.filter((filteredType) => filteredType.type !== 'detail'))
     );
+    this.subscriptions.add(this.types$.subscribe((types) => (this.widgetTypes = types)));
     this.classes$ = this.store.select(ClassSelectors.classes);
     this.widgetsList$ = this.toolboxMenuService.menuStructure$.pipe(
       map((menu) =>
@@ -148,6 +150,9 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
       this.goNext(stepper);
       return;
     }
+
+    const widgetType = this.widgetTypes.find((widgetType) => widgetType.type === this.form.selectedWidget);
+
     this.customManifest = {
       ...this.customManifest,
       type: this.form.selectedWidget,
@@ -164,7 +169,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
         changeSpot: false
       },
       options: {
-        ...this.customManifest.options,
+        ...widgetType?.manifest.options,
         title: this.form.title
       }
     };

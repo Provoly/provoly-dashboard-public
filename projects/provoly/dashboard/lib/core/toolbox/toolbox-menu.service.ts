@@ -9,6 +9,7 @@ import { ConfigActions } from '../store/config/config.actions';
 import { ConfigSelectors } from '../store/config/config.selectors';
 import { DEFAULT_ICON_URL } from '../store/config/icon-definitions.interface';
 import { ToolboxManifestService } from './toolbox-manifest.service';
+import { WidgetManifest } from '../model/manifest.interface';
 
 export type WidgetDescriptionBase = {
   icon: string;
@@ -76,7 +77,7 @@ export class ToolboxMenuService {
   _menuStructure$ = new BehaviorSubject<WidgetDescriptionMenu[]>(defaultMenuStructure);
   menuStructure$: Observable<WidgetDescriptionMenu[]>;
   menuList$: Observable<CatalogEntry[]>;
-  types$: Observable<{ icon: string; label: string; type: string }[]>;
+  types$: Observable<{ icon: string; label: string; type: string; manifest: WidgetManifest }[]>;
 
   constructor(
     private widgetFactoryService: WidgetFactoryService,
@@ -142,7 +143,12 @@ export class ToolboxMenuService {
             (menu) => menu.label.replace('@pry.toolbox.sub.', '').indexOf(type) >= 0
           );
           if (!!matchingMenu) {
-            return { type, label: matchingMenu.label, icon: matchingMenu.icon };
+            return {
+              type,
+              label: matchingMenu.label,
+              icon: matchingMenu.icon,
+              manifest: Object.values(manifests).find((manifest) => manifest.type === type) as WidgetManifest
+            };
           }
           const matchingSubMenu = menuStructure
             .map((menu) => menu.sub.find((sub) => sub.label.replace('@pry.toolbox.', '').indexOf(type) >= 0))
@@ -151,10 +157,11 @@ export class ToolboxMenuService {
             return {
               type,
               label: matchingSubMenu.label,
-              icon: matchingSubMenu.icon.replace('assets/svgs/', '').replace(/.svg$/, '')
+              icon: matchingSubMenu.icon.replace('assets/svgs/', '').replace(/.svg$/, ''),
+              manifest: Object.values(manifests).find((manifest) => manifest.type === type) as WidgetManifest
             };
           }
-          return { type, label: type, icon: DEFAULT_ICON_URL };
+          return { type, label: type, icon: DEFAULT_ICON_URL, manifest: {} as WidgetManifest };
         });
       })
     );
