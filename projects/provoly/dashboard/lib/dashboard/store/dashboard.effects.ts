@@ -556,7 +556,7 @@ export class DashboardEffects {
             ...action.additionalOptions
           }
         } as WidgetManifest;
-        if (!this.toolboxManifestService.isModel(action.widgetType)) {
+        if (!this.toolboxManifestService.isModel(action.widgetType) && newWidgetManifest.header !== false) {
           newWidgetManifest.header = { datasourceSelection: false };
         }
 
