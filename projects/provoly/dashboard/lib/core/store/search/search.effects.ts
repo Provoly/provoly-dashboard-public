@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { filter } from 'rxjs';
-import { catchError, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs';
 import { DashboardActions } from '../../../dashboard/store/dashboard.actions';
 import { DashboardSelectors } from '../../../dashboard/store/dashboard.selectors';
 import { MonoClassSearchPayload } from '../../model/search-mono-class.model';
@@ -34,6 +33,16 @@ export class SearchEffects {
         )
       )
     )
+  );
+
+  updateAggregatesInWidget$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(SearchActions.getDatasourceItems),
+        filter((props) => props.id !== DEFAULT_NAMED_QUERY_ID && props.id !== EXPLORE_NAMED_QUERY_ID),
+        tap((props) => document.dispatchEvent(new CustomEvent('datasourceRefresh', { detail: props.id })))
+      ),
+    { dispatch: false }
   );
 
   search$ = createEffect(() =>

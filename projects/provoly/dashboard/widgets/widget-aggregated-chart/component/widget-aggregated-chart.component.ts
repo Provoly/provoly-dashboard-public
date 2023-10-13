@@ -18,7 +18,16 @@ import {
   VegaType,
   WIDGET_HEADER_HEIGHT
 } from '@provoly/dashboard';
-import { BehaviorSubject, combineLatest, Observable, Subject, switchMap, withLatestFrom } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  fromEvent,
+  Observable,
+  startWith,
+  Subject,
+  switchMap,
+  withLatestFrom
+} from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { View } from 'vega';
 import embed, { vega } from 'vega-embed';
@@ -239,7 +248,15 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       })
     );
 
-    this.aggregatedValues$ = combineLatest([this.datasourceIds$, this.options$, this.resultSet$]).pipe(
+    this.aggregatedValues$ = combineLatest([
+      this.datasourceIds$,
+      this.options$,
+      this.resultSet$,
+      combineLatest([fromEvent(window, 'datasourceRefresh'), this.datasourceIds$]).pipe(
+        filter(([event, datasources]) => datasources.includes((event as CustomEvent).detail)),
+        startWith(undefined)
+      )
+    ]).pipe(
       switchMap(([datasources, options]) => this.aggregationService.aggregate(datasources, options)),
       debounceTime(100),
       withLatestFrom(this.options$),
