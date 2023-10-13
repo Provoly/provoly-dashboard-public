@@ -48,6 +48,7 @@ import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { FormsModule } from '@angular/forms';
 import { TabGroupComponent } from './components/tabs/tab-group.component';
 import { TabComponent } from './components/tabs/tab.component';
+import { PRY_GEOAUTH_TOKEN, PryDefaultGeoAuthService } from './auth/geoAuth.service';
 
 const SELECTORS = [
   TranslateIdPipe,
@@ -106,12 +107,21 @@ export class PryCoreModule {
     this.pryTranslateService.addCoreTranslations();
   }
 
-  static forRoot(access?: { accessProvider?: Provider; guardProvider?: Provider }): ModuleWithProviders<PryCoreModule> {
+  static forRoot(access?: {
+    accessProvider?: Provider;
+    guardProvider?: Provider;
+    geoAuthProvider?: Provider;
+  }): ModuleWithProviders<PryCoreModule> {
     const defaultAccessProvider = { provide: PRY_ACCESS_TOKEN, useClass: PryDefaultAccessService };
     const defaultGuardProvider = { provide: PRY_ACCESS_GUARD, useClass: PryDefaultAccessGuard };
+    const defaultGeoAuthProvider = { provide: PRY_GEOAUTH_TOKEN, useClass: PryDefaultGeoAuthService };
     return {
       ngModule: PryCoreModule,
-      providers: [access?.accessProvider ?? defaultAccessProvider, access?.guardProvider ?? defaultGuardProvider]
+      providers: [
+        access?.accessProvider ?? defaultAccessProvider,
+        access?.guardProvider ?? defaultGuardProvider,
+        access?.geoAuthProvider ?? defaultGeoAuthProvider
+      ]
     };
   }
 }

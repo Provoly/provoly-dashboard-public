@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import {
   Attribute,
   FieldType,
@@ -39,6 +39,7 @@ import {
   getCircleFeatureFromItem,
   getFeatureFromItem
 } from '../utils/widget-map.utils';
+import { PRY_GEOAUTH_TOKEN, PryGeoAuthService } from '../../../lib/core/auth/geoAuth.service';
 
 export type AttributesForClass = {
   [key: string]: {
@@ -53,6 +54,7 @@ export type ItemStyles = { [id: string]: { classic: Style; bordered: Style } };
   providedIn: 'root'
 })
 export class WidgetMapLayerService {
+  constructor(@Optional() @Inject(PRY_GEOAUTH_TOKEN) private geoAuthService: PryGeoAuthService) {}
   styleCache: any = {};
 
   circleStyle = new Style({
@@ -334,6 +336,7 @@ export class WidgetMapLayerService {
           attributions: [layer.attribution ?? ''],
           crossOrigin: 'anonymous',
           url: layer.url,
+          tileLoadFunction: this.geoAuthService?.customLoader,
           params: { LAYERS: layer.paramLayer, TILED: layer.paramTiled, ...(layer.additionalParameters ?? {}) }
         })
       });

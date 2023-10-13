@@ -251,14 +251,16 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       map(([dataSources, geoServerUrl]) => {
         if (!geoServerUrl) return [];
         return dataSources
-          .filter((ds) => ds.metadata?.find((m) => m.metadataDef.name === GeoMetadata.NAMESPACE) !== undefined)
+          .filter((ds) => DatasourceUtils.isGeo(ds))
           .map((ds) => {
             ds = ds as unknown as Dataset;
             const metadatas: { [key: string]: string } = {};
             ds.metadata?.forEach((m) => (metadatas[m.metadataDef.name] = m.value));
             return {
               type: 'geoserver',
-              url: geoServerUrl + '/' + metadatas[GeoMetadata.NAMESPACE] + '/wms?SERVICE=WMS&VERSION=1.3.0',
+              url: `${geoServerUrl}/${
+                metadatas[GeoMetadata.NAMESPACE].length > 0 ? metadatas[GeoMetadata.NAMESPACE] + '/' : ''
+              }wms?SERVICE=WMS&VERSION=1.3.0`,
               paramTiled: true,
               opacity: parseInt(metadatas[GeoMetadata.OPACITY] ?? 100, 10),
               oClass: ds.oClass,
