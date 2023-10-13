@@ -1,4 +1,4 @@
-import { Inject, Injectable, Optional } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   Attribute,
   FieldType,
@@ -15,7 +15,6 @@ import {
   MapWidgetRelationLayerOptions,
   MapWMSLayerLayerOptions,
   MapWMTSLayerLayerOptions,
-  PRY_GEOAUTH_TOKEN,
   PryGeoAuthService,
   ResultSet
 } from '@provoly/dashboard';
@@ -55,8 +54,6 @@ export type ItemStyles = { [id: string]: { classic: Style; bordered: Style } };
   providedIn: 'root'
 })
 export class WidgetMapLayerService {
-  constructor(@Optional() @Inject(PRY_GEOAUTH_TOKEN) private geoAuthService: PryGeoAuthService) {}
-
   styleCache: any = {};
 
   circleStyle = new Style({
@@ -92,6 +89,11 @@ export class WidgetMapLayerService {
       radius: 10
     })
   });
+  geoAuthService?: PryGeoAuthService;
+
+  withGeoAuth(geoAuthService: PryGeoAuthService) {
+    this.geoAuthService = geoAuthService;
+  }
 
   get implementationList() {
     return Object.keys(this.layersImplementation).filter((implementation) => implementation !== 'geoserver');
@@ -338,7 +340,7 @@ export class WidgetMapLayerService {
           attributions: [layer.attribution ?? ''],
           crossOrigin: 'anonymous',
           url: layer.url,
-          tileLoadFunction: this.geoAuthService?.customLoader,
+          tileLoadFunction: (tile: any, str: string) => this.geoAuthService?.customLoader(tile, str),
           params: { LAYERS: layer.paramLayer, TILED: layer.paramTiled, ...(layer.additionalParameters ?? {}) }
         })
       });

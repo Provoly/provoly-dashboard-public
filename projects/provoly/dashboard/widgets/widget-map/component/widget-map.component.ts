@@ -1,11 +1,13 @@
-import { Overlay as cdkOverlay, OverlayRef } from '@angular/cdk/overlay';
+import { OverlayRef } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
   Component,
   ComponentRef,
   ElementRef,
+  Inject,
   Injector,
   OnDestroy,
+  Optional,
   TemplateRef,
   ViewChild,
   ViewContainerRef
@@ -47,7 +49,9 @@ import {
   MapWMTSLayerLayerOptions,
   NamedQueryTypes,
   Operation,
+  PRY_GEOAUTH_TOKEN,
   PryAggregationService,
+  PryGeoAuthService,
   PryI18nService,
   PrySnackbarService,
   ResultsetUtils,
@@ -180,15 +184,16 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     private snackBar: PrySnackbarService,
     public translateService: PryI18nService,
     private tooltipFactoryService: TooltipFactoryService,
-    private overlay: cdkOverlay,
-    private viewContainerRef: ViewContainerRef,
     private symbolService: SymbolService,
     private injector: Injector,
     private widgetMapLayerService: WidgetMapLayerService,
     private pryAggregationService: PryAggregationService,
-    el: ElementRef
+    el: ElementRef,
+    @Optional() @Inject(PRY_GEOAUTH_TOKEN) private geoAuthService: PryGeoAuthService
   ) {
     super(store, el);
+
+    this.widgetMapLayerService.withGeoAuth(this.geoAuthService);
 
     this.basicActions$ = this.actions$.pipe(
       map((actions) => actions.filter((action) => action !== 'export' && action !== 'upload'))
