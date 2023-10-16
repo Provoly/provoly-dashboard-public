@@ -810,7 +810,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
               componentPromises.push(this.generateTooltip(value));
             });
             classicFeatures.forEach((value: any) => {
-              componentPromises.push(this.generateTooltip(value));
+              componentPromises.push(this.generateTooltip(value.values));
             });
 
             Promise.all(componentPromises).then((promises) => {
@@ -882,7 +882,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       const component$ = this.tooltipFactoryService.generateTooltip(value.oClass, this.injector, this.popupContent);
       component$.subscribe((component) => {
         if (component) {
-          component.instance.data.item = value.values;
+          component.instance.data.item = value;
           component.instance.popup = this.popup;
           resolve(component);
         }

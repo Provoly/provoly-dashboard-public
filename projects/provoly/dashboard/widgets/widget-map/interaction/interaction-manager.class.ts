@@ -53,19 +53,13 @@ export class InteractionManager {
         | Feature<Circle>
         | Feature<Point>
       )[];
-      const valuesToDisplay = [
-        ...new Set(
-          values
-            .map((value) => value.get('id'))
-            .filter((id) => !!id)
-            .map((id) => values.find((value) => value.get('id') === id))
-            .map((value) => ({
-              oClass: value?.get('oClass'),
-              coordinates: event.coordinate,
-              values: value?.getKeys().reduce((p, c) => ({ ...p, [c]: value.get(c) }), {})
-            }))
-        )
-      ];
+      const valuesToDisplay = [...new Set(values.map((value) => value.get('id')).filter((id) => !!id))]
+        .map((id) => values.find((value) => value.get('id') === id))
+        .map((value) => ({
+          oClass: value?.get('oClass'),
+          coordinates: event.coordinate,
+          values: value?.getKeys().reduce((p, c) => ({ ...p, [c]: value.get(c) }), {})
+        }));
       this.component.classicFeatures$.next(valuesToDisplay);
       const wmsLayers = this.component.getWMSLayers();
       if (wmsLayers) {

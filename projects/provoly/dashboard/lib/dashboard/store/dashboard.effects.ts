@@ -697,13 +697,10 @@ export class DashboardEffects {
               id: feature.id,
               oClass: action.oClass,
               coordinates: action.coordinates,
-              values: { properties: [] }
+              properties: Object.keys(feature.properties)
+                .map((property) => ({ key: property, value: feature.properties[property] }))
+                .filter((prop) => !!prop.value)
             };
-            Object.keys(feature.properties).forEach((property) => {
-              if (feature.properties[property] !== null) {
-                result.values.properties.push({ key: property, value: feature.properties[property] });
-              }
-            });
             return result;
           })
         });
