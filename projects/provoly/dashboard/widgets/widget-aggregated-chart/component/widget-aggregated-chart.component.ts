@@ -23,6 +23,7 @@ import {
   combineLatest,
   fromEvent,
   Observable,
+  share,
   startWith,
   Subject,
   switchMap,
@@ -251,12 +252,13 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     this.aggregatedValues$ = combineLatest([
       this.datasourceIds$,
       this.options$,
-      this.resultSet$,
+      this.resultSet$.pipe(filter((rs) => (rs.merged ?? 0) > 0)),
       combineLatest([fromEvent(window, 'datasourceRefresh'), this.datasourceIds$]).pipe(
         filter(([event, datasources]) => datasources.includes((event as CustomEvent).detail)),
         startWith(undefined)
       )
     ]).pipe(
+      debounceTime(100),
       switchMap(([datasources, options]) => this.aggregationService.aggregate(datasources, options)),
       debounceTime(100),
       withLatestFrom(this.options$),
@@ -286,7 +288,8 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           )
           .reduce((a, b) => [...a, ...b], []);
         return { operation: aggregate.operation, data: flattened };
-      })
+      }),
+      share()
     );
 
     this.noData$ = this.aggregatedValues$.pipe(map(({ operation, data }) => data.length === 0));

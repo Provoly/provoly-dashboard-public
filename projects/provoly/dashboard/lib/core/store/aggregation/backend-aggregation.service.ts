@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { map, Observable, of, switchMap } from 'rxjs';
+import { map, Observable, of, share } from 'rxjs';
 import { DashboardSelectors } from '../../../dashboard/store/dashboard.selectors';
 import { PrySnackbarService } from '../../components/snackbar/snackbar.service';
 import { PryI18nService } from '../../i18n/i18n.service';
@@ -16,6 +16,7 @@ import { FieldSelectors } from '../field/field.selectors';
 import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from '../search/search.constants';
 import { SearchService } from '../search/search.service';
 import { AggregationResult, PryAggregationService } from './base-aggregation.service';
+import { debounceTime } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,14 @@ export class PryBackendAggregationService extends PryAggregationService {
   private classes: Class[] = [];
   private fields: Field[] = [];
   private filters: { [datasource: string]: FilterContext[] } = {};
+  private dataUrl: string = '';
+
+  private cache: {
+    [key: string]: {
+      response: Observable<AggregationResult>;
+      time: number;
+    };
+  } = {};
 
   constructor(
     private store: Store,
@@ -39,6 +48,7 @@ export class PryBackendAggregationService extends PryAggregationService {
     this.store.select(ClassSelectors.classes).subscribe((classes) => (this.classes = classes));
     this.store.select(FieldSelectors.fields).subscribe((fields) => (this.fields = fields));
     this.store.select(DashboardSelectors.datasourceFilters).subscribe((filters) => (this.filters = filters));
+    this.store.select(ConfigSelectors.dataUrl).subscribe((dataUrl) => (this.dataUrl = dataUrl));
   }
 
   override aggregate(datasources: string[], options: ChartAggregatedWidgetOptions): Observable<AggregationResult> {
@@ -93,19 +103,24 @@ export class PryBackendAggregationService extends PryAggregationService {
     }
     params = this.searchService.getItemsFilter(targetDatasource, params);
 
-    return this.store.select(ConfigSelectors.dataUrl).pipe(
-      switchMap((url) =>
-        this.httpClient
-          .get<AggregationResult>(`${url}/data-sources/id/${targetDatasource}/items/aggregate`, {
+    const key = `${this.dataUrl}_${params.toString()}`;
+    if (!this.cache[key] || this.cache[key].time + 1000 < new Date().getTime()) {
+      this.cache[key] = {
+        response: this.httpClient
+          .get<AggregationResult>(`${this.dataUrl}/data-sources/id/${targetDatasource}/items/aggregate`, {
             params
           })
           .pipe(
+            debounceTime(100),
             map((result) => ({
               ...result,
               operation: options.ordinate.operation === Operation.NONE ? Operation.NONE : result.operation
-            }))
-          )
-      )
-    );
+            })),
+            share()
+          ),
+        time: new Date().getTime()
+      };
+    }
+    return this.cache[key].response;
   }
 }
