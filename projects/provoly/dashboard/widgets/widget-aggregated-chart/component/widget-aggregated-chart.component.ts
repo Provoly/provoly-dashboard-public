@@ -260,7 +260,6 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     ]).pipe(
       debounceTime(100),
       switchMap(([datasources, options]) => this.aggregationService.aggregate(datasources, options)),
-      debounceTime(100),
       withLatestFrom(this.options$),
       map(([aggregate, options]) => {
         // @ts-ignore
