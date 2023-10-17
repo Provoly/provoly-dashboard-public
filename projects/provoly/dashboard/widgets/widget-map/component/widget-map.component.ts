@@ -1,4 +1,3 @@
-import { OverlayRef } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
   Component,
@@ -63,7 +62,6 @@ import {
 } from '@provoly/dashboard';
 import equal from 'fast-deep-equal/es6';
 import { Feature, Map, Overlay, View } from 'ol';
-import { applyBackground, applyStyle } from 'ol-mapbox-style';
 import { Coordinate } from 'ol/coordinate';
 import { boundingExtent, createEmpty } from 'ol/extent';
 import { Circle, Geometry, Point } from 'ol/geom';
@@ -73,7 +71,6 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import { Pixel } from 'ol/pixel';
 import { fromLonLat, get as getProjection, transform } from 'ol/proj';
-
 import { register } from 'ol/proj/proj4';
 import { TileWMS } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
@@ -108,6 +105,7 @@ import {
 } from '../utils/widget-map.utils';
 import { XMLUtils } from '../utils/xml-utils.class';
 import { WidgetMapLayerService } from './widget-map-layer.service';
+import MapboxVectorLayer from 'ol/layer/MapboxVector';
 
 export const TOOLTIP_PADDING = 15;
 
@@ -145,7 +143,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   layers$!: Observable<BaseLayer[]>;
   map!: Map;
   additionalLayers$ = new BehaviorSubject<VectorLayer<VectorSource<Geometry>>[]>([]);
-  private overlayRef?: OverlayRef;
   styles$: Observable<{ identifier: string; label: string }[]>;
   WIDGET_HEADER_HEIGHT = WIDGET_HEADER_HEIGHT;
   i = 0;
@@ -521,13 +518,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         if (!styleUrl) {
           return [];
         }
-        const layer = new VectorTileLayer({
-          declutter: true,
-          properties: { title: 'background' }
-        });
-        applyStyle(layer, styleUrl).catch((err) => console.warn('Style application problem', err));
-        applyBackground(layer, styleUrl).catch((err) => console.warn('Background application problem', err));
-        return [layer];
+        return [
+          new MapboxVectorLayer({
+            properties: { title: 'background' },
+            styleUrl
+          })
+        ];
       })
     );
 

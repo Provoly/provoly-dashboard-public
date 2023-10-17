@@ -10,6 +10,11 @@
       "version": "0.14",
       "description": "Update library to version 0.14",
       "factory": "./ng-update/version-0-14/index#updateTo0_14"
+    },
+    "migration-v0.15": {
+      "version": "0.15",
+      "description": "Update library to version 0.15",
+      "factory": "./ng-update/version-0-15/index#updateTo0_15"
     }
   }
 }
