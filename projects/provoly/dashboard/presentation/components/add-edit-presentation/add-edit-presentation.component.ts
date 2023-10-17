@@ -75,6 +75,9 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
       cover: this.form.value.cover ?? false,
       image: this.image ?? DEFAULT_RESTITUTION_ICON_URL
     };
+    if (!this.edition) {
+      this.store.dispatch(DashboardActions.updateStaticManifest({ staticManifest: { windows: [] } }));
+    }
     this.subscriptions.add(
       this.staticManifest$.pipe(take(1)).subscribe((staticManifest) => {
         this.store.dispatch(
