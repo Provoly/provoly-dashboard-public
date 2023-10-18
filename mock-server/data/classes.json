@@ -61,7 +61,7 @@
       },
       {
         "id": "37d71f6c-9c88-405e-85b2-1895e6c190d5",
-        "name": "location-auto",
+        "name": "position-auto",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false
@@ -122,7 +122,7 @@
     "attributes": [
       {
         "id": "3010e2c4-ef24-40fb-a72b-6757df8017f0",
-        "name": "location",
+        "name": "position",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false
@@ -163,7 +163,7 @@
     "attributes": [
       {
         "id": "940f5738-c0bf-4fd4-96af-8f319e6fd445",
-        "name": "location",
+        "name": "position",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false
@@ -211,7 +211,7 @@
       },
       {
         "id": "54a21924-5309-43cd-b8c6-f98a4712ca61",
-        "name": "location",
+        "name": "position",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false
@@ -252,7 +252,7 @@
       },
       {
         "id": "fa3082bc-2acf-45c4-9af6-3ffd53e59330",
-        "name": "location",
+        "name": "position",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false
@@ -300,7 +300,7 @@
       },
       {
         "id": "4cf300b2-f56d-47de-b6a9-81a47de6af2e",
-        "name": "location",
+        "name": "position",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false
@@ -432,7 +432,7 @@
     "attributes": [
       {
         "id": "1230e2c4-ef24-40fb-a72b-6757df8017f0",
-        "name": "location",
+        "name": "position",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false
@@ -453,7 +453,7 @@
     "attributes": [
       {
         "id": "1260e2c4-ef24-40fb-a72b-6757df8017f0",
-        "name": "location",
+        "name": "position",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false
@@ -479,7 +479,7 @@
       },
       {
         "id": "497f6eca-6276-4993-bfeb-53cbbbba6f09",
-        "name": "station_location",
+        "name": "position",
         "field": "497f6eca-6276-4993-bfeb-53cbbbba6f08-station_location",
         "multiValued": false
       },
@@ -521,7 +521,7 @@
     "attributes": [
       {
         "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08point",
-        "name": "position",
+        "name": "location",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-point",
         "multiValued": false
       },
@@ -569,7 +569,7 @@
       },
       {
         "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08point",
-        "name": "position",
+        "name": "location",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-point",
         "multiValued": false
       },
@@ -651,7 +651,7 @@
     "attributes": [
       {
         "id": "63cca4b1-8c37-4ce9-bcdb-e84dc60af9be",
-        "name": "GeoShape",
+        "name": "position",
         "field": "7000506c-049b-47d3-b92d-a2e823b46b80",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,

@@ -20,6 +20,16 @@
         "position": "FULL"
       }
     ],
+    "11111111-69a6-474e-8f46-7cc8796ed151": [
+      {
+        "isDefault": true,
+        "iconUrl": "internal:1697630358598velo.png",
+        "iconSize": [
+          25,
+          25
+        ]
+      }
+    ],
     "d260d53d-3529-4712-bedb-6517ecad5784": [
       {
         "iconSize": [
@@ -108,6 +118,22 @@
           "numero_accident_qui_a_eu_lieu",
           "oClass",
           "voie"
+        ]
+      }
+    },
+    "11111111-69a6-474e-8f46-7cc8796ed151": {
+      "type": "attribute",
+      "options": {
+        "attributes": [
+          "accroches_libres",
+          "geo_point_2d",
+          "id",
+          "nombre_emplacements",
+          "oClass",
+          "position",
+          "station_longitude",
+          "station_nom",
+          "velos_disponibles"
         ]
       }
     }

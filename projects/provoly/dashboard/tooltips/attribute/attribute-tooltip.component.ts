@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BaseTooltipComponent, TranslateIdPipe } from '@provoly/dashboard';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'pry-attribute-tooltip',
@@ -12,7 +12,25 @@ export class AttributeTooltipComponent extends BaseTooltipComponent {
     this.context = this.context ?? { attributes: [] };
   }
 
-  getValue(attribute: string): Observable<string> {
+  getValue(attribute: string, limit = 9999): Observable<string> {
+    return this._getValue(attribute).pipe(
+      map((value) => {
+        switch (typeof value) {
+          case 'undefined':
+            return '';
+          case 'number':
+            return value.toString();
+          case 'string':
+            return value;
+          default:
+            const result = JSON.stringify(value);
+            return result.length > limit ? `${result.substring(0, limit)}...` : result;
+        }
+      })
+    );
+  }
+
+  _getValue(attribute: string): Observable<string | undefined | number> {
     if (!this.data.item.properties) {
       // This is for Provoly-like items
       switch (attribute) {
@@ -24,12 +42,12 @@ export class AttributeTooltipComponent extends BaseTooltipComponent {
             output: 'name'
           }) as Observable<string>;
         default:
-          return of((this.data.item.attributes[attribute]?.value ?? '') as string);
+          return of(this.data.item.attributes[attribute]?.value);
       }
     } else {
       // This is for other items, like WMSFeatures
       return of(
-        this.data.item.properties.find((prop: { key: string; value: string }) => prop.key === attribute)?.value ?? ''
+        this.data.item.properties.find((prop: { key: string; value: string }) => prop.key === attribute)?.value
       );
     }
   }

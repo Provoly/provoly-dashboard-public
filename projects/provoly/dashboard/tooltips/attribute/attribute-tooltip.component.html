@@ -3,14 +3,17 @@
     <img
       [src]="data.item | translateItemToSymbol | async"
       [alt]="data.item.oClass | translateId : { type: 'class', output: 'name' } | async"
+      [title]="data.item.oClass | translateId : { type: 'class', output: 'name' } | async"
       width="32"
       aria-hidden="true"
     />
-    <span>{{ data.item.oClass | translateId : { type: 'class', output: 'name' } | async }}</span>
+    <span [title]="data.item.oClass | translateId : { type: 'class', output: 'name' } | async">{{
+      data.item.oClass | translateId : { type: 'class', output: 'name' } | async
+    }}</span>
   </h3>
   <ng-container *ngFor="let attribute of context.attributes">
-    <p>
-      <span>{{ attribute }}:</span> {{ getValue(attribute) | async }}
+    <p [title]="getValue(attribute) | async">
+      <span>{{ attribute }}:</span> {{ getValue(attribute, 40) | async }}
     </p>
   </ng-container>
 </div>
