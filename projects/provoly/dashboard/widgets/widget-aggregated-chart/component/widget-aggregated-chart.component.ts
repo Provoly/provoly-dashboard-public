@@ -125,7 +125,10 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           .filter((attr) => !!attr)
       ),
       map((attributes) =>
-        (attributes.length > 0 ? Object.values(Operation) : [Operation.COUNT, Operation.DISTINCT, Operation.NONE])
+        (attributes.length > 0
+          ? Object.values(Operation).filter((operation) => operation !== Operation.EXTENT)
+          : [Operation.COUNT, Operation.DISTINCT, Operation.NONE]
+        )
           .map((v) => ({
             id: v,
             label: this.translateService.instant('@pry.widget.chart.operation.' + v)
