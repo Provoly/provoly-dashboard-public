@@ -4,7 +4,6 @@ import { Overlay } from '@angular/cdk/overlay';
 import { PryDatasetComponent, PryDatasetCssComponent, PryDatasetDetailComponent } from '@provoly/dashboard/dataset';
 import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
 import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pry-icon.component';
-import { MockPryTooltipDirective } from '@provoly/dashboard/mock/directive/mock-pry-tooltip.directive';
 import { MockNgModelDirective } from '@provoly/dashboard/mock/directive/mock-ng-model.directive';
 import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/mock-pry-tab-group.component';
 import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
@@ -33,7 +32,6 @@ describe('PryDatasetComponent', () => {
         PryDatasetCssComponent,
         MockI18nPipe,
         MockPryIconComponent,
-        MockPryTooltipDirective,
         MockNgModelDirective,
         MockPryTabGroupComponent,
         MockPryTabComponent

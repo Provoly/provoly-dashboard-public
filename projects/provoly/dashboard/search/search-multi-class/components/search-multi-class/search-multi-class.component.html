@@ -1,13 +1,15 @@
 <div class="o-search-multi-class">
   <div class="o-search-multi-class__header">
     <h3 class="a-h3">{{ '@pry.search.multi.title' | i18n }}</h3>
-    <div class="" [pryOverlay]="optionOverlay" [(overlayOpen)]="optionsOpen" (click)="optionsOpen = !optionsOpen">
-      <button
-        class="a-btn a-btn--icon-text"
-        [pryTooltip]="infoTooltip"
-        pryTooltipPosition="bottom"
-        aria-describedby="infoTooltip_searchMulticlass"
-      >
+    <div
+      class="a-tooltip"
+      [attr.data-tooltip]="'@pry.search.multi.extraOptions' | i18n"
+      data-tooltip-position="bottom"
+      [pryOverlay]="optionOverlay"
+      [(overlayOpen)]="optionsOpen"
+      (click)="optionsOpen = !optionsOpen"
+    >
+      <button class="a-btn a-btn--icon-text">
         {{ '@pry.search.multi.options' | i18n }}
         <pry-icon iconSvg="tune" [width]="16" [height]="16" [animation]="false"></pry-icon>
       </button>
@@ -40,9 +42,3 @@
     </div>
   </div>
 </div>
-
-<ng-template #infoTooltip>
-  <div class="m-tooltip" role="tooltip" id="infoTooltip_searchMulticlass">
-    <span class="m-tooltip__text"> Options supplémentaires </span>
-  </div>
-</ng-template>

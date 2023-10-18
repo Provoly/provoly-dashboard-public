@@ -14,10 +14,9 @@
       (click)="panelClassesOpen = true"
     >
       <span
-        class="o-search-fulltext__classes__content"
-        [pryTooltip]="infoTooltip"
-        pryTooltipPosition="bottom"
-        aria-describedby="infoTooltip_searchfulltext"
+        class="o-search-fulltext__classes__content a-tooltip"
+        [attr.data-tooltip]="'@pry.search.fulltext.selectClass' | i18n"
+        data-tooltip-position="bottom"
       >
         <pry-icon
           [iconSvg]="classesSelected.length === 0 ? 'apps' : 'detail'"
@@ -26,7 +25,7 @@
           [animation]="false"
         ></pry-icon>
         <span class="o-search-fulltext__classes__content__label" *ngIf="mode === 'inline'">
-          {{ classesSelectedLabel | i18n: { nb: classesSelected.length } }}
+          {{ classesSelectedLabel | i18n : { nb: classesSelected.length } }}
         </span>
       </span>
 
@@ -56,16 +55,16 @@
         (focusin)="onOpenSearchPanel()"
         (focusout)="onFocusOut()"
       />
-      <div
-        *ngIf="!searchDisabled"
-        class="o-search-fulltext__input__clear"
-        [pryTooltip]="infoTooltipClose"
-        pryTooltipPosition="bottom"
-        aria-describedby="infoTooltipClose_searchfulltext"
-      >
+      <div *ngIf="!searchDisabled" class="o-search-fulltext__input__clear">
         <div class="o-search-fulltext__input__clear__wrapper" (click)="onClearSearch($event)">
-          <pry-icon iconSvg="close" [height]="16" [width]="16" [animation]="false"></pry-icon>
-          <span class="u-visually-hidden">Effacer la saisie</span>
+          <div
+            class="a-tooltip"
+            [attr.data-tooltip]="'@pry.search.fulltext.clear' | i18n"
+            data-tooltip-position="bottom"
+          >
+            <pry-icon iconSvg="close" [height]="16" [width]="16" [animation]="false"></pry-icon>
+            <span class="u-visually-hidden">{{ '@pry.search.fulltext.clear' | i18n }}</span>
+          </div>
         </div>
       </div>
     </pry-choose-widget>
@@ -73,19 +72,18 @@
 
   <button
     #searchButton
-    class="a-btn a-btn--primary"
+    class="a-btn a-btn--primary a-tooltip"
     (click)="onSearch()"
     [class.o-search-fulltext__button__inline]="mode === 'inline'"
     [ngClass]="{ ' -width-full': mode === 'vertical' }"
     [disabled]="searchDisabled"
     *ngIf="launchButton"
-    [pryTooltip]="infoTooltipSearch"
-    pryTooltipPosition="bottom"
-    aria-describedby="infoTooltipSearch_searchfulltext"
+    [attr.data-tooltip]="'@pry.search.fulltext.search' | i18n"
+    data-tooltip-position="bottom"
   >
     <pry-icon iconSvg="search-line" [animation]="false"></pry-icon>
     <span *ngIf="mode === 'vertical'">{{ '@pry.search.fulltext.search' | i18n }}</span>
-    <span class="u-visually-hidden">Lancer la recherche</span>
+    <span class="u-visually-hidden">{{ '@pry.search.fulltext.search' | i18n }}</span>
   </button>
 </div>
 
@@ -115,28 +113,10 @@
           alt="class"
           [height]="20"
           [width]="20"
-          [src]="clazz.id | translateId: { type: 'class', output: 'icon' } | async"
+          [src]="clazz.id | translateId : { type: 'class', output: 'icon' } | async"
         />
         <span class="o-search-fulltext__classes-overlay__item__label">{{ clazz.name }}</span>
       </button>
     </ng-container>
-  </div>
-</ng-template>
-
-<ng-template #infoTooltip>
-  <div class="m-tooltip" role="tooltip" id="infoTooltip_searchfulltext">
-    <span class="m-tooltip__text"> Sélectionner la classe </span>
-  </div>
-</ng-template>
-
-<ng-template #infoTooltipSearch>
-  <div class="m-tooltip" role="tooltip" id="infoTooltipSearch_searchfulltext">
-    <span class="m-tooltip__text"> Lancer la recherche </span>
-  </div>
-</ng-template>
-
-<ng-template #infoTooltipClose>
-  <div class="m-tooltip" role="tooltip" id="infoTooltipClose_searchfulltext">
-    <span class="m-tooltip__text"> Effacer la saisie </span>
   </div>
 </ng-template>

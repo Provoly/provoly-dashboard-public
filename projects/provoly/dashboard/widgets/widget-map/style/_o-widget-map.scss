@@ -66,3 +66,17 @@
     }
   }
 }
+
+.a-tooltip {
+  &--move {
+    &[data-tooltip]:not([data-tooltip-position])::after {
+      left: calc(50% + 20px);
+    }
+  }
+
+  &--click {
+    &[data-tooltip]:not([data-tooltip-position])::after {
+      left: calc(50% + 10px);
+    }
+  }
+}

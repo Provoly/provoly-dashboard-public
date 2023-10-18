@@ -20,18 +20,8 @@
             [width]="15"
             [height]="15"
             style="color: black"
-            [pryTooltip]="classesTooltip"
-            pryTooltipPosition="after"
+            [attr.data-tooltip]="('@pry.search.multi.in' | i18n) + ' ' + join(classesLinked)"
           ></pry-icon>
-          <ng-template #classesTooltip>
-            <span>
-              {{ '@pry.search.multi.in' | i18n }}
-              <span *ngFor="let clazz of classesLinked; let last = last">
-                {{ clazz.name }}
-                <ng-container *ngIf="!last">, </ng-container>
-              </span>
-            </span>
-          </ng-template>
         </ng-container>
       </div>
 

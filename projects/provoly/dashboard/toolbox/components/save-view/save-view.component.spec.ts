@@ -7,7 +7,6 @@ import { MockPryAccessDirective } from '@provoly/dashboard/mock/directive/mock-p
 import { of } from 'rxjs';
 import * as uuid from 'uuid';
 import { MockPryIconComponent } from '../../../mock/components/mock-pry-icon.component';
-import { MockPryTooltipDirective } from '../../../mock/directive/mock-pry-tooltip.directive';
 import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 
@@ -27,14 +26,7 @@ describe('SaveViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        SaveViewComponent,
-        MockPryIconComponent,
-        MockTranslatePipe,
-        MockPryTooltipDirective,
-        MockI18nPipe,
-        MockPryAccessDirective
-      ],
+      declarations: [SaveViewComponent, MockPryIconComponent, MockTranslatePipe, MockI18nPipe, MockPryAccessDirective],
       providers: [
         provideMockStore({}),
         {

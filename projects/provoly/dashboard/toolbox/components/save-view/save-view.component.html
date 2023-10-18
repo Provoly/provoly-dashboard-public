@@ -1,8 +1,9 @@
 <ng-container *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'save' }">
   <ng-container *ngIf="mode === 'directSave'">
     <div
-      [pryTooltip]="infoTooltipDirectSave"
-      pryTooltipPosition="bottom"
+      class="a-tooltip"
+      [attr.data-tooltip]="'@pry.toolbox.save' | i18n"
+      data-tooltip-position="bottom"
       [attr.aria-expanded]="saveTypeOpened"
       aria-controls="directiveSave"
       aria-describedby="infoTooltip_directSave"
@@ -21,9 +22,9 @@
   </ng-container>
   <ng-container *ngIf="mode === 'saveAs'">
     <div
-      class="save-manifest-container"
-      [pryTooltip]="infoTooltipSaveAs"
-      pryTooltipPosition="bottom"
+      class="save-manifest-container a-tooltip"
+      [attr.data-tooltip]="'@pry.toolbox.rename' | i18n"
+      data-tooltip-position="bottom"
       [attr.aria-expanded]="saveAsOpened"
       aria-controls="saveModal"
       aria-describedby="infoTooltip_saveAs"
@@ -152,17 +153,6 @@
         </div>
       </pry-step>
     </pry-stepper>
-  </div>
-</ng-template>
-
-<ng-template #infoTooltipSaveAs>
-  <div class="m-tooltip" role="tooltip" id="infoTooltip_saveAs">
-    <span class="m-tooltip__text">{{ '@pry.toolbox.rename' | i18n }}</span>
-  </div>
-</ng-template>
-<ng-template #infoTooltipDirectSave>
-  <div class="m-tooltip" role="tooltip" id="infoTooltip_directSave">
-    <span class="m-tooltip__text">{{ '@pry.toolbox.save' | i18n }}</span>
   </div>
 </ng-template>
 

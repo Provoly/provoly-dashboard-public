@@ -8,7 +8,6 @@ import { MockCdkConnectedOverlayDirective } from '../../../mock/directive/mock-c
 import { MockCdkOverlayOriginDirective } from '../../../mock/directive/mock-cdk-overlay-origin.directive';
 import { MockNgModelDirective } from '../../../mock/directive/mock-ng-model.directive';
 import { MockPryOverlayDirective } from '../../../mock/directive/mock-pry-overlay.directive';
-import { MockPryTooltipDirective } from '../../../mock/directive/mock-pry-tooltip.directive';
 import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 import { searchFulltextActions } from '../store/search-fulltext.actions';
@@ -30,7 +29,6 @@ describe('PrySearchFulltextComponent', () => {
         MockPryOverlayDirective,
         MockNgModelDirective,
         MockPryChooseWidgetComponent,
-        MockPryTooltipDirective,
         MockI18nPipe,
         MockPrySearchCssComponent
       ],

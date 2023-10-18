@@ -4,7 +4,6 @@ import { ToolboxManifestService, WidgetFactoryService } from '@provoly/dashboard
 import { MockPryIconComponent } from '../../../mock/components/mock-pry-icon.component';
 import { MockCdkConnectedOverlayDirective } from '../../../mock/directive/mock-cdk-connected-overlay.directive';
 import { MockCdkOverlayOriginDirective } from '../../../mock/directive/mock-cdk-overlay-origin.directive';
-import { MockPryTooltipDirective } from '../../../mock/directive/mock-pry-tooltip.directive';
 import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 import { DragWidgetsComponent } from './drag-widgets.component';
@@ -22,7 +21,6 @@ describe('DragWidgetsComponent', () => {
         MockTranslatePipe,
         MockCdkOverlayOriginDirective,
         MockCdkConnectedOverlayDirective,
-        MockPryTooltipDirective,
         MockI18nPipe
       ],
       providers: [

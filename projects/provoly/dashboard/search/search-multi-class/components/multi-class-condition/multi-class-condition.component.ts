@@ -179,6 +179,10 @@ export class MultiClassConditionComponent implements OnInit {
     }
   }
 
+  join(classes: Class[]): string {
+    return classes.map((clazz) => clazz.name).join(', ');
+  }
+
   get hasTwoFields() {
     return this.form.get('operator')?.value === 'INSIDE' || this.form.get('operator')?.value === 'OUTSIDE';
   }

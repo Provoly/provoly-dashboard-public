@@ -19,15 +19,10 @@
               </pry-card-icon>
 
               <pry-card-title>
-                <div
-                  class="o-pry-card-title__text"
-                  [pryTooltip]="infoTooltip"
-                  aria-describedby="infoTooltip_searchHome"
-                >
+                <div class="o-pry-card-title__text" aria-describedby="infoTooltip_searchHome">
                   <div class="a-p o-pry-card-title__text__title">{{ nq.name }}</div>
                   <div class="a-p o-pry-card-title__text__description" *ngIf="nq.description">{{ nq.description }}</div>
                 </div>
-
                 <ng-template #infoTooltip>
                   <div class="m-tooltip" role="tooltip" id="infoTooltip_searchHome">
                     <span class="m-tooltip__text">
@@ -38,7 +33,6 @@
                     </span>
                   </div>
                 </ng-template>
-
                 <pry-icon
                   class="o-pry-card-title__pin"
                   *ngIf="nq.favorite"
@@ -49,15 +43,14 @@
                 ></pry-icon>
 
                 <button
-                  [pryTooltip]="infoTooltipShow"
-                  pryTooltipPosition="bottom"
-                  aria-describedby="infoTooltipShow_searchHome"
-                  class="a-btn a-btn--secondary -size-sm"
+                  [attr.data-tooltip]="'@pry.search.home.showAssociatedWidget' | i18n"
+                  data-tooltip-position="bottom"
+                  class="a-tooltip a-btn a-btn--secondary -size-sm"
                   (click)="onSearchNamedQuery(nq.id)"
                   *ngIf="(layout$ | async) !== DashboardGridLayout.MANUAL"
                 >
                   {{ '@pry.search.namedQuery.display' | i18n }}
-                  <span class="u-visually-hidden">le widget associé à cette recherche</span>
+                  <span class="u-visually-hidden">{{ '@pry.search.home.associatedWidget' | i18n }}</span>
                 </button>
               </pry-card-title>
 
@@ -201,12 +194,6 @@
     </ng-template>
   </ng-container>
 </div>
-
-<ng-template #infoTooltipShow>
-  <div class="m-tooltip" role="tooltip" id="infoTooltipShow_searchHome">
-    <span class="m-tooltip__text"> Afficher le widget associé à cette recherche </span>
-  </div>
-</ng-template>
 
 <div class="o-pry-search-home__search">
   <h3 class="a-h3">{{ '@pry.search.home.ssTitle' | i18n }}</h3>

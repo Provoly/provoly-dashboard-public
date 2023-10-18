@@ -61,7 +61,6 @@ export * from './components/select-image/select-image.component';
 export * from './components/icon/icon.component';
 export * from './components/icon/icon.module';
 export * from './components/overlay/overlay.directive';
-export * from './components/overlay/tooltip.directive';
 export * from './components/overlay/overlay.module';
 export * from './components/overlay/dialog-ref';
 export * from './components/overlay/dialog.service';

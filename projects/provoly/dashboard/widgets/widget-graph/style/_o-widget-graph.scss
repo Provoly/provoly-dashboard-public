@@ -1,4 +1,18 @@
 @use '../../../styles/abstracts/index' as *;
 
-/* Organism - widget map */
+/* Organism - widget graph */
 /* Extends o-widget */
+
+.a-tooltip {
+  &--move {
+    &[data-tooltip]:not([data-tooltip-position])::after {
+      left: calc(50% + 30px);
+    }
+  }
+
+  &--rectangle {
+    &[data-tooltip]:not([data-tooltip-position])::after {
+      left: calc(50% + 50px);
+    }
+  }
+}

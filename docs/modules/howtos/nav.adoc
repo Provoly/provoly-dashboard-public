@@ -1,5 +1,6 @@
 * Howtos
 ** xref:css-theming.adoc[Surcharger le theme css de la librairie]
+** xref:css-useful-classes.adoc[Classes CSS utiles avec des exemples]
 ** xref:create.adoc[Ajouter un formulaire de création d’objets]
 ** xref:apply.adoc[Appliquer des transformations aux récupérations de données]
 ** xref:no-pry-back.adoc[Comment faire sans backend Provoly]

@@ -32,7 +32,13 @@
     <p class="o-catalog__list__item__libelle">{{ widget.label | i18n : { warn: false } }}</p>
   </ng-template>
   <ng-container *ngIf="widget.visibility?.type === PryVisibilityType.PRIVATE">
-    <pry-icon iconSvg="private" [pryTooltip]="private" class="is-private" [height]="17" [width]="17"></pry-icon>
+    <pry-icon
+      iconSvg="private"
+      class="is-private a-tooltip"
+      [attr.data-tooltip]="'@pry.restitution.lock' | i18n"
+      [height]="17"
+      [width]="17"
+    ></pry-icon>
   </ng-container>
   <div class="o-catalog__list__item__action" *ngIf="widget.isCustom">
     <button type="button" class="a-btn a-btn--ghost" (click)="emitSelectedRestitution(widget)">
@@ -40,9 +46,3 @@
     </button>
   </div>
 </li>
-
-<ng-template #private>
-  <div class="m-tooltip" role="tooltip">
-    <span class="m-tooltip__text">{{ '@pry.restitution.lock' | i18n }}</span>
-  </div>
-</ng-template>

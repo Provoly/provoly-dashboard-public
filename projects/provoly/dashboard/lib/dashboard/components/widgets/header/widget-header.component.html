@@ -62,9 +62,9 @@
           id="toggleActions"
           (click)="toggleDatasourceSelection()"
           *pryAccess="{ module: 'dashboard', page: 'widget', action: 'select_named_query' }"
-          class="a-btn"
-          [pryTooltip]="infoTooltip"
-          aria-describedby="infoTooltip_widgetHeader"
+          class="a-btn a-tooltip"
+          [attr.data-tooltip]="'@pry.widget.tooltip.readSearch' | i18n"
+          data-tooltip-position="bottom"
         >
           <pry-icon [height]="17" [width]="17" iconSvg="stack-fill"></pry-icon>
           <span>{{ '@pry.widget.tooltip.readSearch' | i18n }}</span>
@@ -95,10 +95,9 @@
           type="button"
           role="menuitem"
           (click)="toggleChangeSpot()"
-          class="a-btn"
+          class="a-btn a-tooltip"
           tabindex="-1"
-          [pryTooltip]="infoChangeSpot"
-          aria-describedby="infoTooltip_changeSpot"
+          [attr.data-tooltip]="'@pry.widget.tooltip.changeSpot' | i18n"
         >
           <pry-icon [height]="17" [width]="17" iconSvg="move"></pry-icon>
           <span>{{ '@pry.widget.tooltip.changeSpot' | i18n }}</span>
@@ -123,9 +122,8 @@
           role="menuitem"
           tabindex="-1"
           (click)="toggleCatalog()"
-          class="a-btn"
-          [pryTooltip]="infoAdd"
-          aria-describedby="infoAdd_widgetHeader"
+          class="a-btn a-tooltip"
+          [attr.data-tooltip]="'@pry.widget.tooltip.catalogWidget' | i18n"
         >
           <pry-icon [height]="17" [width]="17" iconSvg="library_add"></pry-icon>
           <span>{{ '@pry.widget.tooltip.catalogWidget' | i18n }}</span>
@@ -137,9 +135,8 @@
           role="menuitem"
           tabindex="-1"
           (click)="toggleRemoveConfirm($event)"
-          class="a-btn"
-          [pryTooltip]="infoRemove"
-          aria-describedby="infoRemove_widgetHeader"
+          class="a-btn a-tooltip"
+          [attr.data-tooltip]="'@pry.widget.tooltip.deleteWidget' | i18n"
           (keydown.tab)="menuOpen()"
         >
           <pry-icon [height]="17" [width]="17" iconSvg="delete"></pry-icon>
@@ -192,27 +189,6 @@
         {{ '@pry.toolbox.manifest.validate' | i18n }}
       </button>
     </div>
-  </div>
-</ng-template>
-
-<ng-template #infoTooltip>
-  <div class="m-tooltip" role="tooltip" id="infoTooltip_widgetHeader" aria-hidden="true">
-    <span class="m-tooltip__text">{{ '@pry.widget.tooltip.readSearch' | i18n }}</span>
-  </div>
-</ng-template>
-<ng-template #infoRemove>
-  <div class="m-tooltip" role="tooltip" id="infoRemove_widgetHeader" aria-hidden="true">
-    <span class="m-tooltip__text">{{ '@pry.widget.tooltip.deleteWidget' | i18n }}</span>
-  </div>
-</ng-template>
-<ng-template #infoAdd>
-  <div class="m-tooltip" role="tooltip" id="infoAdd_widgetHeader" aria-hidden="true">
-    <span class="m-tooltip__text">{{ '@pry.widget.tooltip.catalogWidget' | i18n }}</span>
-  </div>
-</ng-template>
-<ng-template #infoChangeSpot>
-  <div class="m-tooltip" role="tooltip" id="infoAdd_changeSpot" aria-hidden="true">
-    <span class="m-tooltip__text">{{ '@pry.widget.tooltip.changeSpot' | i18n }}</span>
   </div>
 </ng-template>
 

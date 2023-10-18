@@ -1,6 +1,6 @@
 <ng-container *ngIf="mode !== 'action'">
   <label
-    class="a-toggle"
+    class="a-toggle a-tooltip"
     [for]="'toggle-' + _id"
     [dir]="dir"
     [ngClass]="{
@@ -9,9 +9,8 @@
       '-size-sm': size === 'sm',
       '-txt-inside': hasTextInside
     }"
-    [pryTooltip]="infoTooltip"
-    pryTooltipPosition="bottom"
-    aria-describedby="infoTooltip_toggle"
+    [attr.data-tooltip]="'@pry.toolbox.edit' | i18n"
+    data-tooltip-position="bottom"
   >
     <input
       #input
@@ -26,11 +25,6 @@
     />
     <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
   </label>
-  <ng-template #infoTooltip>
-    <div class="m-tooltip" role="tooltip" id="infoTooltip_toggle">
-      <span class="m-tooltip__text">{{ '@pry.toolbox.edit' | i18n }}</span>
-    </div>
-  </ng-template>
 </ng-container>
 <ng-container *ngIf="mode === 'action'">
   <button

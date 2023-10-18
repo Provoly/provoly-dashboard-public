@@ -55,6 +55,20 @@
             white-space: nowrap;
             text-overflow: ellipsis;
           }
+
+          .m-tooltip {
+            position: absolute;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 2;
+          }
+
+          &:hover + m-tooltip {
+            visibility: visible;
+            transition: opacity 0.2s ease;
+            opacity: 1;
+          }
         }
 
         &__pin {

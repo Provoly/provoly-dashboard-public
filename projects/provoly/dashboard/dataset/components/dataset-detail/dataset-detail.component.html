@@ -52,13 +52,14 @@
             {{ version.version }}
             <pry-icon *ngIf="(activeVersion$ | async) === version.id" iconSvg="check" class="check"></pry-icon>
           </td>
-          <td [pryTooltip]="dateTooltip">
-            {{ version.lastModified | sinceDate }}
-            <ng-template #dateTooltip>
-              <div class="m-tooltip" aria-hidden="true" role="tooltip" id="dateTooltip">
-                <span class="m-tooltip__text"> {{ version.lastModified | sinceDate : { onlyLocale: true } }}</span>
-              </div>
-            </ng-template>
+          <td>
+            <div
+              class="a-tooltip"
+              [attr.data-tooltip]="version.lastModified | sinceDate : { onlyLocale: true }"
+              data-tooltip-position="right"
+            >
+              {{ version.lastModified | sinceDate : { onlyLocale: true } }}
+            </div>
           </td>
           <td>
             {{

@@ -1,5 +1,5 @@
 <div class="toolbox-draggable">
-  <div [pryTooltip]="infoTooltip" pryTooltipPosition="bottom" aria-describedby="infoTooltip_dragWidgets">
+  <div class="a-tooltip" data-tooltip="Insérer un widget" data-tooltip-position="bottom">
     <button
       type="button"
       class="a-btn a-btn--secondary -size-md"
@@ -18,12 +18,6 @@
     </button>
   </div>
 </div>
-
-<ng-template #infoTooltip>
-  <div class="m-tooltip" role="tooltip" id="infoTooltip_dragWidgets">
-    <span class="m-tooltip__text"> Insérer un widget </span>
-  </div>
-</ng-template>
 
 <ng-template
   cdkConnectedOverlay

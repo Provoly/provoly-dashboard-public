@@ -1,9 +1,8 @@
 <button
   type="button"
   (click)="toggle()"
-  class="a-btn a-btn--icon-text -settings"
-  [pryTooltip]="infoTooltipSearch"
-  aria-describedby="infoTooltipSearch_settings"
+  class="a-btn a-btn--icon-text -settings a-tooltip"
+  [attr.data-tooltip]="'@pry.widget.tooltip.openParameter' | i18n"
 >
   <pry-icon [height]="20" [width]="20" iconSvg="control"></pry-icon>
   <span>{{ '@pry.widget.settings.title' | i18n }}</span>
@@ -51,11 +50,5 @@
         {{ '@pry.widget.settings.validateUpdating' | i18n }}
       </button>
     </div>
-  </div>
-</ng-template>
-
-<ng-template #infoTooltipSearch>
-  <div class="m-tooltip" aria-hidden="true" role="tooltip" id="infoTooltipSearch_settings">
-    <span class="m-tooltip__text"> {{ '@pry.widget.tooltip.openParameter' | i18n }}</span>
   </div>
 </ng-template>

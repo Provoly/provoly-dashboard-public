@@ -1,0 +1,76 @@
+@use '../abstracts' as *;
+
+/* Theme atom - tooltip */
+
+.a-tooltip {
+  &[data-tooltip] {
+    position: relative;
+    cursor: pointer;
+
+    &:after {
+      line-height: 1;
+      pointer-events: none;
+      position: absolute;
+      box-sizing: border-box;
+      display: none;
+      opacity: 0;
+    }
+
+    &:after {
+      content: attr(data-tooltip);
+      text-align: center;
+      min-width: 3em;
+      max-width: 21em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: toRem(5) toRem(7);
+      box-shadow: 2px 3px 10px 2px rgba(0, 0, 0, 0.2);
+      border-radius: toRem(5);
+      z-index: 1000;
+    }
+
+    &:hover:after {
+      display: block;
+      opacity: 1;
+    }
+
+    &:not([data-tooltip-position])::after,
+    &[data-tooltip-position="top"]::after {
+      bottom: calc(100% + 5px);
+    }
+
+    &:not([data-tooltip-position])::after,
+    &[data-tooltip-position="top"]::after {
+      left: 50%;
+      -webkit-transform: translate(-50%, -4px);
+      transform: translate(-50%, -4px);
+    }
+
+   &[data-tooltip-position="bottom"]::after {
+     top: calc(100%);
+      left: 50%;
+      -webkit-transform: translate(-50%, 8px);
+      transform: translate(-50%, 8px);
+    }
+
+    &[data-tooltip-position="left"]::after {
+      top: 50%;
+      right: calc(100% + 5px);
+      -webkit-transform: translate(-8px, -50%);
+      transform: translate(-8px, -50%);
+    }
+
+    &[data-tooltip-position="right"]::after {
+      top: 50%;
+      left: calc(100% + 5px);
+      -webkit-transform: translate(8px, -50%);
+      transform: translate(8px, -50%);
+    }
+  }
+
+  [data-tooltip=""]::after {
+    display: none;
+  }
+}
+

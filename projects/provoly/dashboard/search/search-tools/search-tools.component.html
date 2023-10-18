@@ -5,13 +5,12 @@
 >
   <button
     type="button"
-    class="a-btn a-btn--icon-text -back"
+    class="a-btn a-btn--icon-text -back a-tooltip"
     (click)="onSearchTools()"
     aria-pressed="false"
     *ngIf="((editInProgress$ | async) && !(isRename$ | async)) || isSearchCriteria"
-    [pryTooltip]="infoTooltipBack"
-    pryTooltipPosition="bottom"
-    aria-describedby="infoTooltipBack_searchTools"
+    [attr.data-tooltip]="'@pry.search.button.backSearch' | i18n"
+    data-tooltip-position="bottom"
   >
     <pry-icon iconSvg="arrow_back" [width]="24" [height]="24" [animation]="false"></pry-icon>
     <span>{{ '@pry.search.button.backSearch' | i18n }}</span>
@@ -105,9 +104,3 @@
     ></pry-save-query-button>
   </div>
 </div>
-
-<ng-template #infoTooltipBack>
-  <div class="m-tooltip" role="tooltip" id="infoTooltipBack_searchTools">
-    <span class="m-tooltip__text"> Retour à la liste des recherches </span>
-  </div>
-</ng-template>

@@ -25,6 +25,12 @@
         font-size: toRem(20);
         padding-bottom: toRem(10);
       }
+
+      pry-toolbox-action-instanciator {
+        .a-tooltip[data-tooltip][data-tooltip-position=bottom]::after {
+          top: calc(100% - 10px);
+        }
+      }
     }
   }
 }

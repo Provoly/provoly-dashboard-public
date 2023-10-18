@@ -1,11 +1,5 @@
-<div [pryTooltip]="infoTooltip" pryTooltipPosition="bottom" aria-describedby="infoTooltip_clearView">
+<div class="a-tooltip" [attr.data-tooltip]="'@pry.toolbox.clear' | i18n" data-tooltip-position="bottom">
   <button type="button" class="a-btn a-btn--secondary -size-md" (click)="clear()">
     <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.clear' | i18n }}</ng-container>
   </button>
 </div>
-
-<ng-template #infoTooltip>
-  <div class="m-tooltip" role="tooltip" id="infoTooltip_clearView">
-    <span class="m-tooltip__text">{{ '@pry.toolbox.clear' | i18n }}</span>
-  </div>
-</ng-template>

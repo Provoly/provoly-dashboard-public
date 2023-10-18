@@ -22,7 +22,6 @@ import {
   WmsService
 } from '@provoly/dashboard';
 import { MockNgModelDirective } from '@provoly/dashboard/mock/directive/mock-ng-model.directive';
-import { MockPryTooltipDirective } from '@provoly/dashboard/mock/directive/mock-pry-tooltip.directive';
 import { hot } from 'jest-marbles';
 import { of } from 'rxjs';
 import { MockPryIconComponent } from '../../../mock/components/mock-pry-icon.component';
@@ -68,7 +67,6 @@ describe('WidgetMapComponent', () => {
         MockPrySettingsComponent,
         MockPryWidgetHeaderComponent,
         MockI18nPipe,
-        MockPryTooltipDirective,
         MockNgModelDirective
       ],
       providers: [

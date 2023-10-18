@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DashboardActions } from '@provoly/dashboard';
 import { MockPryIconComponent } from '../../../mock/components/mock-pry-icon.component';
-import { MockPryTooltipDirective } from '../../../mock/directive/mock-pry-tooltip.directive';
 import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 
@@ -15,13 +14,7 @@ describe('LaunchTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        LaunchTabComponent,
-        MockTranslatePipe,
-        MockPryIconComponent,
-        MockPryTooltipDirective,
-        MockI18nPipe
-      ],
+      declarations: [LaunchTabComponent, MockTranslatePipe, MockPryIconComponent, MockI18nPipe],
       providers: [provideMockStore()]
     }).compileComponents();
   });

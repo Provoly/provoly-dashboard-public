@@ -15,7 +15,10 @@ export const frTranslations = {
         or: 'ou',
         title: 'Mes recherches',
         ssTitle: 'Nouvelle recherche',
-        searchByCriteria: 'Recherche par critères'
+        searchByCriteria: 'Recherche par critères',
+        associatedWidget: 'le widget associé à cette recherche',
+        showAssociatedWidget: 'Afficher le widget associé à cette recherche',
+        otherActions: 'Autres actions'
       },
       attribute: {
         title: 'Attribut : ',
@@ -104,12 +107,15 @@ export const frTranslations = {
         allClasses: 'Toutes les classes',
         oneClass: 'Une classe sélectionnée',
         manyClasses: '{{nb}} classes sélectionnées',
-        search: 'Lancer la recherche'
+        selectClass: 'Sélectionner la classe',
+        search: 'Lancer la recherche',
+        clear: 'Effacer la saisie'
       },
       multi: {
         title: 'Ajouter des critères',
         addCondition: 'Ajouter un critère',
         options: 'Options',
+        extraOptions: 'Options supplémentaires',
         multiType: 'Associer les critères',
         search: 'Rechercher',
         requiredError: 'La valeur est manquante',

@@ -1,0 +1,45 @@
+== Classes CSS utiles
+
+Une liste de classes particulièrement utiles et réutilisables, incluses dans la bibliothèque + des exemples d'utilisation.
+
+=== `.a-tooltip`
+Une classe qui permet d'avoir des info-bulles contenantes du texte simple (pas de HTML).
+
+==== Utilisation
+
+1. Mettre la classe "a-tooltip" sur l'élément cible.
+2. Mettre le contenu de la tooltip dans l'attribut `data-tooltip` (statique) ou `[attr.data-tooltip]` (databinding).
+3. Préciser la position de l'info-bulle avec l'attribut `data-tooltip-position="top|bottom|left|right"` (statique) ou `[attr.data-tooltip]` (databinding). La position par défaut est `top`.
+
+==== Problèmes
+Si l'info-bulle n'apparaît pas :
+
+* il y a potentiellement un `overflow: hidden` ou `overflow: scroll` sur l'un des éléments parents
+- c'est possible de contourner un `overflow: scroll` en définissant un `padding` et un `background-clip: padding-box` sur l'élément parent
+* l'élément qui a la classe `a-tooltip` n'est pas en `position: relative` (ce qui peut perturber la `position: absolute` du pseudo-élément `::after` utilisé pour générer l'info-bulle)
+* il est parfois utile de placer la classe et les attributs de la tooltip sur une div wrapper, au lieu de la div cible directement
+
+==== Exemples
+Utilisation simple
+```
+<div
+  class="a-tooltip"
+  [attr.data-tooltip]="'@pry.toolbox.clear' | i18n"
+  data-tooltip-position="bottom">
+  ...
+</div>
+```
+
+Solution pour une div avec un `overflow: scroll`
+```
+.navbar {
+  overflow-y: scroll;
+
+  // when hovering over an element with class a-tooltip, add padding and background-clip to the navbar
+  // this will make the tooltip poisitioned on the right visible
+  &:has(.a-tooltip:hover) {
+    padding-right: 300px; // max tooltip length
+    background-clip: content-box, padding-box;
+  }
+```
+

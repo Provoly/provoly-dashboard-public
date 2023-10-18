@@ -9,7 +9,6 @@ import { MockPrySelectComponent } from '../../../../mock/components/mock-pry-sel
 import { MockPryMultiClassFieldSelectionComponent } from '../../../../mock/components/search/mock-pry-multi-class-field-selection.component';
 import { MockNgFormDirective } from '../../../../mock/directive/mock-ng-form.directive';
 import { MockNgModelDirective } from '../../../../mock/directive/mock-ng-model.directive';
-import { MockPryTooltipDirective } from '../../../../mock/directive/mock-pry-tooltip.directive';
 import { MockI18nPipe } from '../../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../../mock/pipe/mock-translate.pipe';
 import { MockOverlay } from '../../../../mock/service/mock-overlay.service';
@@ -30,7 +29,6 @@ describe('MultiClassConditionComponent', () => {
         MockPryIconComponent,
         MockPrySelectComponent,
         MockPryMultiClassFieldSelectionComponent,
-        MockPryTooltipDirective,
         MockNgFormDirective,
         MockNgModelDirective,
         MockI18nPipe

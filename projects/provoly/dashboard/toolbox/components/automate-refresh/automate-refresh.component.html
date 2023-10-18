@@ -1,5 +1,5 @@
 <pry-toolbox-css></pry-toolbox-css>
-<div [pryTooltip]="infoTooltip" pryTooltipPosition="bottom" aria-describedby="infoTooltip_automateRefresh">
+<div class="a-tooltip" [attr.data-tooltip]="'@pry.toolbox.automateRefresh' | i18n" data-tooltip-position="bottom">
   <button
     type="button"
     class="a-btn a-btn--secondary -size-md automate-btn"
@@ -13,11 +13,6 @@
     </ng-container>
   </button>
 </div>
-<ng-template #infoTooltip>
-  <div class="m-tooltip" role="tooltip" id="infoTooltip_automateRefresh">
-    <span class="m-tooltip__text">{{ '@pry.toolbox.automateRefresh' | i18n }}</span>
-  </div>
-</ng-template>
 
 <ng-template #datasourceList>
   <div *ngIf="datasources$ | async as dataSources">

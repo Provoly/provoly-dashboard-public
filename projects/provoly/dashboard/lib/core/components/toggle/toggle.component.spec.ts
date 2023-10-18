@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MockPryTooltipDirective } from '../../../../mock/directive/mock-pry-tooltip.directive';
 import { PryToggleComponent } from './toggle.component';
+import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
 
 describe('ToggleComponent', () => {
   let component: PryToggleComponent;
@@ -9,7 +9,7 @@ describe('ToggleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PryToggleComponent, MockPryTooltipDirective]
+      declarations: [PryToggleComponent, MockI18nPipe]
     }).compileComponents();
   });
 

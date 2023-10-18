@@ -1,6 +1,6 @@
 <div class="o-named-query">
   <div class="combobox-container" (dragleave)="dragLeave($event)">
-    <div [pryTooltip]="infoTooltip" pryTooltipPosition="bottom" aria-describedby="infoTooltip_namedQuery">
+    <div class="a-tooltip" [attr.data-tooltip]="'@pry.toolbox.resultSet' | i18n" data-tooltip-position="bottom">
       <button type="button" class="a-btn a-btn--action" (click)="toggle()">
         <pry-icon iconSvg="data_usage"></pry-icon>
         <ng-container *ngIf="label">{{ '@pry.toolbox.resultSet' | i18n }}</ng-container>
@@ -10,15 +10,9 @@
     <div class="combobox" *ngIf="displayCombo" (mouseleave)="toggle()">
       <ng-container *ngFor="let rs of namedQueries$ | async">
         <div draggable="true" (dragstart)="dragStart($event, rs)">
-          {{ rs | translateId: { type: 'datasource', output: 'name' } | async }}
+          {{ rs | translateId : { type: 'datasource', output: 'name' } | async }}
         </div>
       </ng-container>
     </div>
   </div>
-
-  <ng-template #infoTooltip>
-    <div class="m-tooltip" role="tooltip" id="infoTooltip_namedQuery">
-      <span class="m-tooltip__text"> Recherches nommées </span>
-    </div>
-  </ng-template>
 </div>

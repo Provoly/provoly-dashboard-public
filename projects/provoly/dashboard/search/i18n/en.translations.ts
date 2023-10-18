@@ -15,7 +15,10 @@ export const enTranslations = {
         or: 'or',
         title: 'My search',
         ssTitle: 'New search',
-        searchByCriteria: 'search by criteria'
+        searchByCriteria: 'search by criteria',
+        associatedWidget: 'widget associated with this search',
+        showAssociatedWidget: 'Show the widget associated with this search',
+        otherActions: 'Other actions'
       },
       attribute: {
         title: 'Attribute: ',
@@ -104,12 +107,15 @@ export const enTranslations = {
         allClasses: 'All classes',
         oneClass: 'One selected class',
         manyClasses: '{{nb}} selected classes',
-        search: 'Search'
+        selectClass: 'Select class',
+        search: 'Search',
+        clear: 'Clear input'
       },
       multi: {
         title: 'Add criterias',
         addCondition: 'Add one criteria',
         options: 'Options',
+        extraOptions: 'Extra options',
         multiType: 'Kind of association',
         search: 'Search',
         requiredError: 'Value is missing',

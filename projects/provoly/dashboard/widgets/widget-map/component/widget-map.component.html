@@ -323,13 +323,10 @@
     <ng-container *ngFor="let action of basicActions$ | async">
       <button
         type="button"
-        class="a-btn a-btn--icon-only"
+        class="a-btn a-btn--icon-only a-tooltip a-tooltip--{{ action }}"
         (click)="interactionManager.selectionInteraction.changeSelection(action)"
         [class.-selected]="interactionManager.selectionInteraction.selectionType === action"
-        [pryTooltip]="infoTooltipAction"
-        pryTooltipPosition="bottom"
-        aria-describedby="infoTooltipAction"
-        [pryTooltipContext]="{ action: action }"
+        [attr.data-tooltip]="'@pry.widget.map.' + action | i18n"
       >
         <pry-icon [iconSvg]="action"></pry-icon>
         <span class="u-visually-hidden">{{ '@pry.widget.map.' + action | i18n }}</span>
@@ -338,14 +335,12 @@
 
     <button
       type="button"
-      class="a-btn a-btn--icon-only"
+      class="a-btn a-btn--icon-only a-tooltip"
       id="export_card"
       aria-expanded="false"
       aria-controls="export_type"
       aria-haspopup="menu"
-      [pryTooltip]="infoTooltipDown"
-      pryTooltipPosition="bottom"
-      aria-describedby="infoTooltipDown_widgetMap"
+      [attr.data-tooltip]="'@pry.widget.map.export' | i18n"
       *ngIf="(actions$ | async)?.includes('export')"
     >
       <pry-icon iconSvg="file_download" (click)="export()"></pry-icon>
@@ -433,18 +428,6 @@
       <div #mapRef id="map"></div>
     </div>
   </div>
-
-  <ng-template #infoTooltipAction let-action="action">
-    <div class="m-tooltip" role="tooltip" id="infoTooltipAction" aria-hidden="true">
-      <span class="m-tooltip__text">{{ '@pry.widget.map.' + action | i18n }}</span>
-    </div>
-  </ng-template>
-
-  <ng-template #infoTooltipDown>
-    <div class="m-tooltip" role="tooltip" id="infoTooltipDown_widgetMap" aria-hidden="true">
-      <span class="m-tooltip__text">{{ '@pry.widget.map.export' | i18n }}</span>
-    </div>
-  </ng-template>
 
   <div #popup class="m-tooltip m-tooltip--popup" [hidden]="true" role="tooltip">
     <div class="m-tooltip--popup__header">

@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { MockPryIconComponent } from '../../../../../mock/components/mock-pry-icon.component';
-import { MockPryTooltipDirective } from '../../../../../mock/directive/mock-pry-tooltip.directive';
 import { MockI18nPipe } from '../../../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../../../mock/pipe/mock-translate.pipe';
 import { DashboardSelectors } from '../../../store/dashboard.selectors';
@@ -21,7 +20,7 @@ describe('SettingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SettingsComponent, MockPryIconComponent, MockTranslatePipe, MockPryTooltipDirective, MockI18nPipe],
+      declarations: [SettingsComponent, MockPryIconComponent, MockTranslatePipe, MockI18nPipe],
       providers: [
         provideMockStore({
           initialState: {},

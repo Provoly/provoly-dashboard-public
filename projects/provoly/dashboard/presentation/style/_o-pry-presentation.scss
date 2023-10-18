@@ -47,25 +47,29 @@
     flex-direction: column;
     align-items: stretch;
 
+    .a-tooltip {
+      height: 100%;
+    }
+
+    &__image {
+      width: auto;
+      height: 90%;
+      cursor: pointer;
+      overflow: hidden;
+
+      .is-full-width {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
     &__header {
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       height: toRem(110);
-
-      img {
-        width: auto;
-        height: 90%;
-
-        &.is-full-width {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        cursor: pointer;
-      }
 
       pry-icon.is-private {
         position: absolute;

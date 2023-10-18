@@ -3,8 +3,9 @@
   <ng-container *ngSwitchCase="ViewMode.CATALOG">
     <div class="o-manifest-layout__toolbox">
       <button
-        [pryTooltip]="create"
-        class="a-btn a-btn--primary a-btn--icon-text"
+        class="a-btn a-btn--primary a-btn--icon-text a-tooltip"
+        [attr.data-tooltip]="'@pry.presentation.create' | i18n"
+        data-tooltip-position="bottom"
         type="button"
         (click)="creation()"
         *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'create' }"
@@ -38,22 +39,24 @@
               <ng-container *ngIf="presentation.visibility.type === PryVisibilityType.PRIVATE">
                 <pry-icon
                   [iconSvg]="presentation.visibility.type.toLowerCase()"
-                  [pryTooltip]="private"
-                  class="is-private"
+                  class="is-private a-tooltip"
+                  [attr.data-tooltip]="'@pry.presentation.private' | i18n"
                   [height]="17"
                   [width]="17"
                 ></pry-icon>
               </ng-container>
-
-              <img
-                alt=""
-                [height]="presentation.cover ? 600 : 128"
-                [width]="presentation.cover ? 600 : 128"
-                [class.is-full-width]="presentation.cover"
-                [src]="presentation.image | getSecuredImage | async"
-                (click)="fetch(presentation)"
-                [pryTooltip]="view"
-              />
+              <div class="a-tooltip" [attr.data-tooltip]="'@pry.presentation.view' | i18n">
+                <div class="o-presentation__item__image">
+                  <img
+                    alt=""
+                    [class.is-full-width]="presentation.cover"
+                    [height]="presentation.cover ? 600 : 128"
+                    [width]="presentation.cover ? 600 : 128"
+                    [src]="presentation.image | getSecuredImage | async"
+                    (click)="fetch(presentation)"
+                  />
+                </div>
+              </div>
             </div>
 
             <div class="o-presentation__item__txt">
@@ -74,49 +77,50 @@
                 <li>
                   <button
                     type="button"
-                    class="a-btn a-btn--icon-only"
+                    class="a-btn a-btn--icon-only a-tooltip"
+                    [attr.data-tooltip]="'@pry.presentation.homeView' | i18n"
                     (click)="default(presentation.id, presentation.name)"
                     *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'default' }"
                   >
-                    <pry-icon
-                      [iconSvg]="presentation.default ? 'home-fill' : 'home-line'"
-                      [pryTooltip]="homeView"
-                    ></pry-icon>
+                    <pry-icon [iconSvg]="presentation.default ? 'home-fill' : 'home-line'"></pry-icon>
                     <span class="u-visually-hidden"></span>
                   </button>
                 </li>
                 <li>
                   <button
-                    class="a-btn a-btn--icon-only"
+                    class="a-btn a-btn--icon-only a-tooltip"
+                    [attr.data-tooltip]="'@pry.presentation.change' | i18n"
                     (click)="edit(presentation)"
                     [disabled]="!presentation.owner"
                     *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'edit' }"
                   >
-                    <pry-icon iconSvg="edit" [pryTooltip]="change"></pry-icon>
+                    <pry-icon iconSvg="edit"></pry-icon>
                     <span class="u-visually-hidden">{{ '@pry.presentation.edition' | i18n }}</span>
                   </button>
                 </li>
                 <li>
                   <button
                     (click)="toggleModal(presentation)"
-                    class="a-btn a-btn--icon-only"
+                    class="a-btn a-btn--icon-only a-tooltip"
+                    [attr.data-tooltip]="'@pry.presentation.share' | i18n"
                     aria-haspopup="dialog"
                     [disabled]="!presentation.owner"
                     *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'share' }"
                   >
-                    <pry-icon iconSvg="share" [pryTooltip]="share"></pry-icon>
+                    <pry-icon iconSvg="share"></pry-icon>
                     <span class="u-visually-hidden">{{ '@pry.presentation.share' | i18n }}</span>
                   </button>
                 </li>
                 <li>
                   <button
-                    class="a-btn a-btn--icon-only"
+                    class="a-btn a-btn--icon-only a-tooltip"
+                    [attr.data-tooltip]="'@pry.presentation.erase' | i18n"
                     #openModal
                     (click)="delete(presentation.id)"
                     [disabled]="!presentation.owner"
                     *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'delete' }"
                   >
-                    <pry-icon iconSvg="delete" [pryTooltip]="erase"></pry-icon>
+                    <pry-icon iconSvg="delete"></pry-icon>
                     <span class="u-visually-hidden">{{ '@pry.presentation.delete' | i18n }}</span>
                   </button>
                 </li>
@@ -186,52 +190,5 @@
         {{ '@pry.toolbox.manifest.check' | i18n }}
       </button>
     </div>
-  </div>
-</ng-template>
-
-<ng-template #create>
-  <div class="m-tooltip" role="tooltip">
-    <span class="m-tooltip__text">{{ '@pry.presentation.create' | i18n }}</span>
-  </div>
-</ng-template>
-
-<ng-template #view>
-  <div class="m-tooltip" role="tooltip">
-    <span class="m-tooltip__text">{{ '@pry.presentation.view' | i18n }}</span>
-  </div>
-</ng-template>
-
-<ng-template #private>
-  <div class="m-tooltip" role="tooltip">
-    <span class="m-tooltip__text">{{ '@pry.presentation.private' | i18n }}</span>
-  </div>
-</ng-template>
-
-<ng-template #homeView>
-  <div class="m-tooltip" role="tooltip">
-    <span class="m-tooltip__text">{{ '@pry.presentation.homeView' | i18n }}</span>
-  </div>
-</ng-template>
-
-<ng-template #share>
-  <div class="m-tooltip" role="tooltip">
-    <span class="m-tooltip__text">{{ '@pry.presentation.share' | i18n }}</span>
-  </div>
-</ng-template>
-
-<ng-template #erase>
-  <div class="m-tooltip" role="tooltip">
-    <span class="m-tooltip__text">{{ '@pry.presentation.erase' | i18n }}</span>
-  </div>
-</ng-template>
-
-<ng-template #change>
-  <div class="m-tooltip" role="tooltip">
-    <span class="m-tooltip__text">{{ '@pry.presentation.change' | i18n }}</span>
-  </div>
-</ng-template>
-<ng-template #backToCatalog>
-  <div class="m-tooltip" role="tooltip">
-    <span class="m-tooltip__text">{{ '@pry.presentation.backToCatalog' | i18n }}</span>
   </div>
 </ng-template>
