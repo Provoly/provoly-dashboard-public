@@ -4,6 +4,7 @@ export const frTranslations = {
       label: 'Notifications',
       link: 'Voir',
       notifications: 'Vous avez {{count}} notifications',
+      notification:'Vous avez {{count}} notification',
       deleteAll: 'Tout supprimer ({{count}})',
       delete: 'Supprimer la notification',
       noNotifications: 'Aucune notification actuellement',

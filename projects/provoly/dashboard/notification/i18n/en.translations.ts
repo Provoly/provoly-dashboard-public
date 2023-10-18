@@ -4,6 +4,7 @@ export const enTranslations = {
       label: 'Notifications',
       link: 'See',
       notifications: 'You have {{count}} notifications',
+      notification: 'You have {{count}} notification',
       deleteAll: 'Delete all ({{count}})',
       delete: 'Delete notification',
       noNotifications: 'No notification',

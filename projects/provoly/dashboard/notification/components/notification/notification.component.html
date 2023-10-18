@@ -13,7 +13,7 @@
     id="read_notifications"
     #ref
     (click)="toggle()"
-    [title]="'@pry.notif.notifications' | i18n: { count: notifications.length }"
+    [title]="notifications.length <= 1 ? ('@pry.notif.notification' | i18n: {count : notifications.length} ) : ('@pry.notif.notifications' | i18n : {count : notifications.length})"
   >
     <pry-icon iconSvg="notifications"></pry-icon>
     <span *ngIf="notifications.length > 0" class="a-pastille -unread"
