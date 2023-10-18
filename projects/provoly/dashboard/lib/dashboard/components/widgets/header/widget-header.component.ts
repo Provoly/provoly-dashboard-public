@@ -5,6 +5,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnDestroy,
   Output,
   TemplateRef,
   ViewChild,
@@ -12,7 +13,7 @@ import {
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import equal from 'fast-deep-equal/es6';
-import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable, Subject, Subscription } from 'rxjs';
 import { v4 } from 'uuid';
 import { UNKNOWN_DATASOURCE } from '../../../../core/components/translate-id/translate-id.pipe';
 import { GeoMetadata } from '../../../../core/model/dataset.interface';
@@ -42,7 +43,7 @@ export type HeaderAction = {
   selector: 'pry-widget-header',
   templateUrl: './widget-header.component.html'
 })
-export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
+export class PryWidgetHeaderComponent extends SubscriptionnerDirective implements OnDestroy {
   @ViewChild('template', { read: TemplateRef }) template!: TemplateRef<any>;
   @ViewChild('templateModal', { read: TemplateRef }) templateModal!: TemplateRef<any>;
   @ViewChild('toggle', { read: TemplateRef }) toggle!: TemplateRef<any>;
@@ -62,9 +63,17 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
   places: WidgetManifest[] = [];
   selectedItem?: Element | null;
   usedDatasources$: Observable<DataSource[]>;
+  openSub?: Subscription;
 
   @Input() set manifest(manifest: WidgetManifest | null) {
     this.manifest$.next(manifest);
+  }
+
+  @Input() set openData$(open$: Observable<void> | Subject<void>) {
+    this.openSub?.unsubscribe();
+    this.openSub = open$.subscribe(() => {
+      this.toggleDatasourceSelection();
+    });
   }
 
   @Input() additionalOptions: HeaderAction[] | null = [];
@@ -226,7 +235,7 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
     }
   }
 
-  toggleCombo() {
+  toggleDatasourceSelection() {
     if (!this.comboRef) {
       this.comboRef = this.overlay.create(
         new OverlayConfig({
@@ -236,7 +245,7 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
         })
       );
       this.store.dispatch(ConfigActions.addingOverlay({ id: this.constructor.name + '-combo' }));
-      this.comboRef.backdropClick().subscribe((_) => this.toggleCombo());
+      this.comboRef.backdropClick().subscribe((_) => this.toggleDatasourceSelection());
       this.comboRef.attach(new TemplatePortal(this.template, this.viewContainerRef));
       setTimeout(() => {
         this.inputCatalog?.nativeElement?.focus();
@@ -245,7 +254,7 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
       this.comboRef.dispose();
       this.comboRef = undefined;
       this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name + '-combo' }));
-      this.menuOpen();
+      this.menuOpen(undefined, false);
     }
   }
 
@@ -268,7 +277,7 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
         datasource: this.selectedDataSourceIds$.getValue()
       } as unknown as WidgetManifest
     });
-    this.toggleCombo();
+    this.toggleDatasourceSelection();
   }
 
   toggleRemoveConfirm($event?: MouseEvent) {
@@ -487,4 +496,10 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective {
   }
 
   protected readonly DEFAULT_ICON_URL = DEFAULT_ICON_URL;
+
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    this.subscription?.unsubscribe();
+    this.openSub?.unsubscribe();
+  }
 }

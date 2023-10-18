@@ -66,6 +66,7 @@ export const enTranslations = {
         tooltip: 'Display tooltip',
         stacked: 'Vertical stacking',
         noData: 'No data to display',
+        aggNoResult: 'Aggregation returns no results',
         scheme: {
           accent: '8 colors n°1',
           set2: '8 colors n°2',

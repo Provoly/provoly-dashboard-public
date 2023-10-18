@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import equal from 'fast-deep-equal/es6';
-import { BehaviorSubject, combineLatest, distinctUntilChanged, filter, map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, filter, map, Observable, Subject } from 'rxjs';
 import { UNKNOWN_DATASOURCE } from '../../../core/components/translate-id/translate-id.pipe';
 import { Item } from '../../../core/model/item.interface';
 import { ResultSet } from '../../../core/model/result-set.interface';
@@ -10,7 +10,6 @@ import { DataSourceSelectors } from '../../../core/store/data-source/data-source
 import { ResultsetUtils } from '../../resultset-utils';
 import { DashboardSelectors } from '../../store/dashboard.selectors';
 import { BaseWidgetComponent } from './base-widget.component';
-import { NamedQueryTypes } from '../../../core/store/data-source/named-query-types.model';
 
 @Component({ selector: 'pry-data-widget', template: '' })
 export class DataWidgetComponent extends BaseWidgetComponent {
@@ -20,6 +19,7 @@ export class DataWidgetComponent extends BaseWidgetComponent {
   allItems$: Observable<Item[]>;
   usedDatasources$: Observable<DataSource[]>;
 
+  @Input() openData$: Observable<void> | Subject<void> = new Subject<void>();
   @Input() set staticResultSet(resultSet: ResultSet) {
     this.staticResultSet$.next(resultSet);
   }

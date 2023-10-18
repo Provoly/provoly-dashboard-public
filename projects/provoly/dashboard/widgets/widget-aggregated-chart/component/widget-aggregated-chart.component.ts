@@ -21,7 +21,10 @@ import {
 import {
   BehaviorSubject,
   combineLatest,
+  debounceTime,
+  filter,
   fromEvent,
+  map,
   Observable,
   share,
   startWith,
@@ -29,7 +32,6 @@ import {
   switchMap,
   withLatestFrom
 } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
 import { View } from 'vega';
 import embed, { vega } from 'vega-embed';
 import { mergeDeep, TopLevelSpec } from 'vega-lite';
@@ -73,6 +75,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   noData$: Observable<boolean>;
   sortActive? = 'name';
   sortDirection? = 'asc';
+  noAggregationData$: Observable<boolean>;
 
   constructor(
     store: Store<any>,
@@ -291,10 +294,12 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           .reduce((a, b) => [...a, ...b], []);
         return { operation: aggregate.operation, data: flattened };
       }),
+      startWith({ operation: Operation.NONE, data: [] }),
       share()
     );
 
-    this.noData$ = this.aggregatedValues$.pipe(map(({ operation, data }) => data.length === 0));
+    this.noData$ = this.datasourceIds$.pipe(map((ids) => ids.length === 0));
+    this.noAggregationData$ = this.aggregatedValues$.pipe(map(({ data }) => data.length === 0));
 
     this.vegaLiteSpec$ = combineLatest([
       this.options$,
@@ -487,6 +492,10 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
 
   openSettings() {
     (this.open$ as Subject<void>).next(undefined);
+  }
+
+  openData() {
+    (this.openData$ as Subject<void>).next(undefined);
   }
 
   private getTitle(options: ChartAggregatedWidgetOptions) {

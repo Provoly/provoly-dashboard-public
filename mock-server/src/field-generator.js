@@ -117,7 +117,7 @@ function generateAttrValueByFieldType(type, attr) {
         coordinates: casual.multiPolygon
       };
     default:
-      console.error('Cannot generate attr value for ', attr);
+      console.error('Cannot generate attr value for ', attr, type.type);
       return 'Cannot generate attr value for this';
   }
 }
@@ -187,7 +187,7 @@ const generateFieldValue = (attr) => {
     default:
       // no specific attr name value generation
       // get attr type using field
-      const type = fields.get().find((f) => f.id === attr.field) || { type: 'unknown' };
+      const type = fields.get().find((f) => f.id === attr.field) || { type: attr.type ?? 'unknown' };
       return generateAttrValueByFieldType(type, attr);
   }
 };

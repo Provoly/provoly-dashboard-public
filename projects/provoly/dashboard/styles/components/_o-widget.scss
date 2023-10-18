@@ -101,6 +101,7 @@
     }
 
     &__text {
+      margin-bottom: toRem(20);
       max-width: toRem(294);
       line-height: toRem(20);
       text-align: center;

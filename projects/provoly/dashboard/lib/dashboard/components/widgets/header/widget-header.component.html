@@ -60,7 +60,7 @@
           role="menuitem"
           tabindex="-1"
           id="toggleActions"
-          (click)="toggleCombo()"
+          (click)="toggleDatasourceSelection()"
           *pryAccess="{ module: 'dashboard', page: 'widget', action: 'select_named_query' }"
           class="a-btn"
           [pryTooltip]="infoTooltip"
@@ -218,7 +218,7 @@
 
 <ng-template #template>
   <pry-datasource-selector
-    (cancel)="toggleCombo()"
+    (cancel)="toggleDatasourceSelection()"
     (validated)="emitManifest()"
     (nextTab)="focusInputCatalog()"
     (previousTab)="focusValidation()"

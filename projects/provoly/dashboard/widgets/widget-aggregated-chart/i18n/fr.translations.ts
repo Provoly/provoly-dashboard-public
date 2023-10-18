@@ -65,6 +65,7 @@ export const frTranslations = {
         tooltip: 'Affichage des info-bulles',
         stacked: 'Superposition verticale',
         noData: 'Aucune donnée à afficher',
+        aggNoResult: "L'aggrégation demandée ne renvoie rien.",
         scheme: {
           accent: '8 couleurs n°1',
           set2: '8 couleurs n°2',

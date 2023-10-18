@@ -9,6 +9,7 @@
     #header
     [headerOptions]="(displayHeader$ | async) ?? {}"
     [displayCount]="false"
+    [openData$]="openData$"
   >
     <pry-settings
       (saveTriggered)="emitManifest()"
@@ -268,24 +269,36 @@
       </ng-container>
     </pry-settings>
   </pry-widget-header>
-  <div class="no-result" *ngIf="(isChartValid$ | async) === false">
-    <img
-      class="no-result__search"
-      src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
-      alt="{{ '@pry.widget.chart.noData' | i18n }}"
-      aria-hidden="true"
-    />
-    <span class="no-result__text">{{ '@pry.widget.chart.noData' | i18n }}</span>
-  </div>
-  <ng-container *ngIf="(isChartValid$ | async) && !(noData$ | async)">
+
+  <ng-container *ngIf="(isChartValid$ | async) && !(noData$ | async) && !(noAggregationData$ | async)">
     <div #vega></div>
   </ng-container>
 
-  <ng-container *ngIf="!(isChartValid$ | async)">
+  <ng-container *ngIf="noData$ | async">
     <div class="o-widget__choose-parameters">
-      <p class="a-p">
-        {{ '@pry.widget.chart.chooseParameters' | i18n }}
-      </p>
+      <img
+        class="no-result__search"
+        src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
+        alt="{{ '@pry.widget.chart.noData' | i18n }}"
+        aria-hidden="true"
+      />
+      <span class="no-result__text">{{ '@pry.widget.chart.noData' | i18n }}</span>
+      <button type="button" (click)="openData()" class="a-btn a-btn--primary">
+        <pry-icon [height]="20" [width]="20" iconSvg="control"></pry-icon>
+        <span>{{ '@pry.widget.tooltip.readSearch' | i18n }}</span>
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!(noData$ | async) && !(isChartValid$ | async)">
+    <div class="o-widget__choose-parameters">
+      <img
+        class="no-result__search"
+        src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
+        alt="{{ '@pry.widget.chart.chooseParameters' | i18n }}"
+        aria-hidden="true"
+      />
+      <span class="no-result__text">{{ '@pry.widget.chart.chooseParameters' | i18n }}</span>
       <button type="button" (click)="openSettings()" class="a-btn a-btn--primary">
         <pry-icon [height]="20" [width]="20" iconSvg="control"></pry-icon>
         <span>{{ '@pry.widget.settings.title' | i18n }}</span>
@@ -293,11 +306,19 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="noData$ | async">
+  <ng-container *ngIf="!(noData$ | async) && (isChartValid$ | async) && (noAggregationData$ | async)">
     <div class="o-widget__choose-parameters">
-      <p class="a-p">
-        {{ '@pry.widget.chart.noData' | i18n }}
-      </p>
+      <img
+        class="no-result__search"
+        src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
+        alt="{{ '@pry.widget.chart.aggNoResult' | i18n }}"
+        aria-hidden="true"
+      />
+      <span class="no-result__text">{{ '@pry.widget.chart.aggNoResult' | i18n }}</span>
+      <button type="button" (click)="openSettings()" class="a-btn a-btn--primary">
+        <pry-icon [height]="20" [width]="20" iconSvg="control"></pry-icon>
+        <span>{{ '@pry.widget.settings.title' | i18n }}</span>
+      </button>
     </div>
   </ng-container>
 </div>
