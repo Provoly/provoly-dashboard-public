@@ -5,15 +5,16 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   DashboardActions,
+  DashboardGridLayout,
   DashboardManifest,
   DashboardSelectors,
+  DisplayMode,
   GlobalManifest,
   ManifestDescription,
   PryVisibility,
   PryVisibilityType,
   SubscriptionnerDirective,
-  ViewMode,
-  DisplayMode
+  ViewMode
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, debounceTime, map, Observable, take } from 'rxjs';
 import { v4 } from 'uuid';
@@ -146,6 +147,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
       viewMode: ViewMode.CREATION
     };
     this.store.dispatch(DashboardActions.selectPresentation(newPresentation));
+    this.store.dispatch(DashboardActions.setGridLayout({ layout: DashboardGridLayout.FULL }));
     this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: DisplayMode.CREATE }));
   }
 

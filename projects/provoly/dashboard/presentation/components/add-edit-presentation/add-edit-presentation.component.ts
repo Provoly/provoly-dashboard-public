@@ -30,7 +30,7 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
   image: string = DEFAULT_RESTITUTION_ICON_URL;
   @Output() goBack = new EventEmitter<void>();
   type: LibraryTypes = LibraryTypes.ILLUSTRATION;
-  chosenLayout?: string;
+  chosenLayout: DashboardGridLayout = DashboardGridLayout.FULL;
 
   @Input() set selectedPresentation(presentation: ManifestDescription | null) {
     this.selectedPresentation$.next(presentation);
@@ -39,7 +39,6 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
   constructor(private store: Store, @Optional() protected router: Router) {
     super();
     this.store.dispatch(MetadataActions.loadMetadata());
-    this.store.dispatch(DashboardActions.setGridLayout({ layout: DashboardGridLayout.FULL }));
     this.staticManifest$ = this.store.select(DashboardSelectors.staticManifest);
     combineLatest([this.staticManifest$, this.store.select(DashboardSelectors.gridLayout)]).subscribe(
       ([staticManifest, gridLayout]) => {
@@ -112,7 +111,6 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
     if (!this.edition) {
       this.store.dispatch(
         DashboardActions.updateManifest({
-          // @ts-ignore
           manifest: { windows: [{ widgets: [], grid: { layout: this.chosenLayout } }] },
           selectedIds: [],
           manifestId: selectedPresentation.id
