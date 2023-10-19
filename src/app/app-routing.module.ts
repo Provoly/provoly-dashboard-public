@@ -175,68 +175,6 @@ const routes: Routes = [
     }
   },
   {
-    path: 'chart-legacy',
-    component: DashboardContainerComponent,
-    data: {
-      manifest: {
-        grid: {
-          gap: 30,
-          rows: 5,
-          columns: 5
-        },
-        widgets: [
-          {
-            type: 'chart-legacy',
-            layout: { x: 1, y: 1, height: 5, width: 5 },
-            options: {
-              title: 'value_dec_2, value_long',
-              type: 'line',
-              subType: 'default',
-              series: {
-                groupBy: 'seriesName'
-              },
-              selectedVariables: [
-                {
-                  type: 'quantitative',
-                  label: 'value_dec_2',
-                  name: 'value_dec_2'
-                },
-                {
-                  label: 'value_long',
-                  name: 'value_long',
-                  type: 'quantitative',
-                  axisOptions: {
-                    tickMinStep: 1
-                  }
-                }
-              ],
-              aggregation: 'sum',
-              customTitle: 'Titre de mon graphique',
-              specToMerge: {
-                scales: [
-                  {
-                    name: 'color',
-                    type: 'ordinal',
-                    domain: {
-                      data: 'table',
-                      field: 'id'
-                    },
-                    range: {
-                      scheme: 'category20'
-                    }
-                  }
-                ]
-              },
-              tooltip: true,
-              legend: true
-            },
-            datasource: 'graphspe-cifi-cdat-acd2-51ccec998307'
-          }
-        ]
-      } as DashboardManifest
-    }
-  },
-  {
     path: 'graph',
     component: DashboardContainerComponent,
     data: {

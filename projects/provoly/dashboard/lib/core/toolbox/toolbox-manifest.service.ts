@@ -6,7 +6,6 @@ import { SubscriptionnerDirective } from '../../dashboard/components/subscriptio
 import { DashboardSelectors } from '../../dashboard/store/dashboard.selectors';
 import { WidgetLayout, WidgetManifest } from '../model/manifest.interface';
 import { GraphType } from '../model/widget-aggregated-chart-manifest.interface';
-import { MarkSubType, MarkType } from '../model/widget-chart-manifest.interface';
 import { TooltipMode } from '../model/widget-map-manifest.interface';
 import { ConfigSelectors } from '../store/config/config.selectors';
 
@@ -165,94 +164,6 @@ export class ToolboxManifestService extends SubscriptionnerDirective {
         width: 3
       },
       options: { graph: { type: GraphType.CIRCULAR } },
-      datasource: USE_CURRENT_RESULTSET
-    },
-    barchartLegacy: {
-      type: 'chart-legacy',
-      layout: {
-        x: 1,
-        y: 1,
-        height: 2,
-        width: 3
-      },
-      options: { type: MarkType.BAR, subType: MarkSubType.DEFAULT },
-      datasource: USE_CURRENT_RESULTSET
-    },
-    histogramLegacy: {
-      type: 'chart-legacy',
-      layout: {
-        x: 1,
-        y: 1,
-        height: 2,
-        width: 3
-      },
-      options: { type: MarkType.BAR, subType: MarkSubType.HISTOGRAM },
-      datasource: USE_CURRENT_RESULTSET
-    },
-    linechartLegacy: {
-      type: 'chart-legacy',
-      layout: {
-        x: 1,
-        y: 1,
-        height: 2,
-        width: 3
-      },
-      options: { type: MarkType.LINE, subType: MarkSubType.DEFAULT },
-      datasource: USE_CURRENT_RESULTSET
-    },
-    pointchartLegacy: {
-      type: 'chart-legacy',
-      layout: {
-        x: 1,
-        y: 1,
-        height: 2,
-        width: 3
-      },
-      options: { type: MarkType.POINT, subType: MarkSubType.DEFAULT },
-      datasource: USE_CURRENT_RESULTSET
-    },
-    areachartLegacy: {
-      type: 'chart-legacy',
-      layout: {
-        x: 1,
-        y: 1,
-        height: 2,
-        width: 3
-      },
-      options: { type: MarkType.AREA, subType: MarkSubType.DEFAULT },
-      datasource: USE_CURRENT_RESULTSET
-    },
-    arcchartLegacy: {
-      type: 'chart-legacy',
-      layout: {
-        x: 1,
-        y: 1,
-        height: 2,
-        width: 3
-      },
-      options: { type: MarkType.ARC, subType: MarkSubType.DEFAULT },
-      datasource: USE_CURRENT_RESULTSET
-    },
-    radarchartLegacy: {
-      type: 'chart-legacy',
-      layout: {
-        x: 1,
-        y: 1,
-        height: 2,
-        width: 3
-      },
-      options: { type: MarkType.RADAR, subType: MarkSubType.DEFAULT },
-      datasource: USE_CURRENT_RESULTSET
-    },
-    circlechartLegacy: {
-      type: 'chart-legacy',
-      layout: {
-        x: 1,
-        y: 1,
-        height: 2,
-        width: 3
-      },
-      options: { type: MarkType.CIRCLE_PACK, subType: MarkSubType.DEFAULT },
       datasource: USE_CURRENT_RESULTSET
     },
     detail: {

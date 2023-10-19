@@ -54,5 +54,3 @@ Exemple de manifest :
 ----
 
 NOTE: Ce widget a un remplaçant nommé `@provoly/dashboard/widgets/widget-aggregated-chart`. En effet, celui-là ne pouvait réaliser les agrégations que sur les données remontées par le back (ce qui se trouve être potentiellement limité en volume).
-
-NOTE: Le type dans les menus a été modifié de `chart` à `chart-legacy`.

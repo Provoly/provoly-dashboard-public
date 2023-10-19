@@ -52,7 +52,8 @@ export const defaultMenuStructure: WidgetDescriptionMenu[] = [
       { icon: 'show_chart', label: '@pry.toolbox.linechart', type: 'linechart' },
       { icon: 'auto_graph', label: '@pry.toolbox.pointchart', type: 'pointchart' },
       { icon: 'area_chart', label: '@pry.toolbox.areachart', type: 'areachart' },
-      { icon: 'donut_large', label: '@pry.toolbox.arcchart', type: 'arcchart' }
+      { icon: 'donut_large', label: '@pry.toolbox.arcchart', type: 'arcchart' },
+      { icon: 'bar_chart', label: '@pry.toolbox.vega', type: 'vega' }
     ]
   },
   {
@@ -64,8 +65,7 @@ export const defaultMenuStructure: WidgetDescriptionMenu[] = [
       { icon: 'toc', label: '@pry.toolbox.detail', type: 'detail' },
       { icon: 'graph', label: '@pry.toolbox.graph', type: 'graph' },
       { icon: 'settings_applications', label: '@pry.toolbox.iframe', type: 'iframe' },
-      { icon: 'tile', label: '@pry.toolbox.tile', type: 'tile' },
-      { icon: 'bar_chart', label: '@pry.toolbox.vega', type: 'vega' }
+      { icon: 'tile', label: '@pry.toolbox.tile', type: 'tile' }
     ]
   }
 ];
@@ -135,9 +135,19 @@ export class ToolboxMenuService {
       )
     );
 
-    this.types$ = combineLatest([this.toolboxManifestService.initialManifests$, this.menuStructure$]).pipe(
-      map(([manifests, menuStructure]) => {
-        const types = [...new Set(Object.values(manifests).map((manifest) => manifest.type))];
+    this.types$ = combineLatest([
+      this.toolboxManifestService.initialManifests$,
+      this.menuStructure$,
+      this.widgetFactoryService.reference$
+    ]).pipe(
+      map(([manifests, menuStructure, reference]) => {
+        const types = [
+          ...new Set(
+            Object.values(manifests)
+              .filter((manifest) => reference[manifest.type])
+              .map((manifest) => manifest.type)
+          )
+        ];
         return types.map((type) => {
           const matchingMenu = menuStructure.find(
             (menu) => menu.label.replace('@pry.toolbox.sub.', '').indexOf(type) >= 0

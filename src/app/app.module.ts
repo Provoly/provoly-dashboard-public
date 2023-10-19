@@ -68,13 +68,6 @@ import { SearchContainerComponent } from './search-container/search-container.co
               widgetLoader(module, 'WidgetAggregatedChartModule')
             )
         },
-        'chart-legacy': {
-          name: 'chart-legacy',
-          load: () =>
-            import('@provoly/dashboard/widgets/widget-chart').then((module) =>
-              widgetLoader(module, 'WidgetChartModule')
-            )
-        },
         detail: {
           name: 'detail',
           load: () =>
