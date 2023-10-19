@@ -36,7 +36,7 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
     this.selectedPresentation$.next(presentation);
   }
 
-  constructor(private store: Store, @Optional() protected router: Router) {
+  constructor(protected store: Store, @Optional() protected router: Router) {
     super();
     this.store.dispatch(MetadataActions.loadMetadata());
     this.staticManifest$ = this.store.select(DashboardSelectors.staticManifest);
@@ -82,6 +82,10 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
         this.store.dispatch(
           DashboardActions.saveManifest({
             ...presentation,
+            metadata: presentation.metadata?.map((metadata) => ({
+              id: metadata.metadataDef.id,
+              value: metadata.value
+            })),
             manifest: staticManifest
           })
         );

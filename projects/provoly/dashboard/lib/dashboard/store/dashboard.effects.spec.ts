@@ -556,6 +556,7 @@ describe('DashboardEffects', () => {
           'id',
           undefined,
           undefined,
+          undefined,
           undefined
         );
         expect(serviceSpy).toHaveBeenNthCalledWith(
@@ -564,6 +565,7 @@ describe('DashboardEffects', () => {
           { windows: [] },
           { type: 'PRIVATE' },
           'id',
+          undefined,
           undefined,
           undefined,
           undefined
@@ -617,6 +619,7 @@ describe('DashboardEffects', () => {
           'id',
           undefined,
           undefined,
+          undefined,
           undefined
         );
         expect(serviceSpy).toHaveBeenNthCalledWith(
@@ -625,6 +628,7 @@ describe('DashboardEffects', () => {
           { windows: [{ widgets: [] }] },
           { type: 'PRIVATE' },
           'id',
+          undefined,
           undefined,
           undefined,
           undefined
@@ -716,6 +720,7 @@ describe('DashboardEffects', () => {
           'mId',
           undefined,
           undefined,
+          undefined,
           undefined
         );
         expect(serviceSpy).toHaveBeenNthCalledWith(
@@ -724,6 +729,7 @@ describe('DashboardEffects', () => {
           { windows: [{ widgets: [] }] },
           { type: 'PRIVATE' },
           'mId',
+          undefined,
           undefined,
           undefined,
           undefined

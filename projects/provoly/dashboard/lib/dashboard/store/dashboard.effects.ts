@@ -333,7 +333,8 @@ export class DashboardEffects {
             action.id,
             action.description,
             action.image,
-            action.cover
+            action.cover,
+            action.metadata
           )
           .pipe(
             tap(() =>

@@ -69,7 +69,8 @@ export class ManifestService {
     id: string,
     description?: string,
     image?: string,
-    cover?: boolean
+    cover?: boolean,
+    metadata?: { id: string; value: string }[]
   ): Observable<{ id: string; name: string; manifest: GlobalManifest }> {
     return this.store.select(ConfigSelectors.refUrl).pipe(
       mergeMap((url) =>
@@ -83,6 +84,7 @@ export class ManifestService {
             image,
             visibility,
             cover,
+            metadata,
             datasource: ManifestUtils.getDatasourcesUsedByManifest(manifest)
           }
         )
