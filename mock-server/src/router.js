@@ -139,7 +139,7 @@ router.on('POST', '/ref/model/class', (req, res, params) => {
     makeResponseOk(res);
   });
 });
-router.on('GET', '/ref/model/storage', (req, res, params) => {
+router.on('GET', '/ref/model/storages', (req, res, params) => {
   readPayload(req).then((payload) => makeResponseOk(res, ['ELASTIC', 'POSTGIS']));
 });
 router.on(['OPTIONS', 'GET'], '/ref/model/attribute/:id/associations', (req, res, params) => {

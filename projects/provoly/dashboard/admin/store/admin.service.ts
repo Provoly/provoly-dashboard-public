@@ -214,6 +214,6 @@ export class AdminService {
   getStorageOptions() {
     return this.store
       .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.get<string[]>(`${url}/model/storage`)));
+      .pipe(mergeMap((url) => this.httpClient.get<string[]>(`${url}/model/storages`)));
   }
 }
