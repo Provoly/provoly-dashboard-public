@@ -2,7 +2,7 @@
 
 ## Lancement du sample de la lib
 
-Version Node JS 16+
+Version Node JS 18.18.2
 
 Lancer `npm install` puis `run watch:lib`
 
