@@ -13,13 +13,17 @@ export class PryDefaultGeoAuthService extends PryGeoAuthService {
   }
 
   override customLoader(tile: any, src: string): void {
-    const client = new XMLHttpRequest();
-    client.open('GET', src);
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.addEventListener('loadend', function (evt) {
+      const data = this.response;
+      if (data !== undefined) {
+        tile.getImage().src = URL.createObjectURL(data);
+      }
+    });
+    xhr.open('GET', src);
     // Exemple of how to pass authentification header
     // client.setRequestHeader('Authorization', 'Basic ' + window.btoa('user:pass'));
-    client.onload = () => {
-      tile.getImage().src = src;
-    };
-    client.send();
+    xhr.send();
   }
 }
