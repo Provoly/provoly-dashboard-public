@@ -92,9 +92,9 @@ export class AdminFieldsFormComponent implements OnInit, OnDestroy {
         this.fieldForm.controls['crs'].disable();
       }
     }
-    // @ts-ignore
-    this.selectedFieldTypeDescription$ = this.fieldForm.get('type').valueChanges.pipe(
-      startWith(this.fieldTypeTranslations[0]['varType']),
+
+    this.selectedFieldTypeDescription$ = this.fieldForm.get('type')?.valueChanges.pipe(
+      startWith(this.currentField?.type ?? this.fieldTypeTranslations[0]['varType']),
       distinctUntilChanged(),
       map(
         (selectedType: string) =>
