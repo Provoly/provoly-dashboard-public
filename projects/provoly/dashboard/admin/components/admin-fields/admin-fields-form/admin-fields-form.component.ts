@@ -87,6 +87,10 @@ export class AdminFieldsFormComponent implements OnInit, OnDestroy {
         type: this.currentField.type
       });
       this.fieldForm.controls['type'].disable();
+      if (this.isGeographicType) {
+        this.fieldForm.addControl('crs', new FormControl(this.currentField.crs, [Validators.required]));
+        this.fieldForm.controls['crs'].disable();
+      }
     }
     // @ts-ignore
     this.selectedFieldTypeDescription$ = this.fieldForm.get('type').valueChanges.pipe(
