@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   ClassActions,
+  ConfigActions,
   DashboardActions,
   Dataset,
   DataSourceActions,
@@ -29,6 +30,7 @@ export class PryDatasetComponent extends SubscriptionnerDirective {
     this.store.dispatch(DataSourceActions.load());
     this.store.dispatch(ClassActions.load());
     this.store.dispatch(FieldActions.load());
+    this.store.dispatch(ConfigActions.loadCustomization());
     this.datasets$ = this.store.select(DataSourceSelectors.datasets);
     this.store.dispatch(DashboardActions.fetchManifestsList());
     this.filteredDatasets$ = combineLatest([this.datasets$, this.search$]).pipe(
