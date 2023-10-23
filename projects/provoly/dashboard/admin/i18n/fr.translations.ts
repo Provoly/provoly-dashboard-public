@@ -107,7 +107,8 @@ export const frTranslations = {
         invalid: 'Le champs est requis',
         listLabel: 'Nom de la valeur',
         addValue: 'Ajouter une nouvelle valeur',
-        removeValue: 'Supprimer cette valeur'
+        removeValue: 'Supprimer cette valeur',
+        system: 'Métadonnée système'
       },
       'metadata-rules': {
         title: 'Règles Metadonnées',

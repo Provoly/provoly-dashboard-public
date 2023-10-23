@@ -7,27 +7,29 @@
     </div>
 
     <div class="o-tabs__panel__content__actions__buttons">
-      <ng-container *pryAccess="{ module: 'admin', page: 'dataset', action: 'write' }">
-        <button type="button" class="a-btn a-btn--icon-only" aria-pressed="false">
-          <span class="u-visually-hidden">{{ '@pry.action.edit' | i18n }} {{ metaDefinition(metadata).name }}</span>
-          <pry-icon
-            class="edit-icon"
-            iconSvg="edit"
-            [width]="15"
-            [height]="15"
-            (click)="editMetadata(metadata)"
-          ></pry-icon>
-        </button>
-        <button type="button" class="a-btn a-btn--icon-only" aria-pressed="false">
-          <span class="u-visually-hidden">{{ '@pry.action.delete' | i18n }} {{ metaDefinition(metadata).name }}</span>
-          <pry-icon
-            class="delete-icon"
-            iconSvg="delete"
-            [width]="15"
-            [height]="15"
-            (click)="removeMetadata(metadata)"
-          ></pry-icon>
-        </button>
+      <ng-container *ngIf="!metaDefinition(metadata).readOnly">
+        <ng-container *pryAccess="{ module: 'admin', page: 'dataset', action: 'write' }">
+          <button type="button" class="a-btn a-btn--icon-only" aria-pressed="false">
+            <span class="u-visually-hidden">{{ '@pry.action.edit' | i18n }} {{ metaDefinition(metadata).name }}</span>
+            <pry-icon
+              class="edit-icon"
+              iconSvg="edit"
+              [width]="15"
+              [height]="15"
+              (click)="editMetadata(metadata)"
+            ></pry-icon>
+          </button>
+          <button type="button" class="a-btn a-btn--icon-only" aria-pressed="false">
+            <span class="u-visually-hidden">{{ '@pry.action.delete' | i18n }} {{ metaDefinition(metadata).name }}</span>
+            <pry-icon
+              class="delete-icon"
+              iconSvg="delete"
+              [width]="15"
+              [height]="15"
+              (click)="removeMetadata(metadata)"
+            ></pry-icon>
+          </button>
+        </ng-container>
       </ng-container>
     </div>
   </div>

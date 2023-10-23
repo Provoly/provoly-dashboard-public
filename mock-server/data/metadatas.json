@@ -4,31 +4,34 @@
     "name": "_class",
     "type": "UUID",
     "allowedValues": [],
-    "description": "test maj uuid"
+    "description": "",
+    "system": true,
+    "readOnly": true
   },
   {
     "id": "e1e55abd-2fb7-4e3b-9372-92c7c9d6c5c4",
     "name": "_date_modification",
     "type": "DATE",
     "allowedValues": [],
-    "description": "re test uuid v9"
-  },
-  {
-    "id": "ba681f33-fe70-42f8-a277-05c607ba29cf",
-    "name": "vigipirate",
-    "type": "INTEGER"
+    "description": "",
+    "system": true,
+    "readOnly": true
   },
   {
     "id": "7ce12610-e031-403c-a6e0-b8147979f657",
     "name": "Test",
-    "type": "INTEGER"
+    "type": "INTEGER",
+    "system": false,
+    "readOnly": false
   },
   {
     "id": "42250134-9c58-4845-9ac7-ad37b8dec616",
     "name": "test",
     "type": "INTEGER",
     "description": null,
-    "allowedValues": []
+    "allowedValues": [],
+    "system": false,
+    "readOnly": false
   },
   {
     "id": "c63a3431-6fe8-43de-afab-38752ef40ed9",
@@ -44,7 +47,9 @@
       "1",
       "1",
       "1"
-    ]
+    ],
+    "system": false,
+    "readOnly": false
   },
   {
     "id": "f34754e6-be23-43c0-bb78-3d351e26c033",
@@ -57,6 +62,35 @@
       "Fluides",
       "Biodiversités et Paysages",
       "Mobilités"
-    ]
+    ],
+    "system": true,
+    "readOnly": false
+  },
+  {
+    "id": "146536da-01da-4538-990a-78a11c4696d8",
+    "name": "_geoNamespace",
+    "type": "STRING",
+    "description": "Namespace geoserver",
+    "allowedValues": [],
+    "system": true,
+    "readOnly": false
+  },
+  {
+    "id": "146536da-01da-4538-990a-78a11c4696d8",
+    "name": "_geoKey",
+    "type": "STRING",
+    "description": "clé geoserver",
+    "allowedValues": [],
+    "system": true,
+    "readOnly": false
+  },
+  {
+    "id": "146536da-01da-4538-990a-78a11c4696d8",
+    "name": "_geoOpacity",
+    "type": "STRING",
+    "description": "opactié couche geoserver",
+    "allowedValues": [],
+    "system": true,
+    "readOnly": false
   }
 ]

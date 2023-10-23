@@ -164,8 +164,21 @@ const getDatasetStatus = () => {
   return datasetState;
 };
 
+const getDataSetWithMetadata = () => {
+  return datasets.map((dataset) => ({
+    ...dataset,
+    metadata: dataset.metadata.map((meta) => {
+      const metadataRef = metadatas.find((metaRef) => metaRef.name === meta.metadataDef.name);
+      return {
+        ...meta,
+        metadataDef: { ...meta.metadataDef, readOnly: metadataRef?.readOnly, system: metadataRef?.system }
+      };
+    })
+  }));
+};
+
 const getDatasets = () => {
-  return datasets;
+  return getDataSetWithMetadata();
 };
 
 const saveDatasets = (dataset) => {
@@ -173,15 +186,15 @@ const saveDatasets = (dataset) => {
 };
 
 const updateDataset = (newDataset) => {
-  datasets = datasets.map((dataset) => (dataset.id === newDataset.id ? newDataset : dataset));
+  datasets = getDataSetWithMetadata().map((dataset) => (dataset.id === newDataset.id ? newDataset : dataset));
 };
 
 const deleteDataset = (id) => {
-  datasets = datasets.filter((dataset) => dataset.id !== id);
+  datasets = getDataSetWithMetadata().filter((dataset) => dataset.id !== id);
 };
 
 const getById = (id) => {
-  const dataset = datasets.filter((dataset) => dataset.id === id);
+  const dataset = getDataSetWithMetadata().filter((dataset) => dataset.id === id);
   if (dataset[0]) {
     return dataset[0];
   }
@@ -232,7 +245,7 @@ const deactivateTransformation = (id) => {
   );
 };
 const getDatasetMetadata = (id) => {
-  return datasets.find((dataset) => dataset.id === id).metadata || [];
+  return getDataSetWithMetadata().find((dataset) => dataset.id === id).metadata || [];
 };
 const addDatasetMetadata = (datasetId, metadataId, payload) => {
   if (payload) {
@@ -264,7 +277,7 @@ const putFields = (field) => {
 };
 
 const generateDatasetVersions = () => {
-  return datasets
+  return getDataSetWithMetadata()
     .map((dataset) => {
       const versions = [];
       const howMany = casual.integer((from = 5), (to = 10));

@@ -35,16 +35,19 @@ export class AdminSelectMetadataComponent implements OnInit, OnDestroy {
           });
           this.store.dispatch(
             AdminActions.mainActions({
-              actions: [
-                {
-                  action: AdminActions.routeTo({ path: editPath.toString() }),
-                  label: 'edit',
-                  icon: 'edit',
-                  moduleAccess: 'admin',
-                  pageAccess: 'metadata',
-                  actionAccess: 'write'
-                }
-              ]
+              actions:
+                metadata.readOnly === true
+                  ? []
+                  : [
+                      {
+                        action: AdminActions.routeTo({ path: editPath.toString() }),
+                        label: 'edit',
+                        icon: 'edit',
+                        moduleAccess: 'admin',
+                        pageAccess: 'metadata',
+                        actionAccess: 'write'
+                      }
+                    ]
             })
           );
         }

@@ -107,7 +107,8 @@ export const enTranslations = {
         invalid: 'Field is required',
         listLabel: 'Value name',
         addValue: 'Add new value',
-        removeValue: 'Remove value'
+        removeValue: 'Remove value',
+        system: 'System metadata'
       },
       'metadata-rules': {
         title: 'Metadata Rules',

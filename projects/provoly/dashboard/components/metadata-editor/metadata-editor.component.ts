@@ -55,7 +55,7 @@ export class PryMetadataEditorComponent extends SubscriptionnerDirective {
       map(([type, metadata, metaDefs, userProfileDefs]) => {
         if (type === 'meta') {
           let datasetMetadataIds = metadata?.map((u) => (u as MetadataValue).metadataDef.id);
-          return metaDefs.filter((meta) => !datasetMetadataIds?.includes(meta.id));
+          return metaDefs.filter((meta) => !datasetMetadataIds?.includes(meta.id) && !meta.readOnly);
         } else {
           let userProfileIds = metadata?.map((u) => (u as MetadataUser).userProfile.id);
           return (userProfileDefs ?? []).filter((meta) => !userProfileIds?.includes(meta.id));

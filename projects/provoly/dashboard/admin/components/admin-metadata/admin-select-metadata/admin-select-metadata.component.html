@@ -32,6 +32,10 @@
       {{ '@pry.admin.metadata.type' | i18n }} :
       <strong>{{ currentTypeTranslation | i18n }}</strong>
     </p>
+    <p class="a-p" *ngIf="metadata.system !== undefined">
+      {{ '@pry.admin.metadata.system' | i18n }} :
+      <strong>{{ metadata.system ? '✔' : '✘' }}</strong>
+    </p>
 
     <ng-container *ngIf="metadata.allowedValues">
       <ng-container *ngFor="let item of metadata.allowedValues">

@@ -13,6 +13,8 @@ export interface IMetadata {
   type: VARIABLE_TYPE | METADATA_TYPE;
   description?: string;
   allowedValues?: Array<string>;
+  system?: boolean;
+  readOnly?: boolean;
 }
 
 export interface Environment {
