@@ -30,6 +30,7 @@ import {
   DEFAULT_PROJECTION,
   Field,
   FieldSelectors,
+  FilterContext,
   GeoMetadata,
   GeometricFieldTypes,
   GetCapabilitiesResponse,
@@ -223,9 +224,20 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       })
     );
     this.fields$ = this.store.select(FieldSelectors.fields);
-    this.datasourceFilters$ = this.store
-      .select(DashboardSelectors.datasourceFilters)
-      .pipe(distinctUntilChanged((p, c) => equal(p, c)));
+
+    this.datasourceFilters$ = combineLatest([
+      this.store.select(DashboardSelectors.datasourceFilters),
+      this.datasourceIds$
+    ]).pipe(
+      map(
+        ([filters, ids]) =>
+          Object.keys(filters)
+            .filter((filterDsKey) => ids.includes(filterDsKey))
+            .reduce((p, c) => ({ ...p, [c]: filters[c] }), {}) as { [p: string]: FilterContext[] }
+      ),
+      distinctUntilChanged((p, c) => equal(p, c))
+    );
+
     this.styles$ = this.store.select(ConfigSelectors.mapStyles).pipe(
       map((styles) =>
         styles.concat(
@@ -763,8 +775,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         this.fitOption$,
         this.selectedIds$.pipe(distinctUntilChanged((p, c) => equal(p, c))),
         this.wmsCapabilities$,
-        this.aggregatedExtents$
-      ]).subscribe(([mapStyleLayer, layers, fit, selectedIds, capabilities, extents]) => {
+        this.aggregatedExtents$,
+        this.datasourceFilters$
+      ]).subscribe(([mapStyleLayer, layers, fit, selectedIds, capabilities, extents, filters]) => {
         const toApplyLayers = [...layers, ...mapStyleLayer];
         this.map.setLayers(toApplyLayers);
         this.map
@@ -785,7 +798,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           });
 
         setTimeout(() => {
-          this.fitMapForObjects(fit, capabilities, selectedIds, extents);
+          this.fitMapForObjects(fit, capabilities, selectedIds, extents, filters);
           this.map.updateSize();
         }, 200);
       })
@@ -918,7 +931,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     fit: boolean,
     wmsCapabilities: { [p: string]: GetCapabilitiesResponse | null } = {},
     selectedIds?: string[],
-    extents: { datasource: string; extent: Coordinate[] }[] = []
+    extents: { datasource: string; extent: Coordinate[] }[] = [],
+    filters: { [p: string]: FilterContext[] } = {}
   ) {
     if (fit) {
       let extent = createEmpty();
@@ -970,15 +984,21 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         }))
         .filter((extent) => !!extent.extent) as { datasource: string; extent: Coordinate[] }[];
 
-      const singleExtentType = extents.concat(
-        ...capabilitiesExtents.filter(
-          (capabilityExtent) =>
-            !capabilityExtent.datasource || !extents.find((extent) => extent.datasource === capabilityExtent.datasource)
-        )
-      );
+      const activeFilters = Object.keys(filters).filter((filter) => filters[filter].find((attr) => !!attr.value));
+
+      const uniqueExtent =
+        activeFilters.length > 0
+          ? extents
+          : extents.concat(
+              ...capabilitiesExtents.filter(
+                (capabilityExtent) =>
+                  !capabilityExtent.datasource ||
+                  !extents.find((extent) => extent.datasource === capabilityExtent.datasource)
+              )
+            );
 
       const selectedExtent = boundingExtent(
-        listOfMarkers.filter((coord) => !!coord).concat(...singleExtentType.map((extent) => extent.extent))
+        listOfMarkers.filter((coord) => !!coord).concat(...uniqueExtent.map((extent) => extent.extent))
       );
 
       if (

@@ -76,47 +76,20 @@ const routes: Routes = [
       } as DashboardManifest,
       filters: [
         {
-          id: '6ce14ac6-39a9-43c0-96b5-ef11fb47bf82',
-          name: 'sub',
-          type: 'text',
+          id: 'e766ea71-71ca-45e8-b6c8-6494c4b0c5a0',
+          name: 'Statut',
+          type: 'list',
+          attributes: [
+            {
+              id: 'f629ef8a-8773-4e3b-914b-6ab838d255bb',
+              name: 'statut',
+              label: 'statut / CKDo:EquipementsPublics / Equipements publics',
+              datasource: 's6406e7e-37cd-41ce-b5fc-36d233e6ae5c'
+            }
+          ],
           operator: 'EQUALS',
-          value: 'SUBMERSION',
-          attributes: [
-            {
-              id: '4c87f8bc-f30e-4875-b03b-9c4fa97d7288',
-              name: 'id',
-              label: 'id / Submersion / tronçon_de_route',
-              datasource: 's6406e7e-37cd-41ce-b5fc-36d233e6ae5c'
-            },
-            {
-              id: '4c87f8bc-f30e-4875-b03b-9c4fa97d7289',
-              name: 'id2',
-              label: 'id2 / Submersion / tronçon_de_route',
-              datasource: 's6406e7e-37cd-41ce-b5fc-36d233e6ae5c'
-            }
-          ]
-        },
-        {
-          id: '3bc03f8a-6f8c-4cc1-ad58-7ea1ec5adeaa',
-          name: 'aze',
-          type: 'date',
-          operator: 'INSIDE',
-          hasDateRange: true,
-          value: '2023-09-06,2023-09-09',
-          attributes: [
-            {
-              id: '4c87f8bc-f30e-4875-b03b-9c4fa97d7281',
-              name: 'id',
-              label: 'id / Submersion / tronçon_de_route',
-              datasource: 's6406e7e-37cd-41ce-b5fc-36d233e6ae5c'
-            },
-            {
-              id: '4c87f8bc-f30e-4875-b03b-9c4fa97d7282',
-              name: 'id2',
-              label: 'id2 / Submersion / tronçon_de_route',
-              datasource: 's6406e7e-37cd-41ce-b5fc-36d233e6ae5c'
-            }
-          ]
+          possibleValues: 'PUBLIC,PRIVE,PARA_PUBLIC',
+          value: 'PRIVE'
         }
       ] as Filter[]
     }
