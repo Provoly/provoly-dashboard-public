@@ -22,7 +22,10 @@ export class ResultsetUtils {
     });
 
     const uniqueRelations = [
-      ...new Set(rs1Copy.relations.map((rel) => `${rel.relationType}|${rel.source}|${rel.destination}`))
+      ...new Set([
+        ...rs1Copy.relations.map((rel) => `${rel.relationType}|${rel.source}|${rel.destination}`),
+        ...rs2.relations.map((rel) => `${rel.relationType}|${rel.source}|${rel.destination}`)
+      ])
     ];
     rs1Copy.relations = uniqueRelations.map((key) => {
       const splittedKey = key.split('|');
@@ -31,6 +34,19 @@ export class ResultsetUtils {
           rel.relationType === splittedKey[0] && rel.source === splittedKey[1] && rel.destination === splittedKey[2]
       );
     }) as Relation[];
+
+    if (!rs1Copy.count) {
+      rs1Copy.count = {};
+    }
+    Object.keys(rs2.count ?? {}).forEach((key) => {
+      if (!rs1Copy.count![key]) {
+        rs1Copy.count![key] = { count: 0, accurate: true };
+      }
+      rs1Copy.count![key] = {
+        count: rs1Copy.count![key].count + rs2.count![key].count,
+        accurate: rs1Copy.count![key].accurate && rs2.count![key].accurate
+      };
+    });
 
     return rs1Copy;
   }

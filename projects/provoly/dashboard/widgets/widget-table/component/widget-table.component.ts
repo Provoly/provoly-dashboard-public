@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   baseItemProperties,
@@ -27,10 +27,19 @@ import equal from 'fast-deep-equal/es6';
 import { auditTime, BehaviorSubject, combineLatest, Observable, take } from 'rxjs';
 import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
 
+export interface Pagination {
+  totalPages: number;
+  page: number;
+  rows: number;
+  items: Item[];
+  loaded: number;
+  loadedPages: number;
+  noFillersItems: number;
+}
+
 @Component({
   selector: 'pry-widget-table',
-  templateUrl: './widget-table.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './widget-table.component.html'
 })
 export class WidgetTableComponent extends DataWidgetComponent {
   options$: Observable<TableWidgetOptions>;
@@ -52,6 +61,9 @@ export class WidgetTableComponent extends DataWidgetComponent {
   isContextMenuOpened$: Observable<boolean>;
   quickOrder$: Observable<ResultOrder | undefined>;
   private _refresh$ = new BehaviorSubject<void>(undefined);
+  actualPage$ = new BehaviorSubject<number>(0);
+  pagination$: Observable<Pagination>;
+
   constructor(store: Store<any>, el: ElementRef, private cdr: ChangeDetectorRef) {
     super(store, el);
 
@@ -104,6 +116,51 @@ export class WidgetTableComponent extends DataWidgetComponent {
         return (searchLoading ?? []).filter((id) => (datasourceIds ?? []).includes(id))?.length > 0;
       })
     );
+
+    const HEADER_SIZE = 60;
+    const PAGINATION_SIZE = 35;
+    const LINE_SIZE = 45;
+
+    this.pagination$ = combineLatest([
+      this.allItems$,
+      this.actualPage$,
+      this.widgetSize$,
+      this.resultSet$,
+      this.displayHeader$
+    ]).pipe(
+      map(([items, actualPage, size, rs, headerPresent]) => {
+        const rows = Math.max(
+          1,
+          Math.floor(
+            (size.height - HEADER_SIZE - PAGINATION_SIZE - (headerPresent ? WIDGET_HEADER_HEIGHT : 0)) / LINE_SIZE
+          )
+        );
+        const total = Object.values(rs.count ?? {}).reduce((p, c) => c.count + p, 0);
+        const loadedPages = Math.ceil(items.length / rows);
+        const page = actualPage <= loadedPages ? actualPage : Math.max(0, loadedPages - 1);
+        const filtered = items.filter((_, idx) => idx >= rows * page && idx < rows * (page + 1));
+        const filteredWithFillers =
+          filtered.length === rows
+            ? filtered
+            : filtered.concat(
+                new Array(rows - filtered.length).fill({
+                  metadata: { '__widget-table-filler': true }
+                } as unknown as Item)
+              );
+        return {
+          rows,
+          page,
+          items: filteredWithFillers,
+          noFillersItems: filtered.length,
+          total,
+          totalPages: Math.ceil(total / rows),
+          loaded: items.length,
+          loadedPages
+        };
+      })
+    );
+
+    this.subscriptions.add(this.pagination$.subscribe(() => this.refresh()));
 
     this.columns$ = this.options$.pipe(
       map((options) => options?.columns ?? []),
@@ -268,5 +325,9 @@ export class WidgetTableComponent extends DataWidgetComponent {
 
   trackObjects(index: number, item: Item) {
     return item.id;
+  }
+
+  goToPage(number: number) {
+    this.actualPage$.next(number);
   }
 }

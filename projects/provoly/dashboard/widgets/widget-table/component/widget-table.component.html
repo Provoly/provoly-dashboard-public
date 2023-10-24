@@ -92,73 +92,121 @@
       <span class="a-table-loading__loader"></span>
     </div>
     <ng-template #noLoading>
-      <ng-container *ngIf="(allItems$ | async) ?? [] as allObjects">
-        <div class="no-result" *ngIf="allObjects.length === 0">
-          <img
-            class="no-result__search"
-            src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
-            alt="{{ '@pry.widget.table.empty' | i18n }}"
-            aria-hidden="true"
-          />
-          <span class="no-result__text">{{ '@pry.widget.table.empty' | i18n }}</span>
-        </div>
+      <ng-container *ngIf="pagination$ | async as pagination">
+        <ng-container *ngIf="pagination?.items ?? [] as allObjects">
+          <div
+            class="no-result"
+            *ngIf="pagination.noFillersItems === 0"
+            [style.height.%]="pagination.totalPages > 0 ? 80 : 100"
+          >
+            <img
+              class="no-result__search"
+              src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
+              alt="{{ '@pry.widget.table.empty' | i18n }}"
+              aria-hidden="true"
+            />
+            <span class="no-result__text">{{ '@pry.widget.table.empty' | i18n }}</span>
+          </div>
 
-        <ng-container *ngIf="(selectedIds$ | async) ?? [] as selectedIds">
-          <ng-container *ngIf="(columns$ | async) ?? [] as columns">
-            <table class="a-table" [attr.aria-label]="'@pry.widget.table.description' | i18n">
-              <thead>
-                <tr>
-                  <th *ngIf="allObjects?.length ?? 0 > 0">
-                    <pry-checkbox [ngModel]="areAllSelected" (ngModelChange)="selectAll($event)"></pry-checkbox>
-                  </th>
-                  <th *ngFor="let column of columns; let i = index" resizable (click)="setOrder(column)">
-                    <span>{{ column.label }}</span>
-                    <ng-container *ngIf="quickOrder$ | async as quickOrder">
-                      <ng-container *ngIf="quickOrder.attribute === column.attributeId">
-                        <pry-icon
-                          [iconSvg]="quickOrder.asc ? 'chevron_top' : 'chevron_bottom'"
-                          [height]="12"
-                          [width]="12"
-                        ></pry-icon>
-                      </ng-container>
-                    </ng-container>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  *ngFor="let item of allObjects; trackBy: trackObjects"
-                  [class.is-selected]="selectedIds.includes(item.id)"
-                  [class.context-menu-selected]="contextMenuClickedId === item.id && (isContextMenuOpened$ | async)"
-                  (contextmenu)="contextMenu($event, item)"
-                  detachRow
-                  (selectedValue)="selection($event, item)"
-                >
-                  <td class="checkbox-wrapper">
-                    <pry-checkbox [ngModel]="selectedIds.includes(item.id)"></pry-checkbox>
-                  </td>
-                  <td *ngFor="let column of columns" class="u-ellipsis">
-                    <ng-container *ngIf="column.property === 'metadata'">
-                      <pry-metadata [item]="item"></pry-metadata>
-                    </ng-container>
-                    <ng-container *ngIf="column.property === 'oClass'">
-                      <p class="content-img">
-                        <img
-                          [height]="25"
-                          [width]="25"
-                          [src]="item | translateItemToSymbol | async"
-                          [alt]="item.oClass | translateId : { type: 'class', output: 'name' } | async"
-                        />
-                      </p>
-                    </ng-container>
-                    <ng-container *ngIf="!['metadata', 'oClass'].includes(column.property)">
-                      <pry-expand-value [value]="item | getValue : column.property | async"></pry-expand-value>
-                    </ng-container>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <ng-container *ngIf="pagination.noFillersItems > 0">
+            <ng-container *ngIf="(selectedIds$ | async) ?? [] as selectedIds">
+              <ng-container *ngIf="(columns$ | async) ?? [] as columns">
+                <table class="a-table" [attr.aria-label]="'@pry.widget.table.description' | i18n">
+                  <thead>
+                    <tr>
+                      <th *ngIf="allObjects?.length ?? 0 > 0">
+                        <pry-checkbox [ngModel]="areAllSelected" (ngModelChange)="selectAll($event)"></pry-checkbox>
+                      </th>
+                      <th *ngFor="let column of columns; let i = index" resizable (click)="setOrder(column)">
+                        <span>{{ column.label }}</span>
+                        <ng-container *ngIf="quickOrder$ | async as quickOrder">
+                          <ng-container *ngIf="quickOrder.attribute === column.attributeId">
+                            <pry-icon
+                              [iconSvg]="quickOrder.asc ? 'chevron_top' : 'chevron_bottom'"
+                              [height]="12"
+                              [width]="12"
+                            ></pry-icon>
+                          </ng-container>
+                        </ng-container>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let item of allObjects"
+                      [class.is-selected]="selectedIds.includes(item.id)"
+                      [class.context-menu-selected]="contextMenuClickedId === item.id && (isContextMenuOpened$ | async)"
+                      (contextmenu)="contextMenu($event, item)"
+                      detachRow
+                      (selectedValue)="selection($event, item)"
+                      [class.filler]="item.metadata!['__widget-table-filler']"
+                    >
+                      <td class="checkbox-wrapper">
+                        <pry-checkbox [ngModel]="selectedIds.includes(item.id)"></pry-checkbox>
+                      </td>
+                      <td *ngFor="let column of columns" class="u-ellipsis">
+                        <ng-container *ngIf="column.property === 'metadata'">
+                          <pry-metadata [item]="item"></pry-metadata>
+                        </ng-container>
+                        <ng-container *ngIf="column.property === 'oClass'">
+                          <p class="content-img">
+                            <img
+                              [height]="25"
+                              [width]="25"
+                              [src]="item | translateItemToSymbol | async"
+                              [alt]="item.oClass | translateId : { type: 'class', output: 'name' } | async"
+                            />
+                          </p>
+                        </ng-container>
+                        <ng-container *ngIf="!['metadata', 'oClass'].includes(column.property)">
+                          <pry-expand-value [value]="item | getValue : column.property | async"></pry-expand-value>
+                        </ng-container>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </ng-container>
+            </ng-container>
           </ng-container>
+
+          <div class="a-table-pagination" *ngIf="pagination.totalPages > 0">
+            <div class="a-table-pagination__spacing">
+              <div>
+                <button (click)="goToPage(0)" [disabled]="pagination.page <= 0">
+                  <pry-icon iconSvg="skip-left-fill"></pry-icon>
+                </button>
+              </div>
+              <div>
+                <button (click)="goToPage(pagination.page - 1)" [disabled]="pagination.page <= 0">
+                  <pry-icon iconSvg="arrow-left-s-fill"></pry-icon>
+                </button>
+              </div>
+              <div class="a-table-pagination__spacing__label">
+                <p>{{ pagination.page + 1 }} / {{ pagination.loadedPages }}</p>
+              </div>
+              <div>
+                <button
+                  (click)="goToPage(pagination.page + 1)"
+                  [disabled]="pagination.page + 1 >= pagination.loadedPages"
+                >
+                  <pry-icon iconSvg="arrow-right-s-fill"></pry-icon>
+                </button>
+              </div>
+              <div>
+                <button
+                  (click)="goToPage(pagination.loadedPages - 1)"
+                  [disabled]="pagination.page + 1 >= pagination.loadedPages"
+                >
+                  <pry-icon iconSvg="skip-right-fill"></pry-icon>
+                </button>
+              </div>
+              <div class="a-table-pagination__spacing__label">
+                ({{
+                  '@pry.widget.table.remaining' | i18n : { remaining: pagination.totalPages - pagination.loadedPages }
+                }})
+              </div>
+            </div>
+          </div>
         </ng-container>
       </ng-container>
     </ng-template>

@@ -4,8 +4,8 @@
 .a-table-wrapper {
   flex: 1;
   height: 100%;
-  overflow: auto;
-  padding-bottom: toRem(20);
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .a-table {
@@ -81,6 +81,18 @@
             }
           }
         }
+
+        &.checkbox-wrapper {
+          height: toRem(45);
+        }
+      }
+
+      &.filler {
+        border-bottom-color: white;
+
+        td > * {
+          display: none;
+        }
       }
     }
 
@@ -97,6 +109,25 @@
 
   a[href].a-btn {
     color: inherit;
+  }
+
+  &-pagination {
+    height: toRem(35);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+
+    &__spacing {
+      display: flex;
+      flex-direction: row;
+      height: toRem(35);
+
+      &__label {
+        margin-top: toRem(5);
+        height: toRem(35);
+      }
+    }
   }
 }
 

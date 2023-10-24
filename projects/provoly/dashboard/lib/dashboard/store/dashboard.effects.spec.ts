@@ -906,7 +906,8 @@ describe('DashboardEffects', () => {
               classA: [{ id: 'aaa', oClass: 'classA', attributes: {} }],
               classB: [{ id: 'bbb', oClass: 'classB', attributes: {} }]
             },
-            relations: []
+            relations: [],
+            count: {}
           }
         })
       });
@@ -925,7 +926,10 @@ describe('DashboardEffects', () => {
               { id: 'ccc', oClass: 'classB', attributes: {} }
             ]
           },
-          relations: []
+          relations: [],
+          count: {
+            classB: { count: 3, accurate: true }
+          }
         } as ResultSet)
       );
 
@@ -935,7 +939,11 @@ describe('DashboardEffects', () => {
             classA: [{ id: 'aaa', oClass: 'classA', attributes: {} }],
             classB: [{ id: 'bbb', oClass: 'classB', attributes: {} }]
           },
-          relations: []
+          relations: [],
+          count: {
+            classA: { count: 5, accurate: true },
+            classB: { count: 5, accurate: false }
+          }
         }
       });
 
@@ -954,7 +962,11 @@ describe('DashboardEffects', () => {
                 { id: 'ccc', oClass: 'classB', attributes: {} }
               ]
             },
-            relations: []
+            relations: [],
+            count: {
+              classA: { count: 5, accurate: true },
+              classB: { count: 8, accurate: false }
+            }
           }
         })
       });
@@ -998,7 +1010,8 @@ describe('DashboardEffects', () => {
               { relationType: 'a', source: 'a', destination: 'a' },
               { relationType: 'b', source: 'a', destination: 'a' },
               { relationType: 'a', source: 'c', destination: 'a' }
-            ]
+            ],
+            count: {}
           } as unknown as ResultSet
         })
       });
