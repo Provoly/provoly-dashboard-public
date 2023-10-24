@@ -63,6 +63,7 @@ export class WidgetTableComponent extends DataWidgetComponent {
   private _refresh$ = new BehaviorSubject<void>(undefined);
   actualPage$ = new BehaviorSubject<number>(0);
   pagination$: Observable<Pagination>;
+  isOpen = false;
 
   constructor(store: Store<any>, el: ElementRef, private cdr: ChangeDetectorRef) {
     super(store, el);
@@ -160,7 +161,7 @@ export class WidgetTableComponent extends DataWidgetComponent {
       })
     );
 
-    this.subscriptions.add(this.pagination$.subscribe(() => this.refresh()));
+    this.subscriptions.add(this.pagination$.pipe(auditTime(200)).subscribe(() => this.refresh()));
 
     this.columns$ = this.options$.pipe(
       map((options) => options?.columns ?? []),
@@ -216,11 +217,12 @@ export class WidgetTableComponent extends DataWidgetComponent {
       map(([order, nqs]) => (nqs.length === 1 ? order[nqs[0]] : undefined))
     );
 
-    this.subscriptions.add(this._refresh$.pipe(auditTime(200)).subscribe(() => this.cdr.detectChanges()));
+    this.subscriptions.add(this._refresh$.subscribe(() => this.cdr.detectChanges()));
   }
 
   refresh() {
     this._refresh$.next();
+    this.isOpen = !this.isOpen;
   }
 
   emitManifest() {

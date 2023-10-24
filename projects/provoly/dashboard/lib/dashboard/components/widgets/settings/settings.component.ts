@@ -29,6 +29,7 @@ export class SettingsComponent extends SubscriptionnerDirective implements OnIni
   manifest$?: Observable<WidgetManifest>;
   manifest?: WidgetManifest;
   private openSub?: Subscription;
+  @Output() triggerClick = new EventEmitter<void>();
 
   @Input() set widgetIndex(widgetIndex: number) {
     this._widgetIndex$.next(widgetIndex);

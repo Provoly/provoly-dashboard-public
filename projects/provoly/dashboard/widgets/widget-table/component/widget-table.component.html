@@ -8,14 +8,17 @@
     (manifestModified)="manifestModified.emit($event)"
     #header
     [headerOptions]="(displayHeader$ | async) ?? {}"
+    (click)="refresh()"
   >
     <pry-settings
+      (click)="refresh()"
       (saveTriggered)="emitManifest()"
       (changeTitle)="changeWidgetTitle($event)"
       [headerPresent]="displayHeader$ | async"
       [widgetIndex]="widgetIndex"
       [header]="header"
       [open$]="open$"
+      (triggerClick)="this.refresh()"
       class="o-settings"
     >
       <div class="o-settings__popup__content__actions">
@@ -28,6 +31,7 @@
       <div
         *ngFor="let columnDef of optionsCopy?.columns ?? []; let i = index"
         class="o-settings__popup__content__fields"
+        (click)="refresh()"
       >
         <div class="o-settings__popup__content__fields__head">
           <div class="m-btn-group">
@@ -51,10 +55,12 @@
           <div class="m-form-label-field">
             <label class="a-label" for="table_property">{{ '@pry.widget.table.property' | i18n }}</label>
             <pry-select
+              (click)="refresh()"
               (ngModelChange)="changePropertyName($event, columnDef)"
               [itemsAsOption]="true"
               [items]="properties$ | async"
               [ngModel]="columnDef.property"
+              [class.ng-select-opened]="isOpen"
               bindLabel="label"
               bindValue="property"
               id="table_property"
