@@ -11,6 +11,7 @@ import {
   DisplayMode,
   GlobalManifest,
   ManifestDescription,
+  PryTitleService,
   PryVisibility,
   PryVisibilityType,
   SubscriptionnerDirective,
@@ -53,7 +54,8 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     protected overlay: Overlay,
     protected viewContainerRef: ViewContainerRef,
     protected router: Router,
-    protected ngZone: NgZone
+    protected ngZone: NgZone,
+    protected titleService: PryTitleService
   ) {
     super();
     this.store.dispatch(DashboardActions.fetchManifestsList());
@@ -87,6 +89,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
         }
       })
     );
+    this.titleService.changeTitle('@pry.presentation.title');
   }
 
   closeRestitution() {
@@ -108,6 +111,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
         viewMode: ViewMode.CATALOG
       })
     );
+    this.titleService.changeTitle(presentation.name);
     this.store.dispatch(DashboardActions.fetchStaticManifest({ id: presentation.id }));
     this.store
       .select(DashboardSelectors.staticManifest)
@@ -154,6 +158,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   edit(presentation: ManifestDescription) {
     this.selectedMode = ViewMode.EDITION;
     this.selectedPresentation$.next(presentation);
+    this.titleService.changeTitle(presentation.name);
     this.store.dispatch(DashboardActions.selectPresentation({ presentation, viewMode: ViewMode.EDITION }));
     this.store.dispatch(DashboardActions.fetchStaticManifest({ id: presentation.id }));
     this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: DisplayMode.EDIT }));

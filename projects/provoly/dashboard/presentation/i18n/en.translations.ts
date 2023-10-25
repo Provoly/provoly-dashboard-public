@@ -33,7 +33,8 @@ export const enTranslations = {
       edition: 'Edit',
       delete: 'Delete',
       backToCatalog: 'Back to catalog',
-      search: 'Search'
+      search: 'Search',
+      title: 'Presentations'
     }
   }
 };

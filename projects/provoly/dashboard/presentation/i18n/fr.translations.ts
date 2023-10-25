@@ -34,7 +34,8 @@ export const frTranslations = {
       edition: 'Éditer',
       delete: 'Supprimer',
       backToCatalog: 'Revenir au catalogue',
-      search: 'Rechercher'
+      search: 'Rechercher',
+      title: 'Présentations'
     }
   }
 };
