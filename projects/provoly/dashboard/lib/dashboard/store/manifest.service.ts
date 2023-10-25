@@ -70,7 +70,7 @@ export class ManifestService {
     description?: string,
     image?: string,
     cover?: boolean,
-    metadata?: { id: string; value: string }[]
+    metadata?: { metadataDefId: string; value: string }[]
   ): Observable<{ id: string; name: string; manifest: GlobalManifest }> {
     return this.store.select(ConfigSelectors.refUrl).pipe(
       mergeMap((url) =>

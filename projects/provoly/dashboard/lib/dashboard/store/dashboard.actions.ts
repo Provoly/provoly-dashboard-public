@@ -167,7 +167,7 @@ export const DashboardActions = {
       image?: string;
       visibility?: PryVisibility;
       cover?: boolean;
-      metadata?: { id: string; value: string }[];
+      metadata?: { metadataDefId: string; value: string }[];
     }>()
   ),
   solveCollisions: createAction('[Dashboard] solving collisions'),

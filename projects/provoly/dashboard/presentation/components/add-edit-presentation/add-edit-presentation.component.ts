@@ -83,7 +83,7 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
           DashboardActions.saveManifest({
             ...presentation,
             metadata: presentation.metadata?.map((metadata) => ({
-              id: metadata.metadataDef.id,
+              metadataDefId: metadata.metadataDef.id,
               value: metadata.value
             })),
             manifest: staticManifest
