@@ -513,7 +513,7 @@ describe('WidgetMapComponent', () => {
           key: 'rs',
           oClass: 'geoClass',
           subType: 'Point',
-          title: 'resultset - loc (Point)',
+          title: 'resultset - loc',
           type: 'auto'
         },
         {
@@ -522,7 +522,7 @@ describe('WidgetMapComponent', () => {
           key: 'rs',
           oClass: 'geoClass',
           subType: 'MultiPolygon',
-          title: 'resultset - zone (MultiPolygon)',
+          title: 'resultset - zone',
           type: 'auto'
         }
       ],
