@@ -53,7 +53,6 @@ import {
   PryAggregationService,
   PryGeoAuthService,
   PryI18nService,
-  PrySnackbarService,
   ResultsetUtils,
   SymbolService,
   TooltipFactoryService,
@@ -179,7 +178,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   constructor(
     store: Store<any>,
-    private snackBar: PrySnackbarService,
     public translateService: PryI18nService,
     private tooltipFactoryService: TooltipFactoryService,
     private symbolService: SymbolService,
