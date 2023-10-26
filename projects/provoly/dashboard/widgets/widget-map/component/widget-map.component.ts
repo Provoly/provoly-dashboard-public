@@ -314,7 +314,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                 (geo) =>
                   ({
                     type: 'auto',
-                    title: `${ds.name} - ${geo.attr.name} (${geo.field!.type})`,
+                    title: `${ds.name}${geoAttributes.length > 1 ? ' - ' + geo.attr.name : ''}`,
                     oClass: ds.oClass,
                     key: ds.id,
                     subType: geo.field!.type,
