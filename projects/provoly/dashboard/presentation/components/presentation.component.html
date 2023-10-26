@@ -49,9 +49,9 @@
                 <div class="o-presentation__item__image">
                   <img
                     alt=""
-                    [class.is-full-width]="presentation.cover"
                     [height]="presentation.cover ? 600 : 128"
                     [width]="presentation.cover ? 600 : 128"
+                    [class.is-full-width]="presentation.cover"
                     [src]="presentation.image | getSecuredImage | async"
                     (click)="fetch(presentation)"
                   />
