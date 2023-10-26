@@ -68,7 +68,8 @@ export class AdminClassesFormComponent extends SubscriptionnerDirective implemen
     if (this._currentClass) {
       this.classForm.patchValue({
         id: this._currentClass.id,
-        name: this._currentClass.name
+        name: this._currentClass.name,
+        storage: this._currentClass.storage
       });
     }
   }
