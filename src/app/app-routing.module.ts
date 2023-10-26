@@ -175,24 +175,9 @@ const routes: Routes = [
             options: {
               attributions: true,
               tooltipMode: TooltipMode.CLICK,
-              layers: [
-                {
-                  type: 'point'
-                },
-                {
-                  type: 'line'
-                },
-                {
-                  type: 'polygon'
-                },
-                {
-                  type: 'multi-line'
-                },
-                {
-                  type: 'multi-polygon'
-                }
-              ],
-              fit: true
+              layers: [],
+              fit: true,
+              automaticLayers: true
             },
             datasource: 'geospe-cifi-cdat-acd2-51ccec998307'
           }
