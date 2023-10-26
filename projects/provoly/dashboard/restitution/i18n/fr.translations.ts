@@ -31,7 +31,7 @@ export const frTranslations = {
       selectDataSource: 'Sélectionner la source de données',
       unselectDataSource: 'Désélectionner la source de données',
       dataSource: 'Donnée(s)',
-      noDataSource: 'Aucunes donnée disponible',
+      noDataSource: 'Aucune donnée disponible',
       delete: 'Supprimer la restitution',
       next: 'Suivant',
       lock: 'Restitution privée',

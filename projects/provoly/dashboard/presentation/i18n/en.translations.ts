@@ -18,7 +18,8 @@ export const enTranslations = {
         categories: 'Categories',
         categoryInput: 'Add categories',
         grid: 'Current grid: ',
-        cover: 'Image will cover the whole presentation card'
+        cover: 'Image will cover the whole presentation card',
+        theme: 'Theme'
       },
       share: 'Share',
       view: 'Consult the presentation',

@@ -262,7 +262,7 @@ export const frTranslations = {
         list: 'Types métier',
         edit: 'Modifier le type métier',
         name: 'Nom',
-        description: 'description',
+        description: 'Description',
         type: 'Type technique',
         attributes: 'Présence dans des attributs',
         attributesTab: 'Attributs',
