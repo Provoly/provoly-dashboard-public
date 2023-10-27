@@ -1,19 +1,36 @@
 import { Component } from '@angular/core';
-import { BaseTooltipComponent, TranslateIdPipe } from '@provoly/dashboard';
-import { map, Observable, of } from 'rxjs';
+import { BaseTooltipComponent, Class, ClassSelectors, TranslateIdPipe } from '@provoly/dashboard';
+import { map, Observable, of, switchMap } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'pry-attribute-tooltip',
   templateUrl: './attribute-tooltip.component.html'
 })
 export class AttributeTooltipComponent extends BaseTooltipComponent {
-  constructor(private translateIdPipe: TranslateIdPipe) {
+  private classes$: Observable<Class[]>;
+
+  constructor(private translateIdPipe: TranslateIdPipe, private store: Store<any>) {
     super();
     this.context = this.context ?? { attributes: [] };
+    this.classes$ = this.store.select(ClassSelectors.classes);
+  }
+
+  getAttributeName(attribute: string): Observable<string> {
+    return this.classes$.pipe(
+      map(
+        (classes) =>
+          classes
+            .map((clazz) => clazz.attributes)
+            .flat()
+            .find((attr) => attr.id === attribute)?.name ?? attribute
+      )
+    );
   }
 
   getValue(attribute: string, limit = 9999): Observable<string> {
-    return this._getValue(attribute).pipe(
+    return this.getAttributeName(attribute).pipe(
+      switchMap((attribute: string) => this._getValue(attribute)),
       map((value) => {
         switch (typeof value) {
           case 'undefined':

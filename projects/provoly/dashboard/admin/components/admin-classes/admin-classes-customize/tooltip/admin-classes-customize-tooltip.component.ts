@@ -39,11 +39,11 @@ export class AdminClassesCustomizeTooltipComponent extends SubscriptionnerDirect
   possibleNonAttributesFields = [
     {
       name: 'id',
-      field: ''
+      id: 'id'
     },
     {
       name: 'oClass',
-      field: ''
+      id: 'oClass'
     }
   ] as Attribute[];
   @Output() backPressed = new EventEmitter<void>();
@@ -93,7 +93,7 @@ export class AdminClassesCustomizeTooltipComponent extends SubscriptionnerDirect
   tooltipTypeChanged($event: any) {
     this.currentClassConfig.type = $event;
     if (this.currentClassConfig.type === 'attribute') {
-      this.currentClassConfig.options = { attributes: this.possibleAttributes.map((attr) => attr.name) };
+      this.currentClassConfig.options = { attributes: this.possibleAttributes.map((attr) => attr.id) };
     } else {
       this.currentClassConfig.options = {};
     }
@@ -156,5 +156,6 @@ export class AdminClassesCustomizeTooltipComponent extends SubscriptionnerDirect
 
   changeAttributes($event: any) {
     this.currentClassConfig.options.attributes = $event;
+    setTimeout(() => this.updateExample(), 100);
   }
 }

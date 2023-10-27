@@ -13,7 +13,7 @@
   </h3>
   <ng-container *ngFor="let attribute of context.attributes">
     <p [title]="getValue(attribute) | async">
-      <span>{{ attribute }}:</span> {{ getValue(attribute, 40) | async }}
+      <span>{{ getAttributeName(attribute) | async }}:</span> {{ getValue(attribute, 40) | async }}
     </p>
   </ng-container>
 </div>
