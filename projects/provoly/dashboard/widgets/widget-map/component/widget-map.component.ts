@@ -98,6 +98,7 @@ import {
   DEFAULT_ZOOM_MIN,
   DEFAULT_ZOOM_START,
   exportMapAsImage,
+  getLayerOrder,
   getLinkFeature,
   getMapAsPng,
   populateIntensityAttribute,
@@ -364,7 +365,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         }
 
         autoOptions.layers = [
-          ...(autoOptions.layers ?? []).filter((layer) => layer.type !== 'auto'),
+          ...(autoOptions.layers ?? [])
+            .sort((l1, l2) => l1.order! - l2.order!)
+            .map((layer, i, array) => (autoOptions.layers![i] = { ...layer, order: getLayerOrder(layer, i, array) }))
+            .filter((layer) => layer.type !== 'auto'),
           ...(autoOptions.automaticLayers
             ? autoDatasetLayers
                 .filter(
@@ -406,7 +410,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
               : { ...layer };
           }),
           ...geoLayers.filter((layer) => !actualLayerKeys.includes(layer.key))
-        ].filter((layer) => !!layer);
+        ]
+          .filter((layer) => !!layer)
+          .sort((l1, l2) => l1.order! - l2.order!);
 
         autoOptions.layers.forEach((layer) => {
           this.setDefaultLayerTitle(layer, capabilities);
@@ -1143,9 +1149,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   invertLayers(idx: number, idxWith: number) {
     if (!!this.optionsCopy && !!this.optionsCopy.layers) {
-      const tmp = this.optionsCopy.layers[idxWith];
+      const tmpOrder = this.optionsCopy.layers[idxWith].order;
+      this.optionsCopy.layers[idxWith].order = this.optionsCopy.layers[idx].order;
+      this.optionsCopy.layers[idx].order = tmpOrder;
+      const tmpIndex = this.optionsCopy.layers[idxWith];
       this.optionsCopy.layers[idxWith] = this.optionsCopy.layers[idx];
-      this.optionsCopy.layers[idx] = tmp;
+      this.optionsCopy.layers[idx] = tmpIndex;
     }
   }
 

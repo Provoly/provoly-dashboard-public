@@ -261,6 +261,45 @@ export const geometryForLayer = (layer: MapWidgetLayerOptions): string => {
   }
 };
 
+export const getLayerOrder = (layer: MapWidgetLayerOptions, index: number, array: MapWidgetLayerOptions[]): number => {
+  if (layer.order && array[index - 1] && array[index - 1].order && layer.order < array[index - 1].order!)
+    return array[index - 1].order! + 1;
+  if (layer.order) return layer.order;
+  if (index === 0 && !layer.order) return 0;
+
+  let [distanceToFirstPreviousOrder, distanceToFirstNextOrder] = [
+    array
+      .slice(0, index + 1)
+      .reverse()
+      .findIndex((element) => !!element.order),
+    array.slice(index + 1).findIndex((element) => !!element.order)
+  ];
+
+  let [previousOrderIndex, nextOrderIndex] = [
+    distanceToFirstPreviousOrder > -1 ? index - distanceToFirstPreviousOrder : 0,
+    distanceToFirstNextOrder + index + 1
+  ];
+  let [previousOrder, nextOrder] = [
+    distanceToFirstPreviousOrder > -1 ? array[previousOrderIndex].order! : 0,
+    distanceToFirstNextOrder > -1 ? array[nextOrderIndex].order! : -1
+  ];
+
+  if (nextOrder > 0 && nextOrder < previousOrder) {
+    const newOrder = previousOrder + (nextOrderIndex - previousOrderIndex);
+    console.warn(
+      `the order property of layer no ${index + 2} was preset but doesn't follow the order of the other layers`
+    );
+    nextOrder = newOrder;
+  }
+
+  if (nextOrder > 0) {
+    let relativeIndex = index - previousOrderIndex;
+    return previousOrder + ((nextOrder - previousOrder) / (nextOrderIndex - previousOrderIndex)) * relativeIndex;
+  } else {
+    return previousOrder + distanceToFirstPreviousOrder;
+  }
+};
+
 export const DEFAULT_HEATMAP_RADIUS = 25;
 export const DEFAULT_RADIUS_INTENSITY_FACTOR = 10000;
 export const DEFAULT_ZOOM_MIN = 3;

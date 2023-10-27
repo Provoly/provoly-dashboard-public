@@ -241,7 +241,8 @@ describe('WidgetMapComponent', () => {
               attribute: 'loc',
               intensityAttribute: 'intensity',
               intensityAsc: true,
-              title: '@pry.widget.map.layerType.heatmap'
+              title: '@pry.widget.map.layerType.heatmap',
+              order: 0
             }
           ],
           fit: true,
@@ -259,7 +260,8 @@ describe('WidgetMapComponent', () => {
             attribute: 'loc',
             intensityAttribute: 'intensity',
             intensityAsc: true,
-            title: '@pry.widget.map.layerType.heatmap'
+            title: '@pry.widget.map.layerType.heatmap',
+            order: 0
           }
         ],
         fit: true,
@@ -283,7 +285,8 @@ describe('WidgetMapComponent', () => {
             {
               type: 'marker',
               attribute: 'loc',
-              title: '@pry.widget.map.layerType.marker'
+              title: '@pry.widget.map.layerType.marker',
+              order: 0
             }
           ],
           fit: true,
@@ -299,7 +302,8 @@ describe('WidgetMapComponent', () => {
           {
             type: 'marker',
             attribute: 'loc',
-            title: '@pry.widget.map.layerType.marker'
+            title: '@pry.widget.map.layerType.marker',
+            order: 0
           }
         ],
         fit: true,
@@ -325,7 +329,8 @@ describe('WidgetMapComponent', () => {
               attribute: 'loc',
               intensityAttribute: 'intensity',
               intensityAsc: true,
-              title: '@pry.widget.map.layerType.bubble'
+              title: '@pry.widget.map.layerType.bubble',
+              order: 0
             }
           ],
           fit: true,
@@ -343,7 +348,8 @@ describe('WidgetMapComponent', () => {
             attribute: 'loc',
             intensityAttribute: 'intensity',
             intensityAsc: true,
-            title: '@pry.widget.map.layerType.bubble'
+            title: '@pry.widget.map.layerType.bubble',
+            order: 0
           }
         ],
         fit: true,
@@ -376,7 +382,8 @@ describe('WidgetMapComponent', () => {
               intensityAttribute: 'intensity',
               attribute: 'loc',
               type: 'heatmap',
-              title: '@pry.widget.map.layerType.heatmap'
+              title: '@pry.widget.map.layerType.heatmap',
+              order: 0
             }
           ]
         } as WidgetOptions,
