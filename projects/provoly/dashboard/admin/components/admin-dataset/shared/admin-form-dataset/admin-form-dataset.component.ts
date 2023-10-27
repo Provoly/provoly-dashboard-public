@@ -47,7 +47,7 @@ export class AdminFormDatasetComponent implements OnInit, OnDestroy {
     this.classes = this.store.select(ClassSelectors.classes);
     this.form = this.formBuilder.group({
       id: [uuidv4()],
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required,Validators.maxLength(100)]],
       oClass: ['', [Validators.required]],
       type: ['', [Validators.required]]
     });
