@@ -1,4 +1,5 @@
 import { Injectable, InjectionToken } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 export abstract class PryGeoAuthService {
   abstract customLoader(tile: any, src: string): void;
@@ -8,22 +9,13 @@ export const PRY_GEOAUTH_TOKEN = new InjectionToken<PryGeoAuthService>('PRY_GEOA
 
 @Injectable()
 export class PryDefaultGeoAuthService extends PryGeoAuthService {
-  constructor() {
+  constructor(private httpClient: HttpClient) {
     super();
   }
 
   override customLoader(tile: any, src: string): void {
-    const xhr = new XMLHttpRequest();
-    xhr.responseType = 'blob';
-    xhr.addEventListener('loadend', function (evt) {
-      const data = this.response;
-      if (data !== undefined) {
-        tile.getImage().src = URL.createObjectURL(data);
-      }
+    this.httpClient.get(src, { observe: 'response', params: {}, responseType: 'blob' }).subscribe((blob) => {
+      tile.getImage().src = URL.createObjectURL(blob.body!);
     });
-    xhr.open('GET', src);
-    // Exemple of how to pass authentification header
-    // client.setRequestHeader('Authorization', 'Basic ' + window.btoa('user:pass'));
-    xhr.send();
   }
 }
