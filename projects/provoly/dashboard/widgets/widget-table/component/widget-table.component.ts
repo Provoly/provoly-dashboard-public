@@ -25,7 +25,7 @@ import {
 } from '@provoly/dashboard';
 import equal from 'fast-deep-equal/es6';
 import { auditTime, BehaviorSubject, combineLatest, Observable, take } from 'rxjs';
-import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
+import { delay, filter, map, tap, withLatestFrom } from 'rxjs/operators';
 
 export interface Pagination {
   totalPages: number;
@@ -217,7 +217,7 @@ export class WidgetTableComponent extends DataWidgetComponent {
       map(([order, nqs]) => (nqs.length === 1 ? order[nqs[0]] : undefined))
     );
 
-    this.subscriptions.add(this._refresh$.subscribe(() => this.cdr.detectChanges()));
+    this.subscriptions.add(this._refresh$.pipe(delay(100)).subscribe(() => this.cdr.detectChanges()));
   }
 
   refresh() {
