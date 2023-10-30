@@ -18,7 +18,7 @@ export enum GeoMetadata {
 export interface DatasetMessage {
   extractMessageCode: string;
   type: string;
-  name: string;
+  name?: string;
   recordId: string;
   datasetVersionId: string;
   level: 'ERROR' | 'WARNING';

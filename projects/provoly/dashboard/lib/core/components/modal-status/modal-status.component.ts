@@ -35,7 +35,7 @@ export class PryModalStatusComponent {
             .flat()
             .map((preview) => ({
               ...preview,
-              name: preview.name.split(',').join(', ')
+              name: (preview.name ?? '').split(',').join(', ')
             }))
         )
       );
