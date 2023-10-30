@@ -16,6 +16,7 @@ export interface MapWidgetOptions {
   singleLayer?: boolean;
   ignoreAutoLayer?: string[];
   automaticLayers?: boolean;
+  ignoreGetCapabilitiesExtent?: boolean;
 }
 
 export type MapWidgetLayerOptions =

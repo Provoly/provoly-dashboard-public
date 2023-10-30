@@ -164,6 +164,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   basicActions$: Observable<('click' | 'lasso' | 'rectangle' | 'zoom' | 'move' | 'export' | 'upload')[]>;
   zoomAndCenter$ = new BehaviorSubject<{ zoom?: { start: number; min: number; max: number }; center?: number[] }>({});
   fitOption$!: Observable<boolean>;
+  ignoreGetCapabilitiesExtent$!: Observable<boolean>;
   mapStyleUrl$!: Observable<string | null>;
   interactionManager: InteractionManager = new InteractionManager();
   mapStyleLayer$!: Observable<VectorTileLayer[]>;
@@ -560,6 +561,11 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       distinctUntilChanged()
     );
 
+    this.ignoreGetCapabilitiesExtent$ = this.options$.pipe(
+      map((options) => !!options.ignoreGetCapabilitiesExtent),
+      distinctUntilChanged()
+    );
+
     this.layers$ = combineLatest([
       this.resultSet$,
       this.options$,
@@ -780,32 +786,35 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         this.selectedIds$.pipe(distinctUntilChanged((p, c) => equal(p, c))),
         this.wmsCapabilities$,
         this.aggregatedExtents$,
-        this.datasourceFilters$
-      ]).subscribe(([mapStyleLayer, layers, fit, selectedIds, capabilities, extents, filters]) => {
-        const toApplyLayers = [...layers, ...mapStyleLayer];
-        this.map.setLayers(toApplyLayers);
-        this.map
-          .getAllLayers()
-          .filter((layer) => !(layer instanceof Tile))
-          .forEach((layer) => {
-            const getFeatures = (layer.getSource() as VectorSource)?.getFeatures;
-            if (typeof getFeatures === 'function') {
-              (layer.getSource() as VectorSource)?.getFeatures().forEach((feature: any) => {
-                const type = feature.get('type');
-                if (['bubble', 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].includes(type)) {
-                  feature.setStyle(
-                    feature.get(selectedIds.includes(feature.get('id')) ? 'selectedStyle' : 'classicStyle')
-                  );
-                }
-              });
-            }
-          });
+        this.datasourceFilters$,
+        this.ignoreGetCapabilitiesExtent$
+      ]).subscribe(
+        ([mapStyleLayer, layers, fit, selectedIds, capabilities, extents, filters, ignoreGetCapabilitiesExtent]) => {
+          const toApplyLayers = [...layers, ...mapStyleLayer];
+          this.map.setLayers(toApplyLayers);
+          this.map
+            .getAllLayers()
+            .filter((layer) => !(layer instanceof Tile))
+            .forEach((layer) => {
+              const getFeatures = (layer.getSource() as VectorSource)?.getFeatures;
+              if (typeof getFeatures === 'function') {
+                (layer.getSource() as VectorSource)?.getFeatures().forEach((feature: any) => {
+                  const type = feature.get('type');
+                  if (['bubble', 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].includes(type)) {
+                    feature.setStyle(
+                      feature.get(selectedIds.includes(feature.get('id')) ? 'selectedStyle' : 'classicStyle')
+                    );
+                  }
+                });
+              }
+            });
 
-        setTimeout(() => {
-          this.fitMapForObjects(fit, capabilities, selectedIds, extents, filters);
-          this.map.updateSize();
-        }, 200);
-      })
+          setTimeout(() => {
+            this.fitMapForObjects(fit, ignoreGetCapabilitiesExtent, capabilities, selectedIds, extents, filters);
+            this.map.updateSize();
+          }, 200);
+        }
+      )
     );
     this.subscriptions.add(
       combineLatest([this.wmsFeatures$, this.classicFeatures$, this.widgetSize$, this.displayHeader$]).subscribe(
@@ -933,6 +942,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   fitMapForObjects(
     fit: boolean,
+    ignoreGetCapabilitiesExtent = false,
     wmsCapabilities: { [p: string]: GetCapabilitiesResponse | null } = {},
     selectedIds?: string[],
     extents: { datasource: string; extent: Coordinate[] }[] = [],
@@ -991,7 +1001,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       const activeFilters = Object.keys(filters).filter((filter) => filters[filter].find((attr) => !!attr.value));
 
       const uniqueExtent =
-        activeFilters.length > 0
+        activeFilters.length > 0 || ignoreGetCapabilitiesExtent
           ? extents
           : extents.concat(
               ...capabilitiesExtents.filter(
