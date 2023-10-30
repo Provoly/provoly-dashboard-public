@@ -16,3 +16,5 @@ jobs:
         run: npm ci
       - name: Running Tests
         run: npm run test:lib:ci
+      - name: Running build
+        run: npm run build:lib:prod
