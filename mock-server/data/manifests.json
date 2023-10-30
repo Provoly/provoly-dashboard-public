@@ -559,5 +559,46 @@
         }
       ]
     }
+  },
+  {
+    "name": "front-aggregation",
+    "manifest": {
+      "windows": [
+        {
+          "widgets": [
+            {
+              "type": "chart",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "height": 12,
+                "width": 12
+              },
+              "options": {
+                "title": "test",
+                "ordinate": {
+                  "attribute": "497f6eca-6276-4993-bfeb-53cbbbba6f08zone",
+                  "operation": "count",
+                  "label": "Nombre"
+                },
+                "abscissa": {
+                  "attribute": "497f6eca-6276-4993-bfeb-53cbbbba6f08zone",
+                  "label": "Nom"
+                },
+                "graph": {
+                  "offset": true,
+                  "stacked": true
+                }
+              },
+              "datasource": "graphspe-cifi-cdat-acd2-51ccec998307"
+            }
+          ],
+          "grid": {
+            "layout": "1",
+            "rows": 12
+          }
+        }
+      ]
+    }
   }
 ]

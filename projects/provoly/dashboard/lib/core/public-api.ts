@@ -45,7 +45,7 @@ export * from './store/context-menu/context-menu.reducer';
 export * from './store/raw/raw.service';
 export * from './store/aggregation/base-aggregation.service';
 export * from './store/aggregation/backend-aggregation.service';
-export * from './store/aggregation/frontend-aggregation.service';
+export * from './store/aggregation/frontend-aggregation/frontend-aggregation.service';
 export * from './components/nq-color-selector/nq-color-selector.component';
 export * from './components/translate-id/translate-id.pipe';
 export * from './components/translate-item-to-symbol/translate-item-to-symbol.pipe';

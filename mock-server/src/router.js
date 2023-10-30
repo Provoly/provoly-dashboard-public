@@ -637,7 +637,7 @@ router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items/aggregate', (req,
       }
 
       const result = {
-        type: query.operation,
+        operation: query.operation,
         values: []
       };
       if (!!abscissaField && (!!ordinateField || query.operation === 'count' || query.operation === 'cardinality')) {
@@ -667,7 +667,7 @@ router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items/aggregate', (req,
           }
         }
       } else {
-        console.warn('absissa or ordinate not found', query);
+        console.warn('abscissa or ordinate not found', query);
       }
 
       makeResponseOk(res, result);

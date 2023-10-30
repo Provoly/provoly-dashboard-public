@@ -17,6 +17,7 @@ import {
   PryBackendAggregationService,
   PryCoreModule,
   PryDashboardModule,
+  PryFrontendAggregationService,
   PryHiddenWhenOverlay,
   PryHttpErrorInterceptorService,
   PryI18nModule,

@@ -129,7 +129,7 @@ const isCurrentPresentationModified = createSelector(
 );
 const isCurrentPresentationOwner = createSelector(presentation, (state) => !!state.current && state.current.owner);
 
-const filters = createSelector(feature, (state: DashboardState) => state?.manifests.manifest.filters ?? {});
+const filters = createSelector(feature, (state: DashboardState) => state?.manifests.manifest.filters ?? []);
 const datasourceFilters = createSelector(feature, (state: DashboardState) =>
   state?.manifests.manifest.filters
     ? state?.manifests.manifest.filters.reduce(

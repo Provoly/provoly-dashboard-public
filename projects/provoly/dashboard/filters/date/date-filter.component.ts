@@ -22,8 +22,8 @@ export class DateFilterComponent extends BaseFilterComponent implements Subscrip
 
   ngOnInit() {
     if (this.filter?.hasDateRange) {
-      this.date1 = (this.filter?.value ?? '').split(',')[0];
-      this.date2 = (this.filter?.value ?? '').split(',')[1];
+      this.date1 = (this.filter?.value ?? '').toString().split(',')[0];
+      this.date2 = (this.filter?.value ?? '').toString().split(',')[1];
       // subscription responsible for sending api requests
       this.subscriptions.add(
         combineLatest([

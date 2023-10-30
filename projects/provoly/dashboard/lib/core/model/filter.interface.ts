@@ -4,7 +4,7 @@ export interface Filter {
   type: string;
   attributes: { id: string; name: string; label: string; datasource: string }[];
   operator?: string;
-  value?: string;
+  value?: string | number;
   possibleValues?: string;
   hasDateRange?: boolean;
 }
