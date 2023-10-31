@@ -33,6 +33,7 @@ import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockGeometryFieldsForPipe } from '../../../mock/pipe/mock-numeric-fields-for.pipe';
 import { MockTranslateIdPipe } from '../../../mock/pipe/mock-translate-id.pipe';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
+import { BACKGROUND_ORDER } from '../utils/widget-map.utils';
 import { mapUtilsData } from '../utils/widget-map.utils.spec';
 
 import { WidgetMapComponent } from './widget-map.component';
@@ -482,7 +483,8 @@ describe('WidgetMapComponent', () => {
           paramLayer: 'geoKey',
           paramTiled: true,
           type: 'geoserver',
-          url: 'http://geoserver.url/geoNamespace/wms?SERVICE=WMS&VERSION=1.3.0'
+          url: 'http://geoserver.url/geoNamespace/wms?SERVICE=WMS&VERSION=1.3.0',
+          order: 0
         }
       ],
       style: 'style1',
@@ -521,7 +523,8 @@ describe('WidgetMapComponent', () => {
           oClass: 'geoClass',
           subType: 'Point',
           title: 'resultset - loc',
-          type: 'auto'
+          type: 'auto',
+          order: 0
         },
         {
           attribute: 'zone',
@@ -530,12 +533,142 @@ describe('WidgetMapComponent', () => {
           oClass: 'geoClass',
           subType: 'MultiPolygon',
           title: 'resultset - zone',
-          type: 'auto'
+          type: 'auto',
+          order: 1
         }
       ],
       style: 'style1',
       tooltipMode: 'click',
       automaticLayers: true
+    });
+  });
+
+  it('automatic configuration should respect order', () => {
+    jest.useFakeTimers();
+
+    component.staticManifest = {
+      options: {
+        style: 'a-style',
+        layers: [{ type: 'wms', background: true }],
+        fit: true,
+        automaticLayers: true
+      } as MapWidgetOptions,
+      datasource: 'rs'
+    } as WidgetManifest;
+
+    const results = [] as MapWidgetOptions[];
+    component.options$.subscribe((options) => results.push(options));
+
+    fixture.detectChanges();
+
+    jest.advanceTimersByTime(10_000);
+    jest.runOnlyPendingTimers();
+
+    expect(results[results.length - 1]).toEqual({
+      fit: true,
+      layers: [
+        {
+          attribute: 'loc',
+          classes: ['geoClass'],
+          key: 'rs',
+          oClass: 'geoClass',
+          subType: 'Point',
+          title: 'resultset - loc',
+          type: 'auto',
+          order: 0
+        },
+        {
+          attribute: 'zone',
+          classes: ['geoClass'],
+          key: 'rs',
+          oClass: 'geoClass',
+          subType: 'MultiPolygon',
+          title: 'resultset - zone',
+          type: 'auto',
+          order: 4999.5
+        },
+        {
+          type: 'wms',
+          background: true,
+          order: BACKGROUND_ORDER
+        }
+      ],
+      style: 'style1',
+      tooltipMode: 'click',
+      automaticLayers: true
+    });
+  });
+
+  it('automatic order assignment give correct orders if not present', () => {
+    jest.useFakeTimers();
+
+    component.staticManifest = {
+      options: {
+        style: 'a-style',
+        layers: [
+          { type: 'wms', background: true, paramLayer: '1' },
+          { type: 'wms', paramLayer: '2', order: 3 },
+          { type: 'wms', paramLayer: '3' },
+          { type: 'wms', paramLayer: '4', order: 8 },
+          { type: 'wms', paramLayer: '5' }
+        ],
+        fit: true
+      } as MapWidgetOptions,
+      datasource: 'rs'
+    } as WidgetManifest;
+
+    const results = [] as MapWidgetOptions[];
+    component.options$.subscribe((options) => results.push(options));
+
+    fixture.detectChanges();
+
+    jest.advanceTimersByTime(10_000);
+    jest.runOnlyPendingTimers();
+
+    expect(results[results.length - 1]).toEqual({
+      fit: true,
+      layers: [
+        { type: 'wms', paramLayer: '2', order: 3 },
+        { type: 'wms', paramLayer: '3', order: 5.5 },
+        { type: 'wms', paramLayer: '4', order: 8 },
+        { type: 'wms', paramLayer: '5', order: 5003.5 },
+        { type: 'wms', background: true, paramLayer: '1', order: 9999 }
+      ],
+      style: 'style1',
+      tooltipMode: 'click'
+    });
+  });
+
+  it('automatic order assignment give correct orders nothing present', () => {
+    jest.useFakeTimers();
+
+    component.staticManifest = {
+      options: {
+        style: 'a-style',
+        layers: [{ type: 'heatmap' }, { type: 'marker' }, { type: 'point' }, { type: 'polygon' }],
+        fit: true
+      } as MapWidgetOptions,
+      datasource: 'rsadzazd'
+    } as WidgetManifest;
+
+    const results = [] as MapWidgetOptions[];
+    component.options$.subscribe((options) => results.push(options));
+
+    fixture.detectChanges();
+
+    jest.advanceTimersByTime(10_000);
+    jest.runOnlyPendingTimers();
+
+    expect(results[results.length - 1]).toEqual({
+      fit: true,
+      layers: [
+        { type: 'heatmap', attribute: 'loc', order: 0, title: '@pry.widget.map.layerType.heatmap' },
+        { type: 'marker', attribute: 'loc', order: 1, title: '@pry.widget.map.layerType.marker' },
+        { type: 'point', attribute: 'loc', order: 2, title: '@pry.widget.map.layerType.point' },
+        { type: 'polygon', order: 3, title: '@pry.widget.map.layerType.polygon' }
+      ],
+      style: 'style1',
+      tooltipMode: 'click'
     });
   });
 });

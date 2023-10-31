@@ -1,12 +1,5 @@
-import {
-  BaseWidgetMapLayerOptions,
-  Class,
-  Field,
-  FieldType,
-  MapWidgetLayerOptions,
-  ResultSet
-} from '@provoly/dashboard';
-import { getLayerOrder, populateIntensityAttribute, populateLocationAttribute } from './widget-map.utils';
+import { Class, Field, FieldType, MapWidgetLayerOptions, ResultSet } from '@provoly/dashboard';
+import { assignLayersOrder, populateIntensityAttribute, populateLocationAttribute } from './widget-map.utils';
 
 const rs = {
   items: {
@@ -81,37 +74,6 @@ const fields = [
   }
 ] as Field[];
 
-const layers = [
-  [
-    { type: 'heatmap', order: 1 },
-    { type: 'point', order: undefined },
-    { type: 'line', order: 3 },
-    { type: 'marker', order: 5 }
-  ],
-  [
-    { type: 'bubble', order: 10 },
-    { type: 'point', order: undefined },
-    { type: 'marker', order: undefined }
-  ],
-  [
-    { type: 'bubble', order: undefined },
-    { type: 'point', order: undefined },
-    { type: 'marker', order: 1 }
-  ],
-  [
-    { type: 'bubble', order: undefined },
-    { type: 'marker', order: 1 },
-    { type: 'point', order: undefined },
-    { type: 'line', order: 5 },
-    { type: 'marker', order: undefined }
-  ],
-  [
-    { type: 'bubble', order: 11 },
-    { type: 'point', order: undefined },
-    { type: 'marker', order: 1 }
-  ]
-] as MapWidgetLayerOptions[][];
-
 export const mapUtilsData = {
   rs,
   fields,
@@ -134,33 +96,77 @@ describe('WidgetMapUtils functions', () => {
       expect(layer).toEqual({ ...layer, attribute: 'loc', intensityAttribute: 'intensity' });
     });
   });
+
   describe('getLayerOrder', () => {
-    describe('valid test cases', () => {
-      test.each([
-        [layers[0][1], 1, layers[0], 2],
-
-        [layers[1][1], 1, layers[1], 11],
-        [layers[1][2], 2, layers[1], 12],
-
-        [layers[2][0], 0, layers[2], 0],
-        [layers[2][1], 1, layers[2], 0.5],
-
-        [layers[3][0], 0, layers[3], 0],
-        [layers[3][2], 2, layers[3], 3],
-        [layers[3][4], 4, layers[3], 6]
-      ])('should assign the layer order correctly', (layer, index, array, expected) => {
-        const result = getLayerOrder(layer, index, array);
-        expect(result).toEqual(expected);
-      });
+    it('order case 1', () => {
+      expect(
+        assignLayersOrder([
+          { type: 'heatmap', order: 1 },
+          { type: 'point', order: undefined },
+          { type: 'line', order: 3 },
+          { type: 'marker', order: 5 }
+        ] as MapWidgetLayerOptions[])
+      ).toEqual([
+        { order: 1, type: 'heatmap' },
+        { order: 2, type: 'point' },
+        { order: 3, type: 'line' },
+        { order: 5, type: 'marker' }
+      ]);
     });
 
-    it('should console warn if one of the layers is out of order', () => {
-      console.warn = jest.fn();
-      const result = getLayerOrder(layers[4][1], 1, layers[4]);
-      expect(result).toEqual(12);
-      expect(console.warn).toHaveBeenCalledWith(
-        "the order property of layer no 3 was preset but doesn't follow the order of the other layers"
-      );
+    it('order case 2', () => {
+      expect(
+        assignLayersOrder([
+          { type: 'bubble', order: 10 },
+          { type: 'point', order: undefined },
+          { type: 'marker', order: undefined }
+        ] as MapWidgetLayerOptions[])
+      ).toEqual([
+        { order: 10, type: 'bubble' },
+        { order: 11, type: 'point' },
+        { order: 12, type: 'marker' }
+      ]);
+    });
+
+    it('order case 3', () => {
+      expect(
+        assignLayersOrder([
+          { type: 'bubble', order: undefined },
+          { type: 'point', order: undefined },
+          { type: 'marker', order: 1 }
+        ] as MapWidgetLayerOptions[])
+      ).toEqual([
+        { order: 0, type: 'bubble' },
+        { order: 0.5, type: 'point' },
+        { order: 1, type: 'marker' }
+      ]);
+    });
+
+    it('order case 4', () => {
+      expect(
+        assignLayersOrder([
+          { type: 'bubble', order: undefined },
+          { type: 'marker', order: 1 },
+          { type: 'point', order: undefined },
+          { type: 'line', order: 5 },
+          { type: 'marker', order: undefined }
+        ] as MapWidgetLayerOptions[])
+      ).toEqual([
+        { order: 0, type: 'bubble' },
+        { order: 1, type: 'marker' },
+        { order: 3, type: 'point' },
+        { order: 5, type: 'line' },
+        { order: 6, type: 'marker' }
+      ]);
+    });
+
+    it('order case 5', () => {
+      expect(
+        assignLayersOrder([{ type: 'bubble', background: true }, { type: 'point' }] as MapWidgetLayerOptions[])
+      ).toEqual([
+        { order: 0, type: 'point' },
+        { background: true, order: 9999, type: 'bubble' }
+      ]);
     });
   });
 });

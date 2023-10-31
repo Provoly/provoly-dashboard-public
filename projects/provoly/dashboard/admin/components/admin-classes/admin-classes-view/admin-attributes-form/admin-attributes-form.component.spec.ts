@@ -34,7 +34,6 @@ describe('AdminAttributesFormComponent', () => {
   let component: AdminAttributesFormComponent;
   let fixture: ComponentFixture<AdminAttributesFormComponent>;
   let store: MockStore<AdminAttributesFormComponent>;
-  let overlay: Overlay;
 
   let mockOverlayRef = {
     backdropClick: () => of({}),
@@ -93,7 +92,6 @@ describe('AdminAttributesFormComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AdminAttributesFormComponent);
     store = TestBed.inject(MockStore);
-    overlay = TestBed.inject(Overlay);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

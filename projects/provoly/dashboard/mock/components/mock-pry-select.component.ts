@@ -45,6 +45,7 @@ export class MockPrySelectComponent implements ControlValueAccessor {
   @Input() bindValue: any;
   @Input() bindLabel: any;
   @Input() bindIcon: any;
+  @Input() autocomplete: any;
 
   @Input() isForm = false;
   @Input() required?: any;

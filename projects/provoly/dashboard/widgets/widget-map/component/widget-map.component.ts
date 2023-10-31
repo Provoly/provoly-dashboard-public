@@ -93,12 +93,12 @@ import {
 import { InteractionManager } from '../interaction/interaction-manager.class';
 import { CqlUtils } from '../utils/cql-utils.class';
 import {
+  assignLayersOrder,
   DEFAULT_MAP_CENTER,
   DEFAULT_ZOOM_MAX,
   DEFAULT_ZOOM_MIN,
   DEFAULT_ZOOM_START,
   exportMapAsImage,
-  getLayerOrder,
   getLinkFeature,
   getMapAsPng,
   populateIntensityAttribute,
@@ -144,10 +144,20 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   layers$!: Observable<BaseLayer[]>;
   map!: Map;
   additionalLayers$ = new BehaviorSubject<VectorLayer<VectorSource<Geometry>>[]>([]);
-  styles$: Observable<{ identifier: string; label: string }[]>;
+  styles$: Observable<
+    {
+      identifier: string;
+      label: string;
+    }[]
+  >;
   WIDGET_HEADER_HEIGHT = WIDGET_HEADER_HEIGHT;
   i = 0;
-  itemStyles$!: Observable<{ [id: string]: { classic: Style; bordered: Style } }>;
+  itemStyles$!: Observable<{
+    [id: string]: {
+      classic: Style;
+      bordered: Style;
+    };
+  }>;
   height$: Observable<number>;
   actions$ = widgetMapConfig.actions$;
   private wmsFeatures$: Observable<any[]>;
@@ -162,7 +172,14 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   legendHeight$: Observable<number>;
   imageNotProvided: boolean[] = [];
   basicActions$: Observable<('click' | 'lasso' | 'rectangle' | 'zoom' | 'move' | 'export' | 'upload')[]>;
-  zoomAndCenter$ = new BehaviorSubject<{ zoom?: { start: number; min: number; max: number }; center?: number[] }>({});
+  zoomAndCenter$ = new BehaviorSubject<{
+    zoom?: {
+      start: number;
+      min: number;
+      max: number;
+    };
+    center?: number[];
+  }>({});
   fitOption$!: Observable<boolean>;
   ignoreGetCapabilitiesExtent$!: Observable<boolean>;
   mapStyleUrl$!: Observable<string | null>;
@@ -172,9 +189,19 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   tooltipNumber = 0;
   STYLE_FROM_URL = '_url';
   NO_STYLE = 'none';
-  wmsCapabilities$: Observable<{ [p: string]: GetCapabilitiesResponse | null } | undefined>;
+  wmsCapabilities$: Observable<
+    | {
+        [p: string]: GetCapabilitiesResponse | null;
+      }
+    | undefined
+  >;
   autoDatasetLayers$: Observable<MapAutoLayerOptions[]>;
-  aggregatedExtents$!: Observable<{ datasource: string; extent: Coordinate[] }[]>;
+  aggregatedExtents$!: Observable<
+    {
+      datasource: string;
+      extent: Coordinate[];
+    }[]
+  >;
   datasourceFilters$: Observable<any>;
   usedClasses$: Observable<any>;
 
@@ -233,7 +260,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         ([filters, ids]) =>
           Object.keys(filters)
             .filter((filterDsKey) => ids.includes(filterDsKey))
-            .reduce((p, c) => ({ ...p, [c]: filters[c] }), {}) as { [p: string]: FilterContext[] }
+            .reduce((p, c) => ({ ...p, [c]: filters[c] }), {}) as {
+            [p: string]: FilterContext[];
+          }
       ),
       distinctUntilChanged((p, c) => equal(p, c))
     );
@@ -268,7 +297,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           .filter((ds) => DatasourceUtils.isGeo(ds))
           .map((ds) => {
             ds = ds as unknown as Dataset;
-            const metadatas: { [key: string]: string } = {};
+            const metadatas: {
+              [key: string]: string;
+            } = {};
             ds.metadata?.forEach((m) => (metadatas[m.metadataDef.name] = m.value));
             return {
               type: 'geoserver',
@@ -366,10 +397,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         }
 
         autoOptions.layers = [
-          ...(autoOptions.layers ?? [])
-            .sort((l1, l2) => l1.order! - l2.order!)
-            .map((layer, i, array) => (autoOptions.layers![i] = { ...layer, order: getLayerOrder(layer, i, array) }))
-            .filter((layer) => layer.type !== 'auto'),
+          ...(autoOptions.layers ?? []).filter((layer) => layer.type !== 'auto'),
           ...(autoOptions.automaticLayers
             ? autoDatasetLayers
                 .filter(
@@ -411,9 +439,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
               : { ...layer };
           }),
           ...geoLayers.filter((layer) => !actualLayerKeys.includes(layer.key))
-        ]
-          .filter((layer) => !!layer)
-          .sort((l1, l2) => l1.order! - l2.order!);
+        ].filter((layer) => !!layer);
 
         autoOptions.layers.forEach((layer) => {
           this.setDefaultLayerTitle(layer, capabilities);
@@ -445,6 +471,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           }
         }
 
+        autoOptions.layers = assignLayersOrder(autoOptions.layers);
+
         return autoOptions;
       }),
       distinctUntilChanged((p, c) => equal(p, c))
@@ -470,10 +498,20 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           return of({});
         } else {
           return from(
-            new Promise<{ [id: string]: { classic: Style; bordered: Style } }>((resolve, reject) => {
+            new Promise<{
+              [id: string]: {
+                classic: Style;
+                bordered: Style;
+              };
+            }>((resolve, reject) => {
               const total = Object.values(rs.items).reduce((p, c) => c.length + p, 0);
               if (total === 0) resolve({});
-              const result = {} as { [id: string]: { classic: Style; bordered: Style } };
+              const result = {} as {
+                [id: string]: {
+                  classic: Style;
+                  bordered: Style;
+                };
+              };
               Object.values(rs.items).forEach((items) => {
                 items.forEach((item) =>
                   Promise.all([
@@ -721,7 +759,16 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                       map((extentResponse: AggregationResult) => {
                         const projBox = getProjection(field!.crs ?? DEFAULT_PROJECTION);
                         const response = extentResponse.values as {
-                          value: { top_left: { lon: string; lat: string }; bottom_right: { lon: string; lat: string } };
+                          value: {
+                            top_left: {
+                              lon: string;
+                              lat: string;
+                            };
+                            bottom_right: {
+                              lon: string;
+                              lat: string;
+                            };
+                          };
                         }[];
                         if (
                           projBox &&
@@ -740,12 +787,26 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                               transform(
                                 [
                                   parseFloat(
-                                    (extentResponse.values[0] as { value: { top_left: { lon: string } } }).value
-                                      .top_left.lon
+                                    (
+                                      extentResponse.values[0] as {
+                                        value: {
+                                          top_left: {
+                                            lon: string;
+                                          };
+                                        };
+                                      }
+                                    ).value.top_left.lon
                                   ),
                                   parseFloat(
-                                    (extentResponse.values[0] as { value: { top_left: { lat: string } } }).value
-                                      .top_left.lat
+                                    (
+                                      extentResponse.values[0] as {
+                                        value: {
+                                          top_left: {
+                                            lat: string;
+                                          };
+                                        };
+                                      }
+                                    ).value.top_left.lat
                                   )
                                 ],
                                 projBox,
@@ -754,12 +815,26 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                               transform(
                                 [
                                   parseFloat(
-                                    (extentResponse.values[0] as { value: { bottom_right: { lon: string } } }).value
-                                      .bottom_right.lon
+                                    (
+                                      extentResponse.values[0] as {
+                                        value: {
+                                          bottom_right: {
+                                            lon: string;
+                                          };
+                                        };
+                                      }
+                                    ).value.bottom_right.lon
                                   ),
                                   parseFloat(
-                                    (extentResponse.values[0] as { value: { bottom_right: { lat: string } } }).value
-                                      .bottom_right.lat
+                                    (
+                                      extentResponse.values[0] as {
+                                        value: {
+                                          bottom_right: {
+                                            lat: string;
+                                          };
+                                        };
+                                      }
+                                    ).value.bottom_right.lat
                                   )
                                 ],
                                 projBox,
@@ -777,7 +852,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
             .flat()
         )
       ),
-      startWith([] as { datasource: string; extent: Coordinate[] }[])
+      startWith(
+        [] as {
+          datasource: string;
+          extent: Coordinate[];
+        }[]
+      )
     );
 
     this.legendLayers$ = this.options$.pipe(
@@ -928,7 +1008,11 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   setDefaultLayerTitle(
     layer: MapWidgetLayerOptions,
-    capabilities: { [p: string]: GetCapabilitiesResponse | null } | undefined
+    capabilities:
+      | {
+          [p: string]: GetCapabilitiesResponse | null;
+        }
+      | undefined
   ) {
     if (!layer.title) {
       if (['geoserver', 'wms'].includes(layer.type)) {
@@ -956,10 +1040,17 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   fitMapForObjects(
     fit: boolean,
     ignoreGetCapabilitiesExtent = false,
-    wmsCapabilities: { [p: string]: GetCapabilitiesResponse | null } = {},
+    wmsCapabilities: {
+      [p: string]: GetCapabilitiesResponse | null;
+    } = {},
     selectedIds?: string[],
-    extents: { datasource: string; extent: Coordinate[] }[] = [],
-    filters: { [p: string]: FilterContext[] } = {}
+    extents: {
+      datasource: string;
+      extent: Coordinate[];
+    }[] = [],
+    filters: {
+      [p: string]: FilterContext[];
+    } = {}
   ) {
     if (fit) {
       let extent = createEmpty();
@@ -1009,7 +1100,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
             wmsCapabilities![layer.getProperties()['url']]?.doc
           )
         }))
-        .filter((extent) => !!extent.extent) as { datasource: string; extent: Coordinate[] }[];
+        .filter((extent) => !!extent.extent) as {
+        datasource: string;
+        extent: Coordinate[];
+      }[];
 
       const activeFilters = Object.keys(filters).filter((filter) => filters[filter].find((attr) => !!attr.value));
 

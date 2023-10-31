@@ -17,13 +17,6 @@ import { Circle, LineString, Point } from 'ol/geom';
 import { Style } from 'ol/style';
 import { WidgetMapLayerService } from '../component/widget-map-layer.service';
 
-export type LatLonCandidate = {
-  min: number;
-  max: number;
-  name: string;
-  type: string;
-};
-
 export const populateLocationAttribute = (
   layer: MapWidgetLayerOptions,
   resultSet: ResultSet,
@@ -52,7 +45,10 @@ export const populateLocationAttribute = (
 
       const geometry = geometryForLayer(layer);
 
-      let candidates = [] as { attr: Attribute; field: Field | undefined }[];
+      let candidates = [] as {
+        attr: Attribute;
+        field: Field | undefined;
+      }[];
       if (Object.keys(resultSet.items).length > 0) {
         // Based on items that we have to display
 
@@ -261,43 +257,59 @@ export const geometryForLayer = (layer: MapWidgetLayerOptions): string => {
   }
 };
 
-export const getLayerOrder = (layer: MapWidgetLayerOptions, index: number, array: MapWidgetLayerOptions[]): number => {
-  if (layer.order && array[index - 1] && array[index - 1].order && layer.order < array[index - 1].order!)
-    return array[index - 1].order! + 1;
-  if (layer.order) return layer.order;
-  if (index === 0 && !layer.order) return 0;
+export const assignLayersOrder = (_layers: MapWidgetLayerOptions[]) => {
+  const layers = JSON.parse(JSON.stringify(_layers)) as MapWidgetLayerOptions[];
 
-  let [distanceToFirstPreviousOrder, distanceToFirstNextOrder] = [
-    array
-      .slice(0, index + 1)
-      .reverse()
-      .findIndex((element) => !!element.order),
-    array.slice(index + 1).findIndex((element) => !!element.order)
-  ];
+  layers.sort((l1, l2) => (l2.background ? 0 : 1) - (l1.background ? 0 : 1));
 
-  let [previousOrderIndex, nextOrderIndex] = [
-    distanceToFirstPreviousOrder > -1 ? index - distanceToFirstPreviousOrder : 0,
-    distanceToFirstNextOrder + index + 1
-  ];
-  let [previousOrder, nextOrder] = [
-    distanceToFirstPreviousOrder > -1 ? array[previousOrderIndex].order! : 0,
-    distanceToFirstNextOrder > -1 ? array[nextOrderIndex].order! : -1
-  ];
+  // Assign sure things
+  layers.forEach((layer, index) => {
+    if (layer.background) {
+      layer.order = BACKGROUND_ORDER;
+    }
+    if (index === 0 && !layer.order) {
+      layer.order = 0;
+    }
+  });
 
-  if (nextOrder > 0 && nextOrder < previousOrder) {
-    const newOrder = previousOrder + (nextOrderIndex - previousOrderIndex);
-    console.warn(
-      `the order property of layer no ${index + 2} was preset but doesn't follow the order of the other layers`
-    );
-    nextOrder = newOrder;
-  }
+  layers.forEach((layer, index) => {
+    if (layer.order === undefined) {
+      let [distanceToFirstPreviousOrder, distanceToFirstNextOrder] = [
+        layers
+          .slice(0, index)
+          .reverse()
+          .findIndex((element) => element.order !== undefined) + 1,
+        layers.slice(index + 1).findIndex((element) => element.order !== undefined)
+      ];
 
-  if (nextOrder > 0) {
-    let relativeIndex = index - previousOrderIndex;
-    return previousOrder + ((nextOrder - previousOrder) / (nextOrderIndex - previousOrderIndex)) * relativeIndex;
-  } else {
-    return previousOrder + distanceToFirstPreviousOrder;
-  }
+      let [previousOrderIndex, nextOrderIndex] = [
+        distanceToFirstPreviousOrder > -1 ? index - distanceToFirstPreviousOrder : 0,
+        distanceToFirstNextOrder + index + 1
+      ];
+      let [previousOrder, nextOrder] = [
+        distanceToFirstPreviousOrder > -1 ? layers[previousOrderIndex].order! : 0,
+        distanceToFirstNextOrder > -1 ? layers[nextOrderIndex].order! : -1
+      ];
+
+      if (nextOrder > 0 && nextOrder < previousOrder) {
+        const newOrder = previousOrder + (nextOrderIndex - previousOrderIndex);
+        console.warn(
+          `the order property of layer no ${index + 2} was preset but doesn't follow the order of the other layers`
+        );
+        nextOrder = newOrder;
+      }
+
+      if (nextOrder > 0) {
+        let relativeIndex = index - previousOrderIndex;
+        layer.order =
+          previousOrder + ((nextOrder - previousOrder) / (nextOrderIndex - previousOrderIndex)) * relativeIndex;
+      } else {
+        layer.order = previousOrder + distanceToFirstPreviousOrder;
+      }
+    }
+  });
+
+  return layers.sort((l1, l2) => (l1.order ?? 1) - (l2.order! ?? 1));
 };
 
 export const DEFAULT_HEATMAP_RADIUS = 25;
@@ -306,3 +318,5 @@ export const DEFAULT_ZOOM_MIN = 3;
 export const DEFAULT_ZOOM_START = 10;
 export const DEFAULT_ZOOM_MAX = 18;
 export const DEFAULT_MAP_CENTER = [2.2827217347381525, 48.864706031557716];
+
+export const BACKGROUND_ORDER = 9999;

@@ -59,7 +59,6 @@ export class PryFrontendAggregationService extends PryAggregationService {
         ordinate,
         options.abscissa.limit
       );
-      console.log(aggregationResult.values);
     } else {
       const groupByAttribute =
         classes
@@ -106,7 +105,6 @@ export class PryFrontendAggregationService extends PryAggregationService {
     const groupByAbscissa = this.getItemsGroupedByAttributeValue(items, abscissa);
     let result: { key: ValueType; value: ValueType }[] = [
       ...Object.keys(groupByAbscissa).map((abscissaAttribute) => {
-        console.log(AggregationUtils.getAggregatedValue(operation, groupByAbscissa, abscissaAttribute, ordinate ?? ''));
         return {
           key: +abscissaAttribute || abscissaAttribute,
           value: AggregationUtils.getAggregatedValue(operation, groupByAbscissa, abscissaAttribute, ordinate ?? '')

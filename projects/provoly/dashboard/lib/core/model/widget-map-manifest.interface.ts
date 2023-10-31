@@ -41,6 +41,7 @@ export interface BaseWidgetMapLayerOptions {
   maxZoom?: number;
   opacity?: number;
   order?: number;
+  background?: boolean;
 }
 
 export interface MapWidgetHeatMapLayerOptions extends BaseWidgetMapLayerOptions {
