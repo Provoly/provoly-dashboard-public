@@ -1,5 +1,17 @@
 @use '../abstracts' as *;
 
+.o-modal-wrapper__backdrop::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: gray;
+  opacity: 0.3;
+}
+
+
 /* Organism - modal */
 .o-modal-wrapper {
   position: absolute;

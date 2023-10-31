@@ -1,44 +1,47 @@
-<div class="o-modal-wrapper -extra-large">
-  <div class="o-modal__top">
-    <div class="o-modal__top__title">
-      <h2 class="a-h2">
-        {{
-          '@pry.dataset.error.modalTitle.' +
-            (_version?.state !== 'ERROR' && _version?.hasWarnings ? 'WARNING' : 'ERROR') | i18n
-        }}
-        ({{ messageCount$ | async }})
-      </h2>
-    </div>
-    <div class="o-modal__top__close">
-      <button class="a-btn a-btn--icon-only" (click)="goBack()">
-        <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
-        <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
-      </button>
-    </div>
-  </div>
-  <table class="a-table">
-    <thead>
-      <tr>
-        <th>{{ '@pry.dataset.error.type' | i18n }}</th>
-        <th>{{ '@pry.dataset.error.elements' | i18n }}</th>
-        <th>{{ '@pry.dataset.error.message' | i18n }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let preview of datasetPreviews$ | async | slice : 0 : 5">
-        <td>
-          {{ '@pry.dataset.error.level.' + preview.level | i18n }}
-        </td>
-        <td>
-          {{ preview.recordId }}
-        </td>
-        <td>
+<div class="o-modal-wrapper__backdrop" (click)="goBack()">
+  <div class="o-modal-wrapper -extra-large">
+    <div class="o-modal__top">
+      <div class="o-modal__top__title">
+        <h2 class="a-h2">
           {{
-            '@pry.dataset.error.code.' + preview.extractMessageCode
-              | i18n : { plural: preview.name.includes(',') ? 's' : '', name: preview.name, recordId: preview.recordId }
+            '@pry.dataset.error.modalTitle.' +
+              (_version?.state !== 'ERROR' && _version?.hasWarnings ? 'WARNING' : 'ERROR') | i18n
           }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          ({{ messageCount$ | async }})
+        </h2>
+      </div>
+      <div class="o-modal__top__close">
+        <button class="a-btn a-btn--icon-only" (click)="goBack()">
+          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+    <table class="a-table">
+      <thead>
+        <tr>
+          <th>{{ '@pry.dataset.error.type' | i18n }}</th>
+          <th>{{ '@pry.dataset.error.elements' | i18n }}</th>
+          <th>{{ '@pry.dataset.error.message' | i18n }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let preview of datasetPreviews$ | async | slice : 0 : 5">
+          <td>
+            {{ '@pry.dataset.error.level.' + preview.level | i18n }}
+          </td>
+          <td>
+            {{ preview.recordId }}
+          </td>
+          <td>
+            {{
+              '@pry.dataset.error.code.' + preview.extractMessageCode
+                | i18n
+                  : { plural: preview.name.includes(',') ? 's' : '', name: preview.name, recordId: preview.recordId }
+            }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
