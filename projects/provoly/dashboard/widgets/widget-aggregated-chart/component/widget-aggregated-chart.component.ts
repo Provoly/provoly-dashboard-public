@@ -258,7 +258,6 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     this.aggregatedValues$ = combineLatest([
       this.datasourceIds$,
       this.options$,
-      this.resultSet$.pipe(filter((rs) => (rs.merged ?? 0) > 0)),
       combineLatest([fromEvent(window, 'datasourceRefresh'), this.datasourceIds$]).pipe(
         filter(([event, datasources]) => datasources.includes((event as CustomEvent).detail)),
         startWith(undefined)
