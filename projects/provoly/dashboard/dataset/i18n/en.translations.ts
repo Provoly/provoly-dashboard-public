@@ -45,7 +45,7 @@ export const enTranslations = {
           WARNING: 'Warning'
         },
         code: {
-          UNRECOGNIZED: 'Unrecognized attribute {{name}}',
+          UNRECOGNIZED: 'Unrecognized attribute{{plural}} {{name}}',
           FORMAT: 'Wrong format for attribute {{name}}',
           STORAGE: 'Insertion error for element {{recordId}}',
           NO_VALUES: 'No value for {{recordId}} line',
