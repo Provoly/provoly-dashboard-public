@@ -65,8 +65,8 @@ export const enTranslations = {
         legendLabel: 'Legend',
         tooltip: 'Display tooltip',
         stacked: 'Vertical stacking',
-        noData: 'No data to display',
-        aggNoResult: 'Aggregation returns no results',
+        noData: 'No selected datasource',
+        aggNoResult: 'No results to display',
         scheme: {
           accent: '8 colors n°1',
           set2: '8 colors n°2',

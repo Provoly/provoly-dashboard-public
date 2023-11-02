@@ -64,8 +64,8 @@ export const frTranslations = {
         legendLabel: 'Légende',
         tooltip: 'Affichage des info-bulles',
         stacked: 'Superposition verticale',
-        noData: 'Aucune donnée à afficher',
-        aggNoResult: "L'aggrégation demandée ne renvoie rien.",
+        noData: 'Aucune datasource sélectionnée',
+        aggNoResult: 'Aucune donnée à afficher',
         scheme: {
           accent: '8 couleurs n°1',
           set2: '8 couleurs n°2',

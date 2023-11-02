@@ -290,23 +290,7 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="!(noData$ | async) && !(isChartValid$ | async)">
-    <div class="o-widget__choose-parameters">
-      <img
-        class="no-result__search"
-        src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
-        alt="{{ '@pry.widget.chart.chooseParameters' | i18n }}"
-        aria-hidden="true"
-      />
-      <span class="no-result__text">{{ '@pry.widget.chart.chooseParameters' | i18n }}</span>
-      <button type="button" (click)="openSettings()" class="a-btn a-btn--primary">
-        <pry-icon [height]="20" [width]="20" iconSvg="control"></pry-icon>
-        <span>{{ '@pry.widget.settings.title' | i18n }}</span>
-      </button>
-    </div>
-  </ng-container>
-
-  <ng-container *ngIf="!(noData$ | async) && (isChartValid$ | async) && (noAggregationData$ | async)">
+  <ng-container *ngIf="!(noData$ | async) && (noAggregationData$ | async)">
     <div class="o-widget__choose-parameters">
       <img
         class="no-result__search"
@@ -315,6 +299,22 @@
         aria-hidden="true"
       />
       <span class="no-result__text">{{ '@pry.widget.chart.aggNoResult' | i18n }}</span>
+      <button type="button" (click)="openSettings()" class="a-btn a-btn--primary">
+        <pry-icon [height]="20" [width]="20" iconSvg="control"></pry-icon>
+        <span>{{ '@pry.widget.settings.title' | i18n }}</span>
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!(noData$ | async) && !(noAggregationData$ | async) && !(isChartValid$ | async)">
+    <div class="o-widget__choose-parameters">
+      <img
+        class="no-result__search"
+        src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
+        alt="{{ '@pry.widget.chart.chooseParameters' | i18n }}"
+        aria-hidden="true"
+      />
+      <span class="no-result__text">{{ '@pry.widget.chart.chooseParameters' | i18n }}</span>
       <button type="button" (click)="openSettings()" class="a-btn a-btn--primary">
         <pry-icon [height]="20" [width]="20" iconSvg="control"></pry-icon>
         <span>{{ '@pry.widget.settings.title' | i18n }}</span>
