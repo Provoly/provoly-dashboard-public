@@ -428,7 +428,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       combineLatest([this.vegaLiteSpec$, this.trigger$]).subscribe(([spec, _]) => {
         if (this.vega) {
           this.view?.finalize();
-          console.log(spec);
+          //console.log(spec);
           embed(this.vega.nativeElement, JSON.parse(JSON.stringify(spec)), {
             actions: false,
             renderer: 'canvas',
