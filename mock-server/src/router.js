@@ -1013,6 +1013,16 @@ router.on(['POST'], '/data/imports/dataset/id/:id', (req, res, params) => {
 router.on(['OPTIONS', 'GET'], '/external/style.json', (req, res, params) => {
   makeResponseOk(res, JSON.parse(fs.readFileSync('./data/style.json', 'utf8')));
 });
+
+router.on(['OPTIONS', 'POST'], '/timings', (req, res, params) => {
+  console.log('timing');
+  readPayload(req).then((payload) => {
+    console.log('timing', payload);
+    fs.writeFileSync('./timings.json', JSON.stringify(payload, null, 2));
+    makeResponseOk(res, undefined, 200);
+  });
+});
+
 const server = http.createServer((req, res) => {
   router.lookup(req, res);
 });
