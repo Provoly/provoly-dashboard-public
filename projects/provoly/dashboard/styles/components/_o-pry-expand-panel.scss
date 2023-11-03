@@ -26,11 +26,11 @@
   }
 
   &__content-wrapper {
-    overflow: auto;
+    //overflow: auto;
   }
 
   &__content {
-    overflow: hidden;
+    //overflow: hidden;
     max-height: toRem(540);
   }
 }

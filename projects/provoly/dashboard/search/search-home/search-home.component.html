@@ -45,7 +45,7 @@
                 <button
                   [attr.data-tooltip]="'@pry.search.home.showAssociatedWidget' | i18n"
                   data-tooltip-position="bottom"
-                  class="a-tooltip a-btn a-btn--secondary -size-sm"
+                  class="a-tooltip a-btn a-btn--secondary -size-sm -override-tooltip-position"
                   (click)="onSearchNamedQuery(nq.id)"
                   *ngIf="(layout$ | async) !== DashboardGridLayout.MANUAL"
                 >

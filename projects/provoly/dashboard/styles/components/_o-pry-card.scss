@@ -6,7 +6,7 @@
 
 .o-pry-card {
   display: block;
-  overflow-x: hidden;
+  //overflow-x: hidden;
 
   .o-pry-card-header {
     display: flex;
@@ -39,6 +39,13 @@
           font-size: toRem(12);
           border-width: 1px;
           border-radius: toRem(15);
+
+          &.-override-tooltip-position {
+            &::after {
+              top: calc(100%);
+              left: -150%;
+            }
+          }
         }
 
         &__text {
