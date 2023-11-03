@@ -66,6 +66,19 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
   }
 
   save() {
+    if (!this.edition) {
+      this.store.dispatch(DashboardActions.updateStaticManifest({ staticManifest: { windows: [] } }));
+    }
+    const presentation = this.dispatchSave();
+    this.store.dispatch(
+      DashboardActions.selectPresentation({
+        presentation,
+        viewMode: ViewMode.EDITION
+      })
+    );
+  }
+
+  dispatchSave(): ManifestDescription {
     const presentation = {
       ...this.selectedPresentation$.value!,
       id: this.selectedPresentation$.value?.id || uuidv4(),
@@ -74,9 +87,7 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
       cover: this.form.value.cover ?? false,
       image: this.image ?? DEFAULT_RESTITUTION_ICON_URL
     };
-    if (!this.edition) {
-      this.store.dispatch(DashboardActions.updateStaticManifest({ staticManifest: { windows: [] } }));
-    }
+
     this.subscriptions.add(
       this.staticManifest$.pipe(take(1)).subscribe((staticManifest) => {
         this.store.dispatch(
@@ -91,15 +102,13 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
         );
       })
     );
-    this.store.dispatch(
-      DashboardActions.selectPresentation({
-        presentation,
-        viewMode: ViewMode.EDITION
-      })
-    );
+    return presentation;
   }
 
   configureDashboard(selectedPresentation: ManifestDescription) {
+    if (this.form.valid) {
+      this.dispatchSave();
+    }
     this.store.dispatch(
       DashboardActions.selectPresentation({
         presentation: {
