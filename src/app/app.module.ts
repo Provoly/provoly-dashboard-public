@@ -17,7 +17,6 @@ import {
   PryBackendAggregationService,
   PryCoreModule,
   PryDashboardModule,
-  PryFrontendAggregationService,
   PryHiddenWhenOverlay,
   PryHttpErrorInterceptorService,
   PryI18nModule,
@@ -67,7 +66,8 @@ import { SearchContainerComponent } from './search-container/search-container.co
           load: () =>
             import('@provoly/dashboard/widgets/widget-aggregated-chart').then((module) =>
               widgetLoader(module, 'WidgetAggregatedChartModule')
-            )
+            ),
+          autoLoadDatasource: 'none'
         },
         detail: {
           name: 'detail',
@@ -100,7 +100,8 @@ import { SearchContainerComponent } from './search-container/search-container.co
         map: {
           name: 'map',
           load: () =>
-            import('@provoly/dashboard/widgets/widget-map').then((module) => widgetLoader(module, 'WidgetMapModule'))
+            import('@provoly/dashboard/widgets/widget-map').then((module) => widgetLoader(module, 'WidgetMapModule')),
+          autoLoadDatasource: 'not-geo'
         },
         table: {
           name: 'table',

@@ -5,6 +5,10 @@ import { BaseWidgetComponent } from '../base-widget.component';
 import { WidgetFillerComponent } from '../widget-filler/widget-filler.component';
 import { WidgetPlaceholderComponent } from '../widget-placeholder/widget-placeholder.component';
 import { WidgetDefinition, WidgetLazyDefinition, WidgetStaticDefinition } from './widgets-definition.model';
+import { DatasourceUtils } from '../../../../core/store/data-source/datasource-utils';
+import { DataSourceSelectors } from '../../../../core/store/data-source/data-source.selectors';
+import { Store } from '@ngrx/store';
+import { DataSource } from '../../../../core/store/data-source/data-source.model';
 
 export const WIDGET_DEFINITION = new InjectionToken<string>('Widgets definition');
 
@@ -17,12 +21,15 @@ export class WidgetFactoryService {
     filler: { name: 'filler', component: WidgetFillerComponent }
   });
   moduleRefCache = {} as { [manifestType: string]: Type<BaseWidgetComponent> };
+  datasources: DataSource[] = [];
 
   constructor(
     private injector: Injector,
-    @Inject(WIDGET_DEFINITION) reference: { [key: string]: WidgetDefinition }
+    @Inject(WIDGET_DEFINITION) reference: { [key: string]: WidgetDefinition },
+    private store: Store
   ) {
     this.putDefinitions(reference);
+    this.store.select(DataSourceSelectors.getDataSources).subscribe((datasources) => (this.datasources = datasources));
   }
 
   resolveComponent(manifest: WidgetManifest) {
@@ -61,5 +68,21 @@ export class WidgetFactoryService {
 
   isModuleLoaded(type: string): Observable<boolean> {
     return this.reference$.pipe(map((componentDefs) => !!componentDefs[type]));
+  }
+
+  datasourcesToAutoLoad(manifest: WidgetManifest) {
+    const widgetDefinition = this.reference$.getValue()[manifest.type];
+    const datasourcesArray: string[] = Array.isArray(manifest.datasource ?? [])
+      ? ((manifest.datasource ?? []) as string[])
+      : ([manifest.datasource] as string[]);
+    return datasourcesArray.filter((datasource) => {
+      const matching = this.datasources.find((ds) => ds.id === datasource)!;
+      return (
+        widgetDefinition.autoLoadDatasource === undefined ||
+        widgetDefinition.autoLoadDatasource === 'all' ||
+        (widgetDefinition.autoLoadDatasource === 'geo' && DatasourceUtils.isGeo(matching)) ||
+        (widgetDefinition.autoLoadDatasource === 'not-geo' && !DatasourceUtils.isGeo(matching))
+      );
+    });
   }
 }

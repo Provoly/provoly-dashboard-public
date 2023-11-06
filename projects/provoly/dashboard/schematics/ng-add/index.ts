@@ -76,7 +76,8 @@ function widgetImports(options: ProjectSetupOptions, context: SchematicContext, 
       name: 'widget-aggregated-chart',
       path: '@provoly/dashboard/widgets/widget-aggregated-chart',
       moduleName: 'WidgetAggregatedChartModule',
-      type: 'chart'
+      type: 'chart',
+      autoLoadDatasource: 'none'
     },
     {
       name: 'widget-detail',
@@ -102,7 +103,13 @@ function widgetImports(options: ProjectSetupOptions, context: SchematicContext, 
       moduleName: 'WidgetImageModule',
       type: 'image'
     },
-    { name: 'widget-map', path: '@provoly/dashboard/widgets/widget-map', moduleName: 'WidgetMapModule', type: 'map' },
+    {
+      name: 'widget-map',
+      path: '@provoly/dashboard/widgets/widget-map',
+      moduleName: 'WidgetMapModule',
+      type: 'map',
+      autoLoadDatasource: 'not-geo'
+    },
     {
       name: 'widget-table',
       path: '@provoly/dashboard/widgets/widget-table',
@@ -135,7 +142,10 @@ function widgetImports(options: ProjectSetupOptions, context: SchematicContext, 
       imports.push(
         definition.type +
           ':' +
-          `{ name: '${definition.type}', load: () => import('${definition.path}').then((module) => ${external(
+          `{
+              name: '${definition.type}',
+              ${definition.autoLoadDatasource ? `autoLoadDatasource: '${definition.autoLoadDatasource}',` : ''}
+              load: () => import('${definition.path}').then((module) => ${external(
             'widgetLoader',
             '@provoly/dashboard'
           )}(module, '${definition.moduleName}')) }`

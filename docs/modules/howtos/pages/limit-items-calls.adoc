@@ -1,0 +1,35 @@
+=== Comment faire pour limiter les appels à /items
+
+Les appels de récupération des items sont potentiellement coûteux. Il est bon de pouvoir les limiter.
+Pour ce faire, on peut ajouter à la configuration d'un widget, l'option `autoLoadDatasource?: 'all' | 'none' | 'not-geo' | 'geo'`.
+
+* `all`: Tous les items des datasources liées à ce widget sont récupérés lors de son affichage. C'est la valeur par défaut.
+* `none`: Aucun item des datasources liées à ce widget ne sont récupérés lors de son affichage.
+* `geo`: Seuls les items des datasources géographiques liées à ce widget ne sont récupérés lors de son affichage.
+* `all`: Seuls les items des datasources non-géographiques liées à ce widget ne sont récupérés lors de son affichage.
+
+(Les datasources géographiques sont celles qui ont des metadata _geoKey and _geoNamespace définies)
+
+La configuration "naturelle" pour Provoly est la suivante pour ces 2 widgets particuliers, et par défaut pour le reste:
+
+[source,js]
+----
+PryDashboardModule.forRoot(
+    {
+        chart: {
+          name: 'chart',
+          load: () =>
+            import('@provoly/dashboard/widgets/widget-aggregated-chart').then((module) =>
+              widgetLoader(module, 'WidgetAggregatedChartModule')
+            ),
+          autoLoadDatasource: 'none'
+        },
+        map: {
+          name: 'map',
+          load: () =>
+            import('@provoly/dashboard/widgets/widget-map').then((module) => widgetLoader(module, 'WidgetMapModule')),
+          autoLoadDatasource: 'not-geo'
+        },
+        ...
+    })
+----

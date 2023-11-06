@@ -491,76 +491,6 @@
     }
   },
   {
-    "name": "map_et_chart",
-    "manifest": {
-      "locked": false,
-      "windows": [
-        {
-          "widgets": [
-            {
-              "type": "table",
-              "layout": {
-                "x": 1,
-                "y": 1,
-                "height": 12,
-                "width": 6
-              },
-              "options": {},
-              "datasource": "graphspe-cifi-cdat-acd2-51ccec998307"
-            },
-            {
-              "type": "chart",
-              "layout": {
-                "x": 7,
-                "y": 1,
-                "height": 12,
-                "width": 6
-              },
-              "options": {
-                "title": "test",
-                "ordinate": {
-                  "attribute": "da314951-82cb-4e93-9955-4654993f231c",
-                  "operation": "none",
-                  "label": "Température"
-                },
-                "abscissa": {
-                  "attribute": "d5d4cda4-7ff3-4f19-ab69-7c95745888cf",
-                  "label": "Date"
-                },
-                "graph": {
-                  "offset": true,
-                  "stacked": true
-                },
-                "groupBy": {
-                  "attribute": "eothr951-82cb-4e93-9955-4654993f231c"
-                }
-              },
-              "datasource": "graphspe-cifi-cdat-acd2-51ccec998307"
-            }
-          ]
-        }
-      ],
-      "filters": [
-        {
-          "id": "3695ce4c-26d9-4fba-8ceb-e50b18b22688",
-          "name": "nom station",
-          "type": "list",
-          "attributes": [
-            {
-              "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-              "name": "station_nom",
-              "label": "station_nom / Data for charts / station velo",
-              "datasource": "graphspe-cifi-cdat-acd2-51ccec998307",
-              "type": "string"
-            }
-          ],
-          "operator": "EQUALS",
-          "possibleValues": "A,B,C"
-        }
-      ]
-    }
-  },
-  {
     "name": "front-aggregation",
     "manifest": {
       "windows": [
@@ -597,6 +527,62 @@
             "layout": "1",
             "rows": 12
           }
+        }
+      ]
+    }
+  },
+  {
+    "name": "map_et_chart",
+    "manifest": {
+      "locked": false,
+      "windows": [
+        {
+          "widgets": [
+            {
+              "type": "chart",
+              "layout": {
+                "x": 7,
+                "y": 1,
+                "height": 12,
+                "width": 6
+              },
+              "options": {
+                "title": "test",
+                "ordinate": {
+                  "attribute": "da314951-82cb-4e93-9955-4654993f231c",
+                  "operation": "none",
+                  "label": "Température"
+                },
+                "abscissa": {
+                  "attribute": "d5d4cda4-7ff3-4f19-ab69-7c95745888cf",
+                  "label": "Date"
+                },
+                "graph": {
+                  "offset": true,
+                  "stacked": true
+                },
+                "groupBy": {
+                  "attribute": "eothr951-82cb-4e93-9955-4654993f231c"
+                }
+              },
+              "datasource": "graphspe-cifi-cdat-acd2-51ccec998307"
+            },
+            {
+              "type": "map",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "height": 12,
+                "width": 6
+              },
+              "options": {
+                "fit": true,
+                "tooltipMode": "click",
+                "layers": []
+              },
+              "datasource": "graphspe-cifi-cdat-acd2-51ccec998307"
+            }
+          ]
         }
       ]
     }

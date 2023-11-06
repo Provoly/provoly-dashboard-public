@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { SearchService, WmsService } from '@provoly/dashboard';
+import { SearchService, WidgetFactoryService, WidgetManifest, WmsService } from '@provoly/dashboard';
 import { hot } from 'jest-marbles';
 import { Observable, of } from 'rxjs';
 import { PrySnackbarService } from '../../core/components/snackbar/snackbar.service';
@@ -54,6 +54,15 @@ describe('DashboardEffects', () => {
           provide: DashboardInitService,
           useValue: {
             init: () => {}
+          }
+        },
+        {
+          provide: WidgetFactoryService,
+          useValue: {
+            datasourcesToAutoLoad: (manifest: WidgetManifest) =>
+              Array.isArray(manifest.datasource ?? [])
+                ? ((manifest.datasource ?? []) as string[])
+                : ([manifest.datasource] as string[])
           }
         },
         {

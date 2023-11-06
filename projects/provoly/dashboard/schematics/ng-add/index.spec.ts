@@ -61,4 +61,34 @@ describe(schematicName, () => {
 
     expect(runner.tasks.some((task) => task.name === 'node-package')).toBe(true);
   });
+
+  it(`should add autoLoad options to widget map`, async () => {
+    await runner.runSchematic(
+      schematicName,
+      { widgets: ['widget-map'], pipeline: false, projectName: 'test-project' } as ProjectSetupOptions,
+      tree
+    );
+    const actual = tree.readContent('/src/app/app.module.ts');
+    expect(actual).toMatch(/autoLoadDatasource: 'not-geo',/);
+  });
+
+  it(`should add autoLoad options to widget aggregated chart`, async () => {
+    await runner.runSchematic(
+      schematicName,
+      { widgets: ['widget-aggregated-chart'], pipeline: false, projectName: 'test-project' } as ProjectSetupOptions,
+      tree
+    );
+    const actual = tree.readContent('/src/app/app.module.ts');
+    expect(actual).toMatch(/autoLoadDatasource: 'none',/);
+  });
+
+  it(`should not add autoLoad options to widget table`, async () => {
+    await runner.runSchematic(
+      schematicName,
+      { widgets: ['widget-table'], pipeline: false, projectName: 'test-project' } as ProjectSetupOptions,
+      tree
+    );
+    const actual = tree.readContent('/src/app/app.module.ts');
+    expect(actual).not.toMatch(/autoLoadDatasource: /);
+  });
 });

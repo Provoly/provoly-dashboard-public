@@ -30,6 +30,7 @@ import { ManifestService } from './manifest.service';
 import { RefreshService } from './refresh.service';
 import { PryTitleService } from './title.service';
 import { WmsService } from './wms.service';
+import { WidgetFactoryService } from '../components/widgets/widget-instanciator/widget-factory.service';
 
 @Injectable()
 export class DashboardEffects {
@@ -198,16 +199,15 @@ export class DashboardEffects {
       mergeMap(([action, manifest, resultSets, resultSetsParams, quickOrder]) => {
         if (!action.id) {
           return (
-            (
-              [
-                ...new Set(
-                  manifest.windows
-                    .map((winManifest) => (winManifest ?? {}).widgets ?? [])
-                    .reduce((p, c) => [...p, ...c], [])
-                    .map((widManifest) => widManifest.datasource)
-                )
-              ] as (string | string[])[]
-            ).reduce((p, c) => [...p, ...(Array.isArray(c) ? c : [c])], []) as string[]
+            [
+              ...new Set(
+                manifest.windows
+                  .map((winManifest) => (winManifest ?? {}).widgets ?? [])
+                  .reduce((p, c) => [...p, ...c], [])
+                  .map((widManifest) => this.widgetFactoryService.datasourcesToAutoLoad(widManifest))
+                  .reduce((p, c) => [...p, ...c], [] as string[])
+              )
+            ] as string[]
           )
             .filter(
               (resultSet) =>
@@ -757,7 +757,8 @@ export class DashboardEffects {
     private busService: BusService,
     private searchService: SearchService,
     private pryDialog: PryDialogService,
-    private wmsService: WmsService
+    private wmsService: WmsService,
+    private widgetFactoryService: WidgetFactoryService
   ) {
     dashboardInitService.init();
     refreshService.start();
