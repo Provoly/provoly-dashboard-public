@@ -29,4 +29,10 @@ export class PryAboutComponent {
     }
     return this.i18nService.instant('@pry.about.noVersion');
   }
+
+  hasVersion(value: BackendVersion | FrontendVersion) {
+    const backVersion = value as BackendVersion;
+    const frontVersion = value as FrontendVersion;
+    return !!value && (!!backVersion.chartVersion || !!frontVersion.libVersion);
+  }
 }

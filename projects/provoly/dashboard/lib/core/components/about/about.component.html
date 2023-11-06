@@ -1,8 +1,15 @@
-<div class="info-icon description-container description">
-  <span class="info-text">i</span>
-</div>
-<div class="description-tooltip title-tooltip">
-  <ul *ngFor="let version of (version$ | async) ?? {} | keyvalue">
-    <li>{{ '@pry.about.' + version.key | i18n }} {{ displayVersion(version.value) }}</li>
-  </ul>
+<div class="o-about">
+  <div class="info-icon description-container description">
+    <span class="info-text">i</span>
+  </div>
+  <div class="description-tooltip title-tooltip">
+    <ng-container *ngFor="let version of (version$ | async) ?? {} | keyvalue">
+      <div class="o-about__line">
+        {{ '@pry.about.' + version.key | i18n }}
+        <p class="a-chips -md" [class.-not-found]="!hasVersion(version.value)">
+          {{ displayVersion(version.value) }}
+        </p>
+      </div>
+    </ng-container>
+  </div>
 </div>

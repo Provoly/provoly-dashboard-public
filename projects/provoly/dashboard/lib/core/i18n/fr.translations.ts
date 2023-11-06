@@ -1,13 +1,13 @@
 export const frTranslations = {
   '@pry': {
     about: {
-      front: 'Librairie front version : ',
-      ref: 'Référentiel version : ',
-      data: 'Données version : ',
-      replay: 'Rejeu version : ',
-      exec: 'Exécution version : ',
-      transfo: 'Transformation version : ',
-      monitor: 'Supervision version : ',
+      front: 'Librairie front',
+      ref: 'Référentiel',
+      data: 'Données',
+      replay: 'Rejeu',
+      exec: 'Exécution',
+      transfo: 'Transformation',
+      monitor: 'Supervision',
       noVersion: 'Version non trouvée'
     },
     header: {

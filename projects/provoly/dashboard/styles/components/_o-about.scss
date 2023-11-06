@@ -1,0 +1,59 @@
+@use '../abstracts' as *;
+
+.o-about {
+
+  .description:hover:after {
+    cursor: pointer;
+  }
+
+  .description-tooltip {
+    position: absolute;
+    transform: translateY(5rem);
+    max-width: 50vw;
+    visibility: hidden;
+    background-color: #fff;
+    padding: 20px;
+    -webkit-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .description:hover + .description-tooltip {
+    visibility: visible;
+    transition: opacity 0.2s ease;
+    opacity: 1;
+  }
+
+  .title-tooltip {
+    transform: translateY(4rem);
+  }
+
+  .title-container {
+    display: flex;
+  }
+
+  .info-icon {
+    position: relative;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background-color: #ccc;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    margin: 0 1rem;
+  }
+
+  &__line {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: toRem(10);
+  }
+}

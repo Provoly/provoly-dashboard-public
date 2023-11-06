@@ -45,7 +45,7 @@
       <ng-template #templateOption let-item="item">
         <div class="aligned-option">
           <p>{{ item.name }}</p>
-          <div class="chips" *ngIf="item.crs">{{ item.crs }}</div>
+          <div class="a-chips" *ngIf="item.crs">{{ item.crs }}</div>
         </div>
       </ng-template>
       <ng-container *ngIf="selectedFieldTypeDescription$ | async as description">

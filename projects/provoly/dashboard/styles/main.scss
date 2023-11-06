@@ -17,7 +17,7 @@
 @use 'components/a-table' as *;
 @use 'components/a-toggle' as *;
 @use 'components/a-tooltip' as *;
-
+@use 'components/a-chips' as *;
 
 /* Atoms lib */
 @use 'components/a-pry-select' as *;
@@ -69,6 +69,7 @@
 @use 'components/o-pry-expand-panel' as *;
 @use 'components/o-pry-stepper' as *;
 @use 'components/overlay' as *;
+@use 'components/o-about' as *;
 
 /* Layout */
 @use 'layout/o-base-layout' as *;
