@@ -179,5 +179,29 @@
         "value": "troncon_de_route"
       }
     ]
+  },
+  {
+    "id": "meteo-cifi-cdat-acd2-51ccec998307",
+    "name": "Geodata",
+    "oClass": "17b90da3-f448-4cc3-bfd8-74c8b8481590",
+    "type": "OPEN",
+    "metadata": [
+      {
+        "metadataDef": {
+          "id": "9d9aba2c-fc3a-44d7-a508-287ad2d8cbb0",
+          "name": "_geoNamespace",
+          "type": "string"
+        },
+        "value": "CKDo"
+      },
+      {
+        "metadataDef": {
+          "id": "7ce12610-e031-403c-a6e0-b8147979f657",
+          "name": "_geoKey",
+          "type": "string"
+        },
+        "value": "Batiments Publics"
+      }
+    ]
   }
 ]

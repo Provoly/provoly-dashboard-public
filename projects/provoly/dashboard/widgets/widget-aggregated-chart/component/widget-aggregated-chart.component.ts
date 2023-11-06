@@ -5,11 +5,16 @@ import {
   ChartAggregatedWidgetOptions,
   Class,
   ClassSelectors,
+  Dataset,
   DataWidgetComponent,
   Field,
   FieldSelectors,
   FieldType,
   GraphType,
+  MonoClassSearchPayload,
+  MultiClassSearchPayload,
+  NamedQuery,
+  NamedQueryTypes,
   Operation,
   PryAggregationService,
   PryI18nService,
@@ -76,6 +81,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   sortActive? = 'name';
   sortDirection? = 'asc';
   noAggregationData$: Observable<boolean>;
+  allowedClasses$: Observable<Class[]>;
 
   constructor(
     store: Store<any>,
@@ -143,10 +149,44 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     this.subscriptions.add(this.fields$.subscribe((fields) => (this.fields = fields)));
     this.subscriptions.add(this.classes$.subscribe((classes) => (this.classes = classes)));
 
-    this.abscissaAttributes$ = combineLatest([this.classes$, this.fields$, this.resultSet$, this.optionsCopy$]).pipe(
-      map(([classes, fields, rs, optionCopy]) =>
-        classes
-          .filter((clazz) => Object.keys(rs.items).includes(clazz.id))
+    this.allowedClasses$ = combineLatest([this.classes$, this.usedDatasources$]).pipe(
+      map(([classes, datasources]) => {
+        const hasFullText = datasources
+          .map((ds) => ds.sourceType === 'namedQuery' && ds.request.type === NamedQueryTypes.MULTI_CLASS)
+          .reduce((p, c) => p || c, false);
+
+        const multiClassDatasourcesClasses = datasources
+          .filter((ds) => ds.sourceType === 'namedQuery' && ds.request.type === NamedQueryTypes.MULTI_CLASS)
+          .map((multiDs) => (multiDs as NamedQuery).request as MultiClassSearchPayload)
+          .map((payload) => payload.oClasses);
+
+        const hasMultiNoClass = multiClassDatasourcesClasses.includes(undefined);
+
+        const multiClasses = (
+          multiClassDatasourcesClasses.filter((classes) => !!classes) as unknown as string[]
+        ).reduce((p, c) => [...p, ...c], [] as string[]);
+
+        const singleClasses = datasources
+          .filter(
+            (ds) =>
+              (ds.sourceType === 'namedQuery' && ds.request.type === NamedQueryTypes.MONO_CLASS) ||
+              ds.sourceType === 'dataset'
+          )
+          .map(
+            (singleDs) =>
+              (singleDs as Dataset).oClass ?? ((singleDs as NamedQuery).request as MonoClassSearchPayload).oClass
+          );
+
+        return classes.filter(
+          (clazz) =>
+            hasFullText || hasMultiNoClass || multiClasses.includes(clazz.id) || singleClasses.includes(clazz.id)
+        );
+      })
+    );
+
+    this.abscissaAttributes$ = combineLatest([this.fields$, this.allowedClasses$, this.optionsCopy$]).pipe(
+      map(([fields, allowedClasses, optionCopy]) =>
+        allowedClasses
           .map((clazz) => clazz.attributes)
           .map((attrs) =>
             attrs.filter((attr) => {
@@ -166,14 +206,12 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     );
 
     this.ordinateAttributes$ = combineLatest([
-      this.classes$,
       this.fields$,
-      this.resultSet$,
+      this.allowedClasses$,
       this.triggerOrdinateAttributes$
     ]).pipe(
-      map(([classes, fields, rs]) =>
-        classes
-          .filter((clazz) => Object.keys(rs.items).includes(clazz.id))
+      map(([fields, allowedClasses]) =>
+        allowedClasses
           .map((clazz) => clazz.attributes)
           .map((attrs) =>
             attrs.filter((attr) => {
@@ -258,7 +296,6 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     this.aggregatedValues$ = combineLatest([
       this.datasourceIds$,
       this.options$,
-      this.resultSet$.pipe(filter((rs) => (rs.merged ?? 0) > 0)),
       combineLatest([fromEvent(window, 'datasourceRefresh'), this.datasourceIds$]).pipe(
         filter(([event, datasources]) => datasources.includes((event as CustomEvent).detail)),
         startWith(undefined)
