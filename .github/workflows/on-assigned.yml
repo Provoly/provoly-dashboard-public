@@ -9,6 +9,6 @@ jobs:
     steps:
       - uses: alex-page/github-project-automation-plus@v0.8.3
         with:
-          project: Provoly/provoly-dashboard
+          project: Provoly Backlog et Roadmap
           column: In Progress
           repo-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
