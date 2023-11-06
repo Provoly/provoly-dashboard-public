@@ -11,4 +11,4 @@ jobs:
         with:
           project: Provoly Backlog et Roadmap
           column: In Progress
-          repo-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          repo-token: ${{ secrets.GHPROJECT_TOKEN }}
