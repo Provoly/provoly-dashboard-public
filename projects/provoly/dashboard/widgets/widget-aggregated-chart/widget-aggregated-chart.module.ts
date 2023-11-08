@@ -1,7 +1,7 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   BaseWidgetComponent,
   BaseWidgetModule,
@@ -22,6 +22,7 @@ import { WidgetAggregatedChartComponent } from './component/widget-aggregated-ch
 import { enTranslations } from './i18n/en.translations';
 import { frTranslations } from './i18n/fr.translations';
 import { PryWidgetAggregatedChartCssComponent } from './style/css.component';
+import { PryColorPickerModule } from '@provoly/dashboard/components/color-picker';
 
 @NgModule({
   declarations: [WidgetAggregatedChartComponent, PryWidgetAggregatedChartCssComponent],
@@ -38,7 +39,9 @@ import { PryWidgetAggregatedChartCssComponent } from './style/css.component';
     PryEditInputModule,
     PryI18nModule,
     PryRangeModule,
-    PrySortModule
+    PrySortModule,
+    ReactiveFormsModule,
+    PryColorPickerModule
   ],
   exports: [WidgetAggregatedChartComponent],
   providers: [PryAggregationService]

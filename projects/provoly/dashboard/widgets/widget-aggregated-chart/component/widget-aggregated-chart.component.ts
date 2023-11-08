@@ -43,6 +43,7 @@ import { mergeDeep, TopLevelSpec } from 'vega-lite';
 import { fontConfig } from 'vega-lite/build/src/config';
 
 vega.scheme('KO/W/OK', ['#C04D3F', '#FD9843', '#9ABE29']);
+vega.scheme('Provoly', ['#40b688', '#dfe5ec', '#a7ddc8', '#fc5640']);
 
 @Component({
   selector: 'pry-widget-aggregated-chart',
@@ -82,6 +83,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   sortDirection? = 'asc';
   noAggregationData$: Observable<boolean>;
   allowedClasses$: Observable<Class[]>;
+  colors = vega.scheme('Provoly');
 
   constructor(
     store: Store<any>,
@@ -418,9 +420,17 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                   theta: isCircular ? { field: 'value', type: types.ordinate.vegaType } : undefined,
                   color: {
                     title: legendTitle,
-                    field: !isCircular ? 'series' : 'key',
+                    field: !isCircular ? (!options.groupBy ? undefined : 'series') : 'key',
                     legend: options.graph.legend,
-                    scale: options.graph.legend ? { scheme: options.groupBy?.color ?? this.schemes[0].id } : undefined
+                    scale: !isCircular
+                      ? options.groupBy
+                        ? { scheme: options.groupBy?.color ?? this.schemes[0].id }
+                        : undefined
+                      : { scheme: options.circleColorScheme },
+                    value:
+                      !isCircular && !options.groupBy
+                        ? options.baseColor ?? vega.scheme(this.schemes[0].id)[0]
+                        : undefined
                   },
                   xOffset: stacked && options.groupBy ? { field: 'series' } : undefined,
                   tooltip: options.graph.tooltip
@@ -465,7 +475,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       combineLatest([this.vegaLiteSpec$, this.trigger$]).subscribe(([spec, _]) => {
         if (this.vega) {
           this.view?.finalize();
-          //console.log(spec);
+          //console.log(JSON.stringify(spec));
           embed(this.vega.nativeElement, JSON.parse(JSON.stringify(spec)), {
             actions: false,
             renderer: 'canvas',
@@ -557,7 +567,8 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       if ([GraphType.CIRCULAR, GraphType.DONUT].includes($event)) {
         this.optionsCopy$.next({
           ...this.optionsCopy$.value,
-          groupBy: undefined
+          groupBy: undefined,
+          circleColorScheme: this.optionsCopy$.value?.circleColorScheme ?? 'Provoly'
         });
       }
       if ([GraphType.HISTOGRAM].includes($event)) {
@@ -866,5 +877,23 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     return new Promise((resolve, reject) => {
       resolve(this.vega.nativeElement.querySelectorAll('canvas')[0].toDataURL('image/png'));
     });
+  }
+
+  changeCircleColorScheme($event: any) {
+    if (this.optionsCopy$.value) {
+      this.optionsCopy$.next({
+        ...this.optionsCopy$.value,
+        circleColorScheme: $event
+      });
+    }
+  }
+
+  changeBaseColor($event: any) {
+    if (this.optionsCopy$.value) {
+      this.optionsCopy$.next({
+        ...this.optionsCopy$.value,
+        baseColor: $event
+      });
+    }
   }
 }

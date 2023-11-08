@@ -141,7 +141,7 @@ const routes: Routes = [
                 attribute: 'eothr951-82cb-4e93-9955-4654993f231c'
               }
             },
-            datasource: 'graphspe-cifi-cdat-acd2-51ccec998307'
+            datasource: 'meteo-cifi-cdat-acd2-51ccec998307'
           }
         ]
       } as DashboardManifest

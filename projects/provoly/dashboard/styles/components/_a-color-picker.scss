@@ -1,0 +1,62 @@
+@use '../abstracts' as *;
+
+.a-color-picker {
+  width: toRem(30);
+  height: toRem(30);
+  border: 3px solid #000000;
+  position: relative;
+
+  &__modal {
+    position: absolute;
+    bottom: 0;
+    left: 100%;
+    box-shadow: 0px 4px 4px rgba(17, 59, 110, 0.24);
+    z-index: 100;
+
+    &__backdrop {
+      display: grid;
+      grid-template-areas: "selector bar"
+                            "input input";
+
+      &:before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(17, 59, 110, 0.12);
+      }
+    }
+
+    &__selector {
+      grid-area: selector;
+      z-index: 1;
+      width: 300px;
+      height: 300px;
+    }
+
+    &__bar {
+      grid-area: bar;
+      z-index: 1;
+      width: 40px;
+      height: 300px;
+    }
+
+    &__input {
+      grid-area: input;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-items: center;
+      background-color: white;
+
+      input {
+        border: none;
+        width: 100%;
+        text-align: center;
+        outline: none;
+      }
+    }
+  }
+}

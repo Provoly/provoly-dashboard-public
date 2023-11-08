@@ -1,0 +1,30 @@
+<div
+  class="a-color-picker"
+  (click)="togglePicker($event)"
+  [style.background-color]="color"
+  [title]="color"
+  role="button"
+>
+  <div class="a-color-picker__modal" [style.display]="picking ? 'flex' : 'none'">
+    <div class="a-color-picker__modal__backdrop">
+      <canvas
+        #selector
+        class="a-color-picker__modal__selector"
+        (mousemove)="mouseMove($event)"
+        (mouseup)="mouseUp($event)"
+        height="300"
+        width="300"
+      ></canvas>
+      <canvas
+        #bar
+        class="a-color-picker__modal__bar"
+        (click)="selectColorFromBar($event)"
+        height="300"
+        width="40"
+      ></canvas>
+      <div class="a-color-picker__modal__input" (click)="clickInput($event)">
+        #<input [ngModel]="(color ?? '#').substring(1)" (ngModelChange)="inputColor($event)" #input />
+      </div>
+    </div>
+  </div>
+</div>

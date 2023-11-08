@@ -82,7 +82,8 @@ export const enTranslations = {
           category20: '20 colors with 2 shades',
           category20b: '20 colors with 4 shades n°1',
           category20c: '20 colors with 4 shades n°2',
-          'KO/W/OK': 'Traffic light'
+          'KO/W/OK': 'Traffic light',
+          Provoly: 'Provoly'
         },
         time: {
           second: 'Second',
@@ -93,7 +94,8 @@ export const enTranslations = {
           month: 'Month',
           quarter: 'Quarter',
           year: 'Year'
-        }
+        },
+        color: 'Color'
       }
     },
     message: {

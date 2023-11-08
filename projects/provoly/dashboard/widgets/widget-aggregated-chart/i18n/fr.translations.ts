@@ -81,7 +81,8 @@ export const frTranslations = {
           category20: '20 couleurs avec 2 nuances',
           category20b: '20 couleurs avec 4 nuances n°1',
           category20c: '20 couleurs avec 4 nuances n°2',
-          'KO/W/OK': 'Feu de signalisation'
+          'KO/W/OK': 'Feu de signalisation',
+          Provoly: 'Provoly'
         },
         time: {
           second: 'Seconde',
@@ -92,7 +93,8 @@ export const frTranslations = {
           month: 'Mois',
           quarter: 'Trimestre',
           year: 'Année'
-        }
+        },
+        color: 'Couleur'
       }
     },
     message: {

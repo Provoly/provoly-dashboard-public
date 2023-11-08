@@ -171,7 +171,13 @@ describe('WidgetAggregatedChartComponent', () => {
           {
             mark: { innerRadius: 30, line: false, point: false, type: 'bar' },
             encoding: {
-              color: { field: 'series', legend: false, scale: undefined, title: '@pry.widget.chart.legendLabel' },
+              color: {
+                field: undefined,
+                legend: false,
+                scale: undefined,
+                title: '@pry.widget.chart.legendLabel',
+                value: '#40b688'
+              },
               theta: undefined,
               x: {
                 axis: { grid: false, labelExpr: 'height < 300 ? truncate(datum.value, 10) : datum.value' },
@@ -252,8 +258,9 @@ describe('WidgetAggregatedChartComponent', () => {
               color: {
                 field: 'key',
                 legend: true,
-                scale: { scheme: 'accent' },
-                title: '@pry.widget.chart.legendLabel'
+                scale: { scheme: undefined },
+                title: '@pry.widget.chart.legendLabel',
+                value: undefined
               },
               theta: { field: 'value', type: 'nominal' },
               x: undefined,

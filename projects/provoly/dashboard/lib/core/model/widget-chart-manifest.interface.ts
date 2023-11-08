@@ -61,6 +61,7 @@ export enum VegaType {
 }
 
 export enum VegaColorType {
+  PROVOLY = 'Provoly',
   ACCENT = 'accent',
   SET2 = 'set2',
   DARK2 = 'dark2',

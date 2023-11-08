@@ -266,6 +266,48 @@
             </ng-container>
           </div>
         </ng-container>
+
+        <ng-container
+          *ngIf="optionsCopy.graph.type === GraphType.DONUT || optionsCopy.graph.type === GraphType.CIRCULAR"
+        >
+          <div class="m-form-label-field">
+            <label class="a-label" for="chart_circleScheme">{{ '@pry.widget.chart.colorScheme' | i18n }}</label>
+            <pry-select
+              (ngModelChange)="changeCircleColorScheme($event)"
+              [ngModel]="optionsCopy.circleColorScheme"
+              [itemsAsOption]="true"
+              [items]="schemes"
+              id="chart_circleScheme"
+              [labelTranslate]="true"
+              baseTranslate="@pry.widget.chart.scheme."
+              bindValue="id"
+              bindLabel="id"
+            ></pry-select>
+          </div>
+        </ng-container>
+
+        <ng-container
+          *ngIf="
+            optionsCopy.graph.type !== GraphType.DONUT &&
+            optionsCopy.graph.type !== GraphType.CIRCULAR &&
+            !optionsCopy.groupBy
+          "
+        >
+          <div class="m-form-label-field">
+            <label class="a-label" for="chart_baseColor">{{ '@pry.widget.chart.color' | i18n }}</label>
+            <pry-color-picker
+              (ngModelChange)="changeBaseColor($event)"
+              [ngModel]="optionsCopy.baseColor"
+              id="chart_baseColor"
+              class="a-pry-select"
+            ></pry-color-picker>
+            <ng-template #templateOption let-item="item">
+              <div class="aligned-option">
+                <div class="a-chips -md" [style.background-color]="item">{{ item }}</div>
+              </div>
+            </ng-template>
+          </div>
+        </ng-container>
       </ng-container>
     </pry-settings>
   </pry-widget-header>

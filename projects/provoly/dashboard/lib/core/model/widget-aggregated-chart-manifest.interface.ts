@@ -62,4 +62,6 @@ export interface ChartAggregatedWidgetOptions {
     legend?: boolean;
   };
   additionalSpec?: any;
+  circleColorScheme?: string;
+  baseColor?: string;
 }
