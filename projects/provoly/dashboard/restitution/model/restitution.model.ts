@@ -1,6 +1,6 @@
 export interface RestitutionForm {
   selectedWidget: string;
-  selectedDataSource: Array<string>;
+  selectedDataSources: string[];
   title: string;
   description: string;
   image?: string;

@@ -96,6 +96,7 @@ export const frTranslations = {
         },
         color: 'Couleur',
         sort: {
+          title: 'Tri',
           asc: {
             quantitative: 'Croissant',
             ordinal: 'Alphabétique',

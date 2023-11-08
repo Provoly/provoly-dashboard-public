@@ -39,7 +39,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
   };
   form: RestitutionForm = {
     selectedWidget: '',
-    selectedDataSource: [],
+    selectedDataSources: [],
     title: '',
     image: DEFAULT_RESTITUTION_ICON_URL,
     description: '',
@@ -103,7 +103,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
       if (this.selectedRestitution.visibility) {
         this.visibility = this.selectedRestitution.visibility;
       }
-      this.form.selectedDataSource.forEach((dataSource: string) => {
+      this.form.selectedDataSources.forEach((dataSource: string) => {
         this.store.dispatch(SearchActions.getDatasourceItems({ id: dataSource }));
       });
       this.customManifest = JSON.parse(this.selectedRestitution.content);
@@ -118,7 +118,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
       };
       this.form = {
         selectedWidget: this.customManifest.type,
-        selectedDataSource: this.customManifest.datasource as string[],
+        selectedDataSources: this.customManifest.datasource as string[],
         title: this.selectedRestitution.name,
         cover: this.selectedRestitution.cover,
         ...this.selectedRestitution
@@ -129,7 +129,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
 
   cancel(stepper: PryStepperComponent) {
     this.form.selectedWidget = '';
-    this.form.selectedDataSource = [];
+    this.form.selectedDataSources = [];
     this.form.title = '';
     this.form.description = '';
     this.form.image = '';
@@ -142,7 +142,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
   }
 
   datasourcesChanged($event: DataSource[]) {
-    this.form.selectedDataSource = $event.map((ds) => ds.id);
+    this.form.selectedDataSources = $event.map((ds) => ds.id);
   }
 
   submit(stepper: PryStepperComponent) {
@@ -157,7 +157,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
       ...this.customManifest,
       type: this.form.selectedWidget,
       title: this.form.title,
-      datasource: this.form.selectedDataSource,
+      datasource: this.form.selectedDataSources,
       cover: this.form.cover ?? false,
       header: {
         datasourceSelection: false,
@@ -173,26 +173,13 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
         title: this.form.title
       }
     };
-    this.form.selectedDataSource.forEach((nameQuery: string) => {
+    this.form.selectedDataSources.forEach((nameQuery: string) => {
       this.store.dispatch(SearchActions.getDatasourceItems({ id: nameQuery }));
     });
     this.goNext(stepper);
     setTimeout(() => {
       this.openSettings$.next();
     }, 150);
-  }
-
-  isSubmitDisabled() {
-    return (
-      this.form.selectedWidget === '' ||
-      this.form.title.trim().length === 0 ||
-      this.form.title.length > 30 ||
-      this.form.description.length > 255
-    );
-  }
-
-  noDataSourceSelected() {
-    return !this.form.selectedDataSource || this.form.selectedDataSource.length === 0;
   }
 
   goNext(stepper: PryStepperComponent) {
@@ -219,7 +206,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
             description: this.form.description,
             image: this.form.image ?? '',
             visibility: this.visibility,
-            datasource: this.form.selectedDataSource,
+            datasource: this.form.selectedDataSources,
             cover: this.form.cover ?? false,
             modificationDate: ''
           }

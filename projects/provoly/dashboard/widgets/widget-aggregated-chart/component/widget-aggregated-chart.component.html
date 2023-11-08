@@ -251,7 +251,7 @@
           <div class="o-settings__popup__content__fields -condensed">
             <div class="m-form-label-field">
               <pry-checkbox (ngModelChange)="toggleSort($event)" [ngModel]="!!optionsCopy.graph.sort"
-                >Sort
+                >{{ '@pry.widget.chart.sort.title' | i18n }}
               </pry-checkbox>
             </div>
             <ng-container *ngIf="!!optionsCopy.graph.sort">

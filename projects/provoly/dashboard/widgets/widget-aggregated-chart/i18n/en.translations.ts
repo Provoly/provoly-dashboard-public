@@ -97,6 +97,7 @@ export const enTranslations = {
         },
         color: 'Color',
         sort: {
+          title: 'Sort',
           asc: {
             quantitative: 'Low to high',
             nominal: 'Alphabetical',

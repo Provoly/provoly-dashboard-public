@@ -62,7 +62,11 @@
             <button (click)="cancel(stepper)" type="button" class="a-btn a-btn--secondary">
               {{ '@pry.restitution.close' | i18n }}
             </button>
-            <button (click)="goNext(stepper)" [disabled]="isSubmitDisabled()" class="a-btn a-btn--primary">
+            <button
+              (click)="goNext(stepper)"
+              [disabled]="form.selectedWidget === '' || form.title.trim().length === 0"
+              class="a-btn a-btn--primary"
+            >
               {{ '@pry.restitution.validate' | i18n }}
             </button>
           </div>
@@ -75,7 +79,7 @@
         (cancel)="prev(stepper)"
         (validated)="submit(stepper)"
         (datasourcesChanged)="datasourcesChanged($event)"
-        [datasourceIds]="form.selectedDataSource"
+        [datasourceIds]="form.selectedDataSources"
       ></pry-datasource-selector>
     </pry-step>
     <pry-step>
@@ -125,12 +129,7 @@
         <button (click)="prev(stepper)" type="button" class="a-btn a-btn--secondary">
           {{ '@pry.restitution.close' | i18n }}
         </button>
-        <button
-          (click)="goNext(stepper)"
-          [disabled]="noDataSourceSelected() || isSubmitDisabled()"
-          type="button"
-          class="a-btn a-btn--primary"
-        >
+        <button (click)="goNext(stepper)" type="button" class="a-btn a-btn--primary">
           {{ '@pry.restitution.broadcast' | i18n }}
         </button>
       </div>

@@ -33,7 +33,7 @@ describe('PryRestitution', () => {
     ]),
     types$: of([])
   };
-  let form: { selectedDataSource: any; selectedWidget?: string; title?: string; image?: string; description?: string };
+  let form: { selectedDataSources: any; selectedWidget?: string; title?: string; image?: string; description?: string };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -71,7 +71,7 @@ describe('PryRestitution', () => {
     fixture.detectChanges();
     form = {
       selectedWidget: '',
-      selectedDataSource: [],
+      selectedDataSources: [],
       title: '',
       image: '',
       description: ''
@@ -79,10 +79,5 @@ describe('PryRestitution', () => {
   });
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-  it('should be test', () => {
-    component.form.selectedDataSource = [];
-    component.noDataSourceSelected();
-    expect(component.form.selectedDataSource.length).toEqual(0);
   });
 });
