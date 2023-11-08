@@ -19,7 +19,6 @@ import {
   PryAggregationService,
   PryI18nService,
   ValueType,
-  VegaColorType,
   VegaType,
   WIDGET_HEADER_HEIGHT
 } from '@provoly/dashboard';
@@ -41,9 +40,7 @@ import { View } from 'vega';
 import embed, { vega } from 'vega-embed';
 import { mergeDeep, TopLevelSpec } from 'vega-lite';
 import { fontConfig } from 'vega-lite/build/src/config';
-
-vega.scheme('KO/W/OK', ['#C04D3F', '#FD9843', '#9ABE29']);
-vega.scheme('Provoly', ['#40b688', '#dfe5ec', '#a7ddc8', '#fc5640']);
+import { PrySchemeService } from '@provoly/dashboard/components/scheme-picker';
 
 @Component({
   selector: 'pry-widget-aggregated-chart',
@@ -77,7 +74,6 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   triggerOrdinateAttributes$ = new Subject<void>();
   copyAbscissaField?: Field;
   copyOrdinateField?: Field;
-  schemes: { id: string }[] = [];
   noData$: Observable<boolean>;
   sortActive? = 'name';
   sortDirection? = 'asc';
@@ -94,10 +90,10 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     store: Store<any>,
     private translateService: PryI18nService,
     el: ElementRef,
-    private aggregationService: PryAggregationService
+    private aggregationService: PryAggregationService,
+    private schemeService: PrySchemeService
   ) {
     super(store, el);
-    this.schemes = Object.values(VegaColorType).map((id) => ({ id }));
     this.typeOptions = Object.values(GraphType)
       .map((v) => ({
         id: v,
@@ -358,6 +354,12 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
         const legendTitle = this.translateService.instant(
           options.groupBy ? types.groupBy.name ?? '' : '@pry.widget.chart.legendLabel'
         );
+
+        ([options.groupBy?.color, options.circleColorScheme].filter((scheme) => !!scheme) as string[]).forEach(
+          (scheme) => {
+            this.schemeService.assertScheme(scheme);
+          }
+        );
         return mergeDeep(
           {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
@@ -429,12 +431,12 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                     legend: options.graph.legend,
                     scale: !isCircular
                       ? options.groupBy
-                        ? { scheme: options.groupBy?.color ?? this.schemes[0].id }
+                        ? { scheme: options.groupBy?.color ?? this.schemeService.getDefaultScheme() }
                         : undefined
-                      : { scheme: options.circleColorScheme },
+                      : { scheme: options.circleColorScheme ?? this.schemeService.getDefaultScheme() },
                     value:
                       !isCircular && !options.groupBy
-                        ? options.baseColor ?? vega.scheme(this.schemes[0].id)[0]
+                        ? options.baseColor ?? this.schemeService.getSchemeColors(this.schemeService.getDefaultScheme())
                         : undefined
                   },
                   xOffset: stacked && options.groupBy ? { field: 'series' } : undefined,
@@ -874,7 +876,10 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       if ($event) {
         this.optionsCopy$.next({
           ...this.optionsCopy$.value,
-          groupBy: { attribute: this.optionsCopy$.value?.groupBy?.attribute ?? '', color: this.schemes[0].id }
+          groupBy: {
+            attribute: this.optionsCopy$.value?.groupBy?.attribute ?? '',
+            color: this.schemeService.getDefaultScheme()
+          }
         });
       } else {
         this.optionsCopy$.next({
@@ -913,10 +918,6 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     return Math.max(...data.map((val: any) => val.value)) < 3
       ? { tickCount: Math.max(...data.map((val: any) => val.value)) }
       : {};
-  }
-
-  scheme() {
-    return vega.scheme(this.optionsCopy$.value?.groupBy?.color ?? '');
   }
 
   toggleStacked($event: any) {

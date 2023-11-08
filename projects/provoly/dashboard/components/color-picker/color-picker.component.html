@@ -1,7 +1,7 @@
 <div
   class="a-color-picker"
   (click)="togglePicker($event)"
-  [style.background-color]="color"
+  [style.background-color]="temporaryColor ?? color"
   [title]="color"
   role="button"
 >

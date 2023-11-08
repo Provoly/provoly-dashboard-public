@@ -50,7 +50,11 @@ export const enTranslations = {
       },
       modalTitle: 'Do you want to confirm?',
       itemId: 'Id',
-      class: 'Class'
+      class: 'Class',
+      colorScheme: 'Color scheme',
+      custom: 'Custom n°{{id}}',
+      addColor: 'Add color',
+      removeColor: 'Remove color'
     },
     view: {
       name: 'Tab n°{{rank}}'

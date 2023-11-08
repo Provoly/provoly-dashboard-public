@@ -3,7 +3,7 @@
 .a-color-picker {
   width: toRem(30);
   height: toRem(30);
-  border: 3px solid #000000;
+  border-radius: toRem(15);
   position: relative;
 
   &__modal {

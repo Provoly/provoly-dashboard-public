@@ -50,7 +50,11 @@ export const frTranslations = {
       },
       modalTitle: 'Voulez-vous confirmer ?',
       itemId: 'Id',
-      class: 'Classe'
+      class: 'Classe',
+      colorScheme: 'Schéma de couleur',
+      custom: 'Personalisé n°{{id}}',
+      addColor: 'Ajouter une couleur',
+      removeColor: 'Supprimer une couleur'
     },
     view: {
       name: 'Page n°{{rank}}'

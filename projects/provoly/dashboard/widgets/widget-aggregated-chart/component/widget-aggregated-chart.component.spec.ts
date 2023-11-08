@@ -176,7 +176,7 @@ describe('WidgetAggregatedChartComponent', () => {
                 legend: false,
                 scale: undefined,
                 title: '@pry.widget.chart.legendLabel',
-                value: '#40b688'
+                value: ['#113B6E', '#4E92E4', '#40B688', '#7BCCAD', '#FFC971', '#FD9843', '#EC547A']
               },
               theta: undefined,
               x: {
@@ -258,7 +258,7 @@ describe('WidgetAggregatedChartComponent', () => {
               color: {
                 field: 'key',
                 legend: true,
-                scale: { scheme: undefined },
+                scale: { scheme: 'Provoly' },
                 title: '@pry.widget.chart.legendLabel',
                 value: undefined
               },

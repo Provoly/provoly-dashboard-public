@@ -23,6 +23,7 @@ import { enTranslations } from './i18n/en.translations';
 import { frTranslations } from './i18n/fr.translations';
 import { PryWidgetAggregatedChartCssComponent } from './style/css.component';
 import { PryColorPickerModule } from '@provoly/dashboard/components/color-picker';
+import { PrySchemePickerModule } from '@provoly/dashboard/components/scheme-picker';
 
 @NgModule({
   declarations: [WidgetAggregatedChartComponent, PryWidgetAggregatedChartCssComponent],
@@ -41,7 +42,8 @@ import { PryColorPickerModule } from '@provoly/dashboard/components/color-picker
     PryRangeModule,
     PrySortModule,
     ReactiveFormsModule,
-    PryColorPickerModule
+    PryColorPickerModule,
+    PrySchemePickerModule
   ],
   exports: [WidgetAggregatedChartComponent],
   providers: [PryAggregationService]

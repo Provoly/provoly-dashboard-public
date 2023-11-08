@@ -1,0 +1,34 @@
+<div class="m-color-scheme">
+  <label class="a-label" for="scheme">{{ '@pry.widget.colorScheme' | i18n }}</label>
+  <pry-select
+    (ngModelChange)="changeColorScheme($event)"
+    [ngModel]="scheme$ | async"
+    [itemsAsOption]="true"
+    [items]="schemes$ | async"
+    id="scheme"
+    bindValue="id"
+    bindLabel="label"
+  ></pry-select>
+</div>
+
+<div class="m-color-scheme__display">
+  <div class="m-color-scheme__display__item" *ngFor="let colorScheme of schemeColors$ | async; let i = index">
+    <pry-color-picker [ngModel]="colorScheme" (ngModelChange)="modifyColorScheme($event, i)"></pry-color-picker>
+    <button
+      (click)="removeColorFromScheme(i)"
+      class="a-btn a-btn--icon-only"
+      title="{{ '@pry.widget.removeColor' | i18n }}"
+    >
+      <span class="u-visually-hidden">{{ '@pry.widget.removeColor' | i18n }}</span>
+      <pry-icon iconSvg="trash"></pry-icon>
+    </button>
+  </div>
+  <button
+    (click)="addColorToScheme()"
+    class="a-btn a-btn--primary a-btn--icon-only"
+    title="{{ '@pry.widget.addColor' | i18n }}"
+  >
+    <span class="u-visually-hidden">{{ '@pry.widget.addColor' | i18n }}</span>
+    <pry-icon iconSvg="add"></pry-icon>
+  </button>
+</div>

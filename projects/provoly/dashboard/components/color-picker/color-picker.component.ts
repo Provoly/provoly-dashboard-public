@@ -32,6 +32,7 @@ export class PryColorPickerComponent implements ControlValueAccessor, AfterViewI
   @ViewChild('input') input!: ElementRef<HTMLInputElement>;
   innerRadius = 3;
   outerRadius = 8;
+  temporaryColor?: string;
 
   constructor(private _cd: ChangeDetectorRef) {}
 
@@ -50,6 +51,7 @@ export class PryColorPickerComponent implements ControlValueAccessor, AfterViewI
       this.onChange(this.color);
       this.onTouch();
       this._cd.markForCheck();
+      this.inputColor(color);
     }
   }
 
@@ -60,14 +62,19 @@ export class PryColorPickerComponent implements ControlValueAccessor, AfterViewI
 
   ngAfterViewInit(): void {
     this.inhibate = false;
-    this.selectorContext = this.selector.nativeElement.getContext('2d')!;
-    this.barContext = this.bar.nativeElement.getContext('2d')!;
-    this.redrawSelector();
-    this.redrawBar();
+    this.selectorContext = this.selector.nativeElement.getContext('2d', { willReadFrequently: true })!;
+    this.barContext = this.bar.nativeElement.getContext('2d', { willReadFrequently: true })!;
   }
 
   togglePicker($event: MouseEvent) {
-    this.picking = !this.picking;
+    this.picking = !this.disabled && !this.picking;
+    if (!this.picking && this.temporaryColor) {
+      this.writeValue(this.temporaryColor);
+    }
+    if (this.picking) {
+      this.redrawSelector();
+      this.redrawBar();
+    }
   }
 
   redrawSelector() {
@@ -140,17 +147,21 @@ export class PryColorPickerComponent implements ControlValueAccessor, AfterViewI
     this.barContext.stroke();
   }
 
-  selectColor($event: MouseEvent) {
+  selectColor($event: MouseEvent, temporary = false) {
     // Read pixel Color
-    this.writeValue(
-      this.rgbToHex(
-        ...(this.selectorContext.getImageData($event.offsetX, $event.offsetY, 1, 1)['data'] as unknown as [
-          number,
-          number,
-          number
-        ])
-      )
+    const pixelColor = this.rgbToHex(
+      ...(this.selectorContext.getImageData($event.offsetX, $event.offsetY, 1, 1)['data'] as unknown as [
+        number,
+        number,
+        number
+      ])
     );
+    if (!temporary) {
+      this.writeValue(pixelColor);
+    } else {
+      this.temporaryColor = pixelColor;
+    }
+
     this.markerSelectorPosition = [$event.offsetX, $event.offsetY];
     this.redrawSelector();
     $event.stopPropagation();
@@ -163,11 +174,14 @@ export class PryColorPickerComponent implements ControlValueAccessor, AfterViewI
     );
     this.redrawBar();
     this.redrawSelector();
-    this.selectColor({
-      offsetX: this.markerSelectorPosition[0],
-      offsetY: this.markerSelectorPosition[1],
-      stopPropagation: () => $event.stopPropagation()
-    } as unknown as MouseEvent);
+    this.selectColor(
+      {
+        offsetX: this.markerSelectorPosition[0],
+        offsetY: this.markerSelectorPosition[1],
+        stopPropagation: () => $event.stopPropagation()
+      } as unknown as MouseEvent,
+      true
+    );
     $event.stopPropagation();
   }
 
@@ -185,7 +199,7 @@ export class PryColorPickerComponent implements ControlValueAccessor, AfterViewI
   }
 
   inputColor($event: any) {
-    const possibleColor = '#' + $event;
+    const possibleColor = !!$event ? ($event.indexOf('#') === -1 ? '#' + $event : $event) : '#FFFFFF';
     if (/^#[0-9A-F]{6}$/i.test(possibleColor)) {
       this.writeValue(possibleColor);
       const rgba = this.strToRGBA(this.color!);
@@ -335,11 +349,11 @@ export class PryColorPickerComponent implements ControlValueAccessor, AfterViewI
 
   mouseMove($event: MouseEvent) {
     if ($event.buttons > 0) {
-      this.selectColor($event);
+      this.selectColor($event, true);
     }
   }
 
   mouseUp($event: MouseEvent) {
-    this.selectColor($event);
+    this.selectColor($event, false);
   }
 }

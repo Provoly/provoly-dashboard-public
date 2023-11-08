@@ -235,27 +235,10 @@
               </div>
 
               <div class="m-form-label-field">
-                <label class="a-label" for="chart_seriesScheme">{{ '@pry.widget.chart.colorScheme' | i18n }}</label>
-                <pry-select
+                <pry-scheme-picker
                   (ngModelChange)="changeColorScheme($event)"
                   [ngModel]="optionsCopy.groupBy.color"
-                  [itemsAsOption]="true"
-                  [items]="schemes"
-                  id="chart_seriesScheme"
-                  [labelTranslate]="true"
-                  baseTranslate="@pry.widget.chart.scheme."
-                  bindValue="id"
-                  bindLabel="id"
-                ></pry-select>
-              </div>
-
-              <div class="o-widget--chart-color-thumb">
-                <div
-                  *ngFor="let schemeColor of scheme()"
-                  class="o-widget--chart-color-thumb-item"
-                  [title]="schemeColor"
-                  [style.background-color]="schemeColor"
-                ></div>
+                ></pry-scheme-picker>
               </div>
 
               <div class="m-form-label-field">
@@ -303,20 +286,10 @@
         <ng-container
           *ngIf="optionsCopy.graph.type === GraphType.DONUT || optionsCopy.graph.type === GraphType.CIRCULAR"
         >
-          <div class="m-form-label-field">
-            <label class="a-label" for="chart_circleScheme">{{ '@pry.widget.chart.colorScheme' | i18n }}</label>
-            <pry-select
-              (ngModelChange)="changeCircleColorScheme($event)"
-              [ngModel]="optionsCopy.circleColorScheme"
-              [itemsAsOption]="true"
-              [items]="schemes"
-              id="chart_circleScheme"
-              [labelTranslate]="true"
-              baseTranslate="@pry.widget.chart.scheme."
-              bindValue="id"
-              bindLabel="id"
-            ></pry-select>
-          </div>
+          <pry-scheme-picker
+            (ngModelChange)="changeCircleColorScheme($event)"
+            [ngModel]="optionsCopy.circleColorScheme"
+          ></pry-scheme-picker>
         </ng-container>
 
         <ng-container
