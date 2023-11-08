@@ -49,7 +49,8 @@ export class AdminFormDatasetComponent implements OnInit, OnDestroy {
       id: [uuidv4()],
       name: ['', [Validators.required,Validators.maxLength(100)]],
       oClass: ['', [Validators.required]],
-      type: ['', [Validators.required]]
+      type: ['', [Validators.required]],
+      description:['',[Validators.maxLength(500)]]
     });
   }
 
@@ -69,7 +70,8 @@ export class AdminFormDatasetComponent implements OnInit, OnDestroy {
             id: dataset.id,
             name: dataset.name,
             oClass: dataset.oClass,
-            type: dataset.type
+            type: dataset.type,
+            description: dataset.description
           });
         }
       })

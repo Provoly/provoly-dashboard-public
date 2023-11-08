@@ -14,6 +14,7 @@ export const enTranslations = {
       api: 'API',
       returnToList: 'Back to catalog',
       refresh: 'Refresh',
+      since_day:'Last update :',
       version: {
         title: 'Title',
         INDEXING: 'Loading',

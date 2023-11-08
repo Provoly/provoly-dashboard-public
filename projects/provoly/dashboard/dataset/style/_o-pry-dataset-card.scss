@@ -16,8 +16,23 @@
     padding: toRem(10);
     max-width: toRem(330);
   }
+  &__txt {
+    flex-grow: 1;
+    padding: toRem(10) toRem(15);
+    .a-h3 {
+      font-size: toRem(14);
+    }
 
-  &__footer {
+    .a-p {
+      font-size: toRem(13);
+
+      &.-date {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+    &__footer {
     display: flex;
     align-items: center;
   }

@@ -14,6 +14,7 @@ export const frTranslations = {
       api: 'API',
       returnToList: 'Retour au catalogue',
       refresh: 'Actualiser',
+      since_day:'Dernière mise à jour :',
       version: {
         title: 'Intitulé',
         INDEXING: 'En chargement',

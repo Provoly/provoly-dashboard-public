@@ -182,7 +182,7 @@ const getDatasets = () => {
 };
 
 const saveDatasets = (dataset) => {
-  datasets.push(dataset);
+  datasets.push({...dataset, metadata: dataset.metadata ?? []});
 };
 
 const updateDataset = (newDataset) => {

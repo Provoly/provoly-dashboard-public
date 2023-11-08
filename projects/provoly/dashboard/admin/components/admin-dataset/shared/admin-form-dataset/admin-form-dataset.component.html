@@ -55,6 +55,24 @@
       [readonly]="dataset$ ? true : false"
     ></pry-select>
   </div>
+  <div class="m-form-label-field -width-sm">
+    <label class="a-label" id="description-label" for="description">{{'@pry.admin.fields.description' | i18n}}</label>
+    <textarea
+      formControlName="description"
+      name="description"
+      row="4"
+      cols="30"
+      id="description"
+      maxlength="500"
+    ></textarea>
+    <label
+      for="description"
+      *ngIf="form.get('description')?.hasError('maxlength')"
+      class="a-label a-label--help -error"
+    >
+      {{ '@pry.presentation.maxLength' | i18n : { len: '500' } }}
+    </label>
+  </div>
 
   <label class="a-label a-label--help -error" *ngIf="isSameName">{{ '@pry.admin.dataset.is-same-name' | i18n }}</label>
 

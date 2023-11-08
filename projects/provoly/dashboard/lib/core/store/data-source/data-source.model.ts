@@ -26,10 +26,8 @@ export interface DescriptionQuery {
 export interface Dataset extends DescriptionQuery {
   sourceType: 'dataset';
   id: string;
-  name: string;
   oClass: string;
   type: PryDatasetType;
-  metadata: MetadataValue[];
 }
 
 export interface DatasetVersion {

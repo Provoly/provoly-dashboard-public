@@ -7,7 +7,11 @@
 </div>
 
 <div class="o-dataset-layout__content">
-  <h1 class="a-h1">{{ dataset.name }}</h1>
+  <div class="a-p">
+    <h1 class="a-h1">{{ dataset.name }}</h1>
+      <span class="description">{{dataset.description}}</span>
+  </div>
+
   <div class="dataset-detail">
     <pry-tab-group translationStringBase="@pry.dataset.">
       <pry-tab [templateRef]="table" name="data"></pry-tab>

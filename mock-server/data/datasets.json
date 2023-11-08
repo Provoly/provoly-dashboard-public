@@ -31,6 +31,7 @@
     "name": "ds-modifiable",
     "oClass": "17b90da3-f448-4cc3-bfd8-74c8b8481590",
     "type": "MODIFIABLE",
+    "description": "test de l'ajout d'une description",
     "metadata": [
       {
         "metadataDef": {

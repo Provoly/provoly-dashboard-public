@@ -1,13 +1,24 @@
 @use '../../styles/abstracts/index' as *;
 
 /* Organism - pry-dataset */
-
+.dataset-layout{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &__content {
+    width: 100%;
+    padding: toRem(25) toRem(20) toRem(20) toRem(20);
+    height: 100%;
+    overflow: auto;
+  }
+}
 .o-pry-dataset {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(toRem(330), 0fr));
   grid-auto-rows: toRem(200);
   grid-gap: toRem(10);
-  gap: 1.5rem;
+  column-gap: 1.5rem;
+  row-gap: 4rem;
   padding-bottom: toRem(60);
 
   &__search {
@@ -21,7 +32,11 @@
       pointer-events: none;
     }
   }
-
+&__item{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
   pry-dataset-card {
     margin: 2rem;
     width: 100%;
