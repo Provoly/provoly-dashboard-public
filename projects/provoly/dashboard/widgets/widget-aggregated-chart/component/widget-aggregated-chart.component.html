@@ -265,6 +265,39 @@
               </div>
             </ng-container>
           </div>
+          <div class="o-settings__popup__content__fields -condensed">
+            <div class="m-form-label-field">
+              <pry-checkbox (ngModelChange)="toggleSort($event)" [ngModel]="!!optionsCopy.graph.sort"
+                >Sort
+              </pry-checkbox>
+            </div>
+            <ng-container *ngIf="!!optionsCopy.graph.sort">
+              <div class="m-form-label-field">
+                <label class="a-label" for="chart_seriesAttr">Attribute</label>
+                <pry-select
+                  (ngModelChange)="changeSortAttribute($event)"
+                  [ngModel]="optionsCopy.graph.sort.attribute"
+                  [items]="sortAttributes$ | async"
+                  bindValue="id"
+                  bindLabel="label"
+                  class="a-pry-select"
+                  id="chart_sortAttr"
+                ></pry-select>
+              </div>
+              <div class="m-form-label-field">
+                <label class="a-label" for="chart_seriesAttr">Sort</label>
+                <pry-select
+                  (ngModelChange)="changeSortDirection($event)"
+                  [ngModel]="optionsCopy.graph.sort.direction"
+                  [items]="sortDirections"
+                  bindValue="value"
+                  bindLabel="label"
+                  class="a-pry-select"
+                  id="chart_sortDirection"
+                ></pry-select>
+              </div>
+            </ng-container>
+          </div>
         </ng-container>
 
         <ng-container

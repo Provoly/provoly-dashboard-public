@@ -81,6 +81,11 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   noData$: Observable<boolean>;
   sortActive? = 'name';
   sortDirection? = 'asc';
+  sortAttributes$: Observable<{ id?: string; label?: string }[]>;
+  sortDirections = [
+    { value: 'asc', label: '' },
+    { value: 'desc', label: '' }
+  ];
   noAggregationData$: Observable<boolean>;
   allowedClasses$: Observable<Class[]>;
   colors = vega.scheme('Provoly');
@@ -257,17 +262,17 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       })
     );
 
-    this.attributeTypes$ = combineLatest([this.options$, this.fields$, this.classes$]).pipe(
-      filter(([options, fields, classes]) => !!options.abscissa && !!options.ordinate),
+    this.attributeTypes$ = combineLatest([this.optionsCopy$, this.fields$, this.classes$]).pipe(
+      filter(([options, fields, classes]) => !!options && !!options.abscissa && !!options.ordinate),
       map(([options, fields, classes]) => {
         const abscissa = classes
-          .map((clazz) => clazz.attributes.find((attr) => attr.id === options.abscissa.attribute))
+          .map((clazz) => clazz.attributes.find((attr) => attr.id === options!.abscissa.attribute))
           .find((attr) => !!attr);
         const ordinate = classes
-          .map((clazz) => clazz.attributes.find((attr) => attr.id === options.ordinate.attribute))
+          .map((clazz) => clazz.attributes.find((attr) => attr.id === options!.ordinate.attribute))
           .find((attr) => !!attr);
         const groupBy = classes
-          .map((clazz) => clazz.attributes.find((attr) => attr.id === options.groupBy?.attribute))
+          .map((clazz) => clazz.attributes.find((attr) => attr.id === options?.groupBy?.attribute))
           .find((attr) => !!attr);
         const abscissaFieldType = fields.find((field) => field.id === abscissa?.field)?.type ?? FieldType.STRING;
         const ordinateFieldType = fields.find((field) => field.id === ordinate?.field)?.type ?? FieldType.STRING;
@@ -281,7 +286,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           ordinate: {
             fieldType: ordinateFieldType,
             vegaType:
-              options.ordinate.operation === Operation.COUNT || options.ordinate.operation === Operation.DISTINCT
+              options!.ordinate.operation === Operation.COUNT || options!.ordinate.operation === Operation.DISTINCT
                 ? VegaType.QUANTITATIVE
                 : this.translateToVegaType(ordinateFieldType, ordinate?.name ?? ''),
             name: ordinate?.name ?? ''
@@ -467,6 +472,59 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           options.additionalSpec
         );
       })
+    );
+
+    this.sortAttributes$ = this.optionsCopy$.pipe(
+      map((options) => {
+        return [
+          { id: options?.abscissa.attribute, label: options?.abscissa.label },
+          { id: options?.ordinate.attribute, label: options?.ordinate.label }
+        ].filter((attribute) => !!attribute.id);
+      })
+    );
+
+    this.subscriptions.add(
+      this.sortAttributes$.subscribe((attributes) => {
+        if (
+          this.optionsCopy$.value?.graph.sort &&
+          !attributes.map((attribute) => attribute.id).includes(this.optionsCopy$.value?.graph.sort?.attribute)
+        ) {
+          this.optionsCopy$.next({
+            ...this.optionsCopy$.value!,
+            graph: {
+              ...this.optionsCopy$.value?.graph!,
+              sort: {
+                ...this.optionsCopy$.value?.graph.sort,
+                attribute: attributes[0].id ?? ''
+              }
+            }
+          });
+        }
+      })
+    );
+
+    this.subscriptions.add(
+      combineLatest([this.optionsCopy$, this.attributeTypes$, this.classes$]).subscribe(
+        ([options, attrTypes, classes]) => {
+          this.sortDirections = this.sortDirections
+            .map((sort) => {
+              let attribute = classes
+                .map((clazz) => clazz.attributes.find((attr) => attr.id === options?.graph.sort?.attribute))
+                .find((attr) => !!attr);
+              return {
+                value: sort.value,
+                label: this.translateService.instant(
+                  `@pry.widget.chart.sort.${sort.value}.${
+                    attrTypes.abscissa.name === attribute?.name
+                      ? attrTypes.abscissa.vegaType
+                      : attrTypes.ordinate.vegaType
+                  }`
+                )
+              };
+            })
+            .sort((a, b) => a.label.localeCompare(b.label));
+        }
+      )
     );
   }
 
@@ -868,6 +926,47 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
         graph: {
           ...this.optionsCopy$.value?.graph,
           stacked: $event
+        }
+      });
+    }
+  }
+
+  toggleSort($event: any) {
+    if (this.optionsCopy$.value) {
+      this.optionsCopy$.next({
+        ...this.optionsCopy$.value,
+        graph: {
+          ...this.optionsCopy$.value.graph,
+          sort: $event
+            ? this.optionsCopy$.value.graph.sort ?? {
+                attribute: this.optionsCopy$.value.abscissa.attribute,
+                direction: 'asc'
+              }
+            : undefined
+        }
+      });
+    }
+  }
+
+  changeSortAttribute($event: any) {
+    if (this.optionsCopy$.value) {
+      this.optionsCopy$.next({
+        ...this.optionsCopy$.value,
+        graph: {
+          ...this.optionsCopy$.value.graph,
+          sort: { ...this.optionsCopy$.value.graph.sort!, attribute: $event }
+        }
+      });
+    }
+  }
+
+  changeSortDirection($event: any) {
+    if (this.optionsCopy$.value) {
+      this.optionsCopy$.next({
+        ...this.optionsCopy$.value,
+        graph: {
+          ...this.optionsCopy$.value?.graph,
+          sort: { ...this.optionsCopy$.value?.graph.sort!, direction: $event }
         }
       });
     }

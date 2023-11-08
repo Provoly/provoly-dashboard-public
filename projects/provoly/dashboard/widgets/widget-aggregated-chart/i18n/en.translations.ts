@@ -95,7 +95,21 @@ export const enTranslations = {
           quarter: 'Quarter',
           year: 'Year'
         },
-        color: 'Color'
+        color: 'Color',
+        sort: {
+          asc: {
+            quantitative: 'Low to high',
+            nominal: 'Alphabetical',
+            ordinal: 'Alphabetical',
+            temporal: 'Chronological'
+          },
+          desc: {
+            quantitative: 'High to low',
+            nominal: 'Reverse alphabetical',
+            ordinal: 'Reverse alphabetical',
+            temporal: 'Antichronological'
+          }
+        }
       }
     },
     message: {

@@ -36,6 +36,11 @@ export interface TimeLimit {
   isTimeLimit: true;
 }
 
+export interface Sort {
+  attribute: string;
+  direction: 'asc' | 'desc';
+}
+
 export interface ChartAggregatedWidgetOptions {
   abscissa: {
     label: string;
@@ -60,6 +65,7 @@ export interface ChartAggregatedWidgetOptions {
     type: GraphType;
     stacked?: boolean;
     legend?: boolean;
+    sort?: Sort;
   };
   additionalSpec?: any;
   circleColorScheme?: string;

@@ -101,6 +101,14 @@ export class PryBackendAggregationService extends PryAggregationService {
     if (options.groupBy) {
       params = params.set('groupBy', options.groupBy.attribute);
     }
+    if (options.graph.sort) {
+      params = params.set(
+        'sort',
+        `${options.graph.sort.direction},${
+          options.graph.sort.attribute === options.abscissa.attribute ? 'KEY' : 'VALUE'
+        }`
+      );
+    }
     params = this.searchService.getItemsFilter(targetDatasource, params);
 
     const key = `${this.dataUrl}_${params.toString()}`;

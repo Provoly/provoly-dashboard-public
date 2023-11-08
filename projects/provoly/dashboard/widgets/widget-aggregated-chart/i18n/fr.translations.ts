@@ -94,7 +94,21 @@ export const frTranslations = {
           quarter: 'Trimestre',
           year: 'Année'
         },
-        color: 'Couleur'
+        color: 'Couleur',
+        sort: {
+          asc: {
+            quantitative: 'Croissant',
+            ordinal: 'Alphabétique',
+            nominal: 'Alphabétique',
+            temporal: 'Chronologique'
+          },
+          desc: {
+            quantitative: 'Décroissant',
+            ordinal: 'Anti-alphabétique',
+            nominal: 'Anti-alphabétique',
+            temporal: 'Antéchronologique'
+          }
+        }
       }
     },
     message: {
