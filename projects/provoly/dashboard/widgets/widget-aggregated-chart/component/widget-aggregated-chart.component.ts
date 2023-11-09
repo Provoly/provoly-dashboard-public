@@ -18,6 +18,7 @@ import {
   Operation,
   PryAggregationService,
   PryI18nService,
+  SearchActions,
   ValueType,
   VegaType,
   WIDGET_HEADER_HEIGHT
@@ -34,6 +35,7 @@ import {
   startWith,
   Subject,
   switchMap,
+  tap,
   withLatestFrom
 } from 'rxjs';
 import { View } from 'vega';
@@ -305,7 +307,12 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       )
     ]).pipe(
       debounceTime(100),
-      switchMap(([datasources, options]) => this.aggregationService.aggregate(datasources, options)),
+      tap(([datasources]) => this.store.dispatch(SearchActions.setSearchLoading({ datasources, start: true }))),
+      switchMap(([datasources, options]) =>
+        this.aggregationService
+          .aggregate(datasources, options)
+          .pipe(tap(() => this.store.dispatch(SearchActions.setSearchLoading({ datasources, start: false }))))
+      ),
       withLatestFrom(this.options$),
       map(([aggregate, options]) => {
         // @ts-ignore

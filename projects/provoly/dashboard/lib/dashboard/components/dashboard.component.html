@@ -85,6 +85,21 @@
       </div>
     </ng-template>
   </ng-container>
+  <div
+    class="a-page-loader backdrop"
+    [style.display]="(dataFetching$ | async)?.length ?? 1 > 0 ? 'flex' : 'none'"
+    [style.width.px]="params.gridWidth"
+    [style.height.px]="params.gridHeight"
+  >
+    <pry-icon
+      iconSvg="loader"
+      class="no-widget__loading"
+      [alt]="'@pry.widget.target.loading' | i18n"
+      [width]="200"
+      [height]="200"
+    />
+    <p>{{ '@pry.widget.target.loading' | i18n }}...</p>
+  </div>
 </div>
 <pry-context-menu></pry-context-menu>
 

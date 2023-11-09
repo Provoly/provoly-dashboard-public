@@ -37,5 +37,11 @@ export const searchReducer = createReducer(
   on(SearchActions.searchFailure, (state, action) => ({
     ...state,
     searchLoading: [...state.searchLoading.filter((id) => id !== (action.id ?? DEFAULT_NAMED_QUERY_ID))]
+  })),
+  on(SearchActions.setSearchLoading, (state, action) => ({
+    ...state,
+    searchLoading: action.start
+      ? [...new Set([...state.searchLoading, ...action.datasources])]
+      : [...state.searchLoading.filter((id) => !action.datasources.includes(id))]
   }))
 );

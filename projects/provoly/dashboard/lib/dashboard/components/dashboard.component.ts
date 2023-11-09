@@ -54,6 +54,7 @@ import { DashboardSelectors } from '../store/dashboard.selectors';
 import { solveCollisions } from './solve-collisions.function';
 import { SubscriptionnerDirective } from './subscriptionner.directive';
 import { WidgetInstanciatorComponent } from './widgets/widget-instanciator/widget-instanciator.component';
+import { SearchSelectors } from '../../core/store/search/search.selectors';
 
 export const MIME_TYPE_WIDGET_MANIFEST = 'application/widget-manifest';
 export const MIME_TYPE_WIDGET_TYPE = 'application/widget-type-';
@@ -77,6 +78,8 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
   nonFillerWidgets$: Observable<number>;
   loading$: Observable<boolean>;
   @ViewChildren(WidgetInstanciatorComponent) instanciators?: QueryList<WidgetInstanciatorComponent>;
+  dataFetching$: Observable<string[]>;
+  params: DashboardCellParams = {} as DashboardCellParams;
 
   get widgetsInstances() {
     return this.instanciators?.map((instanciator) => instanciator.instanciatedComponent.instance) ?? [];
@@ -131,6 +134,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
   constructor(private store: Store<any>, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
     super();
     this.loading$ = this.store.select(DashboardSelectors.loading);
+    this.dataFetching$ = this.store.select(SearchSelectors.searchLoading);
     this.modeEdition$ = this.store.select(DashboardSelectors.dashboardEditionMode);
     this.subscriptions.add(
       this.modeEdition$.subscribe((mode) => {
@@ -323,7 +327,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
         ? (!!this.manifest && !!this.manifest.grid && this.manifest.grid.rows) || DEFAULT_ROWS_NUMBER
         : this.manifest?.widgets.reduce((p: number, c: WidgetManifest) => p + c.layout.height, 0) ?? 1;
 
-      const params = {
+      this.params = {
         gridWidth,
         // Calculate height to parennt the parent's
         gridHeight: element.getBoundingClientRect().height,
@@ -336,19 +340,21 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
         offsetTop: this.gridRef.nativeElement.offsetTop,
         mobileMode
       };
-      params.gridGap =
-        params.rows * params.cellHeight < params.gridHeight
+      this.params.gridGap =
+        this.params.rows * this.params.cellHeight < this.params.gridHeight
           ? !!this.manifest && !!this.manifest.grid
             ? this.manifest.grid.gap || DEFAULT_GAP_PX
             : DEFAULT_GAP_PX
           : 0;
-      params.cellHeight = (params.gridHeight - (params.rows - 1) * params.gridGap) / params.rows;
-      params.cellWidth = (params.gridWidth - (params.columns - 1) * params.gridGap) / params.columns;
+      this.params.cellHeight =
+        (this.params.gridHeight - (this.params.rows - 1) * this.params.gridGap) / this.params.rows;
+      this.params.cellWidth =
+        (this.params.gridWidth - (this.params.columns - 1) * this.params.gridGap) / this.params.columns;
 
-      this.store.dispatch(DashboardActions.updateDashboardParams({ params }));
+      this.store.dispatch(DashboardActions.updateDashboardParams({ params: this.params }));
 
-      this.rows.next(params.rows);
-      this.rowHeight.next(params.cellHeight);
+      this.rows.next(this.params.rows);
+      this.rowHeight.next(this.params.cellHeight);
     }
   }
 

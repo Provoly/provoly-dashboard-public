@@ -434,7 +434,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
             const geoLayer = geoLayers.find((geoLayer) => layer.key === geoLayer.key) ?? null;
             return layer.type === 'geoserver'
               ? geoLayer
-                ? { ...geoLayer, ...layer }
+                ? { ...geoLayer, ...layer, url: geoLayer.url }
                 : (null as unknown as MapWidgetLayerOptions)
               : { ...layer };
           }),

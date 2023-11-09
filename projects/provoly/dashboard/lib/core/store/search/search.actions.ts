@@ -15,5 +15,10 @@ export const SearchActions = {
     '[Search Api] (bus) Search Success',
     props<{ resultSet: ResultSet; id?: string; params?: string }>()
   ),
-  searchFailure: createAction('[Search Api] (bus) Search Failure', props<{ error: any; id?: string }>())
+  searchFailure: createAction('[Search Api] (bus) Search Failure', props<{ error: any; id?: string }>()),
+
+  setSearchLoading: createAction(
+    '[Search Api] (bus) set Search loading datasource status',
+    props<{ datasources: string[]; start: boolean }>()
+  )
 };
