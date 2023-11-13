@@ -36,7 +36,7 @@ export const frTranslations = {
       delete: 'Supprimer',
       backToCatalog: 'Revenir au catalogue',
       search: 'Rechercher',
-      title: 'Présentations'
+      title: 'Catalogue de présentations'
     }
   }
 };

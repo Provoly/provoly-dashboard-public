@@ -35,7 +35,7 @@ export const enTranslations = {
       delete: 'Delete',
       backToCatalog: 'Back to catalog',
       search: 'Search',
-      title: 'Presentations'
+      title: 'Presentation catalog'
     }
   }
 };
