@@ -5,7 +5,6 @@
     </h2>
     <ng-template #querySelector>
       <div *ngFor="let ds of usedDatasources$ | async" class="o-widget__header__content__query">
-        <pry-nq-color-selector [disabled]="true" [datasource]="ds"></pry-nq-color-selector>
         <ng-container
           *ngIf="ds.id | translateId : { type: 'datasource', output: 'icon', noDefault: true } | async as url"
         >

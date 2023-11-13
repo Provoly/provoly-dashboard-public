@@ -613,7 +613,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   }
 
   private getTitle(options: ChartAggregatedWidgetOptions) {
-    return options.graph?.title ?? (options.abscissa.label ?? 'key') + ' / ' + (options.ordinate.label ?? 'value');
+    return options.graph?.title ?? undefined;
   }
 
   changeChartTitle($event: string) {

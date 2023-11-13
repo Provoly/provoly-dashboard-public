@@ -30,7 +30,7 @@ import { DashboardSelectors } from '../../../store/dashboard.selectors';
 import { SubscriptionnerDirective } from '../../subscriptionner.directive';
 import { WidgetPlacementUtils } from '../widget-placement/widget-placement.utils';
 
-export const WIDGET_HEADER_HEIGHT = 60;
+export const WIDGET_HEADER_HEIGHT = 32;
 
 export type HeaderAction = {
   icon: string;
