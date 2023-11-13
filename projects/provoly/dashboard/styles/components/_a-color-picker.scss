@@ -5,6 +5,7 @@
   height: toRem(30);
   border-radius: toRem(15);
   position: relative;
+  box-shadow: 0px 4px 4px rgba(17, 59, 110, 0.24);
 
   &__modal {
     position: absolute;
