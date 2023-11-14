@@ -9,7 +9,7 @@ import {
   GlobalManifest,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
-import { combineLatest, Observable, take } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, take } from 'rxjs';
 import { debounceTime, delay } from 'rxjs/operators';
 
 @Component({
@@ -21,6 +21,7 @@ export class DashboardContainerComponent extends SubscriptionnerDirective {
   globalManifest$: Observable<GlobalManifest>;
   @ViewChild('dashboard') dashboard!: DashboardComponent;
   DEBUG_EXPORT = false;
+  apply$ = new BehaviorSubject<void>(undefined);
 
   constructor(private route: ActivatedRoute, private store: Store<any>) {
     super();
@@ -50,7 +51,7 @@ export class DashboardContainerComponent extends SubscriptionnerDirective {
   }
 
   filter() {
-    this.store.dispatch(DashboardActions.dispatchFilters());
+    this.apply$.next();
   }
 
   clearFilters() {

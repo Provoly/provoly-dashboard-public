@@ -19,6 +19,8 @@ export class DatasourceUtils {
 
   static isGeo(ds: NamedQuery | Dataset) {
     return (
+      !!ds &&
+      !!ds.metadata &&
       ds.metadata?.find((m) => m.metadataDef.name === GeoMetadata.KEY) !== undefined &&
       ds.metadata?.find((m) => m.metadataDef.name === GeoMetadata.NAMESPACE) !== undefined
     );

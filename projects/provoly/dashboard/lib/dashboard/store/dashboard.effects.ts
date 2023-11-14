@@ -663,6 +663,13 @@ export class DashboardEffects {
     )
   );
 
+  updateViewAfterFilterValueUpdate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DashboardActions.updateFilterValue),
+      map((action) => SearchActions.getDatasourceItems({ id: action.datasourceId }))
+    )
+  );
+
   dispatchFilters$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.dispatchFilters, DashboardActions.clearAllFilterValues),

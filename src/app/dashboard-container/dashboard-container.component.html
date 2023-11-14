@@ -2,7 +2,11 @@
   <ng-container *ngIf="globalManifest$ | async as manifest">
     <div class="o-container__filters" *ngIf="manifest.filters && manifest.filters.length > 0">
       <div class="o-container__filter-container">
-        <pry-filter-instanciator *ngFor="let filter of manifest.filters" [filter]="filter"></pry-filter-instanciator>
+        <pry-filter-instanciator
+          *ngFor="let filter of manifest.filters"
+          [filter]="filter"
+          [applyFilter$]="apply$"
+        ></pry-filter-instanciator>
       </div>
       <div class="o-container__filter-actions">
         <button type="button" class="a-btn a-btn--primary -size-md" (click)="filter()">

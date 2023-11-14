@@ -8,6 +8,7 @@ import { DashboardActions } from '../store/dashboard.actions';
 export class BaseFilterComponent extends SubscriptionnerDirective {
   @Input() filter?: Filter;
   type!: string;
+  private _value: any;
 
   constructor(protected store: Store) {
     super();
@@ -15,13 +16,17 @@ export class BaseFilterComponent extends SubscriptionnerDirective {
   }
 
   updateFilter(value: any) {
+    this._value = value;
+  }
+
+  validateFilters() {
     if (this.filter) {
       this.filter.attributes.forEach((attribute) => {
         this.store.dispatch(
           DashboardActions.updateFilterValue({
             datasourceId: attribute.datasource,
             id: this.filter?.id ?? '',
-            value
+            value: this._value
           })
         );
       });
