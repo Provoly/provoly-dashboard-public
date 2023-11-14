@@ -20,7 +20,28 @@
 
     &__filters {
       display: flex;
+      padding: toRem(10);
+      max-height: 95px; // needed for ng-select
+    }
+
+    &__filter-container {
+      display: flex;
       justify-content: flex-start;
+      overflow-x: auto;
+      overflow-y: hidden;
+      margin-bottom: toRem(-5);
+      max-height: 95px; // needed for ng-select
+
+      &:has(ng-dropdown-panel.ng-dropdown-panel) {
+        padding-bottom: 350px; // max ng-select dropdown length
+        background-clip: content-box, padding-box;
+      }
+    }
+
+    &__filter-actions {
+      display: flex;
+      align-items: center;
+      gap: toRem(10);
       padding: toRem(10);
     }
   }

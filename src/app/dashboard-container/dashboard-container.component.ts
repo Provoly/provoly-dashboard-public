@@ -48,4 +48,12 @@ export class DashboardContainerComponent extends SubscriptionnerDirective {
         })
     );
   }
+
+  filter() {
+    this.store.dispatch(DashboardActions.dispatchFilters());
+  }
+
+  clearFilters() {
+    this.store.dispatch(DashboardActions.clearAllFilterValues());
+  }
 }

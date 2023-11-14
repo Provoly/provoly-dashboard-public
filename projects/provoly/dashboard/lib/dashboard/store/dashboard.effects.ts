@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { combineLatest, merge, of, startWith, throwError } from 'rxjs';
+import { combineLatest, merge, of, startWith, switchMap, throwError } from 'rxjs';
 import { catchError, debounceTime, delay, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 import {
   PryDialogConfirmComponent,
@@ -663,10 +663,33 @@ export class DashboardEffects {
     )
   );
 
-  updateViewAfterFilterValueUpdate$ = createEffect(() =>
+  dispatchFilters$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DashboardActions.updateFilterValue),
-      map((action) => SearchActions.getDatasourceItems({ id: action.datasourceId }))
+      ofType(DashboardActions.dispatchFilters, DashboardActions.clearAllFilterValues),
+      withLatestFrom(
+        this.store.select(DashboardSelectors.filters),
+        this.store.select(DashboardSelectors.resultSets),
+        this.store.select(DashboardSelectors.resultSetsParams),
+        this.store.select(DashboardSelectors.quickOrder)
+      ),
+      switchMap(([action, filters, resultSets, resultSetsParams, quickOrder ]) => {
+        return [
+          ...new Set(
+            filters
+              .map((f) => f.attributes)
+              .flat()
+              .map((attribute) => attribute.datasource)
+          )
+        ]
+          .filter(
+            (resultSet) =>
+              !!resultSet &&
+              resultSet !== '' &&
+              (!resultSets[resultSet] ||
+                resultSetsParams[resultSet] !== this.searchService.getItemsSerializedParams(resultSet, quickOrder))
+          )
+          .map((ds) => SearchActions.getDatasourceItems({ id: ds }));
+      })
     )
   );
 

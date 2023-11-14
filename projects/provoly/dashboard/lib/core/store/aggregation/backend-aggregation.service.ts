@@ -98,10 +98,13 @@ export class PryBackendAggregationService extends PryAggregationService {
     if (!!options.ordinate.attribute) {
       params = params.set('valueField', options.ordinate.attribute);
     }
+    if (operation === Operation.DISTINCT) {
+      params = params.set('valueField', options.abscissa.attribute);
+    }
     if (options.groupBy) {
       params = params.set('groupBy', options.groupBy.attribute);
     }
-    if (options.graph.sort) {
+    if (options.graph && options.graph.sort) {
       params = params.set(
         'sort',
         `${options.graph.sort.direction},${

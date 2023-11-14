@@ -3,6 +3,8 @@
 /* Molecule m-filter */
 
 .m-filter {
+  min-width: toRem(150);
+
   &__wrapper {
     display: flex;
     align-items: center;

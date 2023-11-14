@@ -715,6 +715,18 @@ const internalReducer = createReducer<DashboardState>(
       }
     };
   }),
+  on(DashboardActions.clearAllFilterValues, (state, action) => {
+    return {
+      ...state,
+      manifests: {
+        ...state.manifests,
+        manifest: {
+          ...state.manifests.manifest,
+          filters: state.manifests.manifest.filters?.map((filter) => ({ ...filter, value: undefined }))
+        }
+      }
+    };
+  }),
   on(DashboardActions.getWmsFeatures, DashboardActions.resetWmsFeatures, (state, action) => ({
     ...state,
     wmsFeatures: []

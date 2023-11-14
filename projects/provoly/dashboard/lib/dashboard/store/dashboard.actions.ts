@@ -231,6 +231,8 @@ export const DashboardActions = {
     '[Dashboard] (bus) update filter value',
     props<{ id: string; value: any; datasourceId: string }>()
   ),
+  clearAllFilterValues: createAction('[Dashboard] (bus) clear all filter values'),
+  dispatchFilters: createAction('[Dashboard] (bus) apply filters to presentation datasources'),
   resetWmsFeatures: createAction('[Widget map] Reset Wms layer features'),
   getWmsFeatures: createAction(
     '[Widget map] Get Wms layer features',

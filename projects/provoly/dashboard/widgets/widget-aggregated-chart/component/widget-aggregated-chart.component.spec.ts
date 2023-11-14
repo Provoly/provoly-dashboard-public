@@ -161,9 +161,8 @@ describe('WidgetAggregatedChartComponent', () => {
     component.vegaLiteSpec$.subscribe((spec) => {
       expect(spec).toEqual({
         $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-        title: 'key / value',
         width: 'container',
-        height: 240,
+        height: 268,
         padding: 10,
         autosize: { type: 'fit', contains: 'padding' },
         data: { values: [{ key: 'A', value: 'V' }] },
@@ -245,9 +244,8 @@ describe('WidgetAggregatedChartComponent', () => {
     component.vegaLiteSpec$.subscribe((spec) => {
       expect(spec).toEqual({
         $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-        title: 'key / value',
         width: 'container',
-        height: 240,
+        height: 268,
         padding: 10,
         autosize: { type: 'fit', contains: 'padding' },
         data: { values: [{ key: 'A', value: 'V' }] },
@@ -323,9 +321,8 @@ describe('WidgetAggregatedChartComponent', () => {
     component.vegaLiteSpec$.subscribe((spec) => {
       expect(spec).toEqual({
         $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-        title: 'ABS / ORD',
         width: 'container',
-        height: 240,
+        height: 268,
         padding: 10,
         autosize: { type: 'fit', contains: 'padding' },
         data: { values: [{ key: 'A', value: 'V', series: 'ORD' }] },
@@ -416,9 +413,8 @@ describe('WidgetAggregatedChartComponent', () => {
     component.vegaLiteSpec$.subscribe((spec) => {
       expect(spec).toEqual({
         $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-        title: 'ABS / ORD',
         width: 'container',
-        height: 240,
+        height: 268,
         padding: 10,
         autosize: { type: 'fit', contains: 'padding' },
         data: { values: [{ key: 'A', value: 'V', series: 'ORD' }] },
