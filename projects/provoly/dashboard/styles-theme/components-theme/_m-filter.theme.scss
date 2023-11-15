@@ -1,7 +1,31 @@
 /* Theme - Atom a-icon */
 
-// colors that make the clear button look like the ng-select clear button
 .m-filter {
+  display: flex;
+  align-items: center;
+
+  &__input-wrapper {
+    border: 1px #BCCAD8 solid;
+    background: #ffffff;
+
+    .pry-select {
+      font-size: 12px;
+    }
+  }
+
+  &__label {
+    background: transparent;
+    font-size: 12px;
+    font-weight: bold;
+    color: #424B5A;
+  }
+
+  &__input {
+    border: none transparent;
+    font-size: 12px;
+  }
+
+  // colors that make the clear button look like the ng-select clear button
   &__clear-wrapper {
     color: #999999;
 

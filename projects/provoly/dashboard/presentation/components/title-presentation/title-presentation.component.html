@@ -4,8 +4,7 @@
     <div class="info-icon description-container description">
       <span class="info-text">i</span>
     </div>
-    <div class="description-tooltip title-tooltip">
-      <p class="a-p -date">{{ presentation.modificationDate | sinceDate }}</p>
+    <div *ngIf="!!presentation.description" class="description-tooltip title-tooltip">
       <p class="a-p">{{ presentation.description }}</p>
     </div>
   </ng-container>

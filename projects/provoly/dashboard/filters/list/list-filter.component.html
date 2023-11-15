@@ -1,8 +1,7 @@
 <pry-list-filter-css></pry-list-filter-css>
-<div class="m-form-label-field -width-sm -list" *ngIf="filter">
-  <label class="a-label" for="{{ filter.name }}">{{ filter.name }}</label>
+<div class="m-filter__input-wrapper" *ngIf="filter">
+  <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
   <pry-select
-    class="a-pry-select"
     [id]="filter.name"
     [items]="possibleValues"
     [ngModel]="filter.value"

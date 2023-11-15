@@ -41,7 +41,7 @@ import {
 import { View } from 'vega';
 import embed, { vega } from 'vega-embed';
 import { mergeDeep, TopLevelSpec } from 'vega-lite';
-import { fontConfig } from 'vega-lite/build/src/config';
+import { initConfig } from 'vega-lite/build/src/config';
 import { PrySchemeService } from '@provoly/dashboard/components/scheme-picker';
 
 @Component({
@@ -476,7 +476,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                 }
               }
             ],
-            config: fontConfig('Ubuntu, sans-serif')
+            config: this.getChartConfig()
           } as any,
           options.additionalSpec
         );
@@ -542,12 +542,15 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       combineLatest([this.vegaLiteSpec$, this.trigger$]).subscribe(([spec, _]) => {
         if (this.vega) {
           this.view?.finalize();
-          //console.log(JSON.stringify(spec));
+          // console.log(JSON.stringify(spec));
           embed(this.vega.nativeElement, JSON.parse(JSON.stringify(spec)), {
             actions: false,
             renderer: 'canvas',
             formatLocale: this.translateService.instantObject('@pry.widget.chart.numberLocale') as any,
-            timeFormatLocale: this.translateService.instantObject('@pry.widget.chart.timeFormatLocale') as any
+            timeFormatLocale: this.translateService.instantObject('@pry.widget.chart.timeFormatLocale') as any,
+            tooltip: {
+              theme: 'custom'
+            }
           })
             .then((result) => (this.view = result.view))
             .catch((err) => console.error('Cannot display chart', err));
@@ -614,6 +617,41 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
 
   private getTitle(options: ChartAggregatedWidgetOptions) {
     return options.graph?.title ?? undefined;
+  }
+
+  getChartConfig() {
+    return initConfig({
+      style: {
+        'guide-label': {
+          // axis tick titles
+          font: 'Ubuntu, sans-serif',
+          fontSize: 12,
+          fontWeight: 600,
+          fill: '#263340'
+        },
+        'guide-title': {
+          // axis title
+          font: 'Ubuntu, sans-serif',
+          fontSize: 12,
+          fontWeight: 600,
+          fill: '#263340'
+        },
+        'group-title': {
+          // chart title
+          font: 'Ubuntu, sans-serif',
+          fontSize: 12,
+          fontWeight: 600,
+          fill: '#263340'
+        },
+        'group-subtitle': {
+          // not sure
+          font: 'Ubuntu, sans-serif',
+          fontSize: 12,
+          fontWeight: 600,
+          fill: '#263340'
+        }
+      }
+    });
   }
 
   changeChartTitle($event: string) {

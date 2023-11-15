@@ -114,6 +114,7 @@
     width: toRem(27);
     height: toRem(27);
     padding: 0;
+    margin: 2px;
   }
 
   // Toggler open/close element
@@ -164,12 +165,12 @@
   }
 
   &.-size-sm {
-    gap: toRem(5);
-    height: toRem(34);
-    padding-left: toRem(15);
-    padding-right: toRem(15);
-    font-size: toRem(13);
-    line-height: toRem(15);
+    gap: toRem(3);
+    height: toRem(30);
+    padding-left: toRem(12);
+    padding-right: toRem(12);
+    font-size: toRem(10);
+    line-height: toRem(13);
 
     &.-circle {
       width: toRem(34);
@@ -179,15 +180,15 @@
 
   &.-size-md {
     gap: toRem(5);
-    height: toRem(37);
-    padding-left: toRem(20);
-    padding-right: toRem(20);
-    font-size: toRem(14);
-    line-height: toRem(16);
+    height: toRem(34);
+    padding-left: toRem(15);
+    padding-right: toRem(15);
+    font-size: toRem(12);
+    line-height: toRem(14);
 
     &.-circle {
-      width: toRem(37);
-      height: toRem(37);
+      width: toRem(34);
+      height: toRem(34);
     }
 
     pry-icon,

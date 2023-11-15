@@ -56,12 +56,6 @@
             {{ '@pry.widget.chart.legend' | i18n }}
           </pry-checkbox>
         </div>
-
-        <div class="m-form-label-field">
-          <pry-checkbox (ngModelChange)="toggleTooltip($event)" [ngModel]="!!optionsCopy.graph.tooltip"
-            >{{ '@pry.widget.chart.tooltip' | i18n }}
-          </pry-checkbox>
-        </div>
       </div>
 
       <ng-container *ngIf="!!optionsCopy.graph.type">

@@ -1,13 +1,15 @@
 <div *ngIf="filter" class="m-filter">
-  <label class="a-label" for="{{ filter.name }}">{{ filter.name }}</label>
   <div class="m-filter__wrapper">
-    <input
-      [ngModel]="filter.value"
-      (ngModelChange)="this.value$.next($event)"
-      [id]="filter.name"
-      type="number"
-      class="a-form-field"
-    />
+    <div class="m-filter__input-wrapper">
+      <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
+      <input
+        class="m-filter__input"
+        [ngModel]="filter.value"
+        (ngModelChange)="this.value$.next($event)"
+        [id]="filter.name"
+        type="number"
+      />
+    </div>
     <span
       *ngIf="!!filter.value"
       class="m-filter__clear-wrapper m-filter__clear-wrapper--number"

@@ -7,11 +7,11 @@
   $this: &;
 
   &__text {
-    @include typography-level(themed($theme-map, 'typography', 'body'));
+    @include typography-level(themed($theme-map, 'typography', 'tooltip'));
   }
 
   &__description {
-    @include typography-level(themed($theme-map, 'typography', 'label'));
+    @include typography-level(themed($theme-map, 'typography', 'tooltip'));
   }
 
   &--popup,

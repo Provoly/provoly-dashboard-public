@@ -162,10 +162,11 @@ describe('WidgetAggregatedChartComponent', () => {
       expect(spec).toEqual({
         $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
         width: 'container',
-        height: 268,
+        height: 270,
         padding: 10,
         autosize: { type: 'fit', contains: 'padding' },
         data: { values: [{ key: 'A', value: 'V' }] },
+        title: undefined,
         layer: [
           {
             mark: { innerRadius: 30, line: false, point: false, type: 'bar' },
@@ -203,15 +204,7 @@ describe('WidgetAggregatedChartComponent', () => {
             }
           }
         ],
-        config: {
-          text: { font: 'Ubuntu, sans-serif' },
-          style: {
-            'guide-label': { font: 'Ubuntu, sans-serif' },
-            'guide-title': { font: 'Ubuntu, sans-serif' },
-            'group-title': { font: 'Ubuntu, sans-serif' },
-            'group-subtitle': { font: 'Ubuntu, sans-serif' }
-          }
-        }
+        config: component.getChartConfig()
       });
       done();
     });
@@ -245,10 +238,11 @@ describe('WidgetAggregatedChartComponent', () => {
       expect(spec).toEqual({
         $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
         width: 'container',
-        height: 268,
+        height: 270,
         padding: 10,
         autosize: { type: 'fit', contains: 'padding' },
         data: { values: [{ key: 'A', value: 'V' }] },
+        title: undefined,
         layer: [
           {
             mark: { innerRadius: 30, line: false, point: false, type: 'arc' },
@@ -271,15 +265,7 @@ describe('WidgetAggregatedChartComponent', () => {
             }
           }
         ],
-        config: {
-          text: { font: 'Ubuntu, sans-serif' },
-          style: {
-            'guide-label': { font: 'Ubuntu, sans-serif' },
-            'guide-title': { font: 'Ubuntu, sans-serif' },
-            'group-title': { font: 'Ubuntu, sans-serif' },
-            'group-subtitle': { font: 'Ubuntu, sans-serif' }
-          }
-        }
+        config: component.getChartConfig()
       });
       done();
     });
@@ -322,10 +308,11 @@ describe('WidgetAggregatedChartComponent', () => {
       expect(spec).toEqual({
         $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
         width: 'container',
-        height: 268,
+        height: 270,
         padding: 10,
         autosize: { type: 'fit', contains: 'padding' },
         data: { values: [{ key: 'A', value: 'V', series: 'ORD' }] },
+        title: undefined,
         layer: [
           {
             mark: { innerRadius: 30, line: true, point: false, type: 'line' },
@@ -363,15 +350,7 @@ describe('WidgetAggregatedChartComponent', () => {
             }
           }
         ],
-        config: {
-          text: { font: 'Ubuntu, sans-serif' },
-          style: {
-            'guide-label': { font: 'Ubuntu, sans-serif' },
-            'guide-title': { font: 'Ubuntu, sans-serif' },
-            'group-title': { font: 'Ubuntu, sans-serif' },
-            'group-subtitle': { font: 'Ubuntu, sans-serif' }
-          }
-        }
+        config: component.getChartConfig()
       });
       done();
     });
@@ -414,10 +393,11 @@ describe('WidgetAggregatedChartComponent', () => {
       expect(spec).toEqual({
         $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
         width: 'container',
-        height: 268,
+        height: 270,
         padding: 10,
         autosize: { type: 'fit', contains: 'padding' },
         data: { values: [{ key: 'A', value: 'V', series: 'ORD' }] },
+        title: undefined,
         layer: [
           {
             mark: { innerRadius: 30, line: false, point: false, type: 'bar' },
@@ -454,15 +434,7 @@ describe('WidgetAggregatedChartComponent', () => {
             }
           }
         ],
-        config: {
-          text: { font: 'Ubuntu, sans-serif' },
-          style: {
-            'guide-label': { font: 'Ubuntu, sans-serif' },
-            'guide-title': { font: 'Ubuntu, sans-serif' },
-            'group-title': { font: 'Ubuntu, sans-serif' },
-            'group-subtitle': { font: 'Ubuntu, sans-serif' }
-          }
-        }
+        config: component.getChartConfig()
       });
       done();
     });

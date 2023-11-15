@@ -118,9 +118,9 @@ export class WidgetTableComponent extends DataWidgetComponent {
       })
     );
 
-    const HEADER_SIZE = 60;
+    const HEADER_SIZE = 30;
     const PAGINATION_SIZE = 35;
-    const LINE_SIZE = 45;
+    const LINE_SIZE = 30;
 
     this.pagination$ = combineLatest([
       this.allItems$,

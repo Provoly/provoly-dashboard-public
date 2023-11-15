@@ -127,7 +127,16 @@ $theme-typography: (
     'letter-spacing': -1px,
     'font-weight': 700,
     'font-style': ''
-  )
+  ),
+  'tooltip': (
+    'font-family': '',
+    'font-variation': '',
+    'font-size': 12px,
+    'line-height': 14px,
+    'letter-spacing': '',
+    'font-weight': 400,
+    'font-style': ''
+  ),
 );
 
 ///// DO NOT EDIT FROM HERE /////

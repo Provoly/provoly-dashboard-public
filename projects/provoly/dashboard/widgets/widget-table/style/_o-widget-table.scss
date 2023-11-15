@@ -6,6 +6,7 @@
 .o-widget--table {
   display: flex;
   flex-direction: column;
+  font-size: toRem(12);
 
   .no-result {
     display: flex;
@@ -59,6 +60,20 @@
       &:active {
         opacity: 1;
       }
+    }
+
+    thead tr, thead tr th {
+      height: toRem(30);
+      white-space: nowrap;
+    }
+
+    td, th {
+      margin: toRem(5);
+      padding: toRem(4.5);
+    }
+
+    .checkbox-wrapper {
+      height: auto;
     }
   }
 }
