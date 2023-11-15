@@ -5,16 +5,16 @@
       alt=""
       [height]="25"
       [width]="25"
-      [src]="dataset.id | translateId: { type: 'datasource', output: 'icon' } | async"
+      [src]="dataset.id | translateId : { type: 'datasource', output: 'icon' } | async"
     />
     <div class="a-h4 dataset-name">{{ dataset.name }}</div>
   </div>
   <div class="o-pry-dataset-card__txt">
     <div class="a-p">
-      <p class="a-p -date">{{'@pry.dataset.since_day' |i18n}} {{ ((activeVersion$ | async)! | sinceDate )}}</p>
+      <p class="a-p -date">{{ '@pry.dataset.since_day' | i18n }} {{ (activeVersion$ | async)! | sinceDate }}</p>
       <div class="description-container">
         <span class="description">{{ truncateDescription(dataset.description, 100) }}</span>
-        <div class="description-tooltip">{{ truncateDescription(dataset.description, 100) }}</div>
+        <div class="description-tooltip">{{ dataset.description }}</div>
       </div>
     </div>
   </div>

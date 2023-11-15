@@ -21,9 +21,10 @@
       <h1 class="a-h1">{{ '@pry.dataset.title' | i18n }}</h1>
       <div class="o-pry-dataset">
         <pry-dataset-card
-          *ngFor="let dataset of filteredDatasets$ | async"
+          *ngFor="let dataset of filteredDatasets$ | async; let index = index"
           [dataset]="dataset"
           (consult)="consult($event)"
+          [style.z-index]="((filteredDatasets$ | async) ?? []).length - index"
         ></pry-dataset-card>
       </div>
     </div>
