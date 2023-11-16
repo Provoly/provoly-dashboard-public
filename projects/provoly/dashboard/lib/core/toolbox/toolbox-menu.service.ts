@@ -65,7 +65,8 @@ export const defaultMenuStructure: WidgetDescriptionMenu[] = [
       { icon: 'toc', label: '@pry.toolbox.detail', type: 'detail' },
       { icon: 'graph', label: '@pry.toolbox.graph', type: 'graph' },
       { icon: 'settings_applications', label: '@pry.toolbox.iframe', type: 'iframe' },
-      { icon: 'tile', label: '@pry.toolbox.tile', type: 'tile' }
+      { icon: 'tile', label: '@pry.toolbox.tile', type: 'tile' },
+      { icon: 'code-box', label: '@pry.toolbox.template', type: 'template' }
     ]
   }
 ];

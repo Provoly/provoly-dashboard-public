@@ -8,12 +8,15 @@ import {
   PryCoreModule,
   PryDashboardModule,
   PryI18nModule,
+  PryI18nService,
   PryIconModule,
   PrySelectModule,
   PryToggleModule
 } from '@provoly/dashboard';
 import { PryCheckboxModule } from '@provoly/dashboard/components/checkbox';
 import { WidgetTemplateComponent } from './component/widget-template.component';
+import { enTranslations } from './i18n/en.translations';
+import { frTranslations } from './i18n/fr.translations';
 import { PryWidgetTemplateCssComponent } from './style/css.component';
 
 @NgModule({
@@ -33,6 +36,12 @@ import { PryWidgetTemplateCssComponent } from './style/css.component';
   exports: [WidgetTemplateComponent]
 })
 export class WidgetTemplateModule extends BaseWidgetModule {
+  constructor(private pryTranslateService: PryI18nService) {
+    super();
+    this.pryTranslateService.addLangObject('fr', 'widget-template', frTranslations);
+    this.pryTranslateService.addLangObject('en', 'widget-template', enTranslations);
+  }
+
   override getComponent() {
     return WidgetTemplateComponent as Type<BaseWidgetComponent>;
   }

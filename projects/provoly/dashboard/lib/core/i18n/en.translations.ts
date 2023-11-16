@@ -136,6 +136,7 @@ export const enTranslations = {
         other: 'Other'
       },
       tile: 'Tiles',
+      template: 'HTML Template',
       now: 'Today',
       since_day: '{{day}} day{{plural}} ago',
       layout: {

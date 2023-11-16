@@ -136,6 +136,7 @@ export const frTranslations = {
         other: 'Autre'
       },
       tile: 'Tuiles',
+      template: 'Template HTML',
       now: "Aujourd'hui",
       since_day: 'Il y a {{day}} jour{{plural}}',
       layout: {
