@@ -32,14 +32,8 @@ import VectorTile from 'ol/source/VectorTile';
 import { Circle, Fill, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
-import {
-  DEFAULT_HEATMAP_RADIUS,
-  DEFAULT_RADIUS_INTENSITY_FACTOR,
-  DEFAULT_ZOOM_MAX,
-  DEFAULT_ZOOM_MIN,
-  getCircleFeatureFromItem,
-  getFeatureFromItem
-} from '../utils/widget-map.utils';
+import { ProjectionLike } from 'ol/proj';
+import { WidgetMapUtils } from '../utils/widget-map.utils';
 
 export type AttributesForClass = {
   [key: string]: {
@@ -142,12 +136,12 @@ export class WidgetMapLayerService {
       map: Map
     ) => {
       const heatmap = new Heatmap({
-        minZoom: layer.minZoom ?? DEFAULT_ZOOM_MIN,
-        maxZoom: layer.maxZoom ?? DEFAULT_ZOOM_MAX,
+        minZoom: layer.minZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MIN,
+        maxZoom: layer.maxZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MAX,
         opacity: (layer.opacity ?? 100) / 100,
         source: new Vector({ attributions: [layer.attribution ?? ''] }),
-        blur: (layer.radius ?? DEFAULT_HEATMAP_RADIUS) / 2,
-        radius: layer.radius ?? DEFAULT_HEATMAP_RADIUS,
+        blur: (layer.radius ?? WidgetMapUtils.DEFAULT_HEATMAP_RADIUS) / 2,
+        radius: layer.radius ?? WidgetMapUtils.DEFAULT_HEATMAP_RADIUS,
         weight: (feature: any) => {
           const value = ItemUtils.getAttributeCalculatedValue(
             feature,
@@ -161,13 +155,25 @@ export class WidgetMapLayerService {
       layerClassesId.forEach((classId) => {
         (resultSet.items[classId] || [])
           .filter((item) => {
-            const location = ItemUtils.readGeometry(item, 'point', attributesForClass[classId].locationAttribute);
+            const location = WidgetMapUtils.readGeometry(
+              map.getView().getProjection(),
+              item,
+              'point',
+              attributesForClass[classId].locationAttribute
+            );
             return !!location;
           })
           .forEach((item) => {
             heatmap
               .getSource()
-              ?.addFeature(getFeatureFromItem(item, 'heatpoint', attributesForClass[item.oClass].locationAttribute));
+              ?.addFeature(
+                WidgetMapUtils.getFeatureFromItem(
+                  map.getView().getProjection(),
+                  item,
+                  'heatpoint',
+                  attributesForClass[item.oClass].locationAttribute
+                )
+              );
           });
       });
 
@@ -183,8 +189,8 @@ export class WidgetMapLayerService {
       map: Map
     ) => {
       const vectorLayer = new VectorLayer({
-        minZoom: layer.minZoom ?? DEFAULT_ZOOM_MIN,
-        maxZoom: layer.maxZoom ?? DEFAULT_ZOOM_MAX,
+        minZoom: layer.minZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MIN,
+        maxZoom: layer.maxZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MAX,
         opacity: (layer.opacity ?? 100) / 100,
         source: new VectorSource({ attributions: [layer.attribution ?? ''] })
       });
@@ -192,11 +198,17 @@ export class WidgetMapLayerService {
       layerClassesId.forEach((classId) => {
         (resultSet.items[classId] || [])
           .filter((item) => {
-            const location = ItemUtils.readGeometry(item, 'point', attributesForClass[item.oClass].locationAttribute);
+            const location = WidgetMapUtils.readGeometry(
+              map.getView().getProjection(),
+              item,
+              'point',
+              attributesForClass[item.oClass].locationAttribute
+            );
             return !!location;
           })
           .forEach(async (item) => {
-            const itemFeature = getFeatureFromItem(
+            const itemFeature = WidgetMapUtils.getFeatureFromItem(
+              map.getView().getProjection(),
               item,
               'marker',
               attributesForClass[item.oClass].locationAttribute,
@@ -219,7 +231,14 @@ export class WidgetMapLayerService {
       itemStyles: ItemStyles,
       map: Map
     ) => {
-      return this.layerFromGeoJsonGeometry(layer, layerClassesId, resultSet, attributesForClass, 'point');
+      return this.layerFromGeoJsonGeometry(
+        map.getView().getProjection(),
+        layer,
+        layerClassesId,
+        resultSet,
+        attributesForClass,
+        'point'
+      );
     },
     line: (
       layer: MapWidgetMarkerLayerOptions,
@@ -230,7 +249,14 @@ export class WidgetMapLayerService {
       itemStyles: ItemStyles,
       map: Map
     ) => {
-      return this.layerFromGeoJsonGeometry(layer, layerClassesId, resultSet, attributesForClass, 'line');
+      return this.layerFromGeoJsonGeometry(
+        map.getView().getProjection(),
+        layer,
+        layerClassesId,
+        resultSet,
+        attributesForClass,
+        'line'
+      );
     },
     'multi-line': (
       layer: MapWidgetMarkerLayerOptions,
@@ -241,7 +267,14 @@ export class WidgetMapLayerService {
       itemStyles: ItemStyles,
       map: Map
     ) => {
-      return this.layerFromGeoJsonGeometry(layer, layerClassesId, resultSet, attributesForClass, 'multi-line');
+      return this.layerFromGeoJsonGeometry(
+        map.getView().getProjection(),
+        layer,
+        layerClassesId,
+        resultSet,
+        attributesForClass,
+        'multi-line'
+      );
     },
     polygon: (
       layer: MapWidgetMarkerLayerOptions,
@@ -252,7 +285,14 @@ export class WidgetMapLayerService {
       itemStyles: ItemStyles,
       map: Map
     ) => {
-      return this.layerFromGeoJsonGeometry(layer, layerClassesId, resultSet, attributesForClass, 'polygon');
+      return this.layerFromGeoJsonGeometry(
+        map.getView().getProjection(),
+        layer,
+        layerClassesId,
+        resultSet,
+        attributesForClass,
+        'polygon'
+      );
     },
     'multi-polygon': (
       layer: MapWidgetMarkerLayerOptions,
@@ -263,7 +303,14 @@ export class WidgetMapLayerService {
       itemStyles: ItemStyles,
       map: Map
     ) => {
-      return this.layerFromGeoJsonGeometry(layer, layerClassesId, resultSet, attributesForClass, 'multi-polygon');
+      return this.layerFromGeoJsonGeometry(
+        map.getView().getProjection(),
+        layer,
+        layerClassesId,
+        resultSet,
+        attributesForClass,
+        'multi-polygon'
+      );
     },
     bubble: (
       layer: MapWidgetBubbleLayerOptions,
@@ -275,8 +322,8 @@ export class WidgetMapLayerService {
       map: Map
     ) => {
       const bubbleLayer = new VectorLayer({
-        minZoom: layer.minZoom ?? DEFAULT_ZOOM_MIN,
-        maxZoom: layer.maxZoom ?? DEFAULT_ZOOM_MAX,
+        minZoom: layer.minZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MIN,
+        maxZoom: layer.maxZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MAX,
         opacity: (layer.opacity ?? 100) / 100,
         source: new VectorSource({ attributions: [layer.attribution ?? ''] })
       });
@@ -284,7 +331,12 @@ export class WidgetMapLayerService {
       layerClassesId.forEach((classId) => {
         (resultSet.items[classId] || [])
           .filter((item) => {
-            const location = ItemUtils.readGeometry(item, 'point', attributesForClass[item.oClass].locationAttribute);
+            const location = WidgetMapUtils.readGeometry(
+              map.getView().getProjection(),
+              item,
+              'point',
+              attributesForClass[item.oClass].locationAttribute
+            );
             return !!location;
           })
           .forEach((item) => {
@@ -293,10 +345,12 @@ export class WidgetMapLayerService {
               attributesForClass[item.oClass].intensityAttribute
             ) as number;
             const atScale = (value - range.min) / (range.max - range.min);
-            const itemFeature = getCircleFeatureFromItem(
+            const itemFeature = WidgetMapUtils.getCircleFeatureFromItem(
+              map.getView().getProjection(),
               item,
               attributesForClass[item.oClass].locationAttribute,
-              (layer.intensityAsc ? atScale : 1 - atScale) * (layer.radiusFactor ?? DEFAULT_RADIUS_INTENSITY_FACTOR),
+              (layer.intensityAsc ? atScale : 1 - atScale) *
+                (layer.radiusFactor ?? WidgetMapUtils.DEFAULT_RADIUS_INTENSITY_FACTOR),
               this.circleStyle,
               this.selectedCircleStyle
             );
@@ -317,8 +371,8 @@ export class WidgetMapLayerService {
       map: Map
     ) => {
       return new VectorLayer({
-        minZoom: layer.minZoom ?? DEFAULT_ZOOM_MIN,
-        maxZoom: layer.maxZoom ?? DEFAULT_ZOOM_MAX,
+        minZoom: layer.minZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MIN,
+        maxZoom: layer.maxZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MAX,
         opacity: (layer.opacity ?? 100) / 100,
         source: new VectorSource({ attributions: [layer.attribution ?? ''] })
       });
@@ -333,8 +387,8 @@ export class WidgetMapLayerService {
       map: Map
     ) => {
       const impl = new Tile({
-        minZoom: layer.minZoom ?? DEFAULT_ZOOM_MIN,
-        maxZoom: layer.maxZoom ?? DEFAULT_ZOOM_MAX,
+        minZoom: layer.minZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MIN,
+        maxZoom: layer.maxZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MAX,
         opacity: (layer.opacity ?? 100) / 100,
         source: new TileWMS({
           attributions: [layer.attribution ?? ''],
@@ -370,8 +424,8 @@ export class WidgetMapLayerService {
         matrixIds[z] = z;
       }
       return new Tile({
-        minZoom: layer.minZoom ?? DEFAULT_ZOOM_MIN,
-        maxZoom: layer.maxZoom ?? DEFAULT_ZOOM_MAX,
+        minZoom: layer.minZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MIN,
+        maxZoom: layer.maxZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MAX,
         opacity: (layer.opacity ?? 100) / 100,
         source: new WMTS({
           attributions: [layer.attribution ?? ''],
@@ -422,8 +476,8 @@ export class WidgetMapLayerService {
       map: Map
     ) => {
       return new VectorLayer({
-        minZoom: layer.minZoom ?? DEFAULT_ZOOM_MIN,
-        maxZoom: layer.maxZoom ?? DEFAULT_ZOOM_MAX,
+        minZoom: layer.minZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MIN,
+        maxZoom: layer.maxZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MAX,
         opacity: (layer.opacity ?? 100) / 100,
         source: new VectorSource({
           attributions: [layer.attribution ?? ''],
@@ -442,8 +496,8 @@ export class WidgetMapLayerService {
       map: Map
     ) => {
       return new VectorTileLayer({
-        minZoom: layer.minZoom ?? DEFAULT_ZOOM_MIN,
-        maxZoom: layer.maxZoom ?? DEFAULT_ZOOM_MAX,
+        minZoom: layer.minZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MIN,
+        maxZoom: layer.maxZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MAX,
         opacity: (layer.opacity ?? 100) / 100,
         source: new VectorTile({
           attributions: [layer.attribution ?? ''],
@@ -462,8 +516,8 @@ export class WidgetMapLayerService {
       map: Map
     ) => {
       return new Tile({
-        minZoom: layer.minZoom ?? DEFAULT_ZOOM_MIN,
-        maxZoom: layer.maxZoom ?? DEFAULT_ZOOM_MAX,
+        minZoom: layer.minZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MIN,
+        maxZoom: layer.maxZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MAX,
         opacity: (layer.opacity ?? 100) / 100,
         source: new XYZ({
           url: layer.url,
@@ -474,6 +528,7 @@ export class WidgetMapLayerService {
   };
 
   private layerFromGeoJsonGeometry(
+    projection: ProjectionLike,
     layer: MapWidgetMarkerLayerOptions,
     layerClassesId: string[],
     resultSet: ResultSet,
@@ -481,8 +536,8 @@ export class WidgetMapLayerService {
     type: 'point' | 'line' | 'multi-line' | 'polygon' | 'multi-polygon'
   ) {
     const vectorLayer = new VectorLayer({
-      minZoom: layer.minZoom ?? DEFAULT_ZOOM_MIN,
-      maxZoom: layer.maxZoom ?? DEFAULT_ZOOM_MAX,
+      minZoom: layer.minZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MIN,
+      maxZoom: layer.maxZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MAX,
       opacity: (layer.opacity ?? 100) / 100,
       source: new VectorSource({ attributions: [layer.attribution ?? ''] })
     });
@@ -491,14 +546,19 @@ export class WidgetMapLayerService {
       (resultSet.items[classId] || [])
         .map((item) => ({
           item,
-          location: ItemUtils.readGeometry(item, type, attributesForClass[item.oClass].locationAttribute)
+          location: WidgetMapUtils.readGeometry(
+            projection,
+            item,
+            type,
+            attributesForClass[item.oClass].locationAttribute
+          )
         }))
         .filter(({ location }) => !!location)
         .forEach(async (subItem) => {
           const itemFeature = new Feature({
             ...subItem.item,
             type,
-            geometry: subItem.location,
+            geometry: subItem.location ?? undefined,
             classicStyle: type === 'point' ? this.pointStyle : this.circleStyle,
             selectedStyle: type === 'point' ? this.selectedPointStyle : this.selectedCircleStyle
           });

@@ -795,5 +795,150 @@
         "multiValued": false
       }
     ]
+  },
+  {
+    "id": "48804bd2-e940-4ff8-8d45-62123279eb6a",
+    "name": "vcub_LAMB93",
+    "icon": null,
+    "attributes": [
+      {
+        "id": "0708d170-8467-4f9e-a589-48b4af2e4e30",
+        "name": "the_geom",
+        "field": "1c1a0637-d8b7-4962-ab95-166896378396",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "50dbfe635e_the_geom"
+      },
+      {
+        "id": "1ebc5c61-9915-4c55-8645-cc3a0ed3b013",
+        "name": "code_commun",
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "2da46d7ad0_code_commun"
+      },
+      {
+        "id": "bec05aed-2961-4c50-a0fe-2566ec657604",
+        "name": "ident",
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "5e9ce59a98_ident"
+      },
+      {
+        "id": "a4c4dba3-545c-45b8-a479-6a97a1bce490",
+        "name": "gid",
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "9f27ca8120_gid"
+      },
+      {
+        "id": "d4c53b01-4e7c-45e5-a7e7-1fc43e8a0b33",
+        "name": "geom_o",
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "2788afb70c_geom_o"
+      },
+      {
+        "id": "8718620f-8e7e-442a-a790-1f7956e4a326",
+        "name": "commune",
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "5d8b2e8c82_commune"
+      },
+      {
+        "id": "feed8c2e-e4aa-4710-80f4-71c999863b0d",
+        "name": "nbplaces",
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "3bb02d60b5_nbplaces"
+      },
+      {
+        "id": "b745e917-0550-45cd-b6c6-1ad1aae80733",
+        "name": "mdate",
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "376576db81_mdate"
+      },
+      {
+        "id": "6054c562-c785-4e70-a633-5a1c1c2df84f",
+        "name": "nbvelos",
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "d9b6186c4a_nbvelos"
+      },
+      {
+        "id": "cf1fb5e6-1dab-44b2-8a2a-628d62faf355",
+        "name": "type",
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "f9fc4dbc95_type"
+      },
+      {
+        "id": "44bf1e3f-fc9d-429f-a387-ba503fdd66bd",
+        "name": "etat",
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "5f233f3524_etat"
+      },
+      {
+        "id": "57cad86c-e77b-4e72-a9aa-309683a1aa58",
+        "name": "gml_id",
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "b909302d70_gml_id"
+      },
+      {
+        "id": "7f487c6d-c9ae-4e4d-aee9-0a884d11cd81",
+        "name": "cdate",
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "b666904d53_cdate"
+      },
+      {
+        "id": "1a7a4f98-e40a-435b-a62e-2d1e2db347c5",
+        "name": "nbclassiq",
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "372da71100_nbclassiq"
+      },
+      {
+        "id": "aa6fec5f-6e56-411b-a77b-9b690b78b50a",
+        "name": "nom",
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "6ccd89a871_nom"
+      },
+      {
+        "id": "284480f9-9d92-486b-a40c-278dffec98b6",
+        "name": "insee",
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "cf2ace7168_insee"
+      },
+      {
+        "id": "3271cd6c-f303-4e9b-85ba-31b1fd6d953d",
+        "name": "nbelec",
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "afac949678_nbelec"
+      }
+    ],
+    "slug": "ce8dc8ebe4_vcub_lamb93",
+    "storage": "POSTGIS"
   }
 ]

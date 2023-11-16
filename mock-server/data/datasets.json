@@ -163,24 +163,7 @@
     "name": "Geodata",
     "oClass": "44444444-69a6-474e-8f46-7cc8796ed151",
     "type": "OPEN",
-    "metadata": [
-      {
-        "metadataDef": {
-          "id": "9d9aba2c-fc3a-44d7-a508-287ad2d8cbb0",
-          "name": "_geoNamespace",
-          "type": "string"
-        },
-        "value": "fntp"
-      },
-      {
-        "metadataDef": {
-          "id": "7ce12610-e031-403c-a6e0-b8147979f657",
-          "name": "_geoKey",
-          "type": "string"
-        },
-        "value": "troncon_de_route"
-      }
-    ]
+    "metadata": []
   },
   {
     "id": "meteo-cifi-cdat-acd2-51ccec998307",
@@ -205,5 +188,12 @@
         "value": "Batiments Publics"
       }
     ]
+  },
+  {
+    "id": "dataset-lambert-93",
+    "name": "VCUB Lambert 93",
+    "oClass": "48804bd2-e940-4ff8-8d45-62123279eb6a",
+    "type": "OPEN",
+    "metadata": []
   }
 ]

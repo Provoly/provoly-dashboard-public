@@ -13,7 +13,7 @@ import {
   MapWidgetMarkerLayerOptions
 } from '@provoly/dashboard';
 import { combineLatest, filter, map, Observable } from 'rxjs';
-import { geometryForLayer } from '../utils/widget-map.utils';
+import { WidgetMapUtils } from '../utils/widget-map.utils';
 
 @Pipe({
   name: 'geometryFieldsFor'
@@ -37,7 +37,7 @@ export class GeometryFieldsForPipe implements PipeTransform {
       | MapWidgetGeometryLayerOptions;
 
     const limitToClasses = args[0].classes as string[];
-    const type = geometryForLayer({ type: args[0].type });
+    const type = WidgetMapUtils.geometryForLayer({ type: args[0].type });
 
     return combineLatest([this.classes$, this.fields$]).pipe(
       filter(([classes, fields]) => !!classes && !!fields && classes.length > 0 && fields.length > 0),

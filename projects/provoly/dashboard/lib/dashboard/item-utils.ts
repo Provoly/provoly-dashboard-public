@@ -1,10 +1,7 @@
-import { GeoJSON } from 'ol/format';
-import Geometry from 'ol/geom/Geometry';
-import { fromLonLat } from 'ol/proj';
 import { AttributeMultipleValue, AttributeSimpleValue, Item, ValueType } from '../core/model/item.interface';
 import { ResultSet } from '../core/model/result-set.interface';
 import { Attribute, Class } from '../core/store/class/class.interface';
-import { Field, FieldType } from '../core/store/field/field.interface';
+import { Field } from '../core/store/field/field.interface';
 
 export interface OlFeature {
   get(key: string): any;
@@ -13,79 +10,6 @@ export interface OlFeature {
 const hiddenFieldText = '*********';
 
 export class ItemUtils {
-  static readGeometry<T extends 'point' | 'line' | 'multi-line' | 'polygon' | 'multi-polygon'>(
-    item: Item,
-    type: T,
-    attribute: Attribute | undefined
-  ): Geometry {
-    if (!attribute || !item.attributes[attribute.name]) {
-      // @ts-ignore
-      return null;
-    }
-
-    let value = item.attributes[attribute.name];
-    if (value.type === 'MULTI') {
-      value = value.values[0];
-    }
-    return new GeoJSON().readGeometry(this.projectGeometry(value.value as any));
-  }
-
-  static projectGeometry(geometry: {
-    type: string;
-    coordinates: [number, number] | [number, number][] | [number, number][][] | [number, number][][][];
-  }): any {
-    return {
-      ...geometry,
-      coordinates:
-        typeof geometry.coordinates[0] === 'number'
-          ? fromLonLat(geometry.coordinates as [number, number])
-          : (geometry.coordinates as [number, number][] | [number, number][][] | [number, number][][][]).map(
-              (sub) => this.projectGeometry({ type: '', coordinates: sub }).coordinates
-            )
-    };
-  }
-
-  static readLocations<T extends 'point' | 'line' | 'polygon'>(
-    item: Item,
-    type: T
-  ): T extends 'point' ? [number, number][] : [number, number][][] {
-    const points = [] as any;
-    Object.entries(item.attributes).forEach(([key, value]) => {
-      if (value.type === 'VALUE') {
-        this.extractGeometries(value, points, type);
-      } else {
-        value.values.forEach((value) => {
-          this.extractGeometries(value, points, type);
-        });
-      }
-    });
-    return points;
-  }
-
-  private static extractGeometries(value: AttributeSimpleValue, points: any[], type: 'point' | 'line' | 'polygon') {
-    const valueSimple = value.value;
-    if (typeof valueSimple !== 'string' && typeof valueSimple !== 'number') {
-      if (type === 'point' && valueSimple.type === FieldType.POINT) {
-        points.push(valueSimple.coordinates);
-      }
-      if (type === 'point' && valueSimple.type === FieldType.MULTIPOINT) {
-        points.push(...valueSimple.coordinates);
-      }
-      if (type === 'line' && valueSimple.type === FieldType.LINE) {
-        points.push(valueSimple.coordinates);
-      }
-      if (type === 'line' && valueSimple.type === FieldType.MULTILINE) {
-        points.push(...valueSimple.coordinates);
-      }
-      if (type === 'polygon' && valueSimple.type === FieldType.POLYGON) {
-        points.push(valueSimple.coordinates);
-      }
-      if (type === 'polygon' && valueSimple.type === FieldType.MULTIPOLYGON) {
-        points.push(...valueSimple.coordinates);
-      }
-    }
-  }
-
   static getAttributeValue(
     item: Item | OlFeature,
     attribute: Attribute | string | undefined

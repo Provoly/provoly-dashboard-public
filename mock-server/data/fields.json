@@ -8,7 +8,7 @@
     "id": "59853619-9773-418a-ace5-70b80fd4dc74",
     "name": "location",
     "type": "Point",
-    "crs" : "EPSG:4326"
+    "crs": "EPSG:4326"
   },
   {
     "id": "59853619-9773-418a-ace5-70b80fd4dc75",
@@ -229,7 +229,7 @@
     "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08-station_location",
     "name": "station_location",
     "type": "Point",
-    "crs" : "EPSG:4326"
+    "crs": "EPSG:4326"
   },
   {
     "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08-geo_point_2d",
@@ -260,38 +260,38 @@
     "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-point",
     "name": "position",
     "type": "Point",
-    "crs" : "EPSG:4326"
+    "crs": "EPSG:4326"
   },
   {
     "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-trajet",
     "name": "trajet",
     "type": "LineString",
-    "crs" : "EPSG:4326"
+    "crs": "EPSG:4326"
   },
   {
     "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-trajetM",
     "name": "multi-trajet",
     "type": "MultiLineString",
-    "crs" : "EPSG:4326"
+    "crs": "EPSG:4326"
   },
   {
     "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-zone",
     "name": "zone",
     "type": "Polygon",
-    "crs" : "EPSG:4326"
+    "crs": "EPSG:4326"
   },
   {
     "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56-zoneM",
     "name": "multi-zone",
     "type": "MultiPolygon",
-    "crs" : "EPSG:4326"
+    "crs": "EPSG:4326"
   },
   {
     "id": "7000506c-049b-47d3-b92d-a2e823b46b80",
     "name": "position",
     "type": "Point",
     "slug": "8cecdcb4fd_position",
-    "crs" : "EPSG:4326"
+    "crs": "EPSG:4326"
   },
   {
     "id": "872ff200-b4cc-47e6-a45b-fe3ea9c1ab9f",
@@ -312,6 +312,20 @@
     "name": "Date origine",
     "type": "instant",
     "slug": "14dc8df89b_date-origine",
+    "crs": null
+  },
+  {
+    "id": "1c1a0637-d8b7-4962-ab95-166896378396",
+    "name": "Position (Lambert93)",
+    "type": "Point",
+    "slug": "2ea9556a7f_position-lambert93",
+    "crs": "EPSG:2154"
+  },
+  {
+    "id": "c23fff92-0d10-4f5a-91f5-80405a058291",
+    "name": "ckdo_keyword",
+    "type": "keyword",
+    "slug": "01fa08f057_ckdo_keyword",
     "crs": null
   }
 ]

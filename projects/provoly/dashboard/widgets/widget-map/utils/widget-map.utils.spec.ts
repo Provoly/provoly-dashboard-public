@@ -1,5 +1,7 @@
-import { Class, Field, FieldType, MapWidgetLayerOptions, ResultSet } from '@provoly/dashboard';
-import { assignLayersOrder, populateIntensityAttribute, populateLocationAttribute } from './widget-map.utils';
+import { Attribute, Class, Field, FieldType, Item, MapWidgetLayerOptions, ResultSet } from '@provoly/dashboard';
+import { WidgetMapUtils } from '@provoly/dashboard/widgets/widget-map';
+import { get } from 'ol/proj';
+import { Point } from 'ol/geom';
 
 const rs = {
   items: {
@@ -84,15 +86,15 @@ describe('WidgetMapUtils functions', () => {
   describe('populateLocationAttribute', () => {
     it('should select latitude and latitude among a list', () => {
       const layer = { type: 'heatmap' } as MapWidgetLayerOptions;
-      populateLocationAttribute(layer, rs, classes, fields);
+      WidgetMapUtils.populateLocationAttribute(layer, rs, classes, fields);
       expect(layer).toEqual({ ...layer, attribute: 'loc' });
     });
   });
   describe('populateIntensityAttribute', () => {
     it('should select intensity among a list', () => {
       const layer = { type: 'heatmap' } as MapWidgetLayerOptions;
-      populateLocationAttribute(layer, rs, classes, fields);
-      populateIntensityAttribute(layer, rs, classes, fields);
+      WidgetMapUtils.populateLocationAttribute(layer, rs, classes, fields);
+      WidgetMapUtils.populateIntensityAttribute(layer, rs, classes, fields);
       expect(layer).toEqual({ ...layer, attribute: 'loc', intensityAttribute: 'intensity' });
     });
   });
@@ -100,7 +102,7 @@ describe('WidgetMapUtils functions', () => {
   describe('getLayerOrder', () => {
     it('order case 1', () => {
       expect(
-        assignLayersOrder([
+        WidgetMapUtils.assignLayersOrder([
           { type: 'heatmap', order: 1 },
           { type: 'point', order: undefined },
           { type: 'line', order: 3 },
@@ -116,7 +118,7 @@ describe('WidgetMapUtils functions', () => {
 
     it('order case 2', () => {
       expect(
-        assignLayersOrder([
+        WidgetMapUtils.assignLayersOrder([
           { type: 'bubble', order: 10 },
           { type: 'point', order: undefined },
           { type: 'marker', order: undefined }
@@ -130,7 +132,7 @@ describe('WidgetMapUtils functions', () => {
 
     it('order case 3', () => {
       expect(
-        assignLayersOrder([
+        WidgetMapUtils.assignLayersOrder([
           { type: 'bubble', order: undefined },
           { type: 'point', order: undefined },
           { type: 'marker', order: 1 }
@@ -144,7 +146,7 @@ describe('WidgetMapUtils functions', () => {
 
     it('order case 4', () => {
       expect(
-        assignLayersOrder([
+        WidgetMapUtils.assignLayersOrder([
           { type: 'bubble', order: undefined },
           { type: 'marker', order: 1 },
           { type: 'point', order: undefined },
@@ -162,11 +164,60 @@ describe('WidgetMapUtils functions', () => {
 
     it('order case 5', () => {
       expect(
-        assignLayersOrder([{ type: 'bubble', background: true }, { type: 'point' }] as MapWidgetLayerOptions[])
+        WidgetMapUtils.assignLayersOrder([
+          { type: 'bubble', background: true },
+          { type: 'point' }
+        ] as MapWidgetLayerOptions[])
       ).toEqual([
         { order: 0, type: 'point' },
         { background: true, order: 9999, type: 'bubble' }
       ]);
+    });
+  });
+
+  describe('readGeometry', () => {
+    const item: Item = {
+      id: 'a',
+      oClass: 'aaa',
+      attributes: {
+        integer: { value: 5, type: 'VALUE', visible: true },
+        decimal: { value: 3.4, type: 'VALUE', visible: true },
+        string: { value: 'a', type: 'VALUE', visible: true },
+        lat: { value: 44.5, type: 'VALUE', visible: true },
+        lng: { value: -0.88, type: 'VALUE', visible: true },
+        location: {
+          type: 'VALUE',
+          value: {
+            type: FieldType.POINT,
+            coordinates: [44.6, -0.89]
+          },
+          visible: true
+        },
+        multi: {
+          type: 'MULTI',
+          values: [
+            { value: 44.6, type: 'VALUE', visible: true },
+            { value: -0.89, type: 'VALUE', visible: true }
+          ]
+        }
+      }
+    };
+
+    it('should give [0,0] if unknown property', () => {
+      expect(WidgetMapUtils.readGeometry(get('EPSG:3857')!, item, 'point', undefined as unknown as Attribute)).toEqual(
+        null
+      );
+    });
+    it('should read from a single value', () => {
+      const geometry = WidgetMapUtils.readGeometry(get('EPSG:3857')!, item, 'point', {
+        id: 'sxxx',
+        name: 'location',
+        field: 'b',
+        multiValued: true
+      });
+      expect(geometry).toBeDefined();
+      expect(geometry).not.toBeNull();
+      expect((geometry as Point).getCoordinates()).toEqual([4964849.289380002, -99078.33127925375]);
     });
   });
 });

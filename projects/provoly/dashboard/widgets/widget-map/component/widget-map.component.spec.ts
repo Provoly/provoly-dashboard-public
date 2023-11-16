@@ -33,10 +33,10 @@ import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockGeometryFieldsForPipe } from '../../../mock/pipe/mock-numeric-fields-for.pipe';
 import { MockTranslateIdPipe } from '../../../mock/pipe/mock-translate-id.pipe';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
-import { BACKGROUND_ORDER } from '../utils/widget-map.utils';
 import { mapUtilsData } from '../utils/widget-map.utils.spec';
 
 import { WidgetMapComponent } from './widget-map.component';
+import { WidgetMapUtils } from '@provoly/dashboard/widgets/widget-map';
 
 describe('WidgetMapComponent', () => {
   let component: WidgetMapComponent;
@@ -590,7 +590,7 @@ describe('WidgetMapComponent', () => {
         {
           type: 'wms',
           background: true,
-          order: BACKGROUND_ORDER
+          order: WidgetMapUtils.BACKGROUND_ORDER
         }
       ],
       style: 'style1',

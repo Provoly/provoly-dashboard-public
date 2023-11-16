@@ -92,21 +92,10 @@ import {
 } from 'rxjs';
 import { InteractionManager } from '../interaction/interaction-manager.class';
 import { CqlUtils } from '../utils/cql-utils.class';
-import {
-  assignLayersOrder,
-  DEFAULT_MAP_CENTER,
-  DEFAULT_ZOOM_MAX,
-  DEFAULT_ZOOM_MIN,
-  DEFAULT_ZOOM_START,
-  exportMapAsImage,
-  getLinkFeature,
-  getMapAsPng,
-  populateIntensityAttribute,
-  populateLocationAttribute
-} from '../utils/widget-map.utils';
 import { XMLUtils } from '../utils/xml-utils.class';
 import { WidgetMapLayerService } from './widget-map-layer.service';
 import MapboxVectorLayer from 'ol/layer/MapboxVector';
+import { WidgetMapUtils } from '../utils/widget-map.utils';
 
 export const TOOLTIP_PADDING = 15;
 
@@ -416,8 +405,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         ];
 
         autoOptions.layers?.forEach((layer, i) => {
-          populateLocationAttribute(layer, resultSet, classes, fields);
-          populateIntensityAttribute(layer, resultSet, classes, fields);
+          WidgetMapUtils.populateLocationAttribute(layer, resultSet, classes, fields);
+          WidgetMapUtils.populateIntensityAttribute(layer, resultSet, classes, fields);
           if (autoOptions.attributions) {
             layer.attribution = layer.attribution ?? '';
           }
@@ -471,7 +460,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           }
         }
 
-        autoOptions.layers = assignLayersOrder(autoOptions.layers);
+        autoOptions.layers = WidgetMapUtils.assignLayersOrder(autoOptions.layers);
 
         return autoOptions;
       }),
@@ -585,10 +574,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.options$
       .pipe(
         map((options) => ({
-          center: fromLonLat(options.center ?? DEFAULT_MAP_CENTER),
-          maxZoom: options.zoom?.max ?? DEFAULT_ZOOM_MAX,
-          minZoom: options.zoom?.min ?? DEFAULT_ZOOM_MIN,
-          zoom: options.zoom?.start ?? DEFAULT_ZOOM_START
+          center: fromLonLat(options.center ?? WidgetMapUtils.DEFAULT_MAP_CENTER),
+          maxZoom: options.zoom?.max ?? WidgetMapUtils.DEFAULT_ZOOM_MAX,
+          minZoom: options.zoom?.min ?? WidgetMapUtils.DEFAULT_ZOOM_MIN,
+          zoom: options.zoom?.start ?? WidgetMapUtils.DEFAULT_ZOOM_START
         })),
         distinctUntilChanged()
       )
@@ -718,7 +707,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
             const source = features.find((f: Feature<Point | Circle>) => f.get('id') === relation.source);
             const dest = features.find((f: Feature<Point | Circle>) => f.get('id') === relation.destination);
             if (!!source && !!dest) {
-              hasRelationLayer.getSource()?.addFeature(getLinkFeature(relation, source, dest));
+              hasRelationLayer.getSource()?.addFeature(WidgetMapUtils.getLinkFeature(relation, source, dest));
             }
           });
         }
@@ -1314,11 +1303,11 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   export() {
-    exportMapAsImage(this.map, 'map.png');
+    WidgetMapUtils.exportMapAsImage(this.map, 'map.png');
   }
 
   override toImage(): Promise<string> {
-    return getMapAsPng(this.map);
+    return WidgetMapUtils.getMapAsPng(this.map);
   }
 
   changeClustered(layer: MapWidgetMarkerLayerOptions, $event: boolean) {

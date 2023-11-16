@@ -1,6 +1,5 @@
 import { FieldType } from '@provoly/dashboard';
 import { Item } from '../core/model/item.interface';
-import { Attribute } from '../core/store/class/class.interface';
 import { ItemUtils } from './item-utils';
 
 const item: Item = {
@@ -67,23 +66,6 @@ describe('ItemUtils functions', () => {
           multiValued: true
         })
       ).toEqual([44.6, -0.89]);
-    });
-  });
-  describe('readGeometry', () => {
-    it('should give [0,0] if unknown property', () => {
-      expect(ItemUtils.readGeometry(item, 'point', undefined as unknown as Attribute)).toEqual(null);
-    });
-    it('should read from a single value', () => {
-      expect(
-        ItemUtils.readGeometry(item, 'point', {
-          id: 'sxxx',
-          name: 'location',
-          field: 'b',
-          multiValued: true
-        })
-          // @ts-ignore
-          .getCoordinates()
-      ).toEqual([4964849.289380002, -99078.33127925375]);
     });
   });
 });
