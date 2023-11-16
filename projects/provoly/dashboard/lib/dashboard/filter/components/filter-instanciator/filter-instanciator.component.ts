@@ -4,6 +4,7 @@ import {
   Component,
   Injector,
   Input,
+  OnDestroy,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
@@ -18,7 +19,7 @@ import { BaseFilterComponent } from '../../base-filter.component';
   selector: 'pry-filter-instanciator',
   templateUrl: './filter-instanciator.component.html'
 })
-export class FilterInstanciatorComponent extends SubscriptionnerDirective implements AfterViewInit {
+export class FilterInstanciatorComponent extends SubscriptionnerDirective implements AfterViewInit, OnDestroy {
   filter$ = new BehaviorSubject<Filter | null>(null);
   private applySub?: Subscription;
   private currentInstance?: BaseFilterComponent;
@@ -62,5 +63,10 @@ export class FilterInstanciatorComponent extends SubscriptionnerDirective implem
         }
       })
     );
+  }
+
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    this.applySub?.unsubscribe();
   }
 }
