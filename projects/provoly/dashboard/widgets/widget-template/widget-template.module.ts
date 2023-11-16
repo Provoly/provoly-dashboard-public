@@ -7,6 +7,7 @@ import {
   BaseWidgetModule,
   PryCoreModule,
   PryDashboardModule,
+  PryI18nModule,
   PryIconModule,
   PrySelectModule,
   PryToggleModule
@@ -26,7 +27,8 @@ import { PryWidgetTemplateCssComponent } from './style/css.component';
     PrySelectModule,
     PryIconModule,
     PryCheckboxModule,
-    PryToggleModule
+    PryToggleModule,
+    PryI18nModule
   ],
   exports: [WidgetTemplateComponent]
 })

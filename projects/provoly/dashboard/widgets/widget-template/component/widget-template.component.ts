@@ -17,11 +17,7 @@ export class WidgetTemplateComponent extends DataWidgetComponent {
   id: number;
   static idGenerator = 0;
 
-  constructor(
-    store: Store<any>,
-    el: ElementRef,
-    private sanitizer: DomSanitizer
-  ) {
+  constructor(store: Store<any>, el: ElementRef, private sanitizer: DomSanitizer) {
     super(store, el);
     this.id = WidgetTemplateComponent.idGenerator++;
     this.options$ = this.manifest$.pipe(map((manifest) => manifest.options as TemplateWidgetOptions));
@@ -104,5 +100,15 @@ export class WidgetTemplateComponent extends DataWidgetComponent {
     const scoped = css.replace(/([},] ?)/g, `$1${scope} `).replace(new RegExp(scope + ' $'), '');
 
     return scope + ' ' + scoped;
+  }
+
+  changeHtml($event: Event) {
+    // @ts-ignore
+    this.optionsCopy.html = $event.currentTarget.value;
+  }
+
+  changeCss($event: Event) {
+    // @ts-ignore
+    this.optionsCopy.html = $event.currentTarget.value;
   }
 }
