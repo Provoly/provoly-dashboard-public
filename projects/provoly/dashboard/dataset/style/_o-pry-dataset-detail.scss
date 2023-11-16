@@ -75,6 +75,10 @@ pry-dataset-detail {
   padding-top: toRem(20);
 }
 
+tr {
+  height: toRem(30);
+}
+
 td {
   .a-btn + .a-btn {
     margin-left: toRem(10);

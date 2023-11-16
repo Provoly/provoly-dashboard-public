@@ -1,18 +1,22 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Filter } from '../../core/model/filter.interface';
 import { SubscriptionnerDirective } from '../components/subscriptionner.directive';
 import { DashboardActions } from '../store/dashboard.actions';
 
 @Component({ selector: 'pry-base-filter', template: '' })
-export class BaseFilterComponent extends SubscriptionnerDirective {
+export class BaseFilterComponent extends SubscriptionnerDirective implements OnInit {
   @Input() filter?: Filter;
   type!: string;
-  private _value: any;
+  protected _value: any;
 
   constructor(protected store: Store) {
     super();
     this.type = 'base';
+  }
+
+  ngOnInit() {
+    this._value = this.filter?.value;
   }
 
   updateFilter(value: any) {

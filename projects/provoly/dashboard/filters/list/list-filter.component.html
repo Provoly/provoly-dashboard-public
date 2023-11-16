@@ -1,5 +1,5 @@
 <pry-list-filter-css></pry-list-filter-css>
-<div class="m-filter__input-wrapper" *ngIf="filter">
+<div class="m-filter__input-wrapper m-filter__input-wrapper--dropdown" *ngIf="filter">
   <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
   <pry-select
     [id]="filter.name"

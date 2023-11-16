@@ -15,36 +15,6 @@
     }
   }
 
-  &__input-wrapper {
-    display: flex;
-    border-radius: toRem(5);
-    padding: toRem(2) toRem(10);
-    align-items: center;
-
-    &:has(.pry-select) {
-      padding: toRem(1) toRem(10);
-    }
-
-    .ng-select-container {
-      border: none;
-      min-width: toRem(100);
-    }
-
-    .ng-select.ng-select-single .ng-select-container {
-      min-height: 22px;
-      height: 22px;
-    }
-
-    .ng-dropdown-panel.ng-select-bottom {
-      margin-top: 2px;
-    }
-
-    .ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container{
-      border: none transparent;
-      box-shadow: none;
-    }
-  }
-
   &__label {
     cursor: none;
     margin: 0;
@@ -63,9 +33,39 @@
     margin: 0 toRem(5);
   }
 
+  &__input-wrapper {
+    display: flex;
+    border-radius: toRem(5);
+    padding: toRem(4) toRem(10);
+    align-items: center;
+
+    &--dropdown {
+      padding: toRem(3) toRem(10);
+    }
+
+    .ng-select-container {
+      border: none;
+      min-width: toRem(100);
+    }
+
+    .ng-select.ng-select-single .ng-select-container {
+      min-height: 22px;
+      height: 22px;
+    }
+
+    .ng-dropdown-panel.ng-select-bottom {
+      margin-top: 3px;
+    }
+
+    .ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container{
+      border: none transparent;
+      box-shadow: none;
+    }
+  }
+
   &__clear-wrapper {
     position: absolute;
-    bottom: toRem(4);
+    bottom: 0.4rem;
     cursor: pointer;
     -webkit-user-select: none;
     user-select: none;

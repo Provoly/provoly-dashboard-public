@@ -20,11 +20,12 @@ export class DateFilterComponent extends BaseFilterComponent implements Subscrip
     this.type = 'date';
   }
 
-  ngOnInit() {
+  override ngOnInit() {
+    super.ngOnInit();
     if (this.filter?.hasDateRange) {
       this.date1 = (this.filter?.value ?? '').toString().split(',')[0];
       this.date2 = (this.filter?.value ?? '').toString().split(',')[1];
-      // subscription responsible for sending api requests
+      // subscription responsible for dispatching filter value to the store
       this.subscriptions.add(
         combineLatest([
           this.date1$.pipe(debounceTime(1000), startWith(this.date1)),
@@ -57,6 +58,10 @@ export class DateFilterComponent extends BaseFilterComponent implements Subscrip
 
   setFilter(value: string) {
     super.updateFilter(value);
+  }
+
+  changeValue($event: string) {
+    this.value$.next($event);
   }
 
   clearDate(index: number) {

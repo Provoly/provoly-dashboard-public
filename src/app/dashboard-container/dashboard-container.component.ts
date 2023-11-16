@@ -52,6 +52,7 @@ export class DashboardContainerComponent extends SubscriptionnerDirective {
 
   filter() {
     this.apply$.next();
+    this.store.dispatch(DashboardActions.dispatchFilters());
   }
 
   clearFilters() {

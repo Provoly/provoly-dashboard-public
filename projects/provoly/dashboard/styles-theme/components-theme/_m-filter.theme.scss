@@ -1,15 +1,30 @@
-/* Theme - Atom a-icon */
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme - Molecule m-filter */
 
 .m-filter {
   display: flex;
   align-items: center;
 
   &__input-wrapper {
-    border: 1px #BCCAD8 solid;
-    background: #ffffff;
+    border: 1px solid themed($theme-map, 'color', 'primary', 400);
+    color: themed($theme-map, 'color', 'primary', 700);
+    background-color: themed($theme-map, 'color', 'primary', 'contrast', 700);
 
     .pry-select {
       font-size: 12px;
+    }
+
+    &:has(input:focus) {
+      outline: 2px solid themed($theme-map, 'color', 'accent', 600);
+      outline-offset: toRem(2);
+      border-color: themed($theme-map, 'color', 'accent', 600);
+    }
+
+    &:has(input:not(focus)) {
+      outline:none;
+      border-color: themed($theme-map, 'color', 'primary', 400);
     }
   }
 
@@ -17,7 +32,7 @@
     background: transparent;
     font-size: 12px;
     font-weight: bold;
-    color: #424B5A;
+    color: #424B5A; // color for label taken from figma
   }
 
   &__input {

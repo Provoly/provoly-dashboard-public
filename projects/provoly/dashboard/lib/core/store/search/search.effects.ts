@@ -40,7 +40,7 @@ export class SearchEffects {
       this.actions$.pipe(
         ofType(SearchActions.getDatasourceItems),
         filter((props) => props.id !== DEFAULT_NAMED_QUERY_ID && props.id !== EXPLORE_NAMED_QUERY_ID),
-        tap((props) => document.dispatchEvent(new CustomEvent('datasourceRefresh', { detail: props.id })))
+        tap((props) => window.dispatchEvent(new CustomEvent('datasourceRefresh', { detail: props.id })))
       ),
     { dispatch: false }
   );

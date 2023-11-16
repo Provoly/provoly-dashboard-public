@@ -663,13 +663,6 @@ export class DashboardEffects {
     )
   );
 
-  updateViewAfterFilterValueUpdate$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(DashboardActions.updateFilterValue),
-      map((action) => SearchActions.getDatasourceItems({ id: action.datasourceId }))
-    )
-  );
-
   dispatchFilters$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.dispatchFilters, DashboardActions.clearAllFilterValues),
@@ -679,7 +672,7 @@ export class DashboardEffects {
         this.store.select(DashboardSelectors.resultSetsParams),
         this.store.select(DashboardSelectors.quickOrder)
       ),
-      switchMap(([action, filters, resultSets, resultSetsParams, quickOrder ]) => {
+      mergeMap(([action, filters, resultSets, resultSetsParams, quickOrder ]) => {
         return [
           ...new Set(
             filters

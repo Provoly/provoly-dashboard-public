@@ -4,14 +4,14 @@
       <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
       <input
         class="m-filter__input"
-        [ngModel]="filter.value"
-        (ngModelChange)="this.value$.next($event)"
+        [ngModel]="_value"
+        (ngModelChange)="valueChange($event)"
         [id]="filter.name"
         type="text"
       />
     </div>
     <span
-      *ngIf="!!filter.value"
+      *ngIf="!!_value"
       class="m-filter__clear-wrapper m-filter__clear-wrapper--text"
       (click)="setFilter('')"
       [title]="'@pry.filters.clear' | i18n"

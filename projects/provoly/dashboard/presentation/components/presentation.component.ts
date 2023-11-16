@@ -132,7 +132,6 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
       });
     this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: DisplayMode.CONSULT }));
     this.store.dispatch(DashboardActions.followManifestRoute());
-    this.store.dispatch(DashboardActions.dispatchFilters());
     this.ngZone.run(() => {
       this.router?.navigateByUrl(this.consultStartUrl);
     });
@@ -163,7 +162,6 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     this.store.dispatch(DashboardActions.selectPresentation({ presentation, viewMode: ViewMode.EDITION }));
     this.store.dispatch(DashboardActions.fetchStaticManifest({ id: presentation.id }));
     this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: DisplayMode.EDIT }));
-    this.store.dispatch(DashboardActions.dispatchFilters());
   }
 
   delete(id: string) {
