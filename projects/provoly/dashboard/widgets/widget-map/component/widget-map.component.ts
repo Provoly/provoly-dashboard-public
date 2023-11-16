@@ -88,7 +88,8 @@ import {
   mergeMap,
   Observable,
   of,
-  startWith
+  startWith,
+  switchMap
 } from 'rxjs';
 import { InteractionManager } from '../interaction/interaction-manager.class';
 import { CqlUtils } from '../utils/cql-utils.class';
@@ -730,7 +731,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       this.fields$,
       this.datasourceFilters$
     ]).pipe(
-      mergeMap(([layers, classes, fields, filters]) =>
+      debounceTime(100),
+      switchMap(([layers, classes, fields, filters]) =>
         combineLatest(
           layers
             .map((layer) =>
