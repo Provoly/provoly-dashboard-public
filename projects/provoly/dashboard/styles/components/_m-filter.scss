@@ -45,12 +45,12 @@
 
     .ng-select-container {
       border: none;
-      min-width: toRem(100);
+      min-width: toRem(150);
     }
 
     .ng-select.ng-select-single .ng-select-container {
-      min-height: 22px;
-      height: 22px;
+      min-height: toRem(22);
+      height: toRem(22);
     }
 
     .ng-dropdown-panel.ng-select-bottom {
@@ -60,6 +60,10 @@
     .ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container{
       border: none transparent;
       box-shadow: none;
+    }
+
+    .ng-option-label {
+      font-size: toRem(12);
     }
   }
 
