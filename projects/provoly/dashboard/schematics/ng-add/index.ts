@@ -77,7 +77,7 @@ function widgetImports(options: ProjectSetupOptions, context: SchematicContext, 
       path: '@provoly/dashboard/widgets/widget-aggregated-chart',
       moduleName: 'WidgetAggregatedChartModule',
       type: 'chart',
-      autoLoadDatasource: 'none'
+      autoLoadDatasource: 'aggregate'
     },
     {
       name: 'widget-detail',

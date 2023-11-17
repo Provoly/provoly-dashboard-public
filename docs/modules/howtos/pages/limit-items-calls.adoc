@@ -7,6 +7,7 @@ Pour ce faire, on peut ajouter à la configuration d'un widget, l'option `autoLo
 * `none`: Aucun item des datasources liées à ce widget ne sont récupérés lors de son affichage.
 * `geo`: Seuls les items des datasources géographiques liées à ce widget ne sont récupérés lors de son affichage.
 * `all`: Seuls les items des datasources non-géographiques liées à ce widget ne sont récupérés lors de son affichage.
+* `aggregate`: Seules les aggrégations calculées sont à rafraîchir pour ce widget.
 
 (Les datasources géographiques sont celles qui ont des metadata _geoKey and _geoNamespace définies)
 
@@ -22,7 +23,7 @@ PryDashboardModule.forRoot(
             import('@provoly/dashboard/widgets/widget-aggregated-chart').then((module) =>
               widgetLoader(module, 'WidgetAggregatedChartModule')
             ),
-          autoLoadDatasource: 'none'
+          autoLoadDatasource: 'aggregate'
         },
         map: {
           name: 'map',

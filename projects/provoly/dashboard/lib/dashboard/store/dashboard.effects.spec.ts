@@ -62,6 +62,10 @@ describe('DashboardEffects', () => {
             datasourcesToAutoLoad: (manifest: WidgetManifest) =>
               Array.isArray(manifest.datasource ?? [])
                 ? ((manifest.datasource ?? []) as string[])
+                : ([manifest.datasource] as string[]),
+            aggregatesToAutoLoad: (manifest: WidgetManifest) =>
+              Array.isArray(manifest.datasource ?? [])
+                ? ((manifest.datasource ?? []) as string[])
                 : ([manifest.datasource] as string[])
           }
         },
@@ -397,12 +401,18 @@ describe('DashboardEffects', () => {
         a: DashboardActions.assertResultSets({})
       });
 
-      const expected$ = hot('--(abcde)-', {
+      const expected$ = hot('--(abcdefghijk)-', {
         a: SearchActions.getDatasourceItems({ id: 'a' }),
         b: SearchActions.getDatasourceItems({ id: 'b' }),
         c: SearchActions.getDatasourceItems({ id: 'already-but-wrong-filter' }),
         d: SearchActions.getDatasourceItems({ id: 'already-but-no-previous-filter' }),
-        e: SearchActions.getDatasourceItems({ id: 'c' })
+        e: SearchActions.getDatasourceItems({ id: 'c' }),
+        f: DashboardActions.triggerAggregate({ id: 'a' }),
+        g: DashboardActions.triggerAggregate({ id: 'b' }),
+        h: DashboardActions.triggerAggregate({ id: 'already' }),
+        i: DashboardActions.triggerAggregate({ id: 'already-but-wrong-filter' }),
+        j: DashboardActions.triggerAggregate({ id: 'already-but-no-previous-filter' }),
+        k: DashboardActions.triggerAggregate({ id: 'c' })
       });
       expect(effects.assertResultSets$).toBeObservable(expected$);
     });

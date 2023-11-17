@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { combineLatest, merge, of, startWith, switchMap, throwError } from 'rxjs';
+import { combineLatest, merge, of, startWith, throwError } from 'rxjs';
 import { catchError, debounceTime, delay, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 import {
   PryDialogConfirmComponent,
@@ -17,7 +17,7 @@ import { ChartWidgetOptions } from '../../core/model/widget-chart-manifest.inter
 import { MapWidgetOptions } from '../../core/model/widget-map-manifest.interface';
 import { ItemService } from '../../core/store/item/item.service';
 import { SearchActions } from '../../core/store/search/search.actions';
-import { EXPLORE_NAMED_QUERY_ID } from '../../core/store/search/search.constants';
+import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from '../../core/store/search/search.constants';
 import { SearchService } from '../../core/store/search/search.service';
 import { ToolboxManifestService } from '../../core/toolbox/toolbox-manifest.service';
 import { BusService } from '../action-bus/service/bus.service';
@@ -189,7 +189,11 @@ export class DashboardEffects {
 
   assertResultSets$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DashboardActions.assertResultSets),
+      ofType(
+        DashboardActions.assertResultSets,
+        DashboardActions.dispatchFilters,
+        DashboardActions.clearAllFilterValues
+      ),
       withLatestFrom(
         this.store.select(DashboardSelectors.globalManifest),
         this.store.select(DashboardSelectors.resultSets),
@@ -197,8 +201,22 @@ export class DashboardEffects {
         this.store.select(DashboardSelectors.quickOrder)
       ),
       mergeMap(([action, manifest, resultSets, resultSetsParams, quickOrder]) => {
+        // @ts-ignore
         if (!action.id) {
-          return (
+          // First send aggregate updates
+          const toAggregateActions = (
+            [
+              ...new Set(
+                manifest.windows
+                  .map((winManifest) => (winManifest ?? {}).widgets ?? [])
+                  .reduce((p, c) => [...p, ...c], [])
+                  .map((widManifest) => this.widgetFactoryService.aggregatesToAutoLoad(widManifest))
+                  .reduce((p, c) => [...p, ...c], [] as string[])
+              )
+            ] as string[]
+          ).map((ds) => DashboardActions.triggerAggregate({ id: ds }));
+
+          const toItemsActions = (
             [
               ...new Set(
                 manifest.windows
@@ -217,14 +235,28 @@ export class DashboardEffects {
                   resultSetsParams[resultSet] !== this.searchService.getItemsSerializedParams(resultSet, quickOrder))
             )
             .map((resultSet) => SearchActions.getDatasourceItems({ id: resultSet }));
+
+          return [...toItemsActions, ...toAggregateActions];
         } else {
+          // @ts-ignore
           if (!resultSets[action.id]) {
+            // @ts-ignore
             return [SearchActions.getDatasourceItems({ id: action.id as string })];
           }
           return [];
         }
       })
     )
+  );
+
+  sendAggregatesEvent$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(DashboardActions.triggerAggregate),
+        filter((action) => action.id !== DEFAULT_NAMED_QUERY_ID && action.id !== EXPLORE_NAMED_QUERY_ID),
+        tap((action) => window.dispatchEvent(new CustomEvent('datasourceRefresh', { detail: action.id })))
+      ),
+    { dispatch: false }
   );
 
   resize$ = createEffect(() =>
@@ -660,36 +692,6 @@ export class DashboardEffects {
       ofType(DashboardActions.setGridLayout),
       filter((action) => action.layout !== DashboardGridLayout.MANUAL),
       map(() => DashboardActions.toggleEditionMode({ force: false }))
-    )
-  );
-
-  dispatchFilters$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(DashboardActions.dispatchFilters, DashboardActions.clearAllFilterValues),
-      withLatestFrom(
-        this.store.select(DashboardSelectors.filters),
-        this.store.select(DashboardSelectors.resultSets),
-        this.store.select(DashboardSelectors.resultSetsParams),
-        this.store.select(DashboardSelectors.quickOrder)
-      ),
-      mergeMap(([action, filters, resultSets, resultSetsParams, quickOrder ]) => {
-        return [
-          ...new Set(
-            filters
-              .map((f) => f.attributes)
-              .flat()
-              .map((attribute) => attribute.datasource)
-          )
-        ]
-          .filter(
-            (resultSet) =>
-              !!resultSet &&
-              resultSet !== '' &&
-              (!resultSets[resultSet] ||
-                resultSetsParams[resultSet] !== this.searchService.getItemsSerializedParams(resultSet, quickOrder))
-          )
-          .map((ds) => SearchActions.getDatasourceItems({ id: ds }));
-      })
     )
   );
 

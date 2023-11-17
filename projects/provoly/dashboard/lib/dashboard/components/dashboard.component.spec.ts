@@ -9,6 +9,7 @@ import { DashboardActions } from '../store/dashboard.actions';
 import { DashboardSelectors } from '../store/dashboard.selectors';
 
 import { DashboardComponent } from './dashboard.component';
+import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pry-icon.component';
 
 const exampleManifest = {
   widgets: [
@@ -27,7 +28,13 @@ describe('DashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DashboardComponent, MockPryContextMenuComponent, MockTranslatePipe, MockI18nPipe],
+      declarations: [
+        DashboardComponent,
+        MockPryContextMenuComponent,
+        MockTranslatePipe,
+        MockI18nPipe,
+        MockPryIconComponent
+      ],
       providers: [
         provideMockStore({
           selectors: [

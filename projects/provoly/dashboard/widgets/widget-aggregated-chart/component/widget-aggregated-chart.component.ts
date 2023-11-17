@@ -302,7 +302,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.datasourceIds$,
       this.options$,
       combineLatest([fromEvent(window, 'datasourceRefresh'), this.datasourceIds$]).pipe(
-        filter(([event, datasources]) => datasources.includes((event as CustomEvent).detail)),
+        filter(([event, datasources]) =>
+          datasources.includes((event as CustomEvent).detail.replace(/$aggregate!/, ''))
+        ),
         startWith(undefined)
       )
     ]).pipe(

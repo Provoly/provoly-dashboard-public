@@ -85,4 +85,14 @@ export class WidgetFactoryService {
       );
     });
   }
+
+  aggregatesToAutoLoad(manifest: WidgetManifest) {
+    const widgetDefinition = this.reference$.getValue()[manifest.type];
+    const datasourcesArray: string[] = Array.isArray(manifest.datasource ?? [])
+      ? ((manifest.datasource ?? []) as string[])
+      : ([manifest.datasource] as string[]);
+    return datasourcesArray.filter(
+      () => widgetDefinition.autoLoadDatasource === undefined || widgetDefinition.autoLoadDatasource === 'aggregate'
+    );
+  }
 }

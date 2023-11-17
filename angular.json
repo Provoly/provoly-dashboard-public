@@ -44,7 +44,6 @@
               "fast-deep-equal",
               "fast-json-stable-stringify",
               "litegraph.js",
-              "ol-layerswitcher",
               "earcut"
             ],
             "outputPath": "dist/provoly-dashboard",
@@ -79,6 +78,7 @@
           },
           "configurations": {
             "production": {
+              "namedChunks": true,
               "budgets": [
                 {
                   "type": "initial",

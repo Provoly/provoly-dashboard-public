@@ -79,7 +79,7 @@ describe(schematicName, () => {
       tree
     );
     const actual = tree.readContent('/src/app/app.module.ts');
-    expect(actual).toMatch(/autoLoadDatasource: 'none',/);
+    expect(actual).toMatch(/autoLoadDatasource: 'aggregate',/);
   });
 
   it(`should not add autoLoad options to widget table`, async () => {

@@ -67,7 +67,7 @@ import { SearchContainerComponent } from './search-container/search-container.co
             import('@provoly/dashboard/widgets/widget-aggregated-chart').then((module) =>
               widgetLoader(module, 'WidgetAggregatedChartModule')
             ),
-          autoLoadDatasource: 'none'
+          autoLoadDatasource: 'aggregate'
         },
         detail: {
           name: 'detail',

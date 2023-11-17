@@ -167,7 +167,7 @@
   },
   {
     "id": "meteo-cifi-cdat-acd2-51ccec998307",
-    "name": "Geodata",
+    "name": "Geodata (geoserver)",
     "oClass": "17b90da3-f448-4cc3-bfd8-74c8b8481590",
     "type": "OPEN",
     "metadata": [
