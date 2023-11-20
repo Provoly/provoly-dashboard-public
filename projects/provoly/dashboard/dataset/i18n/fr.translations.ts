@@ -15,6 +15,7 @@ export const frTranslations = {
       returnToList: 'Retour au catalogue',
       refresh: 'Actualiser',
       since_day:'Dernière mise à jour :',
+      noActiveVersion:'Aucune version active',
       version: {
         title: 'Intitulé',
         INDEXING: 'En chargement',

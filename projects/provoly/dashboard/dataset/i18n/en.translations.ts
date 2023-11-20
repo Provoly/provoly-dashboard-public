@@ -15,6 +15,7 @@ export const enTranslations = {
       returnToList: 'Back to catalog',
       refresh: 'Refresh',
       since_day:'Last update :',
+      noActiveVersion:'No active version',
       version: {
         title: 'Title',
         INDEXING: 'Loading',
