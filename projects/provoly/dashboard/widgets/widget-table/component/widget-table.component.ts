@@ -53,7 +53,6 @@ export class WidgetTableComponent extends DataWidgetComponent {
   WIDGET_HEADER_HEIGHT = WIDGET_HEADER_HEIGHT;
   private classes$: Observable<Class[]>;
   properties$: Observable<{ label: string; property: string }[]>;
-  isLoading$: Observable<boolean>;
   allSelected$: Observable<boolean>;
   areAllSelected: boolean = false;
   allIds: string[] = [];
@@ -111,12 +110,6 @@ export class WidgetTableComponent extends DataWidgetComponent {
     );
 
     this.subscriptions.add(this.allItems$.subscribe((allObjects) => (this.allIds = allObjects.map((obj) => obj.id))));
-
-    this.isLoading$ = combineLatest([store.select(SearchSelectors.searchLoading), this.datasourceIds$]).pipe(
-      map(([searchLoading, datasourceIds]) => {
-        return (searchLoading ?? []).filter((id) => (datasourceIds ?? []).includes(id))?.length > 0;
-      })
-    );
 
     const HEADER_SIZE = 30;
     const PAGINATION_SIZE = 35;

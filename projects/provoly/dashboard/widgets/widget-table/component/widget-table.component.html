@@ -94,10 +94,6 @@
   </pry-widget-header>
 
   <div class="a-table-wrapper">
-    <div class="a-table-loading" *ngIf="isLoading$ | async; else noLoading">
-      <span class="a-table-loading__loader"></span>
-    </div>
-    <ng-template #noLoading>
       <ng-container *ngIf="pagination$ | async as pagination">
         <ng-container *ngIf="pagination?.items ?? [] as allObjects">
           <div
@@ -215,6 +211,5 @@
           </div>
         </ng-container>
       </ng-container>
-    </ng-template>
   </div>
 </div>
