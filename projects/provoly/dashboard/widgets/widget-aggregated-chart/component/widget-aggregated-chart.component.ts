@@ -19,6 +19,7 @@ import {
   PryAggregationService,
   PryI18nService,
   SearchActions,
+  Sort,
   ValueType,
   VegaType,
   WIDGET_HEADER_HEIGHT
@@ -415,7 +416,8 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                           // Force a false value here so that vega understands properly
                           zero: !!options.abscissa.keep0
                           //type: WidgetChartComponent.isTimeUnitUTC(variables[0]) ? 'utc' : undefined
-                        }
+                        },
+                        ...this.getSort(options.abscissa.attribute, options.graph?.sort, options.ordinate.attribute)
                       }
                     : undefined,
                   y: !isCircular
@@ -597,6 +599,14 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       default:
         return {};
     }
+  }
+
+  getSort(abscissa: string, sort?: Sort, ordinate?: string) {
+    return sort
+      ? {
+          sort: { field: sort.attribute === abscissa ? 'key' : 'value', order: sort.direction + 'ending' }
+        }
+      : {};
   }
 
   emitManifest() {
