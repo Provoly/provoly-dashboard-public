@@ -1,7 +1,7 @@
 <div class="title-container">
   <h1 class="a-h1 a-presentation-title">{{ presentationTitle$ | async }}</h1>
   <ng-container *ngIf="presentation$ | async as presentation">
-    <div class="info-icon description-container description">
+    <div *ngIf="!!presentation.description" class="info-icon description-container description">
       <span class="info-text">i</span>
     </div>
     <div *ngIf="!!presentation.description" class="description-tooltip title-tooltip">
