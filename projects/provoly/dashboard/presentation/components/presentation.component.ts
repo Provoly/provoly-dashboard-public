@@ -162,6 +162,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     this.store.dispatch(DashboardActions.selectPresentation({ presentation, viewMode: ViewMode.EDITION }));
     this.store.dispatch(DashboardActions.fetchStaticManifest({ id: presentation.id }));
     this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: DisplayMode.EDIT }));
+    this.search$.next('');
   }
 
   delete(id: string) {

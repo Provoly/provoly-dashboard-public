@@ -48,6 +48,7 @@ export class PryRestitutionCatalogComponent {
   selectRestitution(restitution: Widget) {
     this.selectedRestitution = restitution;
     this.selectMode(this.mode.CONSULT);
+    this.search$.next('');
   }
 
   closeRestitution($event: void) {
@@ -62,6 +63,7 @@ export class PryRestitutionCatalogComponent {
   editRestitution(restitution: Widget) {
     this.selectedRestitution = restitution;
     this.selectMode(ViewMode.EDITION);
+    this.search$.next('');
   }
 
   focusElement(element: HTMLButtonElement) {
