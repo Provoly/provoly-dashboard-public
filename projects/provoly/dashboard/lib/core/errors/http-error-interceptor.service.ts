@@ -17,10 +17,9 @@ export class PryHttpErrorInterceptorService implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError((error) => {
         if (httpErrorOptions.isDevMode) {
-          const message = error?.error?.message ?? error?.message ?? error?.error?.error;
           if (error.status >= 400) {
-            this.snackbar.open({
-              message: 'Statut: ' + error.status + '. Erreur: ' + message,
+            this.snackbar.dispatchOpenEvent({
+              message: this.translateService.instant('@pry.errors.codes.' + error.status),
               type: 'error'
             });
           }
@@ -28,7 +27,7 @@ export class PryHttpErrorInterceptorService implements HttpInterceptor {
           console.error(error);
         } else {
           if (error.status >= 400) {
-            this.snackbar.open({
+            this.snackbar.dispatchOpenEvent({
               message: this.translateService.instant('@pry.errors.codes.' + error.status),
               type: 'error'
             });

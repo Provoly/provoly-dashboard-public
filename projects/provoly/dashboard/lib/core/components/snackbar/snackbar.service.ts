@@ -44,6 +44,10 @@ export class PrySnackbarService {
     this.rootViewContainer = viewContainerRef;
   }
 
+  dispatchOpenEvent(message: PrySnackMessage) {
+    document.dispatchEvent(new CustomEvent(PRY_CUSTOMEVENT_TYPE, { detail: message }));
+  }
+
   open(message: PrySnackMessage): Observable<void> | null {
     this.overlayRef = this.overlay.create(
       new OverlayConfig({
