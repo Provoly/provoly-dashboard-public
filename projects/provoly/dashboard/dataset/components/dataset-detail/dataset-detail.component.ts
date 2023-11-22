@@ -78,6 +78,7 @@ export class PryDatasetDetailComponent implements OnInit {
 
   goBack() {
     this.goToCatalog.emit();
+    this.store.dispatch(DataSourceActions.dataset.listVersions());
   }
 
   refresh() {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterContentInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Dataset, DatasetVersion, DataSourceSelectors } from '@provoly/dashboard';
 import { map, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -7,13 +7,13 @@ import { Store } from '@ngrx/store';
   selector: 'pry-dataset-card',
   templateUrl: './dataset-card.component.html'
 })
-export class PryDatasetCardComponent implements OnInit {
+export class PryDatasetCardComponent implements AfterContentInit  {
   @Input() dataset!: Dataset;
   @Output() consult = new EventEmitter<Dataset>();
   datasetVersions$!: Observable<DatasetVersion[]>;
   activeVersion$!: Observable<string | undefined>;
   constructor(private store: Store) {}
-  ngOnInit() {
+  ngAfterContentInit  () {
     this.datasetVersions$ = this.store
       .select(DataSourceSelectors.matchingDatasetVersions(this.dataset.id))
       .pipe(map((res) => [...res].sort((a, b) => b.version - a.version)));
@@ -24,7 +24,6 @@ export class PryDatasetCardComponent implements OnInit {
       )
     );
   }
-
   truncateDescription(description: string | undefined, maxLength: number): string {
     if (description && description.length > maxLength) {
       return description.slice(0, maxLength) + '...';
