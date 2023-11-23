@@ -392,12 +392,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                     ? {
                         field: 'key',
                         title: options.abscissa.label,
-                        type: types.abscissa.vegaType,
-                        timeUnit:
-                          types.abscissa.vegaType === VegaType.TEMPORAL && options.abscissa.limit?.isTimeLimit
-                            ? options.abscissa.limit.interval
-                            : undefined,
+                        type: !!options.graph.sort ? VegaType.ORDINAL : types.abscissa.vegaType,
                         bin: options.graph.type.indexOf('histogram') >= 0,
+                        ...this.getTimeUnit(options, types.abscissa.vegaType),
                         axis: {
                           //format: types.abscissa.vegaType === VegaType.TEMPORAL ? '%Y-%B-%dT%H:%M:%S' : undefined,
                           grid: false,
@@ -1052,5 +1049,14 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
         baseColor: $event
       });
     }
+  }
+
+  getTimeUnit(options: ChartAggregatedWidgetOptions, abscissaType: VegaType) {
+    if (abscissaType === VegaType.TEMPORAL && options.abscissa.limit?.isTimeLimit) {
+      return { timeUnit: options.abscissa.limit.interval };
+    } else if (abscissaType === VegaType.TEMPORAL && !!options.graph.sort) {
+      return { timeUnit: 'yearmonthdatehoursminutesseconds' };
+    }
+    return {};
   }
 }
