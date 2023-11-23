@@ -17,36 +17,7 @@
   .o-container {
     height: 100%;
     padding: toRem(20);
-
-    &__filters {
-      display: flex;
-      padding: toRem(8) toRem(10);
-      max-height: 50px; // needed for ng-select
-    }
-
-    &__filter-container {
-      display: flex;
-      justify-content: flex-start;
-      overflow-x: auto;
-      overflow-y: hidden;
-      margin-bottom: toRem(-5);
-      max-height: 50px; // needed for ng-select
-      padding: toRem(4) 0;
-
-      &:has(ng-dropdown-panel.ng-dropdown-panel) {
-        padding-bottom: 350px; // max ng-select dropdown length
-        background-clip: content-box, padding-box;
-      }
-    }
-
-    &__filter-actions {
-      display: flex;
-      align-items: center;
-      gap: toRem(10);
-      padding: 0 toRem(10);
-    }
   }
-
   &__toolbox {
     grid-area: tools;
     display: flex;

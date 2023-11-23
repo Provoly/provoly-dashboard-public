@@ -21,8 +21,6 @@ export class DashboardContainerComponent extends SubscriptionnerDirective {
   globalManifest$: Observable<GlobalManifest>;
   @ViewChild('dashboard') dashboard!: DashboardComponent;
   DEBUG_EXPORT = false;
-  apply$ = new BehaviorSubject<void>(undefined);
-
   constructor(private route: ActivatedRoute, private store: Store<any>) {
     super();
     this.globalManifest$ = this.store.select(DashboardSelectors.globalManifest);
@@ -50,12 +48,4 @@ export class DashboardContainerComponent extends SubscriptionnerDirective {
     );
   }
 
-  filter() {
-    this.apply$.next();
-    this.store.dispatch(DashboardActions.dispatchFilters());
-  }
-
-  clearFilters() {
-    this.store.dispatch(DashboardActions.clearAllFilterValues());
-  }
 }
