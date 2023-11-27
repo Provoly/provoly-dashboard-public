@@ -80,7 +80,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   noData$: Observable<boolean>;
   sortActive? = 'name';
   sortDirection? = 'asc';
-  sortAttributes$: Observable<{ id?: string; label?: string }[]>;
+  sortValues$: Observable<{ value: 'key' | 'value'; attrId?: string; label?: string; isDisplayed: boolean }[]>;
   sortDirections = [
     { value: 'asc', label: '' },
     { value: 'desc', label: '' }
@@ -414,7 +414,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                           zero: !!options.abscissa.keep0
                           //type: WidgetChartComponent.isTimeUnitUTC(variables[0]) ? 'utc' : undefined
                         },
-                        ...this.getSort(options.abscissa.attribute, options.graph?.sort, options.ordinate.attribute)
+                        ...this.getSort(options.abscissa.attribute, options.graph?.sort)
                       }
                     : undefined,
                   y: !isCircular
@@ -484,47 +484,44 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       })
     );
 
-    this.sortAttributes$ = this.optionsCopy$.pipe(
+    this.sortValues$ = this.optionsCopy$.pipe(
       map((options) => {
         return [
-          { id: options?.abscissa.attribute, label: options?.abscissa.label },
-          { id: options?.ordinate.attribute, label: options?.ordinate.label }
-        ].filter((attribute) => !!attribute.id);
+          {
+            attrId: options?.abscissa.attribute,
+            label: options?.abscissa.label,
+            value: 'key' as 'key' | 'value',
+            isDisplayed: true
+          },
+          {
+            attrId: options?.ordinate.attribute,
+            label: options?.ordinate.attribute
+              ? options?.ordinate.label
+              : this.translateService.instant(`@pry.widget.chart.sort.by.operation.${options?.ordinate.operation}`),
+            value: 'value' as 'key' | 'value',
+            isDisplayed: !!options?.ordinate
+          }
+        ].filter((value) => value.isDisplayed);
       })
     );
 
     this.subscriptions.add(
-      this.sortAttributes$.subscribe((attributes) => {
-        if (
-          this.optionsCopy$.value?.graph.sort &&
-          !attributes.map((attribute) => attribute.id).includes(this.optionsCopy$.value?.graph.sort?.attribute)
-        ) {
-          this.optionsCopy$.next({
-            ...this.optionsCopy$.value!,
-            graph: {
-              ...this.optionsCopy$.value?.graph!,
-              sort: {
-                ...this.optionsCopy$.value?.graph.sort,
-                attribute: attributes[0].id ?? ''
-              }
-            }
-          });
-        }
-      })
-    );
-
-    this.subscriptions.add(
-      combineLatest([this.optionsCopy$, this.attributeTypes$, this.classes$]).subscribe(
-        ([options, attrTypes, classes]) => {
+      combineLatest([this.optionsCopy$, this.sortValues$, this.attributeTypes$, this.classes$]).subscribe(
+        ([options, sortValues, attrTypes, classes]) => {
           this.sortDirections = this.sortDirections
-            .map((sort) => {
+            .map((sortDir) => {
               let attribute = classes
-                .map((clazz) => clazz.attributes.find((attr) => attr.id === options?.graph.sort?.attribute))
+                .map((clazz) =>
+                  clazz.attributes.find(
+                    (attr) =>
+                      attr.id === sortValues.find((sortValue) => sortValue.value === options?.graph.sort?.value)?.attrId
+                  )
+                )
                 .find((attr) => !!attr);
               return {
-                value: sort.value,
+                value: sortDir.value,
                 label: this.translateService.instant(
-                  `@pry.widget.chart.sort.${sort.value}.${
+                  `@pry.widget.chart.sort.${sortDir.value}.${
                     attrTypes.abscissa.name === attribute?.name
                       ? attrTypes.abscissa.vegaType
                       : attrTypes.ordinate.vegaType
@@ -598,12 +595,8 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     }
   }
 
-  getSort(abscissa: string, sort?: Sort, ordinate?: string) {
-    return sort
-      ? {
-          sort: { field: sort.attribute === abscissa ? 'key' : 'value', order: sort.direction + 'ending' }
-        }
-      : {};
+  getSort(abscissa: string, sort?: Sort) {
+    return sort ? { sort: { field: sort.value, order: sort.direction + 'ending' } } : {};
   }
 
   emitManifest() {
@@ -994,7 +987,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           ...this.optionsCopy$.value.graph,
           sort: $event
             ? this.optionsCopy$.value.graph.sort ?? {
-                attribute: this.optionsCopy$.value.abscissa.attribute,
+                value: 'key',
                 direction: 'asc'
               }
             : undefined
@@ -1003,19 +996,19 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     }
   }
 
-  changeSortAttribute($event: any) {
+  changeSortValue($event: 'key' | 'value') {
     if (this.optionsCopy$.value) {
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         graph: {
           ...this.optionsCopy$.value.graph,
-          sort: { ...this.optionsCopy$.value.graph.sort!, attribute: $event }
+          sort: { ...this.optionsCopy$.value.graph.sort!, value: $event }
         }
       });
     }
   }
 
-  changeSortDirection($event: any) {
+  changeSortDirection($event: 'asc' | 'desc') {
     if (this.optionsCopy$.value) {
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,

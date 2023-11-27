@@ -250,19 +250,19 @@
             </div>
             <ng-container *ngIf="!!optionsCopy.graph.sort">
               <div class="m-form-label-field">
-                <label class="a-label" for="chart_seriesAttr">Attribute</label>
+                <label class="a-label" for="chart_sortValue">{{ '@pry.widget.chart.sort.attribute' | i18n }}</label>
                 <pry-select
-                  (ngModelChange)="changeSortAttribute($event)"
-                  [ngModel]="optionsCopy.graph.sort.attribute"
-                  [items]="sortAttributes$ | async"
-                  bindValue="id"
+                  (ngModelChange)="changeSortValue($event)"
+                  [ngModel]="optionsCopy.graph.sort.value"
+                  [items]="sortValues$ | async"
+                  bindValue="value"
                   bindLabel="label"
                   class="a-pry-select"
-                  id="chart_sortAttr"
+                  id="chart_sortValue"
                 ></pry-select>
               </div>
               <div class="m-form-label-field">
-                <label class="a-label" for="chart_seriesAttr">Sort</label>
+                <label class="a-label" for="chart_sortDirection">{{ '@pry.widget.chart.sort.direction' | i18n }}</label>
                 <pry-select
                   (ngModelChange)="changeSortDirection($event)"
                   [ngModel]="optionsCopy.graph.sort.direction"

@@ -98,6 +98,8 @@ export const enTranslations = {
         color: 'Color',
         sort: {
           title: 'Sort',
+          attribute: 'Attribute',
+          direction: 'Direction',
           asc: {
             quantitative: 'Low to high',
             nominal: 'Alphabetical',
@@ -109,6 +111,13 @@ export const enTranslations = {
             nominal: 'Reverse alphabetical',
             ordinal: 'Reverse alphabetical',
             temporal: 'Antichronological'
+          },
+          by: {
+            operation: {
+              none: 'Ordinate',
+              count: 'Occurrence',
+              cardinality: 'Unique occurrences'
+            }
           }
         }
       }

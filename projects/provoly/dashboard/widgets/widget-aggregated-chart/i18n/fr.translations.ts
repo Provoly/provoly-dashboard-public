@@ -97,6 +97,8 @@ export const frTranslations = {
         color: 'Couleur',
         sort: {
           title: 'Tri',
+          attribute: 'Attribut',
+          direction: 'Direction',
           asc: {
             quantitative: 'Croissant',
             ordinal: 'Alphabétique',
@@ -108,6 +110,13 @@ export const frTranslations = {
             ordinal: 'Anti-alphabétique',
             nominal: 'Anti-alphabétique',
             temporal: 'Antéchronologique'
+          },
+          by: {
+            operation: {
+              none: 'Ordonnée',
+              count: "Nombre d'occurences",
+              cardinality: "Nombre d'occurences uniques"
+            }
           }
         }
       }

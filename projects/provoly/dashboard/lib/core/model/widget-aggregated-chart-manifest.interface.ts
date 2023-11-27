@@ -37,7 +37,7 @@ export interface TimeLimit {
 }
 
 export interface Sort {
-  attribute: string;
+  value: 'key' | 'value';
   direction: 'asc' | 'desc';
 }
 
