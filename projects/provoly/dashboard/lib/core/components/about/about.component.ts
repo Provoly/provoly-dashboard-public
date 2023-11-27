@@ -20,8 +20,8 @@ export class PryAboutComponent {
 
   displayVersion(value: BackendVersion | FrontendVersion) {
     const backVersion = value as BackendVersion;
-    if (!!backVersion.chartVersion) {
-      return `${backVersion.chartVersion}[${backVersion.applicationVersion}]`;
+    if (!!backVersion.applicationVersion) {
+      return `${backVersion.applicationVersion}`;
     }
     const frontVersion = value as FrontendVersion;
     if (!!frontVersion.libVersion) {
