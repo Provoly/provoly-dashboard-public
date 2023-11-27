@@ -62,6 +62,7 @@ module.exports = {
       1
     ),
   save: (id, name, description, creationDate, modificationDate, manifest, image, visibility) => {
+    console.log(JSON.stringify(manifest));
     let previous = manifests.find((m) => m.id === id);
     if (!previous) {
       manifests.push({});

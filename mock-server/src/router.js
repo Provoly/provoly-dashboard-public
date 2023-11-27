@@ -674,6 +674,30 @@ router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items/aggregate', (req,
     }, fieldGeneratorModule.generateDelay());
   }
 });
+router.on(['OPTIONS', 'POST'], '/data/dataset-versions/autocomplete', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    if (payload) {
+      const { attributes = [], search = '', limit = 10 } = payload;
+
+      const attrId = attributes[0]?.id || { id: '-----' };
+      const attr = dataModule.classes
+        .find((cl) => cl.attributes.find((attr) => attr.id === attrId))
+        .attributes.find((attr) => attr.id === attrId);
+      const attrType = dataModule.fields.get().find((field) => field.id === attr?.type)?.type || 'number';
+
+      const result = [];
+      for (let i = 0; i < limit; i++) {
+        result.push(
+          search + '' + (['number', 'decimal'].includes(attrType) ? casual.integer((from = 0)) : casual.word)
+        );
+      }
+      result.sort();
+      makeResponseOk(res, result);
+    } else {
+      makeResponseOk(res, ['']);
+    }
+  });
+});
 
 router.on(['OPTIONS', 'GET'], '/ref/users/me/namedquery', (req, res, params) => {
   makeResponseOk(res, dataModule.namedQueries);

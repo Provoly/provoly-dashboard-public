@@ -1,7 +1,7 @@
 [
   {
     "id": "d6fabb55-dd02-4632-94fa-09c04d1d7ac0",
-    "content": "{\"type\":\"chart\",\"header\":true,\"layout\":{\"x\":1,\"y\":1,\"width\":1,\"height\":1},\"options\":{\"itemIds\":[],\"title\":\"status, undefined\",\"selectedVariables\":[{\"label\":\"status\",\"name\":\"status\",\"type\":\"nominal\"},{}],\"aggregation\":\"count\",\"type\":\"arc\",\"subType\":\"donut\",\"customTitle\":\"status, undefined\",\"innerRadius\":50},\"title\":\"Test -Alexis\",\"datasource\":[\"45061554-298f-4f56-8cd2-52ccec998307\"]}",
+    "content": "{\"type\":\"chart\",\"header\":true,\"layout\":{\"x\":1,\"y\":1,\"width\":1,\"height\":1},\"options\":{\"itemIds\":[],\"title\":\"status, undefined\",\"selectedVariables\":[{\"label\":\"status\",\"name\":\"status\",\"type\":\"nominal\"},{}],\"aggregation\":\"count\",\"type\":\"arc\",\"subType\":\"donut\",\"customTitle\":\"status, undefined\",\"innerRadius\":50},\"title\":\"Test\",\"datasource\":[\"45061554-298f-4f56-8cd2-52ccec998307\"]}",
     "name": "Restitution A",
     "image": "internal:weather.png",
     "description": "description",
@@ -30,7 +30,7 @@
   },
   {
     "id": "f6fabb55-dd02-4632-94fa-09c04d1d7ac0",
-    "content": "{\"type\":\"chart\",\"header\":true,\"layout\":{\"x\":1,\"y\":1,\"width\":1,\"height\":1},\"options\":{\"itemIds\":[],\"title\":\"status, undefined\",\"selectedVariables\":[{\"label\":\"status\",\"name\":\"status\",\"type\":\"nominal\"},{}],\"aggregation\":\"count\",\"type\":\"arc\",\"subType\":\"donut\",\"customTitle\":\"status, undefined\",\"innerRadius\":50},\"title\":\"Test -Alexis\",\"datasource\":[\"45061554-298f-4f56-8cd2-52ccec998307\"]}",
+    "content": "{\"type\":\"chart\",\"header\":true,\"layout\":{\"x\":1,\"y\":1,\"width\":1,\"height\":1},\"options\":{\"itemIds\":[],\"title\":\"status, undefined\",\"selectedVariables\":[{\"label\":\"status\",\"name\":\"status\",\"type\":\"nominal\"},{}],\"aggregation\":\"count\",\"type\":\"arc\",\"subType\":\"donut\",\"customTitle\":\"status, undefined\",\"innerRadius\":50},\"title\":\"Test\",\"datasource\":[\"45061554-298f-4f56-8cd2-52ccec998307\"]}",
     "name": "Restitution C",
     "image": "internal:weather.png",
     "description": "description",

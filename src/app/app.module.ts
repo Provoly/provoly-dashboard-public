@@ -164,6 +164,13 @@ import { SearchContainerComponent } from './search-container/search-container.co
           name: 'number',
           load: () =>
             import('@provoly/dashboard/filters/number').then((module) => filterLoader(module, 'PryNumberFilterModule'))
+        },
+        autocomplete: {
+          name: 'autocomplete',
+          load: () =>
+            import('@provoly/dashboard/filters/autocomplete').then((module) =>
+              filterLoader(module, 'PryAutocompleteModule')
+            )
         }
       },
       [

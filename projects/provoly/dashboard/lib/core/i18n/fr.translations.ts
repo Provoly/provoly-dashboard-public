@@ -351,7 +351,8 @@ export const frTranslations = {
         text: 'Texte',
         date: 'Date',
         list: 'Liste',
-        number: 'Numérique'
+        number: 'Numérique',
+        autocomplete: 'Liste avec suggestion'
       }
     }
   }

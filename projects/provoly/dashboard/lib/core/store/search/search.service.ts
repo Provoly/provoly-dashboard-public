@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { combineLatest, map, mergeMap, Observable, of } from 'rxjs';
+import { combineLatest, map, mergeMap, Observable, of, switchMap } from 'rxjs';
 import { DashboardSelectors } from '../../../dashboard/store/dashboard.selectors';
 import { FilterContext } from '../../model/filter.interface';
 import { ResultOrder } from '../../model/result-order.interface';
@@ -110,5 +110,26 @@ export class SearchService {
     let transformed = rs;
     this.transformations.forEach((func) => (transformed = func(id, transformed)));
     return transformed;
+  }
+
+  autocomplete(
+    attributes:
+      | {
+          id: string;
+          name: string;
+          label: string;
+          datasource: string;
+        }[]
+      | undefined,
+    search: string
+  ) {
+    return this.store.select(ConfigSelectors.dataUrl).pipe(
+      switchMap((url) =>
+        this.httpClient.post<string[]>(encodeURI(`${url}/dataset-versions/autocomplete`), {
+          attributes,
+          search
+        })
+      )
+    );
   }
 }

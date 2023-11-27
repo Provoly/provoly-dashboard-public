@@ -281,6 +281,8 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
           return ['EQUALS', 'NOT_EQUALS', 'GREATER_THAN', 'LOWER_THAN'].includes(operator.value);
         case 'text':
           return ['CONTAINS', 'EQUALS', 'NOT_EQUALS', 'START_WITH', 'END_WITH'].includes(operator.value);
+        case 'autocomplete':
+          return ['EQUALS'].includes(operator.value);
         default:
           return operator;
       }

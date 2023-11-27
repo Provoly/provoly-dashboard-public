@@ -347,7 +347,8 @@ export const enTranslations = {
         text: 'Text',
         date: 'Date',
         list: 'List',
-        number: 'Number'
+        number: 'Number',
+        autocomplete: 'Autocomplete'
       }
     }
   }

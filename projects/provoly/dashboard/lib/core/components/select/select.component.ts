@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, forwardRef, Input, TemplateRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 let uniqueId = 0;
@@ -13,8 +13,7 @@ let uniqueId = 0;
       useExisting: forwardRef(() => PrySelectComponent),
       multi: true
     }
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  ]
 })
 export class PrySelectComponent implements ControlValueAccessor {
   public id: number = uniqueId++;
@@ -78,10 +77,5 @@ export class PrySelectComponent implements ControlValueAccessor {
       this._onTouched();
       this._cd.markForCheck();
     }
-  }
-
-  customSearchFn(term: string, item: any) {
-    term = term.toLocaleLowerCase();
-    return item.code.toLocaleLowerCase().indexOf(term) > -1 || item.countryName.toLocaleLowerCase().indexOf(term) > -1;
   }
 }

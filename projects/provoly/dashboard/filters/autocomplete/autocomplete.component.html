@@ -1,0 +1,15 @@
+<pry-autocomplete-css></pry-autocomplete-css>
+<div class="m-filter__input-wrapper m-filter__input-wrapper--dropdown" *ngIf="filter" (keyup)="updateSearch($event)">
+  <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
+  <pry-select
+    [id]="filter.name"
+    [items]="autocomplete$ | async"
+    [ngModel]="filter.value"
+    (ngModelChange)="setFilter($event)"
+    [clearable]="true"
+    [autocomplete]="true"
+    [itemsAsOption]="false"
+    aria-labelledby="item-label"
+    (blur)="updateSearch($event)"
+  ></pry-select>
+</div>
