@@ -7,7 +7,6 @@ const classesIds = classes.map((oClass) => oClass.id);
 let fields = JSON.parse(fs.readFileSync('./data/fields.json', 'utf8'));
 const categories = JSON.parse(fs.readFileSync('./data/categories.json', 'utf8'));
 const infrastructures = JSON.parse(fs.readFileSync('./data/infrastructures.json', 'utf8'));
-const inputFlows = JSON.parse(fs.readFileSync('./data/inputFlows.json', 'utf8'));
 const predicates = JSON.parse(fs.readFileSync('./data/predicates.json', 'utf8'));
 const metadatas = JSON.parse(fs.readFileSync('./data/metadatas.json', 'utf8'));
 const userMetadatas = JSON.parse(fs.readFileSync('./data/userMetadata.json', 'utf8'));
@@ -351,7 +350,6 @@ module.exports = {
   relationTypes,
   links,
   infrastructures,
-  inputFlows,
   queryResponses,
   integrationErrors,
   tasksDetailed,

@@ -27,7 +27,6 @@ import {
   DataSourceSelectors,
   DatasourceUtils,
   DataWidgetComponent,
-  DEFAULT_PROJECTION,
   Field,
   FieldSelectors,
   FilterContext,
@@ -70,7 +69,7 @@ import BaseLayer from 'ol/layer/Base';
 import VectorLayer from 'ol/layer/Vector';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import { Pixel } from 'ol/pixel';
-import { fromLonLat, get as getProjection, transform } from 'ol/proj';
+import { fromLonLat } from 'ol/proj';
 import { register } from 'ol/proj/proj4';
 import { TileWMS } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
@@ -99,6 +98,7 @@ import MapboxVectorLayer from 'ol/layer/MapboxVector';
 import { WidgetMapUtils } from '../utils/widget-map.utils';
 
 export const TOOLTIP_PADDING = 15;
+export const NON_MANDATORY_FIT_LAYER_TYPES = ['wms', 'geoserver'];
 
 // Define Lambert Projection
 proj4.defs(
@@ -170,8 +170,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     };
     center?: number[];
   }>({});
-  fitOption$!: Observable<boolean>;
-  ignoreGetCapabilitiesExtent$!: Observable<boolean>;
   mapStyleUrl$!: Observable<string | null>;
   interactionManager: InteractionManager = new InteractionManager();
   mapStyleLayer$!: Observable<VectorTileLayer[]>;
@@ -186,7 +184,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     | undefined
   >;
   autoDatasetLayers$: Observable<MapAutoLayerOptions[]>;
-  aggregatedExtents$!: Observable<
+  fitExtents$!: Observable<
     {
       datasource: string;
       extent: Coordinate[];
@@ -194,6 +192,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   >;
   datasourceFilters$: Observable<any>;
   usedClasses$: Observable<any>;
+  NON_MANDATORY_FIT_LAYER_TYPES = NON_MANDATORY_FIT_LAYER_TYPES;
 
   constructor(
     store: Store<any>,
@@ -361,11 +360,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         )
         .subscribe((urls) => urls.forEach((url) => this.store.dispatch(DashboardActions.getCapability({ url }))))
     );
-    this.subscriptions.add(
-      this.geoServerLayerDescriptions$
-        .pipe(map((layers) => layers.map((layer) => layer.url)))
-        .subscribe((urls) => urls.forEach((url) => this.store.dispatch(DashboardActions.getCapability({ url }))))
-    );
 
     this.wmsCapabilities$ = this.store.select(DashboardSelectors.capabilities);
 
@@ -462,6 +456,28 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         }
 
         autoOptions.layers = WidgetMapUtils.assignLayersOrder(autoOptions.layers);
+
+        if (autoOptions.fit !== undefined) {
+          autoOptions.layers.forEach(
+            (layer) => (layer.fit = !NON_MANDATORY_FIT_LAYER_TYPES.includes(layer.type) || autoOptions.fit)
+          );
+          delete autoOptions.fit;
+        }
+
+        [
+          ...new Set(
+            (
+              autoOptions.layers.filter((layer) => ['wms', 'geoserver'].includes(layer.type)) as (
+                | MapWMSLayerLayerOptions
+                | MapGeoServerLayerOptions
+              )[]
+            ).map((layer) => layer.url)
+          )
+        ].forEach((url) => {
+          if (capabilities && capabilities[url] === undefined) {
+            this.store.dispatch(DashboardActions.getCapability({ url: url }));
+          }
+        });
 
         return autoOptions;
       }),
@@ -584,16 +600,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       )
       .subscribe((view) => this.map.setView(new View(view)));
 
-    this.fitOption$ = this.options$.pipe(
-      map((options) => !!options.fit),
-      distinctUntilChanged()
-    );
-
-    this.ignoreGetCapabilitiesExtent$ = this.options$.pipe(
-      map((options) => !!options.ignoreGetCapabilitiesExtent),
-      distinctUntilChanged()
-    );
-
     this.layers$ = combineLatest([
       this.resultSet$,
       this.options$,
@@ -670,6 +676,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                 itemStyles,
                 this.map
               );
+              resultLayer.set('fit', layer.fit);
               if (layer.type === 'relation') {
                 hasRelationLayer = resultLayer as unknown as VectorLayer<VectorSource>;
               }
@@ -725,123 +732,55 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       })
     );
 
-    this.aggregatedExtents$ = combineLatest([
-      this.geoServerLayerDescriptions$,
+    this.fitExtents$ = combineLatest([
+      this.options$,
       this.classes$,
       this.fields$,
-      this.datasourceFilters$
+      this.datasourceFilters$,
+      this.wmsCapabilities$
     ]).pipe(
       debounceTime(100),
-      switchMap(([layers, classes, fields, filters]) =>
-        combineLatest(
-          layers
-            .map((layer) =>
-              (
-                classes.find((clazz) => clazz.id === layer.oClass) ?? ({ attributes: [] } as unknown as Class)
-              ).attributes
-                .map((attr) => ({ attr, field: fields.find((field) => field.id === attr.field) }))
-                .filter(({ attr, field }) => GeometricFieldTypes.includes(field?.type ?? '----'))
-                .map(({ attr, field }) =>
-                  this.pryAggregationService
-                    .aggregate([layer.datasourceId], {
-                      ordinate: { operation: Operation.EXTENT, attribute: attr.id, label: attr.name, keep0: false }
-                    } as ChartAggregatedWidgetOptions)
-                    .pipe(
-                      map((extentResponse: AggregationResult) => {
-                        const projBox = getProjection(field!.crs ?? DEFAULT_PROJECTION);
-                        const response = extentResponse.values as {
-                          value: {
-                            top_left: {
-                              lon: string;
-                              lat: string;
-                            };
-                            bottom_right: {
-                              lon: string;
-                              lat: string;
-                            };
-                          };
-                        }[];
-                        if (
-                          projBox &&
-                          response.length > 0 &&
-                          response[0].value &&
-                          response[0].value.top_left &&
-                          response[0].value.top_left.lat !== undefined &&
-                          response[0].value.top_left.lon !== undefined &&
-                          response[0].value.bottom_right &&
-                          response[0].value.bottom_right.lat !== undefined &&
-                          response[0].value.bottom_right.lon !== undefined
-                        ) {
-                          return {
-                            datasource: layer.datasourceId,
-                            extent: [
-                              transform(
-                                [
-                                  parseFloat(
-                                    (
-                                      extentResponse.values[0] as {
-                                        value: {
-                                          top_left: {
-                                            lon: string;
-                                          };
-                                        };
-                                      }
-                                    ).value.top_left.lon
-                                  ),
-                                  parseFloat(
-                                    (
-                                      extentResponse.values[0] as {
-                                        value: {
-                                          top_left: {
-                                            lat: string;
-                                          };
-                                        };
-                                      }
-                                    ).value.top_left.lat
-                                  )
-                                ],
-                                projBox,
-                                this.map.getView().getProjection()
-                              ),
-                              transform(
-                                [
-                                  parseFloat(
-                                    (
-                                      extentResponse.values[0] as {
-                                        value: {
-                                          bottom_right: {
-                                            lon: string;
-                                          };
-                                        };
-                                      }
-                                    ).value.bottom_right.lon
-                                  ),
-                                  parseFloat(
-                                    (
-                                      extentResponse.values[0] as {
-                                        value: {
-                                          bottom_right: {
-                                            lat: string;
-                                          };
-                                        };
-                                      }
-                                    ).value.bottom_right.lat
-                                  )
-                                ],
-                                projBox,
-                                this.map.getView().getProjection()
-                              )
-                            ]
-                          };
-                        }
-                        return { datasource: layer.datasourceId, extent: [] };
-                      })
+      switchMap(([options, classes, fields, filters, wmsCapabilities]) =>
+        (options.layers ?? []).find((layer) => ['geoserver', 'wms'].includes(layer.type) && layer.fit)
+          ? combineLatest([
+              ...((options.layers?.filter((layer) => layer.type === 'geoserver') ?? []) as MapGeoServerLayerOptions[])
+                .filter((layer) => layer.fit)
+                .map((layer: MapGeoServerLayerOptions) =>
+                  (
+                    classes.find((clazz) => clazz.id === layer.oClass) ?? ({ attributes: [] } as unknown as Class)
+                  ).attributes
+                    .map((attr) => ({ attr, field: fields.find((field) => field.id === attr.field) }))
+                    .filter(({ attr, field }) => GeometricFieldTypes.includes(field?.type ?? '----'))
+                    .map(({ attr, field }) =>
+                      this.pryAggregationService
+                        .aggregate([layer.datasourceId], {
+                          ordinate: { operation: Operation.EXTENT, attribute: attr.id, label: attr.name, keep0: false }
+                        } as ChartAggregatedWidgetOptions)
+                        .pipe(
+                          map((extentResponse: AggregationResult) => {
+                            return WidgetMapUtils.projectExtentAggregationResponse(
+                              field!,
+                              extentResponse,
+                              layer,
+                              wmsCapabilities,
+                              this.map
+                            );
+                          })
+                        )
                     )
+                    .flat()
                 )
-                .flat()
-            )
-            .flat()
-        )
+                .flat(),
+              ...((options.layers?.filter((layer) => layer.type === 'wms') ?? []) as MapWMSLayerLayerOptions[])
+                .filter((layer) => layer.fit)
+                .map((layer: MapWMSLayerLayerOptions) =>
+                  of({
+                    datasource: `wms-${layer.paramLayer}`,
+                    extent: XMLUtils.getLayerExtent(layer.paramLayer, this.map, wmsCapabilities![layer.url]?.doc) ?? []
+                  })
+                )
+            ])
+          : of([])
       ),
       startWith(
         [] as {
@@ -866,39 +805,34 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       combineLatest([
         this.mapStyleLayer$,
         this.layers$,
-        this.fitOption$,
         this.selectedIds$.pipe(distinctUntilChanged((p, c) => equal(p, c))),
-        this.wmsCapabilities$,
-        this.aggregatedExtents$,
-        this.datasourceFilters$,
-        this.ignoreGetCapabilitiesExtent$
-      ]).subscribe(
-        ([mapStyleLayer, layers, fit, selectedIds, capabilities, extents, filters, ignoreGetCapabilitiesExtent]) => {
-          const toApplyLayers = [...layers, ...mapStyleLayer];
-          this.map.setLayers(toApplyLayers);
-          this.map
-            .getAllLayers()
-            .filter((layer) => !(layer instanceof Tile))
-            .forEach((layer) => {
-              const getFeatures = (layer.getSource() as VectorSource)?.getFeatures;
-              if (typeof getFeatures === 'function') {
-                (layer.getSource() as VectorSource)?.getFeatures().forEach((feature: any) => {
-                  const type = feature.get('type');
-                  if (['bubble', 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].includes(type)) {
-                    feature.setStyle(
-                      feature.get(selectedIds.includes(feature.get('id')) ? 'selectedStyle' : 'classicStyle')
-                    );
-                  }
-                });
-              }
-            });
+        this.fitExtents$,
+        this.datasourceFilters$
+      ]).subscribe(([mapStyleLayer, layers, selectedIds, extents, filters]) => {
+        const toApplyLayers = [...layers, ...mapStyleLayer];
+        this.map.setLayers(toApplyLayers);
+        this.map
+          .getAllLayers()
+          .filter((layer) => !(layer instanceof Tile))
+          .forEach((layer) => {
+            const getFeatures = (layer.getSource() as VectorSource)?.getFeatures;
+            if (typeof getFeatures === 'function') {
+              (layer.getSource() as VectorSource)?.getFeatures().forEach((feature: any) => {
+                const type = feature.get('type');
+                if (['bubble', 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].includes(type)) {
+                  feature.setStyle(
+                    feature.get(selectedIds.includes(feature.get('id')) ? 'selectedStyle' : 'classicStyle')
+                  );
+                }
+              });
+            }
+          });
 
-          setTimeout(() => {
-            this.fitMapForObjects(fit, ignoreGetCapabilitiesExtent, capabilities, selectedIds, extents, filters);
-            this.map.updateSize();
-          }, 200);
-        }
-      )
+        setTimeout(() => {
+          this.fitMapForObjects(selectedIds, extents, filters);
+          this.map.updateSize();
+        }, 200);
+      })
     );
     this.subscriptions.add(
       combineLatest([this.wmsFeatures$, this.classicFeatures$, this.widgetSize$, this.displayHeader$]).subscribe(
@@ -1029,11 +963,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   fitMapForObjects(
-    fit: boolean,
-    ignoreGetCapabilitiesExtent = false,
-    wmsCapabilities: {
-      [p: string]: GetCapabilitiesResponse | null;
-    } = {},
     selectedIds?: string[],
     extents: {
       datasource: string;
@@ -1043,88 +972,57 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       [p: string]: FilterContext[];
     } = {}
   ) {
-    if (fit) {
-      let extent = createEmpty();
-      const listOfMarkers = [] as any[];
+    let extent = createEmpty();
+    const listOfMarkers = [] as any[];
 
-      this.map
-        .getAllLayers()
-        .filter(
-          (layer) => !!layer.getSource && !!layer.getSource() && !!(layer.getSource() as VectorSource).getFeatures
-        )
-        .forEach((layer) => {
-          (layer.getSource() as VectorSource).getFeatures().forEach((feature: any) => {
-            const id = feature.get('id');
-            if (!selectedIds || selectedIds.length <= 0 || (selectedIds.length > 0 && selectedIds.includes(id))) {
-              switch (feature.get('type')) {
-                case 'heatpoint':
-                case 'point':
-                case 'marker':
-                  listOfMarkers.push(feature.getGeometry().getCoordinates());
-                  break;
-                case 'line':
-                case 'link':
-                  listOfMarkers.push(...feature.getGeometry().getCoordinates());
-                  break;
-                case 'polygon':
-                case 'multi-line':
-                  listOfMarkers.push(...feature.getGeometry().getCoordinates().flat());
-                  break;
-                case 'multi-polygon':
-                  listOfMarkers.push(...feature.getGeometry().getCoordinates().flat().flat());
-                  break;
-                default:
-                  listOfMarkers.push(feature.getGeometry().getCenter());
-              }
+    /* Mandatory fit */
+    this.map
+      .getAllLayers()
+      .filter((layer) => layer.getProperties()['fit'])
+      .filter((layer) => !!layer.getSource && !!layer.getSource() && !!(layer.getSource() as VectorSource).getFeatures)
+      .forEach((layer) => {
+        (layer.getSource() as VectorSource).getFeatures().forEach((feature: any) => {
+          const id = feature.get('id');
+          if (!selectedIds || selectedIds.length <= 0 || (selectedIds.length > 0 && selectedIds.includes(id))) {
+            switch (feature.get('type')) {
+              case 'heatpoint':
+              case 'point':
+              case 'marker':
+                listOfMarkers.push(feature.getGeometry().getCoordinates());
+                break;
+              case 'line':
+              case 'link':
+                listOfMarkers.push(...feature.getGeometry().getCoordinates());
+                break;
+              case 'polygon':
+              case 'multi-line':
+                listOfMarkers.push(...feature.getGeometry().getCoordinates().flat());
+                break;
+              case 'multi-polygon':
+                listOfMarkers.push(...feature.getGeometry().getCoordinates().flat().flat());
+                break;
+              default:
+                listOfMarkers.push(feature.getGeometry().getCenter());
             }
-          });
+          }
         });
+      });
 
-      const capabilitiesExtents = this.map
-        .getAllLayers()
-        .filter((layer) => layer.getSource() instanceof TileWMS)
-        .map((layer) => ({
-          datasource: layer.getProperties()['datasourceId'],
-          extent: XMLUtils.getLayerExtent(
-            layer.getProperties()['paramLayer'],
-            this.map,
-            wmsCapabilities![layer.getProperties()['url']]?.doc
-          )
-        }))
-        .filter((extent) => !!extent.extent) as {
-        datasource: string;
-        extent: Coordinate[];
-      }[];
+    const selectedExtent = boundingExtent(
+      listOfMarkers.filter((coord) => !!coord).concat(...extents.map((extent) => extent.extent))
+    );
 
-      const activeFilters = Object.keys(filters).filter((filter) => filters[filter].find((attr) => !!attr.value));
+    if (
+      selectedExtent[0] !== Infinity &&
+      selectedExtent[1] !== Infinity &&
+      selectedExtent[2] !== -Infinity &&
+      selectedExtent[3] !== -Infinity
+    ) {
+      extent = selectedExtent;
+    }
 
-      const uniqueExtent =
-        activeFilters.length > 0 || ignoreGetCapabilitiesExtent
-          ? extents
-          : extents.concat(
-              ...capabilitiesExtents.filter(
-                (capabilityExtent) =>
-                  !capabilityExtent.datasource ||
-                  !extents.find((extent) => extent.datasource === capabilityExtent.datasource)
-              )
-            );
-
-      const selectedExtent = boundingExtent(
-        listOfMarkers.filter((coord) => !!coord).concat(...uniqueExtent.map((extent) => extent.extent))
-      );
-
-      if (
-        selectedExtent[0] !== Infinity &&
-        selectedExtent[1] !== Infinity &&
-        selectedExtent[2] !== -Infinity &&
-        selectedExtent[3] !== -Infinity
-      ) {
-        extent = selectedExtent;
-      }
-
-      if (extent[0] !== Infinity && extent[1] !== Infinity && extent[2] !== -Infinity && extent[3] !== -Infinity) {
-        this.map.getView().fit(extent, { padding: [20, 20, 70, 70], duration: 200 });
-      }
+    if (extent[0] !== Infinity && extent[1] !== Infinity && extent[2] !== -Infinity && extent[3] !== -Infinity) {
+      this.map.getView().fit(extent, { padding: [20, 20, 70, 70], duration: 200 });
     }
   }
 
@@ -1169,8 +1067,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.optionsCopy.styleURL = $event.currentTarget?.value;
   }
 
-  changeFit($event: boolean) {
-    this.optionsCopy.fit = $event;
+  changeFit($event: boolean, layer: MapWidgetLayerOptions) {
+    layer.fit = $event;
   }
 
   changeAttributions($event: boolean) {

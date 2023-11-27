@@ -491,9 +491,6 @@ router.on(['DELETE'], '/ref/abac/context/:name', (req, res, params) => {
   }
 });
 
-router.on(['OPTIONS', 'GET'], '/monitor/supervision/nifi/monitoringInputFlow', (req, res, params) => {
-  makeResponseOk(res, dataModule.inputFlows);
-});
 router.on(['OPTIONS', 'GET'], '/monitor/status', (req, res, params) => {
   makeResponseOk(res, dataModule.infrastructures);
 });

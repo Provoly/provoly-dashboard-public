@@ -103,7 +103,6 @@ describe('WidgetMapComponent', () => {
                 options: {
                   style: 'a-style',
                   layers: [{ type: 'heatmap' }, { type: 'marker' }, { type: 'point' }, { type: 'polygon' }],
-                  fit: true,
                   tooltipMode: TooltipMode.CLICK
                 } as MapWidgetOptions,
                 resultSet: 'rs'
@@ -207,7 +206,6 @@ describe('WidgetMapComponent', () => {
       options: {
         style: 'a-style',
         layers: [{ type: 'heatmap' }, { type: 'marker' }, { type: 'point' }, { type: 'polygon' }],
-        fit: true,
         tooltipMode: TooltipMode.CLICK
       } as MapWidgetOptions,
       datasource: 'rs'
@@ -225,7 +223,6 @@ describe('WidgetMapComponent', () => {
       options: {
         style: 'a-style',
         layers: [{ type: 'heatmap' }],
-        fit: true,
         tooltipMode: TooltipMode.CLICK
       } as MapWidgetOptions,
       datasource: 'rs'
@@ -246,7 +243,6 @@ describe('WidgetMapComponent', () => {
               order: 0
             }
           ],
-          fit: true,
           tooltipMode: TooltipMode.CLICK
         }
       })
@@ -265,7 +261,6 @@ describe('WidgetMapComponent', () => {
             order: 0
           }
         ],
-        fit: true,
         tooltipMode: TooltipMode.CLICK
       });
     });
@@ -273,7 +268,7 @@ describe('WidgetMapComponent', () => {
 
   it('should calculate auto options for markermap', () => {
     component._manifest$ = of({
-      options: { style: 'a-style', layers: [{ type: 'marker' }], fit: true } as MapWidgetOptions,
+      options: { style: 'a-style', layers: [{ type: 'marker' }] } as MapWidgetOptions,
       datasource: 'rs'
     } as WidgetManifest);
     component.widgetIndex = 0;
@@ -290,7 +285,6 @@ describe('WidgetMapComponent', () => {
               order: 0
             }
           ],
-          fit: true,
           tooltipMode: TooltipMode.CLICK
         }
       })
@@ -307,7 +301,6 @@ describe('WidgetMapComponent', () => {
             order: 0
           }
         ],
-        fit: true,
         tooltipMode: TooltipMode.CLICK
       });
     });
@@ -315,7 +308,7 @@ describe('WidgetMapComponent', () => {
 
   it('should calculate auto options for bubblemap', () => {
     component._manifest$ = of({
-      options: { style: 'a-style', layers: [{ type: 'bubble' }], fit: true } as MapWidgetOptions,
+      options: { style: 'a-style', layers: [{ type: 'bubble' }] } as MapWidgetOptions,
       datasource: 'rs'
     } as WidgetManifest);
     component.widgetIndex = 0;
@@ -334,7 +327,6 @@ describe('WidgetMapComponent', () => {
               order: 0
             }
           ],
-          fit: true,
           tooltipMode: TooltipMode.CLICK
         }
       })
@@ -353,7 +345,6 @@ describe('WidgetMapComponent', () => {
             order: 0
           }
         ],
-        fit: true,
         tooltipMode: TooltipMode.CLICK
       });
     });
@@ -363,7 +354,7 @@ describe('WidgetMapComponent', () => {
     const spyEmit = jest.spyOn(component.manifestModified, 'emit').mockReturnValue();
     component._manifest$ = of({
       layout: { height: 1, width: 1, x: 1, y: 1 },
-      options: { layers: [{ type: 'heatmap' }], fit: true } as MapWidgetOptions,
+      options: { layers: [{ type: 'heatmap' }] } as MapWidgetOptions,
       datasource: 'rs',
       type: 'map'
     } as WidgetManifest);
@@ -375,7 +366,6 @@ describe('WidgetMapComponent', () => {
         layout: { height: 1, width: 1, x: 1, y: 1 },
         options: {
           style: 'style1',
-          fit: true,
           tooltipMode: TooltipMode.CLICK,
           layers: [
             {
@@ -409,8 +399,8 @@ describe('WidgetMapComponent', () => {
   });
 
   it('should allow changing fit option', () => {
-    component.changeFit(true);
-    expect(component.optionsCopy.fit).toEqual(true);
+    component.changeFit(true, component.optionsCopy.layers![0]);
+    expect(component.optionsCopy.layers![0].fit).toEqual(true);
   });
 
   it('should allow changing map style', () => {
@@ -439,7 +429,7 @@ describe('WidgetMapComponent', () => {
 
   it('should provide fit operation', () => {
     try {
-      component.fitMapForObjects(true);
+      component.fitMapForObjects();
     } catch (e) {
       fail('');
     }
@@ -456,8 +446,7 @@ describe('WidgetMapComponent', () => {
     component.staticManifest = {
       options: {
         style: 'a-style',
-        layers: [{ type: 'geoserver', opacity: 60, key: 'a' }],
-        fit: true
+        layers: [{ type: 'geoserver', opacity: 60, key: 'a' }]
       } as MapWidgetOptions,
       datasource: 'geo'
     } as WidgetManifest;
@@ -471,7 +460,6 @@ describe('WidgetMapComponent', () => {
     jest.runOnlyPendingTimers();
 
     expect(results[results.length - 1]).toEqual({
-      fit: true,
       layers: [
         {
           datasourceId: 'geo',
@@ -499,7 +487,6 @@ describe('WidgetMapComponent', () => {
       options: {
         style: 'a-style',
         layers: [],
-        fit: true,
         automaticLayers: true
       } as MapWidgetOptions,
       datasource: 'rs'
@@ -514,7 +501,6 @@ describe('WidgetMapComponent', () => {
     jest.runOnlyPendingTimers();
 
     expect(results[results.length - 1]).toEqual({
-      fit: true,
       layers: [
         {
           attribute: 'loc',
@@ -550,7 +536,6 @@ describe('WidgetMapComponent', () => {
       options: {
         style: 'a-style',
         layers: [{ type: 'wms', background: true }],
-        fit: true,
         automaticLayers: true
       } as MapWidgetOptions,
       datasource: 'rs'
@@ -565,7 +550,6 @@ describe('WidgetMapComponent', () => {
     jest.runOnlyPendingTimers();
 
     expect(results[results.length - 1]).toEqual({
-      fit: true,
       layers: [
         {
           attribute: 'loc',
@@ -611,8 +595,7 @@ describe('WidgetMapComponent', () => {
           { type: 'wms', paramLayer: '3' },
           { type: 'wms', paramLayer: '4', order: 8 },
           { type: 'wms', paramLayer: '5' }
-        ],
-        fit: true
+        ]
       } as MapWidgetOptions,
       datasource: 'rs'
     } as WidgetManifest;
@@ -626,7 +609,6 @@ describe('WidgetMapComponent', () => {
     jest.runOnlyPendingTimers();
 
     expect(results[results.length - 1]).toEqual({
-      fit: true,
       layers: [
         { type: 'wms', paramLayer: '2', order: 3 },
         { type: 'wms', paramLayer: '3', order: 5.5 },
@@ -640,6 +622,37 @@ describe('WidgetMapComponent', () => {
   });
 
   it('automatic order assignment give correct orders nothing present', () => {
+    jest.useFakeTimers();
+
+    component.staticManifest = {
+      options: {
+        style: 'a-style',
+        layers: [{ type: 'heatmap' }, { type: 'marker' }, { type: 'point' }, { type: 'polygon' }]
+      } as MapWidgetOptions,
+      datasource: 'rsadzazd'
+    } as WidgetManifest;
+
+    const results = [] as MapWidgetOptions[];
+    component.options$.subscribe((options) => results.push(options));
+
+    fixture.detectChanges();
+
+    jest.advanceTimersByTime(10_000);
+    jest.runOnlyPendingTimers();
+
+    expect(results[results.length - 1]).toEqual({
+      layers: [
+        { type: 'heatmap', attribute: 'loc', order: 0, title: '@pry.widget.map.layerType.heatmap' },
+        { type: 'marker', attribute: 'loc', order: 1, title: '@pry.widget.map.layerType.marker' },
+        { type: 'point', attribute: 'loc', order: 2, title: '@pry.widget.map.layerType.point' },
+        { type: 'polygon', order: 3, title: '@pry.widget.map.layerType.polygon' }
+      ],
+      style: 'style1',
+      tooltipMode: 'click'
+    });
+  });
+
+  it('should support legacy fit but make it disappear', () => {
     jest.useFakeTimers();
 
     component.staticManifest = {
@@ -660,12 +673,11 @@ describe('WidgetMapComponent', () => {
     jest.runOnlyPendingTimers();
 
     expect(results[results.length - 1]).toEqual({
-      fit: true,
       layers: [
-        { type: 'heatmap', attribute: 'loc', order: 0, title: '@pry.widget.map.layerType.heatmap' },
-        { type: 'marker', attribute: 'loc', order: 1, title: '@pry.widget.map.layerType.marker' },
-        { type: 'point', attribute: 'loc', order: 2, title: '@pry.widget.map.layerType.point' },
-        { type: 'polygon', order: 3, title: '@pry.widget.map.layerType.polygon' }
+        { type: 'heatmap', attribute: 'loc', order: 0, title: '@pry.widget.map.layerType.heatmap', fit: true },
+        { type: 'marker', attribute: 'loc', order: 1, title: '@pry.widget.map.layerType.marker', fit: true },
+        { type: 'point', attribute: 'loc', order: 2, title: '@pry.widget.map.layerType.point', fit: true },
+        { type: 'polygon', order: 3, title: '@pry.widget.map.layerType.polygon', fit: true }
       ],
       style: 'style1',
       tooltipMode: 'click'

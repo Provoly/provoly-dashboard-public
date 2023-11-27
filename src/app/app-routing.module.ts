@@ -46,10 +46,8 @@ const routes: Routes = [
               tooltipMode: TooltipMode.CLICK,
               layers: [
                 {
-                  type: 'marker'
-                },
-                {
-                  type: 'marker'
+                  type: 'marker',
+                  fit: true
                 },
                 {
                   type: 'heatmap',
@@ -64,11 +62,11 @@ const routes: Routes = [
                   type: 'wms',
                   opacity: 40,
                   paramLayer: 'ac:243300316_072022',
-                  url: 'https://geo.demo.pangee.ovh/geoserver/alter-carbon/wms',
-                  paramTiled: true
+                  url: 'https://geo.demo.provoly.net/geoserver/alter-carbon/wms',
+                  paramTiled: true,
+                  fit: true
                 }
-              ],
-              fit: true
+              ]
             },
             datasource: ['29061554-298f-4f56-8cd2-51ccec998303', 's6406e7e-37cd-41ce-b5fc-36d233e6ae5c']
           }

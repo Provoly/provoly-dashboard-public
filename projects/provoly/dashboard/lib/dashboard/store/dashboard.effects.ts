@@ -698,10 +698,11 @@ export class DashboardEffects {
   getCapability$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.getCapability),
-      debounceTime(100),
       withLatestFrom(this.store.select(DashboardSelectors.capabilities)),
       filter(
-        ([action, capabilities]) => (!!capabilities && !!action.url && !capabilities[action.url]) || !!action.force
+        ([action, capabilities]) =>
+          (!!capabilities && !!action.url && (!capabilities[action.url] || !capabilities[action.url]!.doc)) ||
+          !!action.force
       ),
       mergeMap(([action, _]) =>
         this.wmsService.getCapabilities(action.url).pipe(

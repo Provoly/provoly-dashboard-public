@@ -130,7 +130,7 @@ import { SearchContainerComponent } from './search-container/search-container.co
       },
       {
         path: 'dashboard',
-        mapUrl: 'https://map.yap.pangee.ovh',
+        mapUrl: 'https://map.provoly.net',
         pryUrl: 'http://localhost:8081',
         wsUrl: 'ws://localhost:8082',
         geoServerUrl: 'https://geo.dev.provoly.net/geoserver'

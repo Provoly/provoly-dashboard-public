@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-export type GetCapabilitiesResponse = { url: string; doc: Document };
+export type GetCapabilitiesResponse = { url: string; doc?: Document };
 
 @Injectable({
   providedIn: 'root'

@@ -1,11 +1,15 @@
 import {
+  AggregationResult,
   Attribute,
   AttributeSimpleValue,
   Class,
+  DEFAULT_PROJECTION,
   Field,
   FieldType,
+  GetCapabilitiesResponse,
   Item,
   ItemUtils,
+  MapGeoServerLayerOptions,
   MapWidgetBubbleLayerOptions,
   MapWidgetHeatMapLayerOptions,
   MapWidgetLayerOptions,
@@ -17,9 +21,10 @@ import { Feature, Map } from 'ol';
 import { Circle, LineString, Point } from 'ol/geom';
 import { Style } from 'ol/style';
 import { WidgetMapLayerService } from '../component/widget-map-layer.service';
-import { ProjectionLike } from 'ol/proj';
+import { get as getProjection, ProjectionLike, transform } from 'ol/proj';
 import Geometry from 'ol/geom/Geometry';
 import { GeoJSON } from 'ol/format';
+import { XMLUtils } from './xml-utils.class';
 
 export class WidgetMapUtils {
   static populateLocationAttribute(
@@ -367,6 +372,106 @@ export class WidgetMapUtils {
         points.push(...valueSimple.coordinates);
       }
     }
+  }
+
+  static projectExtentAggregationResponse(
+    field: Field,
+    extentResponse: AggregationResult,
+    layer: MapGeoServerLayerOptions,
+    wmsCapabilities: { [p: string]: GetCapabilitiesResponse | null } | undefined,
+    map: Map
+  ) {
+    const projBox = getProjection(field!.crs ?? DEFAULT_PROJECTION);
+    const response = extentResponse.values as {
+      value: {
+        top_left: {
+          lon: string;
+          lat: string;
+        };
+        bottom_right: {
+          lon: string;
+          lat: string;
+        };
+      };
+    }[];
+    if (
+      projBox &&
+      response.length > 0 &&
+      response[0].value &&
+      response[0].value.top_left &&
+      response[0].value.top_left.lat !== undefined &&
+      response[0].value.top_left.lon !== undefined &&
+      response[0].value.bottom_right &&
+      response[0].value.bottom_right.lat !== undefined &&
+      response[0].value.bottom_right.lon !== undefined
+    ) {
+      return {
+        datasource: layer.datasourceId,
+        extent: [
+          transform(
+            [
+              parseFloat(
+                (
+                  extentResponse.values[0] as {
+                    value: {
+                      top_left: {
+                        lon: string;
+                      };
+                    };
+                  }
+                ).value.top_left.lon
+              ),
+              parseFloat(
+                (
+                  extentResponse.values[0] as {
+                    value: {
+                      top_left: {
+                        lat: string;
+                      };
+                    };
+                  }
+                ).value.top_left.lat
+              )
+            ],
+            projBox,
+            map.getView().getProjection()
+          ),
+          transform(
+            [
+              parseFloat(
+                (
+                  extentResponse.values[0] as {
+                    value: {
+                      bottom_right: {
+                        lon: string;
+                      };
+                    };
+                  }
+                ).value.bottom_right.lon
+              ),
+              parseFloat(
+                (
+                  extentResponse.values[0] as {
+                    value: {
+                      bottom_right: {
+                        lat: string;
+                      };
+                    };
+                  }
+                ).value.bottom_right.lat
+              )
+            ],
+            projBox,
+            map.getView().getProjection()
+          )
+        ]
+      };
+    }
+
+    return {
+      datasource: layer.datasourceId,
+      extent: XMLUtils.getLayerExtent(layer.paramLayer, map, wmsCapabilities![layer.url]?.doc) ?? []
+    };
   }
 
   static DEFAULT_HEATMAP_RADIUS = 25;

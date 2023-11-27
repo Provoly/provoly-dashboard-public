@@ -51,10 +51,6 @@
         {{ '@pry.widget.map.autoLayer' | i18n }}
       </pry-checkbox>
 
-      <pry-checkbox (ngModelChange)="changeFit($event)" [ngModel]="optionsCopy.fit ?? false">
-        {{ '@pry.widget.map.fit' | i18n }}
-      </pry-checkbox>
-
       <pry-checkbox (ngModelChange)="changeAttributions($event)" [ngModel]="optionsCopy.attributions ?? false">
         {{ '@pry.widget.map.attributions' | i18n }}
       </pry-checkbox>
@@ -122,6 +118,10 @@
                 id="map_layerType"
               ></pry-select>
             </div>
+
+            <pry-checkbox (ngModelChange)="changeFit($event, layer)" [ngModel]="layer.fit">
+              {{ '@pry.widget.map.fit' | i18n }}
+            </pry-checkbox>
 
             <div
               *ngIf="

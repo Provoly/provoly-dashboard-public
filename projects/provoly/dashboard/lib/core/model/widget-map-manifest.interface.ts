@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 
 export interface MapWidgetOptions {
   center?: number[];
@@ -16,7 +16,6 @@ export interface MapWidgetOptions {
   singleLayer?: boolean;
   ignoreAutoLayer?: string[];
   automaticLayers?: boolean;
-  ignoreGetCapabilitiesExtent?: boolean;
 }
 
 export type MapWidgetLayerOptions =
@@ -42,6 +41,7 @@ export interface BaseWidgetMapLayerOptions {
   opacity?: number;
   order?: number;
   background?: boolean;
+  fit?: boolean;
 }
 
 export interface MapWidgetHeatMapLayerOptions extends BaseWidgetMapLayerOptions {
