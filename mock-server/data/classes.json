@@ -940,5 +940,61 @@
     ],
     "slug": "ce8dc8ebe4_vcub_lamb93",
     "storage": "POSTGIS"
+  },
+  {
+    "id": "class-territoires-selectionnables",
+    "name": "territoires",
+    "icon": null,
+    "attributes": [
+      {
+        "id": "273795ba-13e0-4f40-b834-c6a339e5961e",
+        "name": "nom",
+        "field": "7d3ad69f-5de4-4e34-88c3-83160f5d0bc2",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "11a48d93e7_nom"
+      },
+      {
+        "id": "d62cb697-795e-44a6-b45b-bcaa4a7c6c13",
+        "name": "maille",
+        "field": "06d228e3-a873-4740-b99a-d5803044cc95",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "963bce741b_maille"
+      },
+      {
+        "id": "6f48f845-75fc-484f-a6cf-6273e7afab5d",
+        "name": "codegeo",
+        "field": "06d228e3-a873-4740-b99a-d5803044cc95",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "325102451b_codegeo"
+      },
+      {
+        "id": "3a8ce754-2c4b-4e3c-b2a8-6596a8199c1e",
+        "name": "the_geom",
+        "field": "8caa4904-5680-4bf2-8921-25e076e4fa62",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "0db181a0c0_the_geom"
+      },
+      {
+        "id": "4bfd453a-6f94-4ce2-87b2-d732b5a5a7cb",
+        "name": "maille_p",
+        "field": "06d228e3-a873-4740-b99a-d5803044cc95",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "5f5c507068_maille_p"
+      },
+      {
+        "id": "edca01dd-9b2d-4e74-b279-756fbf3f7c69",
+        "name": "codegeo_p",
+        "field": "06d228e3-a873-4740-b99a-d5803044cc95",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "eceaacfe4b_codegeo_p"
+      }
+    ],
+    "slug": "7a6169df6e_territoires"
   }
 ]

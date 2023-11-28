@@ -1,0 +1,269 @@
+{
+  "items": {
+    "class-aggregation-fntp": [
+      {
+        "oClass": "class-aggregation-fntp",
+        "id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "class-aggregation-fntp"
+        },
+        "attributes": {
+          "nbJourMinimum": {
+            "value": 19,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "classe2": {
+            "value": "17 à 20 jours",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "benchNbJourMaximum": {
+            "value": 32,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "classe1": {
+            "value": "14 à 17 jours",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "infrastructureCoursEau": {
+            "value": 6856,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "classe4": {
+            "value": "23 à 26 jours",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "benchClasse3ImpacteePct": {
+            "value": 37.73,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "classe3": {
+            "value": "20 à 23 jours",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "codeGeo": {
+            "value": "28",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "classe5": {
+            "value": "Plus de 26 jours",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "libGeo": {
+            "value": "Normandie",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "classe3ImpacteePct": {
+            "value": 77.46,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "infrastructureImpacteeTotal": {
+            "value": 9114,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "classe5Impactee": {
+            "value": 6.0,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "benchClasse4ImpacteePct": {
+            "value": 23.01,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "classe2ImpacteePct": {
+            "value": 10.09,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "nbJourMoyen": {
+            "value": 22,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "benchClasse5Impactee": {
+            "value": 49212.0,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "benchClasse4Impactee": {
+            "value": 46877.0,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "classe1ImpacteePct": {
+            "value": 0.0,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "scenarioClimatique": {
+            "value": "RCP 2,6",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "classe1Impactee": {
+            "value": 0,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "benchClasse3Impactee": {
+            "value": 76884.0,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "benchClasse5ImpacteePct": {
+            "value": 24.15,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "benchClasse1ImpacteePct": {
+            "value": 0.19,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "benchClasse1Impactee": {
+            "value": 393.0,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "nbJourMaximum": {
+            "value": 26,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "c0": {
+            "value": 325782,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "benchNbJourMoyen": {
+            "value": 24,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "benchClasse2Impactee": {
+            "value": 30400.0,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "classe5ImpacteePct": {
+            "value": 0.07,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "benchNbJourMinimum": {
+            "value": 16,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "benchLibGeo": {
+            "value": "FRANCE",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "classe4Impactee": {
+            "value": 1128.0,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "benchClasse2ImpacteePct": {
+            "value": 14.92,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "maille": {
+            "value": "REG",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "classe2Impactee": {
+            "value": 920.0,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "scenarioTemporel": {
+            "value": "2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "classe3Impactee": {
+            "value": 7060.0,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "classe4ImpacteePct": {
+            "value": 12.38,
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      }
+    ]
+  },
+  "relations": [],
+  "count": {
+    "class-aggregation-fntp": {
+      "count": 1,
+      "accurate": true
+    }
+  },
+  "searchAfter": null
+}

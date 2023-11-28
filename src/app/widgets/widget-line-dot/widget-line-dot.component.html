@@ -1,0 +1,24 @@
+<table class="m-widget-line-dot" #render>
+  <tr class="m-widget-line-dot__category" *ngFor="let line of valuesForLines$ | async">
+    <td class="m-widget-line-dot__category__title">{{ line.label }}</td>
+    <td class="m-widget-line-dot__category__line" #parent>
+      <ng-container *ngFor="let value of line.values; let minMaxIdx = index">
+        <div [style.width.px]="marginStart(parent, value, (minMax$ | async)!)" *ngIf="minMaxIdx === 0"></div>
+        <div class="m-widget-line-dot__category__line__element">
+          <div
+            class="m-widget-line-dot__category__line__dot -type-{{ minMaxIdx }}"
+            [attr.data-value]="value"
+            [attr.data-label]="minMaxLabels[minMaxIdx]"
+            [attr.data-min]="(minMax$ | async)![0]"
+            [attr.data-max]="(minMax$ | async)![1]"
+          ></div>
+        </div>
+        <div
+          class="m-widget-line-dot__category__line__separator"
+          *ngIf="minMaxIdx < 2"
+          [style.width.px]="marginMiddle(parent, value, line.values[minMaxIdx + 1], (minMax$ | async)!)"
+        ></div>
+      </ng-container>
+    </td>
+  </tr>
+</table>

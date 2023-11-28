@@ -1,0 +1,84 @@
+@use 'projects/provoly/dashboard/styles/abstracts' as *;
+
+.m-widget-line-dot {
+  width: 100%;
+
+  &__category {
+    display: flex;
+    flex-direction: row;
+
+    &__title {
+      flex: 1 2;
+    }
+
+    &__line {
+      flex: 2 1;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: toRem(15);
+
+      &__dot {
+        border-radius: 50%;
+        width: toRem(8);
+        height: toRem(8);
+
+        &.-type-0 {
+          background-color: #FFAAAC;
+        }
+
+        &.-type-1 {
+          background-color: #FF5333;
+          width: toRem(12);
+          height: toRem(12);
+
+          &:before {
+            content: attr(data-value);
+            margin-top: toRem(-18);
+            position: absolute;
+            vertical-align: -50%;
+            transform: translate(calc(-50% + 6px));
+          }
+
+          &:after {
+            content: attr(data-label);
+            margin-top: toRem(8);
+            position: absolute;
+            vertical-align: -50%;
+            transform: translate(calc(-50% + 6px));
+          }
+        }
+
+        &.-type-2 {
+          background-color: #B5251B;
+        }
+
+        &:before {
+          content: attr(data-value);
+          margin-top: toRem(-18);
+          position: absolute;
+          font-weight: 600;
+          transform: translate(calc(-50% + 4px));
+        }
+
+        &:after {
+          content: attr(data-label);
+          margin-top: toRem(6);
+          position: absolute;
+          text-transform: uppercase;
+          font-size: toRem(10);
+          transform: translate(calc(-50% + 4px));
+        }
+      }
+
+      &__separator {
+        border-bottom: 1px solid #C2D1D9;
+
+        &.-invisible {
+          border-bottom: none;
+        }
+      }
+    }
+
+  }
+}

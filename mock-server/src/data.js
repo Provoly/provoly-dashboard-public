@@ -28,6 +28,12 @@ let datasets = JSON.parse(fs.readFileSync('./data/datasets.json', 'utf8'));
 let transfos = JSON.parse(fs.readFileSync('./data/transfos.json', 'utf8'));
 let departements = JSON.parse(fs.readFileSync('./data/departements.json', 'utf8'));
 
+Object.keys(queryResponses).forEach((key) => {
+  if (typeof queryResponses[key] === 'string') {
+    queryResponses[key] = JSON.parse(fs.readFileSync(`./data/responses/${queryResponses[key]}`, 'utf8'));
+  }
+});
+
 const itemsAsResultSet = (items) => {
   const classes = [...new Set(items.map((res) => res.oClass))];
   const result = {

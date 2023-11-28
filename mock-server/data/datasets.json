@@ -195,5 +195,19 @@
     "oClass": "48804bd2-e940-4ff8-8d45-62123279eb6a",
     "type": "OPEN",
     "metadata": []
+  },
+  {
+    "id": "dataset-territoires-selectionnables",
+    "name": "Territoires sélectionables",
+    "oClass": "class-territoires-selectionnables",
+    "type": "CLOSED",
+    "metadata": []
+  },
+  {
+    "id": "dataset-aggregation-fntp",
+    "name": "Aggrégation pont inondation",
+    "oClass": "class-aggregation-fntp",
+    "type": "CLOSED",
+    "metadata": []
   }
 ]

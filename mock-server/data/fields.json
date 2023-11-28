@@ -327,5 +327,24 @@
     "type": "keyword",
     "slug": "01fa08f057_ckdo_keyword",
     "crs": null
+  },
+  {
+    "id": "7d3ad69f-5de4-4e34-88c3-83160f5d0bc2",
+    "name": "libelle",
+    "type": "string",
+    "slug": "fa683f34b8_libelle"
+  },
+  {
+    "id": "06d228e3-a873-4740-b99a-d5803044cc95",
+    "name": "idx_txt",
+    "type": "keyword",
+    "slug": "bae4001841_idx_txt"
+  },
+  {
+    "id": "8caa4904-5680-4bf2-8921-25e076e4fa62",
+    "name": "zone",
+    "type": "MultiPolygon",
+    "slug": "8270d984f7_zone",
+    "crs": "EPSG:4326"
   }
 ]

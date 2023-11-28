@@ -1,0 +1,17 @@
+<div class="container" #render>
+  <div class="icon">
+    <img [src]="'/assets/svgs/' + options.icon + '.svg'" [alt]="options.icon" />
+  </div>
+  <div class="text">
+    <div class="top" *ngIf="options.line.length > 0">
+      <span class="value-text">{{ options.line[0].before }}</span>
+      <span class="value">{{ ((values$ | async) ?? [])[0] }} {{ options.line[0].during }} </span>
+      <span class="value-text">{{ options.line[0].after }}</span>
+    </div>
+    <div class="bottom" *ngIf="options.line.length > 1">
+      <span class="value-text">{{ options.line[1].before }}</span>
+      <span class="value"> {{ ((values$ | async) ?? [])[1] | localizedNumber }} {{ options.line[1].during }} </span>
+      <span class="value-text">{{ options.line[1].after }}</span>
+    </div>
+  </div>
+</div>
