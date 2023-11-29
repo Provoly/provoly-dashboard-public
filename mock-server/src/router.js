@@ -671,12 +671,12 @@ router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items/aggregate', (req,
     }, fieldGeneratorModule.generateDelay());
   }
 });
-router.on(['OPTIONS', 'POST'], '/data/dataset-versions/autocomplete', (req, res, params) => {
+router.on(['OPTIONS', 'POST'], '/data/data-sources/autocomplete', (req, res, params) => {
   readPayload(req).then((payload) => {
     if (payload) {
       const { attributes = [], search = '', limit = 10 } = payload;
 
-      const attrId = attributes[0]?.id || { id: '-----' };
+      const attrId = attributes[0]?.attribute || { attribute: '-----' };
       const attr = dataModule.classes
         .find((cl) => cl.attributes.find((attr) => attr.id === attrId))
         .attributes.find((attr) => attr.id === attrId);

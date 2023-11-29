@@ -125,8 +125,8 @@ export class SearchService {
   ) {
     return this.store.select(ConfigSelectors.dataUrl).pipe(
       switchMap((url) =>
-        this.httpClient.post<string[]>(encodeURI(`${url}/dataset-versions/autocomplete`), {
-          attributes,
+        this.httpClient.post<string[]>(encodeURI(`${url}/data-sources/autocomplete`), {
+          attributes: (attributes ?? []).map((attr) => ({ datasource: attr.datasource, attribute: attr.id })),
           search
         })
       )
