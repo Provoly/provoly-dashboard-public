@@ -456,7 +456,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                             field: 'key',
                             type: types.abscissa.vegaType,
                             title: options.abscissa.label,
-                            ...(types.abscissa.vegaType === 'temporal' ? { format: '%Y-%B-%dT%H:%M:%S' } : {})
+                            ...(types.abscissa.vegaType === 'temporal'
+                              ? { format: '%Y-%B-%dT%H:%M:%S', scale: { type: 'utc' } }
+                              : {})
                           },
                           { field: 'value', type: types.ordinate.vegaType, title: options.ordinate.label },
                           {
@@ -470,7 +472,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                             field: 'key',
                             type: types.abscissa.vegaType,
                             title: options.abscissa.label,
-                            ...(types.abscissa.vegaType === 'temporal' ? { format: '%Y-%B-%dT%H:%M:%S' } : {})
+                            ...(types.abscissa.vegaType === 'temporal'
+                              ? { format: '%Y-%B-%dT%H:%M:%S', scale: { type: 'utc' } }
+                              : {})
                           },
                           { field: 'value', type: types.ordinate.vegaType, title: options.ordinate.label }
                         ]
@@ -1049,7 +1053,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     if (abscissaType === VegaType.TEMPORAL && options.abscissa.limit?.isTimeLimit) {
       return { timeUnit: options.abscissa.limit.interval };
     } else if (abscissaType === VegaType.TEMPORAL && !!options.graph.sort) {
-      return { timeUnit: 'yearmonthdatehoursminutesseconds' };
+      return { timeUnit: 'utcyearmonthdate' };
     }
     return {};
   }
