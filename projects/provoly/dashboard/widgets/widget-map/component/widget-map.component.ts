@@ -64,7 +64,7 @@ import { Feature, Map, Overlay, View } from 'ol';
 import { Coordinate } from 'ol/coordinate';
 import { boundingExtent, createEmpty } from 'ol/extent';
 import { Circle, Geometry, Point } from 'ol/geom';
-import { Layer, Tile } from 'ol/layer';
+import { Heatmap, Layer, Tile } from 'ol/layer';
 import BaseLayer from 'ol/layer/Base';
 import VectorLayer from 'ol/layer/Vector';
 import VectorTileLayer from 'ol/layer/VectorTile';
@@ -96,6 +96,8 @@ import { XMLUtils } from '../utils/xml-utils.class';
 import { WidgetMapLayerService } from './widget-map-layer.service';
 import MapboxVectorLayer from 'ol/layer/MapboxVector';
 import { WidgetMapUtils } from '../utils/widget-map.utils';
+import { LayerSlider } from '../interaction/layer-slider.class';
+import TileLayer from 'ol/layer/Tile';
 
 export const TOOLTIP_PADDING = 15;
 export const NON_MANDATORY_FIT_LAYER_TYPES = ['wms', 'geoserver'];
@@ -118,6 +120,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   @ViewChild('popupContent', { read: ViewContainerRef }) popupContent!: ViewContainerRef;
   @ViewChild('exportTypeTemplate', { read: TemplateRef }) exportTypeTemplate!: TemplateRef<any>;
   @ViewChild('address') address!: ElementRef;
+  @ViewChild('sliderElement') sliderElement!: ElementRef<HTMLInputElement>;
   options$: Observable<MapWidgetOptions>;
   layerTypes = this.widgetMapLayerService.implementationList
     .filter((type) => type !== 'auto')
@@ -192,7 +195,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   >;
   datasourceFilters$: Observable<any>;
   usedClasses$: Observable<any>;
-  NON_MANDATORY_FIT_LAYER_TYPES = NON_MANDATORY_FIT_LAYER_TYPES;
+  layerSlider = new LayerSlider();
+  hasSlideLayer$: Observable<boolean>;
+  slides: { id: undefined | string; label: string }[];
 
   constructor(
     store: Store<any>,
@@ -206,6 +211,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     @Optional() @Inject(PRY_GEOAUTH_TOKEN) private geoAuthService: PryGeoAuthService
   ) {
     super(store, el);
+
+    this.slides = [
+      { id: 'all', label: this.translateService.instant('@pry.widget.map.slide.all') },
+      { id: 'left', label: this.translateService.instant('@pry.widget.map.slide.left') },
+      { id: 'right', label: this.translateService.instant('@pry.widget.map.slide.right') }
+    ];
 
     this.widgetMapLayerService.withGeoAuth(this.geoAuthService);
 
@@ -551,6 +562,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       }),
       delay(10)
     );
+
+    this.hasSlideLayer$ = this.options$.pipe(
+      map((options) => (options.layers ?? []).map((layer) => !!layer.slide).reduce((a, b) => a || b, false))
+    );
   }
 
   initInteractionManager() {
@@ -560,6 +575,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   ngAfterViewInit(): void {
     this.map = new Map({ target: this.mapRef.nativeElement });
     this.interactionManager = this.initInteractionManager();
+    this.layerSlider.init(this.map, this.sliderElement.nativeElement);
     this.mapStyleUrl$ = combineLatest([this.options$, this.mapUrl$]).pipe(
       map(([options, url]) => {
         switch (options.style) {
@@ -689,6 +705,13 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                   // Adding CQL query to geoserver layers
                   (resultLayer as Tile<TileWMS>).getSource()!.updateParams({ cql_filter });
                 }
+              }
+
+              if (layer.slide && layer.slide !== 'all') {
+                this.layerSlider.applySlide(
+                  layer.slide,
+                  resultLayer as unknown as TileLayer<any> | VectorLayer<any> | Heatmap
+                );
               }
 
               return resultLayer;
@@ -1071,6 +1094,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     layer.fit = $event;
   }
 
+  changeSlide($event: undefined | 'left' | 'right', layer: MapWidgetLayerOptions) {
+    layer.slide = $event;
+  }
+
   changeAttributions($event: boolean) {
     this.optionsCopy.attributions = $event;
     if (this.optionsCopy.attributions) {
@@ -1347,5 +1374,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   override ngOnDestroy() {
     super.ngOnDestroy();
     this.store.dispatch(DashboardActions.resetWmsFeatures());
+  }
+
+  triggerLayerRender() {
+    this.map.render();
   }
 }

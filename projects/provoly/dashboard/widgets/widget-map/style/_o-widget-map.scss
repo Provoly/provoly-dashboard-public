@@ -80,3 +80,50 @@
     }
   }
 }
+
+.o-map-slider {
+  position: absolute;
+  width: 100%;
+  margin-top: toRem(-10);
+  z-index: 1;
+
+  &.-hidden {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+
+  &::-webkit-slider-runnable-track {
+    background: none;
+  }
+
+  &::-moz-range-track {
+    background: none;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+
+    /*custom styles*/
+    background-color: #5cd5eb;
+    height: toRem(2000);
+    margin-top: toRem(-1950);
+    width: toRem(2);
+  }
+
+  &::-moz-range-thumb {
+    border: none; /*Removes extra border that FF applies*/
+    border-radius: 0; /*Removes default border-radius that FF applies*/
+
+    /*custom styles*/
+    background-color: #5cd5eb;
+    height: toRem(2000);
+    margin-top: toRem(-1950);
+    width: toRem(2);
+  }
+}

@@ -1,4 +1,4 @@
-import {BehaviorSubject} from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 export interface MapWidgetOptions {
   center?: number[];
@@ -42,6 +42,7 @@ export interface BaseWidgetMapLayerOptions {
   order?: number;
   background?: boolean;
   fit?: boolean;
+  slide?: 'left' | 'right' | 'all';
 }
 
 export interface MapWidgetHeatMapLayerOptions extends BaseWidgetMapLayerOptions {

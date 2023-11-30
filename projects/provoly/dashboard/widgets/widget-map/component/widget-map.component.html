@@ -294,6 +294,20 @@
           </div>
         </fieldset>
 
+        <div class="m-form-label-field" *ngIf="layer.type !== 'heatmap'">
+          <label class="a-label" for="slide_select">{{ '@pry.widget.map.slide.title' | i18n }}</label>
+          <pry-select
+            (ngModelChange)="changeSlide($event, layer)"
+            [itemsAsOption]="true"
+            [items]="slides"
+            [ngModel]="layer.slide ?? 'all'"
+            bindLabel="label"
+            bindValue="id"
+            id="slide_select"
+            class="a-pry-select"
+          ></pry-select>
+        </div>
+
         <div class="m-form-label-field" *ngIf="optionsCopy.attributions">
           <label class="a-label" for="attribution">{{ '@pry.widget.map.attribution' | i18n }}</label>
           <input
@@ -426,6 +440,17 @@
   <div [style.height.px]="height$ | async" class="o-map-wrapper">
     <div class="o-map">
       <div #mapRef id="map"></div>
+      <input
+        type="range"
+        min="0"
+        max="100"
+        step="0.01"
+        value="50"
+        #sliderElement
+        class="o-map-slider"
+        [class.-hidden]="!(hasSlideLayer$ | async)"
+        (input)="triggerLayerRender()"
+      />
     </div>
   </div>
 

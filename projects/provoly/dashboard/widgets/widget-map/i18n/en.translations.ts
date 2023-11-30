@@ -74,7 +74,13 @@ export const enTranslations = {
         selectLayers: 'Select layers',
         legends: 'Display legend',
         singleLayer: 'Single layer mode',
-        autoLayer: 'Automatic datasource layers configuration'
+        autoLayer: 'Automatic datasource layers configuration',
+        slide: {
+          title: 'Display on slider',
+          all: 'Everywhere',
+          left: 'To the left',
+          right: 'To the right'
+        }
       }
     }
   }

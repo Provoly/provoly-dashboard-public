@@ -74,7 +74,13 @@ export const frTranslations = {
         selectLayers: 'Sélectionner les couches',
         legends: 'Afficher la légende',
         singleLayer: 'Mode mono-couche',
-        autoLayer: 'Configuration automatique des sources de données'
+        autoLayer: 'Configuration automatique des sources de données',
+        slide: {
+          title: 'Afficher selon un curseur',
+          all: 'Partout',
+          left: 'Uniquement à gauche',
+          right: 'Uniquement à droite'
+        }
       }
     }
   }
