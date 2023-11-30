@@ -19,18 +19,18 @@ export class LayerSlider {
     layer.on('prerender', (event: RenderEvent) => {
       const mapSize = this.map.getSize();
       if (mapSize) {
-        const width = mapSize[0] * (parseFloat(this.slider.value) / 100);
-        let tl = getRenderPixel(event, [0, 0]);
-        let tr = getRenderPixel(event, [width, 0]);
-        let bl = getRenderPixel(event, [0, mapSize[1]]);
-        let br = getRenderPixel(event, [width, mapSize[1]]);
-        if (type === 'right') {
-          tl = getRenderPixel(event, [width, 0]);
-          tr = getRenderPixel(event, [mapSize[0], 0]);
-          bl = getRenderPixel(event, [width, mapSize[1]]);
-          br = getRenderPixel(event, mapSize);
-        }
         if (event.context instanceof CanvasRenderingContext2D) {
+          const width = mapSize[0] * (parseFloat(this.slider.value) / 100);
+          let tl = getRenderPixel(event, [0, 0]);
+          let tr = getRenderPixel(event, [width, 0]);
+          let bl = getRenderPixel(event, [0, mapSize[1]]);
+          let br = getRenderPixel(event, [width, mapSize[1]]);
+          if (type === 'right') {
+            tl = getRenderPixel(event, [width, 0]);
+            tr = getRenderPixel(event, [mapSize[0], 0]);
+            bl = getRenderPixel(event, [width, mapSize[1]]);
+            br = getRenderPixel(event, mapSize);
+          }
           const ctx = event.context as CanvasRenderingContext2D;
           ctx.save();
           ctx.beginPath();
@@ -42,9 +42,17 @@ export class LayerSlider {
           ctx.clip();
         } else {
           const gl = event.context as unknown as WebGL2RenderingContext;
-          this.clearCanvas(gl);
+          const bottomLeft = getRenderPixel(event, [0, mapSize[1]]);
+          const topRight = getRenderPixel(event, [mapSize[0], 0]);
+          const leftWidth = (topRight[0] - bottomLeft[0]) * (parseFloat(this.slider.value) / 100);
+          const rightWidth = (topRight[0] - bottomLeft[0]) * (1 - parseFloat(this.slider.value) / 100);
+          const height = topRight[1] - bottomLeft[1];
           gl.enable(gl.SCISSOR_TEST);
-          gl.scissor(tl[0], tl[1], br[0] - tl[0], br[1] - tl[1]);
+          if (type === 'right') {
+            gl.scissor(bottomLeft[0] + leftWidth, bottomLeft[1], rightWidth, height);
+          } else {
+            gl.scissor(bottomLeft[0], bottomLeft[1], leftWidth, height);
+          }
         }
       }
     });
@@ -55,19 +63,7 @@ export class LayerSlider {
       } else {
         const gl = event.context as WebGL2RenderingContext;
         gl.disable(gl.SCISSOR_TEST);
-        gl.flush();
       }
     });
-  }
-
-  private clearCanvas(gl: WebGL2RenderingContext) {
-    gl.enable(gl.SCISSOR_TEST);
-    gl.enable(gl.DEPTH_TEST);
-    gl.scissor(0, 0, gl.canvas.width, gl.canvas.height);
-    gl.clearColor(0.6, 0, 0, 0.2);
-    gl.clearDepth(1.0);
-    gl.depthFunc(gl.LEQUAL);
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    gl.disable(gl.SCISSOR_TEST);
   }
 }

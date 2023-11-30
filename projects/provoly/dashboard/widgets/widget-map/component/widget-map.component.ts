@@ -71,7 +71,7 @@ import VectorTileLayer from 'ol/layer/VectorTile';
 import { Pixel } from 'ol/pixel';
 import { fromLonLat } from 'ol/proj';
 import { register } from 'ol/proj/proj4';
-import { TileWMS } from 'ol/source';
+import { DataTile, TileWMS } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
 import { Style } from 'ol/style';
 import proj4 from 'proj4';
@@ -98,6 +98,8 @@ import MapboxVectorLayer from 'ol/layer/MapboxVector';
 import { WidgetMapUtils } from '../utils/widget-map.utils';
 import { LayerSlider } from '../interaction/layer-slider.class';
 import TileLayer from 'ol/layer/Tile';
+import WebGLTileLayer from 'ol/layer/WebGLTile';
+import { Attribution, defaults } from 'ol/control';
 
 export const TOOLTIP_PADDING = 15;
 export const NON_MANDATORY_FIT_LAYER_TYPES = ['wms', 'geoserver'];
@@ -198,6 +200,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   layerSlider = new LayerSlider();
   hasSlideLayer$: Observable<boolean>;
   slides: { id: undefined | string; label: string }[];
+  attributions = new Attribution();
 
   constructor(
     store: Store<any>,
@@ -573,7 +576,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   ngAfterViewInit(): void {
-    this.map = new Map({ target: this.mapRef.nativeElement });
+    this.map = new Map({ target: this.mapRef.nativeElement, controls: defaults({ attribution: false }) });
     this.interactionManager = this.initInteractionManager();
     this.layerSlider.init(this.map, this.sliderElement.nativeElement);
     this.mapStyleUrl$ = combineLatest([this.options$, this.mapUrl$]).pipe(
@@ -615,6 +618,19 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         distinctUntilChanged()
       )
       .subscribe((view) => this.map.setView(new View(view)));
+
+    this.options$
+      .pipe(
+        map((options) => options.attributions),
+        distinctUntilChanged()
+      )
+      .subscribe((attributions) => {
+        if (!attributions) {
+          this.map.removeControl(this.attributions);
+        } else {
+          this.map.addControl(this.attributions);
+        }
+      });
 
     this.layers$ = combineLatest([
       this.resultSet$,
@@ -693,6 +709,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                 this.map
               );
               resultLayer.set('fit', layer.fit);
+              resultLayer.set('type', layer.type);
+              resultLayer.set('slide', layer.slide);
+              resultLayer.set('order', layer.order);
               if (layer.type === 'relation') {
                 hasRelationLayer = resultLayer as unknown as VectorLayer<VectorSource>;
               }
@@ -743,7 +762,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           });
         }
         layers.push(...additionalLayers);
-        layers.forEach((layer, index, arr) => layer.set('zIndex', arr.length - index));
 
         if (options.singleLayer) {
           layers.forEach((layer, idx) => {
@@ -751,7 +769,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           });
         }
 
-        return layers;
+        /* Resolve bug drawing webgllayer without nothing underneath: add empty layer below */
+        const _layers = this.addEmptyWebGlLayerBelowSlideHeatmaps(layers);
+
+        _layers.forEach((layer, index, arr) => layer.set('zIndex', arr.length - index));
+
+        return _layers;
       })
     );
 
@@ -906,6 +929,28 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         }
       )
     );
+  }
+
+  private addEmptyWebGlLayerBelowSlideHeatmaps(layers: BaseLayer[]) {
+    const _layers = [];
+    for (let i = 0; i < layers.length; i++) {
+      const layer = layers[i];
+      _layers.push(layer);
+      if (layer.get('type') === 'heatmap' && layer.get('slide')) {
+        const emptyData = new Uint8Array(256 * 256 * 4);
+        const emptyLayer = new WebGLTileLayer({
+          source: new DataTile({
+            loader() {
+              return emptyData;
+            },
+            maxZoom: 0,
+            wrapX: true
+          })
+        });
+        _layers.push(emptyLayer);
+      }
+    }
+    return _layers;
   }
 
   override initResultSet$() {
@@ -1378,5 +1423,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   triggerLayerRender() {
     this.map.render();
+  }
+
+  changeSlideOption($event: any) {
+    this.optionsCopy.slide = $event;
   }
 }

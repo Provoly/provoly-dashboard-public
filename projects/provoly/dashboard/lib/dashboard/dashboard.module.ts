@@ -43,7 +43,7 @@ import {
 } from './components/widgets/widget-placement/widget-placement.utils';
 import { BaseFilterComponent } from './filter/base-filter.component';
 import { FilterInstanciatorComponent } from './filter/components/filter-instanciator/filter-instanciator.component';
-import { FilterGroupComponent } from "./filter/components/filter-group/filter-group.component";
+import { FilterGroupComponent } from './filter/components/filter-group/filter-group.component';
 import { FILTER_DEFINITION, FilterDefinition } from './filter/filter-factory.service';
 import { DefaultViewGuard } from './guard/default-view.guard';
 import { BASE_CONFIG, DashboardInitService } from './store/dashboard-init.service';
@@ -54,7 +54,7 @@ import { PryTitleService } from './store/title.service';
 import { BaseTooltipComponent } from './tooltip/base-tooltip.component';
 import { DefaultTooltipComponent } from './tooltip/components/default/default.tooltip.component';
 import { TOOLTIP_DEFINITION, TooltipDefinition } from './tooltip/tooltip-factory.service';
-import { PryFilterGroupCssComponent } from "./filter/style/css.component";
+import { PryFilterGroupCssComponent } from './filter/style/css.component';
 
 const components = [
   DashboardComponent,

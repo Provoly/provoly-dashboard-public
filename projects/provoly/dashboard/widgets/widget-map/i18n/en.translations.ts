@@ -76,6 +76,7 @@ export const enTranslations = {
         singleLayer: 'Single layer mode',
         autoLayer: 'Automatic datasource layers configuration',
         slide: {
+          global: 'Use a slider',
           title: 'Display on slider',
           all: 'Everywhere',
           left: 'To the left',

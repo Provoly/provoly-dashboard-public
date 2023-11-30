@@ -76,6 +76,7 @@ export const frTranslations = {
         singleLayer: 'Mode mono-couche',
         autoLayer: 'Configuration automatique des sources de données',
         slide: {
+          global: 'Utiliser un curseur',
           title: 'Afficher selon un curseur',
           all: 'Partout',
           left: 'Uniquement à gauche',
