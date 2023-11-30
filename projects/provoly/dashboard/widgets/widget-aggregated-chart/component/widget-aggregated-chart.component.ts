@@ -407,7 +407,8 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                             types.abscissa.vegaType === VegaType.TEMPORAL
                               ? "timeFormat(datum.value, '%Y-%B-%dT%H:%M:%S')"
                               : 'datum.value'
-                          }`
+                          }`,
+                          ...this.getLabelAngle(types.abscissa.vegaType, values.data)
                         },
                         scale: {
                           // Force a false value here so that vega understands properly
@@ -628,7 +629,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           // axis tick titles
           font: 'Ubuntu, sans-serif',
           fontSize: 12,
-          fontWeight: 600,
+          fontWeight: 400,
           fill: '#263340'
         },
         'guide-title': {
@@ -636,13 +637,13 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           font: 'Ubuntu, sans-serif',
           fontSize: 12,
           fontWeight: 600,
-          fill: '#263340'
+          fill: '#3E546A'
         },
         'group-title': {
           // chart title
           font: 'Ubuntu, sans-serif',
           fontSize: 12,
-          fontWeight: 600,
+          fontWeight: 400,
           fill: '#263340'
         },
         'group-subtitle': {
@@ -1049,6 +1050,16 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       return { timeUnit: options.abscissa.limit.interval };
     } else if (abscissaType === VegaType.TEMPORAL && !!options.graph.sort) {
       return { timeUnit: 'yearmonthdatehoursminutesseconds' };
+    }
+    return {};
+  }
+
+  getLabelAngle(abscissaType: VegaType, data: { key: string | number; value: any }[]) {
+    if (
+      [VegaType.NOMINAL, VegaType.ORDINAL].includes(abscissaType) &&
+      data.some((item: { key: string | number; value: any }) => item.key.toString().length > 10)
+    ) {
+      return { labelAngle: -30 };
     }
     return {};
   }

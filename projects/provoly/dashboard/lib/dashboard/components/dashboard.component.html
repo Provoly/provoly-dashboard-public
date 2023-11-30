@@ -3,6 +3,7 @@
   [style.gridTemplateColumns]="gridTemplateColumns$ | async"
   [style.gridTemplateRows]="gridTemplateRows$ | async"
   [style.gridGap]="dashboardParams.gridGap + 'px'"
+  [style.padding]="'0 ' + dashboardParams.gridGap + 'px'"
   #grid
   (mousemove)="movingMouse($event)"
   (drop)="dropping($event)"
