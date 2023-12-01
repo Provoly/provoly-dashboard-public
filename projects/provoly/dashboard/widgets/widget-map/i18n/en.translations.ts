@@ -53,6 +53,7 @@ export const enTranslations = {
           lat: 'Latitude property',
           lng: 'Longitude property'
         },
+        layerStyle: 'Layer style',
         intensityAttribute: 'Intensity property',
         classes: 'Classes displayed in layer',
         relations: 'Display links',

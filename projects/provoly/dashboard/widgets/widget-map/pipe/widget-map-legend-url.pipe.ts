@@ -18,19 +18,31 @@ export class WidgetMapLegendUrlPipe implements PipeTransform {
     if (capability) {
       const matchingLayer = XMLUtils.getMatchingLayer(geoLayer.paramLayer, capability.doc);
       if (matchingLayer) {
-        const matchingStyle = XMLUtils.find(matchingLayer.childNodes, 'Style');
-        if (matchingStyle) {
-          const legendUrl = XMLUtils.find(matchingStyle.childNodes, 'LegendURL');
-          if (legendUrl) {
-            const resource = XMLUtils.find(legendUrl.childNodes, 'OnlineResource');
-            if (resource) {
-              // @ts-ignore
-              return resource.getAttribute('xlink:href');
+        const styles = XMLUtils.findAll(matchingLayer.childNodes, 'Style');
+        if (geoLayer.additionalParameters && geoLayer.additionalParameters['STYLES'] !== undefined) {
+          for (let i = 0; i < styles.length; i++) {
+            const style = styles[i];
+            const styleName = XMLUtils.find(style.childNodes, 'Name')?.textContent ?? '--';
+            if (styleName === geoLayer.additionalParameters['STYLES']) {
+              return this.returnStyleForLayer(style);
             }
           }
+        } else {
+          return this.returnStyleForLayer(styles[0]);
         }
       }
     }
     return '';
+  }
+
+  returnStyleForLayer(style: ChildNode) {
+    const legendUrl = XMLUtils.find(style.childNodes, 'LegendURL');
+    if (legendUrl) {
+      const resource = XMLUtils.find(legendUrl.childNodes, 'OnlineResource');
+      if (resource) {
+        // @ts-ignore
+        return resource.getAttribute('xlink:href');
+      }
+    }
   }
 }

@@ -59,6 +59,28 @@ export class XMLUtils {
     return null;
   }
 
+  static allLayers(doc?: Document) {
+    const result = [];
+    if (doc) {
+      const WMSCapability = XMLUtils.find(doc.childNodes, 'WMS_Capabilities');
+      if (WMSCapability) {
+        const Capabilities = XMLUtils.find(WMSCapability.childNodes, 'Capability');
+        if (Capabilities) {
+          const layerBloc = XMLUtils.find(Capabilities.childNodes, 'Layer');
+          if (layerBloc && layerBloc.childNodes) {
+            for (let i = 0; i < layerBloc.childNodes.length; i++) {
+              const node = layerBloc.childNodes[i];
+              if (node.nodeName === 'Layer') {
+                result.push(node);
+              }
+            }
+          }
+        }
+      }
+    }
+    return result;
+  }
+
   static getLayerExtent(paramLayer: string, map: Map, doc?: Document) {
     if (!doc) {
       return null;
@@ -87,5 +109,33 @@ export class XMLUtils {
       }
     }
     return null;
+  }
+
+  static getPossibleLayerStyles(doc?: Document): {
+    [param: string]: { param: string; styles: { id: string; label: string }[] };
+  } | null {
+    if (!doc) {
+      return {};
+    }
+    const layers = XMLUtils.allLayers(doc);
+    return (
+      layers.map((layer) => {
+        const layerName = XMLUtils.find(layer.childNodes, 'Name')?.textContent ?? '';
+        const styles = XMLUtils.findAll(layer.childNodes, 'Style');
+        const stylesArray = styles.map((style) => ({
+          id: XMLUtils.find(style.childNodes, 'Name')?.textContent,
+          label:
+            XMLUtils.find(style.childNodes, 'Title')?.textContent ??
+            XMLUtils.find(style.childNodes, 'Name')?.textContent
+        })) as { id: string; label: string }[];
+        const uniquesStyles = [...new Set(stylesArray.map((style) => style.id))].map((styleId) =>
+          stylesArray.find((styleInArray) => styleInArray.id === styleId)
+        );
+        return {
+          param: layerName,
+          styles: uniquesStyles
+        };
+      }) as { param: string; styles: { id: string; label: string }[] }[]
+    ).reduce((p, c) => ({ ...p, [c.param]: c }), {});
   }
 }

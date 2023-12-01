@@ -53,6 +53,7 @@ export const frTranslations = {
           lat: 'Propriété de la latitude',
           lng: 'Propriété de la longitude'
         },
+        layerStyle: 'Style de la couche',
         intensityAttribute: "Propriété de l'intensité",
         classes: 'Classes affichées dans cette couche',
         relations: 'Afficher les relations',

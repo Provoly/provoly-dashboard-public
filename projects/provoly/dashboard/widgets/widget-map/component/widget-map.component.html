@@ -123,6 +123,22 @@
               ></pry-select>
             </div>
 
+            <div class="m-form-label-field" *ngIf="['geoserver', 'wms'].includes(layer.type)">
+              <ng-container *ngIf="getAsWmsType(layer) as wmslayer">
+                <label class="a-label" for="map_layerStyle">{{ '@pry.widget.map.layerStyle' | i18n }}</label>
+                <pry-select
+                  (ngModelChange)="changeLayerStyle($event, layer)"
+                  [itemsAsOption]="true"
+                  [items]="layerStyleOptions(layer)"
+                  [ngModel]="getStyle(layer)"
+                  bindLabel="label"
+                  bindValue="id"
+                  class="a-pry-select"
+                  id="map_layerStyle"
+                ></pry-select>
+              </ng-container>
+            </div>
+
             <pry-checkbox (ngModelChange)="changeFit($event, layer)" [ngModel]="layer.fit">
               {{ '@pry.widget.map.fit' | i18n }}
             </pry-checkbox>

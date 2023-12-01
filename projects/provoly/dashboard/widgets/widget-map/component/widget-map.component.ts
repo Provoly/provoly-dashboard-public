@@ -200,6 +200,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   layerSlider = new LayerSlider();
   hasSlideLayer$: Observable<boolean>;
   slides: { id: undefined | string; label: string }[];
+  possibleStyles: {
+    [p: string]: {
+      layers: { [p: string]: { param: string; styles: { id: string; label: string }[] } } | null;
+      url: string;
+    };
+  } = {};
   attributions = new Attribution();
 
   constructor(
@@ -564,6 +570,21 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         return (size.height ?? 100) - WIDGET_HEADER_HEIGHT - top - 56; // 56px is the tooltip height + margin
       }),
       delay(10)
+    );
+
+    this.subscriptions.add(
+      this.wmsCapabilities$
+        .pipe(
+          map((wmsCapabilities) =>
+            wmsCapabilities
+              ? Object.keys(wmsCapabilities)
+                  .map((url) => ({ url, layers: XMLUtils.getPossibleLayerStyles(wmsCapabilities[url]?.doc) }))
+                  .reduce((p, c) => ({ ...p, [c.url]: c }), {})
+              : {}
+          ),
+          startWith({})
+        )
+        .subscribe((possibleStyles) => (this.possibleStyles = possibleStyles))
     );
 
     this.hasSlideLayer$ = this.options$.pipe(
@@ -1419,6 +1440,42 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   override ngOnDestroy() {
     super.ngOnDestroy();
     this.store.dispatch(DashboardActions.resetWmsFeatures());
+  }
+
+  getStyle(_layer: MapWidgetLayerOptions) {
+    const layer = _layer as MapWMSLayerLayerOptions | MapGeoServerLayerOptions;
+    if (layer.additionalParameters?.STYLES) {
+      return layer.additionalParameters?.STYLES;
+    }
+    /* Not manifest-defined style: use first in line because it's the default one sent by geoserver */
+    const possibleStylesForUrl = this.possibleStyles[layer.url] ?? { layers: {} };
+    let possiblesStylesForLayer = possibleStylesForUrl.layers![layer.paramLayer];
+    if (!possiblesStylesForLayer) {
+      possiblesStylesForLayer = possibleStylesForUrl.layers![(layer.paramLayer ?? ':').split(':')[1]] ?? { styles: [] };
+    }
+    return possiblesStylesForLayer.styles[0]?.id;
+  }
+
+  changeLayerStyle($event: any, _layer: MapWidgetLayerOptions) {
+    const layer = _layer as MapWMSLayerLayerOptions | MapGeoServerLayerOptions;
+    if (!layer.additionalParameters) {
+      layer.additionalParameters = {};
+    }
+    layer.additionalParameters.STYLES = $event;
+  }
+
+  getAsWmsType(_layer: MapWidgetLayerOptions) {
+    return _layer as MapWMSLayerLayerOptions | MapGeoServerLayerOptions;
+  }
+
+  layerStyleOptions(_layer: MapWidgetLayerOptions) {
+    const layer = _layer as MapWMSLayerLayerOptions | MapGeoServerLayerOptions;
+    const possibleStylesForUrl = this.possibleStyles[layer.url] ?? { layers: {} };
+    let possiblesStylesForLayer = possibleStylesForUrl.layers![layer.paramLayer];
+    if (!possiblesStylesForLayer) {
+      possiblesStylesForLayer = possibleStylesForUrl.layers![(layer.paramLayer ?? ':').split(':')[1]] ?? { styles: [] };
+    }
+    return possiblesStylesForLayer.styles;
   }
 
   triggerLayerRender() {
