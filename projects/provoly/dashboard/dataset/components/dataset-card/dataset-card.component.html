@@ -17,14 +17,13 @@
     <ng-template #noActiveVersion>
       <span> {{'@pry.dataset.noActiveVersion' | i18n}}</span>
     </ng-template>
-      <div class="description-container">
+      <div class="o-pry-dataset-card__description-container">
         <span class="description">{{ truncateDescription(dataset.description, 100) }}</span>
-        <div class="description-tooltip">{{ truncateDescription(dataset.description, 100) }}</div>
+        <div class="description-tooltip">{{ dataset.description }}</div>
       </div>
     </div>
   </div>
 
-  <div class="o-pry-dataset-card__content"></div>
   <div class="o-pry-dataset-card__footer">
     <button class="a-btn" (click)="goToDetailView()">
       <pry-icon iconSvg="table"></pry-icon>

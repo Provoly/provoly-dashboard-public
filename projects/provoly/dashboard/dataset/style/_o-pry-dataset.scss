@@ -13,6 +13,7 @@
   }
 }
 .o-pry-dataset {
+  @extend %list-unstyled;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(toRem(330), 0fr));
   grid-auto-rows: toRem(200);
@@ -37,14 +38,12 @@
   flex-direction: column;
   align-items: stretch;
 }
-  pry-dataset-card {
-    margin: 2rem;
-    width: 100%;
-    box-sizing: border-box;
-  }
+
 }
 
 .o-dataset-layout {
+  position: relative;
+  z-index: 1;
   overflow: hidden;
   height: 100%;
 
