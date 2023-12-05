@@ -15,6 +15,8 @@ import { MockPryAccessDirective } from '@provoly/dashboard/mock/directive/mock-p
 import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
 import { MockPryPresentationCssComponent } from '@provoly/dashboard/mock/style/mock-pry-presentation-css';
 import { PryPresentationComponent } from '@provoly/dashboard/presentation';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('PryPresentationComponent', () => {
   let component: PryPresentationComponent;
@@ -43,7 +45,15 @@ describe('PryPresentationComponent', () => {
       providers: [
         provideMockStore({}),
         { provide: Overlay },
-        { provide: PryTitleService, useValue: { changeTitle: () => {} } }
+        { provide: PryTitleService, useValue: { changeTitle: () => {} } },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            queryParams: of({
+              id_params: 'id_params_test'
+            })
+          }
+        }
       ]
     }).compileComponents();
     store = TestBed.inject(MockStore);
