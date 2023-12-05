@@ -94,13 +94,6 @@ describe('PryPresentationComponent', () => {
     component.delete(presentation.id);
     expect(spy).toHaveBeenCalledWith(DashboardActions.confirmManifestDeletion({ id: presentation.id }));
   });
-  it('should default is called', () => {
-    const spy = jest.spyOn(store, 'dispatch');
-    component.default(presentation.id, presentation.name);
-    expect(spy).toHaveBeenCalledWith(
-      DashboardActions.defaultManifest({ id: presentation.id, name: presentation.name })
-    );
-  });
   it('should toggle modal', () => {
     expect(component.modalOpened).toBe(false);
     component.toggleModal(presentation);

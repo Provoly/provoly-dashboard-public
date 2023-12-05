@@ -59,7 +59,6 @@ const randomColor = createSelector(
 );
 const hasOverlay = createSelector(feature, (config) => config.overlayList.length > 0);
 const breakpoint = createSelector(feature, (config) => config.breakpoint);
-const defaultViewGuardUsed = createSelector(feature, (config) => config.defaultViewUsed);
 const catalog = createSelector(feature, (config) => config.catalog);
 const chartOption = createSelector(feature, (config) => config.chartOption);
 const maxAttributesInTiles = createSelector(feature, (config) => config.maxAttributesInTiles);
@@ -87,7 +86,6 @@ export const ConfigSelectors = {
   tileAttributesDefinitions,
   hasOverlay,
   breakpoint,
-  defaultViewGuardUsed,
   catalog,
   chartOption,
   maxAttributesInTiles,

@@ -77,8 +77,7 @@ describe('PryAddEditPresentationComponent', () => {
       cover: false,
       manifestUrl: '/dashboard/manifest/test',
       creationDate: '2022-01-01',
-      modificationDate: '2022-01-01',
-      default: false
+      modificationDate: '2022-01-01'
     } as ManifestDescription;
     fixture.detectChanges();
   });

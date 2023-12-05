@@ -44,20 +44,30 @@
                   [width]="17"
                 ></pry-icon>
               </ng-container>
-              <div class="a-tooltip" [attr.data-tooltip]="'@pry.presentation.view' | i18n">
-                <div class="o-presentation__item__image">
-                  <img
-                    alt=""
-                    [height]="presentation.cover ? 600 : 128"
-                    [width]="presentation.cover ? 600 : 128"
-                    [class.is-full-width]="presentation.cover"
-                    [src]="presentation.image | getSecuredImage | async"
-                    (click)="fetch(presentation)"
-                  />
+                <div class="a-tooltip">
+                  <div class="o-presentation__item__image">
+                    <img
+                      alt=""
+                      [height]="presentation.cover ? 600 : 128"
+                      [width]="presentation.cover ? 600 : 128"
+                      [class.is-full-width]="presentation.cover"
+                      [src]="presentation.image | getSecuredImage | async"
+                    />
+                  </div>
                 </div>
-              </div>
+              <ng-container *ngIf="presentation.visibility.type === PryVisibilityType.PRIVATE">
+                  <div class="more-actions">
+                    <button
+                      type="button"
+                      class="a-btn a-btn--more a-tooltip"
+                      [attr.data-tooltip]="'@pry.restitution.more' | i18n"
+                      (click)="toggleModalActions(presentation)"
+                    >
+                      <pry-icon [height]="25" [width]="25" iconSvg="more_horiz"></pry-icon>
+                    </button>
+                  </div>
+              </ng-container>
             </div>
-
             <div class="o-presentation__item__txt">
               <h3 class="a-h3">{{ presentation.name }}</h3>
               <div class="a-p">
@@ -70,63 +80,13 @@
               </div>
               <p class="a-p -date">{{ presentation.modificationDate | sinceDate }}</p>
             </div>
-
             <div class="o-presentation__item__footer">
-              <ul class="m-actions-list">
-                <li>
-                  <button
-                    type="button"
-                    class="a-btn a-btn--icon-only a-tooltip"
-                    [attr.data-tooltip]="'@pry.presentation.homeView' | i18n"
-                    (click)="default(presentation.id, presentation.name)"
-                    *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'default' }"
-                  >
-                    <pry-icon [iconSvg]="presentation.default ? 'home-fill' : 'home-line'"></pry-icon>
-                    <span class="u-visually-hidden"></span>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="a-btn a-btn--icon-only a-tooltip"
-                    [attr.data-tooltip]="'@pry.presentation.change' | i18n"
-                    (click)="edit(presentation)"
-                    [disabled]="!presentation.owner"
-                    *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'edit' }"
-                  >
-                    <pry-icon iconSvg="edit"></pry-icon>
-                    <span class="u-visually-hidden">{{ '@pry.presentation.edition' | i18n }}</span>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    (click)="toggleModal(presentation)"
-                    class="a-btn a-btn--icon-only a-tooltip"
-                    [attr.data-tooltip]="'@pry.presentation.share' | i18n"
-                    aria-haspopup="dialog"
-                    [disabled]="!presentation.owner"
-                    *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'share' }"
-                  >
-                    <pry-icon iconSvg="share"></pry-icon>
-                    <span class="u-visually-hidden">{{ '@pry.presentation.share' | i18n }}</span>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="a-btn a-btn--icon-only a-tooltip"
-                    [attr.data-tooltip]="'@pry.presentation.erase' | i18n"
-                    #openModal
-                    (click)="delete(presentation.id)"
-                    [disabled]="!presentation.owner"
-                    *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'delete' }"
-                  >
-                    <pry-icon iconSvg="delete"></pry-icon>
-                    <span class="u-visually-hidden">{{ '@pry.presentation.delete' | i18n }}</span>
-                  </button>
-                </li>
-              </ul>
+              <button class="a-btn a-tooltip" [attr.data-tooltip]="'@pry.presentation.view' | i18n" (click)="fetch(presentation)">
+                {{'@pry.presentation.consult' | i18n}}</button>
             </div>
           </li>
         </ul>
+
       </div>
     </div>
   </ng-container>
@@ -190,4 +150,68 @@
       </button>
     </div>
   </div>
+</ng-template>
+<ng-template #modalActions>
+<div class="o-modal"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="dialog presenation options"
+     *ngIf="selectedPresentation$ | async as selectedPresentation">
+  <div class="o-modal__top">
+    <div class="o-modal__top__title">
+      <h2 class="a-h2" id="dialog_title">{{ '@pry.presentation.options' | i18n }}</h2>
+    </div>
+    <div class="o-modal__top__close">
+      <button
+        class="a-btn a-btn--icon-only"
+        #crossVisibility
+        (keydown.shift.tab)="focusValidation()"
+        (click)="toggleModalActions()"
+      >
+        <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+        <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+      </button>
+    </div>
+  </div>
+  <ul class="actions-list">
+    <li>
+      <button
+        class="a-btn a-btn--icon-only a-tooltip"
+        [attr.data-tooltip]="'@pry.presentation.change' | i18n"
+        (click)="edit(selectedPresentation)"
+        [disabled]="!selectedPresentation.owner"
+        *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'edit' }"
+      >
+        <pry-icon iconSvg="edit"></pry-icon>
+        <span class="u-visually-hidden">{{ '@pry.presentation.edition' | i18n }}</span>
+      </button>
+    </li>
+    <li>
+      <button
+        (click)="toggleModal(selectedPresentation)"
+        class="a-btn a-btn--icon-only a-tooltip"
+        [attr.data-tooltip]="'@pry.presentation.share' | i18n"
+        aria-haspopup="dialog"
+        [disabled]="!selectedPresentation.owner"
+        *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'share' }"
+      >
+        <pry-icon iconSvg="share"></pry-icon>
+        <span class="u-visually-hidden">{{ '@pry.presentation.share' | i18n }}</span>
+      </button>
+    </li>
+    <li>
+      <button
+        class="a-btn a-btn--icon-only a-tooltip"
+        [attr.data-tooltip]="'@pry.presentation.erase' | i18n"
+        #openModal
+        (click)="delete(selectedPresentation.id)"
+        [disabled]="!selectedPresentation.owner"
+        *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'delete' }"
+      >
+        <pry-icon iconSvg="delete"></pry-icon>
+        <span class="u-visually-hidden">{{ '@pry.presentation.delete' | i18n }}</span>
+      </button>
+    </li>
+  </ul>
+</div>
 </ng-template>

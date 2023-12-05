@@ -30,8 +30,8 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   staticManifest$?: Observable<DashboardManifest>;
   selectedMode: ViewMode = ViewMode.CATALOG;
   modalOpened = false;
+  @ViewChild('modalActions', { read: TemplateRef }) templateModalActions!: TemplateRef<any>;
   @ViewChild('modal', { read: TemplateRef }) template!: TemplateRef<any>;
-  @ViewChild('templateModal', { read: TemplateRef }) templateModal!: TemplateRef<any>;
   @ViewChild('openModal') openModal!: ElementRef<HTMLButtonElement>;
   @ViewChild('confirm') confirm!: ElementRef<HTMLButtonElement>;
   @ViewChild('submit') submit!: ElementRef<HTMLButtonElement>;
@@ -133,20 +133,40 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     this.store.dispatch(DashboardActions.selectPresentation({ presentation, viewMode: ViewMode.EDITION }));
     this.store.dispatch(DashboardActions.fetchStaticManifest({ id: presentation.id }));
     this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: DisplayMode.EDIT }));
-    this.search$.next('');
+    this.overlayRef?.dispose();
+    this.overlayRef = undefined
   }
 
   delete(id: string) {
     this.store.dispatch(DashboardActions.confirmManifestDeletion({ id }));
+    this.toggleModalActions()
   }
 
-  default(id: string, name: string) {
-    this.store.dispatch(DashboardActions.defaultManifest({ id, name }));
+  toggleModalActions(presentation?: ManifestDescription | null) {
+    if (!this.overlayRef && presentation){
+      this.selectedPresentation$.next(presentation);
+      this.store.dispatch(DashboardActions.selectPresentation({ presentation, viewMode: ViewMode.CATALOG }));
+      this.store.dispatch(DashboardActions.loadManifest({ id: presentation.id }));
+      this.overlayRef = this.overlay.create(
+        new OverlayConfig({
+          hasBackdrop: true,
+          panelClass: ['o-modal-wrapper'],
+          backdropClass: 'backdrop'
+        })
+      );
+      this.overlayRef.backdropClick().subscribe(() => this.toggleModalActions(presentation));
+      this.overlayRef.attach(new TemplatePortal(this.templateModalActions, this.viewContainerRef));
+    } else {
+      this.overlayRef?.dispose();
+      this.overlayRef = undefined
+      this.selectedPresentation$.next(null);
+    }
   }
 
   toggleModal(presentation?: ManifestDescription | null) {
     this.modalOpened = !this.modalOpened;
     if (this.modalOpened && presentation) {
+      this.toggleModalActions()
       this.selectedPresentation$.next(presentation);
       this.store.dispatch(DashboardActions.selectPresentation({ presentation, viewMode: ViewMode.CATALOG }));
       /* we need to load manifest in order to be able to save it later */

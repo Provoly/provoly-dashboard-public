@@ -9,6 +9,8 @@ export const frTranslations = {
       close: 'Annuler',
       validate: 'Valider',
       broadcast: 'Diffuser',
+      more: 'Options',
+      options: 'Options de la restitution',
       view: 'Consulter',
       create: 'Créer une restitution',
       cancel: 'Annuler',

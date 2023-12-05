@@ -10,8 +10,6 @@ const manifests = JSON.parse(fs.readFileSync('./data/manifests.json', 'utf8')).m
 
 const metadatas = JSON.parse(fs.readFileSync('./data/metadatas.json', 'utf8'));
 
-let defaultManifest = '--no--default--manifest';
-
 module.exports = {
   list: () => {
     return manifests.map((manifest, idx) => {
@@ -24,7 +22,6 @@ module.exports = {
         modificationDate: manifest.modificationDate,
         image: manifest.image ?? '/assets/svgs/default.svg',
         visibility: manifest.visibility ?? { type: 'PRIVATE' },
-        default: manifest.id === defaultManifest,
         owner: true,
         cover: casual.boolean,
         datasource: [
@@ -80,7 +77,4 @@ module.exports = {
     previous.image = image;
     previous.visibility = visibility;
   },
-  default: (id) => {
-    defaultManifest = id;
-  }
 };

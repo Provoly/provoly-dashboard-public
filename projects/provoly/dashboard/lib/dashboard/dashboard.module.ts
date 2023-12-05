@@ -45,7 +45,6 @@ import { BaseFilterComponent } from './filter/base-filter.component';
 import { FilterInstanciatorComponent } from './filter/components/filter-instanciator/filter-instanciator.component';
 import { FilterGroupComponent } from './filter/components/filter-group/filter-group.component';
 import { FILTER_DEFINITION, FilterDefinition } from './filter/filter-factory.service';
-import { DefaultViewGuard } from './guard/default-view.guard';
 import { BASE_CONFIG, DashboardInitService } from './store/dashboard-init.service';
 import { DashboardEffects } from './store/dashboard.effects';
 import { dashboardFeatureKey, dashboardReducer } from './store/dashboard.reducers';
@@ -131,7 +130,6 @@ export class PryDashboardModule {
         BusService,
         DashboardInitService,
         ToolboxManifestService,
-        DefaultViewGuard,
         RefreshService,
         PryTitleService,
         WebsocketService,

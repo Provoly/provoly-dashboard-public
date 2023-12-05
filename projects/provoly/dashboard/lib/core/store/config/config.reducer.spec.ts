@@ -245,21 +245,6 @@ describe('Config Reducer', () => {
     });
   });
 
-  it('should set the default view used to true', () => {
-    expect(
-      configReducer(
-        {
-          ...initialState,
-          defaultViewUsed: false
-        },
-        ConfigActions.defaultViewGuardUsed()
-      )
-    ).toEqual({
-      ...initialState,
-      defaultViewUsed: true
-    });
-  });
-
   describe('widget catalog', () => {
     it('should save widget', () => {
       expect(

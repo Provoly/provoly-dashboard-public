@@ -22,6 +22,8 @@ export const enTranslations = {
         theme: 'Theme'
       },
       share: 'Share',
+      options: 'Presentation options',
+      consult: 'Consult',
       view: 'Consult the presentation',
       private: 'Private presentation',
       homeView: 'Show on homepage',

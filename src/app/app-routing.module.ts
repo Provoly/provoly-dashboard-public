@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardManifest, DefaultViewGuard, Filter, PRY_ACCESS_GUARD, TooltipMode } from '@provoly/dashboard';
+import { DashboardManifest, Filter, PRY_ACCESS_GUARD, TooltipMode } from '@provoly/dashboard';
 import { PryImportComponent } from '@provoly/dashboard/import';
 import { PryPipelineListComponent } from '@provoly/dashboard/pipeline';
 import { PryPresentationComponent } from '@provoly/dashboard/presentation';
@@ -18,7 +18,6 @@ const routes: Routes = [
   /* In a real app, do not make routes like these ones */
   {
     path: '',
-    canActivate: [DefaultViewGuard],
     component: DashboardContainerComponent,
     data: {}
   },

@@ -60,7 +60,6 @@ export const ConfigActions = {
   addingOverlay: createAction('[Config] adding overlay', props<{ id: string }>()),
   closeOverlay: createAction('[Config] close overlay', props<{ id: string }>()),
   defineBreakpoint: createAction('[Config] (bus) defining breakpoint', props<{ breakpoint: number }>()),
-  defaultViewGuardUsed: createAction('[Config] (bus) default view guard used'),
   saveWidget: createAction('[Config] (bus) defining widget', props<{ widget: Widget }>()),
   confirmRestitutionDeletion: createAction('[Config] (bus) confirm Restitution deletion', props<{ id: string }>()),
   deleteRestitution: createAction('[Config] (bus) delete Restitution', props<{ id: string }>()),

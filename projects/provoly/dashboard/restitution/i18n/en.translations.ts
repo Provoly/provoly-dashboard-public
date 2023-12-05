@@ -23,6 +23,7 @@ export const enTranslations = {
       consult_title: 'Consult a restitution',
       search: 'Search',
       backToCatalog: 'Back to catalog',
+      options: 'Restitution options',
       consult: 'Consult',
       catalog: 'Restitutions catalog',
       add_icon: 'Add this restitution on the presentation',

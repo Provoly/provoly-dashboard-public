@@ -45,7 +45,7 @@
                   [width]="17"
                 ></pry-icon>
               </ng-container>
-              <div class="a-tooltip" [attr.data-tooltip]="'@pry.restitution.visualize' | i18n">
+              <div class="a-tooltip">
                 <div class="o-presentation__item__image">
                   <img
                     alt=""
@@ -54,62 +54,82 @@
                     [class.is-full-width]="restitution.cover"
                     [src]="restitution.image | getSecuredImage : [600, 600] | async"
                     class="pointer"
-                    (click)="selectRestitution(restitution)"
                   />
                 </div>
               </div>
-            </div>
-
+              <ng-container *ngIf="restitution.visibility?.type === PryVisibilityType.PRIVATE">
+                <div class="more-actions">
+                  <button
+                    type="button"
+                    class="a-btn a-btn--more a-tooltip"
+                    [attr.data-tooltip]="'@pry.restitution.more' | i18n"
+                    (click)="toggleModalActions(restitution)"
+                  >
+                    <pry-icon [height]="25" [width]="25" iconSvg="more_horiz"></pry-icon>
+                  </button>
+                </div>
+              </ng-container>
+              </div>
             <div class="o-presentation__item__txt">
               <h3 class="a-h3">{{ restitution.name }}</h3>
               <p class="a-p -date">{{ restitution.modificationDate | sinceDate }}</p>
             </div>
 
             <div class="o-presentation__item__footer">
-              <ul class="m-actions-list">
-                <li>
-                  <button
-                    type="button"
-                    class="a-btn a-btn icon-only a-tooltip"
-                    [attr.data-tooltip]="'@pry.restitution.consult' | i18n"
-                    (click)="selectRestitution(restitution)"
-                    *pryAccess="{ module: 'dashboard', page: 'restitution', action: 'consult' }"
-                  >
-                    <pry-icon iconSvg="eye"></pry-icon>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    class="a-btn a-btn icon-only a-tooltip"
-                    [attr.data-tooltip]="'@pry.restitution.update' | i18n"
-                    (click)="editRestitution(restitution)"
-                    [disabled]="!restitution.owner"
-                    *pryAccess="{ module: 'dashboard', page: 'restitution', action: 'edit' }"
-                  >
-                    <pry-icon iconSvg="edit"></pry-icon>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    class="a-btn a-btn icon-only a-tooltip"
-                    [attr.data-tooltip]="'@pry.restitution.delete' | i18n"
-                    (click)="deleteRestitution(restitution.id)"
-                    [disabled]="!restitution.owner"
-                    *pryAccess="{ module: 'dashboard', page: 'restitution', action: 'delete' }"
-                  >
-                    <pry-icon iconSvg="delete"></pry-icon>
-                  </button>
-                </li>
-              </ul>
+              <button class="a-btn a-tooltip" (click)="selectRestitution(restitution)" [attr.data-tooltip]="'@pry.presentation.view' | i18n">
+                {{'@pry.restitution.view' | i18n}}</button>
             </div>
           </li>
         </ul>
       </div>
     </div>
   </ng-template>
-
+<ng-template #modalActions>
+  <div class="o-modal"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="dialog presenation options"
+      *ngIf="selectedRestitution">
+    <div class="o-modal__top">
+      <div class="o-modal__top__title">
+        <h2 class="a-h2" id="dialog_title">{{ '@pry.restitution.options' | i18n }}</h2>
+      </div>
+      <div class="o-modal__top__close">
+        <button
+          class="a-btn a-btn--icon-only"
+          (click)="toggleModalActions(selectedRestitution)"
+        >
+          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+    <ul class="actions-list">
+      <li>
+        <button
+          type="button"
+          class="a-btn a-btn icon-only a-tooltip"
+          [attr.data-tooltip]="'@pry.restitution.update' | i18n"
+          (click)="editRestitution(selectedRestitution)"
+          *pryAccess="{ module: 'dashboard', page: 'restitution', action: 'edit' }"
+        >
+          <pry-icon iconSvg="edit"></pry-icon>
+        </button>
+      </li>
+      <li>
+        <button
+          type="button"
+          class="a-btn a-btn icon-only a-tooltip"
+          [attr.data-tooltip]="'@pry.restitution.delete' | i18n"
+          (click)="deleteRestitution(selectedRestitution.id)"
+          *pryAccess="{ module: 'dashboard', page: 'restitution', action: 'delete' }"
+        >
+          <pry-icon iconSvg="delete"></pry-icon>
+        </button>
+      </li>
+    </ul>
+  </div>
+</ng-template>
   <ng-template [ngIf]="selectedMode === mode.CONSULT">
     <div class="o-manifest-layout__toolbox">
       <button type="button" (click)="selectMode(mode.CATALOG)" class="a-btn a-btn--primary">

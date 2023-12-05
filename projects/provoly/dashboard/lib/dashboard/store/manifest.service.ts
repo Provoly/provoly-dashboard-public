@@ -103,7 +103,7 @@ export class ManifestService {
       withLatestFrom(this.store.select(DashboardSelectors.manifestsList)),
       mergeMap(([url, manifests]) => {
         const actual = manifests.find((manifest: { id: string }) => manifest.id === id);
-        if (!!actual && !actual.default) {
+        if (!!actual) {
           return this.httpClient
             .put<ArrayBuffer>(encodeURI(`${url}/users/me/dashboards/id/${id}/default`), {})
             .pipe(map(() => true));

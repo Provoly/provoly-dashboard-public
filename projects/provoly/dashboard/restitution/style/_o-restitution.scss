@@ -26,3 +26,17 @@
     border-radius: 10%;
   }
 }
+.actions-list {
+  display: flex;
+  align-items: center;
+  gap: 0.9375rem;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  list-style-type: none;
+}
+.more-actions {
+  position: absolute;
+  top: toRem(6);
+  right: toRem(10);
+}

@@ -171,7 +171,6 @@ export const DashboardActions = {
     }>()
   ),
   solveCollisions: createAction('[Dashboard] solving collisions'),
-  defaultManifest: createAction('[Dashboard] set default manifest', props<{ id: string; name: string }>()),
   clearManifest: createAction('[Dashboard] clear manifest'),
   followManifestRoute: createAction('[Dashboard] (bus) follow manifest route'),
   moveWidget: createAction('[Dashboard] moving widget', props<{ widgetIndex: number; targetIndex: number }>()),

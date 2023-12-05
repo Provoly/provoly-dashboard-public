@@ -60,7 +60,4 @@ export class ManifestsComponent {
     this.fileInput.nativeElement.click();
   }
 
-  default(id: string, name: string) {
-    this.store.dispatch(DashboardActions.defaultManifest({ id, name }));
-  }
 }

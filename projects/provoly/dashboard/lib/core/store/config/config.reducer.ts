@@ -139,10 +139,6 @@ export const configReducer = createReducer(
       ...action.tileAttributes
     }
   })),
-  on(ConfigActions.defaultViewGuardUsed, DashboardActions.updateManifestAfterTenantJoin, (state, action) => ({
-    ...state,
-    defaultViewUsed: true
-  })),
   on(ConfigActions.saveWidget, (state, action) => ({
     ...state,
     catalog: [...state.catalog, action.widget]

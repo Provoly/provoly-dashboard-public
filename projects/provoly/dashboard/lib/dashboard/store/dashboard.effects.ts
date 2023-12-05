@@ -408,26 +408,6 @@ export class DashboardEffects {
     )
   );
 
-  defaultManifest$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(DashboardActions.defaultManifest),
-      mergeMap((action) =>
-        this.manifestService.default(action.id).pipe(
-          tap((res) => {
-            this.snackBar.open({
-              message: this.translateService.instant(
-                res ? '@pry.toolbox.manifest.defaulted' : '@pry.toolbox.manifest.undefaulted',
-                { viewId: action.name }
-              ),
-              type: 'success'
-            });
-          })
-        )
-      ),
-      map(() => DashboardActions.fetchManifestsList())
-    )
-  );
-
   listManifests$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.fetchManifestsList),

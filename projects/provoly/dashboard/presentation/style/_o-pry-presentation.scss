@@ -72,7 +72,7 @@
     &__header {
       position: relative;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       height: toRem(110);
 
@@ -81,6 +81,7 @@
         top: toRem(10);
         left: toRem(10);
       }
+
     }
 
     &__txt {
@@ -101,11 +102,9 @@
     }
 
     &__footer {
-      padding: toRem(10) toRem(15) toRem(10) toRem(15);
-
-      .m-actions-list {
-        justify-content: space-evenly;
-      }
+      display: flex;
+      align-content: center;
+      justify-content: center;
     }
   }
 }
@@ -183,6 +182,15 @@ h1.a-presentation-title {
     padding-bottom: 0;
   }
 }
+.actions-list {
+  display: flex;
+  align-items: center;
+  gap: 0.9375rem;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  list-style-type: none;
+}
 
 .info-icon {
   position: relative;
@@ -196,4 +204,10 @@ h1.a-presentation-title {
   align-self: center;
   margin-right: 1rem;
   border: 1px solid #3E546A;
+}
+
+.more-actions {
+  position: absolute;
+  top: toRem(6);
+  right: toRem(10);
 }

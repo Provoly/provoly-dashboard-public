@@ -81,12 +81,7 @@
     &__footer {
     display: flex;
     align-items: center;
-  }
-
-  &__button {
-    .a-btn {
-      width: 100%;
-    }
+      justify-content: center;
   }
 
   .dataset-name {

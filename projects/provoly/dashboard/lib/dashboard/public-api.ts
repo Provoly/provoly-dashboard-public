@@ -15,7 +15,6 @@ export * from './store/dashboard.reducers';
 export * from './store/wms.service';
 export * from './store/manifest.service';
 export * from './store/manifest-utils.class';
-export * from './guard/default-view.guard';
 export * from './resultset-utils';
 export * from './item-utils';
 export * from './date-utils';

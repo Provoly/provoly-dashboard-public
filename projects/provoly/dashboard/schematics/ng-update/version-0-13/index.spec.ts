@@ -23,7 +23,6 @@ describe(schematicName, () => {
   /* In a real app, do not make routes like these ones */
   {
     path: '',
-    canActivate: [DefaultViewGuard],
     component: DashboardContainerComponent,
     data: {}
   },

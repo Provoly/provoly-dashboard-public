@@ -23,6 +23,8 @@ export const frTranslations = {
         theme: 'Thématique'
       },
       share: 'Partager',
+      options: 'Options de la presentation',
+      consult: 'Consulter',
       view: 'Consulter la presentation',
       private: 'Présentation privée',
       homeView: "Afficher en page d'accueil",
