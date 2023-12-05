@@ -31,7 +31,7 @@ export class GetValuePipe implements PipeTransform {
           ) {
             // @ts-ignore
             const coordinates = JSON.stringify(ItemUtils.getAttributeCalculatedValue(value, attribute)?.coordinates);
-            return coordinates.length > 40 ? `${coordinates.substring(0, 40)}...` : coordinates;
+            return coordinates && coordinates.length > 40 ? `${coordinates.substring(0, 40)}...` : coordinates;
           }
           return ItemUtils.getAttributeCalculatedValue(value, attribute);
         }

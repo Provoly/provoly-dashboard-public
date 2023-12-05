@@ -60,9 +60,10 @@ describe('DashboardEffects', () => {
           provide: WidgetFactoryService,
           useValue: {
             datasourcesToAutoLoad: (manifest: WidgetManifest) =>
-              Array.isArray(manifest.datasource ?? [])
+              (Array.isArray(manifest.datasource ?? [])
                 ? ((manifest.datasource ?? []) as string[])
-                : ([manifest.datasource] as string[]),
+                : ([manifest.datasource] as string[])
+              ).map((ds) => ({ datasetId: ds, excludeGeo: manifest.type !== 'map' })),
             aggregatesToAutoLoad: (manifest: WidgetManifest) =>
               Array.isArray(manifest.datasource ?? [])
                 ? ((manifest.datasource ?? []) as string[])
@@ -379,6 +380,11 @@ describe('DashboardEffects', () => {
                       type,
                       layout,
                       datasource: 'already-but-no-previous-filter'
+                    },
+                    {
+                      type: 'map',
+                      layout,
+                      datasource: 'excludedGeo'
                     }
                   ]
                 },
@@ -401,18 +407,44 @@ describe('DashboardEffects', () => {
         a: DashboardActions.assertResultSets({})
       });
 
-      const expected$ = hot('--(abcdefghijk)-', {
-        a: SearchActions.getDatasourceItems({ id: 'a' }),
-        b: SearchActions.getDatasourceItems({ id: 'b' }),
-        c: SearchActions.getDatasourceItems({ id: 'already-but-wrong-filter' }),
-        d: SearchActions.getDatasourceItems({ id: 'already-but-no-previous-filter' }),
-        e: SearchActions.getDatasourceItems({ id: 'c' }),
-        f: DashboardActions.triggerAggregate({ id: 'a' }),
-        g: DashboardActions.triggerAggregate({ id: 'b' }),
-        h: DashboardActions.triggerAggregate({ id: 'already' }),
-        i: DashboardActions.triggerAggregate({ id: 'already-but-wrong-filter' }),
-        j: DashboardActions.triggerAggregate({ id: 'already-but-no-previous-filter' }),
-        k: DashboardActions.triggerAggregate({ id: 'c' })
+      const expected$ = hot('--(abcdefghijklm)-', {
+        a: SearchActions.getDatasourceItems({
+          id: 'a',
+          excludeGeo: true,
+          from: 'DashboardEffects.assertResultSets$-1'
+        }),
+        b: SearchActions.getDatasourceItems({
+          id: 'b',
+          excludeGeo: true,
+          from: 'DashboardEffects.assertResultSets$-1'
+        }),
+        c: SearchActions.getDatasourceItems({
+          id: 'already-but-wrong-filter',
+          excludeGeo: true,
+          from: 'DashboardEffects.assertResultSets$-1'
+        }),
+        d: SearchActions.getDatasourceItems({
+          id: 'already-but-no-previous-filter',
+          excludeGeo: true,
+          from: 'DashboardEffects.assertResultSets$-1'
+        }),
+        e: SearchActions.getDatasourceItems({
+          id: 'excludedGeo',
+          excludeGeo: false,
+          from: 'DashboardEffects.assertResultSets$-1'
+        }),
+        f: SearchActions.getDatasourceItems({
+          id: 'c',
+          excludeGeo: true,
+          from: 'DashboardEffects.assertResultSets$-1'
+        }),
+        g: DashboardActions.triggerAggregate({ id: 'a' }),
+        h: DashboardActions.triggerAggregate({ id: 'b' }),
+        i: DashboardActions.triggerAggregate({ id: 'already' }),
+        j: DashboardActions.triggerAggregate({ id: 'already-but-wrong-filter' }),
+        k: DashboardActions.triggerAggregate({ id: 'already-but-no-previous-filter' }),
+        l: DashboardActions.triggerAggregate({ id: 'excludedGeo' }),
+        m: DashboardActions.triggerAggregate({ id: 'c' })
       });
       expect(effects.assertResultSets$).toBeObservable(expected$);
     });

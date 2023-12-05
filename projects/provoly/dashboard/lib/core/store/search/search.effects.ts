@@ -21,7 +21,7 @@ export class SearchEffects {
       filter(([_, rank]) => rank === 0),
       filter(([props, rank]) => props.id !== DEFAULT_NAMED_QUERY_ID && props.id !== EXPLORE_NAMED_QUERY_ID),
       mergeMap(([props, rank, quickOrder]) =>
-        this.searchService.getItems(props.id, quickOrder[props.id]).pipe(
+        this.searchService.getItems(props.id, quickOrder[props.id], props.excludeGeo).pipe(
           map((resultSet) =>
             SearchActions.searchSuccess({
               resultSet,

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
+import { Store, StoreModule } from '@ngrx/store';
 import { PryCheckboxModule } from '@provoly/dashboard/components/checkbox';
 import { PryDatePickerModule } from '../core/components/date-picker/date-picker.module';
 import { PryIconModule } from '../core/components/icon/icon.module';
@@ -55,6 +55,7 @@ import { BaseTooltipComponent } from './tooltip/base-tooltip.component';
 import { DefaultTooltipComponent } from './tooltip/components/default/default.tooltip.component';
 import { TOOLTIP_DEFINITION, TooltipDefinition } from './tooltip/tooltip-factory.service';
 import { PryFilterGroupCssComponent } from './filter/style/css.component';
+import { ProxyUtils } from './store/proxy.utils';
 
 const components = [
   DashboardComponent,
@@ -137,5 +138,9 @@ export class PryDashboardModule {
         ConfigService
       ]
     };
+  }
+
+  constructor(store: Store) {
+    ProxyUtils.init(store);
   }
 }

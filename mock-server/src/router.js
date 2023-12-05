@@ -533,12 +533,18 @@ router.on('POST', '/data/items/search', (req, res, params) => {
     if (payload.type === 'MONO_CLASS') {
       const { oClass } = payload;
       const tableOfClasses = new Array(number).fill(oClass, 0, number);
-      makeResponseOk(res, dataModule.itemsAsResultSet(fieldGeneratorModule.generateItems(tableOfClasses)));
+      makeResponseOk(
+        res,
+        dataModule.itemsAsResultSet(fieldGeneratorModule.generateItems(tableOfClasses, readQuery(req).excludeGeo))
+      );
     } else {
       const tableOfClasses = [...new Array(number)].map(
         () => dataModule.classesIds[Math.round(Math.random() * 100) % dataModule.classesIds.length]
       );
-      makeResponseOk(res, dataModule.itemsAsResultSet(fieldGeneratorModule.generateItems(tableOfClasses)));
+      makeResponseOk(
+        res,
+        dataModule.itemsAsResultSet(fieldGeneratorModule.generateItems(tableOfClasses, readQuery(req).excludeGeo))
+      );
     }
   });
 });
@@ -558,7 +564,9 @@ router.on(['OPTIONS', 'POST'], '/data/items', (req, res, params) => {
     );
     makeResponseOk(
       res,
-      payload && payload.length > 0 ? [payload[0]] : [fieldGeneratorModule.generateItems(tableOfClasses)[0]]
+      payload && payload.length > 0
+        ? [payload[0]]
+        : [fieldGeneratorModule.generateItems(tableOfClasses, readQuery(req).excludeGeo)[0]]
     );
   });
 });
@@ -577,7 +585,9 @@ router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items', (req, res, para
         const tableOfClasses = [...new Array(number)].map(
           () => responseTypesLimited[Math.round(Math.random() * 100) % responseTypesLimited.length]
         );
-        const result = dataModule.itemsAsResultSet(fieldGeneratorModule.generateItems(tableOfClasses));
+        const result = dataModule.itemsAsResultSet(
+          fieldGeneratorModule.generateItems(tableOfClasses, readQuery(req).excludeGeo)
+        );
         makeResponseOk(res, result);
       }
     }, fieldGeneratorModule.generateDelay());
@@ -764,12 +774,15 @@ router.on(['OPTIONS', 'GET'], '/data/items/named/:rs', (req, res, params) => {
   if (isPresent) {
     isPresent.lastExecutionDate = new Date().getTime();
   }
-  makeResponseOk(res, dataModule.itemsAsResultSet(fieldGeneratorModule.generateItems(tableOfClasses)));
+  makeResponseOk(
+    res,
+    dataModule.itemsAsResultSet(fieldGeneratorModule.generateItems(tableOfClasses, readQuery(req).excludeGeo))
+  );
 });
 
 router.on(['OPTIONS', 'GET'], '/data/items/:id', (req, res, params) => {
   const randomClass = dataModule.classesIds[Math.round(Math.random() * 100) % dataModule.classesIds.length];
-  const item = fieldGeneratorModule.generateItems([randomClass]);
+  const item = fieldGeneratorModule.generateItems([randomClass], readQuery(req).excludeGeo);
   item[0].id = params.id;
   makeResponseOk(res, item[0]);
 });
@@ -780,7 +793,10 @@ router.on(['OPTIONS', 'GET'], '/data/items/id/:id/relations', (req, res, params)
   );
   makeResponseOk(
     res,
-    dataModule.itemsAsResultSetWithRelationsTo(fieldGeneratorModule.generateItems(tableOfClasses), params.id)
+    dataModule.itemsAsResultSetWithRelationsTo(
+      fieldGeneratorModule.generateItems(tableOfClasses, readQuery(req).excludeGeo),
+      params.id
+    )
   );
 });
 

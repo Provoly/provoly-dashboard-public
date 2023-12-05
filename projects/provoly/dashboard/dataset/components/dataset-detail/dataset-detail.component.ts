@@ -61,7 +61,13 @@ export class PryDatasetDetailComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(DataSourceActions.dataset.listVersionsByDatasetId({ id: this.dataset.id }));
     this.store.dispatch(DashboardActions.removeFilters());
-    this.store.dispatch(SearchActions.getDatasourceItems({ id: this.dataset.id }));
+    this.store.dispatch(
+      SearchActions.getDatasourceItems({
+        id: this.dataset.id,
+        excludeGeo: true,
+        from: 'PryDatasetDetailComponent.ngOnInit()'
+      })
+    );
     this.datasetItems$ = this.store.select(DashboardSelectors.resultSets);
     this.datasetVersions$ = this.store
       .select(DataSourceSelectors.matchingDatasetVersions(this.dataset.id))
@@ -82,7 +88,13 @@ export class PryDatasetDetailComponent implements OnInit {
   }
 
   refresh() {
-    this.store.dispatch(SearchActions.getDatasourceItems({ id: this.dataset.id }));
+    this.store.dispatch(
+      SearchActions.getDatasourceItems({
+        id: this.dataset.id,
+        excludeGeo: true,
+        from: 'PryDatasetDetailComponent.refresh()'
+      })
+    );
     this.store.dispatch(DataSourceActions.dataset.listVersions());
   }
 

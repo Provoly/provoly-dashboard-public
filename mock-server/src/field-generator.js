@@ -44,6 +44,9 @@ casual.define('multiPolygon', function () {
 });
 
 const metaTypes = ['string', 'keyword', 'integer', 'decimal', 'instant'];
+
+const geoTypes = ['Point', 'MultiPoint', 'LineString', 'Polygon', 'MultiLineString', 'MultiPolygon'];
+
 const generateMetadata = () => {
   const metas = {};
   const howMany = Math.round(Math.random() * 100) % 5;
@@ -192,12 +195,19 @@ const generateFieldValue = (attr) => {
   }
 };
 
-const generateItems = (classesTable) => {
+const generateItems = (classesTable, _excludeGeo) => {
+  const excludeGeo = typeof _excludeGeo === 'string' ? JSON.parse(_excludeGeo) : _excludeGeo;
   const datasetId = casual.uuid;
   return classesTable.map((classId) => {
     const objectClass = data.classes.find((oClass) => oClass.id === classId);
 
     const attributes = objectClass.attributes
+      .filter(
+        (attr) =>
+          excludeGeo === false ||
+          excludeGeo === undefined ||
+          !geoTypes.includes(data.fields.get().find((field) => field.id === attr.field)?.type)
+      )
       .map((attr) => ({ [attr.name]: wrapAttribute(attr) }))
       .reduce((p, c) => Object.assign(p, c), {});
 
@@ -220,9 +230,9 @@ const generateDelay = () => {
 
 module.exports = {
   generateFieldValue,
-  generateAttrValueByFieldType,
   generateMetadata,
   generateItems,
   generateNumberOfItems,
-  generateDelay
+  generateDelay,
+  geoTypes
 };

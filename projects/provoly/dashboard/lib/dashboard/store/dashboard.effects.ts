@@ -216,32 +216,45 @@ export class DashboardEffects {
             ] as string[]
           ).map((ds) => DashboardActions.triggerAggregate({ id: ds }));
 
-          const toItemsActions = (
-            [
-              ...new Set(
-                manifest.windows
-                  .map((winManifest) => (winManifest ?? {}).widgets ?? [])
-                  .reduce((p, c) => [...p, ...c], [])
-                  .map((widManifest) => this.widgetFactoryService.datasourcesToAutoLoad(widManifest))
-                  .reduce((p, c) => [...p, ...c], [] as string[])
+          const toItemsActions = Object.values(
+            manifest.windows
+              .map((winManifest) => (winManifest ?? {}).widgets ?? [])
+              .reduce((p, c) => [...p, ...c], [])
+              .map((widManifest) => this.widgetFactoryService.datasourcesToAutoLoad(widManifest))
+              .flat()
+              .reduce(
+                (p, c) => ({ ...p, [c.datasetId]: { ...p[c.datasetId], ...c } }),
+                {} as { [key: string]: { datasetId: string; excludeGeo: boolean } }
               )
-            ] as string[]
           )
             .filter(
               (resultSet) =>
-                !!resultSet &&
-                resultSet !== '' &&
-                (!resultSets[resultSet] ||
-                  resultSetsParams[resultSet] !== this.searchService.getItemsSerializedParams(resultSet, quickOrder))
+                !!resultSet.datasetId &&
+                resultSet.datasetId !== '' &&
+                (!resultSets[resultSet.datasetId] ||
+                  resultSetsParams[resultSet.datasetId] !==
+                    this.searchService.getItemsSerializedParams(resultSet.datasetId, quickOrder))
             )
-            .map((resultSet) => SearchActions.getDatasourceItems({ id: resultSet }));
+            .map((resultSet) =>
+              SearchActions.getDatasourceItems({
+                id: resultSet.datasetId,
+                excludeGeo: resultSet.excludeGeo,
+                from: 'DashboardEffects.assertResultSets$-1'
+              })
+            );
 
           return [...toItemsActions, ...toAggregateActions];
         } else {
           // @ts-ignore
           if (!resultSets[action.id]) {
-            // @ts-ignore
-            return [SearchActions.getDatasourceItems({ id: action.id as string })];
+            return [
+              SearchActions.getDatasourceItems({
+                // @ts-ignore
+                id: action.id as string,
+                excludeGeo: true,
+                from: 'DashboardEffects.assertResultSets$-2'
+              })
+            ];
           }
           return [];
         }
@@ -675,7 +688,13 @@ export class DashboardEffects {
   relaunchAfterOrder$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.quickOrder),
-      map((action) => SearchActions.getDatasourceItems({ id: action.datasourceId }))
+      map((action) =>
+        SearchActions.getDatasourceItems({
+          id: action.datasourceId,
+          excludeGeo: true,
+          from: 'DashboardEffects.relaunchAfterOrder$'
+        })
+      )
     )
   );
 

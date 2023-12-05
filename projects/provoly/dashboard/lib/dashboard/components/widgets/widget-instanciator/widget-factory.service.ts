@@ -75,15 +75,17 @@ export class WidgetFactoryService {
     const datasourcesArray: string[] = Array.isArray(manifest.datasource ?? [])
       ? ((manifest.datasource ?? []) as string[])
       : ([manifest.datasource] as string[]);
-    return datasourcesArray.filter((datasource) => {
-      const matching = this.datasources.find((ds) => ds.id === datasource)!;
-      return (
-        widgetDefinition.autoLoadDatasource === undefined ||
-        widgetDefinition.autoLoadDatasource === 'all' ||
-        (widgetDefinition.autoLoadDatasource === 'geo' && DatasourceUtils.isGeo(matching)) ||
-        (widgetDefinition.autoLoadDatasource === 'not-geo' && !DatasourceUtils.isGeo(matching))
-      );
-    });
+    return datasourcesArray
+      .filter((datasource) => {
+        const matching = this.datasources.find((ds) => ds.id === datasource)!;
+        return (
+          widgetDefinition.autoLoadDatasource === undefined ||
+          widgetDefinition.autoLoadDatasource === 'all' ||
+          (widgetDefinition.autoLoadDatasource === 'geo' && DatasourceUtils.isGeo(matching)) ||
+          (widgetDefinition.autoLoadDatasource === 'not-geo' && !DatasourceUtils.isGeo(matching))
+        );
+      })
+      .map((ds) => ({ datasetId: ds, excludeGeo: manifest.type !== 'map' }));
   }
 
   aggregatesToAutoLoad(manifest: WidgetManifest) {

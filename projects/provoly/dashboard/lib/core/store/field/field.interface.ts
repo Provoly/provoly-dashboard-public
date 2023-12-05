@@ -33,3 +33,5 @@ export const GeometricFieldTypes = [
   FieldType.MULTIPOLYGON,
   FieldType.GEOMETRYCOLLECTION
 ] as string[];
+
+export const NumericFieldTypes = [FieldType.INTEGER, FieldType.DECIMAL, FieldType.INSTANT, FieldType.LONG] as string[];

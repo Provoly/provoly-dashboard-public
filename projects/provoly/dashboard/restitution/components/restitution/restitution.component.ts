@@ -95,16 +95,34 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
       this.customManifest = JSON.parse(this.selectedRestitution.content);
       if (Array.isArray(this.customManifest.datasource)) {
         this.customManifest.datasource.forEach((dataSource: string) => {
-          this.store.dispatch(SearchActions.getDatasourceItems({ id: dataSource }));
+          this.store.dispatch(
+            SearchActions.getDatasourceItems({
+              id: dataSource,
+              excludeGeo: this.customManifest.type === 'map',
+              from: 'PryRestitutionComponent.ngOnInit()-1'
+            })
+          );
         });
       } else {
-        this.store.dispatch(SearchActions.getDatasourceItems({ id: this.customManifest.datasource as string }));
+        this.store.dispatch(
+          SearchActions.getDatasourceItems({
+            id: this.customManifest.datasource as string,
+            excludeGeo: this.customManifest.type === 'map',
+            from: 'PryRestitutionComponent.ngOnInit()-2'
+          })
+        );
       }
       if (this.selectedRestitution.visibility) {
         this.visibility = this.selectedRestitution.visibility;
       }
       this.form.selectedDataSources.forEach((dataSource: string) => {
-        this.store.dispatch(SearchActions.getDatasourceItems({ id: dataSource }));
+        this.store.dispatch(
+          SearchActions.getDatasourceItems({
+            id: dataSource,
+            excludeGeo: this.customManifest.type === 'map',
+            from: 'PryRestitutionComponent.ngOnInit()-3'
+          })
+        );
       });
       this.customManifest = JSON.parse(this.selectedRestitution.content);
       this.customManifest.header = {
@@ -174,7 +192,13 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
       }
     };
     this.form.selectedDataSources.forEach((nameQuery: string) => {
-      this.store.dispatch(SearchActions.getDatasourceItems({ id: nameQuery }));
+      this.store.dispatch(
+        SearchActions.getDatasourceItems({
+          id: nameQuery,
+          excludeGeo: this.customManifest.type === 'map',
+          from: 'PryRestitutionComponent.submit()'
+        })
+      );
     });
     this.goNext(stepper);
     setTimeout(() => {

@@ -8,6 +8,8 @@ import {
   ClassSelectors,
   ConfigActions,
   ConfigSelectors,
+  Field,
+  FieldSelectors,
   ItemUtils,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
@@ -30,6 +32,7 @@ export class AdminClassesCustomizeComponent extends SubscriptionnerDirective imp
   defaultTileAttributes: string[] = [];
   otherTileAttributes: string[] = [];
   maxTilesAttributes = 5;
+  fields$: Observable<Field[]>;
 
   constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     super();
@@ -40,14 +43,17 @@ export class AdminClassesCustomizeComponent extends SubscriptionnerDirective imp
     );
     this.store.dispatch(ClassActions.load());
     this.store.dispatch(ConfigActions.loadCustomization());
+    this.fields$ = this.store.select(FieldSelectors.fields);
     this.currentClass$ = combineLatest([
       this.store.select(AdminClassSelectors.selectedClass),
       this.store.select(ClassSelectors.classes)
     ]).pipe(switchMap(([clazz, _]) => this.store.select(ClassSelectors.classById(clazz?.id ?? ''))));
     this.subscriptions.add(this.currentClass$.subscribe((clazz) => (this.currentClass = clazz ?? ({} as Class))));
     this.currentPropertiesConfig$ = this.store.select(ConfigSelectors.tableDefaultAttributesDefinitions).pipe(
-      combineLatestWith(this.currentClass$),
-      map(([defs, clazz]) => ItemUtils.getAttributesDefinitionForClass((clazz ?? { attributes: [] }) as Class, defs))
+      combineLatestWith(this.currentClass$, this.fields$),
+      map(([defs, clazz, fields]) =>
+        ItemUtils.getAttributesDefinitionForClass((clazz ?? { attributes: [] }) as Class, defs, fields)
+      )
     );
     this.subscriptions.add(
       this.currentPropertiesConfig$.pipe(combineLatestWith(this.currentClass$)).subscribe(([attrs, clazz]) => {
@@ -58,8 +64,10 @@ export class AdminClassesCustomizeComponent extends SubscriptionnerDirective imp
       })
     );
     this.currentTilePropertiesConfig$ = this.store.select(ConfigSelectors.tileAttributesDefinitions).pipe(
-      combineLatestWith(this.currentClass$),
-      map(([defs, clazz]) => ItemUtils.getAttributesDefinitionForClass((clazz ?? { attributes: [] }) as Class, defs)),
+      combineLatestWith(this.currentClass$, this.fields$),
+      map(([defs, clazz, fields]) =>
+        ItemUtils.getAttributesDefinitionForClass((clazz ?? { attributes: [] }) as Class, defs, fields)
+      ),
       map((attrs) => attrs.filter((_, i) => i < this.maxTilesAttributes))
     );
     this.subscriptions.add(

@@ -22,7 +22,7 @@ describe('autoRefresh resultset', () => {
     const spyStore = jest.spyOn(store, 'dispatch').mockReturnValue(undefined);
     jest.useFakeTimers();
     DashboardSelectors.refreshRates.setResult({ search: 2, noTrigger: 2 });
-    DashboardSelectors.manifestDatasources.setResult(['search']);
+    DashboardSelectors.manifestDatasources.setResult([{ datasetId: 'search', excludeGeo: false }]);
     service.start();
 
     jest.advanceTimersToNextTimer(6);
@@ -32,7 +32,11 @@ describe('autoRefresh resultset', () => {
     jest.runAllTimers();
 
     expect(spyStore).toHaveBeenCalledTimes(3);
-    expect(spyStore).toHaveBeenCalledWith(SearchActions.getDatasourceItems({ id: 'search' }));
-    expect(spyStore).not.toHaveBeenCalledWith(SearchActions.getDatasourceItems({ id: 'noTrigger' }));
+    expect(spyStore).toHaveBeenCalledWith(
+      SearchActions.getDatasourceItems({ id: 'search', excludeGeo: false, from: 'RefreshService.start()' })
+    );
+    expect(spyStore).not.toHaveBeenCalledWith(
+      SearchActions.getDatasourceItems({ id: 'noTrigger', excludeGeo: false, from: 'RefreshService.start()' })
+    );
   });
 });

@@ -27,15 +27,22 @@ export class RefreshService {
           ),
           map(([interval, refreshRates, datasources]) =>
             Object.keys(refreshRates)
-              .filter((key) => datasources.includes(key))
+              .filter((key) => datasources.map((ds) => ds.datasetId).includes(key))
               .filter((key) => refreshRates[key] !== undefined && refreshRates[key] !== 0)
               .filter((key) => interval % refreshRates[key] === 0)
+              .map((dsId) => datasources.find((ds) => ds.datasetId === dsId)!)
           ),
           filter((rs) => rs.length > 0)
         )
         .subscribe((resultSetsToUpdate) => {
           resultSetsToUpdate.forEach((rs) => {
-            this.store.dispatch(SearchActions.getDatasourceItems({ id: rs }));
+            this.store.dispatch(
+              SearchActions.getDatasourceItems({
+                id: rs.datasetId,
+                excludeGeo: rs.excludeGeo,
+                from: 'RefreshService.start()'
+              })
+            );
           });
         });
     }

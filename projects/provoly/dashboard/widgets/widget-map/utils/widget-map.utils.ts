@@ -329,7 +329,7 @@ export class WidgetMapUtils {
     type: T,
     attribute: Attribute | undefined
   ) {
-    if (!attribute || !item.attributes[attribute.name]) {
+    if (!attribute) {
       // @ts-ignore
       return null;
     }

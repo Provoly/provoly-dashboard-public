@@ -35,11 +35,19 @@ export class RefreshDatasetsComponent extends ToolboxActionComponent {
 
   refresh() {
     if (this.manifest) {
-      ManifestUtils.getDatasourcesUsedByManifest(this.manifest).forEach((datasetId) => {
-        if (datasetId) {
-          this.store.dispatch(SearchActions.getDatasourceItems({ id: datasetId }));
+      ManifestUtils.getDatasourcesUsedByManifest(this.manifest).forEach(
+        (res: { datasetId: string; excludeGeo: boolean }) => {
+          if (res.datasetId) {
+            this.store.dispatch(
+              SearchActions.getDatasourceItems({
+                id: res.datasetId,
+                excludeGeo: res.excludeGeo,
+                from: 'RefreshDatasetsComponent.refresh()'
+              })
+            );
+          }
         }
-      });
+      );
     }
     this.close();
   }

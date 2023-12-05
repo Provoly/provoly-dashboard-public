@@ -28,13 +28,8 @@ export class SearchService {
     });
   }
 
-  /**
-   * Request the result of a named query by its id
-   * @param id of the data source to fetch
-   * @param quickOrder if it has to be applied
-   */
-  getItems(id: string, quickOrder?: ResultOrder): Observable<ResultSet> {
-    const params = this.getItemsFilter(id, this.getOrder(quickOrder));
+  getItems(id: string, quickOrder?: ResultOrder, excludeGeo?: boolean): Observable<ResultSet> {
+    const params = this.getItemsFilter(id, this.getOrder(quickOrder)).append('excludeGeo', excludeGeo ?? false);
 
     if (!id) {
       console.warn('Not sending items request with no datasource attached.');

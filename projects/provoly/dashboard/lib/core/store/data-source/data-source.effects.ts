@@ -53,7 +53,9 @@ export class DataSourceEffects {
       mergeMap(() => {
         const actions = [] as Action[];
         if (this.idNamedQuery) {
-          actions.push(SearchActions.getDatasourceItems({ id: this.idNamedQuery }));
+          actions.push(
+            SearchActions.getDatasourceItems({ id: this.idNamedQuery, excludeGeo: false, from: 'postNameQuery$' })
+          );
         }
         this.idNamedQuery = undefined;
         actions.push(DataSourceActions.namedQuery.load());

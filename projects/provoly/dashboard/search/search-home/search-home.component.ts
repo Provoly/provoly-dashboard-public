@@ -251,7 +251,9 @@ export class PrySearchHomeComponent implements OnInit, OnDestroy {
   }
 
   refresh(id: string) {
-    this.store.dispatch(SearchActions.getDatasourceItems({ id }));
+    this.store.dispatch(
+      SearchActions.getDatasourceItems({ id, excludeGeo: false, from: 'PrySearchHomeComponent.refresh()' })
+    );
   }
 
   ngOnDestroy(): void {

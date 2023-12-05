@@ -1,7 +1,7 @@
 import { AttributeMultipleValue, AttributeSimpleValue, Item, ValueType } from '../core/model/item.interface';
 import { ResultSet } from '../core/model/result-set.interface';
 import { Attribute, Class } from '../core/store/class/class.interface';
-import { Field } from '../core/store/field/field.interface';
+import { Field, GeometricFieldTypes } from '../core/store/field/field.interface';
 
 export interface OlFeature {
   get(key: string): any;
@@ -90,25 +90,14 @@ export class ItemUtils {
     ];
   }
 
-  static findInResultSet(resultSet: ResultSet, id: string): Item {
-    return (
-      Object.keys(resultSet.items)
-        .map((classId) => resultSet.items[classId].filter((item) => item.id === id))
-        .reduce((p, c) => [...p, ...c], []) as Item[]
-    ).find((item) => !!item) as Item;
-  }
-
-  static getFieldsFromAvailabilityInResultSet(resultSet: ResultSet, classes: Class[], fields: Field[]): Field[] {
+  static getFieldsForClasses(classesId: string[], classes: Class[], fields: Field[]): Field[] {
     return [
       ...new Set(
-        Object.keys(resultSet?.items || {})
+        classesId
           .map((classId) => classes.find((cl) => cl.id === classId) as Class)
           .filter((oClass) => oClass !== undefined)
-          .map((oClass: Class) =>
-            fields
-              .filter((f) => oClass.attributes.map((attr) => attr.field).includes(f.id))
-              .filter((f) => f !== undefined)
-          )
+          .map((oClass: Class) => oClass.attributes.map((attr) => fields.find((f) => f.id === attr.field)!))
+          .map((fields: Field[]) => fields.filter((f) => !!f))
           .reduce((p: Field[], c: Field[]) => [...p, ...c], [])
       )
     ];
@@ -136,7 +125,7 @@ export class ItemUtils {
           .filter((oClass) => oClass !== undefined)
           .map((oClass) =>
             oClass.attributes.filter((attr) =>
-              ItemUtils.getAttributesDefinitionForClass(oClass, definitions).includes(attr.name)
+              ItemUtils.getAttributesDefinitionForClass(oClass, definitions, fields).includes(attr.name)
             )
           )
           .reduce((p, c) => [...p, ...c], [])
@@ -145,8 +134,16 @@ export class ItemUtils {
     ];
   }
 
-  static getAttributesDefinitionForClass(clazz: Class, defs: { [key: string]: string[] }) {
-    return defs[clazz.id ?? ''] ?? (clazz ?? { attributes: [] }).attributes.map((attr) => attr.name);
+  static getAttributesDefinitionForClass(clazz: Class, defs: { [key: string]: string[] }, fields: Field[]) {
+    return (
+      defs[clazz.id ?? ''] ??
+      (clazz ?? { attributes: [] }).attributes
+        .filter((attr) => {
+          const attrField = fields.find((f) => f.id === attr.field);
+          return attrField && !GeometricFieldTypes.includes(attrField.type);
+        })
+        .map((attr) => attr.name)
+    );
   }
 
   static ensureItemIdHasCorrectFormat(item: Item): Item {

@@ -86,7 +86,13 @@ export class EditNamedQueryComponent extends SubscriptionnerDirective {
         break;
     }
     if (this.currentEdit?.id !== DEFAULT_NAMED_QUERY_ID) {
-      this.store.dispatch(SearchActions.getDatasourceItems({ id: this.currentEdit?.id ?? DEFAULT_NAMED_QUERY_ID }));
+      this.store.dispatch(
+        SearchActions.getDatasourceItems({
+          id: this.currentEdit?.id ?? DEFAULT_NAMED_QUERY_ID,
+          excludeGeo: false,
+          from: 'EditNamedQueryComponent.search()'
+        })
+      );
     }
     this.store.dispatch(
       DashboardActions.updateWidgetInPresentation({

@@ -19,7 +19,6 @@ import {
   ItemUtils,
   OrderValue,
   ResultOrder,
-  SearchSelectors,
   TableWidgetOptions,
   WIDGET_HEADER_HEIGHT
 } from '@provoly/dashboard';
@@ -73,7 +72,7 @@ export class WidgetTableComponent extends DataWidgetComponent {
       map(
         ([resultSet, classes, fields]) =>
           [
-            ...ItemUtils.getFieldsFromAvailabilityInResultSet(resultSet, classes, fields),
+            ...ItemUtils.getFieldsForClasses(Object.keys(resultSet.items), classes, fields),
             ...baseItemProperties.map((p) => ({ name: p, id: p } as Field))
           ] as Field[]
       ),
@@ -187,8 +186,13 @@ export class WidgetTableComponent extends DataWidgetComponent {
 
     this.store.dispatch(ClassActions.load());
 
-    this.properties$ = this.resultSet$.pipe(
-      map((rs) => [...ItemUtils.getAttributesFromAvailabilityInResultSet(rs)]),
+    this.properties$ = combineLatest([this.resultSet$, this.classes$, this.fields$]).pipe(
+      map(([rs, classes, fields]) => [
+        ...Object.keys(rs.items)
+          .map((classId) => (classes.find((cl) => cl.id === classId) ?? { attributes: [] }).attributes)
+          .flat()
+          .map((attr) => attr.name)
+      ]),
       map((props) => {
         const sortedProps = [...props];
         sortedProps.sort((pA, pB) => pA.toLocaleLowerCase().localeCompare(pB.toLocaleLowerCase()));

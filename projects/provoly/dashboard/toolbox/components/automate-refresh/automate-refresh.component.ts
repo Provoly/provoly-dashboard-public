@@ -25,8 +25,9 @@ export class AutomateRefreshComponent extends ToolboxActionComponent implements 
 
   constructor(store: Store, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
     super(store);
-
-    this.datasources$ = this.store.select(DashboardSelectors.manifestDatasources);
+    this.datasources$ = this.store
+      .select(DashboardSelectors.manifestDatasources)
+      .pipe(map((dss) => dss.map((ds) => ds.datasetId)));
   }
 
   ngOnInit() {

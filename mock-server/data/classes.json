@@ -706,14 +706,6 @@
         "slug": "29650f0c9a_git"
       },
       {
-        "id": "abc05be7-5378-4842-b9c1-fc57e2c9c12e",
-        "name": "GeoPoint",
-        "field": "4a641178-dca2-40ad-8ee4-063c69d5111d",
-        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false,
-        "slug": "c52f07500d_geo-point"
-      },
-      {
         "id": "20f831f7-d38b-4197-8800-664425056958",
         "name": "insee",
         "field": "872ff200-b4cc-47e6-a45b-fe3ea9c1ab9f",
