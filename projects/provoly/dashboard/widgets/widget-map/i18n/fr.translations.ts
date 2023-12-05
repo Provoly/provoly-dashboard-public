@@ -82,7 +82,10 @@ export const frTranslations = {
           all: 'Partout',
           left: 'Uniquement à gauche',
           right: 'Uniquement à droite'
-        }
+        },
+        open: 'Ouverture/Fermeture menu',
+        zoomIn: 'Zoomer',
+        zoomOut: 'Dézoomer'
       }
     }
   }

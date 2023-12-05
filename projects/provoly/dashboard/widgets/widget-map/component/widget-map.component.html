@@ -366,6 +366,7 @@
           (click)="changeSelection(action)"
           [class.-selected]="(interactionManager.selectionInteraction.selectionType$ | async) === action"
           [attr.data-tooltip]="'@pry.widget.map.' + action | i18n"
+          data-tooltip-position="right"
         >
           <pry-icon [iconSvg]="action"></pry-icon>
           <span class="u-visually-hidden">{{ '@pry.widget.map.' + action | i18n }}</span>
@@ -387,7 +388,7 @@
         [width]="12"
         [height]="24"
       ></pry-icon>
-      <span class="u-visually-hidden">{{ '@pry.widget.map.export' | i18n }}</span>
+      <span class="u-visually-hidden">{{ '@pry.widget.map.open' | i18n }}</span>
     </button>
   </div>
 
@@ -400,6 +401,7 @@
       aria-controls="export_type"
       aria-haspopup="menu"
       [attr.data-tooltip]="'@pry.widget.map.export' | i18n"
+      data-tooltip-position="right"
       (click)="export()"
     >
       <pry-icon iconSvg="file_download"></pry-icon>
@@ -413,9 +415,10 @@
     [style.top.px]="layersTop$ | async"
   >
     <button
-      class="m-layer-switcher__toggle"
+      class="m-layer-switcher__toggle a-tooltip"
       (click)="toggleLayersWindow()"
-      [title]="'@pry.widget.map.selectLayers' | i18n"
+      [attr.data-tooltip]="'@pry.widget.map.selectLayers' | i18n"
+      data-tooltip-position="left"
     >
       <pry-icon iconSvg="layers" [width]="22" [height]="22"></pry-icon>
     </button>
@@ -444,7 +447,12 @@
     *ngIf="((legendLayers$ | async)?.length ?? 0) > 0"
     [style.top.px]="legendTop$ | async"
   >
-    <button class="m-layer-legend__toggle" (click)="toggleLegendWindow()" [title]="'@pry.widget.map.legends' | i18n">
+    <button
+      class="m-layer-legend__toggle a-tooltip"
+      (click)="toggleLegendWindow()"
+      [attr.data-tooltip]="'@pry.widget.map.legends' | i18n"
+      data-tooltip-position="left"
+    >
       <pry-icon iconSvg="legend" [width]="22" [height]="22"></pry-icon>
     </button>
     <ng-container *ngFor="let geoLayer of legendLayers$ | async; let index = index">

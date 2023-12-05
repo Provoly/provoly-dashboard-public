@@ -3,7 +3,6 @@
 .m-layer-legend {
   z-index: 2;
   right: toRem(8);
-  overflow: hidden;
 
   &.ol-control {
     display: flex;
@@ -51,7 +50,6 @@
 .m-layer-switcher {
   z-index: 2;
   right: toRem(8);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: normal;

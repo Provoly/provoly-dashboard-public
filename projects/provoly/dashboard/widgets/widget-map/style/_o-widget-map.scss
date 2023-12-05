@@ -106,6 +106,14 @@
       left: calc(50% + 10px);
     }
   }
+
+  &[data-tooltip].--absolute {
+    position: absolute;
+  }
+
+  &[data-tooltip].--nopos {
+    position: unset;
+  }
 }
 
 .o-map-slider {

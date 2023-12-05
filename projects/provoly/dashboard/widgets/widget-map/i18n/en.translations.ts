@@ -82,7 +82,10 @@ export const enTranslations = {
           all: 'Everywhere',
           left: 'To the left',
           right: 'To the right'
-        }
+        },
+        open: 'Open/Close menu',
+        zoomIn: 'Zoom In',
+        zoomOut: 'Zoom Out'
       }
     }
   }

@@ -1519,6 +1519,21 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.olZoomElement$.next(document.querySelector('.ol-zoom'));
     if (!this.olZoomElement$.getValue()) {
       setTimeout(() => this.getOlZoomElement(), 50);
+    } else {
+      const zoomIn = document.querySelector('.ol-zoom-in');
+      if (zoomIn) {
+        zoomIn.setAttribute('data-tooltip', this.translateService.instant('@pry.widget.map.zoomIn'));
+        zoomIn.setAttribute('data-tooltip-position', 'left');
+        zoomIn.classList.add('a-tooltip', '--nopos');
+        zoomIn.removeAttribute('title');
+      }
+      const zoomOut = document.querySelector('.ol-zoom-out');
+      if (zoomOut) {
+        zoomOut.setAttribute('data-tooltip', this.translateService.instant('@pry.widget.map.zoomOut'));
+        zoomOut.setAttribute('data-tooltip-position', 'left');
+        zoomOut.classList.add('a-tooltip', '--nopos');
+        zoomOut.removeAttribute('title');
+      }
     }
   }
 
