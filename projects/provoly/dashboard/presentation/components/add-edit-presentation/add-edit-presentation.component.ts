@@ -13,7 +13,7 @@ import {
   SubscriptionnerDirective,
   ViewMode
 } from '@provoly/dashboard';
-import { BehaviorSubject, combineLatest, debounceTime, Observable, take } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, take } from 'rxjs';
 import { MetadataActions, MetaEventType } from '@provoly/dashboard/components/metadata-editor';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -109,18 +109,15 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
     if (this.form.valid) {
       this.dispatchSave();
     }
-    this.store.dispatch(
-      DashboardActions.selectPresentation({
-        presentation: {
-          ...this.selectedPresentation$.value!,
-          name: this.form.value.name ?? '',
-          description: this.form.value.description ?? '',
-          image: this.image ?? DEFAULT_RESTITUTION_ICON_URL,
-          cover: this.form.value.cover ?? false
-        },
-        viewMode: this.edition ? ViewMode.CREATION : ViewMode.EDITION
-      })
-    );
+
+    const presentation = {
+      ...this.selectedPresentation$.value!,
+      name: this.form.value.name ?? '',
+      description: this.form.value.description ?? '',
+      image: this.image ?? DEFAULT_RESTITUTION_ICON_URL,
+      cover: this.form.value.cover ?? false
+    };
+
     if (!this.edition) {
       this.store.dispatch(
         DashboardActions.updateManifest({
@@ -136,26 +133,14 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
       );
       this.router?.navigateByUrl(this.editionStartUrl);
     } else {
-      this.store
-        .select(DashboardSelectors.staticManifest)
-        .pipe(debounceTime(1000), take(1))
-        .subscribe((staticManifest: GlobalManifest) => {
-          this.store.dispatch(
-            DashboardActions.updateManifest({
-              manifest: staticManifest,
-              selectedIds: [],
-              manifestId: selectedPresentation.id
-            })
-          );
-          this.store.dispatch(
-            DashboardActions.setInitialPresentation({
-              initial: staticManifest
-            })
-          );
-          this.store.dispatch(DashboardActions.followManifestRoute());
-          this.router?.navigateByUrl(this.editionStartUrl);
-        });
+      this.store.dispatch(DashboardActions.loadPresentation({ presentation }));
     }
+    this.store.dispatch(
+      DashboardActions.selectPresentation({
+        presentation,
+        viewMode: this.edition ? ViewMode.CREATION : ViewMode.EDITION
+      })
+    );
   }
 
   addMetadata(metadata: MetaEventType) {

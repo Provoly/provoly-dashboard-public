@@ -9,7 +9,6 @@ import {
   DashboardManifest,
   DashboardSelectors,
   DisplayMode,
-  GlobalManifest,
   ManifestDescription,
   PryTitleService,
   PryVisibility,
@@ -17,7 +16,7 @@ import {
   SubscriptionnerDirective,
   ViewMode
 } from '@provoly/dashboard';
-import { BehaviorSubject, combineLatest, debounceTime, map, Observable, take } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { v4 } from 'uuid';
 
 @Component({
@@ -99,42 +98,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   }
 
   fetch(presentation: ManifestDescription) {
-    this.store.dispatch(
-      DashboardActions.updateManifest({
-        manifest: { windows: [] },
-        selectedIds: []
-      })
-    );
-    this.store.dispatch(
-      DashboardActions.selectPresentation({
-        presentation: presentation,
-        viewMode: ViewMode.CATALOG
-      })
-    );
-    this.titleService.changeTitle(presentation.name);
-    this.store.dispatch(DashboardActions.fetchStaticManifest({ id: presentation.id }));
-    this.store
-      .select(DashboardSelectors.staticManifest)
-      .pipe(debounceTime(1000), take(1))
-      .subscribe((staticManifest: GlobalManifest) => {
-        this.store.dispatch(
-          DashboardActions.updateManifest({
-            manifest: staticManifest,
-            selectedIds: [],
-            manifestId: presentation.id
-          })
-        );
-        this.store.dispatch(
-          DashboardActions.setInitialPresentation({
-            initial: staticManifest
-          })
-        );
-      });
-    this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: DisplayMode.CONSULT }));
-    this.store.dispatch(DashboardActions.followManifestRoute());
-    this.ngZone.run(() => {
-      this.router?.navigateByUrl(this.consultStartUrl);
-    });
+    this.store.dispatch(DashboardActions.loadPresentation({ presentation }));
   }
 
   creation() {

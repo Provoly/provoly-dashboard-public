@@ -26,7 +26,7 @@ import {
   of,
   switchMap
 } from 'rxjs';
-import { distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { delay, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { DisplayMode, DisplayOptions } from '../../core/model/display-options.interface';
 import {
   DashboardGridLayout,
@@ -134,7 +134,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
   constructor(private store: Store<any>, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
     super();
     this.loading$ = this.store.select(DashboardSelectors.loading);
-    this.dataFetching$ = this.store.select(SearchSelectors.searchLoading);
+    this.dataFetching$ = this.store.select(SearchSelectors.searchLoading).pipe(delay(10));
     this.modeEdition$ = this.store.select(DashboardSelectors.dashboardEditionMode);
     this.subscriptions.add(
       this.modeEdition$.subscribe((mode) => {
@@ -329,7 +329,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
 
       this.params = {
         gridWidth,
-        // Calculate height to parennt the parent's
+        // Calculate height to parent the parent's
         gridHeight: element.getBoundingClientRect().height,
         gridGap: 1,
         columns: (!!this.manifest && !!this.manifest.grid && this.manifest.grid.columns) || DEFAULT_COLUMNS_NUMBER,

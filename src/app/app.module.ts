@@ -48,7 +48,6 @@ import { AppComponent } from './app.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { DashboardContainerComponent } from './dashboard-container/dashboard-container.component';
 import { SearchContainerComponent } from './search-container/search-container.component';
-import { WidgetFocusModule } from './widgets/widget-focus/widget-focus.module';
 
 @NgModule({
   declarations: [AppComponent, DashboardContainerComponent, SearchContainerComponent],
@@ -127,20 +126,6 @@ import { WidgetFocusModule } from './widgets/widget-focus/widget-focus.module';
           name: 'vega',
           load: () =>
             import('@provoly/dashboard/widgets/widget-vega').then((module) => widgetLoader(module, 'WidgetVegaModule'))
-        },
-        focus: {
-          name: 'focus',
-          load: () =>
-            import('./widgets/widget-focus/widget-focus.module').then((module) =>
-              widgetLoader(module, 'WidgetFocusModule')
-            )
-        },
-        'line-dot': {
-          name: 'line-dot',
-          load: () =>
-            import('./widgets/widget-line-dot/widget-line-dot.module').then((module) =>
-              widgetLoader(module, 'WidgetLineDotModule')
-            )
         }
       },
       {

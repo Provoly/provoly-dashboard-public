@@ -24,13 +24,14 @@ import { BusService } from '../action-bus/service/bus.service';
 import { WidgetPlacementUtils } from '../components/widgets/widget-placement/widget-placement.utils';
 import { ResultsetUtils } from '../resultset-utils';
 import { DashboardInitService } from './dashboard-init.service';
-import { DashboardActions } from './dashboard.actions';
+import { DashboardActions, ViewMode } from './dashboard.actions';
 import { DashboardSelectors } from './dashboard.selectors';
 import { ManifestService } from './manifest.service';
 import { RefreshService } from './refresh.service';
 import { PryTitleService } from './title.service';
 import { WmsService } from './wms.service';
 import { WidgetFactoryService } from '../components/widgets/widget-instanciator/widget-factory.service';
+import { DisplayMode } from '../../core/model/display-options.interface';
 
 @Injectable()
 export class DashboardEffects {
@@ -776,13 +777,52 @@ export class DashboardEffects {
     )
   );
 
-  deleteManifestMetadata = createEffect(() =>
+  deleteManifestMetadata$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.deleteManifestMetadata),
       mergeMap((action) =>
         this.manifestService
           .deleteMetadata(action.presentationId, action.metadataId)
           .pipe(map(() => DashboardActions.fetchManifestsList()))
+      )
+    )
+  );
+
+  loadPresentation$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DashboardActions.loadPresentation),
+      tap(() =>
+        this.store.dispatch(
+          DashboardActions.updateManifest({
+            manifest: { windows: [] },
+            selectedIds: []
+          })
+        )
+      ),
+      tap((action) =>
+        this.store.dispatch(
+          DashboardActions.selectPresentation({
+            presentation: action.presentation,
+            viewMode: ViewMode.CATALOG
+          })
+        )
+      ),
+      tap((action) => this.titleService.changeTitle(action.presentation.name)),
+      mergeMap((action) =>
+        this.manifestService.get(action.presentation.id).pipe(
+          mergeMap((manifest) => [
+            DashboardActions.updateManifest({
+              manifest,
+              selectedIds: [],
+              manifestId: action.presentation.id
+            }),
+            DashboardActions.setInitialPresentation({
+              initial: manifest
+            }),
+            DashboardActions.updateDisplayOptions({ mode: DisplayMode.CONSULT }),
+            DashboardActions.followManifestRoute()
+          ])
+        )
       )
     )
   );

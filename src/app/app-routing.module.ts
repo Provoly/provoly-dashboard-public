@@ -273,49 +273,6 @@ const routes: Routes = [
       } as DashboardManifest
     }
   },
-  {
-    path: 'fntp',
-    component: DashboardContainerComponent,
-    data: {
-      manifest: {
-        widgets: [
-          {
-            type: 'focus',
-            layout: { x: 9, y: 1, height: 6, width: 4 },
-            options: {
-              icon: 'pont',
-              line: [
-                { after: 'Ponts sur la zone', attribute: 'infrastructureImpacteeTotal' },
-                {
-                  before: 'dont',
-                  after: "au-dessus d'un cours d'eau",
-                  attribute: 'infrastructureCoursEau'
-                }
-              ]
-            },
-            datasource: 'dataset-aggregation-fntp'
-          },
-          {
-            type: 'line-dot',
-            layout: { x: 9, y: 7, height: 6, width: 4 },
-            options: {
-              lines: [
-                { labelProp: 'libGeo', props: ['nbJourMinimum', 'nbJourMoyen', 'nbJourMaximum'] },
-                { labelProp: 'benchLibGeo', props: ['benchNbJourMinimum', 'benchNbJourMoyen', 'benchNbJourMaximum'] }
-              ]
-            },
-            datasource: 'dataset-aggregation-fntp'
-          },
-          {
-            type: 'map',
-            layout: { x: 1, y: 1, height: 12, width: 8 },
-            options: { automaticLayers: true, fit: true, layers: [] },
-            datasource: 'dataset-territoires-selectionnables'
-          }
-        ]
-      } as DashboardManifest
-    }
-  },
   /* These routes are fine */
   {
     path: 'search',

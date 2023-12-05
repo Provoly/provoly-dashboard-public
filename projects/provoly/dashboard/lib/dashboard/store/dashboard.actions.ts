@@ -256,5 +256,6 @@ export const DashboardActions = {
     '[Dashboard] Delete manifest metadata',
     props<{ presentationId: string; metadataId: string }>()
   ),
-  triggerAggregate: createAction('[Dashboard] (bus) Triggering aggregates for datasource', props<{ id: string }>())
+  triggerAggregate: createAction('[Dashboard] (bus) Triggering aggregates for datasource', props<{ id: string }>()),
+  loadPresentation: createAction('[Dashboard] load presentation', props<{ presentation: ManifestDescription }>())
 };
