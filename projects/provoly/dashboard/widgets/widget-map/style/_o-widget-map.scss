@@ -54,9 +54,36 @@
   }
 }
 
-.ol-attribution {
+.ol-attribution, .ol-zoom {
   top: toRem(5);
   bottom: unset;
+  border-radius: toRem(6);
+  padding: 0;
+  border: none;
+  background: white;
+
+  > button {
+    padding: 0;
+    border: none;
+    background: white;
+  }
+}
+
+.ol-zoom {
+  top: toRem(5);
+  right: toRem(8);
+  left: unset;
+  bottom: unset;
+  border-radius: toRem(6);
+  padding: 0;
+  border: none;
+  background: white;
+
+  > button {
+    padding: 0;
+    border: none;
+    background: white;
+  }
 }
 
 .a-form-field {

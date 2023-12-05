@@ -27,7 +27,7 @@
     @include typography-level(themed($theme-map, 'typography', 'panel'));
   }
 
-  .m-btn-group.-selection-choice {
+  .m-btn-group.-selection-choice, .m-btn-group.-map-selection-choice {
     border-color: themed($theme-map, 'color', 'primary', 400);
 
     .a-btn {

@@ -10,13 +10,12 @@ import VectorTileLayer from 'ol/layer/VectorTile';
 import RenderBox from 'ol/render/Box';
 import VectorSource from 'ol/source/Vector';
 import { Fill, Style } from 'ol/style';
+import { BehaviorSubject } from 'rxjs';
 
 export class SelectionInteraction extends PointerInteraction {
   private coordinates: number[] | null;
-  private cursor: string;
   private features: string[];
-  private previousCursor: string | undefined;
-  selectionType!: 'click' | 'lasso' | 'rectangle' | 'zoom' | 'move';
+  selectionType$ = new BehaviorSubject<'click' | 'lasso' | 'rectangle' | 'zoom' | 'move'>('move');
   private store?: Store;
   private currentRectangle = new RenderBox('ol-rectangle-selection');
   private overlayForLasso: VectorLayer<any>;
@@ -34,13 +33,11 @@ export class SelectionInteraction extends PointerInteraction {
     super({});
 
     this.coordinates = null;
-    this.cursor = 'pointer';
     this.features = [];
-    this.previousCursor = undefined;
     widgetMapConfig.actions$.subscribe((actions) => {
       // @ts-ignore
       this.actions = actions.filter((action) => action !== 'export' && action !== 'upload');
-      this.selectionType = this.actions[0];
+      this.selectionType$.next(this.actions[0]);
     });
     this.overlayForLasso = new VectorLayer({
       source: new VectorSource({
@@ -61,11 +58,11 @@ export class SelectionInteraction extends PointerInteraction {
   override handleDownEvent(evt: MapBrowserEvent<MouseEvent>) {
     const map = evt.map;
 
-    if (this.selectionType === 'move') {
+    if (this.selectionType$.getValue() === 'move') {
       return false;
     }
 
-    if (this.selectionType === 'click') {
+    if (this.selectionType$.getValue() === 'click') {
       this.features = [
         ...new Set(
           map
@@ -78,13 +75,13 @@ export class SelectionInteraction extends PointerInteraction {
       return true;
     }
 
-    if (['rectangle', 'zoom'].includes(this.selectionType)) {
+    if (['rectangle', 'zoom'].includes(this.selectionType$.getValue())) {
       this.coordinates = evt.pixel;
       this.currentRectangle.setMap(evt.map);
       this.currentRectangle.setPixels(this.coordinates, this.coordinates);
     }
 
-    if (this.selectionType === 'lasso') {
+    if (this.selectionType$.getValue() === 'lasso') {
       this.getMap()?.addLayer(this.overlayForLasso);
       this.lassoCoordinates = [evt.coordinate];
       if (!this.currentLassoFeature) {
@@ -101,11 +98,11 @@ export class SelectionInteraction extends PointerInteraction {
   }
 
   override handleDragEvent(evt: MapBrowserEvent<MouseEvent>) {
-    if (['rectangle', 'zoom'].includes(this.selectionType)) {
+    if (['rectangle', 'zoom'].includes(this.selectionType$.getValue())) {
       this.currentRectangle.setPixels(this.coordinates ?? [0, 0], evt.pixel);
       return true;
     }
-    if (this.selectionType === 'lasso') {
+    if (this.selectionType$.getValue() === 'lasso') {
       this.lassoCoordinates.push(evt.coordinate);
       this.currentLassoFeature?.getGeometry()?.setCoordinates(this.getPolygonCoordinates(this.lassoCoordinates));
       return true;
@@ -114,11 +111,11 @@ export class SelectionInteraction extends PointerInteraction {
   }
 
   override handleUpEvent() {
-    if (this.selectionType === 'click' && this.features.length > 0) {
+    if (this.selectionType$.getValue() === 'click' && this.features.length > 0) {
       this.store?.dispatch(DashboardActions.selectMany({ ids: this.features }));
     }
 
-    if (this.selectionType === 'lasso') {
+    if (this.selectionType$.getValue() === 'lasso') {
       const geometry = this.currentLassoFeature?.getGeometry();
 
       const boxFeatures = this.getMap()
@@ -129,33 +126,37 @@ export class SelectionInteraction extends PointerInteraction {
             !(layer instanceof TileLayer) &&
             layer?.getSource() instanceof VectorSource
         )
-        .map(
-          (layer) =>
-            (layer?.getSource() as VectorSource)
-              ?.getFeatures()
-              .filter((features: Feature<any>) => !!features.get('id'))
-              .filter((feature: Feature<any>) => {
-                switch (feature.get('type')) {
-                  case 'point':
-                  case 'marker':
-                    return geometry?.intersectsCoordinate(feature.getGeometry().getCoordinates());
-                  case 'bubble':
-                  case 'line':
-                    return feature
-                      .getGeometry()
-                      .getCoordinates()
-                      .map((coords: Coordinate) => geometry?.intersectsCoordinate(coords))
-                      .reduce((a: boolean, b: boolean) => a || b, false);
-                  case 'polygon':
-                    return feature
-                      .getGeometry()
-                      .getCoordinates()[0]
-                      .map((coords: Coordinate) => geometry?.intersectsCoordinate(coords))
-                      .reduce((a: boolean, b: boolean) => a || b, false);
-                  default:
-                    return false;
-                }
-              })
+        .map((layer) =>
+          (layer?.getSource() as VectorSource)
+            ?.getFeatures()
+            .filter((features: Feature<any>) => !!features.get('id'))
+            .filter((feature: Feature<any>) => {
+              switch (feature.get('type')) {
+                case 'point':
+                case 'marker':
+                  return geometry?.intersectsCoordinate(feature.getGeometry().getCoordinates());
+                case 'bubble':
+                  return feature
+                    .getGeometry()
+                    .getCenter()
+                    .map((coords: Coordinate) => geometry?.intersectsCoordinate(coords))
+                    .reduce((a: boolean, b: boolean) => a || b, false);
+                case 'line':
+                  return feature
+                    .getGeometry()
+                    .getCoordinates()
+                    .map((coords: Coordinate) => geometry?.intersectsCoordinate(coords))
+                    .reduce((a: boolean, b: boolean) => a || b, false);
+                case 'polygon':
+                  return feature
+                    .getGeometry()
+                    .getCoordinates()[0]
+                    .map((coords: Coordinate) => geometry?.intersectsCoordinate(coords))
+                    .reduce((a: boolean, b: boolean) => a || b, false);
+                default:
+                  return false;
+              }
+            })
         )
         .reduce((p, c) => [...p, ...c], []);
 
@@ -171,7 +172,7 @@ export class SelectionInteraction extends PointerInteraction {
       this.lassoCoordinates = [];
     }
 
-    if (this.selectionType === 'rectangle') {
+    if (this.selectionType$.getValue() === 'rectangle') {
       this.currentRectangle.setMap(null as unknown as Map);
 
       const extent = this.currentRectangle.getGeometry().getExtent();
@@ -195,7 +196,7 @@ export class SelectionInteraction extends PointerInteraction {
       this.store?.dispatch(DashboardActions.selectMany({ ids }));
     }
 
-    if (this.selectionType === 'zoom') {
+    if (this.selectionType$.getValue() === 'zoom') {
       this.currentRectangle.setMap(null as unknown as Map);
 
       const extent = this.currentRectangle.getGeometry().getExtent();
@@ -204,7 +205,7 @@ export class SelectionInteraction extends PointerInteraction {
         .fit(extent, { padding: [20, 20, 70, 70], duration: 200 });
     }
 
-    if (this.selectionType === 'lasso') {
+    if (this.selectionType$.getValue() === 'lasso') {
       this.getMap()?.removeLayer(this.overlayForLasso);
     }
 
@@ -216,6 +217,6 @@ export class SelectionInteraction extends PointerInteraction {
   }
 
   changeSelection(type: string) {
-    this.selectionType = type as 'click' | 'lasso' | 'rectangle' | 'zoom' | 'move';
+    this.selectionType$.next(type as 'click' | 'lasso' | 'rectangle' | 'zoom' | 'move');
   }
 }

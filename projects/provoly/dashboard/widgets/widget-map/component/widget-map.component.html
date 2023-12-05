@@ -353,20 +353,45 @@
     </pry-settings>
   </pry-widget-header>
 
-  <div class="m-btn-group -selection-choice" [style.transform]="bottomLeft$ | async">
-    <ng-container *ngFor="let action of basicActions$ | async">
-      <button
-        type="button"
-        class="a-btn a-btn--icon-only a-tooltip a-tooltip--{{ action }}"
-        (click)="interactionManager.selectionInteraction.changeSelection(action)"
-        [class.-selected]="interactionManager.selectionInteraction.selectionType === action"
-        [attr.data-tooltip]="'@pry.widget.map.' + action | i18n"
-      >
-        <pry-icon [iconSvg]="action"></pry-icon>
-        <span class="u-visually-hidden">{{ '@pry.widget.map.' + action | i18n }}</span>
-      </button>
-    </ng-container>
+  <div
+    class="m-btn-group -map-selection-choice -vertical"
+    [class.-with-header]="displayHeader$ | async"
+    [class.-closed]="!(actionMenuOpen$ | async)"
+  >
+    <div class="-vertical">
+      <ng-container *ngFor="let action of basicActions$ | async">
+        <button
+          type="button"
+          class="a-btn a-btn--icon-only a-tooltip a-tooltip--{{ action }}"
+          (click)="changeSelection(action)"
+          [class.-selected]="(interactionManager.selectionInteraction.selectionType$ | async) === action"
+          [attr.data-tooltip]="'@pry.widget.map.' + action | i18n"
+        >
+          <pry-icon [iconSvg]="action"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.widget.map.' + action | i18n }}</span>
+        </button>
+      </ng-container>
+    </div>
 
+    <button
+      type="button"
+      class="a-btn a-btn--icon-only a-tooltip -map-toggle"
+      id="open_menu"
+      [attr.aria-expanded]="actionMenuOpen$ | async"
+      aria-controls="export_type"
+      aria-haspopup="menu"
+      (click)="toggleMenu()"
+    >
+      <pry-icon
+        [iconSvg]="(actionMenuOpen$ | async) ? 'chevron_top' : 'chevron_bottom'"
+        [width]="12"
+        [height]="24"
+      ></pry-icon>
+      <span class="u-visually-hidden">{{ '@pry.widget.map.export' | i18n }}</span>
+    </button>
+  </div>
+
+  <div class="m-btn-group -map-selection-choice -map-export" [class.-with-header]="displayHeader$ | async">
     <button
       type="button"
       class="a-btn a-btn--icon-only a-tooltip"
@@ -375,9 +400,9 @@
       aria-controls="export_type"
       aria-haspopup="menu"
       [attr.data-tooltip]="'@pry.widget.map.export' | i18n"
-      *ngIf="(actions$ | async)?.includes('export')"
+      (click)="export()"
     >
-      <pry-icon iconSvg="file_download" (click)="export()"></pry-icon>
+      <pry-icon iconSvg="file_download"></pry-icon>
       <span class="u-visually-hidden">{{ '@pry.widget.map.export' | i18n }}</span>
     </button>
   </div>
@@ -488,10 +513,4 @@
       <ng-container #popupContent></ng-container>
     </div>
   </div>
-  <div
-    #address
-    class="m-tooltip m-tooltip--address tooltip-address"
-    [style.display]="'none'"
-    (click)="hideAddress()"
-  ></div>
 </div>

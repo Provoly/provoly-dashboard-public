@@ -121,7 +121,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   @ViewChild('popup') popup!: ElementRef;
   @ViewChild('popupContent', { read: ViewContainerRef }) popupContent!: ViewContainerRef;
   @ViewChild('exportTypeTemplate', { read: TemplateRef }) exportTypeTemplate!: TemplateRef<any>;
-  @ViewChild('address') address!: ElementRef;
   @ViewChild('sliderElement') sliderElement!: ElementRef<HTMLInputElement>;
   options$: Observable<MapWidgetOptions>;
   layerTypes = this.widgetMapLayerService.implementationList
@@ -163,7 +162,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   legendTab = 0;
   legendLayers$!: Observable<(MapGeoServerLayerOptions | MapWMSLayerLayerOptions)[]>;
   legendTop$: Observable<number>;
-  layersTop$: Observable<number>;
+  layersTop$!: Observable<number>;
   legendHeight$: Observable<number>;
   imageNotProvided: boolean[] = [];
   basicActions$: Observable<('click' | 'lasso' | 'rectangle' | 'zoom' | 'move' | 'export' | 'upload')[]>;
@@ -207,6 +206,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     };
   } = {};
   attributions = new Attribution();
+  actionMenuOpen$ = new BehaviorSubject(false);
+  attributions$: Observable<boolean>;
+  olZoomElement$ = new BehaviorSubject<HTMLDivElement | null>(null);
 
   constructor(
     store: Store<any>,
@@ -221,6 +223,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   ) {
     super(store, el);
 
+    this.getOlZoomElement();
+
     this.slides = [
       { id: 'all', label: this.translateService.instant('@pry.widget.map.slide.all') },
       { id: 'left', label: this.translateService.instant('@pry.widget.map.slide.left') },
@@ -229,8 +233,18 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
     this.widgetMapLayerService.withGeoAuth(this.geoAuthService);
 
-    this.basicActions$ = this.actions$.pipe(
-      map((actions) => actions.filter((action) => action !== 'export' && action !== 'upload'))
+    this.basicActions$ = combineLatest([
+      this.actions$,
+      this.actionMenuOpen$,
+      this.interactionManager.selectionInteraction.selectionType$
+    ]).pipe(
+      map(([actions, menuOpen, selectionType]) =>
+        menuOpen
+          ? actions.filter((action) => action !== 'export' && action !== 'upload')
+          : actions
+              .filter((action) => action !== 'export' && action !== 'upload')
+              .filter((action) => selectionType === action)
+      )
     );
 
     this.classes$ = this.store
@@ -562,8 +576,11 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       delay(10)
     );
 
-    this.layersTop$ = this.displayHeader$.pipe(map((display) => 140 - (display ? 0 : WIDGET_HEADER_HEIGHT)));
-    this.legendTop$ = this.displayHeader$.pipe(map((display) => 180 - (display ? 0 : WIDGET_HEADER_HEIGHT)));
+    this.attributions$ = this.options$.pipe(map((options) => !!options.attributions));
+
+    this.legendTop$ = combineLatest([this.displayHeader$, this.attributions$]).pipe(
+      map(([header, attr]) => 5 + (header ? 0 : WIDGET_HEADER_HEIGHT) + (attr ? 41 : 0) + 30)
+    );
 
     this.legendHeight$ = combineLatest([this.widgetSize$.pipe(debounceTime(100)), this.legendTop$]).pipe(
       map(([size, top]) => {
@@ -866,6 +883,18 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           )[]
       ),
       delay(10)
+    );
+
+    this.layersTop$ = combineLatest([this.legendTop$, this.legendLayers$]).pipe(
+      map(([legendTop, layers]) => legendTop + ((layers.length ?? 0) > 0 ? 38 : 0))
+    );
+
+    this.subscriptions.add(
+      combineLatest([this.layersTop$, this.olZoomElement$]).subscribe(([layersTop, zoomElement]) => {
+        if (zoomElement) {
+          zoomElement.style.top = `${layersTop + 5}px`;
+        }
+      })
     );
 
     this.subscriptions.add(
@@ -1315,10 +1344,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     layer.clusterDistance = $event.currentTarget?.value;
   }
 
-  hideAddress() {
-    this.address.nativeElement.style.display = 'none';
-  }
-
   changeOpacity(layer: MapWidgetLayerOptions, $event: string) {
     // @ts-ignore
     layer.opacity = parseInt($event, 10);
@@ -1484,5 +1509,21 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   changeSlideOption($event: any) {
     this.optionsCopy.slide = $event;
+  }
+
+  toggleMenu() {
+    this.actionMenuOpen$.next(!this.actionMenuOpen$.getValue());
+  }
+
+  private getOlZoomElement() {
+    this.olZoomElement$.next(document.querySelector('.ol-zoom'));
+    if (!this.olZoomElement$.getValue()) {
+      setTimeout(() => this.getOlZoomElement(), 50);
+    }
+  }
+
+  changeSelection(action: 'click' | 'lasso' | 'rectangle' | 'zoom' | 'move' | 'export' | 'upload') {
+    this.interactionManager.selectionInteraction.changeSelection(action);
+    this.toggleMenu();
   }
 }

@@ -1,7 +1,7 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Component, ElementRef, Input, NgZone, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   DashboardActions,
@@ -55,17 +55,9 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     protected viewContainerRef: ViewContainerRef,
     protected router: Router,
     protected ngZone: NgZone,
-    protected titleService: PryTitleService,
-    protected activatedRoute: ActivatedRoute
+    protected titleService: PryTitleService
   ) {
     super();
-    this.subscriptions.add(
-      this.activatedRoute.queryParams.subscribe((params) => {
-        if (params['create']) {
-          this.creation();
-        }
-      })
-    );
     this.store.dispatch(DashboardActions.fetchManifestsList());
     this.manifests$ = this.store
       .select(DashboardSelectors.manifestsList)

@@ -2,11 +2,16 @@
 
 .m-layer-legend {
   z-index: 2;
-  left: toRem(8);
+  right: toRem(8);
   overflow: hidden;
 
   &.ol-control {
-    border: 1px solid #bccad8;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    border: none;
+    background: white;
   }
 
   button {
@@ -19,6 +24,7 @@
   }
 
   &__toggle {
+    align-self: flex-end;
     width: toRem(30);
     height: toRem(30);
   }
@@ -44,11 +50,16 @@
 
 .m-layer-switcher {
   z-index: 2;
-  left: toRem(8);
+  right: toRem(8);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: normal;
 
   &.ol-control {
-    border: 1px solid #bccad8;
+    border: none;
+    background: white;
+    align-self: flex-end;
   }
 
   button {
@@ -63,6 +74,7 @@
   &__toggle {
     width: toRem(30);
     height: toRem(30);
+    align-self: flex-end;
   }
 
   &__title {
@@ -71,7 +83,6 @@
     background-color: white;
     justify-content: space-between;
     gap: toRem(10);
-    margin-left: toRem(35);
     padding: 5px;
   }
 

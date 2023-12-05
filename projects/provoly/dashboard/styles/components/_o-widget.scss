@@ -154,6 +154,61 @@
       @include outlineOnFocus($border-radius: 4px);
     }
   }
+
+  .m-btn-group.-map-selection-choice {
+    position: absolute;
+    z-index: 400;
+    gap: 0;
+    align-items: flex-start;
+
+    .a-btn {
+      @include outlineOnFocus($border-radius: 4px);
+    }
+
+    &.-with-header {
+      top: toRem(38);
+      left: toRem(5);
+    }
+
+    > .-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: toRem(10);
+      padding: toRem(7);
+      background: white;
+      border-radius: toRem(6) 0 toRem(6) toRem(6);
+      border: none;
+      top: toRem(5);
+      left: toRem(5);
+      z-index: 2;
+    }
+
+    &.-closed {
+      > .-vertical {
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    .a-btn.a-btn--icon-only.a-tooltip.-map-toggle {
+      background: white;
+      border: none;
+      height: toRem(34);
+      border-radius: 0 toRem(6) toRem(6) 0;
+    }
+
+    &.-map-export {
+      padding: toRem(7);
+      background: white;
+      border-radius: toRem(6);
+      border: none;
+      top: toRem(40);
+      z-index: 1;
+
+      &.-with-header {
+        top: toRem(77);
+      }
+    }
+  }
 }
 
 .widget-below-header {
