@@ -123,9 +123,11 @@ export class SearchService {
   ) {
     return this.store.select(ConfigSelectors.dataUrl).pipe(
       switchMap((url) =>
-        this.httpClient.post<string[]>(encodeURI(`${url}/data-sources/autocomplete`), {
-          attributes: (attributes ?? []).map((attr) => ({ datasource: attr.datasource, attribute: attr.id })),
-          search
+        this.httpClient.post<string[]>(encodeURI(`${url}/data-sources/search`), {
+          datasourceByAttribute: (attributes ?? [])
+            .map((attr) => ({ [attr.id]: attr.datasource }))
+            .reduce((p, c) => ({ ...p, ...c }), {}),
+          value: search
         })
       )
     );

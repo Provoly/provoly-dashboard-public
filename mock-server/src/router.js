@@ -684,12 +684,12 @@ router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items/aggregate', (req,
     }, fieldGeneratorModule.generateDelay());
   }
 });
-router.on(['OPTIONS', 'POST'], '/data/data-sources/autocomplete', (req, res, params) => {
+router.on(['OPTIONS', 'POST'], '/data/data-sources/search', (req, res, params) => {
   readPayload(req).then((payload) => {
     if (payload) {
-      const { attributes = [], search = '', limit = 10 } = payload;
+      const { datasourceByAttribute = {}, value = '', limit = 10 } = payload;
 
-      const attrId = attributes[0]?.attribute || { attribute: '-----' };
+      const attrId = Object.keys(datasourceByAttribute)[0] || { attribute: '-----' };
       const attr = dataModule.classes
         .find((cl) => cl.attributes.find((attr) => attr.id === attrId))
         .attributes.find((attr) => attr.id === attrId);
@@ -697,9 +697,7 @@ router.on(['OPTIONS', 'POST'], '/data/data-sources/autocomplete', (req, res, par
 
       const result = [];
       for (let i = 0; i < limit; i++) {
-        result.push(
-          search + '' + (['number', 'decimal'].includes(attrType) ? casual.integer((from = 0)) : casual.word)
-        );
+        result.push(value + '' + (['number', 'decimal'].includes(attrType) ? casual.integer((from = 0)) : casual.word));
       }
       result.sort();
       makeResponseOk(res, result);
