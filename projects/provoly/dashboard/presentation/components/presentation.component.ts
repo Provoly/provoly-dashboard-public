@@ -47,6 +47,11 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   ViewMode = ViewMode;
   search$ = new BehaviorSubject('');
   filteredPresentations$: Observable<ManifestDescription[]>;
+  listOfManifests$ = new BehaviorSubject<ManifestDescription[] | null>(null);
+
+  @Input() set listOfManifests(manifests: ManifestDescription[] | null) {
+    this.listOfManifests$.next(Array.isArray(manifests) ? manifests : null);
+  }
 
   constructor(
     protected store: Store<any>,
@@ -65,15 +70,19 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
       })
     );
     this.store.dispatch(DashboardActions.fetchManifestsList());
-    this.manifests$ = this.store
-      .select(DashboardSelectors.manifestsList)
-      .pipe(
-        map((manifestList) =>
-          [...manifestList].sort((a, b) =>
-            a.modificationDate ? b.modificationDate.localeCompare(a.modificationDate) : 1
+    this.manifests$ = combineLatest([
+      this.store
+        .select(DashboardSelectors.manifestsList)
+        .pipe(
+          map((manifestList) =>
+            [...manifestList].sort((a, b) =>
+              a.modificationDate ? b.modificationDate.localeCompare(a.modificationDate) : 1
+            )
           )
-        )
-      );
+        ),
+      this.listOfManifests$
+    ]).pipe(map(([dynamics, statics]) => (!!statics ? statics : dynamics)));
+
     this.staticManifest$ = this.store
       .select(DashboardSelectors.staticManifest)
       .pipe(map((staticM) => staticM.windows[0]));
@@ -134,16 +143,16 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     this.store.dispatch(DashboardActions.fetchStaticManifest({ id: presentation.id }));
     this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: DisplayMode.EDIT }));
     this.overlayRef?.dispose();
-    this.overlayRef = undefined
+    this.overlayRef = undefined;
   }
 
   delete(id: string) {
     this.store.dispatch(DashboardActions.confirmManifestDeletion({ id }));
-    this.toggleModalActions()
+    this.toggleModalActions();
   }
 
   toggleModalActions(presentation?: ManifestDescription | null) {
-    if (!this.overlayRef && presentation){
+    if (!this.overlayRef && presentation) {
       this.selectedPresentation$.next(presentation);
       this.store.dispatch(DashboardActions.selectPresentation({ presentation, viewMode: ViewMode.CATALOG }));
       this.store.dispatch(DashboardActions.loadManifest({ id: presentation.id }));
@@ -158,7 +167,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
       this.overlayRef.attach(new TemplatePortal(this.templateModalActions, this.viewContainerRef));
     } else {
       this.overlayRef?.dispose();
-      this.overlayRef = undefined
+      this.overlayRef = undefined;
       this.selectedPresentation$.next(null);
     }
   }
@@ -166,7 +175,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   toggleModal(presentation?: ManifestDescription | null) {
     this.modalOpened = !this.modalOpened;
     if (this.modalOpened && presentation) {
-      this.toggleModalActions()
+      this.toggleModalActions();
       this.selectedPresentation$.next(presentation);
       this.store.dispatch(DashboardActions.selectPresentation({ presentation, viewMode: ViewMode.CATALOG }));
       /* we need to load manifest in order to be able to save it later */
