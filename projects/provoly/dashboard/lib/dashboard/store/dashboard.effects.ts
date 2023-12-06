@@ -24,14 +24,13 @@ import { BusService } from '../action-bus/service/bus.service';
 import { WidgetPlacementUtils } from '../components/widgets/widget-placement/widget-placement.utils';
 import { ResultsetUtils } from '../resultset-utils';
 import { DashboardInitService } from './dashboard-init.service';
-import { DashboardActions, ViewMode } from './dashboard.actions';
+import { DashboardActions } from './dashboard.actions';
 import { DashboardSelectors } from './dashboard.selectors';
 import { ManifestService } from './manifest.service';
 import { RefreshService } from './refresh.service';
 import { PryTitleService } from './title.service';
 import { WmsService } from './wms.service';
 import { WidgetFactoryService } from '../components/widgets/widget-instanciator/widget-factory.service';
-import { DisplayMode } from '../../core/model/display-options.interface';
 
 @Injectable()
 export class DashboardEffects {
@@ -783,7 +782,7 @@ export class DashboardEffects {
         this.store.dispatch(
           DashboardActions.selectPresentation({
             presentation: action.presentation,
-            viewMode: ViewMode.CATALOG
+            viewMode: action.viewMode
           })
         )
       ),
@@ -799,7 +798,6 @@ export class DashboardEffects {
             DashboardActions.setInitialPresentation({
               initial: manifest
             }),
-            DashboardActions.updateDisplayOptions({ mode: DisplayMode.CONSULT }),
             DashboardActions.followManifestRoute()
           ])
         )

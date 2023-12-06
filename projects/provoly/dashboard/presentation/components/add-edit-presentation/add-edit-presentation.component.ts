@@ -131,16 +131,21 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
           initial: { windows: [{ widgets: [], grid: { layout: this.chosenLayout as DashboardGridLayout } }] }
         })
       );
+      this.store.dispatch(
+        DashboardActions.selectPresentation({
+          presentation,
+          viewMode: this.edition ? ViewMode.CREATION : ViewMode.EDITION
+        })
+      );
       this.router?.navigateByUrl(this.editionStartUrl);
     } else {
-      this.store.dispatch(DashboardActions.loadPresentation({ presentation }));
+      this.store.dispatch(
+        DashboardActions.loadPresentation({
+          presentation,
+          viewMode: this.edition ? ViewMode.CREATION : ViewMode.EDITION
+        })
+      );
     }
-    this.store.dispatch(
-      DashboardActions.selectPresentation({
-        presentation,
-        viewMode: this.edition ? ViewMode.CREATION : ViewMode.EDITION
-      })
-    );
   }
 
   addMetadata(metadata: MetaEventType) {

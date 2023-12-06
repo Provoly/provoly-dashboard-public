@@ -105,7 +105,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   }
 
   fetch(presentation: ManifestDescription) {
-    this.store.dispatch(DashboardActions.loadPresentation({ presentation }));
+    this.store.dispatch(DashboardActions.loadPresentation({ presentation, viewMode: ViewMode.CATALOG }));
   }
 
   creation() {

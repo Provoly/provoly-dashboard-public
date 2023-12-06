@@ -256,5 +256,8 @@ export const DashboardActions = {
     props<{ presentationId: string; metadataId: string }>()
   ),
   triggerAggregate: createAction('[Dashboard] (bus) Triggering aggregates for datasource', props<{ id: string }>()),
-  loadPresentation: createAction('[Dashboard] load presentation', props<{ presentation: ManifestDescription }>())
+  loadPresentation: createAction(
+    '[Dashboard] load presentation',
+    props<{ presentation: ManifestDescription; viewMode: ViewMode }>()
+  )
 };
