@@ -127,7 +127,8 @@ export class SearchService {
           datasourceByAttribute: (attributes ?? [])
             .map((attr) => ({ [attr.id]: attr.datasource }))
             .reduce((p, c) => ({ ...p, ...c }), {}),
-          value: search
+          value: search,
+          limit: 10
         })
       )
     );
