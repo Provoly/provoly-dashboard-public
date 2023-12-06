@@ -81,18 +81,6 @@ PryDashboardModule.forRoot(
 ),
 ----
 
-=== Vue par défaut / manifest par défaut
-
-Afin d’avoir le comportement "`si j’ai un manifest par défaut, alors je
-l’active. Sinon je charge telle route`", il suffit d’utiliser le
-DefaultViewGuard, sur la route sur laquelle on veut avoir ce
-comportement:
-
-[source,js]
-----
-{ path: '', canActivate: [DefaultViewGuard] }
-----
-
 
 === Problème avec l’éditeur du moteur de transformation
 

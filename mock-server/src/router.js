@@ -94,6 +94,9 @@ router.on(['OPTIONS', 'GET'], '/exec/about/version', (req, res, params) => {
 router.on(['OPTIONS', 'GET'], '/transfo/about/version', (req, res, params) => {
   makeResponseOk(res, { applicationVersion: 'dev-9c9476a3', chartVersion: '0.7.134' });
 });
+router.on(['OPTIONS', 'GET'], '/monitor/about/version', (req, res, params) => {
+  makeResponseOk(res, { applicationVersion: 'dev-9c9476a3', chartVersion: '0.7.134' });
+});
 router.on(['OPTIONS', 'GET'], '/ref/model/class', (req, res, params) => {
   makeResponseOk(res, dataModule.classes);
 });
