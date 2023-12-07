@@ -111,9 +111,6 @@ export class PryDatasetDetailComponent implements OnInit {
   handleButtonAction(version: DatasetVersion) {
     this.selectedDatasetVersion = version;
     switch (version.state) {
-      case 'ERROR':
-        this.consultErrors(version);
-        break;
       case 'ACTIVE':
         this.deactivateVersion(version);
         break;

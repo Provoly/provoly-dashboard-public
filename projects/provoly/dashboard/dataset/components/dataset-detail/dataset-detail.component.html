@@ -9,7 +9,7 @@
 <div class="o-dataset-layout__content">
   <div class="a-p">
     <h1 class="a-h1">{{ dataset.name }}</h1>
-      <span class="description">{{dataset.description}}</span>
+    <span class="description">{{ dataset.description }}</span>
   </div>
 
   <div class="dataset-detail">
@@ -105,37 +105,44 @@
             </ng-container>
           </td>
           <td>
-            <ng-container *ngIf="version.state !== 'LOADING' && version.state !== 'INDEXING'">
-              <button
-                type="button"
-                class="a-btn a-btn--primary a-btn--icon-text ng-star-inserted"
-                (click)="handleButtonAction(version)"
-              >
-                {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
-              </button>
-              <ng-container *ngIf="version.state === 'ACTIVE' || version.state === 'INACTIVE'">
-                <div class="info-icon description-container description">
-                  <span class="info-text">i</span>
-                </div>
-                <div class="description-tooltip validate-tooltip">
-                  <p class="a-p">
-                    {{
-                      (version.state === 'ACTIVE'
-                        ? '@pry.dataset.tooltip.inValidateButton'
-                        : '@pry.dataset.tooltip.validateButton'
-                      ) | i18n
-                    }}
-                  </p>
-                </div>
+            <ng-container
+              *ngIf="version.state !== 'LOADING' && version.state !== 'INDEXING' && version.state !== 'ERROR'"
+            >
+              <ng-container *pryAccess="{ module: 'dashboard', page: 'list-dataset', action: 'activate' }">
+                <button
+                  type="button"
+                  class="a-btn a-btn--primary a-btn--icon-text ng-star-inserted"
+                  (click)="handleButtonAction(version)"
+                >
+                  {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
+                </button>
+                <ng-container *ngIf="version.state === 'ACTIVE' || version.state === 'INACTIVE'">
+                  <div class="info-icon description-container description">
+                    <span class="info-text">i</span>
+                  </div>
+                  <div class="description-tooltip validate-tooltip">
+                    <p class="a-p">
+                      {{
+                        (version.state === 'ACTIVE'
+                          ? '@pry.dataset.tooltip.inValidateButton'
+                          : '@pry.dataset.tooltip.validateButton'
+                        ) | i18n
+                      }}
+                    </p>
+                  </div>
+                </ng-container>
               </ng-container>
             </ng-container>
-            <ng-container *ngIf="version.hasWarnings && version.state !== 'ERROR'">
+            <ng-container *ngIf="version.hasWarnings || version.state === 'ERROR'">
               <button
                 type="button"
                 class="a-btn a-btn--secondary a-btn--icon-text ng-star-inserted"
                 (click)="consultErrors(version)"
               >
-                {{ '@pry.dataset.buttonAction.WARNING' | i18n }}
+                {{
+                  (version.state === 'ERROR' ? '@pry.dataset.buttonAction.ERROR' : '@pry.dataset.buttonAction.WARNING')
+                    | i18n
+                }}
               </button>
             </ng-container>
           </td>
