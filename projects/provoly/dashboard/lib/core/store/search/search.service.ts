@@ -124,10 +124,8 @@ export class SearchService {
   ) {
     return this.store.select(ConfigSelectors.dataUrl).pipe(
       switchMap((url) =>
-        this.httpClient.post<string[]>(encodeURI(`${url}/data-sources/search`), {
-          datasourceByAttribute: (attributes ?? [])
-            .map((attr) => ({ [attr.id]: attr.datasource }))
-            .reduce((p, c) => ({ ...p, ...c }), {}),
+        this.httpClient.post<string[]>(encodeURI(`${url}/data-sources/values`), {
+          attributes: (attributes ?? []).map((attr) => ({ datasource: attr.datasource, attribute: attr.id })),
           value: search,
           limit
         })

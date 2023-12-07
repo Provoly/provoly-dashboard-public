@@ -600,7 +600,8 @@
               "type": "integer"
             }
           ],
-          "operator": "EQUALS"
+          "operator": "EQUALS",
+          "limit": 3
         }
       ]
     }
