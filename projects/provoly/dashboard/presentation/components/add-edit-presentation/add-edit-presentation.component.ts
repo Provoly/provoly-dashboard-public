@@ -137,7 +137,6 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
           viewMode: this.edition ? ViewMode.CREATION : ViewMode.EDITION
         })
       );
-      this.router?.navigateByUrl(this.editionStartUrl);
     } else {
       this.store.dispatch(
         DashboardActions.loadPresentation({
@@ -146,6 +145,7 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
         })
       );
     }
+    this.router?.navigateByUrl(this.editionStartUrl);
   }
 
   addMetadata(metadata: MetaEventType) {

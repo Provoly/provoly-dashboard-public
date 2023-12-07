@@ -1,6 +1,12 @@
 import { Component, Inject, Input, OnInit, Optional } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { DashboardGridLayout, DashboardSelectors, PRY_ACCESS_TOKEN, PryBaseAccess } from '@provoly/dashboard';
+import {
+  DashboardGridLayout,
+  DashboardSelectors,
+  DisplayOptions,
+  PRY_ACCESS_TOKEN,
+  PryBaseAccess
+} from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { ACTIONS, ToolboxAction } from '../toolbox.model';
 
@@ -19,6 +25,7 @@ export class ToolboxComponent implements OnInit {
   dropdownActions$!: Observable<ToolboxAction[]>;
   showDropdownButton$!: Observable<boolean>;
   isDropdownOpen = false;
+  actionsAvailable$: Observable<DisplayOptions | undefined>;
 
   @Input() set actions(actions: ToolboxAction[]) {
     this.actions$.next(actions);
@@ -33,31 +40,31 @@ export class ToolboxComponent implements OnInit {
     this.isManualMode$ = store
       .select(DashboardSelectors.windowManifest)
       .pipe(map((pres) => (pres.grid?.layout ?? DashboardGridLayout.MANUAL) === DashboardGridLayout.MANUAL));
+    this.actionsAvailable$ = store.select(DashboardSelectors.displayOptions);
   }
 
   ngOnInit() {
-    this.allActions$ = combineLatest([this.actions$, this.hasInitialPresentation$]).pipe(
-      switchMap(([actions, hasInitialPresentation]) =>
+    this.allActions$ = combineLatest([this.actions$, this.actionsAvailable$]).pipe(
+      switchMap(([actions, displayOptions]) =>
         combineLatest(
-          actions.map((action) =>
-            this.role
+          actions.map((action) => {
+            // @ts-ignore
+            const actionAvailable = action.visible && displayOptions.toolbox[action.name];
+            return this.role
               ? this.role.hasRole(null, action.access.module, action.access.page, action.access.action).pipe(
                   map(
                     (hasRole) =>
                       ({
                         ...action,
-                        visible:
-                          action.visible &&
-                          (action.name !== 'save_view' || hasInitialPresentation) &&
-                          (!this.role || hasRole)
+                        visible: actionAvailable && (!this.role || hasRole)
                       } as ToolboxAction)
                   )
                 )
               : of({
                   ...action,
-                  visible: action.visible && (action.name !== 'save_view' || hasInitialPresentation)
-                } as ToolboxAction)
-          )
+                  visible: actionAvailable
+                } as ToolboxAction);
+          })
         )
       )
     );

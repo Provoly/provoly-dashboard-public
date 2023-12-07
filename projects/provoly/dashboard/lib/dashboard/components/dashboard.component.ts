@@ -27,7 +27,7 @@ import {
   switchMap
 } from 'rxjs';
 import { delay, distinctUntilChanged, filter, map } from 'rxjs/operators';
-import { DisplayMode, DisplayOptions } from '../../core/model/display-options.interface';
+import { DisplayOptions } from '../../core/model/display-options.interface';
 import {
   DashboardGridLayout,
   DashboardManifest,
@@ -43,7 +43,7 @@ import { DataSourceActions } from '../../core/store/data-source/data-source.acti
 import { FieldActions } from '../../core/store/field/field.actions';
 import { RelationTypesActions } from '../../core/store/relation-types/relation-types.actions';
 import { WidgetPlacementUtils } from '../components/widgets/widget-placement/widget-placement.utils';
-import { DashboardActions, DashboardCellParams } from '../store/dashboard.actions';
+import { DashboardActions, DashboardCellParams, ViewMode } from '../store/dashboard.actions';
 import {
   DEFAULT_COLUMNS_NUMBER,
   DEFAULT_GAP_PX,
@@ -301,7 +301,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
   ngOnInit() {
     if (this.displayOptions)
       this.store.dispatch(
-        DashboardActions.updateDisplayOptions({ mode: DisplayMode.CUSTOM, customDisplay: this.displayOptions })
+        DashboardActions.updateDisplayOptions({ mode: ViewMode.CUSTOM, customDisplay: this.displayOptions })
       );
   }
 

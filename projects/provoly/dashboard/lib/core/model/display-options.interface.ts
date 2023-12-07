@@ -1,3 +1,5 @@
+import { ViewMode } from '../../dashboard/store/dashboard.actions';
+
 export interface DisplayOptions {
   presentationTitle: boolean;
   search: boolean;
@@ -17,61 +19,53 @@ export interface ToolboxDisplayOptions {
   automate_refresh: boolean;
 }
 
-export enum DisplayMode {
-  CONSULT = 'CONSULT',
-  CREATE = 'CREATE',
-  EDIT = 'EDIT',
-  SEARCH = 'SEARCH',
-  CUSTOM = 'CUSTOM'
-}
+export const BASE_DISPLAY_OPTIONS = {
+  presentationTitle: true,
+  search: false,
+  catalog: false,
+  useFilters: false,
+  toolbox: {
+    save_view: false,
+    save_view_as: false,
+    filter_settings: false,
+    new_tab: false,
+    clear_view: false,
+    default_size: false,
+    refresh_datasets: false,
+    automate_refresh: false
+  }
+} as DisplayOptions;
 
-export function getDisplayOptions(mode?: DisplayMode): DisplayOptions {
-  const displayOptions: DisplayOptions = {
-    presentationTitle: true,
-    search: false,
-    catalog: false,
-    useFilters: false,
-    toolbox: {
-      save_view: false,
-      save_view_as: false,
-      filter_settings: false,
-      new_tab: false,
-      clear_view: false,
-      default_size: false,
-      refresh_datasets: false,
-      automate_refresh: false
-    }
-  };
-
+export function getDisplayOptions(mode?: ViewMode): DisplayOptions {
   switch (mode) {
-    case DisplayMode.CONSULT:
+    case ViewMode.CONSULT:
       return {
-        ...displayOptions,
+        ...BASE_DISPLAY_OPTIONS,
         useFilters: true,
-        toolbox: { ...displayOptions.toolbox, save_view_as: true, refresh_datasets: true }
+        toolbox: { ...BASE_DISPLAY_OPTIONS.toolbox, save_view_as: true, refresh_datasets: true }
       };
-    case DisplayMode.SEARCH:
+    case ViewMode.SEARCH:
       return {
-        ...displayOptions,
+        ...BASE_DISPLAY_OPTIONS,
         presentationTitle: false,
         search: true,
-        toolbox: { ...displayOptions.toolbox, clear_view: true, default_size: true, refresh_datasets: true }
+        toolbox: { ...BASE_DISPLAY_OPTIONS.toolbox, clear_view: true, default_size: true, refresh_datasets: true }
       };
 
-    case DisplayMode.EDIT:
-    case DisplayMode.CREATE:
+    case ViewMode.EDITION:
+    case ViewMode.CREATION:
       return {
-        ...displayOptions,
+        ...BASE_DISPLAY_OPTIONS,
         catalog: true,
         useFilters: true,
         toolbox: {
-          ...(Object.keys(displayOptions.toolbox) as (keyof ToolboxDisplayOptions)[]).reduce((acc, key) => {
+          ...(Object.keys(BASE_DISPLAY_OPTIONS.toolbox) as (keyof ToolboxDisplayOptions)[]).reduce((acc, key) => {
             acc[key] = true;
             return acc;
           }, {} as ToolboxDisplayOptions)
         }
       };
     default:
-      return displayOptions;
+      return BASE_DISPLAY_OPTIONS;
   }
 }

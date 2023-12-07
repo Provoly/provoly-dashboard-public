@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { PryVisibility } from '../../core/components/share/share.model';
 import { PrySnackMessage } from '../../core/components/snackbar/snack.interface';
-import { DisplayMode, DisplayOptions } from '../../core/model/display-options.interface';
+import { DisplayOptions } from '../../core/model/display-options.interface';
 import { Filter } from '../../core/model/filter.interface';
 import { Item } from '../../core/model/item.interface';
 import {
@@ -34,7 +34,9 @@ export enum ViewMode {
   CONSULT = 'consult',
   CREATION = 'creation',
   EDITION = 'edition',
-  EDITOR = 'editor'
+  EDITOR = 'editor',
+  SEARCH = 'search',
+  CUSTOM = 'custom'
 }
 
 export const DashboardActions = {
@@ -118,7 +120,7 @@ export const DashboardActions = {
   setInitialPresentation: createAction(
     '[Dashboard] (bus) set initial presentation',
     props<{
-      initial: GlobalManifest;
+      initial?: GlobalManifest;
     }>()
   ),
   declareSenderId: createAction('[Dashboard] self-updating manifest', props<{ tenants: string[]; sender: string }>()),
@@ -240,7 +242,7 @@ export const DashboardActions = {
   addWmsFeatures: createAction('[Widget map] Set Wms layer features', props<{ features: any }>()),
   updateDisplayOptions: createAction(
     '[Dashboard/Display] (bus) Update displayed dashboard management features',
-    props<{ mode: DisplayMode; customDisplay?: DisplayOptions }>()
+    props<{ mode: ViewMode; customDisplay?: DisplayOptions }>()
   ),
   getCapability: createAction('[Widget map] Get Wms capability', props<{ url: string; force?: boolean }>()),
   updateCapability: createAction(

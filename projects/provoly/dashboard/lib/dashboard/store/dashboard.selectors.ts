@@ -15,6 +15,7 @@ import { DashboardCellParams } from './dashboard.actions';
 import { DashboardState } from './dashboard.reducers';
 import { ManifestUtils } from './manifest-utils.class';
 import { ProxyUtils } from './proxy.utils';
+import { BASE_DISPLAY_OPTIONS } from '../../core/model/display-options.interface';
 
 const NEW_WINDOW_TARGET = -1;
 
@@ -153,7 +154,7 @@ const datasourceFilters = createSelector(feature, (state: DashboardState) =>
     : {}
 );
 const wmsFeatures = createSelector(feature, (state: DashboardState) => state?.wmsFeatures);
-const displayOptions = createSelector(feature, (state: DashboardState) => state?.display);
+const displayOptions = createSelector(feature, (state: DashboardState) => state?.display ?? BASE_DISPLAY_OPTIONS);
 const capabilities = createSelector(feature, (state: DashboardState) => state?.capabilities);
 
 export const DashboardSelectors = {

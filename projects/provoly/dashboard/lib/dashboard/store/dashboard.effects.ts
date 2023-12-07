@@ -24,7 +24,7 @@ import { BusService } from '../action-bus/service/bus.service';
 import { WidgetPlacementUtils } from '../components/widgets/widget-placement/widget-placement.utils';
 import { ResultsetUtils } from '../resultset-utils';
 import { DashboardInitService } from './dashboard-init.service';
-import { DashboardActions } from './dashboard.actions';
+import { DashboardActions, ViewMode } from './dashboard.actions';
 import { DashboardSelectors } from './dashboard.selectors';
 import { ManifestService } from './manifest.service';
 import { RefreshService } from './refresh.service';
@@ -796,7 +796,10 @@ export class DashboardEffects {
               manifestId: action.presentation.id
             }),
             DashboardActions.setInitialPresentation({
-              initial: manifest
+              initial: action.viewMode === ViewMode.CONSULT ? undefined : manifest
+            }),
+            DashboardActions.updateDisplayOptions({
+              mode: action.viewMode
             }),
             DashboardActions.followManifestRoute()
           ])

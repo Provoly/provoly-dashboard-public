@@ -1,6 +1,6 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Component, ElementRef, Input, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, Input, NgZone, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
@@ -8,7 +8,6 @@ import {
   DashboardGridLayout,
   DashboardManifest,
   DashboardSelectors,
-  DisplayMode,
   ManifestDescription,
   PryTitleService,
   PryVisibility,
@@ -59,7 +58,8 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     protected viewContainerRef: ViewContainerRef,
     protected router: Router,
     protected titleService: PryTitleService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    protected ngZone: NgZone
   ) {
     super();
     this.subscriptions.add(
@@ -114,7 +114,10 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   }
 
   fetch(presentation: ManifestDescription) {
-    this.store.dispatch(DashboardActions.loadPresentation({ presentation, viewMode: ViewMode.CATALOG }));
+    this.store.dispatch(DashboardActions.loadPresentation({ presentation, viewMode: ViewMode.CONSULT }));
+    this.ngZone.run(() => {
+      this.router?.navigateByUrl(this.consultStartUrl);
+    });
   }
 
   creation() {
@@ -132,7 +135,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     };
     this.store.dispatch(DashboardActions.selectPresentation(newPresentation));
     this.store.dispatch(DashboardActions.setGridLayout({ layout: DashboardGridLayout.FULL }));
-    this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: DisplayMode.CREATE }));
+    this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: ViewMode.CREATION }));
   }
 
   edit(presentation: ManifestDescription) {
@@ -141,7 +144,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     this.titleService.changeTitle(presentation.name);
     this.store.dispatch(DashboardActions.selectPresentation({ presentation, viewMode: ViewMode.EDITION }));
     this.store.dispatch(DashboardActions.fetchStaticManifest({ id: presentation.id }));
-    this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: DisplayMode.EDIT }));
+    this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: ViewMode.EDITION }));
     this.overlayRef?.dispose();
     this.overlayRef = undefined;
   }
