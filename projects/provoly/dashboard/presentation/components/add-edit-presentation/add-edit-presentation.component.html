@@ -59,6 +59,18 @@
             {{ '@pry.presentation.maxLength' | i18n : { len: '200' } }}
           </label>
         </div>
+        <div class="m-form-label-field -width-full" *ngIf="mode === 'theme'">
+          <label class="a-label" for="presentation_theme">{{ '@pry.presentation.form.theme' | i18n }}</label>
+          <pry-select
+            id="presentation_theme"
+            class="a-pry-select"
+            [items]="possibleThemes"
+            [itemsAsOption]="true"
+            [bindData]="true"
+            formControlName="theme"
+            [clearable]="true"
+          ></pry-select>
+        </div>
         <div class="m-form-label-field -width-full">
           <label class="a-label" for="presentation_image">{{ '@pry.presentation.form.image' | i18n }}</label>
           <div class="o-file-input">
@@ -79,16 +91,18 @@
           <pry-select-grid-layout *ngIf="!edition"></pry-select-grid-layout>
         </div>
       </form>
-      <div class="o-presentation__metadata-editor" *ngIf="selectedPresentation$ | async as selectedPresentation">
-        <pry-metadata-editor
-          [targetId]="selectedPresentation.id"
-          [isModification]="true"
-          [metadata]="selectedPresentation.metadata"
-          (removeMeta)="removeMetadata($event)"
-          (addMeta)="addMetadata($event)"
-          [type]="'meta'"
-        ></pry-metadata-editor>
-      </div>
+      <ng-container *ngIf="mode === 'meta'">
+        <div class="o-presentation__metadata-editor" *ngIf="selectedPresentation$ | async as selectedPresentation">
+          <pry-metadata-editor
+            [targetId]="selectedPresentation.id"
+            [isModification]="true"
+            [metadata]="selectedPresentation.metadata"
+            (removeMeta)="removeMetadata($event)"
+            (addMeta)="addMetadata($event)"
+            [type]="'meta'"
+          ></pry-metadata-editor>
+        </div>
+      </ng-container>
     </div>
     <button
       class="a-btn a-btn--primary"

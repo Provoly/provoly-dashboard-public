@@ -152,9 +152,12 @@ export class ConfigEffects {
           map(() => ConfigActions.loadWidgets()),
           catchError((error) => {
             this.snackBar.open({
-              message: this.translateService.instant('@pry.toolbox.catalog.saveErrorCode.' + error.error.code, {
-                name: action.widget.name
-              }),
+              message: this.translateService.instant(
+                '@pry.toolbox.catalog.saveErrorCode.' + +(error.error?.code ?? 'UNKNOWN'),
+                {
+                  name: action.widget.name
+                }
+              ),
               type: 'error'
             });
             return throwError(error);

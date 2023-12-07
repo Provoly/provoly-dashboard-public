@@ -66,6 +66,7 @@ export const frTranslations = {
         description: 'Description de la présentation',
         saved: 'Présentation {{viewId}} sauvegardée',
         saveErrorCode: {
+          UNKNOWN: 'Erreur inconnue',
           FORBIDDEN: "Vous n'êtes pas le propriétaire de cette présentation ",
           NAME_ALREADY_USED: 'Une présentation avec le nom "{{name}}" existe déjà, veuillez sélectionner un autre nom.',
           SAVE_METADATA: 'Veuillez sauvegarder la presentation avant de choisir une thématique.'
@@ -88,6 +89,7 @@ export const frTranslations = {
           name: 'Filtrer par nom'
         },
         saveErrorCode: {
+          UNKNOWN: 'Erreur inconnue',
           NAME_ALREADY_USED: 'Une restitution avec le nom "{{name}}" existe déjà, veuillez sélectionner un autre nom.'
         },
         saved: 'Présentation {{viewId}} sauvegardée'

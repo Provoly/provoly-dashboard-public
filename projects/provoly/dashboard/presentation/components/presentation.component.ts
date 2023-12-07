@@ -47,6 +47,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   search$ = new BehaviorSubject('');
   filteredPresentations$: Observable<ManifestDescription[]>;
   listOfManifests$ = new BehaviorSubject<ManifestDescription[] | null>(null);
+  @Input() mode: 'theme' | 'meta' = 'meta';
 
   @Input() set listOfManifests(manifests: ManifestDescription[] | null) {
     this.listOfManifests$.next(Array.isArray(manifests) ? manifests : null);

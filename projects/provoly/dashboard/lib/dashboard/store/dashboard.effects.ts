@@ -391,9 +391,12 @@ export class DashboardEffects {
             map(() => action.manifest ?? currentManifest),
             catchError((error) => {
               this.snackBar.open({
-                message: this.translateService.instant('@pry.toolbox.manifest.saveErrorCode.' + error.error.code, {
-                  name: action.name
-                }),
+                message: this.translateService.instant(
+                  '@pry.toolbox.manifest.saveErrorCode.' + (error.error?.code ?? 'UNKNOWN'),
+                  {
+                    name: action.name
+                  }
+                ),
                 type: 'error'
               });
               return throwError(error);

@@ -8,13 +8,14 @@ import {
   DashboardSelectors,
   DEFAULT_RESTITUTION_ICON_URL,
   GlobalManifest,
+  IMetadata,
   LibraryTypes,
   ManifestDescription,
   SubscriptionnerDirective,
   ViewMode
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, Observable, take } from 'rxjs';
-import { MetadataActions, MetaEventType } from '@provoly/dashboard/components/metadata-editor';
+import { MetadataActions, MetadataSelectors, MetaEventType } from '@provoly/dashboard/components/metadata-editor';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -31,10 +32,15 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
   @Output() goBack = new EventEmitter<void>();
   type: LibraryTypes = LibraryTypes.ILLUSTRATION;
   chosenLayout: DashboardGridLayout = DashboardGridLayout.FULL;
+  possibleThemes: string[] = [];
+  metadataDefs: IMetadata[] | undefined;
+  metadataThemeId: string = '';
 
   @Input() set selectedPresentation(presentation: ManifestDescription | null) {
     this.selectedPresentation$.next(presentation);
   }
+
+  @Input() mode: 'theme' | 'meta' = 'meta';
 
   constructor(protected store: Store, @Optional() protected router: Router) {
     super();
@@ -48,15 +54,32 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
             : gridLayout;
       }
     );
+    this.subscriptions.add(
+      this.store.select(MetadataSelectors.metadata).subscribe((metadata) => {
+        this.metadataDefs = metadata;
+        const metadataTheme = metadata?.find((meta) => meta.name === '_theme');
+        if (metadataTheme) {
+          this.metadataThemeId = metadataTheme?.id ?? '';
+          this.possibleThemes = metadataTheme?.allowedValues ?? [];
+        }
+      })
+    );
   }
 
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
       description: new FormControl(null, [Validators.maxLength(200)]),
-      cover: new FormControl(false)
+      cover: new FormControl(false),
+      theme: new FormControl('')
     });
     this.image = this.selectedPresentation$.value?.image ?? DEFAULT_RESTITUTION_ICON_URL;
+    this.subscriptions.add(
+      this.selectedPresentation$.subscribe((presentation) => {
+        const theme = presentation?.metadata?.find((metadata) => metadata.metadataDef.name === '_theme')?.value;
+        if (!!theme) this.form.patchValue({ theme });
+      })
+    );
   }
 
   ngAfterViewInit() {
@@ -85,7 +108,8 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
       name: this.form.value.name ?? '',
       description: this.form.value.description ?? '',
       cover: this.form.value.cover ?? false,
-      image: this.image ?? DEFAULT_RESTITUTION_ICON_URL
+      image: this.image ?? DEFAULT_RESTITUTION_ICON_URL,
+      metadata: this.metadata()
     };
 
     this.subscriptions.add(
@@ -115,7 +139,8 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
       name: this.form.value.name ?? '',
       description: this.form.value.description ?? '',
       image: this.image ?? DEFAULT_RESTITUTION_ICON_URL,
-      cover: this.form.value.cover ?? false
+      cover: this.form.value.cover ?? false,
+      metadata: this.metadata()
     };
 
     if (!this.edition) {
@@ -169,5 +194,16 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
 
   close() {
     this.goBack.emit();
+  }
+
+  metadata() {
+    return this.mode === 'theme'
+      ? [
+          {
+            metadataDef: this.metadataDefs!.find((metadata) => metadata.id === this.metadataThemeId)!,
+            value: this.form.value.theme ?? ''
+          }
+        ]
+      : this.selectedPresentation$.value?.metadata ?? [];
   }
 }

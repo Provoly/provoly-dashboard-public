@@ -66,6 +66,7 @@ export const enTranslations = {
         description: 'Presentation description',
         saved: 'Presentation saved as {{viewId}}',
         saveErrorCode: {
+          UNKNOWN: 'Unknown error',
           FORBIDDEN: 'You are not the owner of this presentation',
           NAME_ALREADY_USED: 'A presentation called "{{name}}" already exists, please select another name.',
           SAVE_METADATA: 'Save your presentation before choosing the theme.'
@@ -89,6 +90,7 @@ export const enTranslations = {
         },
         saved: 'Restitution saved as {{viewId}}',
         saveErrorCode: {
+          UNKNOWN: 'Unknown error',
           NAME_ALREADY_USED: 'A restitution called "{{name}}" already exists, please select another name.'
         }
       },

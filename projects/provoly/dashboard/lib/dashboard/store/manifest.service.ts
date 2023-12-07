@@ -85,7 +85,7 @@ export class ManifestService {
             visibility,
             cover,
             metadata,
-            datasource: ManifestUtils.getDatasourcesUsedByManifest(manifest)
+            datasource: ManifestUtils.getDatasourcesUsedByManifest(manifest).map((ds) => ds.datasetId)
           }
         )
       )
