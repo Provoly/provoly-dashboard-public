@@ -119,7 +119,8 @@ export class SearchService {
           datasource: string;
         }[]
       | undefined,
-    search: string
+    search: string,
+    limit = 10
   ) {
     return this.store.select(ConfigSelectors.dataUrl).pipe(
       switchMap((url) =>
@@ -128,7 +129,7 @@ export class SearchService {
             .map((attr) => ({ [attr.id]: attr.datasource }))
             .reduce((p, c) => ({ ...p, ...c }), {}),
           value: search,
-          limit: 10
+          limit
         })
       )
     );

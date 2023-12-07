@@ -24,7 +24,7 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
     this.autocomplete$ = this.search$.pipe(
       distinctUntilChanged((p, v) => equal(p, v)),
       debounceTime(500),
-      switchMap((search) => this.searchService.autocomplete(this.filter?.attributes, search))
+      switchMap((search) => this.searchService.autocomplete(this.filter?.attributes, search, this.filter?.limit))
     );
   }
 

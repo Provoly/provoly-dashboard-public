@@ -224,6 +224,7 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
         })
       );
     }
+    this.filter.limit = this.filter.type === 'autocomplete' ? this.filter.limit ?? 10 : undefined;
   }
 
   getFilterAttributes(filter: Filter, attrCount: number) {

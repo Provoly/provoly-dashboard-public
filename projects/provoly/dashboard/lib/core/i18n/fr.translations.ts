@@ -342,7 +342,8 @@ export const frTranslations = {
         attributes: 'Attributs',
         value: 'Valeur',
         values: 'Valeurs',
-        validate: 'Valider'
+        validate: 'Valider',
+        limit: 'Nombre de suggestions'
       },
       attributes: {
         datasource: 'Datasource',

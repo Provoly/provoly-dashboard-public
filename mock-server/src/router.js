@@ -866,18 +866,6 @@ router.on(['OPTIONS', 'GET'], '/geocoding/reverse/', (req, res, params) => {
       console.log('Error when calling data gouv address service');
     });
 });
-router.on(['OPTIONS', 'GET'], '/geocoding/search/', (req, res, params) => {
-  const query = url.parse(req.url, true).search;
-  const withTextAsQParameter = query.replace('?text=', '?q=');
-  axios
-    .get(`https://api-adresse.data.gouv.fr/search/${withTextAsQParameter}`, { data: params })
-    .then((response) => {
-      makeResponseOk(res, response.data);
-    })
-    .catch((error) => {
-      console.log('Error when calling data gouv address service');
-    });
-});
 
 router.on(['OPTIONS', 'GET'], '/data/file/icons', (req, res, params) => {
   makeResponseOk(res, dataModule.imagesData());

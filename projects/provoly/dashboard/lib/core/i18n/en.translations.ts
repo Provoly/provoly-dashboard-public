@@ -338,7 +338,8 @@ export const enTranslations = {
         attributes: 'Attributes',
         value: 'Value',
         values: 'Values',
-        validate: 'Confirm'
+        validate: 'Confirm',
+        limit: 'Autocomplete proposals'
       },
       attributes: {
         datasource: 'Datasource',

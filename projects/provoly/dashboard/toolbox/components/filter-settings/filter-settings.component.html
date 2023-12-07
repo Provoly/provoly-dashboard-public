@@ -116,6 +116,10 @@
             placeholder="valeur1, valeur2, valeur3"
           />
         </div>
+        <div *ngIf="(currentFilterComponentType$ | async) === 'autocomplete'" class="m-form-label-field">
+          <label for="limit" class="a-label">{{ '@pry.filters.creation.limit' | i18n }}</label>
+          <input id="limit" class="a-form-field" type="number" min="0" max="50" [(ngModel)]="filter.limit" />
+        </div>
         <div class="m-form-label-field">
           <label for="attributes" class="a-label">{{ '@pry.filters.creation.attributes' | i18n }}</label>
           <pry-select

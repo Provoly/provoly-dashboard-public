@@ -7,6 +7,7 @@ export interface Filter {
   value?: string | number;
   possibleValues?: string;
   hasDateRange?: boolean;
+  limit?: number;
 }
 
 export interface FilterContext {
