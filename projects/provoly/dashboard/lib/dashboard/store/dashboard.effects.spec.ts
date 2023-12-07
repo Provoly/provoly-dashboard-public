@@ -174,7 +174,23 @@ describe('DashboardEffects', () => {
           resultSets: { a: { items: {}, relations: [] }, b: { items: {}, relations: [] } },
           joining: true,
           selectedIds: [],
-          presentation: {}
+          presentation: {},
+          display: {
+            catalog: false,
+            presentationTitle: true,
+            search: false,
+            toolbox: {
+              automate_refresh: false,
+              clear_view: false,
+              default_size: false,
+              filter_settings: false,
+              new_tab: false,
+              refresh_datasets: false,
+              save_view: false,
+              save_view_as: false
+            },
+            useFilters: false
+          }
         })
       });
       expect(effects.join$).toBeObservable(expected$);

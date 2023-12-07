@@ -7,7 +7,7 @@
   @include typography-level(themed($theme-map, 'typography', 'form-field'));
   border-color: themed($theme-map, 'color', 'primary', 400);
   border-radius: toRem(4);
-  color: themed($theme-map, 'color', 'primary', 700);
+  color: themed($theme-map, 'color', 'graph', 01);
   background-color: themed($theme-map, 'color', 'primary', 'contrast', 700);
 
   &[aria-invalid='true'] {

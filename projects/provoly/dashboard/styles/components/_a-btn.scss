@@ -7,11 +7,8 @@
   align-items: center;
   justify-content: center;
   width: max-content;
-  height: toRem(44);
-  padding: toRem(8) toRem(22);
   border: 0 solid transparent;
   background-color: transparent;
-  font-size: inherit;
   text-align: center;
   white-space: normal;
   letter-spacing: 0;
@@ -19,6 +16,17 @@
   cursor: pointer;
   user-select: none;
   transition: all 0.24s ease-in-out;
+
+  gap: toRem(3);
+  height: toRem(30);
+  padding: toRem(8) toRem(12);
+  font-size: toRem(12);
+  line-height: toRem(13);
+
+  &.-circle {
+    width: toRem(34);
+    height: toRem(34);
+  }
 }
 
 .a-btn {
@@ -161,20 +169,6 @@
       width: toRem(27);
       min-width: toRem(27);
       height: toRem(27);
-    }
-  }
-
-  &.-size-sm {
-    gap: toRem(3);
-    height: toRem(30);
-    padding-left: toRem(12);
-    padding-right: toRem(12);
-    font-size: toRem(10);
-    line-height: toRem(13);
-
-    &.-circle {
-      width: toRem(34);
-      height: toRem(34);
     }
   }
 

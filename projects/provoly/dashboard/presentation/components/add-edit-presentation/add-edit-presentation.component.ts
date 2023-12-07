@@ -198,12 +198,14 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
 
   metadata() {
     return this.mode === 'theme'
-      ? [
-          {
-            metadataDef: this.metadataDefs!.find((metadata) => metadata.id === this.metadataThemeId)!,
-            value: this.form.value.theme ?? ''
-          }
-        ]
+      ? !this.form.value.theme || this.form.value.theme === ''
+        ? []
+        : [
+            {
+              metadataDef: this.metadataDefs!.find((metadata) => metadata.id === this.metadataThemeId)!,
+              value: this.form.value.theme ?? ''
+            }
+          ]
       : this.selectedPresentation$.value?.metadata ?? [];
   }
 }

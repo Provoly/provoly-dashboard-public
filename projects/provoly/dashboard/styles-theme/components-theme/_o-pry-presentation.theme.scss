@@ -15,8 +15,6 @@
     }
 
     &__txt {
-      color: themed($theme-map, 'color', 'primary', 600);
-
       .a-p {
         &.-date {
           color: themed($theme-map, 'color', 'primary', 500);

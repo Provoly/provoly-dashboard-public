@@ -13,7 +13,7 @@
     &__item {
       a[href],
       .a-btn {
-        color: themed($theme-map, 'color', 'primary', 700);
+        color: themed($theme-map, 'color', 'graph', 01);
         font-size: toRem(14);
         font-weight: 400;
 

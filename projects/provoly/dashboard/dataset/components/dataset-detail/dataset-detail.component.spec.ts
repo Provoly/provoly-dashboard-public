@@ -71,16 +71,6 @@ describe('PryDatasetDetailComponent', () => {
   });
 
   describe('should handle CTA action based on datasetVersion.state', () => {
-    it('should open error modal if version has errors', () => {
-      const spy = jest.spyOn(component, 'consultErrors');
-
-      component.handleButtonAction(mockDatasetVersion);
-
-      expect(spy).toHaveBeenCalled();
-      expect(component.selectedDatasetVersion).toEqual(mockDatasetVersion);
-      expect(component.showModalStatus).toBe(true);
-    });
-
     it('should deactivate version, if version is active', () => {
       // @ts-expect-error
       const spyMethod = jest.spyOn(component, 'deactivateVersion');

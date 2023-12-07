@@ -10,9 +10,7 @@
     border-bottom: 1px themed($theme-map, 'color', 'primary', 300) solid;
 
     &__content {
-      &__title {
-        color: themed($theme-map, 'color', 'primary', 800);
-      }
+      color: #113B6E; //themed($theme-map, 'color', 'primary', 800);
     }
   }
 

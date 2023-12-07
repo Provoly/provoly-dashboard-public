@@ -88,6 +88,7 @@ describe('PryAddEditPresentationComponent', () => {
 
   it('should dispatch save action on submit', () => {
     component.selectedPresentation$.next({ id: '1' } as ManifestDescription);
+    component.edition = true;
     fixture.detectChanges();
     let date = '2020-01-01T10:10:00';
     jest.useFakeTimers().setSystemTime(new Date(date));
@@ -102,7 +103,8 @@ describe('PryAddEditPresentationComponent', () => {
         image: '/assets/svgs/default-restitution.svg',
         manifest: {
           windows: []
-        }
+        },
+        metadata: []
       })
     );
   });

@@ -9,6 +9,7 @@
 
   // Default btn settings
   border-radius: $btn-radius-default;
+  color: themed($theme-map, 'color', 'graph', 01);
   @include typography-level(themed($theme-map, 'typography', 'button'));
 
   &--primary,
@@ -37,12 +38,12 @@
   &--secondary,
   &.a-btn--secondary.-circle {
     border: 1px solid themed($theme-map, 'color', 'primary', 500);
-    color: themed($theme-map, 'color', 'primary', 700);
+    color: themed($theme-map, 'color', 'graph', 01);
     background-color: transparent;
 
     &:hover {
       border: 1px solid themed($theme-map, 'color', 'primary', 600);
-      color: themed($theme-map, 'color', 'primary', 700);
+      color: themed($theme-map, 'color', 'graph', 01);
     }
 
     &:focus,
@@ -147,7 +148,7 @@
 
   // Action add item, circled icon on left + text on right
   &--iconcircle-text {
-    color: themed($theme-map, 'color', 'primary', 700);
+    color: themed($theme-map, 'color', 'graph', 01);
     font-weight: 400;
     font-size: 14px;
 

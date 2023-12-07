@@ -81,7 +81,7 @@ describe('PryPresentationComponent', () => {
   it('should fetch is called', () => {
     const spy = jest.spyOn(store, 'dispatch');
     component.fetch(presentation);
-    expect(spy).toHaveBeenCalledWith(DashboardActions.loadPresentation({ presentation, viewMode: ViewMode.CATALOG }));
+    expect(spy).toHaveBeenCalledWith(DashboardActions.loadPresentation({ presentation, viewMode: ViewMode.CONSULT }));
   });
   it('should edit is called', () => {
     const spy = jest.spyOn(store, 'dispatch');

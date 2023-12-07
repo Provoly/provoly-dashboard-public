@@ -9,7 +9,7 @@
 
   &__input-wrapper {
     border: 1px solid themed($theme-map, 'color', 'primary', 400);
-    color: themed($theme-map, 'color', 'primary', 700);
+    color: themed($theme-map, 'color', 'graph', 01);
     background-color: themed($theme-map, 'color', 'primary', 'contrast', 700);
 
     .pry-select {
