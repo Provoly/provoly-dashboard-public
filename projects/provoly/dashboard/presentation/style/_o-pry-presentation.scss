@@ -8,6 +8,10 @@
       margin-left: auto;
     }
 
+    &.-u-hidden {
+      display: none;
+    }
+
     &__search {
       position: relative;
 

@@ -1,7 +1,7 @@
 <pry-presentation-css></pry-presentation-css>
 <div class="o-manifest-layout" [ngSwitch]="selectedMode">
   <ng-container *ngSwitchDefault>
-    <div class="o-manifest-layout__toolbox" [style.display.none]="hideToolbox">
+    <div class="o-manifest-layout__toolbox" [class.-u-hidden]="hideToolbox">
       <button
         class="a-btn a-btn--primary a-btn--icon-text a-tooltip"
         [attr.data-tooltip]="'@pry.presentation.create' | i18n"
