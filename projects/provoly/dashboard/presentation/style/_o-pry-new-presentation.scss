@@ -29,6 +29,7 @@ pry-add-edit-presentation {
   justify-content: space-between;
   align-items: center;
   gap: toRem(15);
+  padding-top: 0; // needed for pvy-frontend
 
   .a-btn {
     border-radius: 22px;
@@ -84,16 +85,4 @@ pry-add-edit-presentation {
 
 .a-presentation-title {
   padding: 10px;
-}
-
-.a-presentation__search {
-  position: relative;
-
-  .a-icon {
-    position: absolute;
-    right: 0.6875rem;
-    bottom: 0.5625rem;
-    opacity: 0.5;
-    pointer-events: none;
-  }
 }

@@ -30,7 +30,7 @@ export const frTranslations = {
       homeView: "Afficher en page d'accueil",
       erase: 'Supprimer la présentation',
       change: 'Modifier la présentation',
-      create: 'Créer une présentation',
+      create: 'Créer',
       configuration: 'Construire la présentation',
       required: 'Ce champ est requis',
       maxLength: 'Nombre de caractères autorisés : {{len}}',

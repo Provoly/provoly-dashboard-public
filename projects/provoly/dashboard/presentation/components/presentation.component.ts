@@ -15,7 +15,7 @@ import {
   SubscriptionnerDirective,
   ViewMode
 } from '@provoly/dashboard';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, startWith } from 'rxjs';
 import { v4 } from 'uuid';
 
 @Component({
@@ -53,6 +53,13 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     this.listOfManifests$.next(Array.isArray(manifests) ? manifests : null);
   }
 
+  @Input() hideToolbox = false;
+  inputSearch$ = new BehaviorSubject('');
+  @Input() set search(query: string) {
+    console.log(query);
+    this.inputSearch$.next(query);
+  }
+
   constructor(
     protected store: Store<any>,
     protected overlay: Overlay,
@@ -87,14 +94,20 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     this.staticManifest$ = this.store
       .select(DashboardSelectors.staticManifest)
       .pipe(map((staticM) => staticM.windows[0]));
-    this.filteredPresentations$ = combineLatest([this.manifests$, this.search$]).pipe(
-      map(([presentations, search]) =>
-        presentations.filter(
-          (presentations) =>
-            search.length === 0 ||
-            presentations.description.toLowerCase().includes(search.toLowerCase()) ||
-            presentations.name.toLowerCase().includes(search.toLowerCase())
-        )
+    this.filteredPresentations$ = combineLatest([
+      this.manifests$,
+      this.search$,
+      this.inputSearch$.pipe(startWith(''))
+    ]).pipe(
+      map(([presentations, search, inputSearch]) =>
+        presentations.filter((presentations) => {
+          const [name, description] = [presentations.name.toLowerCase(), presentations.description.toLowerCase()];
+          const [searchQuery, inputSearchQuery] = [search?.toLowerCase(), inputSearch?.toLowerCase()];
+          return !!searchQuery || !!inputSearchQuery
+            ? (!!searchQuery && (name.includes(searchQuery) || description.includes(searchQuery))) ||
+                (!!inputSearchQuery && (name.includes(inputSearchQuery) || description.includes(inputSearchQuery)))
+            : true;
+        })
       )
     );
     this.subscriptions.add(
@@ -155,7 +168,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     this.toggleModalActions();
   }
 
-  toggleModalActions(presentation?: ManifestDescription | null) {
+  toggleModalActions(presentation?: ManifestDescription | null, moreButton?: HTMLButtonElement) {
     if (!this.overlayRef && presentation) {
       this.selectedPresentation$.next(presentation);
       this.store.dispatch(DashboardActions.selectPresentation({ presentation, viewMode: ViewMode.CATALOG }));
@@ -163,12 +176,19 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
       this.overlayRef = this.overlay.create(
         new OverlayConfig({
           hasBackdrop: true,
-          panelClass: ['o-modal-wrapper'],
+          panelClass: ['m-context-menu-wrapper'],
           backdropClass: 'backdrop'
         })
       );
       this.overlayRef.backdropClick().subscribe(() => this.toggleModalActions(presentation));
       this.overlayRef.attach(new TemplatePortal(this.templateModalActions, this.viewContainerRef));
+      const contextMenu = document.querySelector('div.m-context-menu') as HTMLDivElement;
+      if (!!contextMenu && moreButton) {
+        const toggleActionsModalButton = document.querySelector('#' + moreButton.id);
+        const rect = toggleActionsModalButton?.getBoundingClientRect();
+        contextMenu.style.left = (rect?.left ?? 0) - (contextMenu?.clientWidth ?? 0) + 23 + 'px';
+        contextMenu.style.top = (rect?.top ?? 0) + 25 + 'px';
+      }
     } else {
       this.overlayRef?.dispose();
       this.overlayRef = undefined;

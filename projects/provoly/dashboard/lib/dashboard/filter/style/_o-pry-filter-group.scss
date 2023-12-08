@@ -6,7 +6,7 @@
     &__filters {
       display: flex;
       padding: toRem(8) toRem(10);
-      max-height: 60px; // needed for ng-select
+      max-height: 50px; // needed for ng-select
       gap: toRem(10);
     }
 
@@ -14,7 +14,7 @@
       display: flex;
       justify-content: flex-start;
       margin-bottom: toRem(-5);
-      max-height: 60px; // needed for ng-select
+      max-height: 50px; // needed for ng-select
       padding: toRem(4) 0;
       overflow-x: auto;
       overflow-y: hidden;
