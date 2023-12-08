@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BaseFilterComponent, SearchService } from '@provoly/dashboard';
 import { BehaviorSubject, Observable, switchMap } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 import equal from 'fast-deep-equal/es6';
 
 @Component({
@@ -24,6 +24,7 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
     this.autocomplete$ = this.search$.pipe(
       distinctUntilChanged((p, v) => equal(p, v)),
       debounceTime(500),
+      filter((search) => !!search && search.length > 2),
       switchMap((search) => this.searchService.autocomplete(this.filter?.attributes, search, this.filter?.limit))
     );
   }

@@ -119,7 +119,7 @@ export class SearchService {
           datasource: string;
         }[]
       | undefined,
-    search: string,
+    search: string = '',
     limit = 10
   ) {
     return this.store.select(ConfigSelectors.dataUrl).pipe(
