@@ -220,6 +220,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     } else {
       this.overlayRef?.dispose();
       this.selectedPresentation$.next(null);
+      this.overlayRef = undefined;
     }
   }
 

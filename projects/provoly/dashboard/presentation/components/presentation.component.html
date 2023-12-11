@@ -59,7 +59,7 @@
                   />
                 </div>
               </div>
-              <ng-container *ngIf="presentation.visibility.type === PryVisibilityType.PRIVATE">
+              <ng-container *ngIf="presentation.owner">
                 <div class="more-actions" *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'share' }">
                   <button
                     type="button"
