@@ -208,7 +208,7 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective implement
             .flexibleConnectedTo(this.togglePanel)
             .withPositions([
               {
-                originX: 'start',
+                originX: 'center',
                 originY: 'bottom',
                 overlayX: 'start',
                 overlayY: 'top'
