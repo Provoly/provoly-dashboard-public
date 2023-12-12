@@ -30,4 +30,12 @@
       }
     }
   }
+
+  .more-actions {
+    background: transparent;
+
+    .a-btn {
+      background-color: themed($theme-map, 'color', 'primary', 50);
+    }
+  }
 }

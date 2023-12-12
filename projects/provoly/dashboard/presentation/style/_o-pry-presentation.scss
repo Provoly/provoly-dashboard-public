@@ -140,6 +140,8 @@
       align-content: center;
       justify-content: center;
       font-size: toRem(14);
+      line-height: toRem(18);
+      padding: toRem(3) 0;
 
       .a-btn {
         margin-left: toRem(20); // needed for centering the footer text
@@ -259,6 +261,11 @@ h1.a-presentation-title {
   position: absolute;
   top: toRem(6);
   right: toRem(10);
+
+  .a-btn {
+    padding: toRem(2) 0;
+    border-radius: 50%;
+  }
 }
 
 .m-context-menu {
