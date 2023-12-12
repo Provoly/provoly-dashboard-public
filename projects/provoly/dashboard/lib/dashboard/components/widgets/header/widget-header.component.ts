@@ -208,9 +208,9 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective implement
             .flexibleConnectedTo(this.togglePanel)
             .withPositions([
               {
-                originX: 'center',
+                originX: 'end',
                 originY: 'bottom',
-                overlayX: 'start',
+                overlayX: 'end',
                 overlayY: 'top'
               }
             ])
@@ -219,6 +219,10 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective implement
       this.store.dispatch(ConfigActions.addingOverlay({ id: this.constructor.name + '-menu' }));
       this.menuRef.backdropClick().subscribe((_) => this.menuOpen());
       this.menuRef.attach(new TemplatePortal(this.overlayMenu, this.viewContainerRef));
+      const contextMenu = document.querySelector('div.m-context-menu') as HTMLDivElement;
+      const rect = this.togglePanel?.nativeElement.getBoundingClientRect();
+      if (!!contextMenu && !!rect)
+        contextMenu.style.left = (rect?.left ?? 0) - (this.menuList?.nativeElement?.clientWidth ?? 0) - 200 + 'px';
       setTimeout(() => {
         this.selectedItem = this.menuList?.nativeElement?.firstElementChild;
         if (this.selectedItem) {
