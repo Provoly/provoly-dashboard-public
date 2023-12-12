@@ -75,17 +75,6 @@ export const DashboardActions = {
       selectedIds: string[];
     }>()
   ),
-  updateManifestAfterResize: createAction(
-    '[Dashboard] (bus) updating manifest after resize',
-    props<{
-      tenants?: string[];
-      manifest: GlobalManifest;
-      resultSets?: ResultSets;
-      joining?: boolean;
-      manifestId?: string;
-      selectedIds: string[];
-    }>()
-  ),
   updateManifestAfterTenantJoin: createAction(
     '[Dashboard] (bus) updating manifest after tenant join',
     props<{

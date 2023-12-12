@@ -466,52 +466,6 @@ describe('DashboardEffects', () => {
     });
   });
 
-  describe('resize$', () => {
-    it("should send an update action after some other actions to propagate, unless it's a propagated one already", () => {
-      store.setState(
-        buildState({
-          ...initialState,
-          manifests: {
-            ...initialState.manifests,
-            sender: 'me',
-            tenants: ['me', 'new-challenger'], // tenant already added by the reducer of the join action
-            manifest: { windows: [{ route: 'a', widgets: [] }] }
-          },
-          results: {
-            ...initialState.results,
-            resultSets: { a: { items: {}, relations: [] }, b: { items: {}, relations: [] } }
-          }
-        })
-      );
-
-      actions$ = hot('--a-b-c-d-', {
-        a: DashboardActions.updateDashboardManifest({ manifest: { widgets: [] } }),
-        b: DashboardActions.moveWidget({ widgetIndex: 0, targetIndex: 1 }),
-        c: DashboardActions.updateWidgetManifest({ manifest: { type, layout }, index: 0 }),
-        d: { ...DashboardActions.updateWidgetManifest({ manifest: { type, layout }, index: 0 }), sender: 'other' }
-      });
-
-      const expected$ = hot('--a-b-c-', {
-        a: DashboardActions.updateManifestAfterResize({
-          tenants: ['me', 'new-challenger'],
-          manifest: { windows: [{ route: 'a', widgets: [] }] },
-          selectedIds: []
-        }),
-        b: DashboardActions.updateManifestAfterResize({
-          tenants: ['me', 'new-challenger'],
-          manifest: { windows: [{ route: 'a', widgets: [] }] },
-          selectedIds: []
-        }),
-        c: DashboardActions.updateManifestAfterResize({
-          tenants: ['me', 'new-challenger'],
-          manifest: { windows: [{ route: 'a', widgets: [] }] },
-          selectedIds: []
-        })
-      });
-      expect(effects.resize$).toBeObservable(expected$);
-    });
-  });
-
   describe('startMissingViewAfterViewUpdate$', () => {
     it('should send start missing views action if main rank', () => {
       store.setState(

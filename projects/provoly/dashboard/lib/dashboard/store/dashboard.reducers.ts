@@ -132,7 +132,6 @@ const internalReducer = createReducer<DashboardState>(
     DashboardActions.updateManifestAfterTenantJoin,
     DashboardActions.updateManifestAfterTenantLeave,
     DashboardActions.updateManifestAfterFetch,
-    DashboardActions.updateManifestAfterResize,
     DashboardActions.updateManifestWithoutActivation,
     (state, action) => {
       // @ts-ignore

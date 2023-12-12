@@ -272,40 +272,11 @@ export class DashboardEffects {
     { dispatch: false }
   );
 
-  resize$ = createEffect(() =>
-    this.actions$.pipe(
-      // forward new manifest after any of these types of actions
-      ofType(
-        DashboardActions.updateDashboardManifest,
-        DashboardActions.moveWidget,
-        DashboardActions.updateWidgetManifest
-      ),
-      // @ts-ignore
-      filter((action) => !action.sender),
-      withLatestFrom(
-        this.store.select(DashboardSelectors.globalManifest),
-        this.store.select(DashboardSelectors.tenants),
-        this.store.select(DashboardSelectors.selectedItemIds)
-      ),
-      map(([action, manifest, tenants, selectedIds]) => {
-        const params = {
-          manifest,
-          selectedIds
-        } as { manifest: GlobalManifest; tenants: string[]; selectedIds: string[] };
-        if (!!tenants && tenants.length > 1) {
-          params.tenants = tenants;
-        }
-        return DashboardActions.updateManifestAfterResize(params);
-      })
-    )
-  );
-
   startMissingViewAfterViewUpdate$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
         DashboardActions.updateManifest,
         DashboardActions.updateManifestAfterFetch,
-        DashboardActions.updateManifestAfterResize,
         DashboardActions.updateManifestAfterTenantLeave,
         DashboardActions.updateManifestAfterTenantJoin,
         DashboardActions.explore,
@@ -331,7 +302,6 @@ export class DashboardEffects {
           DashboardActions.updateManifestAfterTenantJoin,
           DashboardActions.updateManifestAfterTenantLeave,
           DashboardActions.updateManifestAfterFetch,
-          DashboardActions.updateManifestAfterResize,
           DashboardActions.declareSenderId
         ),
         withLatestFrom(this.store.select(DashboardSelectors.rank)),

@@ -606,5 +606,1311 @@
         }
       ]
     }
+  },
+  {
+    "name": "pb_grille",
+    "manifest": {
+      "filters": [
+        {
+          "id": "b327c1b0-be10-4c06-8851-32f5f7a01b56",
+          "name": "EPCI",
+          "type": "text",
+          "value": "Bordeaux Métropole",
+          "operator": "EQUALS",
+          "attributes": [
+            {
+              "id": "651808fc-70c8-4e5b-b510-b542b9896d7e",
+              "name": "nom_epci",
+              "type": "keyword",
+              "label": "nom_epci / Limites Administratives / Limites Administratives",
+              "datasource": "37e084ee-f714-4dc3-afe5-5a7cd203986c"
+            },
+            {
+              "id": "1a878bea-fa99-45f2-ab11-62fd0302690d",
+              "name": "libGeo",
+              "type": "keyword",
+              "label": "libGeo / croisement_submersion_route / croisement_submersion_route",
+              "datasource": "a35a3287-a622-4af3-a663-926744d94b40"
+            }
+          ]
+        }
+      ],
+      "windows": [
+        {
+          "grid": {
+            "rows": 220,
+            "layout": "0"
+          },
+          "route": "/catalog",
+          "widgets": [
+            {
+              "type": "vega",
+              "title": "Pourcentage des routes exposées",
+              "layout": {
+                "x": 4,
+                "y": 14,
+                "width": 3,
+                "height": 15
+              },
+              "options": {
+                "baseSpec": {
+                  "axes": [
+                    {
+                      "scale": "yscale",
+                      "orient": "left"
+                    },
+                    {
+                      "scale": "xscale",
+                      "encode": {
+                        "labels": {
+                          "update": {
+                            "text": {
+                              "signal": "datum.value + '%'"
+                            }
+                          }
+                        }
+                      },
+                      "orient": "bottom",
+                      "tickCount": 3
+                    }
+                  ],
+                  "data": [
+                    {
+                      "name": "dataya",
+                      "values": {},
+                      "transform": [
+                        {
+                          "type": "fold",
+                          "fields": [
+                            "surfaceImpacteeFort",
+                            "surfaceImpacteeFortPct",
+                            "infrastructureTotal",
+                            "infrastructureImpacteeFort",
+                            "benchSurfaceImpacteeFortPct",
+                            "benchInfrastructureImpacteeFortPct",
+                            "surfaceImpacteeMoyen",
+                            "surfaceImpacteeMoyenPct",
+                            "infrastructureImpacteeMoyen",
+                            "benchSurfaceImpacteeMoyenPct",
+                            "benchInfrastructureImpacteeMoyenPct",
+                            "surfaceImpacteeFaible",
+                            "surfaceImpacteeFaiblePct",
+                            "infrastructureImpacteeFaible",
+                            "benchSurfaceImpacteeFaiblePct",
+                            "benchInfrastructureImpacteeFaiblePct",
+                            "totalSurfaceImpactee",
+                            "totalSurfaceImpacteePct",
+                            "totalInfrastructureImpactee",
+                            "totalInfrastructureImpactee",
+                            "infrastructureImpacteeFaiblePct",
+                            "infrastructureImpacteeMoyenPct",
+                            "infrastructureImpacteeFortPct",
+                            "libGeo",
+                            "benchLibGeo"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "dataya-calc",
+                      "source": "dataya",
+                      "transform": [
+                        {
+                          "type": "project",
+                          "fields": [
+                            "key",
+                            "value"
+                          ]
+                        },
+                        {
+                          "as": "category",
+                          "expr": "indexof(datum.key, 'bench') > -1 ? data('dataya')[0]['benchLibGeo']  : data('dataya')[0]['libGeo'] ",
+                          "type": "formula"
+                        },
+                        {
+                          "as": "force",
+                          "expr": "indexof(datum.key, 'Fort') > -1 ? 'Fort' : indexof(datum.key, 'Moyen') > -1 ? 'Moyen' :'Faible' ",
+                          "type": "formula"
+                        },
+                        {
+                          "as": "labelForce",
+                          "expr": "indexof(datum.key, 'Fort') > -1 ? 'Fort' : indexof(datum.key, 'Moyen') > -1 ? 'Moyen' :'Faible' ",
+                          "type": "formula"
+                        },
+                        {
+                          "as": "ord",
+                          "expr": "indexof(datum.key, 'Fort') > -1 ? 3 : indexof(datum.key, 'Moyen') > -1 ? 2 : 1 ",
+                          "type": "formula"
+                        },
+                        {
+                          "as": "amount",
+                          "expr": "datum.value",
+                          "type": "formula"
+                        },
+                        {
+                          "expr": "test(/tructure.*Pct/, datum.key)",
+                          "type": "filter"
+                        },
+                        {
+                          "as": "orderCategories",
+                          "expr": "indexof(datum.key, 'bench') > -1 ? 1 : 0",
+                          "type": "formula"
+                        },
+                        {
+                          "sort": {
+                            "field": "ord"
+                          },
+                          "type": "stack",
+                          "field": "amount",
+                          "groupby": [
+                            "category"
+                          ]
+                        },
+                        {
+                          "as": [
+                            "total"
+                          ],
+                          "ops": [
+                            "sum"
+                          ],
+                          "type": "joinaggregate",
+                          "fields": [
+                            "amount"
+                          ],
+                          "groupby": [
+                            "category"
+                          ]
+                        },
+                        {
+                          "sort": {
+                            "field": "orderCategories"
+                          },
+                          "type": "collect"
+                        },
+                        {
+                          "as": "offsetP",
+                          "expr": "indexof(datum.key, 'bench') > -1 ? 3 * height / 4 + 3 : height / 4 + 3",
+                          "type": "formula"
+                        },
+                        {
+                          "as": "totalText",
+                          "expr": "round(datum.total * 100) / 100 + ' %'",
+                          "type": "formula"
+                        },
+                        {
+                          "as": "withoutPct",
+                          "expr": "replace(datum.key, 'Pct', '')",
+                          "type": "formula"
+                        },
+                        {
+                          "as": "kms",
+                          "expr": "data('dataya')[0][datum.withoutPct]",
+                          "type": "formula"
+                        }
+                      ]
+                    }
+                  ],
+                  "marks": [
+                    {
+                      "from": {
+                        "data": "dataya-calc"
+                      },
+                      "type": "rect",
+                      "encode": {
+                        "enter": {
+                          "x": {
+                            "field": "y0",
+                            "scale": "xscale"
+                          },
+                          "y": {
+                            "field": "category",
+                            "scale": "yscale"
+                          },
+                          "x2": {
+                            "field": "y1",
+                            "scale": "xscale"
+                          },
+                          "fill": {
+                            "field": "force",
+                            "scale": "color"
+                          },
+                          "height": {
+                            "band": 1,
+                            "scale": "yscale"
+                          },
+                          "tooltip": {
+                            "signal": "{ \"Niveau d'exposition\": datum.labelForce, 'Valeur': datum.amount + '%' , 'Distance ': datum.kms + ' km'}"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "from": {
+                        "data": "dataya-calc"
+                      },
+                      "type": "text",
+                      "encode": {
+                        "enter": {
+                          "x": {
+                            "scale": "xscale",
+                            "offset": "(datum.total + 2) * width / 100"
+                          },
+                          "y": {
+                            "scale": "yscale",
+                            "offset": "datum.offsetP"
+                          },
+                          "text": {
+                            "field": "totalText"
+                          },
+                          "color": {
+                            "value": "black"
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "width": 376,
+                  "height": 105,
+                  "scales": [
+                    {
+                      "name": "yscale",
+                      "type": "band",
+                      "range": "height",
+                      "round": true,
+                      "domain": {
+                        "data": "dataya-calc",
+                        "field": "category"
+                      },
+                      "padding": 0.05
+                    },
+                    {
+                      "name": "xscale",
+                      "nice": true,
+                      "range": "width",
+                      "domain": {
+                        "data": "dataya-calc",
+                        "field": "y1"
+                      },
+                      "domainMax": 100
+                    },
+                    {
+                      "name": "color",
+                      "type": "ordinal",
+                      "range": {
+                        "scheme": "blues"
+                      },
+                      "domain": {
+                        "data": "dataya-calc",
+                        "field": "force"
+                      }
+                    }
+                  ],
+                  "$schema": "https://vega.github.io/schema/vega/v5.json",
+                  "padding": 5,
+                  "autosize": {
+                    "type": "fit",
+                    "contains": "padding"
+                  }
+                },
+                "placeData": [
+                  "data",
+                  0,
+                  "values"
+                ]
+              },
+              "datasource": [
+                "a35a3287-a622-4af3-a663-926744d94b40"
+              ]
+            },
+            {
+              "type": "vega",
+              "title": "Pourcentage des routes exposées par type",
+              "layout": {
+                "x": 1,
+                "y": 14,
+                "width": 3,
+                "height": 15
+              },
+              "options": {
+                "baseSpec": {
+                  "axes": [
+                    {
+                      "scale": "yscale",
+                      "orient": "left"
+                    },
+                    {
+                      "scale": "xscale",
+                      "encode": {
+                        "labels": {
+                          "update": {
+                            "text": {
+                              "signal": "datum.value + '%'"
+                            }
+                          }
+                        }
+                      },
+                      "orient": "bottom",
+                      "tickCount": 3
+                    }
+                  ],
+                  "data": [
+                    {
+                      "name": "dataya",
+                      "values": {},
+                      "transform": [
+                        {
+                          "type": "fold",
+                          "fields": [
+                            "autorouteImpacteeFort",
+                            "autresImpacteeFort",
+                            "departementaleImpacteeFort",
+                            "nationaleImpacteeFort",
+                            "autorouteImpacteeFortPct",
+                            "nationaleImpacteeFortPct",
+                            "departementaleImpacteeFortPct",
+                            "autresImpacteeFortPct",
+                            "autorouteImpacteeMoyen",
+                            "autresImpacteeMoyen",
+                            "departementaleImpacteeMoyen",
+                            "nationaleImpacteeMoyen",
+                            "autorouteImpacteeMoyenPct",
+                            "nationaleImpacteeMoyenPct",
+                            "departementaleImpacteeMoyenPct",
+                            "autresImpacteeMoyenPct",
+                            "autorouteImpacteeFaible",
+                            "autresImpacteeFaible",
+                            "departementaleImpacteeFaible",
+                            "nationaleImpacteeFaible",
+                            "autorouteImpacteeFaiblePct",
+                            "nationaleImpacteeFaiblePct",
+                            "departementaleImpacteeFaiblePct",
+                            "autresImpacteeFaiblePct"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "dataya-calc",
+                      "source": "dataya",
+                      "transform": [
+                        {
+                          "type": "project",
+                          "fields": [
+                            "key",
+                            "value"
+                          ]
+                        },
+                        {
+                          "as": "category",
+                          "expr": "indexof(datum.key, 'nationale') > -1 ? 'Nationale' : indexof(datum.key, 'autoroute') > -1 ? 'Autoroute' : indexof(datum.key, 'departementale') > -1 ? 'Départementale' : 'Communale' ",
+                          "type": "formula"
+                        },
+                        {
+                          "as": "orderCategories",
+                          "expr": "indexof(datum.key, 'nationale') > -1 ? 2 : indexof(datum.key, 'autoroute') > -1 ? 3 : indexof(datum.key, 'departementale') > -1 ? 1 : 0 ",
+                          "type": "formula"
+                        },
+                        {
+                          "as": "force",
+                          "expr": "indexof(datum.key, 'Fort') > -1 ? 'Fort' : indexof(datum.key, 'Moyen') > -1 ? 'Moyen' :'Faible' ",
+                          "type": "formula"
+                        },
+                        {
+                          "as": "orderForce",
+                          "expr": "indexof(datum.key, 'Fort') > -1 ? 3 : indexof(datum.key, 'Moyen') > -1 ? 2 : 1 ",
+                          "type": "formula"
+                        },
+                        {
+                          "as": "labelForce",
+                          "expr": "indexof(datum.key, 'Fort') > -1 ? 'Fort' : indexof(datum.key, 'Moyen') > -1 ? 'Moyen' :'Faible' ",
+                          "type": "formula"
+                        },
+                        {
+                          "as": "amount",
+                          "expr": "datum.value",
+                          "type": "formula"
+                        },
+                        {
+                          "expr": "test(/.*Pct/, datum.key)",
+                          "type": "filter"
+                        },
+                        {
+                          "sort": {
+                            "field": "orderForce"
+                          },
+                          "type": "stack",
+                          "field": "amount",
+                          "groupby": [
+                            "category"
+                          ]
+                        },
+                        {
+                          "as": [
+                            "total"
+                          ],
+                          "ops": [
+                            "sum"
+                          ],
+                          "type": "joinaggregate",
+                          "fields": [
+                            "amount"
+                          ],
+                          "groupby": [
+                            "category"
+                          ]
+                        },
+                        {
+                          "sort": {
+                            "field": "orderCategories"
+                          },
+                          "type": "collect"
+                        },
+                        {
+                          "as": "offsetP",
+                          "expr": "datum.orderCategories * height / 4 + 13",
+                          "type": "formula"
+                        },
+                        {
+                          "as": "totalText",
+                          "expr": "round(datum.total * 100) / 100 + ' %'",
+                          "type": "formula"
+                        },
+                        {
+                          "as": "withoutPct",
+                          "expr": "replace(datum.key, 'Pct', '')",
+                          "type": "formula"
+                        },
+                        {
+                          "as": "kms",
+                          "expr": "data('dataya')[0][datum.withoutPct]",
+                          "type": "formula"
+                        }
+                      ]
+                    }
+                  ],
+                  "marks": [
+                    {
+                      "from": {
+                        "data": "dataya-calc"
+                      },
+                      "type": "rect",
+                      "encode": {
+                        "enter": {
+                          "x": {
+                            "field": "y0",
+                            "scale": "xscale"
+                          },
+                          "y": {
+                            "field": "category",
+                            "scale": "yscale"
+                          },
+                          "x2": {
+                            "field": "y1",
+                            "scale": "xscale"
+                          },
+                          "fill": {
+                            "field": "force",
+                            "scale": "color"
+                          },
+                          "height": {
+                            "band": 1,
+                            "scale": "yscale"
+                          },
+                          "tooltip": {
+                            "signal": "{ \"Niveau d'exposition\": datum.labelForce, \"Type de route\": datum.category, 'Valeur': datum.amount + '%', 'Distance ': datum.kms + ' km' }"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "from": {
+                        "data": "dataya-calc"
+                      },
+                      "type": "text",
+                      "encode": {
+                        "enter": {
+                          "x": {
+                            "scale": "xscale",
+                            "offset": "(datum.total + 2) * width / 100"
+                          },
+                          "y": {
+                            "scale": "yscale",
+                            "offset": "datum.offsetP"
+                          },
+                          "text": {
+                            "field": "totalText"
+                          },
+                          "color": {
+                            "value": "black"
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "width": 376,
+                  "height": 105,
+                  "scales": [
+                    {
+                      "name": "yscale",
+                      "type": "band",
+                      "range": "height",
+                      "round": true,
+                      "domain": {
+                        "data": "dataya-calc",
+                        "field": "category"
+                      },
+                      "padding": 0.05
+                    },
+                    {
+                      "name": "xscale",
+                      "nice": true,
+                      "range": "width",
+                      "domain": {
+                        "data": "dataya-calc",
+                        "field": "y1"
+                      },
+                      "domainMax": 100
+                    },
+                    {
+                      "name": "color",
+                      "type": "ordinal",
+                      "range": {
+                        "scheme": "blues"
+                      },
+                      "domain": {
+                        "data": "dataya-calc",
+                        "field": "force"
+                      }
+                    }
+                  ],
+                  "$schema": "https://vega.github.io/schema/vega/v5.json",
+                  "padding": 5,
+                  "autosize": {
+                    "type": "fit",
+                    "contains": "padding"
+                  }
+                },
+                "placeData": [
+                  "data",
+                  0,
+                  "values"
+                ]
+              },
+              "datasource": [
+                "a35a3287-a622-4af3-a663-926744d94b40"
+              ]
+            },
+            {
+              "type": "vega",
+              "title": "Surface EPCI impactée",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "width": 3,
+                "height": 13
+              },
+              "options": {
+                "baseSpec": {
+                  "data": [
+                    {
+                      "name": "dataya",
+                      "values": {},
+                      "transform": [
+                        {
+                          "type": "fold",
+                          "fields": [
+                            "surfaceImpacteeFort",
+                            "surfaceImpacteeFortPct",
+                            "infrastructureTotal",
+                            "infrastructureImpacteeFort",
+                            "infrastructureImpacteeFortPct",
+                            "benchSurfaceImpacteeFortPct",
+                            "benchInfrastructureImpacteeFortPct",
+                            "surfaceImpacteeMoyen",
+                            "surfaceImpacteeMoyenPct",
+                            "infrastructureImpacteeMoyen",
+                            "infrastructureImpacteeMoyenPct",
+                            "benchSurfaceImpacteeMoyenPct",
+                            "benchInfrastructureImpacteeMoyenPct",
+                            "surfaceImpacteeFaible",
+                            "surfaceImpacteeFaiblePct",
+                            "infrastructureImpacteeFaible",
+                            "infrastructureImpacteeFaiblePct",
+                            "benchSurfaceImpacteeFaiblePct",
+                            "benchInfrastructureImpacteeFaiblePct",
+                            "totalSurfaceImpactee",
+                            "totalSurfaceImpacteePct",
+                            "totalInfrastructureImpactee",
+                            "totalInfrastructureImpactee"
+                          ]
+                        },
+                        {
+                          "type": "project",
+                          "fields": [
+                            "key",
+                            "value"
+                          ]
+                        },
+                        {
+                          "as": "labelForce",
+                          "expr": "indexof(datum.key, 'Fort') > -1 ? 'Fort' : indexof(datum.key, 'Moyen') > -1 ? 'Moyen' :'Faible' ",
+                          "type": "formula"
+                        },
+                        {
+                          "as": "ord",
+                          "expr": "indexof(datum.key, 'Fort') > -1 ? 3 : indexof(datum.key, 'Moyen') > -1 ? 2 : 1 ",
+                          "type": "formula"
+                        },
+                        {
+                          "sort": {
+                            "field": "ord"
+                          },
+                          "type": "collect"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "dataya-pct",
+                      "source": "dataya",
+                      "transform": [
+                        {
+                          "expr": "test(/surfaceImpactee(Faible|Fort|Moyen)Pct/, datum.key)",
+                          "type": "filter"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "dataya-soustitre",
+                      "source": "dataya",
+                      "transform": [
+                        {
+                          "expr": "test(/surfaceImpactee(Faible|Fort|Moyen)$/, datum.key)",
+                          "type": "filter"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "table",
+                      "source": "dataya-pct",
+                      "transform": [
+                        {
+                          "sort": {
+                            "signal": "sort"
+                          },
+                          "type": "pie",
+                          "field": "value",
+                          "endAngle": {
+                            "signal": "endAngle"
+                          },
+                          "startAngle": {
+                            "signal": "startAngle"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "name": "titreds",
+                      "source": "dataya-pct",
+                      "transform": [
+                        {
+                          "as": [
+                            "sf"
+                          ],
+                          "ops": [
+                            "sum"
+                          ],
+                          "type": "aggregate",
+                          "fields": [
+                            "value"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "titreds-soustitre",
+                      "source": "dataya-soustitre",
+                      "transform": [
+                        {
+                          "as": [
+                            "sf"
+                          ],
+                          "ops": [
+                            "sum"
+                          ],
+                          "type": "aggregate",
+                          "fields": [
+                            "value"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "marks": [
+                    {
+                      "type": "arc",
+                      "encode": {
+                        "enter": {
+                          "x": {
+                            "signal": "width / 2"
+                          },
+                          "y": {
+                            "signal": "height / 2"
+                          },
+                          "fill": {
+                            "value": "#DFE5EC"
+                          }
+                        },
+                        "update": {
+                          "endAngle": {
+                            "signal": "endAngle"
+                          },
+                          "padAngle": {
+                            "signal": "padAngle"
+                          },
+                          "startAngle": {
+                            "signal": "startAngle2"
+                          },
+                          "innerRadius": {
+                            "signal": "innerRadius"
+                          },
+                          "outerRadius": {
+                            "signal": "min(width, height) / 3"
+                          },
+                          "cornerRadius": {
+                            "signal": "cornerRadius"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "from": {
+                        "data": "table"
+                      },
+                      "type": "arc",
+                      "encode": {
+                        "enter": {
+                          "x": {
+                            "signal": "width / 2"
+                          },
+                          "y": {
+                            "signal": "height / 2"
+                          },
+                          "fill": {
+                            "field": "key",
+                            "scale": "color"
+                          }
+                        },
+                        "update": {
+                          "tooltip": {
+                            "signal": "{ \"Niveau d'exposition\": datum.labelForce, 'Valeur': datum.value + '%' }"
+                          },
+                          "endAngle": {
+                            "field": "endAngle"
+                          },
+                          "padAngle": {
+                            "signal": "padAngle"
+                          },
+                          "startAngle": {
+                            "field": "startAngle"
+                          },
+                          "innerRadius": {
+                            "signal": "innerRadius"
+                          },
+                          "outerRadius": {
+                            "signal": "min(width, height) / 3"
+                          },
+                          "cornerRadius": {
+                            "signal": "cornerRadius"
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "title": {
+                    "dy": {
+                      "signal": "min(width, height) / 1.5"
+                    },
+                    "text": {
+                      "signal": "titre"
+                    },
+                    "encode": {
+                      "title": {
+                        "enter": {
+                          "fill": {
+                            "value": "#3E546A"
+                          }
+                        }
+                      },
+                      "subtitle": {
+                        "enter": {
+                          "fill": {
+                            "value": "#3E546A"
+                          }
+                        }
+                      }
+                    },
+                    "subtitle": {
+                      "signal": "soustitre"
+                    }
+                  },
+                  "width": 180,
+                  "height": 105,
+                  "scales": [
+                    {
+                      "name": "color",
+                      "type": "ordinal",
+                      "range": {
+                        "scheme": "blues"
+                      },
+                      "domain": {
+                        "data": "table",
+                        "field": "key"
+                      }
+                    }
+                  ],
+                  "$schema": "https://vega.github.io/schema/vega/v5.json",
+                  "padding": 5,
+                  "signals": [
+                    {
+                      "name": "startAngle",
+                      "value": 0
+                    },
+                    {
+                      "name": "startAngle2",
+                      "value": 6.29
+                    },
+                    {
+                      "init": "6.29 * data('titreds')[0]['sf'] / 100",
+                      "name": "endAngle"
+                    },
+                    {
+                      "name": "padAngle",
+                      "value": 0
+                    },
+                    {
+                      "name": "innerRadius",
+                      "value": 50
+                    },
+                    {
+                      "name": "cornerRadius",
+                      "value": 0
+                    },
+                    {
+                      "name": "sort",
+                      "value": false
+                    },
+                    {
+                      "init": "data('titreds')[0]['sf'] < 1 ? round(data('titreds')[0]['sf'] * 100) / 100 + ' %' : round(data('titreds')[0]['sf'] ) + ' %'",
+                      "name": "titre"
+                    },
+                    {
+                      "init": "round(data('titreds-soustitre')[0]['sf']) + ' km²'",
+                      "name": "soustitre"
+                    }
+                  ],
+                  "autosize": {
+                    "type": "fit",
+                    "contains": "padding"
+                  }
+                },
+                "placeData": [
+                  "data",
+                  0,
+                  "values"
+                ]
+              },
+              "datasource": [
+                "a35a3287-a622-4af3-a663-926744d94b40"
+              ]
+            },
+            {
+              "type": "vega",
+              "title": "Surface département impactée",
+              "layout": {
+                "x": 4,
+                "y": 1,
+                "width": 3,
+                "height": 13
+              },
+              "options": {
+                "baseSpec": {
+                  "data": [
+                    {
+                      "name": "dataya",
+                      "values": {},
+                      "transform": [
+                        {
+                          "type": "fold",
+                          "fields": [
+                            "surfaceImpacteeFort",
+                            "surfaceImpacteeFortPct",
+                            "infrastructureTotal",
+                            "infrastructureImpacteeFort",
+                            "infrastructureImpacteeFortPct",
+                            "benchSurfaceImpacteeFortPct",
+                            "benchInfrastructureImpacteeFortPct",
+                            "surfaceImpacteeMoyen",
+                            "surfaceImpacteeMoyenPct",
+                            "infrastructureImpacteeMoyen",
+                            "infrastructureImpacteeMoyenPct",
+                            "benchSurfaceImpacteeMoyenPct",
+                            "benchInfrastructureImpacteeMoyenPct",
+                            "surfaceImpacteeFaible",
+                            "surfaceImpacteeFaiblePct",
+                            "infrastructureImpacteeFaible",
+                            "infrastructureImpacteeFaiblePct",
+                            "benchSurfaceImpacteeFaiblePct",
+                            "benchInfrastructureImpacteeFaiblePct",
+                            "totalSurfaceImpactee",
+                            "totalSurfaceImpacteePct",
+                            "totalInfrastructureImpactee",
+                            "totalInfrastructureImpactee",
+                            "benchSurfaceImpacteeTotal"
+                          ]
+                        },
+                        {
+                          "type": "project",
+                          "fields": [
+                            "key",
+                            "value"
+                          ]
+                        },
+                        {
+                          "as": "ord",
+                          "expr": "indexof(datum.key, 'Fort') > -1 ? 3 : indexof(datum.key, 'Moyen') > -1 ? 2 : 1 ",
+                          "type": "formula"
+                        },
+                        {
+                          "sort": {
+                            "field": "ord"
+                          },
+                          "type": "collect"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "dataya-pct",
+                      "source": "dataya",
+                      "transform": [
+                        {
+                          "expr": "test(/benchSurfaceImpactee(Faible|Fort|Moyen)Pct/, datum.key)",
+                          "type": "filter"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "dataya-km",
+                      "source": "dataya",
+                      "transform": [
+                        {
+                          "expr": "test(/benchSurfaceImpacteeTotal/, datum.key)",
+                          "type": "filter"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "table",
+                      "source": "dataya-pct",
+                      "transform": [
+                        {
+                          "sort": {
+                            "signal": "sort"
+                          },
+                          "type": "pie",
+                          "field": "value",
+                          "endAngle": {
+                            "signal": "endAngle"
+                          },
+                          "startAngle": {
+                            "signal": "startAngle"
+                          }
+                        },
+                        {
+                          "as": "labelForce",
+                          "expr": "indexof(datum.key, 'Fort') > -1 ? 'Fort' : indexof(datum.key, 'Moyen') > -1 ? 'Moyen' :'Faible' ",
+                          "type": "formula"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "titreds",
+                      "source": "dataya-pct",
+                      "transform": [
+                        {
+                          "as": [
+                            "sf"
+                          ],
+                          "ops": [
+                            "sum"
+                          ],
+                          "type": "aggregate",
+                          "fields": [
+                            "value"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "soustitreds",
+                      "source": "dataya-km",
+                      "transform": [
+                        {
+                          "as": [
+                            "sf"
+                          ],
+                          "ops": [
+                            "sum"
+                          ],
+                          "type": "aggregate",
+                          "fields": [
+                            "value"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "marks": [
+                    {
+                      "type": "arc",
+                      "encode": {
+                        "enter": {
+                          "x": {
+                            "signal": "width / 2"
+                          },
+                          "y": {
+                            "signal": "height / 2"
+                          },
+                          "fill": {
+                            "value": "#DFE5EC"
+                          }
+                        },
+                        "update": {
+                          "endAngle": {
+                            "signal": "endAngle"
+                          },
+                          "padAngle": {
+                            "signal": "padAngle"
+                          },
+                          "startAngle": {
+                            "signal": "startAngle2"
+                          },
+                          "innerRadius": {
+                            "signal": "innerRadius"
+                          },
+                          "outerRadius": {
+                            "signal": "min(width, height) / 3"
+                          },
+                          "cornerRadius": {
+                            "signal": "cornerRadius"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "from": {
+                        "data": "table"
+                      },
+                      "type": "arc",
+                      "encode": {
+                        "enter": {
+                          "x": {
+                            "signal": "width / 2"
+                          },
+                          "y": {
+                            "signal": "height / 2"
+                          },
+                          "fill": {
+                            "field": "key",
+                            "scale": "color"
+                          }
+                        },
+                        "update": {
+                          "tooltip": {
+                            "signal": "{ \"Niveau d'exposition\": datum.labelForce, 'Valeur': datum.value + '%' }"
+                          },
+                          "endAngle": {
+                            "field": "endAngle"
+                          },
+                          "padAngle": {
+                            "signal": "padAngle"
+                          },
+                          "startAngle": {
+                            "field": "startAngle"
+                          },
+                          "innerRadius": {
+                            "signal": "innerRadius"
+                          },
+                          "outerRadius": {
+                            "signal": "min(width, height) / 3"
+                          },
+                          "cornerRadius": {
+                            "signal": "cornerRadius"
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "title": {
+                    "dy": {
+                      "signal": "min(width, height) / 1.5"
+                    },
+                    "text": {
+                      "signal": "titre"
+                    },
+                    "encode": {
+                      "title": {
+                        "enter": {
+                          "fill": {
+                            "value": "#3E546A"
+                          }
+                        }
+                      },
+                      "subtitle": {
+                        "enter": {
+                          "fill": {
+                            "value": "#3E546A"
+                          }
+                        }
+                      }
+                    },
+                    "subtitle": {
+                      "signal": "soustitre"
+                    }
+                  },
+                  "width": 180,
+                  "height": 105,
+                  "scales": [
+                    {
+                      "name": "color",
+                      "type": "ordinal",
+                      "range": {
+                        "scheme": "blues"
+                      },
+                      "domain": {
+                        "data": "table",
+                        "field": "key"
+                      }
+                    }
+                  ],
+                  "$schema": "https://vega.github.io/schema/vega/v5.json",
+                  "padding": 5,
+                  "signals": [
+                    {
+                      "name": "startAngle",
+                      "value": 0
+                    },
+                    {
+                      "name": "startAngle2",
+                      "value": 6.29
+                    },
+                    {
+                      "init": "6.29 * data('titreds')[0]['sf'] / 100",
+                      "name": "endAngle"
+                    },
+                    {
+                      "name": "padAngle",
+                      "value": 0
+                    },
+                    {
+                      "name": "innerRadius",
+                      "value": 50
+                    },
+                    {
+                      "name": "cornerRadius",
+                      "value": 0
+                    },
+                    {
+                      "name": "sort",
+                      "value": false
+                    },
+                    {
+                      "init": "data('titreds')[0]['sf'] < 1 ? round(data('titreds')[0]['sf'] * 100) / 100 + ' %' : round(data('titreds')[0]['sf'] ) + ' %'",
+                      "name": "titre"
+                    },
+                    {
+                      "init": "round(data('soustitreds')[0]['sf']) + ' km²'",
+                      "name": "soustitre"
+                    }
+                  ],
+                  "autosize": {
+                    "type": "fit",
+                    "contains": "padding"
+                  }
+                },
+                "placeData": [
+                  "data",
+                  0,
+                  "values"
+                ]
+              },
+              "datasource": [
+                "a35a3287-a622-4af3-a663-926744d94b40"
+              ]
+            },
+            {
+              "type": "map",
+              "title": "Risque submersion",
+              "layout": {
+                "x": 7,
+                "y": 1,
+                "width": 6,
+                "height": 48
+              },
+              "options": {
+                "zoom": {
+                  "max": 18,
+                  "min": 3,
+                  "start": 4.46334422994795
+                },
+                "style": "klokantech-basic",
+                "center": [
+                  0.6157215965485285,
+                  45.31943203346029
+                ],
+                "layers": [
+                  {
+                    "fit": false,
+                    "key": "Provoly:alea_submersion",
+                    "url": "https://geo.demo.provoly.net/geoserver/Provoly/wms?SERVICE=WMS&VERSION=1.3.0",
+                    "name": "alea_submersion",
+                    "type": "geoserver",
+                    "order": 0,
+                    "title": "alea_submersion",
+                    "oClass": "4f0ed480-c067-42fb-a0b6-6e4ad60bdde2",
+                    "opacity": 100,
+                    "namespace": "Provoly",
+                    "paramLayer": "alea_submersion",
+                    "paramTiled": true,
+                    "datasourceId": "3aef0cbf-6d73-49e6-9e50-aebfaa211bf1"
+                  },
+                  {
+                    "fit": true,
+                    "key": "Provoly:Limites Administratives",
+                    "url": "https://geo.demo.provoly.net/geoserver/Provoly/wms?SERVICE=WMS&VERSION=1.3.0",
+                    "name": "Limites Administratives",
+                    "type": "geoserver",
+                    "order": 1,
+                    "title": "Limites Administratives",
+                    "oClass": "ccd06b8a-5556-48e4-9ed1-237e99ea6fe3",
+                    "opacity": 100,
+                    "namespace": "Provoly",
+                    "paramLayer": "Limites Administratives",
+                    "paramTiled": true,
+                    "datasourceId": "37e084ee-f714-4dc3-afe5-5a7cd203986c"
+                  }
+                ],
+                "singleLayer": false,
+                "tooltipMode": "click",
+                "automaticLayers": true
+              },
+              "datasource": [
+                "3aef0cbf-6d73-49e6-9e50-aebfaa211bf1",
+                "37e084ee-f714-4dc3-afe5-5a7cd203986c"
+              ]
+            }
+          ]
+        }
+      ]
+    }
   }
 ]

@@ -346,8 +346,10 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
             ? this.manifest.grid.gap || DEFAULT_GAP_PX
             : DEFAULT_GAP_PX
           : 0;
-      this.params.cellHeight =
-        (this.params.gridHeight - (this.params.rows - 1) * this.params.gridGap) / this.params.rows;
+      this.params.cellHeight = Math.max(
+        0,
+        (this.params.gridHeight - (this.params.rows - 1) * this.params.gridGap) / this.params.rows
+      );
       this.params.cellWidth =
         (this.params.gridWidth - (this.params.columns - 1) * this.params.gridGap) / this.params.columns;
 
