@@ -30,6 +30,7 @@
       align-items: center;
 
       &__title {
+        text-transform: uppercase;
         padding-bottom: 0;
         padding-left: toRem(15);
         font-size: toRem(14);
