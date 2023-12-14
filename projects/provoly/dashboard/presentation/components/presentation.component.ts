@@ -56,7 +56,6 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   @Input() hideToolbox = false;
   inputSearch$ = new BehaviorSubject('');
   @Input() set search(query: string) {
-    console.log(query);
     this.inputSearch$.next(query);
   }
 
@@ -112,9 +111,9 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     );
     this.subscriptions.add(
       this.store.select(DashboardSelectors.presentation).subscribe((presentation) => {
+        this.selectedMode = presentation?.viewMode ?? this.ViewMode.CATALOG;
         if (!!presentation.current) {
           this.selectedPresentation$.next(presentation.current ?? null);
-          this.selectedMode = presentation?.viewMode ?? this.ViewMode.CATALOG;
         }
       })
     );
