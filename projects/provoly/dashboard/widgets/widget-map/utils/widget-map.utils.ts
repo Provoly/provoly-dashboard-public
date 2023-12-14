@@ -1,7 +1,6 @@
 import {
   AggregationResult,
   Attribute,
-  AttributeSimpleValue,
   Class,
   DEFAULT_PROJECTION,
   Field,
@@ -350,30 +349,6 @@ export class WidgetMapUtils {
     return geometry;
   }
 
-  static extractGeometries(value: AttributeSimpleValue, points: any[], type: 'point' | 'line' | 'polygon') {
-    const valueSimple = value.value;
-    if (typeof valueSimple !== 'string' && typeof valueSimple !== 'number') {
-      if (type === 'point' && valueSimple.type === FieldType.POINT) {
-        points.push(valueSimple.coordinates);
-      }
-      if (type === 'point' && valueSimple.type === FieldType.MULTIPOINT) {
-        points.push(...valueSimple.coordinates);
-      }
-      if (type === 'line' && valueSimple.type === FieldType.LINE) {
-        points.push(valueSimple.coordinates);
-      }
-      if (type === 'line' && valueSimple.type === FieldType.MULTILINE) {
-        points.push(...valueSimple.coordinates);
-      }
-      if (type === 'polygon' && valueSimple.type === FieldType.POLYGON) {
-        points.push(valueSimple.coordinates);
-      }
-      if (type === 'polygon' && valueSimple.type === FieldType.MULTIPOLYGON) {
-        points.push(...valueSimple.coordinates);
-      }
-    }
-  }
-
   static projectExtentAggregationResponse(
     field: Field,
     extentResponse: AggregationResult,
@@ -407,6 +382,7 @@ export class WidgetMapUtils {
     ) {
       return {
         datasource: layer.datasourceId,
+        error: false,
         extent: [
           transform(
             [
@@ -470,7 +446,8 @@ export class WidgetMapUtils {
 
     return {
       datasource: layer.datasourceId,
-      extent: XMLUtils.getLayerExtent(layer.paramLayer, map, wmsCapabilities![layer.url]?.doc) ?? []
+      extent: XMLUtils.getLayerExtent(layer.paramLayer, map, wmsCapabilities![layer.url]?.doc) ?? [],
+      error: false
     };
   }
 

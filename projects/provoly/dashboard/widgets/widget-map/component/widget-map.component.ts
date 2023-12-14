@@ -67,7 +67,6 @@ import { Circle, Geometry, Point } from 'ol/geom';
 import { Heatmap, Layer, Tile } from 'ol/layer';
 import BaseLayer from 'ol/layer/Base';
 import VectorLayer from 'ol/layer/Vector';
-import VectorTileLayer from 'ol/layer/VectorTile';
 import { Pixel } from 'ol/pixel';
 import { fromLonLat } from 'ol/proj';
 import { register } from 'ol/proj/proj4';
@@ -77,6 +76,7 @@ import { Style } from 'ol/style';
 import proj4 from 'proj4';
 import {
   BehaviorSubject,
+  catchError,
   combineLatest,
   debounceTime,
   delay,
@@ -100,6 +100,7 @@ import { LayerSlider } from '../interaction/layer-slider.class';
 import TileLayer from 'ol/layer/Tile';
 import WebGLTileLayer from 'ol/layer/WebGLTile';
 import { Attribution, defaults } from 'ol/control';
+import VectorTileLayer from 'ol/layer/VectorTile';
 
 export const TOOLTIP_PADDING = 15;
 export const NON_MANDATORY_FIT_LAYER_TYPES = ['wms', 'geoserver'];
@@ -176,7 +177,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }>({});
   mapStyleUrl$!: Observable<string | null>;
   interactionManager: InteractionManager = new InteractionManager();
-  mapStyleLayer$!: Observable<VectorTileLayer[]>;
+  mapStyleLayer$!: Observable<(VectorTileLayer | TileLayer<any>)[]>;
   tooltipIndex = 0;
   tooltipNumber = 0;
   STYLE_FROM_URL = '_url';
@@ -192,6 +193,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     {
       datasource: string;
       extent: Coordinate[];
+      error: boolean;
     }[]
   >;
   datasourceFilters$: Observable<any>;
@@ -640,7 +642,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           new MapboxVectorLayer({
             properties: { title: 'background' },
             styleUrl
-          })
+          }) /* ,
+          new TileLayer({
+            source: new TileDebug()
+          }) */
         ];
       })
     );
@@ -841,15 +846,16 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                           ordinate: { operation: Operation.EXTENT, attribute: attr.id, label: attr.name, keep0: false }
                         } as ChartAggregatedWidgetOptions)
                         .pipe(
-                          map((extentResponse: AggregationResult) => {
-                            return WidgetMapUtils.projectExtentAggregationResponse(
+                          map((extentResponse: AggregationResult) =>
+                            WidgetMapUtils.projectExtentAggregationResponse(
                               field!,
                               extentResponse,
                               layer,
                               wmsCapabilities,
                               this.map
-                            );
-                          })
+                            )
+                          ),
+                          catchError(() => of({ datasource: layer.datasourceId, extent: [], error: true }))
                         )
                     )
                     .flat()
@@ -857,12 +863,14 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                 .flat(),
               ...((options.layers?.filter((layer) => layer.type === 'wms') ?? []) as MapWMSLayerLayerOptions[])
                 .filter((layer) => layer.fit)
-                .map((layer: MapWMSLayerLayerOptions) =>
-                  of({
+                .map((layer: MapWMSLayerLayerOptions) => {
+                  const extent = XMLUtils.getLayerExtent(layer.paramLayer, this.map, wmsCapabilities![layer.url]?.doc);
+                  return of({
                     datasource: `wms-${layer.paramLayer}`,
-                    extent: XMLUtils.getLayerExtent(layer.paramLayer, this.map, wmsCapabilities![layer.url]?.doc) ?? []
-                  })
-                )
+                    extent: extent ?? [],
+                    error: !extent
+                  });
+                })
             ])
           : of([])
       ),
@@ -870,6 +878,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         [] as {
           datasource: string;
           extent: Coordinate[];
+          error: boolean;
         }[]
       )
     );
@@ -905,29 +914,40 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         this.fitExtents$,
         this.datasourceFilters$
       ]).subscribe(([mapStyleLayer, layers, selectedIds, extents, filters]) => {
-        const toApplyLayers = [...layers, ...mapStyleLayer];
-        this.map.setLayers(toApplyLayers);
-        this.map
-          .getAllLayers()
-          .filter((layer) => !(layer instanceof Tile))
-          .forEach((layer) => {
-            const getFeatures = (layer.getSource() as VectorSource)?.getFeatures;
-            if (typeof getFeatures === 'function') {
-              (layer.getSource() as VectorSource)?.getFeatures().forEach((feature: any) => {
-                const type = feature.get('type');
-                if (['bubble', 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].includes(type)) {
-                  feature.setStyle(
-                    feature.get(selectedIds.includes(feature.get('id')) ? 'selectedStyle' : 'classicStyle')
-                  );
-                }
-              });
-            }
-          });
+        const neededCalculatedExtents = layers.filter(
+          (layer) => ['geoserver', 'wms'].includes(layer.get('type')) && layer.get('fit')
+        ).length;
+        const nbCalculatedExtents = extents.filter((extent) => !extent.error).length;
 
-        setTimeout(() => {
+        if (nbCalculatedExtents >= neededCalculatedExtents) {
           this.fitMapForObjects(selectedIds, extents, filters);
           this.map.updateSize();
-        }, 200);
+
+          setTimeout(() => {
+            const toApplyLayers = [...layers, ...mapStyleLayer];
+            this.map.setLayers(toApplyLayers);
+            this.map
+              .getAllLayers()
+              .filter((layer) => !(layer instanceof Tile))
+              .forEach((layer) => {
+                const getFeatures = (layer.getSource() as VectorSource)?.getFeatures;
+                if (typeof getFeatures === 'function') {
+                  (layer.getSource() as VectorSource)?.getFeatures().forEach((feature: any) => {
+                    const type = feature.get('type');
+                    if (
+                      ['bubble', 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].includes(type)
+                    ) {
+                      feature.setStyle(
+                        feature.get(selectedIds.includes(feature.get('id')) ? 'selectedStyle' : 'classicStyle')
+                      );
+                    }
+                  });
+                }
+              });
+          }, 100);
+        } else {
+          this.map.setLayers([...mapStyleLayer]);
+        }
       })
     );
     this.subscriptions.add(
