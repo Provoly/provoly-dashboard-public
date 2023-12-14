@@ -17,28 +17,9 @@ export class ProxyUtils {
   }
 
   static ResultSets(rss: ResultSets) {
-    return new Proxy<ResultSets>(JSON.parse(JSON.stringify(rss)), {
-      get: (original, prop, proxy) => {
-        if (original[prop as string]) {
-          return ProxyUtils.ResultSet(original[prop as string], prop as string);
-        } else {
-          /* actuellement fait via le assertResult
-          setTimeout(() => {
-            if (!this.currentlyLoading.includes(prop as string) && this.requested[prop as string] !== true) {
-              this.requested[prop as string] = true;
-              this.store.dispatch(
-                SearchActions.getDatasourceItems({
-                  id: prop as string,
-                  excludeGeo: true,
-                  from: 'ProxyUtils.ResultSets()'
-                })
-              );
-            }
-          }, 100); */
-        }
-        return undefined;
-      }
-    });
+    return Object.entries(rss)
+      .map(([key, value]) => ({ key, proxy: ProxyUtils.ResultSet(value, key) }))
+      .reduce((p, c) => ({ ...p, [c.key]: c.proxy }), {});
   }
 
   static ResultSet(rs: ResultSet, rsId: string) {

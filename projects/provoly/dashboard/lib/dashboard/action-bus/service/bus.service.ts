@@ -58,7 +58,7 @@ export class BusService {
     if (!action.sender) {
       // Send only non bus-received messages
       this.dataChannel.postMessage({
-        ...action,
+        ...JSON.parse(JSON.stringify(action)),
         sender: this.sender,
         target
       });
