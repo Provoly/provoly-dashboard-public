@@ -29,10 +29,7 @@ export class SearchService {
   }
 
   getItems(id: string, quickOrder?: ResultOrder, excludeGeo?: boolean): Observable<ResultSet> {
-    const params = this.getItemsFilter(id, this.getOrder(quickOrder)).append(
-      'excludeGeo',
-      false /* TODO: when backend will have fixed #52: excludeGeo ?? false */
-    );
+    const params = this.getItemsFilter(id, this.getOrder(quickOrder)).append('excludeGeo', excludeGeo ?? false);
 
     if (!id) {
       console.warn('Not sending items request with no datasource attached.');
