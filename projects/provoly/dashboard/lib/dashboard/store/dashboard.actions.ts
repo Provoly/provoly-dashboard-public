@@ -166,10 +166,7 @@ export const DashboardActions = {
   followManifestRoute: createAction('[Dashboard] (bus) follow manifest route'),
   moveWidget: createAction('[Dashboard] moving widget', props<{ widgetIndex: number; targetIndex: number }>()),
   maximizeWidget: createAction('[Dashboard] maximize widget', props<{ widgetIndex: number }>()),
-  assertResultSets: createAction(
-    '[Dashboard] request resultSet if not present or params changed',
-    props<{ id?: string }>()
-  ),
+  assertResultSets: createAction('[Dashboard] assert resultSet', props<{ id?: string }>()),
   updateResultSet: createAction(
     '[Dashboard] (bus) received named resultSet',
     props<{ id: string; resultSet: ResultSet; params?: string }>()

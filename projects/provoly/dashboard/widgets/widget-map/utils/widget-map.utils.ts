@@ -337,6 +337,12 @@ export class WidgetMapUtils {
     if (value.type === 'MULTI') {
       value = value.values[0];
     }
+
+    if (!value.visible) {
+      console.warn(`Geometry not visible for item ${item.id}`);
+      return;
+    }
+
     let geometry;
     try {
       geometry = new GeoJSON().readGeometry(value.value as any, {

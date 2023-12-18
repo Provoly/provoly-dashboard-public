@@ -206,6 +206,12 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
       })
     );
 
+    this.subscriptions.add(
+      this.windowManifest$.subscribe(() => {
+        this.store.dispatch(DashboardActions.assertResultSets({}));
+      })
+    );
+
     this.store.dispatch(FieldActions.load());
     this.store.dispatch(ClassActions.load());
     this.store.dispatch(CategoryActions.load());

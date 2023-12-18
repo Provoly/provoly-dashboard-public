@@ -9,7 +9,7 @@ export const SearchActions = {
     props<{ payload: MonoClassSearchPayload | MultiClassSearchPayload | FullTextSearchPayload; id?: string }>()
   ),
   getDatasourceItems: createAction(
-    '[Search] (bus) search named',
+    '[Search] (bus) get datasource items',
     props<{ id: string; excludeGeo: boolean; from: string }>()
   ),
 
