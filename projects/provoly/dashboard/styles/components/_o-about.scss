@@ -1,6 +1,7 @@
 @use '../abstracts' as *;
 
 .o-about {
+  position: relative;
 
   .description:hover:after {
     cursor: pointer;
@@ -8,26 +9,63 @@
 
   .description-tooltip {
     position: absolute;
-    transform: translateY(5rem);
     max-width: 50vw;
     visibility: hidden;
     background-color: #fff;
     padding: 20px;
-    -webkit-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.3);
     opacity: 0;
     transition: opacity 0.5s ease;
     z-index: 2;
     pointer-events: none;
+
+    &.-position- {
+      &top {
+        bottom: 2rem;
+        left: -3rem;
+        -webkit-box-shadow: 0 -20px 50px 0 rgba(0, 0, 0, 0.1);
+      }
+      &bottom {
+        top: 2rem;
+        left: -3rem;
+        -webkit-box-shadow: 0 20px 50px 0 rgba(0, 0, 0, 0.1);
+      }
+      &left {
+        top: -15rem;
+        right: 5rem;
+        -webkit-box-shadow: -20px 0 50px 0 rgba(0, 0, 0, 0.1);
+      }
+      &right {
+        top: -15rem;
+        left: 5rem;
+        -webkit-box-shadow: 20px 0 50px 0 rgba(0, 0, 0, 0.1);
+      }
+      &top-left {
+        bottom: 0;
+        right: 5rem;
+        -webkit-box-shadow: -20px -20px 50px 0 rgba(0, 0, 0, 0.1);
+      }
+      &top-right {
+        bottom: 0;
+        left: 5rem;
+        -webkit-box-shadow: 20px -20px 50px 0 rgba(0, 0, 0, 0.1);
+      }
+      &bottom-left {
+        top: 0;
+        right: 5rem;
+        -webkit-box-shadow: -20px 20px 50px 0 rgba(0, 0, 0, 0.1);
+      }
+      &bottom-right {
+        top: 0;
+        left: 5rem;
+        -webkit-box-shadow: 20px 20px 50px 0 rgba(0, 0, 0, 0.1);
+      }
+    }
   }
 
   .description:hover + .description-tooltip {
     visibility: visible;
     transition: opacity 0.2s ease;
     opacity: 1;
-  }
-
-  .title-tooltip {
-    transform: translateY(4rem);
   }
 
   .title-container {

@@ -2,7 +2,7 @@
   <div class="info-icon description-container description">
     <span class="info-text">i</span>
   </div>
-  <div class="description-tooltip title-tooltip">
+  <div class="description-tooltip -position-{{ tooltipPosition }}">
     <ng-container *ngFor="let version of (version$ | async) ?? {} | keyvalue">
       <div class="o-about__line">
         {{ '@pry.about.' + version.key | i18n }}
