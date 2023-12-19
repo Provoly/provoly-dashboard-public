@@ -20,7 +20,7 @@ export const enTranslations = {
       choice: 'You can :',
       or: 'Or',
       create_title: 'Create a restitution',
-      consult_title: 'Consult a restitution',
+      consult_title: 'Consult the restitution',
       search: 'Search',
       backToCatalog: 'Back to catalog',
       options: 'Restitution options',

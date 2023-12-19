@@ -36,7 +36,6 @@
           <li
             class="o-presentation__item"
             *ngFor="let presentation of filteredPresentations$ | async; let index = index"
-            (click)="fetch(presentation)"
           >
             <div class="o-presentation__item__header">
               <ng-container *ngIf="presentation.visibility.type === PryVisibilityType.PRIVATE">
@@ -48,7 +47,11 @@
                   [width]="17"
                 ></pry-icon>
               </ng-container>
-              <div class="a-tooltip">
+              <div
+                class="a-tooltip"
+                (click)="fetch(presentation)"
+                [attr.data-tooltip]="'@pry.presentation.view' | i18n"
+              >
                 <div class="o-presentation__item__image">
                   <img
                     alt=""
@@ -74,7 +77,11 @@
                 </div>
               </ng-container>
             </div>
-            <div class="o-presentation__item__txt">
+            <div
+              class="o-presentation__item__txt a-tooltip"
+              (click)="fetch(presentation)"
+              [attr.data-tooltip]="'@pry.presentation.view' | i18n"
+            >
               <h3 class="a-h3">{{ presentation.name }}</h3>
               <div class="a-p">
                 <div class="description-container">
@@ -86,7 +93,11 @@
               </div>
               <p class="a-p -date">{{ presentation.modificationDate | sinceDate }}</p>
             </div>
-            <div class="o-presentation__item__footer">
+            <div
+              class="o-presentation__item__footer a-tooltip"
+              (click)="fetch(presentation)"
+              [attr.data-tooltip]="'@pry.presentation.view' | i18n"
+            >
               <button class="a-btn">
                 {{ '@pry.presentation.consult' | i18n }}
                 <pry-icon [width]="20" [height]="20" iconSvg="arrow_right"></pry-icon>

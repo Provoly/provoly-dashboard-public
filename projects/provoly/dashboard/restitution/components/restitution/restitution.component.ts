@@ -136,7 +136,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
       };
       this.form = {
         selectedWidget: this.customManifest.type,
-        selectedDataSources: this.customManifest.datasource as string[],
+        selectedDataSources: (this.customManifest.datasource ?? []) as string[],
         title: this.selectedRestitution.name,
         cover: this.selectedRestitution.cover,
         ...this.selectedRestitution
@@ -160,7 +160,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
   }
 
   datasourcesChanged($event: DataSource[]) {
-    this.form.selectedDataSources = $event.map((ds) => ds.id);
+    this.form.selectedDataSources = ($event ?? []).map((ds) => ds.id);
   }
 
   submit(stepper: PryStepperComponent) {
@@ -175,7 +175,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
       ...this.customManifest,
       type: this.form.selectedWidget,
       title: this.form.title,
-      datasource: this.form.selectedDataSources,
+      datasource: this.form.selectedDataSources ?? [],
       cover: this.form.cover ?? false,
       header: {
         datasourceSelection: false,
@@ -230,7 +230,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
             description: this.form.description,
             image: this.form.image ?? '',
             visibility: this.visibility,
-            datasource: this.form.selectedDataSources,
+            datasource: this.form.selectedDataSources ?? [],
             cover: this.form.cover ?? false,
             modificationDate: ''
           }

@@ -22,7 +22,7 @@ export const frTranslations = {
       choice: 'Vous pouvez :',
       or: 'Ou',
       create_title: 'Créer une restitution',
-      consult_title: 'Consulter une restitution',
+      consult_title: 'Consulter la restitution',
       search: 'Rechercher',
       backToCatalog: 'Retour au catalogue',
       consult: 'Consulter',
