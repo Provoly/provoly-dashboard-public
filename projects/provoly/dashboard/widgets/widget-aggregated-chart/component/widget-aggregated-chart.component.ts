@@ -392,7 +392,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                     ? {
                         field: 'key',
                         title: options.abscissa.label,
-                        type: !!options.graph.sort ? VegaType.ORDINAL : types.abscissa.vegaType,
+                        type: this.getAbscissaType(types.abscissa.vegaType, !!options.graph.sort),
                         bin: options.graph.type.indexOf('histogram') >= 0,
                         ...this.getTimeUnit(options, types.abscissa.vegaType),
                         axis: {
@@ -448,7 +448,12 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                         ? options.baseColor ?? this.schemeService.getSchemeColors(this.schemeService.getDefaultScheme())
                         : undefined
                   },
-                  xOffset: stacked && options.groupBy ? { field: 'series' } : undefined,
+                  xOffset:
+                    stacked &&
+                    options.groupBy &&
+                    this.getAbscissaType(types.abscissa.vegaType, !!options.graph.sort) !== VegaType.TEMPORAL
+                      ? { field: 'series' }
+                      : undefined,
                   tooltip: options.graph.tooltip
                     ? options.groupBy
                       ? [
@@ -1066,5 +1071,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       return { labelAngle: -30 };
     }
     return {};
+  }
+
+  getAbscissaType(abscissaVegaType: VegaType, hasSort: boolean) {
+    return hasSort ? VegaType.ORDINAL : abscissaVegaType;
   }
 }
