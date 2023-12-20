@@ -108,22 +108,22 @@ router.on(['OPTIONS', 'GET'], '/ref/model/class/:id/associations', (req, res, pa
 router.on(['OPTIONS', 'PUT'], '/ref/model/class/id/:id/attribute', (req, res, params) => {
   readPayload(req).then((payload) => {
     if (payload) {
-      let classIndex = dataModule.classes.findIndex((obj) => obj.id === params.id);
+      let classIndex = dataModule.class.get().findIndex((obj) => obj.id === params.id);
       if (classIndex !== -1) {
         let attributeIndex =
-          dataModule.classes[classIndex].attributes.length > 0
-            ? dataModule.classes[classIndex].attributes.findIndex((obj) => obj.id === payload.id)
+          dataModule.class.get()[classIndex].attributes.length > 0
+            ? dataModule.class.get()[classIndex].attributes.findIndex((obj) => obj.id === payload.id)
             : -1;
         if (attributeIndex !== -1) {
-          dataModule.classes[classIndex].attributes[attributeIndex].id = payload.id;
-          dataModule.classes[classIndex].attributes[attributeIndex].name = payload.name;
-          dataModule.classes[classIndex].attributes[attributeIndex].technicalName = payload.technicalName;
-          dataModule.classes[classIndex].attributes[attributeIndex].field = payload.field;
-          dataModule.classes[classIndex].attributes[attributeIndex].category = payload.category;
+          dataModule.class.get()[classIndex].attributes[attributeIndex].id = payload.id;
+          dataModule.class.get()[classIndex].attributes[attributeIndex].name = payload.name;
+          dataModule.class.get()[classIndex].attributes[attributeIndex].technicalName = payload.technicalName;
+          dataModule.class.get()[classIndex].attributes[attributeIndex].field = payload.field;
+          dataModule.class.get()[classIndex].attributes[attributeIndex].category = payload.category;
         } else {
-          dataModule.classes[classIndex].attributes.push(payload);
+          dataModule.class.get()[classIndex].attributes.push(payload);
         }
-        fs.writeFileSync('./data/classes.json', JSON.stringify(dataModule.classes, null, 2));
+        fs.writeFileSync('./data/classes.json', JSON.stringify(dataModule.class.get(), null, 2));
       }
     }
     makeResponseOk(res);
@@ -131,15 +131,15 @@ router.on(['OPTIONS', 'PUT'], '/ref/model/class/id/:id/attribute', (req, res, pa
 });
 router.on('POST', '/ref/model/class', (req, res, params) => {
   readPayload(req).then((payload) => {
-    let classIndex = dataModule.classes.findIndex((obj) => obj.id === payload.id);
+    let classIndex = dataModule.class.get().findIndex((obj) => obj.id === payload.id);
     if (classIndex !== -1) {
-      dataModule.classes[classIndex].id = payload.id;
-      dataModule.classes[classIndex].name = payload.name;
-      dataModule.classes[classIndex].attributes = payload.attributes;
+      dataModule.class.get()[classIndex].id = payload.id;
+      dataModule.class.get()[classIndex].name = payload.name;
+      dataModule.class.get()[classIndex].attributes = payload.attributes;
     } else {
-      JSON.stringify(dataModule.classes.push(payload));
+      JSON.stringify(dataModule.class.get().push(payload));
     }
-    fs.writeFileSync('./data/classes.json', JSON.stringify(dataModule.classes, null, 2));
+    fs.writeFileSync('./data/classes.json', JSON.stringify(dataModule.class.get(), null, 2));
     makeResponseOk(res);
   });
 });
@@ -151,25 +151,25 @@ router.on(['OPTIONS', 'GET'], '/ref/model/attribute/:id/associations', (req, res
 });
 
 router.on(['OPTIONS', 'DELETE'], '/ref/model/class/id/:id/attribute/id/:attrId', (req, res, params) => {
-  let classIndex = dataModule.classes.findIndex((obj) => obj.id === params.id);
+  let classIndex = dataModule.class.get().findIndex((obj) => obj.id === params.id);
   if (classIndex !== -1) {
     let attributeIndex =
-      dataModule.classes[classIndex].attributes.length > 0
-        ? dataModule.classes[classIndex].attributes.findIndex((obj) => obj.id === params.attrId)
+      dataModule.class.get()[classIndex].attributes.length > 0
+        ? dataModule.class.get()[classIndex].attributes.findIndex((obj) => obj.id === params.attrId)
         : -1;
     if (attributeIndex !== -1) {
-      dataModule.classes[classIndex].attributes.splice(attributeIndex, 1);
+      dataModule.class.get()[classIndex].attributes.splice(attributeIndex, 1);
     }
-    fs.writeFileSync('./data/classes.json', JSON.stringify(dataModule.classes, null, 2));
+    fs.writeFileSync('./data/classes.json', JSON.stringify(dataModule.class.get(), null, 2));
   }
   makeResponseOk(res);
 });
 
 router.on(['OPTIONS', 'DELETE'], '/ref/model/class/id/:id', (req, res, params) => {
-  let classIndex = dataModule.classes.findIndex((obj) => obj.id === params.id);
+  let classIndex = dataModule.class.get().findIndex((obj) => obj.id === params.id);
   if (classIndex !== -1) {
-    dataModule.classes.splice(classIndex, 1);
-    fs.writeFileSync('./data/classes.json', JSON.stringify(dataModule.classes, null, 2));
+    dataModule.class.get().splice(classIndex, 1);
+    fs.writeFileSync('./data/classes.json', JSON.stringify(dataModule.class.get(), null, 2));
   }
   makeResponseOk(res);
 });
@@ -543,7 +543,7 @@ router.on('POST', '/data/items/search', (req, res, params) => {
       );
     } else {
       const tableOfClasses = [...new Array(number)].map(
-        () => dataModule.classesIds[Math.round(Math.random() * 100) % dataModule.classesIds.length]
+        () => dataModule.class.ids[Math.round(Math.random() * 100) % dataModule.class.ids.length]
       );
       makeResponseOk(
         res,
@@ -564,7 +564,7 @@ router.on(['OPTIONS', 'POST'], '/data/items', (req, res, params) => {
   readPayload(req).then((payload) => {
     // items are generated
     const tableOfClasses = [0].map(
-      () => dataModule.classesIds[Math.round(Math.random() * 100) % dataModule.classesIds.length]
+      () => dataModule.class.ids[Math.round(Math.random() * 100) % dataModule.class.ids.length]
     );
     makeResponseOk(
       res,
@@ -584,7 +584,7 @@ router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items', (req, res, para
       if (fixedResponse) {
         makeResponseOk(res, fixedResponse);
       } else {
-        const responseTypesLimited = dataModule.queryResponseTypes[params.id]?.classes || dataModule.classesIds;
+        const responseTypesLimited = dataModule.queryResponseTypes[params.id]?.classes || dataModule.class.ids;
         const number = dataModule.queryResponseTypes[params.id]?.number ?? fieldGeneratorModule.generateNumberOfItems();
         const tableOfClasses = [...new Array(number)].map(
           () => responseTypesLimited[Math.round(Math.random() * 100) % responseTypesLimited.length]
@@ -626,18 +626,21 @@ router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items/aggregate', (req,
         return;
       }
 
-      const abscissaAttr = dataModule.classes
+      const abscissaAttr = dataModule.class
+        .get()
         .map((clazz) => clazz.attributes.find((attr) => attr.id === query.aggregatedBy))
         .find((attr) => !!attr);
       const abscissaField = dataModule.fields.get().find((field) => field.id === abscissaAttr?.field);
-      const ordinateAttr = dataModule.classes
+      const ordinateAttr = dataModule.class
+        .get()
         .map((clazz) => clazz.attributes.find((attr) => attr.id === query.valueField))
         .find((attr) => !!attr);
       const ordinateField = dataModule.fields.get().find((field) => field.id === ordinateAttr?.field);
 
       let series = [];
       if (query.groupBy) {
-        const groupByAttr = dataModule.classes
+        const groupByAttr = dataModule.class
+          .get()
           .map((clazz) => clazz.attributes.find((attr) => attr.id === query.groupBy))
           .find((attr) => !!attr);
         const groupByField = dataModule.fields.get().find((field) => field.id === groupByAttr?.field);
@@ -691,7 +694,8 @@ router.on(['OPTIONS', 'POST'], '/data/data-sources/values', (req, res, params) =
       const { attributes = [], value = '', limit = 10 } = payload;
 
       const attrId = attributes[0]?.attribute || { attribute: '-----' };
-      const attr = dataModule.classes
+      const attr = dataModule.class
+        .get()
         .find((cl) => cl.attributes.find((attr) => attr.id === attrId))
         .attributes.find((attr) => attr.id === attrId);
       const attrType = dataModule.fields.get().find((field) => field.id === attr?.type)?.type || 'number';
@@ -770,7 +774,7 @@ router.on(['OPTIONS'], '/ref/users/me/namedquery/:id', (req, res, params) => {
 router.on(['OPTIONS', 'GET'], '/data/items/named/:rs', (req, res, params) => {
   const number = fieldGeneratorModule.generateNumberOfItems();
   const tableOfClasses = [...new Array(number)].map(
-    () => dataModule.classesIds[Math.round(Math.random() * 100) % dataModule.classesIds.length]
+    () => dataModule.class.ids[Math.round(Math.random() * 100) % dataModule.class.ids.length]
   );
   const isPresent = dataModule.namedQueries.find((name) => name.id === params.rs);
   if (isPresent) {
@@ -783,7 +787,7 @@ router.on(['OPTIONS', 'GET'], '/data/items/named/:rs', (req, res, params) => {
 });
 
 router.on(['OPTIONS', 'GET'], '/data/items/:id', (req, res, params) => {
-  const randomClass = dataModule.classesIds[Math.round(Math.random() * 100) % dataModule.classesIds.length];
+  const randomClass = dataModule.class.ids[Math.round(Math.random() * 100) % dataModule.class.ids.length];
   const item = fieldGeneratorModule.generateItems([randomClass], readQuery(req).excludeGeo);
   item[0].id = params.id;
   makeResponseOk(res, item[0]);
@@ -791,7 +795,7 @@ router.on(['OPTIONS', 'GET'], '/data/items/:id', (req, res, params) => {
 
 router.on(['OPTIONS', 'GET'], '/data/items/id/:id/relations', (req, res, params) => {
   const tableOfClasses = [...new Array(casual.integer((from = 1), (to = 5)))].map(
-    () => dataModule.classesIds[Math.round(Math.random() * 100) % dataModule.classesIds.length]
+    () => dataModule.class.ids[Math.round(Math.random() * 100) % dataModule.class.ids.length]
   );
   makeResponseOk(
     res,

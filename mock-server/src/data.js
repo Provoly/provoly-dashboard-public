@@ -31,7 +31,7 @@ let departements = JSON.parse(fs.readFileSync('./data/departements.json', 'utf8'
 const getClasses = () =>
   classes.map((oClass) => ({
     ...oClass,
-    technicalName: oClass.technicalName ?? oClass.name
+    attributes: oClass.attributes.map((attr) => ({ ...attr, technicalName: attr.technicalName ?? attr.name }))
   }));
 
 Object.keys(queryResponses).forEach((key) => {
@@ -343,7 +343,8 @@ const deleteField = (id) => {
 
 module.exports = {
   class: {
-    get: getClasses
+    get: getClasses,
+    ids: classesIds
   },
   fields: {
     get: getFields,
