@@ -127,7 +127,7 @@ function generateAttrValueByFieldType(type, attr) {
 
 let rotateDpt = 0;
 const generateFieldValue = (attr) => {
-  switch (attr.name.toLocaleLowerCase()) {
+  switch (attr.technicalName.toLocaleLowerCase()) {
     case 'latitude':
     case 'lat':
       return casual.double((from = 44.6), (to = 44.9)) + '';
@@ -208,7 +208,7 @@ const generateItems = (classesTable, _excludeGeo) => {
           excludeGeo === undefined ||
           !geoTypes.includes(data.fields.get().find((field) => field.id === attr.field)?.type)
       )
-      .map((attr) => ({ [attr.name]: wrapAttribute(attr) }))
+      .map((attr) => ({ [attr.technicalName]: wrapAttribute(attr) }))
       .reduce((p, c) => Object.assign(p, c), {});
 
     return {

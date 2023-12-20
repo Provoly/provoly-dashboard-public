@@ -375,7 +375,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                     key: ds.id,
                     subType: geo.field!.type,
                     classes: [ds.oClass],
-                    attribute: geo.attr.name
+                    attribute: geo.attr.technicalName
                   } as MapAutoLayerOptions)
               );
             })
@@ -1179,7 +1179,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     layer: MapWidgetHeatMapLayerOptions | MapWidgetBubbleLayerOptions
   ) {
     return (
-      (classObj || { attributes: [] }).attributes.find((attr) => attr.name === layer?.intensityAttribute ?? '') ??
+      (classObj || { attributes: [] }).attributes.find((attr) => attr.technicalName === layer?.intensityAttribute ?? '') ??
       (undefined as unknown as Attribute)
     );
   }
@@ -1188,7 +1188,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     type layers = MapWidgetHeatMapLayerOptions | MapWidgetMarkerLayerOptions | MapWidgetBubbleLayerOptions;
     const specificLayer = layer as layers;
     return (
-      classObj.attributes.find((attr) => attr.name === (specificLayer?.attribute ?? []) ?? '') ??
+      classObj.attributes.find((attr) => attr.technicalName === (specificLayer?.attribute ?? []) ?? '') ??
       (undefined as unknown as Attribute)
     );
   }

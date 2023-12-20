@@ -105,8 +105,9 @@ describe('AdminAttributesFormComponent', () => {
     component.selectedClass = classes[0];
 
     let attributeToSave = {
+      ...attribute,
       description: '',
-      ...attribute
+      name: 'attribute-technical' // if no name, the name is the technical name by default
     };
 
     component.attrForm.setValue(attributeToSave);
@@ -122,8 +123,8 @@ describe('AdminAttributesFormComponent', () => {
     component.selectedClass = classes[0];
     component.selectedAttribute = attribute;
     let attributeToUpdate = {
-      description: '',
-      ...attribute
+      ...attribute,
+      description: ''
     };
     component.attrForm.setValue(attributeToUpdate);
     attributeToUpdate.name = 'name';
@@ -136,16 +137,16 @@ describe('AdminAttributesFormComponent', () => {
     ]);
   }));
 
-  it('should not update current attribute because name is required', fakeAsync(() => {
+  it('should not update current attribute because technical name is required', fakeAsync(() => {
     component.selectedClass = classes[0];
     component.selectedAttribute = attribute;
     let attributeToUpdate = {
-      description: '',
-      ...attribute
+      ...attribute,
+      description: ''
     };
-    attributeToUpdate.name = '';
+    attributeToUpdate.technicalName = '';
     component.attrForm.setValue(attributeToUpdate);
-    component.attrForm.patchValue({ name: '' });
+    component.attrForm.patchValue({ technicalName: '' });
 
     component.addAttribute();
     expect(component.attrForm.valid).toEqual(false);

@@ -32,7 +32,7 @@ export enum FilterSteps {
 
 export interface Attribute {
   id: string;
-  name: string;
+  technicalName: string;
   label: string;
   datasource: string;
   type: FieldType;
@@ -73,7 +73,7 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
   ];
   currentOperators$ = new BehaviorSubject(this.operators);
   classes: Class[] = [];
-  attributes$: Observable<{ id: string; name: string; label: string; datasource: string; type: string }[]>;
+  attributes$: Observable<{ id: string; technicalName: string; label: string; datasource: string; type: string }[]>;
   selectedAttribute$ = new BehaviorSubject<string[]>(this.filter.attributes.map((attr) => attr.id));
   @ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
 
@@ -136,7 +136,7 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
           clazz?.attributes.forEach((attr) => {
             attributes.push({
               id: attr.id,
-              name: attr.name,
+              technicalName: attr.technicalName,
               label: [attr.name, dataSource.name, clazz.name].join(' / '),
               datasource: dataSource.id,
               type: fields.find((field) => field.id === attr.field)?.type ?? FieldType.STRING
@@ -230,7 +230,7 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
   getFilterAttributes(filter: Filter, attrCount: number) {
     attrCount = attrCount <= filter.attributes.length ? attrCount : filter.attributes.length;
     return filter.attributes
-      .map((attr) => attr.name)
+      .map((attr) => attr.technicalName)
       .slice(0, attrCount)
       .join(', ');
   }

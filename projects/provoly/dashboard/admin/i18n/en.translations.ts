@@ -238,7 +238,8 @@ export const enTranslations = {
         attributes: {
           add: 'business model Add attribute',
           edit: 'Edit attribute',
-          name: 'Attribute name',
+          name: 'Attribute label',
+          technicalName: 'Technical name',
           info: 'Attribute information',
           description: 'Description',
           field: 'Field',

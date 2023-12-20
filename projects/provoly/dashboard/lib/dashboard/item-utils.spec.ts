@@ -36,6 +36,7 @@ describe('ItemUtils functions', () => {
         ItemUtils.getAttributeCalculatedValue(item, {
           id: 'sxxx',
           name: 'string',
+          technicalName: 'string',
           field: 'a',
           multiValued: false
         })
@@ -44,6 +45,7 @@ describe('ItemUtils functions', () => {
         ItemUtils.getAttributeCalculatedValue(item, {
           id: 'sxxx',
           name: 'integer',
+          technicalName: 'integer',
           field: 'b',
           multiValued: false
         })
@@ -54,6 +56,7 @@ describe('ItemUtils functions', () => {
         ItemUtils.getAttributeCalculatedValue(item, {
           id: 'sxxx',
           name: 'string',
+          technicalName: 'string',
           field: 'a',
           multiValued: false
         })
@@ -62,6 +65,7 @@ describe('ItemUtils functions', () => {
         ItemUtils.getAttributeCalculatedValue(item, {
           id: 'sxxx',
           name: 'multi',
+          technicalName: 'multi',
           field: 'b',
           multiValued: true
         })

@@ -9,6 +9,7 @@ export interface Class {
 export interface Attribute {
   id: string;
   name: string;
+  technicalName: string;
   field: string;
   category?: string;
   multiValued: boolean;

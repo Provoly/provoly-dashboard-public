@@ -146,13 +146,13 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
         return attributes.map(
           (attr) =>
             (({
-              name: attr.name,
+              name: attr.technicalName,
               label: attr.name,
               type: this.translateToVegaType(
                 fields.find((field) => field.id === attr.field)?.type ?? FieldType.STRING,
                 attr.name
               )
-            }) as VariableDefinition) ?? []
+            } as VariableDefinition) ?? [])
         );
       })
     );
@@ -209,7 +209,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
             items.find(
               (item) =>
                 Object.keys(item.attributes).includes(this.optionsCopy.selectedVariables[0].label) &&
-                Object.keys(item.attributes).includes(attribute.name) &&
+                Object.keys(item.attributes).includes(attribute.technicalName) &&
                 !!(item.attributes[this.optionsCopy.selectedVariables[0].label] as AttributeSimpleValue).value &&
                 (item.attributes[attribute.name] as AttributeSimpleValue).value !== undefined
             )
@@ -235,8 +235,8 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
           .filter((attribute) =>
             items.find(
               (item) =>
-                Object.keys(item.attributes).includes(attribute.name) &&
-                (item.attributes[attribute.name] as AttributeSimpleValue).value !== undefined
+                Object.keys(item.attributes).includes(attribute.technicalName) &&
+                (item.attributes[attribute.technicalName] as AttributeSimpleValue).value !== undefined
             )
           );
       }),
@@ -260,8 +260,8 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
           .filter((attribute) =>
             items.find(
               (item) =>
-                Object.keys(item.attributes).includes(attribute.name) &&
-                (item.attributes[attribute.name] as AttributeSimpleValue).value !== undefined
+                Object.keys(item.attributes).includes(attribute.technicalName) &&
+                (item.attributes[attribute.technicalName] as AttributeSimpleValue).value !== undefined
             )
           );
       }),
@@ -520,7 +520,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
               category: (item.attributes[options.radar?.categoryProp ?? ''] as AttributeSimpleValue)?.value ?? 'object',
               key: (item.attributes[options.radar?.keyProp ?? ''] as AttributeSimpleValue)?.value,
               value: (item.attributes[options.radar?.valueProp ?? ''] as AttributeSimpleValue)?.value
-            }) as RadarValue
+            } as RadarValue)
         )
         .filter((a: RadarValue) => a.value !== undefined && a.value !== null && !!a.key);
     }
@@ -554,8 +554,8 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
   }
 
   static uniqueAttributesByNames(attributes: Attribute[]): Attribute[] {
-    return [...new Set(attributes.map((attr) => attr.name))].map(
-      (attrName) => attributes.find((attr) => attr.name === attrName) ?? ({} as Attribute)
+    return [...new Set(attributes.map((attr) => attr.technicalName))].map(
+      (attrName) => attributes.find((attr) => attr.technicalName === attrName) ?? ({} as Attribute)
     );
   }
 
@@ -584,7 +584,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
   }
 
   changeProperty(attrName: string, index: number) {
-    const attr = this.variableAttributes.find((attr) => attr.name === attrName);
+    const attr = this.variableAttributes.find((attr) => attr.technicalName === attrName);
     if (!!attr) {
       this.optionsCopy.selectedVariables[index].name = attr.name;
       this.optionsCopy.selectedVariables[index].label = attr.name;

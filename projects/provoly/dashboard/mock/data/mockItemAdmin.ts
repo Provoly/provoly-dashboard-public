@@ -43,6 +43,7 @@ export const mockDatasetsCounts: DatasetCount[] = [
 export const attribute: Attribute = {
   id: 'id',
   name: 'attribute',
+  technicalName: 'attribute-technical',
   field: 'fieldId',
   category: 'default',
   multiValued: false
@@ -103,6 +104,7 @@ export const linksDetails: LinkDetails[] = [
     attributeSource: {
       id: '5b9d6408-ec70-461d-921f-88ef6ebb6cf6',
       name: 'id_mutation',
+      technicalName: 'id_mutation_technical',
       field: '619c7c3c-070d-41d3-b61e-60ed854c39e2',
       category: 'cf666d66-838f-4d92-a4d2-a315df21fac8',
       multiValued: false
@@ -110,6 +112,7 @@ export const linksDetails: LinkDetails[] = [
     attributeDestination: {
       id: '3010e2c4-ef24-40fb-a72b-6757df8017f0',
       name: 'latitude',
+      technicalName: 'latitude_technical',
       field: '59853619-9773-418a-ace5-70b80fd4dc74',
       category: 'cf666d66-838f-4d92-a4d2-a315df21fac9',
       multiValued: false

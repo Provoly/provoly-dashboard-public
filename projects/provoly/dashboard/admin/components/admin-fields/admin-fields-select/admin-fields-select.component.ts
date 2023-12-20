@@ -18,7 +18,7 @@ export class AdminFieldsSelectComponent implements OnInit, OnDestroy {
   currentField$: Observable<Field | undefined>;
   associations$: Observable<Associations | undefined>;
   sub = new Subscription();
-  attributes$: Observable<{ name: string; classId: string }[]>;
+  attributes$: Observable<{ technicalName: string; classId: string }[]>;
 
   constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.currentField$ = this.store.select(FieldsSelectors.selectedField);
@@ -29,7 +29,7 @@ export class AdminFieldsSelectComponent implements OnInit, OnDestroy {
           .map((clazz) =>
             clazz.attributes
               .filter((attribute) => attribute.field === field?.id)
-              .map((attribute) => ({ name: attribute.name, classId: clazz.id }))
+              .map((attribute) => ({ technicalName: attribute.technicalName, classId: clazz.id }))
           )
           .flat();
       })

@@ -58,11 +58,11 @@ export class GeometryFieldsForPipe implements PipeTransform {
             const attrField = fields.find((f) => f.id === attr.field);
             return !!attrField && attrField.type === type;
           })
-          .sort((a, b) => a.name.localeCompare(b.name));
+          .sort((a, b) => a.technicalName.localeCompare(b.technicalName));
 
         const resArr = [] as Attribute[];
         potentialFields.forEach(function (attr) {
-          if (resArr.findIndex((x) => x.name == attr.name) <= -1) {
+          if (resArr.findIndex((x) => x.technicalName == attr.technicalName) <= -1) {
             resArr.push(attr);
           }
         });

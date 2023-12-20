@@ -59,8 +59,8 @@ export class AdminClassesCustomizeComponent extends SubscriptionnerDirective imp
       this.currentPropertiesConfig$.pipe(combineLatestWith(this.currentClass$)).subscribe(([attrs, clazz]) => {
         this.defaultAttributes = JSON.parse(JSON.stringify(attrs));
         this.otherAttributes = (clazz ?? { attributes: [] }).attributes
-          .map((attr) => attr.name)
-          .filter((name) => !attrs.includes(name));
+          .filter((attr) => !attrs.includes(attr.technicalName))
+          .map((attr) => attr.technicalName);
       })
     );
     this.currentTilePropertiesConfig$ = this.store.select(ConfigSelectors.tileAttributesDefinitions).pipe(
@@ -74,8 +74,8 @@ export class AdminClassesCustomizeComponent extends SubscriptionnerDirective imp
       this.currentTilePropertiesConfig$.pipe(combineLatestWith(this.currentClass$)).subscribe(([attrs, clazz]) => {
         this.defaultTileAttributes = JSON.parse(JSON.stringify(attrs));
         this.otherTileAttributes = (clazz ?? { attributes: [] }).attributes
-          .map((attr) => attr.name)
-          .filter((name) => !attrs.includes(name));
+          .filter((attr) => !attrs.includes(attr.technicalName))
+          .map((attr) => attr.technicalName);
       })
     );
     this.subscriptions.add(

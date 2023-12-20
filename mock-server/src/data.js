@@ -28,6 +28,12 @@ let datasets = JSON.parse(fs.readFileSync('./data/datasets.json', 'utf8'));
 let transfos = JSON.parse(fs.readFileSync('./data/transfos.json', 'utf8'));
 let departements = JSON.parse(fs.readFileSync('./data/departements.json', 'utf8'));
 
+const getClasses = () =>
+  classes.map((oClass) => ({
+    ...oClass,
+    technicalName: oClass.technicalName ?? oClass.name
+  }));
+
 Object.keys(queryResponses).forEach((key) => {
   if (typeof queryResponses[key] === 'string') {
     queryResponses[key] = JSON.parse(fs.readFileSync(`./data/responses/${queryResponses[key]}`, 'utf8'));
@@ -336,8 +342,9 @@ const deleteField = (id) => {
 };
 
 module.exports = {
-  classes,
-  classesIds,
+  class: {
+    get: getClasses
+  },
   fields: {
     get: getFields,
     put: putFields,

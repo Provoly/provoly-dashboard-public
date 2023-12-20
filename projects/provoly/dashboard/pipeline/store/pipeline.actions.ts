@@ -12,7 +12,7 @@ export interface NodePipelineError extends PipelineError {
 }
 
 export interface NodeStatusModel {
-  attributes: { name: string; type: string }[];
+  attributes: { technicalName: string; type: string }[];
 }
 
 export interface NodeStatus {

@@ -18,13 +18,15 @@ describe('PrySearchSelectAttributeComponent', () => {
         id: 'attrId',
         field: 'field',
         multiValued: false,
-        name: 'name'
+        name: 'name',
+        technicalName: 'name'
       },
       {
         id: 'attrId2',
         field: 'field2',
         multiValued: false,
-        name: 'name'
+        name: 'name',
+        technicalName: 'name'
       }
     ]
   };

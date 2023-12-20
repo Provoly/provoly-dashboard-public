@@ -27,7 +27,7 @@
       }
     }
 
-    &.ng-invalid.pry-select-form > .ng-select-container {
+    &.ng-invalid.pry-select-form:not(.ng-untouched) > .ng-select-container {
       border-color: themed($theme-map, 'color', 'status', 'error');
       border-width: 1px;
     }

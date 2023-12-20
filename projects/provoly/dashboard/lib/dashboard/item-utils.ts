@@ -25,8 +25,8 @@ export class ItemUtils {
       return (
         (
           (!item.hasOwnProperty('oClass')
-            ? (item as OlFeature).get('attributes')[attribute.name] ?? {}
-            : ((item as Item).attributes[attribute.name] as AttributeMultipleValue)) ?? {}
+            ? (item as OlFeature).get('attributes')[attribute.technicalName] ?? {}
+            : ((item as Item).attributes[attribute.technicalName] as AttributeMultipleValue)) ?? {}
         ).values ?? []
       )
         .map((v: AttributeSimpleValue) => ({ ...v, value: v.visible ? v.value : hiddenFieldText }))
@@ -34,8 +34,8 @@ export class ItemUtils {
     }
     return (
       !item.hasOwnProperty('oClass')
-        ? (item as OlFeature).get('attributes')[attribute.name]
-        : (item as Item).attributes[attribute.name]
+        ? (item as OlFeature).get('attributes')[attribute.technicalName]
+        : (item as Item).attributes[attribute.technicalName]
     ) as AttributeSimpleValue;
   }
 
@@ -125,7 +125,7 @@ export class ItemUtils {
           .filter((oClass) => oClass !== undefined)
           .map((oClass) =>
             oClass.attributes.filter((attr) =>
-              ItemUtils.getAttributesDefinitionForClass(oClass, definitions, fields).includes(attr.name)
+              ItemUtils.getAttributesDefinitionForClass(oClass, definitions, fields).includes(attr.technicalName)
             )
           )
           .reduce((p, c) => [...p, ...c], [])
@@ -142,7 +142,7 @@ export class ItemUtils {
           const attrField = fields.find((f) => f.id === attr.field);
           return attrField && !GeometricFieldTypes.includes(attrField.type);
         })
-        .map((attr) => attr.name)
+        .map((attr) => attr.technicalName)
     );
   }
 

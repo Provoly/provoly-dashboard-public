@@ -27,7 +27,7 @@ export class FilterComponent extends PipelinePropertiesPanelComponent {
     this.node.properties['attributeName'] = $event;
     this.checkFn();
     if (this.model) {
-      const attrType = this.model.attributes.find((attr) => attr.name === $event)?.type ?? 'string';
+      const attrType = this.model.attributes.find((attr) => attr.technicalName === $event)?.type ?? 'string';
       this.operators = this.ref[attrType];
       if (this.operators) {
         this.node.properties['operator'] = this.operators[0];

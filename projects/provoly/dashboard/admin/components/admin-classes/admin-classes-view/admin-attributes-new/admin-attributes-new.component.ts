@@ -13,11 +13,7 @@ export class AdminAttributesNewComponent implements OnInit {
   selectedClass$?: Observable<Class>;
   interClass$?: Observable<Class | undefined>;
 
-  constructor(
-    private store: Store<any>,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     this.store.dispatch(ClassActions.load());
   }
 

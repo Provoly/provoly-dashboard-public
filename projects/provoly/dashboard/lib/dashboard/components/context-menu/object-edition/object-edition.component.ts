@@ -144,19 +144,19 @@ export class PryObjectEditionComponent extends SubscriptionnerDirective {
   assignValue(attribute: Attribute, $event: any) {
     const value =
       this.fieldType(attribute) === FieldType.INSTANT && $event !== '' ? new Date($event).getTime() : $event;
-    if (!this.tmpObject.attributes[attribute.name]) {
-      this.tmpObject.attributes[attribute.name] = { type: 'VALUE', metadata: {}, value, visible: true };
+    if (!this.tmpObject.attributes[attribute.technicalName]) {
+      this.tmpObject.attributes[attribute.technicalName] = { type: 'VALUE', metadata: {}, value, visible: true };
     } else {
-      (this.tmpObject.attributes[attribute.name] as AttributeSimpleValue).value = value;
+      (this.tmpObject.attributes[attribute.technicalName] as AttributeSimpleValue).value = value;
     }
   }
 
   value(attribute: Attribute) {
-    const value = (this.tmpObject.attributes[attribute.name] as AttributeSimpleValue)?.value;
+    const value = (this.tmpObject.attributes[attribute.technicalName] as AttributeSimpleValue)?.value;
     if (this.fieldType(attribute) === FieldType.INSTANT) {
       return value !== undefined && value !== '' ? DateUtils.formatDate(new Date(value as string | number)) : undefined;
     }
-    return ((this.tmpObject.attributes[attribute.name] as AttributeSimpleValue) ?? {}).value;
+    return ((this.tmpObject.attributes[attribute.technicalName] as AttributeSimpleValue) ?? {}).value;
   }
 
   toggleDatePicker($event: Event, id: string) {
@@ -176,25 +176,25 @@ export class PryObjectEditionComponent extends SubscriptionnerDirective {
   }
 
   multiValues(attribute: Attribute) {
-    return ((this.tmpObject.attributes[attribute.name] as AttributeMultipleValue) ?? { values: [] }).values;
+    return ((this.tmpObject.attributes[attribute.technicalName] as AttributeMultipleValue) ?? { values: [] }).values;
   }
 
   removeMultiValued(attribute: Attribute, i: number) {
-    (this.tmpObject.attributes[attribute.name] as AttributeMultipleValue).values.splice(i, 1);
+    (this.tmpObject.attributes[attribute.technicalName] as AttributeMultipleValue).values.splice(i, 1);
   }
 
   addMultiValued(attribute: Attribute) {
-    if (!this.tmpObject.attributes[attribute.name]) {
-      this.tmpObject.attributes[attribute.name] = { type: 'MULTI', values: [] };
+    if (!this.tmpObject.attributes[attribute.technicalName]) {
+      this.tmpObject.attributes[attribute.technicalName] = { type: 'MULTI', values: [] };
     }
-    (this.tmpObject.attributes[attribute.name] as AttributeMultipleValue).values.push({
+    (this.tmpObject.attributes[attribute.technicalName] as AttributeMultipleValue).values.push({
       type: 'VALUE',
       metadata: {},
       // @ts-ignore
       value: undefined,
       visible: true
     });
-    return (this.tmpObject.attributes[attribute.name] as AttributeMultipleValue).values.length - 1;
+    return (this.tmpObject.attributes[attribute.technicalName] as AttributeMultipleValue).values.length - 1;
   }
 
   valueMulti(attribute: Attribute, i: number) {
@@ -203,18 +203,18 @@ export class PryObjectEditionComponent extends SubscriptionnerDirective {
 
   assignValueMulti(attribute: Attribute, $event: any, i: number) {
     const value = this.fieldType(attribute) === FieldType.INSTANT ? new Date($event).getTime() : $event;
-    if (!this.tmpObject.attributes[attribute.name]) {
-      this.tmpObject.attributes[attribute.name] = { type: 'MULTI', values: [] };
+    if (!this.tmpObject.attributes[attribute.technicalName]) {
+      this.tmpObject.attributes[attribute.technicalName] = { type: 'MULTI', values: [] };
     }
-    if (!(this.tmpObject.attributes[attribute.name] as AttributeMultipleValue).values[i]) {
-      (this.tmpObject.attributes[attribute.name] as AttributeMultipleValue).values[i] = {
+    if (!(this.tmpObject.attributes[attribute.technicalName] as AttributeMultipleValue).values[i]) {
+      (this.tmpObject.attributes[attribute.technicalName] as AttributeMultipleValue).values[i] = {
         type: 'VALUE',
         metadata: {},
         value,
         visible: true
       };
     } else {
-      (this.tmpObject.attributes[attribute.name] as AttributeMultipleValue).values[i].value = value;
+      (this.tmpObject.attributes[attribute.technicalName] as AttributeMultipleValue).values[i].value = value;
     }
   }
 
@@ -223,7 +223,7 @@ export class PryObjectEditionComponent extends SubscriptionnerDirective {
     this.tmpObject.oClass = $event;
     if (this.from === 'map') {
       this.attributes.forEach((attribute) => {
-        if (['latitude', 'lat'].indexOf(attribute.name) >= 0) {
+        if (['latitude', 'lat'].indexOf(attribute.technicalName) >= 0) {
           if (attribute.multiValued) {
             const idx = this.addMultiValued(attribute);
             this.assignValueMulti(attribute, (this.coordinates ?? [])[0], idx);
@@ -231,7 +231,7 @@ export class PryObjectEditionComponent extends SubscriptionnerDirective {
             this.assignValue(attribute, (this.coordinates ?? [])[0]);
           }
         }
-        if (['longitude', 'long', 'lon', 'lng'].indexOf(attribute.name) >= 0) {
+        if (['longitude', 'long', 'lon', 'lng'].indexOf(attribute.technicalName) >= 0) {
           if (attribute.multiValued) {
             const idx = this.addMultiValued(attribute);
             this.assignValueMulti(attribute, (this.coordinates ?? [])[1], idx);
@@ -245,8 +245,8 @@ export class PryObjectEditionComponent extends SubscriptionnerDirective {
 
   setRawMethod(attribute: Attribute, $event: any) {
     this.method = $event;
-    if (!this.tmpObject.attributes[attribute.name]) {
-      this.tmpObject.attributes[attribute.name] = {
+    if (!this.tmpObject.attributes[attribute.technicalName]) {
+      this.tmpObject.attributes[attribute.technicalName] = {
         type: 'VALUE',
         metadata: {},
         value: '',
@@ -258,20 +258,20 @@ export class PryObjectEditionComponent extends SubscriptionnerDirective {
     }
     if ($event === this.UPLOAD_METHOD) {
       // @ts-ignore
-      delete (this.tmpObject.attributes[attribute.name] as AttributeSimpleValue).metadata[HTTP_ORIGIN_METADATA];
+      delete (this.tmpObject.attributes[attribute.technicalName] as AttributeSimpleValue).metadata[HTTP_ORIGIN_METADATA];
     }
   }
 
   valueMetadata(attribute: Attribute, type: string) {
-    return (((this.tmpObject.attributes[attribute.name] as AttributeSimpleValue) ?? {}).metadata ?? {})[type];
+    return (((this.tmpObject.attributes[attribute.technicalName] as AttributeSimpleValue) ?? {}).metadata ?? {})[type];
   }
 
   assignMetadata(attribute: Attribute, $event: any, type: string) {
-    if (!(this.tmpObject.attributes[attribute.name] as AttributeSimpleValue).metadata) {
-      (this.tmpObject.attributes[attribute.name] as AttributeSimpleValue).metadata = { [type]: $event };
+    if (!(this.tmpObject.attributes[attribute.technicalName] as AttributeSimpleValue).metadata) {
+      (this.tmpObject.attributes[attribute.technicalName] as AttributeSimpleValue).metadata = { [type]: $event };
     } else {
       // @ts-ignore
-      (this.tmpObject.attributes[attribute.name] as AttributeSimpleValue).metadata[type] = $event;
+      (this.tmpObject.attributes[attribute.technicalName] as AttributeSimpleValue).metadata[type] = $event;
     }
   }
 

@@ -89,12 +89,12 @@ export class WidgetTableComponent extends DataWidgetComponent {
       map(([options, resultSet, classes, fields, defs]) => {
         if (!options.columns || options.columns.length === 0) {
           const attributes = ItemUtils.getAttributesFromRs(resultSet, classes, fields, defs);
-          const uniqueProps = [...new Set(attributes.map((attr) => attr.name))];
+          const uniqueProps = [...new Set(attributes.map((attr) => attr.technicalName))];
 
           options.columns = uniqueProps.map((property) => ({
             property: property,
             label: property,
-            attributeId: attributes.find((attr) => attr.name === property)?.id
+            attributeId: attributes.find((attr) => attr.technicalName === property)?.id
           })) as ColumnDefinition[];
         }
         return options;
@@ -191,7 +191,7 @@ export class WidgetTableComponent extends DataWidgetComponent {
         ...Object.keys(rs.items)
           .map((classId) => (classes.find((cl) => cl.id === classId) ?? { attributes: [] }).attributes)
           .flat()
-          .map((attr) => attr.name)
+          .map((attr) => attr.technicalName)
       ]),
       map((props) => {
         const sortedProps = [...props];

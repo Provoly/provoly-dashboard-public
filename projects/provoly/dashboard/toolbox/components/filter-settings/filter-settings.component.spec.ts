@@ -41,11 +41,35 @@ const filter: Filter = {
 };
 
 const attributes: Attribute[] = [
-  { id: '1', name: 'string-attr', label: 'string-attr / ds / class', datasource: 'ds-id', type: FieldType.STRING },
-  { id: '2', name: 'date-attr', label: 'date-attr / ds / class', datasource: 'ds-id', type: FieldType.INSTANT },
-  { id: '3', name: 'number-attr', label: 'number-attr / ds / class', datasource: 'ds-id', type: FieldType.INTEGER },
-  { id: '4', name: 'other-attr', label: 'other-attr / ds / class', datasource: 'ds-id', type: FieldType.RAW },
-  { id: '5', name: 'string-attr2', label: 'string-attr2 / ds / class', datasource: 'ds-id', type: FieldType.STRING }
+  {
+    id: '1',
+    technicalName: 'string-attr',
+    label: 'string-attr / ds / class',
+    datasource: 'ds-id',
+    type: FieldType.STRING
+  },
+  {
+    id: '2',
+    technicalName: 'date-attr',
+    label: 'date-attr / ds / class',
+    datasource: 'ds-id',
+    type: FieldType.INSTANT
+  },
+  {
+    id: '3',
+    technicalName: 'number-attr',
+    label: 'number-attr / ds / class',
+    datasource: 'ds-id',
+    type: FieldType.INTEGER
+  },
+  { id: '4', technicalName: 'other-attr', label: 'other-attr / ds / class', datasource: 'ds-id', type: FieldType.RAW },
+  {
+    id: '5',
+    technicalName: 'string-attr2',
+    label: 'string-attr2 / ds / class',
+    datasource: 'ds-id',
+    type: FieldType.STRING
+  }
 ];
 
 describe('FilterSettingsComponent', () => {
@@ -81,10 +105,10 @@ describe('FilterSettingsComponent', () => {
                   id: '9e397c90-b109-423d-812b-3c4ff815ce71',
                   name: 'class-name',
                   attributes: [
-                    { id: 'loc', name: 'loc', field: 'loc-xxxx' },
-                    { id: 'lat', name: 'lat', field: 'lat-xxxx' },
-                    { id: 'lng', name: 'lng', field: 'lng-xxxx' },
-                    { id: 'intensity', name: 'intensity', field: 'intensity-xxxx' }
+                    { id: 'loc', name: 'loc', technicalName: 'loc', field: 'loc-xxxx' },
+                    { id: 'lat', name: 'lat', technicalName: 'lat', field: 'lat-xxxx' },
+                    { id: 'lng', name: 'lng', technicalName: 'lng', field: 'lng-xxxx' },
+                    { id: 'intensity', name: 'intensity', technicalName: 'intensity', field: 'intensity-xxxx' }
                   ]
                 }
               ]
@@ -211,28 +235,28 @@ describe('FilterSettingsComponent', () => {
             datasource: 'fakeid',
             id: 'loc',
             label: 'loc / ds-name / class-name',
-            name: 'loc',
+            technicalName: 'loc',
             type: 'string'
           },
           {
             datasource: 'fakeid',
             id: 'lat',
             label: 'lat / ds-name / class-name',
-            name: 'lat',
+            technicalName: 'lat',
             type: 'string'
           },
           {
             datasource: 'fakeid',
             id: 'lng',
             label: 'lng / ds-name / class-name',
-            name: 'lng',
+            technicalName: 'lng',
             type: 'string'
           },
           {
             datasource: 'fakeid',
             id: 'intensity',
             label: 'intensity / ds-name / class-name',
-            name: 'intensity',
+            technicalName: 'intensity',
             type: 'keyword'
           }
         ]
@@ -264,7 +288,7 @@ describe('FilterSettingsComponent', () => {
   });
 
   it('should select attributes', () => {
-    let attribute = { id: 'id', name: 'test-attr', label: 'Test Attr', datasource: 'ds', type: 'string' } as Attribute;
+    let attribute = { id: 'id', name: 'test-attr', technicalName: 'tech-test-attr', label: 'Test Attr', datasource: 'ds', type: 'string' } as Attribute;
     component.selectAttribute([attribute]);
     expect(component.filter.attributes).toEqual([attribute]);
     expect(component.selectedAttribute$.value).toEqual(['id']);

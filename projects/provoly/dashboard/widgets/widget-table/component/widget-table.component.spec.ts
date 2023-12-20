@@ -67,10 +67,19 @@ describe('WidgetTableComponent', () => {
             {
               selector: ClassSelectors.classes,
               value: [
-                { id: 'a', attributes: [{ id: '1', field: 'f1', name: 'field-name-1' }] },
-                { id: 'b', attributes: [{ id: '2', field: 'f2', name: 'field-name-2' }] },
-                { id: 'c', attributes: [{ id: '3', field: 'f2', name: 'field-name-3' }] },
-                { id: 'd', attributes: [{ id: '4', field: 'f2', name: 'field-name-4' }] }
+                {
+                  id: 'a',
+                  attributes: [{ id: '1', field: 'f1', name: 'field-name-1', technicalName: 'field-name-1' }]
+                },
+                {
+                  id: 'b',
+                  attributes: [{ id: '2', field: 'f2', name: 'field-name-2', technicalName: 'field-name-2' }]
+                },
+                {
+                  id: 'c',
+                  attributes: [{ id: '3', field: 'f2', name: 'field-name-3', technicalName: 'field-name-3' }]
+                },
+                { id: 'd', attributes: [{ id: '4', field: 'f2', name: 'field-name-4', technicalName: 'field-name-4' }] }
               ]
             }
           ]

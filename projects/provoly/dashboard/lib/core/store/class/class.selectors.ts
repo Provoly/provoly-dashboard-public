@@ -4,7 +4,13 @@ import * as fromClass from './class.reducer';
 
 const feature = createFeatureSelector<fromClass.ClassState>(fromClass.classesFeatureKey);
 const entities = createSelector(feature, fromClass.selectEntities);
-const classes = createSelector(feature, fromClass.selectAll);
+const classEntities = createSelector(feature, fromClass.selectAll);
+const classes = createSelector(classEntities, (classes) =>
+  classes.map((c) => ({
+    ...c,
+    attributes: c.attributes.map((attr) => ({ ...attr, technicalName: attr.technicalName ?? attr.name }))
+  }))
+);
 const memoizeClassById = {} as any;
 const classById = (id: string) => {
   if (!memoizeClassById[id]) {

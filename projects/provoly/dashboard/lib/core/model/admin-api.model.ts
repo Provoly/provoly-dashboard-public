@@ -69,6 +69,7 @@ export const DEFAULT_CATEGORY_UUID = 'cf666d66-838f-4d92-a4d2-a315df21fac9';
 export interface AttributeExtended {
   id: string;
   name: string;
+  technicalName: string;
   field: string;
   fieldName: string;
   category?: string;

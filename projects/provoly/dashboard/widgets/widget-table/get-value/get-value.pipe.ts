@@ -14,7 +14,7 @@ export class GetValuePipe implements PipeTransform {
       filter(([classes, fields]) => !!classes && classes.length > 0),
       map(([classes, fields]) => {
         const oClass = classes.find((cl) => cl.id === value.oClass);
-        const attribute = oClass?.attributes.find((attr) => attr.name === args[0]);
+        const attribute = oClass?.attributes.find((attr) => attr.technicalName === args[0]);
         if (!!attribute) {
           const field = fields.find((f) => f.id === attribute.field);
           if (

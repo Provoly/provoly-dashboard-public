@@ -16,7 +16,7 @@ export class CqlUtils {
       .map((cond) => {
         const conditions = [];
 
-        const attributeName = attributesReference.find((attr) => attr.id === cond.attribute)?.name;
+        const attributeName = attributesReference.find((attr) => attr.id === cond.attribute)?.technicalName;
 
         if (attributeName && cond.value && (typeof cond.value !== 'string' || cond.value.length > 0)) {
           switch (cond.operator) {

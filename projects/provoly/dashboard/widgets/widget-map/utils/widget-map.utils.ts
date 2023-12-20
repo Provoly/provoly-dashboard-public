@@ -79,7 +79,7 @@ export class WidgetMapUtils {
         }
 
         if (candidates.length > 0) {
-          specificLayer.attribute = candidates[0].attr.name;
+          specificLayer.attribute = candidates[0].attr.technicalName;
         }
       }
     }
@@ -102,7 +102,7 @@ export class WidgetMapUtils {
       const classes = classesNotFiltered.filter(
         (cl) =>
           (specificLayer.classes?.includes(cl.id) || !specificLayer.classes || specificLayer.classes.length === 0) &&
-          cl.attributes.find((attr) => attr.name === (specificLayer?.attribute ?? []))
+          cl.attributes.find((attr) => attr.technicalName === (specificLayer?.attribute ?? []))
       );
 
       if (!specificLayer.intensityAttribute) {
@@ -118,7 +118,7 @@ export class WidgetMapUtils {
                 return {
                   min: Math.min(...attrValues),
                   max: Math.max(...attrValues),
-                  name: attr.attr.name
+                  technicalName: attr.attr.technicalName
                 };
               });
           })
@@ -126,7 +126,7 @@ export class WidgetMapUtils {
           .sort((a, b) => b.max - a.max);
 
         if (candidatesDry.length > 0) {
-          specificLayer.intensityAttribute = candidatesDry[0].name;
+          specificLayer.intensityAttribute = candidatesDry[0].technicalName;
           specificLayer.intensityAsc = true;
         }
       }
@@ -333,7 +333,7 @@ export class WidgetMapUtils {
       return null;
     }
 
-    let value = item.attributes[attribute.name];
+    let value = item.attributes[attribute.technicalName];
     if (value.type === 'MULTI') {
       value = value.values[0];
     }

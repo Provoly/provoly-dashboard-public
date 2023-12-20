@@ -23,6 +23,10 @@
   <ng-template #attributeDetails>
     <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
     <p class="a-p">
+      {{ '@pry.admin.classes.attributes.technicalName' | i18n }} :
+      <strong>{{ attribute.technicalName }}</strong>
+    </p>
+    <p class="a-p">
       {{ '@pry.admin.classes.attributes.name' | i18n }} :
       <strong>{{ attribute.name }}</strong>
     </p>

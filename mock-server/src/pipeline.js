@@ -58,7 +58,7 @@ const pipeline = (payload) => {
         nodeId: node.id,
         outModel: {
           attributes: attributes.map((attr) => ({
-            name: attr.name,
+            technicalName: attr.technicalName,
             type: fields.get().find((field) => field.id === attr.field)?.type ?? 'string'
           }))
         },

@@ -78,7 +78,7 @@ const routes: Routes = [
           attributes: [
             {
               id: 'f629ef8a-8773-4e3b-914b-6ab838d255bb',
-              name: 'statut',
+              technicalName: 'statut',
               label: 'statut / CKDo:EquipementsPublics / Equipements publics',
               datasource: 's6406e7e-37cd-41ce-b5fc-36d233e6ae5c'
             }

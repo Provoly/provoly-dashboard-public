@@ -98,7 +98,7 @@ router.on(['OPTIONS', 'GET'], '/monitor/about/version', (req, res, params) => {
   makeResponseOk(res, { applicationVersion: 'dev-9c9476a3', chartVersion: '0.7.134' });
 });
 router.on(['OPTIONS', 'GET'], '/ref/model/class', (req, res, params) => {
-  makeResponseOk(res, dataModule.classes);
+  makeResponseOk(res, dataModule.class.get());
 });
 
 router.on(['OPTIONS', 'GET'], '/ref/model/class/:id/associations', (req, res, params) => {
@@ -117,6 +117,7 @@ router.on(['OPTIONS', 'PUT'], '/ref/model/class/id/:id/attribute', (req, res, pa
         if (attributeIndex !== -1) {
           dataModule.classes[classIndex].attributes[attributeIndex].id = payload.id;
           dataModule.classes[classIndex].attributes[attributeIndex].name = payload.name;
+          dataModule.classes[classIndex].attributes[attributeIndex].technicalName = payload.technicalName;
           dataModule.classes[classIndex].attributes[attributeIndex].field = payload.field;
           dataModule.classes[classIndex].attributes[attributeIndex].category = payload.category;
         } else {

@@ -46,21 +46,21 @@ const classes = [
     id: 'aaa',
     name: 'a',
     attributes: [
-      { id: 'loc', name: 'loc', field: 'loc-xxxx' },
-      { id: 'lat', name: 'lat', field: 'lat-xxxx' },
-      { id: 'lng', name: 'lng', field: 'lng-xxxx' },
-      { id: 'intensity', name: 'intensity', field: 'intensity-xxxx' }
+      { id: 'loc', name: 'loc', technicalName: 'loc', field: 'loc-xxxx' },
+      { id: 'lat', name: 'lat', technicalName: 'lat', field: 'lat-xxxx' },
+      { id: 'lng', name: 'lng', technicalName: 'lng', field: 'lng-xxxx' },
+      { id: 'intensity', name: 'intensity', technicalName: 'intensity', field: 'intensity-xxxx' }
     ]
   },
   {
     id: 'geoClass',
     name: 'geoClassName',
     attributes: [
-      { id: 'loc', name: 'loc', field: 'loc-xxxx' },
-      { id: 'lat', name: 'lat', field: 'lat-xxxx' },
-      { id: 'lng', name: 'lng', field: 'lng-xxxx' },
-      { id: 'zone', name: 'zone', field: 'zone' },
-      { id: 'intensity', name: 'intensity', field: 'intensity-xxxx' }
+      { id: 'loc', name: 'loc', technicalName: 'loc', field: 'loc-xxxx' },
+      { id: 'lat', name: 'lat', technicalName: 'lat', field: 'lat-xxxx' },
+      { id: 'lng', name: 'lng', technicalName: 'lng', field: 'lng-xxxx' },
+      { id: 'zone', name: 'zone', technicalName: 'zone',  field: 'zone' },
+      { id: 'intensity', name: 'intensity', technicalName: 'intensity', field: 'intensity-xxxx' }
     ]
   }
 ] as Class[];
@@ -212,6 +212,7 @@ describe('WidgetMapUtils functions', () => {
       const geometry = WidgetMapUtils.readGeometry(get('EPSG:3857')!, item, 'point', {
         id: 'sxxx',
         name: 'location',
+        technicalName: 'location',
         field: 'b',
         multiValued: true
       });

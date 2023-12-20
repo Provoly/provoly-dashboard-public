@@ -8,7 +8,7 @@ describe('GetValuePipe', () => {
   const pipe = new GetValuePipe({
     select: () =>
       new BehaviorSubject([
-        { id: 'b', name: 'b-name', attributes: [{ id: 'a-id', name: 'a', multiValued: false }] }
+        { id: 'b', name: 'b-name', attributes: [{ id: 'a-id', name: 'a', technicalName: 'a', multiValued: false }] }
       ] as Class[])
   } as unknown as Store<any>);
 

@@ -21,7 +21,7 @@ describe('WidgetMapGeometryFieldsForPipe', () => {
       pipe.transform({ type: 'bubble', attribute: '' }, { resultSet: of({ items: { aaa: [] }, relations: [] }) })
     ).toBeObservable(
       hot('a', {
-        a: [{ field: 'loc-xxxx', id: 'loc', name: 'loc' }]
+        a: [{ field: 'loc-xxxx', id: 'loc', name: 'loc', technicalName: 'loc' }]
       })
     );
   });

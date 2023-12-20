@@ -121,9 +121,10 @@ export class AdminClassesCustomizeTooltipComponent extends SubscriptionnerDirect
       if (component) {
         component.instance.data.item = this.fields
           .map((attr) => ({
-            [attr.name]: {
+            [attr.technicalName]: {
               type: 'VALUE',
-              value: '«' + this.translateService.instant('@pry.admin.customize.exemple', { expr: attr.name }) + '»',
+              value:
+                '«' + this.translateService.instant('@pry.admin.customize.exemple', { expr: attr.technicalName }) + '»',
               visible: true
             } as AttributeSimpleValue
           }))

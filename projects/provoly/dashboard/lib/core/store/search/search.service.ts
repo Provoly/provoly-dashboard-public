@@ -111,7 +111,7 @@ export class SearchService {
     attributes:
       | {
           id: string;
-          name: string;
+          technicalName: string;
           label: string;
           datasource: string;
         }[]

@@ -1,7 +1,7 @@
 <ng-container *ngIf="(selectedclass$ | async) || (interClass$ | async) as selectedClass">
   <div class="o-base-container">
     <h1 class="a-h1">
-      {{ '@pry.admin.classes.title' | i18n: { class: selectedClass.name } }}
+      {{ '@pry.admin.classes.title' | i18n : { class: selectedClass.name } }}
     </h1>
     <table
       class="a-table"
@@ -21,6 +21,7 @@
       <thead>
         <tr>
           <th></th>
+          <th prySortHeader="technicalName">{{ '@pry.admin.classes.attributes.technicalName' | i18n }}</th>
           <th prySortHeader="name">{{ '@pry.admin.classes.attributes.name' | i18n }}</th>
           <th prySortHeader="field">{{ '@pry.admin.classes.attributes.field' | i18n }}</th>
           <th prySortHeader="category">{{ '@pry.admin.classes.attributes.category' | i18n }}</th>
@@ -28,7 +29,7 @@
       </thead>
       <tbody>
         <tr
-          *ngFor="let attr of attributesExtended$ | async | prySortData: sortActive : sortDirection"
+          *ngFor="let attr of attributesExtended$ | async | prySortData : sortActive : sortDirection"
           (click)="selectAttr(attr)"
           [class.is-selected]="(selectedAttributeId$ | async) === attr.id"
         >
@@ -46,6 +47,7 @@
               <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
             </button>
           </td>
+          <td>{{ attr.technicalName }}</td>
           <td>{{ attr.name }}</td>
           <td>{{ attr.fieldName }}</td>
           <td>{{ attr.categoryName }}</td>

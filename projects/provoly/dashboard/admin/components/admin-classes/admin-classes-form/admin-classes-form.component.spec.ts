@@ -22,6 +22,7 @@ jest.mock('uuid', () => ({ v4: () => 'adfd01fb-309b-4e1c-9117-44d003f5d7fc' }));
 let attribute = {
   id: 'adfd01fb-309b-4e1c-9117-44d003f5d7fc',
   name: 'id',
+  technicalName: 'id',
   field: FIELD_UUID,
   multiValued: false
 };

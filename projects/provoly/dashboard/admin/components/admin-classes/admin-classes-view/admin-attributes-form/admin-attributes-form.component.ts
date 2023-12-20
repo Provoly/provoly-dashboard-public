@@ -41,13 +41,18 @@ import { AdminClassActions } from '../../store/admin-class.actions';
 export class AdminAttributesFormComponent implements OnInit, OnDestroy {
   attrForm: UntypedFormGroup;
   sub = new Subscription();
-  nameAlreadyExists$?: Observable<boolean>;
+
   attributeNames?: string[];
+  attributeTechnicalNames?: string[];
+  nameAlreadyExists$?: Observable<boolean>;
+  technicalNameAlreadyExists$?: Observable<boolean>;
+  nameAlreadyExists = false;
+  technicalNameAlreadyExists = false;
+
   fields$: Observable<Field[]>;
   selectedFieldTypeDescription$?: Observable<string | undefined>;
   fieldTypeDescription = FIELD_OPTIONS;
   categories$: Observable<Category[]>;
-  nameAlreadyExists = false;
   isShowedCategory = false;
   catToAdd = {} as Category;
 
@@ -79,7 +84,11 @@ export class AdminAttributesFormComponent implements OnInit, OnDestroy {
 
     this.attrForm = this.formBuilder.group({
       id: [uuid()],
-      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100), noWhitespaceValidator]],
+      technicalName: [
+        '',
+        [Validators.required, Validators.minLength(2), Validators.maxLength(100), noWhitespaceValidator]
+      ],
+      name: ['', [Validators.maxLength(50), noWhitespaceValidator]],
       description: [{ value: '', disabled: true }],
       field: ['', [Validators.required]],
       category: [DEFAULT_CATEGORY_UUID],
@@ -89,14 +98,17 @@ export class AdminAttributesFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.attributeNames = this.interClass?.attributes.map((attr: Attribute) => attr.name);
+    this.attributeTechnicalNames = this.interClass?.attributes.map((attr: Attribute) => attr.technicalName);
 
     if (this.selectedClass) {
       this.attributeNames = this.selectedClass.attributes.map((attr: Attribute) => attr.name);
+      this.attributeTechnicalNames = this.selectedClass.attributes.map((attr: Attribute) => attr.technicalName);
 
       if (this.selectedAttribute) {
         this.attrForm.patchValue({
           id: this.selectedAttribute.id,
-          name: this.selectedAttribute.name,
+          technicalName: this.selectedAttribute.technicalName,
+          name: this.selectedAttribute.name ?? this.selectedAttribute.technicalName,
           field: this.selectedAttribute.field,
           category: this.selectedAttribute.category
         });
@@ -105,13 +117,27 @@ export class AdminAttributesFormComponent implements OnInit, OnDestroy {
     }
 
     if (this.attributeNames) {
-      this.nameAlreadyExists$ = combineLatest([
-        this.attrForm.get('name')?.valueChanges as Observable<string>,
-        of(this.attributeNames)
-      ]).pipe(
-        map(([value, attributeNames]) => attributeNames.includes(value) && value != this.selectedAttribute?.name)
-      );
+      this.nameAlreadyExists$ = this.attrForm
+        .get('name')!
+        .valueChanges.pipe(
+          map((value) => !!this.attributeNames?.includes(value) && value != this.selectedAttribute?.name)
+        );
       this.sub.add(this.nameAlreadyExists$.subscribe((value) => (this.nameAlreadyExists = value)));
+    }
+
+    if (this.attributeTechnicalNames) {
+      this.technicalNameAlreadyExists$ = this.attrForm
+        .get('technicalName')!
+        .valueChanges.pipe(
+          map(
+            (value) => !!this.attributeTechnicalNames?.includes(value) && value != this.selectedAttribute?.technicalName
+          )
+        );
+      this.sub.add(
+        this.technicalNameAlreadyExists$.subscribe((value) => {
+          this.technicalNameAlreadyExists = value;
+        })
+      );
     }
 
     this.selectedFieldTypeDescription$ = this.attrForm.get('field')?.valueChanges.pipe(
@@ -144,6 +170,18 @@ export class AdminAttributesFormComponent implements OnInit, OnDestroy {
     this.attrForm.patchValue({
       name: this.attrForm.value.name.trim()
     });
+
+    if (!this.attrForm.value.name) {
+      this.attrForm.patchValue({
+        name: this.attrForm.value.technicalName.slice(0, 50)
+      });
+    }
+
+    if (this.attributeNames?.includes(this.attrForm.value.technicalName.slice(0, 50))) {
+      this.nameAlreadyExists = true;
+      this.attrForm.controls['name'].setErrors({ alreadyExists: true });
+      return;
+    }
 
     if (this.attrForm.valid) {
       let attrToSave = this.attrForm.getRawValue() as Attribute;
