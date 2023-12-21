@@ -85,7 +85,8 @@ export const enTranslations = {
         },
         open: 'Open/Close menu',
         zoomIn: 'Zoom In',
-        zoomOut: 'Zoom Out'
+        zoomOut: 'Zoom Out',
+        slideTitle: 'Displayed data'
       }
     }
   }

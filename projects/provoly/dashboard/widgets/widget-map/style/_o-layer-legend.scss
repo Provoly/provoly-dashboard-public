@@ -95,3 +95,24 @@
   }
 
 }
+
+.m-map-slide-legend {
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+  background-color: white;
+  border-radius: toRem(5);
+  padding: toRem(5);
+
+  &.-left {
+    left: toRem(65);
+  }
+
+  &.-right {
+    right: toRem(47);
+  }
+
+  &__title {
+    font-weight: bold;
+  }
+}

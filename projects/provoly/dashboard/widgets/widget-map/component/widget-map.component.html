@@ -490,6 +490,20 @@
     </ng-container>
   </div>
 
+  <div class="m-map-slide-legend -left" *ngIf="leftSlideLayers.length > 0" [style.top.px]="legendTop$ | async">
+    <span class="m-map-slide-legend__title">{{ '@pry.widget.map.slideTitle' | i18n }}:</span>
+    <div *ngFor="let layer of leftSlideLayers">
+      {{ layer.get('title') }}
+    </div>
+  </div>
+
+  <div class="m-map-slide-legend -right" *ngIf="rightSlideLayers.length > 0" [style.top.px]="legendTop$ | async">
+    <span class="m-map-slide-legend__title">{{ '@pry.widget.map.slideTitle' | i18n }}:</span>
+    <div *ngFor="let layer of rightSlideLayers">
+      {{ layer.get('title') }}
+    </div>
+  </div>
+
   <div [style.height.px]="height$ | async" class="o-map-wrapper">
     <div class="o-map">
       <div #mapRef id="map"></div>

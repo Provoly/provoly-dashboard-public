@@ -1451,10 +1451,18 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   get mapLayers() {
-    return this.map
+    return (this.map ?? { getLayers: () => ({ getArray: () => [] }) })
       .getLayers()
       .getArray()
       .filter((layer) => layer.get('title') !== 'background');
+  }
+
+  get rightSlideLayers() {
+    return this.mapLayers.filter((layer) => layer.get('slide') === 'right');
+  }
+
+  get leftSlideLayers() {
+    return this.mapLayers.filter((layer) => layer.get('slide') === 'left');
   }
 
   changeVisibility(layer: BaseLayer) {

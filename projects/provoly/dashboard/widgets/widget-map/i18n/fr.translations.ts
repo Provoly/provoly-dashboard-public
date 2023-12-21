@@ -85,7 +85,8 @@ export const frTranslations = {
         },
         open: 'Ouverture/Fermeture menu',
         zoomIn: 'Zoomer',
-        zoomOut: 'Dézoomer'
+        zoomOut: 'Dézoomer',
+        slideTitle: 'Données affichées'
       }
     }
   }
