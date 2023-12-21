@@ -53,10 +53,12 @@
       </div>
     </ng-template>
   </ng-container>
-  <li class="m-actions-list__item" *ngIf="isManualMode$ | async">
-    <pry-edit-mode-toggle
-      *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'edit_dashboard' }"
-      [displayLabels]="displayLabels"
-    ></pry-edit-mode-toggle>
-  </li>
+  <ng-container *ngIf="showEditToggle$ | async">
+    <li class="m-actions-list__item" *ngIf="isManualMode$ | async">
+      <pry-edit-mode-toggle
+        *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'edit_dashboard' }"
+        [displayLabels]="displayLabels"
+      ></pry-edit-mode-toggle>
+    </li>
+  </ng-container>
 </ul>

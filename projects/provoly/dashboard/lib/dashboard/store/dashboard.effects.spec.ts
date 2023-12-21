@@ -189,7 +189,8 @@ describe('DashboardEffects', () => {
               save_view: false,
               save_view_as: false
             },
-            useFilters: false
+            useFilters: false,
+            edit_toggle: false
           }
         })
       });

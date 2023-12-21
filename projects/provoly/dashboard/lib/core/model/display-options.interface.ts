@@ -6,6 +6,7 @@ export interface DisplayOptions {
   catalog: boolean;
   useFilters: boolean;
   toolbox: ToolboxDisplayOptions;
+  edit_toggle: boolean;
 }
 
 export interface ToolboxDisplayOptions {
@@ -33,7 +34,8 @@ export const BASE_DISPLAY_OPTIONS = {
     default_size: false,
     refresh_datasets: false,
     automate_refresh: false
-  }
+  },
+  edit_toggle: false
 } as DisplayOptions;
 
 export function getDisplayOptions(mode?: ViewMode): DisplayOptions {
@@ -49,7 +51,8 @@ export function getDisplayOptions(mode?: ViewMode): DisplayOptions {
         ...BASE_DISPLAY_OPTIONS,
         presentationTitle: false,
         search: true,
-        toolbox: { ...BASE_DISPLAY_OPTIONS.toolbox, clear_view: true, default_size: true, refresh_datasets: true }
+        toolbox: { ...BASE_DISPLAY_OPTIONS.toolbox, clear_view: true, default_size: true, refresh_datasets: true },
+        edit_toggle: true
       };
 
     case ViewMode.EDITION:
@@ -63,7 +66,8 @@ export function getDisplayOptions(mode?: ViewMode): DisplayOptions {
             acc[key] = true;
             return acc;
           }, {} as ToolboxDisplayOptions)
-        }
+        },
+        edit_toggle: true
       };
     default:
       return BASE_DISPLAY_OPTIONS;

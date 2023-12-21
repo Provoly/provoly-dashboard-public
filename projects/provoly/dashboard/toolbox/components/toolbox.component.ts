@@ -26,6 +26,7 @@ export class ToolboxComponent implements OnInit {
   showDropdownButton$!: Observable<boolean>;
   isDropdownOpen = false;
   actionsAvailable$: Observable<DisplayOptions | undefined>;
+  showEditToggle$: Observable<boolean>;
 
   @Input() set actions(actions: ToolboxAction[]) {
     this.actions$.next(actions);
@@ -41,6 +42,7 @@ export class ToolboxComponent implements OnInit {
       .select(DashboardSelectors.windowManifest)
       .pipe(map((pres) => (pres.grid?.layout ?? DashboardGridLayout.MANUAL) === DashboardGridLayout.MANUAL));
     this.actionsAvailable$ = store.select(DashboardSelectors.displayOptions);
+    this.showEditToggle$ = this.actionsAvailable$.pipe(map((actions) => !!actions?.edit_toggle));
   }
 
   ngOnInit() {
