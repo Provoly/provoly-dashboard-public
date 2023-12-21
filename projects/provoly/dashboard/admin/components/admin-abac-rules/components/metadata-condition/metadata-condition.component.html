@@ -28,12 +28,9 @@
         <label class="a-label u-visually-hidden" for="metadata_operator">???</label>
         <pry-select
           id="metadata_operator"
-          class="a-pry-select"
           [readonly]="readonly"
           [style.width.px]="160"
-          [labelTranslate]="true"
           [items]="operators$ | async"
-          [itemsAsOption]="true"
           bindValue="operator"
           bindLabel="translation"
           [ngModel]="condition.operator"

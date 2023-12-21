@@ -41,10 +41,9 @@
       </label>
       <div class="title-container">
         <pry-select
-          class="a-pry-select -width-sm"
+          class="-width-sm"
           formControlName="type"
           [items]="fieldTypeTranslations"
-          [itemsAsOption]="true"
           bindValue="varType"
           bindLabel="translation"
           [isForm]="true"
@@ -67,11 +66,9 @@
       </label>
       <div class="title-container">
         <pry-select
-          class="a-pry-select -width-sm"
+          class="-width-sm"
           formControlName="crs"
-          [labelTranslate]="false"
           [items]="CRS_OPTIONS"
-          [itemsAsOption]="true"
           bindValue="code"
           bindLabel="label"
           [isForm]="true"

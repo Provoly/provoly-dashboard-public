@@ -3,9 +3,7 @@
     <input class="a-form-field" type="text" [ngModel]="attributeName$ | async" readonly />
     <pry-select
       class="a-pry-select operator"
-      [labelTranslate]="true"
       [items]="operatorOptions$ | async"
-      [itemsAsOption]="true"
       bindValue="operator"
       bindLabel="translation"
       name="operator"

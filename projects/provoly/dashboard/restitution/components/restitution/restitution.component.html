@@ -11,10 +11,7 @@
           <label for="restitution" class="a-label">{{ '@pry.restitution.restitution_type' | i18n }}</label>
           <pry-select
             id="restitution"
-            class="a-pry-select"
-            [itemsAsOption]="true"
             [items]="types$ | async"
-            [labelTranslate]="true"
             [(ngModel)]="form.selectedWidget"
             [disabled]="consultMode"
             bindIcon="icon"

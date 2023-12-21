@@ -28,12 +28,9 @@
       '@pry.admin.metadata-rules.metadata-item.name' | i18n
     }}</label>
     <pry-select
-      class="a-pry-select"
       id="item"
       formControlName="metadataItem"
-      [labelTranslate]="true"
       [items]="metadataList"
-      [itemsAsOption]="true"
       bindValue="id"
       bindLabel="name"
       [isForm]="true"
@@ -47,12 +44,9 @@
       '@pry.admin.metadata-rules.metadata-user.name' | i18n
     }}</label>
     <pry-select
-      class="a-pry-select"
       id="user"
       formControlName="metadataUser"
-      [labelTranslate]="true"
       [items]="metadataUserListFilter"
-      [itemsAsOption]="true"
       bindValue="id"
       bindLabel="name"
       [isForm]="true"

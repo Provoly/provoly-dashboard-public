@@ -3,11 +3,9 @@
     <label class="a-label" for="tooltip_type">{{ '@pry.admin.customize.type' | i18n }}</label>
     <pry-select
       id="tooltip_type"
-      class="a-pry-select"
       (ngModelChange)="tooltipTypeChanged($event)"
       [ngModel]="currentClassConfig.type"
       [items]="possibleTooltipTypes$ | async"
-      [itemsAsOption]="true"
       bindValue="value"
       bindLabel="label"
     ></pry-select>
@@ -21,10 +19,8 @@
     <label class="a-label" for="customize_simplified">{{ '@pry.admin.customize.simplified' | i18n }}</label>
     <pry-select
       id="customize_simplified"
-      class="a-pry-select"
       (ngModelChange)="changeAttributes($event)"
       [ngModel]="currentClassConfig.options.attributes"
-      [itemsAsOption]="true"
       [items]="possibleAttributes"
       [multiple]="true"
       [closeOnSelect]="false"

@@ -1,14 +1,12 @@
 <div class="m-form-label-field">
   <label class="a-label" for="filter">{{ '@pry.pipeline.filter.filter' | i18n }}</label>
   <pry-select
-    [itemsAsOption]="true"
     [items]="model?.attributes ?? null"
     [ngModel]="node.properties['attributeName']"
     (ngModelChange)="changeAttribute($event)"
     [disabled]="disabled"
     bindLabel="technicalName"
     bindValue="technicalName"
-    class="a-pry-select"
     id="filter"
   ></pry-select>
 </div>
@@ -20,7 +18,6 @@
     [ngModel]="node.properties['operator']"
     (ngModelChange)="changeOperator($event)"
     [disabled]="disabled"
-    class="a-pry-select"
     id="operator"
   ></pry-select>
 </div>

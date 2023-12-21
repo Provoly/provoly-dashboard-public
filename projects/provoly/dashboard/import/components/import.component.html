@@ -7,10 +7,8 @@
         <div class="m-form-label-field">
           <label class="a-h3" for="datasets">{{ '@pry.import.fileType' | i18n }}</label>
           <pry-select
-            class="a-pry-select"
             id="fileType"
             [items]="fileTypes"
-            [itemsAsOption]="true"
             [ngModel]="fileTypes[0].value"
             [disabled]="false"
             (ngModelChange)="onFileTypeChange($event)"
@@ -39,10 +37,8 @@
       <div class="m-form-label-field">
         <label class="a-h3" for="datasets">{{ '@pry.import.datasetImport' | i18n }}</label>
         <pry-select
-          class="a-pry-select"
           id="datasets"
           [items]="datasets$ | async"
-          [itemsAsOption]="true"
           [(ngModel)]="datasetSelected"
           [placeholder]="'@pry.import.dataset' | i18n"
           bindValue="id"

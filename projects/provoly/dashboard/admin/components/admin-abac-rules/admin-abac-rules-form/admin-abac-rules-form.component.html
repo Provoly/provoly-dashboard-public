@@ -91,7 +91,6 @@
           </label>
           <pry-select
             id="predicate"
-            class="a-pry-select"
             [attr.aria-labelledby]="
               isSubmitted && abacRuleForm.form.get('predicate')?.invalid
                 ? 'predicate-label predicate-error'
@@ -101,8 +100,7 @@
             [items]="predicates$ | async"
             bindLabel="name"
             bindValue="id"
-            [itemsAsOption]="true"
-            [templateOption]="templateOption"
+            [template]="templateOption"
             name="predicate"
             [ngModel]="rule.predicate"
             (ngModelChange)="onChangeAbacRuleProperty('predicate', $event)"

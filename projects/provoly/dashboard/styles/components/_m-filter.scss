@@ -43,27 +43,18 @@
       padding: toRem(3) toRem(10);
     }
 
-    .ng-select-container {
+    height: toRem(30);
+
+    .a-pry-select {
       border: none;
-      min-width: toRem(150);
-    }
+      padding: 0;
+      outline: none;
 
-    .ng-select.ng-select-single .ng-select-container {
-      min-height: toRem(22);
-      height: toRem(22);
-    }
-
-    .ng-dropdown-panel.ng-select-bottom {
-      margin-top: 3px;
-    }
-
-    .ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container{
-      border: none transparent;
-      box-shadow: none;
-    }
-
-    .ng-option-label {
-      font-size: toRem(12);
+      &:focus-within {
+        outline: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
     }
   }
 

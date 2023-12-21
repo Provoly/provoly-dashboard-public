@@ -45,19 +45,16 @@ const routes: Routes = [
               layers: [
                 {
                   type: 'marker',
-                  fit: true,
-                  slide: 'right'
+                  fit: true
                 },
                 {
                   type: 'heatmap',
-                  classes: ['17b90da3-f448-4cc3-bfd8-74c8b8481590'],
-                  slide: 'right'
+                  classes: ['0e745c78-4a74-4bfd-9789-06ec93f7d364']
                 },
                 {
                   type: 'bubble',
                   classes: ['06406e7e-37cd-41ce-b5fc-36d233e5ae5c'],
-                  opacity: 50,
-                  slide: 'left'
+                  opacity: 50
                 },
                 {
                   type: 'wms',

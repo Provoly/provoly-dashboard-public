@@ -1,22 +1,21 @@
 <pry-filter-group-css></pry-filter-group-css>
-  <ng-container *ngIf="globalManifest$ | async as manifest">
-    <div class="o-container__filters" *ngIf="manifest.filters && manifest.filters.length > 0">
-      <div class="o-container__filter-container" (click)="openSelect()" [class.o-container__filter-container--ng-select-open]="isSelectOpen">
-        <pry-filter-instanciator
-          *ngFor="let filter of manifest.filters"
-          [filter]="filter"
-          [applyFilter$]="apply$"
-        ></pry-filter-instanciator>
-      </div>
-      <div class="o-container__filter-actions">
-        <button type="button" class="a-btn a-btn--secondary a-btn--icon-only -size-md" (click)="clearFilters()">
-          <pry-icon iconSvg="clear_filter"></pry-icon>
-        </button>
-        <button type="button" class="a-btn a-btn--primary -size-md" (click)="filter()">
-          {{ '@pry.toolbox.filter' | i18n }}
-          <pry-icon iconSvg="refresh_filter"></pry-icon>
-        </button>
-      </div>
+<ng-container *ngIf="globalManifest$ | async as manifest">
+  <div class="o-container__filters" *ngIf="manifest.filters && manifest.filters.length > 0">
+    <div class="o-container__filter-container" (click)="openSelect()">
+      <pry-filter-instanciator
+        *ngFor="let filter of manifest.filters"
+        [filter]="filter"
+        [applyFilter$]="apply$"
+      ></pry-filter-instanciator>
     </div>
-  </ng-container>
-
+    <div class="o-container__filter-actions">
+      <button type="button" class="a-btn a-btn--secondary a-btn--icon-only -size-md" (click)="clearFilters()">
+        <pry-icon iconSvg="clear_filter"></pry-icon>
+      </button>
+      <button type="button" class="a-btn a-btn--primary -size-md" (click)="filter()">
+        {{ '@pry.toolbox.filter' | i18n }}
+        <pry-icon iconSvg="refresh_filter"></pry-icon>
+      </button>
+    </div>
+  </div>
+</ng-container>

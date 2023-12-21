@@ -22,14 +22,12 @@
         <label class="a-label" for="tile_classes">{{ '@pry.widget.tile.classes' | i18n }}</label>
         <pry-select
           (ngModelChange)="changeClasses($event)"
-          [itemsAsOption]="true"
           [items]="classes$ | async"
           [multiple]="true"
           [closeOnSelect]="false"
           [ngModel]="optionsCopy.classes"
           bindLabel="name"
           bindValue="id"
-          class="a-pry-select"
           id="tile_classes"
         ></pry-select>
       </div>

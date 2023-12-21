@@ -1,5 +1,8 @@
 export const enTranslations = {
   '@pry': {
+    select: {
+      label: 'Options list'
+    },
     about: {
       front: 'Version Front Library : {{value}} ',
       ref: 'Version repository : {{value}}',

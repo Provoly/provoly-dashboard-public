@@ -3,7 +3,6 @@
   <pry-select
     (ngModelChange)="changeColorScheme($event)"
     [ngModel]="scheme$ | async"
-    [itemsAsOption]="true"
     [items]="schemes$ | async"
     id="scheme"
     bindValue="id"

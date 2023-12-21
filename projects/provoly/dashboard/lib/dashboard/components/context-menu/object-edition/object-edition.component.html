@@ -22,10 +22,8 @@
           <pry-select
             [(ngModel)]="relation.typeId"
             [items]="relations$ | async"
-            [itemsAsOption]="true"
             bindLabel="label"
             bindValue="id"
-            class="a-pry-select"
             id="createobject_link"
           ></pry-select>
         </div>
@@ -48,10 +46,8 @@
             [ngModel]="tmpObject.oClass"
             (ngModelChange)="changeClass($event)"
             [items]="classes"
-            [itemsAsOption]="true"
             bindValue="id"
             bindLabel="name"
-            class="a-pry-select"
             id="createobject_class"
           ></pry-select>
         </div>
@@ -110,11 +106,8 @@
                     [ngModel]="method"
                     (ngModelChange)="setRawMethod(attribute, $event)"
                     [items]="rawMethods"
-                    [itemsAsOption]="true"
                     bindValue="id"
                     bindLabel="name"
-                    [labelTranslate]="true"
-                    class="a-pry-select"
                   ></pry-select>
                   <input
                     type="text"
@@ -141,7 +134,7 @@
               (click)="addMultiValued(attribute)"
             >
               <pry-icon iconSvg="add"></pry-icon>
-              <span>{{ '@pry.context.createObject.addMultiField' | i18n: { name: attribute.name } }}</span>
+              <span>{{ '@pry.context.createObject.addMultiField' | i18n : { name: attribute.name } }}</span>
             </button>
             <div class="multi-value" *ngFor="let multiValue of multiValues(attribute); let i = index">
               <ng-container [ngSwitch]="fieldType(attribute)">

@@ -46,15 +46,3 @@
     }
   }
 }
-
-.o-component-pry-composed-condition.ng-select-disabled {
-  .o-pry-composed-condition__type.-vertical-bar {
-    &:before {
-      background-color: themed($theme-map, 'color', 'primary', 400);
-    }
-
-    &:after {
-      border-color: themed($theme-map, 'color', 'primary', 400);
-    }
-  }
-}

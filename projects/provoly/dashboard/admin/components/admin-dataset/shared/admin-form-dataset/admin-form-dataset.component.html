@@ -44,33 +44,28 @@
   <div class="m-form-label-field -width-sm">
     <label class="a-label" id="item-label" for="class">{{ '@pry.admin.dataset.oClass' | i18n }}</label>
     <pry-select
-      class="a-pry-select"
       id="class"
       formControlName="oClass"
       [items]="classes | async"
-      [itemsAsOption]="true"
       bindValue="id"
       bindLabel="name"
       [isForm]="true"
       aria-labelledby="item-label"
-      [readonly]="dataset$ ? true : false"
+      [readonly]="!!dataset$"
     ></pry-select>
   </div>
 
   <div class="m-form-label-field -width-sm">
     <label class="a-label" id="user-label" for="type">{{ '@pry.admin.dataset.type' | i18n }}</label>
     <pry-select
-      class="a-pry-select"
       id="type"
       formControlName="type"
       [items]="datasetTypes"
-      [itemsAsOption]="true"
       bindValue="value"
       bindLabel="label"
       [isForm]="true"
-      [labelTranslate]="true"
       aria-labelledby="user-label"
-      [readonly]="dataset$ ? true : false"
+      [readonly]="!!dataset$"
     ></pry-select>
   </div>
 

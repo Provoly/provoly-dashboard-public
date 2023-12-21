@@ -5,7 +5,6 @@ import { PryI18nService } from '../../i18n/i18n.service';
 import { ClassSelectors } from '../../store/class/class.selectors';
 import { ConfigSelectors } from '../../store/config/config.selectors';
 import { FieldSelectors } from '../../store/field/field.selectors';
-import { ImageService } from '../../store/image/image.service';
 import { SymbolService } from '../../symbol/symbol.service';
 import { TranslateIdPipe } from './translate-id.pipe';
 
@@ -33,7 +32,6 @@ describe('TranslateIdPipe', () => {
     const pipe = new TranslateIdPipe(
       { dispatch: () => undefined } as unknown as Store,
       { instant: (x: string) => x } as PryI18nService,
-      { getImage: (y: string) => y } as unknown as ImageService,
       { domSanitizer: () => undefined } as unknown as SymbolService
     );
     expect(pipe).toBeTruthy();
@@ -59,7 +57,6 @@ describe('TranslateIdPipe', () => {
         }
       } as unknown as Store,
       { instant: (x: string) => x } as PryI18nService,
-      { getImage: (y: string) => of({ type: y, url: y }) } as unknown as ImageService,
       { getSymbolOfClass: () => of('xxxx') } as unknown as SymbolService
     );
   });

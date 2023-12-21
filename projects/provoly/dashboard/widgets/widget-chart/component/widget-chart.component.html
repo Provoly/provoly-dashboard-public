@@ -41,12 +41,9 @@
           <label class="a-label" for="chart_type">{{ '@pry.widget.chart.type' | i18n }}</label>
           <pry-select
             (ngModelChange)="changeType($event)"
-            [itemsAsOption]="true"
             [items]="typeOptions"
-            [labelTranslate]="true"
             [ngModel]="optionsCopy.type + '-' + optionsCopy.subType"
-            baseTranslate="@pry.widget.chart.markType."
-            class="a-pry-select"
+            i18nPrefix="@pry.widget.chart.markType."
             bindLabel="label"
             bindValue="id"
             id="chart_type"
@@ -74,14 +71,10 @@
             <pry-select
               (ngModelChange)="changeAggregation($event)"
               *ngIf="i === 1"
-              [bindData]="true"
-              [itemsAsOption]="true"
               [items]="aggregations"
-              [labelTranslate]="true"
               [ngModel]="optionsCopy.aggregation"
-              [translationFn]="translateAggregations"
-              class="a-pry-select"
               id="aggregations"
+              i18nPrefix="@pry.widget.chart.aggregation."
             ></pry-select>
           </div>
 
@@ -91,12 +84,10 @@
             </label>
             <pry-select
               (ngModelChange)="changeProperty($event, i)"
-              [itemsAsOption]="true"
               [items]="(i !== 1 ? variableAttributes$ : possibleSecondaryAttributes$) | async"
               [ngModel]="variableDef.name"
               bindLabel="name"
               bindValue="technicalName"
-              class="a-pry-select"
               id="aggregation_property"
             ></pry-select>
           </div>
@@ -111,13 +102,9 @@
             <label class="a-label" for="chart_timeUnit">{{ '@pry.widget.chart.timeUnit' | i18n }}</label>
             <pry-select
               (ngModelChange)="changeTimeUnit($event, variableDef)"
-              [bindData]="true"
-              [itemsAsOption]="true"
               [items]="timeUnits"
-              [labelTranslate]="true"
               [ngModel]="variableDef.timeUnit"
-              baseTranslate="@pry.widget.chart.timeUnitList."
-              class="a-pry-select"
+              i18nPrefix="@pry.widget.chart.timeUnitList."
               id="chart_timeUnit"
             ></pry-select>
           </div>
@@ -151,11 +138,9 @@
             <pry-select
               (ngModelChange)="changeSeries($event)"
               [ngModel]="optionsCopy.series.groupBy!"
-              [itemsAsOption]="true"
               [items]="variableAttributes$ | async"
               bindLabel="name"
               bindValue="name"
-              class="a-pry-select"
               id="chart_seriesAttr"
             ></pry-select>
           </div>
@@ -173,11 +158,9 @@
             <pry-select
               (ngModelChange)="changeSeriesScheme($event)"
               [ngModel]="optionsCopy.series?.scheme!"
-              [itemsAsOption]="true"
               [items]="schemes"
               id="chart_seriesScheme"
-              [labelTranslate]="true"
-              baseTranslate="@pry.widget.chart.scheme."
+              i18nPrefix="@pry.widget.chart.scheme."
               bindValue="id"
               bindLabel="id"
             ></pry-select>
@@ -215,11 +198,9 @@
             <pry-select
               (ngModelChange)="trigger(); proposeTitle()"
               [(ngModel)]="optionsCopy.radar.compare"
-              [itemsAsOption]="true"
               [items]="comparisons"
               bindLabel="name"
               bindValue="id"
-              class="a-pry-select"
             ></pry-select>
           </div>
 
@@ -228,13 +209,11 @@
               <pry-select
                 (ngModelChange)="trigger(); proposeTitle()"
                 [(ngModel)]="optionsCopy.radar.props"
-                [itemsAsOption]="true"
                 [items]="numericProperties$ | async"
                 [multiple]="true"
                 [closeOnSelect]="false"
                 bindLabel="name"
                 bindValue="name"
-                class="a-pry-select"
               ></pry-select>
             </div>
           </ng-container>
@@ -245,11 +224,9 @@
               <pry-select
                 (ngModelChange)="trigger(); proposeTitle()"
                 [(ngModel)]="optionsCopy.radar.keyProp"
-                [itemsAsOption]="true"
                 [items]="textProperties$ | async"
                 bindLabel="name"
                 bindValue="name"
-                class="a-pry-select"
                 id="comparison_key"
               ></pry-select>
             </div>
@@ -259,11 +236,9 @@
               <pry-select
                 (ngModelChange)="trigger(); proposeTitle()"
                 [(ngModel)]="optionsCopy.radar.valueProp"
-                [itemsAsOption]="true"
                 [items]="numericProperties$ | async"
                 bindLabel="name"
                 bindValue="name"
-                class="a-pry-select"
                 id="comparison_values"
               ></pry-select>
             </div>
@@ -275,11 +250,9 @@
               <pry-select
                 (ngModelChange)="trigger(); proposeTitle()"
                 [(ngModel)]="optionsCopy.radar.categoryProp"
-                [itemsAsOption]="true"
                 [items]="textProperties$ | async"
                 bindLabel="name"
                 bindValue="name"
-                class="a-pry-select"
                 id="comparison_category"
               ></pry-select>
             </div>
@@ -294,8 +267,6 @@
             <pry-select
               (ngModelChange)="changeSeriesScheme($event)"
               [ngModel]="optionsCopy.series?.scheme!"
-              [bindData]="true"
-              [itemsAsOption]="false"
               [items]="schemes"
               id="chart_seriesScheme_radar"
             ></pry-select>
@@ -310,11 +281,9 @@
             <pry-select
               (ngModelChange)="trigger(); proposeTitle()"
               [(ngModel)]="optionsCopy.packing.id"
-              [itemsAsOption]="true"
               [items]="variableAttributes$ | async"
               bindLabel="name"
               bindValue="name"
-              class="a-pry-select"
               id="chart_circle_id"
             ></pry-select>
           </div>
@@ -324,11 +293,9 @@
             <pry-select
               (ngModelChange)="trigger(); proposeTitle()"
               [(ngModel)]="optionsCopy.packing.parentId"
-              [itemsAsOption]="true"
               [items]="variableAttributes$ | async"
               bindLabel="name"
               bindValue="name"
-              class="a-pry-select"
               id="chart_circle_pid"
             ></pry-select>
           </div>
@@ -338,11 +305,9 @@
             <pry-select
               (ngModelChange)="trigger(); proposeTitle()"
               [(ngModel)]="optionsCopy.packing.packField"
-              [itemsAsOption]="true"
               [items]="numericProperties$ | async"
               bindLabel="name"
               bindValue="name"
-              class="a-pry-select"
               id="chart_circle_field"
             ></pry-select>
           </div>
@@ -352,11 +317,9 @@
             <pry-select
               (ngModelChange)="trigger(); proposeTitle()"
               [(ngModel)]="optionsCopy.packing.tooltip"
-              [itemsAsOption]="true"
               [items]="variableAttributes$ | async"
               bindLabel="name"
               bindValue="name"
-              class="a-pry-select"
               id="chart_circle_tooltip"
             ></pry-select>
           </div>

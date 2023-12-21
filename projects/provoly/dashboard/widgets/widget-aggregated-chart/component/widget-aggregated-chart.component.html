@@ -31,10 +31,8 @@
           <label class="a-label" for="chart_type">{{ '@pry.widget.chart.type' | i18n }}</label>
           <pry-select
             (ngModelChange)="changeType($event)"
-            [itemsAsOption]="true"
             [items]="typeOptions"
             [ngModel]="optionsCopy.graph.type"
-            class="a-pry-select"
             bindLabel="label"
             bindValue="id"
             id="chart_type"
@@ -64,12 +62,10 @@
             <label class="a-label" for="abscissa">{{ '@pry.widget.chart.abscissa' | i18n }}</label>
             <pry-select
               (ngModelChange)="changeAbscissa($event)"
-              [itemsAsOption]="true"
               [items]="abscissaAttributes$ | async | prySortData : sortActive : sortDirection"
               [ngModel]="optionsCopy.abscissa.attribute"
               bindLabel="name"
               bindValue="id"
-              class="a-pry-select"
               id="abscissa"
             ></pry-select>
           </div>
@@ -119,14 +115,11 @@
                   <label class="a-label" for="date_limit">{{ '@pry.widget.chart.order' | i18n }}</label>
                   <pry-select
                     (ngModelChange)="changeLimitOrder($event)"
-                    [itemsAsOption]="true"
                     [items]="[{ id: 'asc' }, { id: 'desc' }]"
                     [ngModel]="optionsCopy.abscissa.limit.order"
-                    [baseTranslate]="'@pry.widget.chart.'"
-                    [labelTranslate]="true"
+                    [i18nPrefix]="'@pry.widget.chart.'"
                     bindLabel="id"
                     bindValue="id"
-                    class="a-pry-select"
                     id="other_limit"
                   ></pry-select>
                 </ng-container>
@@ -136,7 +129,6 @@
                 <label class="a-label" for="date_limit">{{ '@pry.widget.chart.timeInterval' | i18n }}</label>
                 <pry-select
                   (ngModelChange)="changeTimeLimit($event)"
-                  [itemsAsOption]="true"
                   [items]="[
                     { id: 'second' },
                     { id: 'minute' },
@@ -148,11 +140,9 @@
                     { id: 'year' }
                   ]"
                   [ngModel]="optionsCopy.abscissa.limit.interval"
-                  [labelTranslate]="true"
-                  baseTranslate="@pry.widget.chart.time."
+                  i18nPrefix="@pry.widget.chart.time."
                   bindLabel="id"
                   bindValue="id"
-                  class="a-pry-select"
                   id="date_limit"
                 ></pry-select>
               </ng-container>
@@ -165,12 +155,10 @@
             <label class="a-label" for="operations">{{ '@pry.widget.chart.operation.title' | i18n }}</label>
             <pry-select
               (ngModelChange)="changeOperation($event)"
-              [itemsAsOption]="true"
               [items]="operations$ | async"
               [ngModel]="optionsCopy.ordinate.operation"
               bindLabel="label"
               bindValue="id"
-              class="a-pry-select"
               id="operations"
             ></pry-select>
           </div>
@@ -180,12 +168,10 @@
               <label class="a-label" for="ordinate">{{ '@pry.widget.chart.ordinate' | i18n }}</label>
               <pry-select
                 (ngModelChange)="changeOrdinate($event)"
-                [itemsAsOption]="true"
                 [items]="ordinateAttributes$ | async | prySortData : sortActive : sortDirection"
                 [ngModel]="optionsCopy.ordinate.attribute"
                 bindLabel="name"
                 bindValue="id"
-                class="a-pry-select"
                 id="ordinate"
               ></pry-select>
             </div>
@@ -223,7 +209,6 @@
                   [items]="abscissaAttributes$ | async | prySortData : sortActive : sortDirection"
                   bindLabel="name"
                   bindValue="id"
-                  class="a-pry-select"
                   id="chart_seriesAttr"
                 ></pry-select>
               </div>
@@ -257,7 +242,6 @@
                   [items]="sortValues$ | async"
                   bindValue="value"
                   bindLabel="label"
-                  class="a-pry-select"
                   id="chart_sortValue"
                 ></pry-select>
               </div>
@@ -269,7 +253,6 @@
                   [items]="sortDirections"
                   bindValue="value"
                   bindLabel="label"
-                  class="a-pry-select"
                   id="chart_sortDirection"
                 ></pry-select>
               </div>
@@ -299,7 +282,6 @@
               (ngModelChange)="changeBaseColor($event)"
               [ngModel]="optionsCopy.baseColor"
               id="chart_baseColor"
-              class="a-pry-select"
             ></pry-color-picker>
             <ng-template #templateOption let-item="item">
               <div class="aligned-option">

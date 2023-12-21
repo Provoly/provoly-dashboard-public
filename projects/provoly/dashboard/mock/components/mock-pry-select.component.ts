@@ -1,6 +1,6 @@
 // noinspection AngularMissingOrInvalidDeclarationInModule
 
-import { Component, forwardRef, Input, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, Output, TemplateRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -31,28 +31,22 @@ export class MockPrySelectComponent implements ControlValueAccessor {
     this._onTouched();
   }
 
-  @Input() labelTranslate = false;
-  @Input() baseTranslate = '';
-  @Input() translationFn?: (...args: any[]) => any;
-  @Input() translationFnArgs: any[] = [];
+  @Input() items: any[] | null | undefined = null;
   @Input() clearable = false;
   @Input() multiple = false;
-  @Input() multipleClearRight = false;
-
-  @Input() items!: any[] | null;
-  @Input() itemsAsOption = false;
-  @Input() bindData = false;
-  @Input() bindValue: any;
-  @Input() bindLabel: any;
-  @Input() bindIcon: any;
-  @Input() autocomplete: any;
-
+  @Input() closeOnSelect = true;
+  @Input() placeholder?: string;
   @Input() isForm = false;
   @Input() required?: any;
   @Input() name?: any;
   @Input() readonly = false;
-  @Input() placeholder = false;
-
-  @Input() templateLabel?: TemplateRef<any>;
-  @Input() templateOption?: TemplateRef<any>;
+  @Input() autocomplete: boolean = false;
+  @Input() bindValue: string | undefined;
+  @Input() bindLabel: string | undefined;
+  @Input() iconSize = [14, 14];
+  @Input() bindIcon: any;
+  @Input() template?: TemplateRef<any>;
+  @Input() i18nPrefix: string | null = null;
+  @Output() searched = new EventEmitter<string>();
+  @Output() cleared = new EventEmitter<void>();
 }

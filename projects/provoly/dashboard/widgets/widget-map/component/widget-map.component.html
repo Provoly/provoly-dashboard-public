@@ -22,13 +22,11 @@
         <label class="a-label" for="map_style">{{ '@pry.widget.map.style' | i18n }}</label>
         <pry-select
           (ngModelChange)="changeStyle($event)"
-          [itemsAsOption]="true"
           [items]="styles$ | async"
           [ngModel]="optionsCopy.style"
           bindLabel="label"
           bindValue="identifier"
           id="map_style"
-          class="a-pry-select"
         ></pry-select>
       </div>
 
@@ -112,13 +110,9 @@
               <label class="a-label" for="map_layerType">{{ '@pry.widget.map.layerType.title' | i18n }}</label>
               <pry-select
                 (ngModelChange)="changeLayerType($event, i)"
-                [bindData]="true"
-                [itemsAsOption]="true"
                 [items]="layerTypes"
-                [labelTranslate]="true"
                 [ngModel]="layer.type"
-                baseTranslate="@pry.widget.map.layerType."
-                class="a-pry-select"
+                i18nPrefix="@pry.widget.map.layerType."
                 id="map_layerType"
               ></pry-select>
             </div>
@@ -128,12 +122,10 @@
                 <label class="a-label" for="map_layerStyle">{{ '@pry.widget.map.layerStyle' | i18n }}</label>
                 <pry-select
                   (ngModelChange)="changeLayerStyle($event, layer)"
-                  [itemsAsOption]="true"
                   [items]="layerStyleOptions(layer)"
                   [ngModel]="getStyle(layer)"
                   bindLabel="label"
                   bindValue="id"
-                  class="a-pry-select"
                   id="map_layerStyle"
                 ></pry-select>
               </ng-container>
@@ -159,13 +151,11 @@
               <label class="a-label" for="map_classes">{{ '@pry.widget.map.classes' | i18n }}</label>
               <pry-select
                 (ngModelChange)="changeClasses($event, layer)"
-                [itemsAsOption]="true"
                 [items]="usedClasses$ | async"
                 [multiple]="true"
                 [ngModel]="layer.classes"
                 bindLabel="name"
                 bindValue="id"
-                class="a-pry-select"
                 id="map_classes"
               ></pry-select>
             </div>
@@ -204,13 +194,11 @@
                 }}</label>
                 <pry-select
                   (ngModelChange)="changeLocationAttributes($event, layer)"
-                  [itemsAsOption]="true"
                   [items]="fields"
                   [ngModel]="layer.attribute"
                   bindLabel="name"
                   bindValue="name"
                   id="map_locationAttribute_both"
-                  class="a-pry-select"
                 ></pry-select>
               </div>
             </div>
@@ -222,13 +210,11 @@
                 }}</label>
                 <pry-select
                   (ngModelChange)="changeIntensityAttributes($event, layer)"
-                  [itemsAsOption]="true"
                   [items]="fields"
                   [ngModel]="layerHasIntensity(layer).intensityAttribute"
                   bindLabel="name"
                   bindValue="name"
                   id="map_intensityAttribute"
-                  class="a-pry-select"
                 ></pry-select>
               </div>
             </div>
@@ -318,13 +304,11 @@
           <label class="a-label" for="slide_select">{{ '@pry.widget.map.slide.title' | i18n }}</label>
           <pry-select
             (ngModelChange)="changeSlide($event, layer)"
-            [itemsAsOption]="true"
             [items]="slides"
             [ngModel]="layer.slide ?? 'all'"
             bindLabel="label"
             bindValue="id"
             id="slide_select"
-            class="a-pry-select"
           ></pry-select>
         </div>
 

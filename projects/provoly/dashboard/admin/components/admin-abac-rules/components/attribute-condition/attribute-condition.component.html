@@ -44,12 +44,9 @@
         <div class="m-form-label-field">
           <label class="a-label u-visually-hidden" for="condition_operator">???</label>
           <pry-select
-            class="a-pry-select"
             id="condition_operator"
             [style.width.px]="160"
-            [labelTranslate]="true"
             [items]="operatorOptions$ | async"
-            [itemsAsOption]="true"
             bindValue="operator"
             bindLabel="translation"
             [ngModel]="condition.operator"

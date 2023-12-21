@@ -44,12 +44,11 @@
         <label for="metadata" id="metadata-label" class="a-label">Data</label>
         <pry-select
           id="metadata"
-          class="a-pry-select o-metadata-editor"
+          class="o-metadata-editor"
           formControlName="metadata"
           [items]="availableMetadata$ | async"
           (ngModelChange)="onMetaChange($event)"
           [isForm]="true"
-          [itemsAsOption]="true"
           bindLabel="name"
           [attr.aria-labelledby]="
             isSubmitted && form.get('metadata')?.invalid ? 'metadata-label metadata-error' : 'metadata-label'
@@ -98,11 +97,11 @@
 
         <ng-template #inputList>
           <ng-container *ngIf="form.value['metadata']['type'] === 'LIST'; else inputText">
-            <div class="m-form-label-field  o-metadata-editor__container">
+            <div class="m-form-label-field o-metadata-editor__container">
               <label id="list-label" class="a-label" for="list">{{ '@pry.action.choiceInList' | i18n }}</label>
               <pry-select
                 id="list"
-                class="a-pry-select o-metadata-editor"
+                class="o-metadata-editor"
                 formControlName="value"
                 [items]="form.value['metadata']['allowedValues']"
                 [isForm]="true"

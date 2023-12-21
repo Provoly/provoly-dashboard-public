@@ -8,13 +8,10 @@
       </label>
       <pry-select
         id="link_name"
-        class="a-pry-select"
         formControlName="relationType"
-        [items]="relationTypes$ | async | prySortData: sortActive : sortDirection"
+        [items]="relationTypes$ | async | prySortData : sortActive : sortDirection"
         (ngModelChange)="onTypeSourceChange()"
-        [labelTranslate]="true"
         [isForm]="true"
-        [itemsAsOption]="true"
         bindValue="id"
         bindLabel="name"
         [placeholder]="'@pry.admin.links.selectRelationType' | i18n"
@@ -42,11 +39,9 @@
       </label>
       <pry-select
         id="link_class-source"
-        class="a-pry-select"
         formControlName="classSource"
-        [items]="classes$ | async | prySortData: sortActive : sortDirection"
+        [items]="classes$ | async | prySortData : sortActive : sortDirection"
         (ngModelChange)="onClassSourceChange($event)"
-        [itemsAsOption]="true"
         bindLabel="name"
         [attr.aria-labelledby]="
           isSubmitted && linkForm.get('classSource')?.invalid
@@ -68,7 +63,7 @@
     </div>
 
     <div
-      *ngIf="attributesSource$ | async | prySortData: sortActive : sortDirection as attr"
+      *ngIf="attributesSource$ | async | prySortData : sortActive : sortDirection as attr"
       class="m-form-label-field -width-sm"
     >
       <label id="attribute-source-label" for="link_attribute-source" class="a-label">
@@ -77,11 +72,9 @@
       </label>
       <pry-select
         id="link_attribute-source"
-        class="a-pry-select"
         formControlName="attributeSource"
         [items]="attr"
         [isForm]="true"
-        [itemsAsOption]="true"
         bindLabel="name"
         [attr.aria-labelledby]="
           isSubmitted && linkForm.get('attributeSource')?.invalid
@@ -102,18 +95,16 @@
       </label>
     </div>
 
-    <div *ngIf="classes$ | async | prySortData: sortActive : sortDirection as cd" class="m-form-label-field -width-sm">
+    <div *ngIf="classes$ | async | prySortData : sortActive : sortDirection as cd" class="m-form-label-field -width-sm">
       <label id="class-destination-label" for="link_class-destination" class="a-label">
         {{ '@pry.admin.links.classDestination' | i18n }} *
         <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
       </label>
       <pry-select
         id="link_class-destination"
-        class="a-pry-select"
         formControlName="classDestination"
         [items]="cd"
         (ngModelChange)="onClassDestinationChange($event)"
-        [itemsAsOption]="true"
         bindLabel="name"
         [attr.aria-labelledby]="
           isSubmitted && linkForm.get('classDestination')?.invalid
@@ -135,7 +126,7 @@
     </div>
 
     <div
-      *ngIf="attributesDestination$ | async | prySortData: sortActive : sortDirection as attr"
+      *ngIf="attributesDestination$ | async | prySortData : sortActive : sortDirection as attr"
       class="m-form-label-field -width-sm"
     >
       <label id="attribute-destination-label" for="link_attribute-destination" class="a-label">
@@ -144,11 +135,9 @@
       </label>
       <pry-select
         id="link_attribute-destination"
-        class="a-pry-select"
         formControlName="attributeDestination"
         [items]="attr"
         [isForm]="true"
-        [itemsAsOption]="true"
         bindLabel="name"
         [attr.aria-labelledby]="
           isSubmitted && linkForm.get('attributeDestination')?.invalid

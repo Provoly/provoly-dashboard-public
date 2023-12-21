@@ -63,10 +63,7 @@
           <label class="a-label" for="presentation_theme">{{ '@pry.presentation.form.theme' | i18n }}</label>
           <pry-select
             id="presentation_theme"
-            class="a-pry-select"
             [items]="possibleThemes"
-            [itemsAsOption]="true"
-            [bindData]="true"
             formControlName="theme"
             [clearable]="true"
           ></pry-select>

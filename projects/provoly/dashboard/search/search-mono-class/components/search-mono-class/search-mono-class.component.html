@@ -4,13 +4,10 @@
       <label class="a-label" for="composed_class">{{ '@pry.search.composed.class' | i18n }}</label>
       <pry-select
         [items]="classes$ | async"
-        [itemsAsOption]="true"
         bindValue="id"
         [ngModel]="monoClassId$ | async"
         (ngModelChange)="onChangeClass($event)"
-        [templateLabel]="optionTpl"
-        [templateOption]="optionTpl"
-        class="a-pry-select"
+        [template]="optionTpl"
         id="composed_class"
       >
       </pry-select>
@@ -23,7 +20,7 @@
             alt=""
             [height]="25"
             [width]="25"
-            [src]="item.id | translateId: { type: 'class', output: 'icon' } | async"
+            [src]="item.id | translateId : { type: 'class', output: 'icon' } | async"
           />
         </ng-container>
         <ng-template #noImg>
@@ -31,7 +28,7 @@
             alt=""
             [height]="25"
             [width]="25"
-            [src]="item.id | translateId: { type: 'class', output: 'icon' } | async"
+            [src]="item.id | translateId : { type: 'class', output: 'icon' } | async"
           />
         </ng-template>
         <span>{{ item.name }}</span>

@@ -19,7 +19,12 @@
     "migration-v0.18": {
       "version": "0.18",
       "description": "Update library to version 0.18",
-      "factory": "./ng-update/version-0-15/index#updateTo0_18"
+      "factory": "./ng-update/version-0-18/index#updateTo0_18"
+    },
+    "migration-v0.20": {
+      "version": "0.20",
+      "description": "Update library to version 0.20",
+      "factory": "./ng-update/version-0-20/index#updateTo0_20"
     }
   }
 }

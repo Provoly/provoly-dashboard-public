@@ -54,17 +54,14 @@
     <div class="title-container">
       <pry-select
         id="type"
-        class="a-pry-select"
         formControlName="field"
         [items]="fields$ | async"
-        [itemsAsOption]="true"
         [autocomplete]="true"
         bindLabel="name"
         bindValue="id"
         [isForm]="true"
         required="true"
-        [templateLabel]="templateOption"
-        [templateOption]="templateOption"
+        [template]="templateOption"
       ></pry-select>
       <ng-template #templateOption let-item="item">
         <div class="aligned-option">
@@ -94,7 +91,6 @@
       id="category"
       class="form-control"
       formControlName="category"
-      [labelTranslate]="true"
       [items]="categories$ | async"
       (click)="showCategory()"
       bindValue="id"

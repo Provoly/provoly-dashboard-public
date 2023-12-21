@@ -30,11 +30,8 @@
       <label class="a-label" for="environment-type">{{ '@pry.admin.environment.type' | i18n }}</label>
       <pry-select
         id="environment-type"
-        class="a-pry-select"
         formControlName="type"
-        [labelTranslate]="true"
         [items]="envOptions"
-        [itemsAsOption]="true"
         bindValue="varType"
         bindLabel="translation"
         (ngModelChange)="onTypeChange($event)"

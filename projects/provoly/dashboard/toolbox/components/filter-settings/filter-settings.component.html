@@ -87,8 +87,6 @@
           <label for="filterType" class="a-label">{{ '@pry.filters.creation.type' | i18n }}</label>
           <pry-select
             id="filterType"
-            [labelTranslate]="true"
-            [itemsAsOption]="true"
             [placeholder]="'@pry.filters.creation.type' | i18n"
             [items]="types$ | async"
             bindLabel="label"
@@ -124,8 +122,6 @@
           <label for="attributes" class="a-label">{{ '@pry.filters.creation.attributes' | i18n }}</label>
           <pry-select
             id="attributes"
-            [labelTranslate]="false"
-            [itemsAsOption]="true"
             [multiple]="true"
             [closeOnSelect]="false"
             [items]="attributes$ | async"
@@ -141,8 +137,6 @@
           <label for="operations" class="a-label">{{ '@pry.filters.attributes.operator' | i18n }}</label>
           <pry-select
             id="operations"
-            [labelTranslate]="true"
-            [itemsAsOption]="true"
             [items]="currentOperators$ | async"
             [(ngModel)]="filter.operator"
             [placeholder]="'@pry.filters.attributes.operator' | i18n"

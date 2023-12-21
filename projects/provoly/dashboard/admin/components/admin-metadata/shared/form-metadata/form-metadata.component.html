@@ -45,12 +45,9 @@
         <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
       </label>
       <pry-select
-        class="a-pry-select"
         id="metadata-type"
         formControlName="type"
-        [labelTranslate]="true"
         [items]="metaOptions"
-        [itemsAsOption]="true"
         bindValue="varType"
         bindLabel="translation"
         [readonly]="!!metadata"

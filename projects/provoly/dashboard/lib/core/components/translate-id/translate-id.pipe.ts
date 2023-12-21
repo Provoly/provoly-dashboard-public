@@ -12,7 +12,6 @@ import { DataSourceSelectors } from '../../store/data-source/data-source.selecto
 import { NamedQueryTypes } from '../../store/data-source/named-query-types.model';
 import { Field } from '../../store/field/field.interface';
 import { FieldSelectors } from '../../store/field/field.selectors';
-import { ImageService } from '../../store/image/image.service';
 import { DEFAULT_NAMED_QUERY_ID } from '../../store/search/search.constants';
 import { SymbolService } from '../../symbol/symbol.service';
 
@@ -21,7 +20,8 @@ export const UNKNOWN_DATASOURCE = (id: string) =>
     id: id,
     color: '#FFFFFF',
     name: id,
-    request: { fullSearch: { value: '???' } }
+    request: { fullSearch: { value: '???' }, type: NamedQueryTypes.FULL_TEXT },
+    sourceType: 'namedQuery'
   } as NamedQuery);
 
 @Pipe({
@@ -31,7 +31,6 @@ export class TranslateIdPipe implements PipeTransform {
   constructor(
     private store: Store<any>,
     private translateService: PryI18nService,
-    private imageService: ImageService,
     private symbolService: SymbolService
   ) {}
 

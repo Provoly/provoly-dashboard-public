@@ -1,124 +1,99 @@
-<ng-container *ngIf="itemsAsOption; else itemAsInput">
-  <ng-select
-    class="a-pry-select"
-    [class.pry-select-form]="isForm"
-    [multiple]="multiple"
-    [closeOnSelect]="closeOnSelect"
-    [items]="items"
-    [bindValue]="bindData ? undefined : bindValue"
-    [bindLabel]="bindData ? undefined : bindLabel"
-    [clearable]="clearable"
-    [ngModel]="value"
-    (ngModelChange)="writeValue($event)"
-    [searchable]="autocomplete"
-    [disabled]="disabled"
-    [readonly]="readonly"
-    [required]="required"
-    [name]="name"
-    [placeholder]="placeholder!"
-    [clearAllText]="'@pry.filters.clear' | i18n"
-  >
-    <!-- Label part -->
-    <ng-container *ngIf="templateLabel; else noTemplateLabel">
-      <ng-template ng-label-tmp let-item="item" let-clear="clear">
-        <ng-container [ngTemplateOutlet]="templateLabel" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
-      </ng-template>
+<div
+  class="a-pry-select"
+  [attr.aria-disabled]="disabled"
+  #selectElement
+  [class.-focused]="focused"
+  (click)="toggle()"
+  role="combobox"
+  [attr.aria-expanded]="open"
+  [attr.aria-owns]="open ? modalId : null"
+  aria-haspopup="listbox"
+>
+  <ng-container *ngIf="autocomplete; else noAutocomplete">
+    <input
+      type="text"
+      class="a-pry-select__search"
+      [ngModel]="search$.getValue()"
+      (ngModelChange)="search($event)"
+      (focus)="toggle(true)"
+      aria-autocomplete="list"
+      [attr.aria-controls]="open ? modalId : null"
+    />
+  </ng-container>
+  <ng-template #noAutocomplete>
+    <ng-container *ngIf="(valueItems$ | async).length === 0; else selectedValues">
+      <span class="a-pry-select__placeholder">{{ placeholder }}</span>
     </ng-container>
-    <ng-template #noTemplateLabel>
-      <ng-template ng-label-tmp let-item="item" let-clear="clear">
-        <span
-          *ngIf="multiple && !multipleClearRight"
-          class="ng-value-icon left"
-          (click)="clear(item)"
-          aria-hidden="true"
-          >×</span
-        >
-        <span class="ng-value-label">
-          <ng-container *ngIf="bindIcon">
+    <ng-template #selectedValues>
+      <ng-container *ngFor="let item of valueItems$ | async">
+        <div class="a-pry-select__value" [class.pry-select-form]="isForm" [class.-multiple]="multiple">
+          <ng-container *ngIf="template; else noTemplateLabel">
+            <ng-template let-item="item" let-clear="clear">
+              <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
+            </ng-template>
+          </ng-container>
+          <ng-template #noTemplateLabel>
             <pry-icon
-              style="margin-right: 0.25em"
+              *ngIf="bindIcon"
               [iconSvg]="item[bindIcon]"
               [width]="iconSize[0]"
               [height]="iconSize[1]"
-              [animation]="false"
             ></pry-icon>
-          </ng-container>
-          <ng-container *ngIf="labelTranslate; else noTranslate">
-            <ng-container *ngIf="translationFn; else noTranslationFn">
-              {{ translationFn(bindData ? item : item?.[bindLabel], translationFnArgs) | i18n }}
+            <ng-container *ngIf="bindLabel ? item?.[bindLabel] : item as value">
+              {{ (i18nPrefix ?? '') + value | i18n : { warn: false } }}
+              <span
+                *ngIf="multiple && clearable"
+                class="a-pry-select__clear"
+                (click)="clear($event, item)"
+                aria-hidden="true"
+                >×</span
+              >
             </ng-container>
-            <ng-template #noTranslationFn>
-              <ng-container *ngIf="baseTranslate + (bindData ? item : item?.[bindLabel]) !== 'null'">
-                {{ baseTranslate + (bindData ? item : item?.[bindLabel]) | i18n }}
-              </ng-container>
-            </ng-template>
-          </ng-container>
-          <ng-template #noTranslate>
-            {{ bindData ? item : item?.[bindLabel] }}
           </ng-template>
-        </span>
-        <span
-          *ngIf="multiple && multipleClearRight"
-          class="ng-value-icon right"
-          (click)="clear(item)"
-          aria-hidden="true"
-          >×</span
-        >
-      </ng-template>
+        </div>
+      </ng-container>
     </ng-template>
-
-    <!-- Option part -->
-    <ng-container *ngIf="templateOption; else noTemplateOption">
-      <ng-template ng-option-tmp let-item="item">
-        <ng-container [ngTemplateOutlet]="templateOption" [ngTemplateOutletContext]="{ item }"></ng-container>
-      </ng-template>
-    </ng-container>
-    <ng-template #noTemplateOption>
-      <ng-template ng-option-tmp let-item="item">
-        <span class="ng-option-label">
-          <pry-icon
-            *ngIf="bindIcon"
-            [iconSvg]="item[bindIcon]"
-            [width]="iconSize[0]"
-            [height]="iconSize[1]"
-            [animation]="false"
-          ></pry-icon>
-          <ng-container *ngIf="labelTranslate; else noTranslateOption">
-            <ng-container *ngIf="translationFn; else noTranslationFnOption">
-              {{ translationFn(bindData ? item : item?.[bindLabel], translationFnArgs) | i18n }}
-            </ng-container>
-            <ng-template #noTranslationFnOption>
-              {{ baseTranslate + (bindData ? item : item?.[bindLabel]) | i18n }}
-            </ng-template>
-          </ng-container>
-          <ng-template #noTranslateOption>
-            {{ bindData ? item : item?.[bindLabel] }}
-          </ng-template>
-        </span>
-      </ng-template>
-    </ng-template>
-  </ng-select>
-</ng-container>
-<ng-template #itemAsInput>
-  <ng-select
-    #select
-    class="pry-select"
-    [class.pry-select-form]="isForm"
-    [multiple]="multiple"
-    [closeOnSelect]="closeOnSelect"
-    [items]="items"
-    [bindValue]="bindValue"
-    [bindLabel]="bindLabel"
-    [clearable]="clearable"
-    [searchable]="autocomplete"
-    [ngModel]="value"
-    (ngModelChange)="writeValue($event)"
-    [readonly]="readonly"
-    [disabled]="disabled"
-    [required]="required"
-    [name]="name"
-    [placeholder]="placeholder!"
-    [clearAllText]="'@pry.filters.clear' | i18n"
+    <div class="a-pry-select__filler"></div>
+  </ng-template>
+  <span *ngIf="clearable" class="a-pry-select__clear" (click)="clearAll($event)" aria-hidden="true">×</span>
+  <pry-icon
+    class="a-pry-select__toggle"
+    [iconSvg]="open ? 'chevron_top' : 'chevron_bottom'"
+    [width]="iconSize[0]"
+    [height]="iconSize[1]"
+  ></pry-icon>
+</div>
+<ng-template #optionsModal>
+  <div
+    role="listbox"
+    [attr.aria-label]="'@pry.select.label' | i18n"
+    [id]="modalId"
+    [attr.aria-activedescendant]="'select-option-' + activeDescendant"
+    [attr.aria-multiselectable]="multiple"
+    [attr.required]="required"
+    [attr.aria-readonly]="readonly"
   >
-  </ng-select>
+    <ng-container *ngFor="let item of matchingItems$ | async; let index = index">
+      <div
+        class="a-pry-select__options__option"
+        [attr.aria-selected]="(valueItems$ | async).includes(item)"
+        [attr.aria-checked]="(valueItems$ | async).includes(item)"
+        [attr.aria-disabled]="disabled"
+        (click)="select($event, item, index)"
+        [style.width.px]="modalWidth"
+        role="option"
+        [id]="'select-option-' + index"
+      >
+        <ng-container *ngIf="template; else noTemplate">
+          <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
+        </ng-container>
+        <ng-template #noTemplate>
+          <pry-icon *ngIf="bindIcon" [iconSvg]="item[bindIcon]" [width]="iconSize[0]" [height]="iconSize[1]"></pry-icon>
+          <ng-container *ngIf="bindLabel ? item?.[bindLabel] : item as value">
+            {{ (i18nPrefix ? i18nPrefix : '') + value | i18n : { warn: false } }}
+          </ng-container>
+        </ng-template>
+      </div>
+    </ng-container>
+  </div>
 </ng-template>

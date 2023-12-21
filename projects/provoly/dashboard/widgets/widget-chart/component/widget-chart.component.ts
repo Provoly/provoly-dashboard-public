@@ -562,7 +562,6 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
   templateTypeTranslationFn = (item: any, args: any[]) =>
     `${args[0]}${item === MarkSubType.DEFAULT ? item : args[1] + args[2] + item}`;
 
-  translateAggregations = (item: any) => this.translateService.instant('@pry.widget.chart.aggregation.' + item);
   advancedEdit: string = '{}';
 
   changeChartTitle(title: string) {

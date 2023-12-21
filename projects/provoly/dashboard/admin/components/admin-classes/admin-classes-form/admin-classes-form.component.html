@@ -36,12 +36,8 @@
       </label>
       <pry-select
         [items]="storageOptions$ | async"
-        [labelTranslate]="true"
-        baseTranslate="@pry.admin.storage.options."
-        [bindData]="true"
-        [itemsAsOption]="true"
+        i18nPrefix="@pry.admin.storage.options."
         formControlName="storage"
-        class="a-pry-select"
         id="storage_options"
         [readonly]="!!_currentClass"
       ></pry-select>

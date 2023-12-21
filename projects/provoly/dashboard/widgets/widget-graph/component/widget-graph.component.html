@@ -22,13 +22,11 @@
         <label class="a-label" for="graph_layout">{{ '@pry.widget.graph.layout' | i18n }}</label>
         <pry-select
           (ngModelChange)="changeLayout($event)"
-          [itemsAsOption]="true"
           [items]="layouts"
           [ngModel]="optionsCopy!.layout"
           bindLabel="key"
           bindValue="key"
           id="graph_layout"
-          class="a-pry-select"
         ></pry-select>
       </div>
 

@@ -1,5 +1,8 @@
 export const frTranslations = {
   '@pry': {
+    select: {
+      label: 'Liste des choix'
+    },
     about: {
       front: 'Librairie front',
       ref: 'Référentiel',
