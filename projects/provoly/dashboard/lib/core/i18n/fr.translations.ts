@@ -29,7 +29,6 @@ export const frTranslations = {
       defineCatalog: 'Définissez votre entrée de catalogue',
       buttonChoice: 'Sélectionner une restitution',
       tooltip: {
-        openParameter: 'Ouvrir les paramètres',
         params: 'Paramétrer la vue de votre restitution',
         readSearch: 'Choisir les données',
         deleteWidget: 'Supprimer votre restitution',
@@ -117,7 +116,6 @@ export const frTranslations = {
       detail: 'Détail',
       chart: 'Graphique',
       resultSet: 'Recherches nommées',
-      saveView: 'Enregistrer sous',
       rename: 'Enregistrer sous',
       restore: 'Restaurer les pages',
       save: 'Enregistrer',

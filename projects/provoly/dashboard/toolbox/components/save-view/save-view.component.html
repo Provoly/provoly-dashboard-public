@@ -1,13 +1,6 @@
 <ng-container *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'save' }">
   <ng-container *ngIf="mode === 'directSave'">
-    <div
-      class="a-tooltip"
-      [attr.data-tooltip]="'@pry.toolbox.save' | i18n"
-      data-tooltip-position="bottom"
-      [attr.aria-expanded]="saveTypeOpened"
-      aria-controls="directiveSave"
-      aria-describedby="infoTooltip_directSave"
-    >
+    <div [attr.aria-expanded]="saveTypeOpened" aria-controls="directiveSave" aria-describedby="infoTooltip_directSave">
       <button
         type="button"
         #directiveSave
@@ -22,9 +15,7 @@
   </ng-container>
   <ng-container *ngIf="mode === 'saveAs'">
     <div
-      class="save-manifest-container a-tooltip"
-      [attr.data-tooltip]="'@pry.toolbox.rename' | i18n"
-      data-tooltip-position="bottom"
+      class="save-manifest-container"
       [attr.aria-expanded]="saveAsOpened"
       aria-controls="saveModal"
       aria-describedby="infoTooltip_saveAs"
@@ -36,7 +27,7 @@
         (click)="toggleSaveAs()"
         aria-haspopup="dialog"
       >
-        <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.saveView' | i18n }} ({{ nbPages }})</ng-container>
+        <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.rename' | i18n }} ({{ nbPages }})</ng-container>
       </button>
     </div>
   </ng-container>

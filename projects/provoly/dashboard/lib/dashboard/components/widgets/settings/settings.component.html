@@ -1,9 +1,4 @@
-<button
-  type="button"
-  (click)="toggle()"
-  class="a-btn a-btn--icon-text -settings a-tooltip"
-  [attr.data-tooltip]="'@pry.widget.tooltip.openParameter' | i18n"
->
+<button type="button" (click)="toggle()" class="a-btn a-btn--icon-text -settings">
   <pry-icon [height]="20" [width]="20" iconSvg="control"></pry-icon>
   <span>{{ '@pry.widget.settings.title' | i18n }}</span>
 </button>

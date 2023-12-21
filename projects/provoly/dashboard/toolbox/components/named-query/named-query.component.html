@@ -1,11 +1,9 @@
 <div class="o-named-query">
   <div class="combobox-container" (dragleave)="dragLeave($event)">
-    <div class="a-tooltip" [attr.data-tooltip]="'@pry.toolbox.resultSet' | i18n" data-tooltip-position="bottom">
-      <button type="button" class="a-btn a-btn--action" (click)="toggle()">
-        <pry-icon iconSvg="data_usage"></pry-icon>
-        <ng-container *ngIf="label">{{ '@pry.toolbox.resultSet' | i18n }}</ng-container>
-      </button>
-    </div>
+    <button type="button" class="a-btn a-btn--action" (click)="toggle()">
+      <pry-icon iconSvg="data_usage"></pry-icon>
+      <ng-container *ngIf="label">{{ '@pry.toolbox.resultSet' | i18n }}</ng-container>
+    </button>
 
     <div class="combobox" *ngIf="displayCombo" (mouseleave)="toggle()">
       <ng-container *ngFor="let rs of namedQueries$ | async">

@@ -61,9 +61,7 @@
           id="toggleActions"
           (click)="toggleDatasourceSelection()"
           *pryAccess="{ module: 'dashboard', page: 'widget', action: 'select_named_query' }"
-          class="a-btn a-tooltip"
-          [attr.data-tooltip]="'@pry.widget.tooltip.readSearch' | i18n"
-          data-tooltip-position="bottom"
+          class="a-btn"
         >
           <pry-icon [height]="17" [width]="17" iconSvg="stack-fill"></pry-icon>
           <span>{{ '@pry.widget.tooltip.readSearch' | i18n }}</span>
@@ -90,14 +88,7 @@
         </li>
       </ng-container>
       <li class="m-context-menu__list__item" role="none" *ngIf="hasGrid && displayOption(headerOptions, 'changeSpot')">
-        <button
-          type="button"
-          role="menuitem"
-          (click)="toggleChangeSpot()"
-          class="a-btn a-tooltip"
-          tabindex="-1"
-          [attr.data-tooltip]="'@pry.widget.tooltip.changeSpot' | i18n"
-        >
+        <button type="button" role="menuitem" (click)="toggleChangeSpot()" class="a-btn" tabindex="-1">
           <pry-icon [height]="17" [width]="17" iconSvg="move"></pry-icon>
           <span>{{ '@pry.widget.tooltip.changeSpot' | i18n }}</span>
         </button>
@@ -116,14 +107,7 @@
         </button>
       </li>
       <li class="m-context-menu__list__item" role="none" *ngIf="displayOption(headerOptions, 'addToCatalog')">
-        <button
-          type="button"
-          role="menuitem"
-          tabindex="-1"
-          (click)="toggleCatalog()"
-          class="a-btn a-tooltip"
-          [attr.data-tooltip]="'@pry.widget.tooltip.catalogWidget' | i18n"
-        >
+        <button type="button" role="menuitem" tabindex="-1" (click)="toggleCatalog()" class="a-btn">
           <pry-icon [height]="17" [width]="17" iconSvg="library_add"></pry-icon>
           <span>{{ '@pry.widget.tooltip.catalogWidget' | i18n }}</span>
         </button>
@@ -134,8 +118,7 @@
           role="menuitem"
           tabindex="-1"
           (click)="toggleRemoveConfirm($event)"
-          class="a-btn a-tooltip"
-          [attr.data-tooltip]="'@pry.widget.tooltip.deleteWidget' | i18n"
+          class="a-btn"
           (keydown.tab)="menuOpen()"
         >
           <pry-icon [height]="17" [width]="17" iconSvg="delete"></pry-icon>

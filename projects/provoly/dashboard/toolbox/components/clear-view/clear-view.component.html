@@ -1,5 +1,3 @@
-<div class="a-tooltip" [attr.data-tooltip]="'@pry.toolbox.clear' | i18n" data-tooltip-position="bottom">
-  <button type="button" class="a-btn a-btn--secondary -size-md" (click)="clear()">
-    <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.clear' | i18n }}</ng-container>
-  </button>
-</div>
+<button type="button" class="a-btn a-btn--secondary -size-md" (click)="clear()">
+  <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.clear' | i18n }}</ng-container>
+</button>

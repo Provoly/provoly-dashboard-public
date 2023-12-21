@@ -1,18 +1,16 @@
 <pry-toolbox-css></pry-toolbox-css>
-<div class="a-tooltip" [attr.data-tooltip]="'@pry.toolbox.automateRefresh' | i18n" data-tooltip-position="bottom">
-  <button
-    type="button"
-    class="a-btn a-btn--secondary -size-md automate-btn"
-    cdkOverlayOrigin
-    #trigger="cdkOverlayOrigin"
-    (click)="toggleDatasourceList()"
-    [disabled]="((datasources$ | async)?.length ?? 0) < 1"
-  >
-    <ng-container *ngIf="displayLabels">
-      {{ '@pry.toolbox.automateRefresh' | i18n }}
-    </ng-container>
-  </button>
-</div>
+<button
+  type="button"
+  class="a-btn a-btn--secondary -size-md automate-btn"
+  cdkOverlayOrigin
+  #trigger="cdkOverlayOrigin"
+  (click)="toggleDatasourceList()"
+  [disabled]="((datasources$ | async)?.length ?? 0) < 1"
+>
+  <ng-container *ngIf="displayLabels">
+    {{ '@pry.toolbox.automateRefresh' | i18n }}
+  </ng-container>
+</button>
 
 <ng-template #datasourceList>
   <div *ngIf="datasources$ | async as dataSources">

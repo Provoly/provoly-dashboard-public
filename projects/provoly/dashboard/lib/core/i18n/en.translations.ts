@@ -29,7 +29,6 @@ export const enTranslations = {
       defineCatalog: 'Define catalog entry',
       buttonChoice: 'Select a restitution',
       tooltip: {
-        openParameter: 'Open parameter',
         params: 'Parameter restitution presentation',
         readSearch: 'Choose data',
         deleteWidget: 'Delete restitution',
@@ -117,7 +116,6 @@ export const enTranslations = {
       detail: 'Detail',
       chart: 'Chart',
       resultSet: 'Named Queries',
-      saveView: 'Save my presentation',
       rename: 'Save my presentation',
       restore: 'Restore closed pages',
       save: 'Save',

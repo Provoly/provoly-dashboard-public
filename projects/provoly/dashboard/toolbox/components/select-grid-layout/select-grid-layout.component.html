@@ -1,11 +1,5 @@
 <pry-toolbox-css></pry-toolbox-css>
-<div
-  [attr.aria-expanded]="modalOpened"
-  aria-controls="grid-layout"
-  class="a-tooltip"
-  [attr.data-tooltip]="'@pry.toolbox.chooseGrid' | i18n"
-  data-tooltip-position="bottom"
->
+<div [attr.aria-expanded]="modalOpened" aria-controls="grid-layout">
   <button type="button" #openModal class="a-btn a-btn--secondary -size-md" (click)="toggleGridChoiceModal()">
     <ng-container *ngIf="displayLabels">
       {{ '@pry.toolbox.chooseGrid' | i18n }}

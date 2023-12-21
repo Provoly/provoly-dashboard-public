@@ -1,8 +1,6 @@
-<div class="a-tooltip" [attr.data-tooltip]="'@pry.toolbox.refresh' | i18n" data-tooltip-position="bottom">
-  <button type="button" class="a-btn a-btn--secondary -size-md" (click)="refresh()" [disabled]="datasetCount < 1">
-    <ng-container *ngIf="displayLabels">
-      {{ '@pry.toolbox.refresh' | i18n }}
-    </ng-container>
-    <pry-icon iconSvg="refresh_data"></pry-icon>
-  </button>
-</div>
+<button type="button" class="a-btn a-btn--secondary -size-md" (click)="refresh()" [disabled]="datasetCount < 1">
+  <ng-container *ngIf="displayLabels">
+    {{ '@pry.toolbox.refresh' | i18n }}
+  </ng-container>
+  <pry-icon iconSvg="refresh_data"></pry-icon>
+</button>
