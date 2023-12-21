@@ -26,6 +26,7 @@ import {
 } from '@provoly/dashboard';
 import {
   BehaviorSubject,
+  catchError,
   combineLatest,
   debounceTime,
   filter,
@@ -312,9 +313,13 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       debounceTime(100),
       tap(([datasources]) => this.store.dispatch(SearchActions.setSearchLoading({ datasources, start: true }))),
       switchMap(([datasources, options]) =>
-        this.aggregationService
-          .aggregate(datasources, options)
-          .pipe(tap(() => this.store.dispatch(SearchActions.setSearchLoading({ datasources, start: false }))))
+        this.aggregationService.aggregate(datasources, options).pipe(
+          tap(() => this.store.dispatch(SearchActions.setSearchLoading({ datasources, start: false }))),
+          catchError((err) => {
+            this.store.dispatch(SearchActions.setSearchLoading({ datasources, start: false }));
+            throw err;
+          })
+        )
       ),
       withLatestFrom(this.options$),
       map(([aggregate, options]) => {
