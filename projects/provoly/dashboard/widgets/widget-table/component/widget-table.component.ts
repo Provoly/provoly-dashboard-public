@@ -89,12 +89,12 @@ export class WidgetTableComponent extends DataWidgetComponent {
       map(([options, resultSet, classes, fields, defs]) => {
         if (!options.columns || options.columns.length === 0) {
           const attributes = ItemUtils.getAttributesFromRs(resultSet, classes, fields, defs);
-          const uniqueProps = [...new Set(attributes.map((attr) => attr.technicalName))];
+          const uniqueProps = [...new Set(attributes.map(({ name, technicalName }) => ({ name, technicalName })))];
 
           options.columns = uniqueProps.map((property) => ({
-            property: property,
-            label: property,
-            attributeId: attributes.find((attr) => attr.technicalName === property)?.id
+            property: property.technicalName,
+            label: property.name,
+            attributeId: attributes.find((attr) => attr.technicalName === property.technicalName)?.id
           })) as ColumnDefinition[];
         }
         return options;

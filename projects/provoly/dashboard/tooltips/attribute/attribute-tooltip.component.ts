@@ -28,8 +28,20 @@ export class AttributeTooltipComponent extends BaseTooltipComponent {
     );
   }
 
+  getAttributeTechnicalName(attribute: string): Observable<string> {
+    return this.classes$.pipe(
+      map(
+        (classes) =>
+          classes
+            .map((clazz) => clazz.attributes)
+            .flat()
+            .find((attr) => attr.id === attribute)?.technicalName ?? attribute
+      )
+    );
+  }
+
   getValue(attribute: string, limit = 9999): Observable<string> {
-    return this.getAttributeName(attribute).pipe(
+    return this.getAttributeTechnicalName(attribute).pipe(
       switchMap((attribute: string) => this._getValue(attribute)),
       map((value) => {
         switch (typeof value) {
