@@ -32,3 +32,11 @@
     }
   }
 }
+
+.m-context-menu {
+  &__list__item {
+    .a-btn {
+      white-space: nowrap;
+    }
+  }
+}

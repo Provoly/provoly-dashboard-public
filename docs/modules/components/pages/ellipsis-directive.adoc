@@ -1,0 +1,22 @@
+=== Ellipsis Directive
+
+La directive `+Ellipsis+` permet d'ajouter un infobulle automatiquement sur un element qui contient un texte tronqué.
+
+Il y a un paramètre d’entrée obligatoire :
+
+- textElementSelector: le selecteur CSS de l'element contenant le texte à tronquer
+
+==== Exemple d’utilisation
+
+[,html]
+----
+<div ellipsis textElementSelector=".a-p">
+	<div class="a-p">
+		exampletext
+	</div>
+</div>
+----
+
+Il faut que le texte soit dans un element avec `display: block` et une `width` définie, sinon le texte ne va pas être tronqué.
+
+A cause du `overflow: hidden` sur l'element qui contient le texte, il faut que la directive soit placée sur un element wrapper, sinon l'infobulle ne va pas s'afficher.

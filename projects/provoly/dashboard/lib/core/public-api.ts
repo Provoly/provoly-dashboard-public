@@ -119,3 +119,4 @@ export * from './i18n/deep-merge.function';
 export * from './errors/http-error-interceptor.service';
 export * from './components/about/pry-about.module';
 export * from './components/about/about.component';
+export * from './components/ellipsis.directive';

@@ -17,9 +17,8 @@
       <ng-template #noActiveVersion>
         <span> {{ '@pry.dataset.noActiveVersion' | i18n }}</span>
       </ng-template>
-      <div class="o-pry-dataset-card__description-container">
-        <span class="description">{{ truncateDescription(dataset.description, 100) }}</span>
-        <div class="description-tooltip">{{ dataset.description }}</div>
+      <div class="o-pry-dataset-card__description-container" ellipsis textElementSelector=".description">
+        <div class="description">{{ truncateDescription(dataset.description, 100) }}</div>
       </div>
     </div>
   </div>

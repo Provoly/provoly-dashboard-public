@@ -31,6 +31,7 @@
 
   &__content {
     height: 100%;
+    overflow: auto;
 
     .pointer {
       cursor: pointer;
@@ -78,11 +79,6 @@
       }
     }
 
-    .a-tooltip {
-      align-items: center;
-      width: 100%;
-      height: 100%;
-    }
     &__image {
       width: auto;
       cursor: pointer;
@@ -135,6 +131,23 @@
       }
     }
 
+    &__description-container {
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-content: center;
+
+      &.a-tooltip[data-tooltip]:after {
+        width: 100%;
+        white-space: normal;
+      }
+    }
+
+    &__description {
+      width: 100%;
+      max-height: toRem(40);
+    }
+
     &__footer {
       display: flex;
       align-content: center;
@@ -142,6 +155,7 @@
       font-size: toRem(14);
       line-height: toRem(18);
       padding: toRem(3) 0;
+      max-height: toRem(37);
 
       .a-btn {
         margin-left: toRem(20); // needed for centering the footer text
@@ -160,56 +174,6 @@
 .o-presentation-consult {
   width: 100%;
   padding: toRem(15);
-}
-
-.description-container {
-  position: relative;
-  width: 100%;
-}
-
-.description {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  display: inherit;
-  position: relative;
-  line-height: 2rem;
-  box-sizing: border-box;
-  pointer-events:none;
-}
-
-.description:after {
-  content:"";
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 40px;
-  height: 48px;
-  z-index: 1;
-  pointer-events:initial;
-}
-
-.description:hover:after{
-  cursor: pointer;
-}
-
-.description-tooltip {
-  position: absolute;
-  max-width: 50vw;
-  visibility: hidden;
-  background-color: #fff;
-  padding: 20px;
-  -webkit-box-shadow: 0 0 50px 0 rgba(0,0,0,0.3);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  z-index: 2;
-}
-
-.description:hover + .description-tooltip {
-  visibility: visible;
-  transition: opacity 0.2s ease;
-  opacity: 1;
 }
 
 .title-tooltip {
@@ -233,6 +197,7 @@ h1.a-presentation-title {
     padding-bottom: 0;
   }
 }
+
 .actions-list {
   display: flex;
   align-items: center;

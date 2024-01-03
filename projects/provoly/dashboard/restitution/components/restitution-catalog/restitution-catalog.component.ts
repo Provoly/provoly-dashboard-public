@@ -1,16 +1,9 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  ConfigActions,
-  ConfigSelectors, DashboardActions,
-  ManifestDescription,
-  PryVisibilityType,
-  ViewMode,
-  Widget
-} from '@provoly/dashboard';
+import { ConfigActions, ConfigSelectors, PryVisibilityType, ViewMode, Widget } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
-import { TemplatePortal } from "@angular/cdk/portal";
+import { TemplatePortal } from '@angular/cdk/portal';
 
 @Component({
   selector: 'pry-restitution-catalog',
@@ -67,7 +60,7 @@ export class PryRestitutionCatalogComponent {
 
   deleteRestitution(id: string) {
     this.store.dispatch(ConfigActions.confirmRestitutionDeletion({ id }));
-    this.toggleModalActions()
+    this.toggleModalActions();
   }
 
   editRestitution(restitution: Widget) {
@@ -75,26 +68,32 @@ export class PryRestitutionCatalogComponent {
     this.selectMode(ViewMode.EDITION);
     this.search$.next('');
     this.overlayRef?.dispose();
-    this.overlayRef = undefined
+    this.overlayRef = undefined;
   }
 
-  toggleModalActions(restitution?: Widget ) {
-    if (!this.overlayRef && restitution){
-      this.selectedRestitution = restitution
+  toggleModalActions(restitution?: Widget, moreButton?: HTMLButtonElement) {
+    if (!this.overlayRef && restitution) {
+      this.selectedRestitution = restitution;
       this.overlayRef = this.overlay.create(
         new OverlayConfig({
           hasBackdrop: true,
-          panelClass: ['o-modal-wrapper'],
+          panelClass: ['m-context-menu-wrapper'],
           backdropClass: 'backdrop'
         })
       );
       this.overlayRef.backdropClick().subscribe(() => this.toggleModalActions(restitution));
       this.overlayRef.attach(new TemplatePortal(this.templateActions, this.viewContainerRef));
+      const contextMenu = document.querySelector('div.m-context-menu') as HTMLDivElement;
+      if (!!contextMenu && moreButton) {
+        const toggleActionsModalButton = document.querySelector('#' + moreButton.id);
+        const rect = toggleActionsModalButton?.getBoundingClientRect();
+        contextMenu.style.left = (rect?.left ?? 0) - (contextMenu?.clientWidth ?? 0) + 23 + 'px';
+        contextMenu.style.top = (rect?.top ?? 0) + 25 + 'px';
+      }
     } else {
       this.overlayRef?.dispose();
-      this.overlayRef = undefined
+      this.overlayRef = undefined;
       this.selectedRestitution = null;
     }
   }
-
 }

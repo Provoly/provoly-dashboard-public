@@ -49,6 +49,7 @@ import { FormsModule } from '@angular/forms';
 import { TabGroupComponent } from './components/tabs/tab-group.component';
 import { TabComponent } from './components/tabs/tab.component';
 import { PRY_GEOAUTH_TOKEN, PryDefaultGeoAuthService } from './auth/geoAuth.service';
+import { EllipsisDirective } from './components/ellipsis.directive';
 
 const SELECTORS = [
   TranslateIdPipe,
@@ -64,7 +65,8 @@ const SELECTORS = [
   AccordionComponent,
   AccordionItemComponent,
   TabGroupComponent,
-  TabComponent
+  TabComponent,
+  EllipsisDirective
 ];
 
 @NgModule({

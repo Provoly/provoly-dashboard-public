@@ -5,8 +5,8 @@
 
 .a-tooltip {
   &[data-tooltip]:after {
-    @include typography-level(themed($theme-map, 'typography', 'body'));
+    @include typography-level(themed($theme-map, 'typography', 'simple-tooltip'));
     background-color: themed($theme-map, 'color', 'primary', 50);
-    color: themed($theme-map, 'color', 'primary', 800);
+    color: themed($theme-map, 'color', 'primary', 700);
   }
 }

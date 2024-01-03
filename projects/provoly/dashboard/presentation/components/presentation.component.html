@@ -77,18 +77,11 @@
                 </div>
               </ng-container>
             </div>
-            <div
-              class="o-presentation__item__txt a-tooltip"
-              (click)="fetch(presentation)"
-              [attr.data-tooltip]="'@pry.presentation.view' | i18n"
-            >
+            <div class="o-presentation__item__txt" (click)="fetch(presentation)">
               <h3 class="a-h3">{{ presentation.name }}</h3>
-              <div class="a-p">
-                <div class="description-container">
-                  <span class="description">
-                    {{ presentation.description }}
-                  </span>
-                  <div class="description-tooltip">{{ presentation.description }}</div>
+              <div class="o-presentation__item__description-container" ellipsis textElementSelector=".a-p">
+                <div class="o-presentation__item__description a-p">
+                  {{ presentation.description }}
                 </div>
               </div>
               <p class="a-p -date">{{ presentation.modificationDate | sinceDate }}</p>
@@ -176,7 +169,7 @@
       class="m-context-menu__list"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="dialog presenation options"
+      aria-labelledby="dialog presentation options"
       *ngIf="selectedPresentation$ | async as selectedPresentation"
     >
       <li class="m-context-menu__list__item">
