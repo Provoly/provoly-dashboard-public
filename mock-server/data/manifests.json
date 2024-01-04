@@ -176,6 +176,50 @@
         }
       ]
     }
+  },{
+    "name": "manifest indépendant ?",
+    "manifest": {
+      "windows": [
+        {
+          "widgets": [
+            {
+              "type": "map",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "height": 12,
+                "width": 12
+              },
+              "options": {
+                "fit": true,
+                "tooltipMode": "click",
+                "layers": [
+                  {
+                    "type": "geoserver",
+                    "url": "https://wrong.url/geoserver/CKDo/wms?SERVICE=WMS&VERSION=1.3.0",
+                    "paramTiled": true,
+                    "opacity": 100,
+                    "oClass": "0e745c78-4a74-4bfd-9789-06ec93f7d364",
+                    "key": "CKDo:EquipementsPublics",
+                    "namespace": "CKDo",
+                    "paramLayer": "EquipementsPublics",
+                    "name": "CKDo:EquipementsPublics",
+                    "datasourceId": "s6406e7e-37cd-41ce-b5fc-36d233e6ae5c",
+                    "title": "Equipements publics Bdx Métropole",
+                    "order": 4,
+                    "additionalParameters": {
+                      "STYLES": "point"
+                    },
+                    "attribution": ""
+                  }
+                ]
+              },
+              "datasource": "s6406e7e-37cd-41ce-b5fc-36d233e6ae5c"
+            }
+          ]
+        }
+      ]
+    }
   },
   {
     "name": "2 charts",
