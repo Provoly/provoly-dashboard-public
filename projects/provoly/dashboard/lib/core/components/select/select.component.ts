@@ -178,18 +178,20 @@ export class PrySelectComponent implements ControlValueAccessor {
 
   toggle(force?: boolean) {
     if (!this.disabled) {
-      this.open = force !== undefined ? force : !this.open;
-      if (this.open) {
-        this.modalWidth = this._elementRef.getBoundingClientRect().width - 5;
-        this.overlayRef = this.overlay.create(this.getOverlayConfig());
-        this.overlayRef.backdropClick().subscribe(() => {
-          this.toggle(false);
-          this.writeValue(this.search$.getValue());
-        });
-        this.overlayRef.attach(new TemplatePortal(this.optionsModal, this.viewContainerRef));
-      } else {
-        this.overlayRef?.dispose();
-        this.overlayRef = undefined;
+      if (this.open !== force) {
+        this.open = force !== undefined ? force : !this.open;
+        if (this.open) {
+          this.modalWidth = this._elementRef.getBoundingClientRect().width - 5;
+          this.overlayRef = this.overlay.create(this.getOverlayConfig());
+          this.overlayRef.backdropClick().subscribe(() => {
+            this.toggle(false);
+            this.writeValue(this.search$.getValue());
+          });
+          this.overlayRef.attach(new TemplatePortal(this.optionsModal, this.viewContainerRef));
+        } else {
+          this.overlayRef?.dispose();
+          this.overlayRef = undefined;
+        }
       }
     }
   }
