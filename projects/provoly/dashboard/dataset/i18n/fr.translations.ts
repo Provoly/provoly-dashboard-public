@@ -2,7 +2,7 @@ export const frTranslations = {
   '@pry': {
     dataset: {
       consult: 'Consulter',
-      title: 'Catalogue des jeux de données',
+      title: 'Catalogue de données',
       search: 'Rechercher',
       date: 'Date',
       status: 'Statut',
@@ -14,8 +14,8 @@ export const frTranslations = {
       api: 'API',
       returnToList: 'Retour au catalogue',
       refresh: 'Actualiser',
-      since_day:'Dernière mise à jour :',
-      noActiveVersion:'Aucune version active',
+      since_day: 'Dernière mise à jour :',
+      noActiveVersion: 'Aucune version active',
       version: {
         title: 'Intitulé',
         INDEXING: 'En chargement',

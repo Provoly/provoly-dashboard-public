@@ -119,6 +119,7 @@ export const frTranslations = {
       rename: 'Enregistrer sous',
       restore: 'Restaurer les pages',
       save: 'Enregistrer',
+      share: 'Partager',
       drag: 'Restitution...',
       dragIndication: 'Insérer un',
       barchart: 'Barres',
@@ -335,7 +336,7 @@ export const frTranslations = {
         modify: 'Modifier'
       },
       creation: {
-        create: 'Nouveau filtre',
+        create: 'Créer un filtre',
         update: 'Modifier un filtre',
         name: 'Nom du filtre',
         type: 'Type du filtre',
@@ -344,7 +345,8 @@ export const frTranslations = {
         value: 'Valeur',
         values: 'Valeurs',
         validate: 'Valider',
-        limit: 'Nombre de suggestions'
+        limit: 'Nombre de suggestions',
+        dateRange: 'Plage de dates'
       },
       attributes: {
         datasource: 'Datasource',

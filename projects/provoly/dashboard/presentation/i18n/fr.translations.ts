@@ -2,7 +2,7 @@ export const frTranslations = {
   '@pry': {
     presentation: {
       add: {
-        pageTitle: 'Renseigner la description de la présentation',
+        pageTitle: 'Renseigner la description du tableau de bord',
         info: 'Informations',
         submit: 'Enregistrer'
       },
@@ -19,26 +19,26 @@ export const frTranslations = {
         categories: 'Catégories',
         categoryInput: 'Saisir la/les catégories',
         grid: 'Grille actuelle: ',
-        cover: "L'image doit couvrir la carte de la présentation",
+        cover: "L'image doit couvrir la carte du tableau de bord",
         theme: 'Thématique'
       },
       share: 'Partager',
-      options: 'Options de la presentation',
+      options: 'Options du tableau de bord',
       consult: 'Consulter',
-      view: 'Consulter la presentation',
+      view: 'Consulter le tableau de bord',
       private: 'Présentation privée',
       homeView: "Afficher en page d'accueil",
-      erase: 'Supprimer la présentation',
-      change: 'Modifier la présentation',
+      erase: 'Supprimer le tableau de bord',
+      change: 'Modifier le tableau de bord',
       create: 'Créer',
-      configuration: 'Construire la présentation',
+      configuration: 'Construire le tableau de bord',
       required: 'Ce champ est requis',
       maxLength: 'Nombre de caractères autorisés : {{len}}',
       edition: 'Éditer',
       delete: 'Supprimer',
       backToCatalog: 'Revenir au catalogue',
       search: 'Rechercher',
-      title: 'Catalogue de présentations'
+      title: 'Catalogue de tableaux de bord'
     }
   }
 };

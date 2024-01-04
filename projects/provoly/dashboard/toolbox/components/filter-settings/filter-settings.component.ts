@@ -252,7 +252,7 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
 
   goToCreation() {
     this.currentFilterComponentType$.next('');
-    this.currentStep = FilterSteps.EDITION;
+    this.currentStep = FilterSteps.CREATION;
   }
 
   submitFilter() {

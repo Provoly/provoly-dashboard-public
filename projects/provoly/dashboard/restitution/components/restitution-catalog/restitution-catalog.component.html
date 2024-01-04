@@ -6,10 +6,10 @@
         type="button"
         (click)="selectMode(mode.CREATION)"
         class="a-btn a-btn--primary a-tooltip"
-        [attr.data-tooltip]="'@pry.restitution.create_title' | i18n"
+        [attr.data-tooltip]="'@pry.restitution.create' | i18n"
         *pryAccess="{ module: 'dashboard', page: 'restitution', action: 'create' }"
       >
-        {{ '@pry.restitution.create_title' | i18n }}
+        {{ '@pry.restitution.create' | i18n }}
       </button>
       <div>
         <div class="o-catalog__search">
@@ -156,7 +156,7 @@
       </button>
     </div>
     <div class="o-manifest-layout__content">
-      <pry-restitution (restitutionCreated)="closeRestitution($event)" class="restitution"></pry-restitution>
+      <pry-restitution (restitutionCreated)="closeRestitution($event)" [edit]="false" class="restitution"></pry-restitution>
     </div>
   </ng-template>
   <ng-template [ngIf]="selectedMode === mode.EDITION">

@@ -18,7 +18,7 @@
   <div class="o-filters">
     <div class="o-filters__header">
       <ng-container *ngIf="currentStep === FilterSteps.LIST">
-        <h2>Paramétrer les filtres</h2>
+        <h2>{{ '@pry.filters.label' | i18n }}</h2>
       </ng-container>
       <ng-container *ngIf="currentStep === FilterSteps.CREATION || currentStep === FilterSteps.EDITION">
         <div class="u-display-flex -row -align-center">
@@ -93,7 +93,7 @@
           </pry-select>
         </div>
         <div *ngIf="(currentFilterComponentType$ | async) === 'date'" class="m-form-label-field u-display-flex -row">
-          <label for="date-range" class="a-label">Plage de dates</label>
+          <label for="date-range" class="a-label">{{ '@pry.filters.creation.dateRange' | i18n }}</label>
           <pry-checkbox
             id="date-range"
             [(ngModel)]="filter.hasDateRange"

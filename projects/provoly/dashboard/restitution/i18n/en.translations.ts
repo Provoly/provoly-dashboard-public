@@ -8,7 +8,7 @@ export const enTranslations = {
       image: 'Image',
       close: 'Cancel',
       validate: 'Save',
-      broadcast: 'Submit',
+      share: 'Share',
       view: 'View',
       create: 'Create restitution',
       cancel: 'Cancel',

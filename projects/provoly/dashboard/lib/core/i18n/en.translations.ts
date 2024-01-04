@@ -320,7 +320,7 @@ export const enTranslations = {
       }
     },
     filters: {
-      label: 'Filters settings',
+      label: 'Filter settings',
       noAttributes: 'Presentation had no available attributes',
       noFilters: 'No filters set up for this presentation yet.',
       clear: 'Clear all',
@@ -340,7 +340,8 @@ export const enTranslations = {
         value: 'Value',
         values: 'Values',
         validate: 'Confirm',
-        limit: 'Autocomplete proposals'
+        limit: 'Autocomplete proposals',
+        dateRange: 'Date range'
       },
       attributes: {
         datasource: 'Datasource',
