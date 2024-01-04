@@ -100,14 +100,13 @@ describe('AdminAttributesFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should create new attribute for selected class', fakeAsync(() => {
+  it('should create new attribute for selected class', () => {
     const spyStore = jest.spyOn(store, 'dispatch');
     component.selectedClass = classes[0];
 
     let attributeToSave = {
       ...attribute,
-      description: '',
-      name: 'attribute-technical' // if no name, the name is the technical name by default
+      description: ''
     };
 
     component.attrForm.setValue(attributeToSave);
@@ -116,9 +115,9 @@ describe('AdminAttributesFormComponent', () => {
     expect(spyStore.mock.calls).toEqual([
       [AdminClassActions.saveAttributeForClass({ classId: classes[0].id, attribute: attributeToSave, route: '/' })]
     ]);
-  }));
+  });
 
-  it('should update current attribute', fakeAsync(() => {
+  it('should update current attribute', () => {
     const spyStore = jest.spyOn(store, 'dispatch');
     component.selectedClass = classes[0];
     component.selectedAttribute = attribute;
@@ -135,9 +134,9 @@ describe('AdminAttributesFormComponent', () => {
     expect(spyStore.mock.calls).toEqual([
       [AdminClassActions.saveAttributeForClass({ classId: classes[0].id, attribute: attributeToUpdate, route: '/' })]
     ]);
-  }));
+  });
 
-  it('should not update current attribute because technical name is required', fakeAsync(() => {
+  it('should not update current attribute because technical name is required', () => {
     component.selectedClass = classes[0];
     component.selectedAttribute = attribute;
     let attributeToUpdate = {
@@ -150,7 +149,7 @@ describe('AdminAttributesFormComponent', () => {
 
     component.addAttribute();
     expect(component.attrForm.valid).toEqual(false);
-  }));
+  });
 
   it('should create new category and set to attrForm', fakeAsync(() => {
     const spyStore = jest.spyOn(store, 'dispatch');
