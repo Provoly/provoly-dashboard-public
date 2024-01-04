@@ -1,5 +1,20 @@
 <pry-autocomplete-css></pry-autocomplete-css>
-<div class="m-filter__input-wrapper m-filter__input-wrapper--dropdown" *ngIf="filter" (keyup)="updateSearch($event)">
+<div
+  class="m-filter__input-wrapper m-filter__input-wrapper--dropdown"
+  *ngIf="filter"
+  (keyup)="updateSearch($event)"
+  #ref
+>
+  <div class="no-widget no-widget__loader">
+    <pry-icon
+      iconSvg="loader"
+      class="no-widget__loading"
+      [alt]="'@pry.widget.target.loading' | i18n"
+      [width]="20"
+      [height]="20"
+      *ngIf="loader"
+    />
+  </div>
   <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
   <pry-select
     [id]="filter.name"
@@ -10,5 +25,6 @@
     [autocomplete]="true"
     aria-labelledby="item-label"
     (blur)="updateSearch($event)"
+    [elementRef]="ref"
   ></pry-select>
 </div>

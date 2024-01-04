@@ -142,6 +142,10 @@
     line-height: toRem(20);
     text-align: center;
   }
+
+  &__loader {
+    width: toRem(20);
+  }
 }
 
 .a-indicator-block {

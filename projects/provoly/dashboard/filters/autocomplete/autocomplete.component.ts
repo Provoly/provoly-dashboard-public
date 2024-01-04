@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BaseFilterComponent, SearchService } from '@provoly/dashboard';
-import { BehaviorSubject, Observable, switchMap } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
+import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, filter, Observable, switchMap } from 'rxjs';
 import equal from 'fast-deep-equal/es6';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'pry-autocomplete',
@@ -12,6 +12,7 @@ import equal from 'fast-deep-equal/es6';
 export class AutocompleteComponent extends BaseFilterComponent implements OnInit, OnDestroy {
   search$ = new BehaviorSubject<string>('');
   autocomplete$?: Observable<string[]>;
+  loader: boolean = false;
 
   constructor(store: Store, private searchService: SearchService) {
     super(store);
@@ -25,7 +26,16 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
       distinctUntilChanged((p, v) => equal(p, v)),
       debounceTime(500),
       filter((search) => !!search && search.length > 2),
-      switchMap((search) => this.searchService.autocomplete(this.filter?.attributes, search, this.filter?.limit))
+      switchMap((search) => {
+        this.loader = true;
+        return this.searchService.autocomplete(this.filter?.attributes, search, this.filter?.limit).pipe(
+          tap(() => (this.loader = false)),
+          catchError((err) => {
+            this.loader = false;
+            throw err;
+          })
+        );
+      })
     );
   }
 

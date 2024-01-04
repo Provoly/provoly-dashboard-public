@@ -705,7 +705,9 @@ router.on(['OPTIONS', 'POST'], '/data/data-sources/values', (req, res, params) =
         result.push(value + '' + (['number', 'decimal'].includes(attrType) ? casual.integer((from = 0)) : casual.word));
       }
       result.sort();
-      makeResponseOk(res, result);
+      setTimeout(() => {
+        makeResponseOk(res, result);
+      }, 1000);
     } else {
       makeResponseOk(res, ['']);
     }

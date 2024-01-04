@@ -69,7 +69,8 @@ export class PrySelectComponent implements ControlValueAccessor {
 
   overlayRef?: OverlayRef;
   @ViewChild('optionsModal', { read: TemplateRef }) optionsModal!: TemplateRef<any>;
-  @ViewChild('selectElement') public selectElement!: ElementRef;
+  @ViewChild('selectElement') public selectElement!: ElementRef<HTMLDivElement>;
+  @Input() elementRef!: HTMLDivElement;
 
   private _onChange = (_: any) => {};
   private _onTouched = () => {};
@@ -179,7 +180,7 @@ export class PrySelectComponent implements ControlValueAccessor {
     if (!this.disabled) {
       this.open = force !== undefined ? force : !this.open;
       if (this.open) {
-        this.modalWidth = this.selectElement.nativeElement.getBoundingClientRect().width - 5;
+        this.modalWidth = this._elementRef.getBoundingClientRect().width - 5;
         this.overlayRef = this.overlay.create(this.getOverlayConfig());
         this.overlayRef.backdropClick().subscribe(() => {
           this.toggle(false);
@@ -196,22 +197,20 @@ export class PrySelectComponent implements ControlValueAccessor {
   private getOverlayConfig(): OverlayConfig {
     const positionStrategy = this.overlay
       .position()
-      .flexibleConnectedTo(this.selectElement.nativeElement)
+      .flexibleConnectedTo(this._elementRef)
       .withPush(false)
       .withPositions([
         {
           originX: 'start',
           originY: 'bottom',
           overlayX: 'start',
-          overlayY: 'top',
-          offsetY: 4
+          overlayY: 'top'
         },
         {
           originX: 'start',
           originY: 'top',
           overlayX: 'start',
-          overlayY: 'bottom',
-          offsetY: -4
+          overlayY: 'bottom'
         }
       ]);
 
@@ -223,5 +222,9 @@ export class PrySelectComponent implements ControlValueAccessor {
       panelClass: ['a-pry-select__options'],
       backdropClass: 'a-pry-select__backdrop'
     });
+  }
+
+  get _elementRef(): HTMLDivElement {
+    return this.elementRef ?? this.selectElement.nativeElement;
   }
 }
