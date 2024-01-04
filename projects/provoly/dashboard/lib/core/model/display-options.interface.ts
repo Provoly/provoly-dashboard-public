@@ -7,6 +7,7 @@ export interface DisplayOptions {
   useFilters: boolean;
   toolbox: ToolboxDisplayOptions;
   edit_toggle: boolean;
+  widgetContextMenu: boolean | WidgetContextMenuDisplayOptions;
 }
 
 export interface ToolboxDisplayOptions {
@@ -18,6 +19,16 @@ export interface ToolboxDisplayOptions {
   default_size: boolean;
   refresh_datasets: boolean;
   automate_refresh: boolean;
+}
+
+export interface WidgetContextMenuDisplayOptions {
+  datasourceSelection: boolean;
+  parameters: boolean;
+  window: boolean;
+  maximize: boolean;
+  addToCatalog: boolean;
+  delete: boolean;
+  changeSpot: boolean;
 }
 
 export const BASE_DISPLAY_OPTIONS = {
@@ -35,7 +46,16 @@ export const BASE_DISPLAY_OPTIONS = {
     refresh_datasets: false,
     automate_refresh: false
   },
-  edit_toggle: false
+  edit_toggle: false,
+  widgetContextMenu: {
+    datasourceSelection: true,
+    parameters: true,
+    window: true,
+    maximize: true,
+    addToCatalog: true,
+    delete: true,
+    changeSpot: true
+  }
 } as DisplayOptions;
 
 export function getDisplayOptions(mode?: ViewMode): DisplayOptions {
@@ -44,7 +64,8 @@ export function getDisplayOptions(mode?: ViewMode): DisplayOptions {
       return {
         ...BASE_DISPLAY_OPTIONS,
         useFilters: true,
-        toolbox: { ...BASE_DISPLAY_OPTIONS.toolbox, save_view_as: true, refresh_datasets: true }
+        toolbox: { ...BASE_DISPLAY_OPTIONS.toolbox, save_view_as: true, refresh_datasets: true },
+        widgetContextMenu: false
       };
     case ViewMode.SEARCH:
       return {
@@ -67,7 +88,8 @@ export function getDisplayOptions(mode?: ViewMode): DisplayOptions {
             return acc;
           }, {} as ToolboxDisplayOptions)
         },
-        edit_toggle: true
+        edit_toggle: true,
+        widgetContextMenu: false
       };
     default:
       return BASE_DISPLAY_OPTIONS;

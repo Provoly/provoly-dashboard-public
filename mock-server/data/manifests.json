@@ -129,7 +129,6 @@
   {
     "name": "map_et_table",
     "manifest": {
-      "locked": false,
       "windows": [
         {
           "widgets": [
@@ -420,7 +419,6 @@
   {
     "name": "map_et_chart",
     "manifest": {
-      "locked": false,
       "windows": [
         {
           "widgets": [
@@ -476,7 +474,6 @@
   {
     "name": "cql_filter",
     "manifest": {
-      "locked": false,
       "windows": [
         {
           "grid": {
@@ -586,7 +583,6 @@
           "route": "/"
         }
       ],
-      "locked": false,
       "filters": [
         {
           "id": "bc5a3b63-6774-4d0a-9f80-a2313d5074cf",

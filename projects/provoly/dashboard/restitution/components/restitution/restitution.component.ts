@@ -6,10 +6,12 @@ import {
   ClassActions,
   ClassSelectors,
   ConfigActions,
+  DashboardActions,
   DataSource,
   DataSourceActions,
   DEFAULT_RESTITUTION_ICON_URL,
   FieldActions,
+  getDisplayOptions,
   LibraryTypes,
   PryVisibility,
   PryVisibilityType,
@@ -17,6 +19,7 @@ import {
   SubscriptionnerDirective,
   ToolboxManifestService,
   ToolboxMenuService,
+  ViewMode,
   Widget,
   WidgetManifest
 } from '@provoly/dashboard';
@@ -91,6 +94,25 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
     if (this.selectedRestitution) {
       if (!this.edit) {
         this.consultMode = true;
+        this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: ViewMode.CONSULT }));
+      } else {
+        this.store.dispatch(
+          DashboardActions.updateDisplayOptions({
+            mode: ViewMode.CUSTOM,
+            customDisplay: {
+              ...getDisplayOptions(ViewMode.EDITION),
+              widgetContextMenu: {
+                datasourceSelection: false,
+                parameters: true,
+                window: false,
+                maximize: false,
+                addToCatalog: false,
+                delete: false,
+                changeSpot: false
+              }
+            }
+          })
+        );
       }
       this.customManifest = JSON.parse(this.selectedRestitution.content);
       if (Array.isArray(this.customManifest.datasource)) {
@@ -125,15 +147,6 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
         );
       });
       this.customManifest = JSON.parse(this.selectedRestitution.content);
-      this.customManifest.header = {
-        datasourceSelection: false,
-        parameters: true,
-        window: false,
-        maximize: false,
-        addToCatalog: false,
-        delete: false,
-        changeSpot: false
-      };
       this.form = {
         selectedWidget: this.customManifest.type,
         selectedDataSources: (this.customManifest.datasource ?? []) as string[],
@@ -177,15 +190,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
       title: this.form.title,
       datasource: this.form.selectedDataSources ?? [],
       cover: this.form.cover ?? false,
-      header: {
-        datasourceSelection: false,
-        parameters: true,
-        window: false,
-        maximize: false,
-        addToCatalog: false,
-        delete: false,
-        changeSpot: false
-      },
+      header: true,
       options: {
         ...widgetType?.manifest.options,
         title: this.form.title

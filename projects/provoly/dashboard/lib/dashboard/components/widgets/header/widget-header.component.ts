@@ -29,6 +29,7 @@ import { DashboardActions } from '../../../store/dashboard.actions';
 import { DashboardSelectors } from '../../../store/dashboard.selectors';
 import { SubscriptionnerDirective } from '../../subscriptionner.directive';
 import { WidgetPlacementUtils } from '../widget-placement/widget-placement.utils';
+import { WidgetContextMenuDisplayOptions } from '../../../../core/model/display-options.interface';
 
 export const WIDGET_HEADER_HEIGHT = 30;
 
@@ -102,7 +103,7 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective implement
     this._widgetIndex = widgetIndex;
   }
 
-  lockedView$: Observable<boolean>;
+  displayContextMenu$: Observable<boolean | WidgetContextMenuDisplayOptions>;
   targetIndexes$: Observable<number[]>;
   _widgetIndex$ = new BehaviorSubject<number>(0);
   _widgetIndex!: number;
@@ -136,9 +137,9 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective implement
         this.windowManifest = manifest;
       })
     );
-    this.lockedView$ = this.store
-      .select(DashboardSelectors.globalManifest)
-      .pipe(map((m) => !!m.locked || !!this.manifest$.getValue()?.locked));
+    this.displayContextMenu$ = this.store
+      .select(DashboardSelectors.displayOptions)
+      .pipe(map((options) => options.widgetContextMenu));
 
     this.usedDatasources$ = combineLatest([
       this.store.select(DataSourceSelectors.getDataSourcesSorted),
@@ -394,19 +395,6 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective implement
 
   isActionDisabled(option: HeaderAction) {
     return !!option?.disabled ? option?.disabled(this) : false;
-  }
-
-  displayOption(headerOptions: any, parameters: string) {
-    return (
-      headerOptions === undefined ||
-      headerOptions === true ||
-      headerOptions[parameters] === undefined ||
-      headerOptions[parameters] === true
-    );
-  }
-
-  displaySettings(headerOptions: { [p: string]: boolean } | {} | undefined) {
-    return headerOptions === undefined || headerOptions === true || Object.keys(headerOptions).length > 0;
   }
 
   toggleChangeSpot() {

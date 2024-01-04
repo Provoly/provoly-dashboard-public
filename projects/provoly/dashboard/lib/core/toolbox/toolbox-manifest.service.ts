@@ -287,9 +287,6 @@ export class ToolboxManifestService extends SubscriptionnerDirective {
 
       $event.dataTransfer.dropEffect = 'copy';
       $event.dataTransfer.effectAllowed = 'copy';
-      if (!this.isModel(id) && manifest.header !== false) {
-        manifest.header = { datasourceSelection: false };
-      }
 
       $event.dataTransfer.setData(MIME_TYPE_WIDGET_MANIFEST, JSON.stringify(manifest));
       $event.dataTransfer.setData(MIME_TYPE_WIDGET_TYPE + manifest.type, 'unused');

@@ -26,7 +26,6 @@ export class PryDatasetDetailComponent implements OnInit {
   widgetManifest = {
     table: {
       header: true,
-      locked: true,
       type: 'table',
       layout: { x: 1, y: 1, height: 12, width: 12 },
       options: {},

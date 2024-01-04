@@ -20,7 +20,7 @@
       </div>
     </ng-template>
   </div>
-  <div class="m-btn-group" *ngIf="!(lockedView$ | async) && displaySettings(headerOptions)">
+  <div class="m-btn-group" *ngIf="displayContextMenu$ | async as options">
     <button
       type="button"
       id="dialog_Menu"
@@ -37,7 +37,7 @@
 </div>
 
 <ng-template #overlayMenu>
-  <div class="m-context-menu">
+  <div class="m-context-menu" *ngIf="displayContextMenu$ | async as options">
     <ul
       class="m-context-menu__list"
       #menuList
@@ -52,7 +52,7 @@
       <li
         class="m-context-menu__list__item"
         role="none"
-        *ngIf="(manifest$ | async)?.datasource && displayOption(headerOptions, 'datasourceSelection')"
+        *ngIf="(manifest$ | async)?.datasource && (options === true || options['datasourceSelection'] === true)"
       >
         <button
           type="button"
@@ -67,10 +67,10 @@
           <span>{{ '@pry.widget.tooltip.readSearch' | i18n }}</span>
         </button>
       </li>
-      <li class="m-context-menu__list__item" role="none" *ngIf="displayOption(headerOptions, 'parameters')">
+      <li class="m-context-menu__list__item" role="none" *ngIf="options === true || options!['parameters'] === true">
         <ng-content></ng-content>
       </li>
-      <ng-container *ngIf="displayOption(headerOptions, 'window')">
+      <ng-container *ngIf="options === true || options!['window'] === true">
         <li class="m-context-menu__list__item" role="none" *ngFor="let targetIndex of targetIndexes$ | async">
           <button
             type="button"
@@ -87,13 +87,17 @@
           </button>
         </li>
       </ng-container>
-      <li class="m-context-menu__list__item" role="none" *ngIf="hasGrid && displayOption(headerOptions, 'changeSpot')">
+      <li
+        class="m-context-menu__list__item"
+        role="none"
+        *ngIf="hasGrid && (options === true || options!['changeSpot'] === true)"
+      >
         <button type="button" role="menuitem" (click)="toggleChangeSpot()" class="a-btn" tabindex="-1">
           <pry-icon [height]="17" [width]="17" iconSvg="move"></pry-icon>
           <span>{{ '@pry.widget.tooltip.changeSpot' | i18n }}</span>
         </button>
       </li>
-      <li class="m-context-menu__list__item" role="none" *ngIf="displayOption(headerOptions, 'maximize')">
+      <li class="m-context-menu__list__item" role="none" *ngIf="options === true || options!['maximize'] === true">
         <button
           type="button"
           role="menuitem"
@@ -106,13 +110,13 @@
           {{ '@pry.widget.target.maximize' | i18n }}
         </button>
       </li>
-      <li class="m-context-menu__list__item" role="none" *ngIf="displayOption(headerOptions, 'addToCatalog')">
+      <li class="m-context-menu__list__item" role="none" *ngIf="options === true || options!['addToCatalog'] === true">
         <button type="button" role="menuitem" tabindex="-1" (click)="toggleCatalog()" class="a-btn">
           <pry-icon [height]="17" [width]="17" iconSvg="library_add"></pry-icon>
           <span>{{ '@pry.widget.tooltip.catalogWidget' | i18n }}</span>
         </button>
       </li>
-      <li class="m-context-menu__list__item" role="none" *ngIf="displayOption(headerOptions, 'delete')">
+      <li class="m-context-menu__list__item" role="none" *ngIf="options === true || options!['delete'] === true">
         <button
           type="button"
           role="menuitem"

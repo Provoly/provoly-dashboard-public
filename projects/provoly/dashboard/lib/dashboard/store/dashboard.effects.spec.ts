@@ -190,7 +190,16 @@ describe('DashboardEffects', () => {
               save_view_as: false
             },
             useFilters: false,
-            edit_toggle: false
+            edit_toggle: false,
+            widgetContextMenu: {
+              addToCatalog: true,
+              changeSpot: true,
+              datasourceSelection: true,
+              delete: true,
+              maximize: true,
+              parameters: true,
+              window: true
+            }
           }
         })
       });

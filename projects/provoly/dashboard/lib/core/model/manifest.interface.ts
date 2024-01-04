@@ -71,7 +71,6 @@ export interface Request {
 export interface GlobalManifest {
   windows: DashboardManifest[];
   refreshRates?: { [key: string]: number };
-  locked?: boolean;
   filters?: Filter[];
 }
 
@@ -81,8 +80,7 @@ export interface WidgetManifest {
   layout: WidgetLayout;
   options?: WidgetOptions;
   datasource?: string | string[];
-  header?: boolean | { [key: string]: boolean };
-  locked?: boolean;
+  header?: boolean;
   cover?: boolean;
   contextMenu?: boolean;
 }
