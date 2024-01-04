@@ -21,10 +21,10 @@ import {
 import {
   BehaviorSubject,
   combineLatest,
+  debounceTime,
   distinctUntilChanged,
   map,
   Observable,
-  of,
   startWith,
   Subscription,
   switchMap
@@ -125,6 +125,17 @@ export class AdminAttributesFormComponent implements OnInit, OnDestroy {
       this.sub.add(this.nameAlreadyExists$.subscribe((value) => (this.nameAlreadyExists = value)));
     }
 
+    this.attrForm
+      .get('technicalName')!
+      .valueChanges.pipe(distinctUntilChanged(), debounceTime(500))
+      .subscribe((value) => {
+        if (!this.attrForm.get('name')?.value) {
+          this.attrForm.patchValue({
+            name: value.slice(0, 50)
+          });
+        }
+      });
+
     if (this.attributeTechnicalNames) {
       this.technicalNameAlreadyExists$ = this.attrForm
         .get('technicalName')!
@@ -177,12 +188,6 @@ export class AdminAttributesFormComponent implements OnInit, OnDestroy {
       });
     }
 
-    if (this.attributeNames?.includes(this.attrForm.value.technicalName.slice(0, 50))) {
-      this.nameAlreadyExists = true;
-      this.attrForm.controls['name'].setErrors({ alreadyExists: true });
-      return;
-    }
-
     if (this.attrForm.valid) {
       let attrToSave = this.attrForm.getRawValue() as Attribute;
       let path = this.router.createUrlTree(['..'], { relativeTo: this.route });
@@ -201,7 +206,7 @@ export class AdminAttributesFormComponent implements OnInit, OnDestroy {
         );
       } else if (this.interClass) {
         let interAttribute = Object.assign([], this.interClass.attributes);
-        let interClassUpdated = Object.assign({}, this.interClass);
+        let interClassUpdated = { ...this.interClass };
         interAttribute.push(attrToSave);
         interClassUpdated.attributes = interAttribute;
         this.store.dispatch(AdminClassActions.saveInterClass({ class: interClassUpdated, route: path.toString() }));
