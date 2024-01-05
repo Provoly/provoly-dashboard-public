@@ -48,7 +48,7 @@
               <div
                 class="a-tooltip"
                 (click)="selectRestitution(restitution)"
-                [attr.data-tooltip]="'@pry.restitution.consult_title' | i18n"
+                [attr.data-tooltip]="'@pry.restitution.consultRestitution' | i18n"
               >
                 <div class="o-presentation__item__image">
                   <img
@@ -79,7 +79,7 @@
             <div
               class="o-presentation__item__txt a-tooltip"
               (click)="selectRestitution(restitution)"
-              [attr.data-tooltip]="'@pry.restitution.consult_title' | i18n"
+              [attr.data-tooltip]="'@pry.restitution.consultRestitution' | i18n"
             >
               <h3 class="a-h3">{{ restitution.name }}</h3>
               <p class="a-p -date">{{ restitution.modificationDate | sinceDate }}</p>
@@ -88,7 +88,7 @@
             <div
               class="o-presentation__item__footer a-tooltip"
               (click)="selectRestitution(restitution)"
-              [attr.data-tooltip]="'@pry.restitution.consult_title' | i18n"
+              [attr.data-tooltip]="'@pry.restitution.consultRestitution' | i18n"
             >
               <button class="a-btn">
                 {{ '@pry.restitution.view' | i18n }}
