@@ -151,7 +151,12 @@ const getWidgets = () => {
 };
 
 const saveWidget = (widget) => {
-  widgetList.push(widget);
+  const previous = widgetList.findIndex((w) => w.id === widget.id);
+  if (previous === -1) {
+    widgetList.push(widget);
+  } else {
+    widgetList[previous] = widget;
+  }
 };
 
 const getAssociations = (id) => {

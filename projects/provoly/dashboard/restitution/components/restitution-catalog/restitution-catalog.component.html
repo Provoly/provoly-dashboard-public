@@ -61,7 +61,7 @@
                   />
                 </div>
               </div>
-              <ng-container *ngIf="restitution.visibility?.type === PryVisibilityType.PRIVATE">
+              <ng-container *ngIf="restitution.owner">
                 <div class="more-button">
                   <button
                     type="button"
@@ -156,7 +156,7 @@
       </button>
     </div>
     <div class="o-manifest-layout__content">
-      <pry-restitution (restitutionCreated)="closeRestitution($event)" [edit]="false" class="restitution"></pry-restitution>
+      <pry-restitution (restitutionCreated)="closeRestitution($event)" class="restitution"></pry-restitution>
     </div>
   </ng-template>
   <ng-template [ngIf]="selectedMode === mode.EDITION">
