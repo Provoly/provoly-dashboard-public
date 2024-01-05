@@ -139,7 +139,6 @@
 
       &.a-tooltip[data-tooltip]:after {
         width: 100%;
-        white-space: normal;
       }
     }
 
@@ -176,53 +175,7 @@
   padding: toRem(15);
 }
 
-.title-tooltip {
-  transform: translateY(4rem);
-}
-.info-tooltip{
-  transform: translateY(8rem);
-}
-
-h1.a-presentation-title {
-  font-size: 16px;
-  padding-right: 20px;
-  color: #113B6E;
-}
-
-.title-container {
-  display: flex;
-
-  .h-1 {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-}
-
-.actions-list {
-  display: flex;
-  align-items: center;
-  gap: 0.9375rem;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-evenly;
-  list-style-type: none;
-}
-
-.info-icon {
-  position: relative;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  cursor: pointer;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  align-self: center;
-  margin-right: 1rem;
-  border: 1px solid #3E546A;
-}
-
-.more-actions {
+.more-button {
   position: absolute;
   top: toRem(6);
   right: toRem(10);

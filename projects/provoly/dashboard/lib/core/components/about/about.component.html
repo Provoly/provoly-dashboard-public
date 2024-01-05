@@ -1,8 +1,8 @@
 <div class="o-about">
-  <div class="info-icon description-container description">
-    <span class="info-text">i</span>
+  <div class="m-info-icon">
+    <span>i</span>
   </div>
-  <div class="description-tooltip -position-{{ tooltipPosition }}">
+  <div class="o-about__tooltip -position-{{ tooltipPosition }}">
     <ng-container *ngFor="let version of (version$ | async) ?? {} | keyvalue">
       <div class="o-about__line">
         {{ '@pry.about.' + version.key | i18n }}

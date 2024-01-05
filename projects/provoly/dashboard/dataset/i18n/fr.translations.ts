@@ -67,7 +67,8 @@ export const frTranslations = {
         loading: "Les données sont en cours d'intégration dans la solution",
         invalid:
           "Les données de cette version sont présentes dans la solution mais sont non pertinentes. Elles ne sont pas disponibles pour l'affichage",
-        inValidateButton:
+        unknown: 'Erreur inconnue',
+        invalidateButton:
           'Permet de rendre indisponible les données de la version dans le cas où elles sont considérées comme non pertinente d\'un point de vue métier. Si la version invalidée est la version active, alors les données récupérées par défaut seront celle de la version "Disponible" précédente la plus récente qui passera ainsi au statut "Active"',
         validateButton:
           "Permet de rendre disponible les données de la version dans le cas où elles sont considérées comme pertinente d'un point de vue métier après avoir été invalider. Si la version validée est la plus récente, elle deviendra ainsi la version active et ses données seront celles remontées par défaut"

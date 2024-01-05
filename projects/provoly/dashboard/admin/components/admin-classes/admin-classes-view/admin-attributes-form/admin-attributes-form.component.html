@@ -51,7 +51,7 @@
 
   <div class="m-form-label-field -width-sm">
     <label class="a-label" for="type">{{ '@pry.admin.classes.attributes.field' | i18n }}</label>
-    <div class="title-container">
+    <div class="u-display-flex">
       <pry-select
         id="type"
         formControlName="field"
@@ -69,14 +69,14 @@
           <div class="a-chips" *ngIf="item.crs">{{ item.crs }}</div>
         </div>
       </ng-template>
-      <ng-container *ngIf="selectedFieldTypeDescription$ | async as description">
-        <div class="info-icon description-container description">
-          <span class="info-text">i</span>
-        </div>
-        <div class="description-tooltip title-tooltip">
-          <p class="a-p -date">{{ description }}</p>
-        </div>
-      </ng-container>
+      <div
+        *ngIf="selectedFieldTypeDescription$ | async as description"
+        class="m-info-icon a-tooltip -tooltip-width-lg u-self-center -flex-shrink-0"
+        [attr.data-tooltip]="description"
+        data-tooltip-position="right"
+      >
+        <span>i</span>
+      </div>
     </div>
     <div *ngIf="attrForm.get('field')?.invalid">
       <div *ngIf="attrForm.get('field')?.dirty && attrForm.get('field')?.hasError('required')">
@@ -153,7 +153,7 @@
         </caption>
         <thead>
           <tr>
-            <th scole="col">{{ '@pry.admin.classes.category.name' | i18n }}</th>
+            <th scope="col">{{ '@pry.admin.classes.category.name' | i18n }}</th>
           </tr>
         </thead>
         <tbody>

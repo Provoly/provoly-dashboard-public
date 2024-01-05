@@ -5,7 +5,7 @@
       <button
         type="button"
         (click)="selectMode(mode.CREATION)"
-        class="a-btn a-btn--primary a-tooltip"
+        class="a-btn a-btn--primary a-tooltip -tooltip-no-wrap"
         [attr.data-tooltip]="'@pry.restitution.create' | i18n"
         *pryAccess="{ module: 'dashboard', page: 'restitution', action: 'create' }"
       >
@@ -39,14 +39,14 @@
               <ng-container *ngIf="restitution.visibility?.type === PryVisibilityType.PRIVATE">
                 <pry-icon
                   iconSvg="private"
-                  class="is-private a-tooltip"
+                  class="is-private a-tooltip -tooltip-no-wrap"
                   [attr.data-tooltip]="'@pry.restitution.lock' | i18n"
                   [height]="17"
                   [width]="17"
                 ></pry-icon>
               </ng-container>
               <div
-                class="a-tooltip"
+                class="a-tooltip -tooltip-no-wrap"
                 (click)="selectRestitution(restitution)"
                 [attr.data-tooltip]="'@pry.restitution.consultRestitution' | i18n"
               >
@@ -62,10 +62,10 @@
                 </div>
               </div>
               <ng-container *ngIf="restitution.visibility?.type === PryVisibilityType.PRIVATE">
-                <div class="more-actions">
+                <div class="more-button">
                   <button
                     type="button"
-                    class="a-btn a-btn--more a-tooltip"
+                    class="a-btn a-btn--more a-tooltip -tooltip-no-wrap"
                     [id]="'more-actions-' + index"
                     [attr.data-tooltip]="'@pry.restitution.more' | i18n"
                     (click)="toggleModalActions(restitution, button)"
@@ -77,7 +77,7 @@
               </ng-container>
             </div>
             <div
-              class="o-presentation__item__txt a-tooltip"
+              class="o-presentation__item__txt a-tooltip -tooltip-no-wrap"
               (click)="selectRestitution(restitution)"
               [attr.data-tooltip]="'@pry.restitution.consultRestitution' | i18n"
             >
@@ -86,7 +86,7 @@
             </div>
 
             <div
-              class="o-presentation__item__footer a-tooltip"
+              class="o-presentation__item__footer a-tooltip -tooltip-no-wrap"
               (click)="selectRestitution(restitution)"
               [attr.data-tooltip]="'@pry.restitution.consultRestitution' | i18n"
             >

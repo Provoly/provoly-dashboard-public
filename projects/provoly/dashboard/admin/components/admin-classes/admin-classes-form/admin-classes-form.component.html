@@ -28,7 +28,7 @@
       <span *ngIf="classForm.get('name')?.hasError('whitespace')">{{ '@pry.admin.noWhitespace' | i18n }}</span>
     </label>
   </div>
-  <div class="u-display-flex -row -no-gap -align-center">
+  <div class="u-display-flex -row -align-center">
     <div class="m-form-label-field -width-sm">
       <label class="a-label" for="storage_options">
         {{ '@pry.admin.storage.label' | i18n }}
@@ -42,13 +42,8 @@
         [readonly]="!!_currentClass"
       ></pry-select>
     </div>
-    <div class="info-icon description-container description">
-      <span class="info-text">i</span>
-    </div>
-    <div class="description-tooltip info-tooltip">
-      <p class="a-p -date">
-        {{ '@pry.admin.storage.description.' + classForm.get('storage')?.value | i18n }}
-      </p>
+    <div class="m-info-icon a-tooltip -tooltip-width-md" [attr.data-tooltip]="'@pry.admin.storage.description.' + classForm.get('storage')?.value | i18n" data-tooltip-position="right">
+      <span>i</span>
     </div>
   </div>
   <div class="m-btn-group -width-sm">

@@ -1,0 +1,14 @@
+@use '../abstracts' as *;
+
+/* Molecule - presentation title */
+
+.m-presentation-title {
+  display: flex;
+
+  &__text {
+    display: flex;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+

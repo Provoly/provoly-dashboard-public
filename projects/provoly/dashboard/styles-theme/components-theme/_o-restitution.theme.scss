@@ -5,3 +5,13 @@
 .o-catalog {
   border-right-color: themed($theme-map, 'color', 'primary', 300);
 }
+
+.o-restitution {
+  .more-button {
+    background: transparent;
+
+    .a-btn {
+      background-color: themed($theme-map, 'color', 'primary', 50);
+    }
+  }
+}

@@ -41,14 +41,14 @@
               <ng-container *ngIf="presentation.visibility.type === PryVisibilityType.PRIVATE">
                 <pry-icon
                   [iconSvg]="presentation.visibility.type.toLowerCase()"
-                  class="is-private a-tooltip"
+                  class="is-private a-tooltip -tooltip-no-wrap"
                   [attr.data-tooltip]="'@pry.presentation.private' | i18n"
                   [height]="17"
                   [width]="17"
                 ></pry-icon>
               </ng-container>
               <div
-                class="a-tooltip"
+                class="a-tooltip -tooltip-no-wrap"
                 (click)="fetch(presentation)"
                 [attr.data-tooltip]="'@pry.presentation.view' | i18n"
               >
@@ -63,11 +63,11 @@
                 </div>
               </div>
               <ng-container *ngIf="presentation.owner">
-                <div class="more-actions" *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'share' }">
+                <div class="more-button" *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'share' }">
                   <button
                     type="button"
-                    class="a-btn a-btn--more a-tooltip"
-                    [id]="'more-actions-' + index"
+                    class="a-btn a-btn--more a-tooltip -tooltip-no-wrap"
+                    [id]="'more-button-' + index"
                     [attr.data-tooltip]="'@pry.restitution.more' | i18n"
                     (click)="$event.stopPropagation(); toggleModalActions(presentation, button)"
                     #button
@@ -87,7 +87,7 @@
               <p class="a-p -date">{{ presentation.modificationDate | sinceDate }}</p>
             </div>
             <div
-              class="o-presentation__item__footer a-tooltip"
+              class="o-presentation__item__footer a-tooltip -tooltip-no-wrap"
               (click)="fetch(presentation)"
               [attr.data-tooltip]="'@pry.presentation.view' | i18n"
             >

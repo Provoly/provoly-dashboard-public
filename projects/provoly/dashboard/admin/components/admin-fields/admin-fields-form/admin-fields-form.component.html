@@ -39,7 +39,7 @@
         {{ '@pry.admin.fields.type' | i18n }} *
         <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
       </label>
-      <div class="title-container">
+      <div class="u-display-flex">
         <pry-select
           class="-width-sm"
           formControlName="type"
@@ -48,14 +48,14 @@
           bindLabel="translation"
           [isForm]="true"
         ></pry-select>
-        <ng-container>
-          <div class="info-icon description-container description">
-            <span class="info-text">i</span>
-          </div>
-          <div class="description-tooltip title-tooltip">
-            <p class="a-p -date">{{ selectedFieldTypeDescription$ | async }}</p>
-          </div>
-        </ng-container>
+        <div
+          *ngIf="selectedFieldTypeDescription$ | async as description"
+          class="m-info-icon a-tooltip -tooltip-width-lg u-self-center -flex-shrink-0"
+          [attr.data-tooltip]="description"
+          data-tooltip-position="right"
+        >
+          <span>i</span>
+        </div>
       </div>
     </div>
 
@@ -64,7 +64,7 @@
         {{ '@pry.admin.fields.crs' | i18n }} *
         <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
       </label>
-      <div class="title-container">
+      <div class="u-display-flex">
         <pry-select
           class="-width-sm"
           formControlName="crs"

@@ -1,11 +1,13 @@
-<div class="title-container">
-  <h1 class="a-h1 a-presentation-title">{{ presentationTitle$ | async }}</h1>
-  <ng-container *ngIf="presentation$ | async as presentation">
-    <div *ngIf="!!presentation.description" class="info-icon description-container description">
-      <span class="info-text">i</span>
-    </div>
-    <div *ngIf="!!presentation.description" class="description-tooltip title-tooltip">
-      <p class="a-p">{{ presentation.description }}</p>
-    </div>
-  </ng-container>
+<div class="m-presentation-title" *ngIf="currentPresentation$ | async as currentPresentation">
+  <h1 class="a-h1 m-presentation-title__text">
+    {{ currentPresentation.name || ('@pry.header.noCurrentPresentation' | i18n) }}
+  </h1>
+  <div
+    *ngIf="!!currentPresentation.description"
+    class="m-presentation-title__description m-info-icon a-tooltip -tooltip-width-lg align-center"
+    [attr.data-tooltip]="currentPresentation.description"
+    data-tooltip-position="right"
+  >
+    <span>i</span>
+  </div>
 </div>

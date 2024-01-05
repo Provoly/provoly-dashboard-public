@@ -51,7 +51,7 @@ export class PryDatasetDetailComponent implements OnInit {
   showModalStatus: boolean = false;
   selectedDatasetVersion?: DatasetVersion;
   selectedMode: ViewMode = ViewMode.CONSULT;
-  activeVersion$!: Observable<string | undefined>;
+  activeVersion$!: Observable<string>;
 
   constructor(private store: Store) {
     this.compId = nextCompId++;
@@ -76,7 +76,8 @@ export class PryDatasetDetailComponent implements OnInit {
     this.activeVersion$ = this.datasetVersions$.pipe(
       map(
         (versions) =>
-          versions.sort((v1, v2) => v2.version - v1.version).find((version) => version.state === 'ACTIVE')?.id
+          versions.sort((v1, v2) => v2.version - v1.version).find((version) => version.state === 'ACTIVE')?.id ??
+          'no active version found'
       )
     );
   }
@@ -124,6 +125,22 @@ export class PryDatasetDetailComponent implements OnInit {
   consultErrors(version: DatasetVersion) {
     this.selectedDatasetVersion = version;
     this.showModalStatus = true;
+  }
+
+  getVersionTooltipContent(version: DatasetVersion, activeVersionId: string) {
+    switch (version.state) {
+      case 'ERROR':
+        return 'error';
+      case 'ACTIVE':
+        return version.id === activeVersionId ? 'active' : 'inactive';
+      case 'LOADING':
+      case 'INDEXING':
+        return 'loading';
+      case 'INACTIVE':
+        return 'invalid';
+      default:
+        return 'unknown';
+    }
   }
 
   private deactivateVersion(version: DatasetVersion) {

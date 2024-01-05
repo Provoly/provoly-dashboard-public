@@ -32,7 +32,7 @@
   </div>
 </ng-template>
 <ng-template #datasetVersions>
-  <div class="table-container">
+  <div *ngIf="activeVersion$ | async as activeVersionId" class="table-container">
     <table class="a-table">
       <caption>
         {{
@@ -54,7 +54,7 @@
         <tr *ngFor="let version of datasetVersions$ | async">
           <td>
             {{ version.version }}
-            <pry-icon *ngIf="(activeVersion$ | async) === version.id" iconSvg="check" class="check"></pry-icon>
+            <pry-icon *ngIf="activeVersionId === version.id" iconSvg="check" class="check"></pry-icon>
           </td>
           <td>
             <div
@@ -67,44 +67,20 @@
           </td>
           <td>
             {{
-              ((activeVersion$ | async) === version.id
+              (activeVersionId === version.id
                 ? '@pry.dataset.version.currentlyActive'
                 : '@pry.dataset.version.' + version.state
               ) | i18n
             }}
-            <ng-container>
-              <div class="info-icon description-container description">
-                <span class="info-text">i</span>
-              </div>
-              <div class="description-tooltip">
-                <p class="a-p">
-                  <ng-container [ngSwitch]="version.state">
-                    <ng-container *ngSwitchCase="'ERROR'">
-                      {{ '@pry.dataset.tooltip.error' | i18n }}
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'ACTIVE'">
-                      {{
-                        ((activeVersion$ | async) === version.id
-                          ? '@pry.dataset.tooltip.active'
-                          : '@pry.dataset.tooltip.inactive'
-                        ) | i18n
-                      }}
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'LOADING'">
-                      {{ '@pry.dataset.tooltip.loading' | i18n }}
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'INDEXING'">
-                      {{ '@pry.dataset.tooltip.loading' | i18n }}
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'INACTIVE'">
-                      {{ '@pry.dataset.tooltip.invalid' | i18n }}
-                    </ng-container>
-                  </ng-container>
-                </p>
-              </div>
-            </ng-container>
+            <div
+              class="m-info-icon a-tooltip -tooltip-width-md"
+              [attr.data-tooltip]="'@pry.dataset.tooltip.' + getVersionTooltipContent(version, activeVersionId) | i18n"
+              data-tooltip-position="right"
+            >
+              <span>i</span>
+            </div>
           </td>
-          <td>
+          <td class="u-display-flex -align-center">
             <ng-container
               *ngIf="version.state !== 'LOADING' && version.state !== 'INDEXING' && version.state !== 'ERROR'"
             >
@@ -117,18 +93,17 @@
                   {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
                 </button>
                 <ng-container *ngIf="version.state === 'ACTIVE' || version.state === 'INACTIVE'">
-                  <div class="info-icon description-container description">
-                    <span class="info-text">i</span>
-                  </div>
-                  <div class="description-tooltip validate-tooltip">
-                    <p class="a-p">
-                      {{
-                        (version.state === 'ACTIVE'
-                          ? '@pry.dataset.tooltip.inValidateButton'
-                          : '@pry.dataset.tooltip.validateButton'
-                        ) | i18n
-                      }}
-                    </p>
+                  <div
+                    class="m-info-icon a-tooltip -tooltip-width-lg"
+                    [attr.data-tooltip]="
+                      (version.state === 'ACTIVE'
+                        ? '@pry.dataset.tooltip.invalidateButton'
+                        : '@pry.dataset.tooltip.validateButton'
+                      ) | i18n
+                    "
+                    data-tooltip-position="right"
+                  >
+                    <span>i</span>
                   </div>
                 </ng-container>
               </ng-container>
