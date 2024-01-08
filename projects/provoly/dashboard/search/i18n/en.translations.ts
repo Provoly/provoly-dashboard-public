@@ -46,6 +46,7 @@ export const enTranslations = {
         startWith: 'Start with',
         endWith: 'End with',
         notEqualsString: 'Different from',
+        notEqualsNumber: 'Different from',
         equalsString: 'Match',
         equalsNumber: 'Equal to',
         greaterThanNumber: 'Greater than',

@@ -18,6 +18,8 @@
       (focus)="toggle(true)"
       aria-autocomplete="list"
       [attr.aria-controls]="open ? modalId : null"
+      [attr.aria-disabled]="disabled"
+      [disabled]="disabled"
     />
   </ng-container>
   <ng-template #noAutocomplete>
@@ -28,9 +30,7 @@
       <ng-container *ngFor="let item of valueItems$ | async">
         <div class="a-pry-select__value" [class.pry-select-form]="isForm" [class.-multiple]="multiple">
           <ng-container *ngIf="template; else noTemplateLabel">
-            <ng-template let-item="item" let-clear="clear">
-              <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
-            </ng-template>
+            <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
           </ng-container>
           <ng-template #noTemplateLabel>
             <pry-icon

@@ -119,12 +119,12 @@
           <pry-select
             id="attributes"
             [multiple]="true"
+            [clearable]="true"
             [closeOnSelect]="false"
             [items]="attributes$ | async"
             [ngModel]="filter.attributes"
             (ngModelChange)="selectAttribute($event)"
             [placeholder]="'@pry.filters.creation.attributes' | i18n"
-            [autocomplete]="true"
             bindLabel="label"
           >
           </pry-select>

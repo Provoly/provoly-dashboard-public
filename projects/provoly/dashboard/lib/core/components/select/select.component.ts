@@ -15,6 +15,8 @@ import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
+import equal from 'fast-deep-equal/es6';
+import { SubscriptionnerDirective } from '../../../dashboard/components/subscriptionner.directive';
 
 let uniqueId = 0;
 
@@ -30,7 +32,7 @@ let uniqueId = 0;
     }
   ]
 })
-export class PrySelectComponent implements ControlValueAccessor {
+export class PrySelectComponent extends SubscriptionnerDirective implements ControlValueAccessor {
   public id: number = uniqueId++;
   _items$ = new BehaviorSubject<any[]>([]);
   matchingItems$: Observable<any>;
@@ -83,9 +85,10 @@ export class PrySelectComponent implements ControlValueAccessor {
   }
 
   constructor(private _cd: ChangeDetectorRef, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
+    super();
     this.matchingItems$ = combineLatest([this._items$, this.search$, this.searchSelected$]).pipe(
       map(([items, term, alreadySelected]) =>
-        term && term.length > 0 && !alreadySelected
+        this.autocomplete && term && term.length > 0 && !alreadySelected
           ? items.filter((i) => {
               const itemValue = this.bindLabel ? i?.[this.bindLabel] : i;
               return itemValue.indexOf(term) > -1;
@@ -95,13 +98,28 @@ export class PrySelectComponent implements ControlValueAccessor {
     );
     this.valueItems$ = combineLatest([this.value$, this._items$]).pipe(
       map(([value, items]) =>
-        (this.multiple ? value ?? [] : !!value ? [value] : []).map((value: any) =>
-          items.find((item) => {
-            const itemValue = this.bindValue ? item?.[this.bindValue] : item;
-            return itemValue === value;
-          })
-        )
+        (this.multiple ? value ?? [] : !!value ? [value] : []).map((value: any) => {
+          const keyProp = this.bindValue ?? this.bindLabel ?? 'id';
+          return items.find((item) => {
+            return typeof item === 'object'
+              ? typeof value === 'object'
+                ? item[keyProp] === value[keyProp]
+                : item[keyProp] === value
+              : item === value;
+          });
+        })
       )
+    );
+    this.subscriptions.add(
+      this.valueItems$.subscribe((item) => {
+        if (!this.multiple) {
+          const itemValue = this.bindLabel ? item[0]?.[this.bindLabel] : item[0];
+          if (itemValue) {
+            this.search$.next(itemValue);
+            this.searchSelected$.next(true);
+          }
+        }
+      })
     );
   }
 
@@ -119,7 +137,7 @@ export class PrySelectComponent implements ControlValueAccessor {
   }
 
   writeValue(obj: any): void {
-    if (this.value$.getValue() !== obj) {
+    if (!equal(this.value$.getValue(), obj)) {
       this.value$.next(obj);
       this._onChange(this.value$.getValue());
       this._onTouched();
@@ -132,7 +150,12 @@ export class PrySelectComponent implements ControlValueAccessor {
   clear($event: Event, item: any) {
     $event.stopPropagation();
     const itemValue = this.bindValue ? item?.[this.bindValue] : item;
-    this.writeValue(this.value$.getValue().filter((i: any) => i !== itemValue));
+    const keyProp = this.bindValue ?? this.bindLabel ?? 'id';
+    this.writeValue(
+      this.value$
+        .getValue()
+        .filter((i: any) => (typeof itemValue === 'object' ? i[keyProp] !== itemValue[keyProp] : i !== itemValue))
+    );
   }
 
   clearAll($event: Event) {
@@ -154,11 +177,19 @@ export class PrySelectComponent implements ControlValueAccessor {
 
   select($event: Event, item: any, index: number) {
     const itemValue = this.bindValue ? item?.[this.bindValue] : item;
+    const keyProp = this.bindValue ?? this.bindLabel ?? 'id';
     if (this.multiple) {
       if (!this.value$.getValue()) {
         this.writeValue([itemValue]);
       } else {
-        if (this.value$.getValue().includes(itemValue)) {
+        if (
+          typeof itemValue === 'object'
+            ? this.value$
+                .getValue()
+                .map((val: any) => val[keyProp])
+                .includes(itemValue[keyProp])
+            : this.value$.getValue().includes(itemValue)
+        ) {
           this.clear($event, item);
         } else {
           this.writeValue([...this.value$.getValue(), itemValue]);
@@ -185,7 +216,9 @@ export class PrySelectComponent implements ControlValueAccessor {
           this.overlayRef = this.overlay.create(this.getOverlayConfig());
           this.overlayRef.backdropClick().subscribe(() => {
             this.toggle(false);
-            this.writeValue(this.search$.getValue());
+            if (this.autocomplete) {
+              this.writeValue(this.search$.getValue());
+            }
           });
           this.overlayRef.attach(new TemplatePortal(this.optionsModal, this.viewContainerRef));
         } else {

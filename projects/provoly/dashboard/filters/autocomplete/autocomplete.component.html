@@ -26,5 +26,6 @@
     aria-labelledby="item-label"
     (blur)="updateSearch($event)"
     [elementRef]="ref"
+    (cleared)="clear()"
   ></pry-select>
 </div>

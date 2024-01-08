@@ -171,10 +171,6 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
       case 'text':
         return attributes.filter((attr) => [FieldType.STRING, FieldType.KEYWORD].includes(attr.type));
       default:
-        if (this.selectedAttribute$.value.length > 0) {
-          const attributeType = attributes.find((attr) => attr.id === this.selectedAttribute$.value[0])?.type;
-          return attributes.filter((attr) => attr.type === attributeType);
-        }
         return attributes;
     }
   }

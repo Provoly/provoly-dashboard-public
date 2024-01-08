@@ -8,63 +8,72 @@
         "name": "id_mutation",
         "field": "619c7c3c-070d-41d3-b61e-60ed854c39e2",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "id_mutation"
       },
       {
         "id": "0e2637e7-0f34-47f3-9863-43576d8b31fb",
         "name": "valeur_fonciere",
         "field": "abbac2de-0ff4-4d3d-b6e8-cd8f7ebdf5af",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "valeur_fonciere"
       },
       {
         "id": "0e2637e7-0f34-47f3-9863-43576d8b32fb",
         "name": "valeur_notariale",
         "field": "abbac2de-0ff4-4d3d-b6e8-cd8f7ebdf5af",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "valeur_notariale"
       },
       {
         "id": "0e2637e7-0f34-47f3-9863-43576d8b33fb",
         "name": "type_maison",
         "field": "abbac2de-0ff4-4d3d-b6e8-cd8f7ebdf5af",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "type_maison"
       },
       {
         "id": "0e2637e7-0f34-47f3-9863-43576d8b30fb",
         "name": "type_terrain",
         "field": "abbac2de-0ff4-4d3d-b6e8-cd8f7ebdf5af",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "type_terrain"
       },
       {
         "id": "e1dc1e5c-1b85-4441-ab1a-cc2548c6a7c2",
         "name": "creation",
         "field": "e374bef3-dd45-4130-8668-7ecf77a00001",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "creation"
       },
       {
         "id": "06253165-31d4-4ab3-9d2d-a4c6394fb80a",
         "name": "latitude",
         "field": "59853619-9773-418a-ace5-70b80fd4dc75",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "latitude"
       },
       {
         "id": "37d71f6c-9c88-405e-85b2-1895e6c190d5",
         "name": "longitude",
         "field": "7be854d6-706c-4784-af44-f8c1d071e512",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "longitude"
       },
       {
         "id": "37d71f6c-9c88-405e-85b2-1895e6c190d5",
         "name": "position-auto",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "position-auto"
       }
     ]
   },
@@ -77,42 +86,48 @@
         "name": "value_dec_1",
         "field": "9fc993db-ab5f-403d-883d-1bb3970692af",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "value_dec_1"
       },
       {
         "id": "124854d6-706c-4784-af44-f8c1d071e512",
         "name": "value_dec_2",
         "field": "9fc993db-ab5f-403d-883d-1bb3970692af",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "value_dec_2"
       },
       {
         "id": "12533f47-53f6-46ed-b197-0d0a7fb79ece",
         "name": "value_int",
         "field": "79f91495-02e9-4208-8166-149a7a28e610",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "value_int"
       },
       {
         "id": "126854d6-706c-4784-af44-f8c1d071e512",
         "name": "value_long",
         "field": "AAA97d0c-d81c-4927-aaa4-38710775633d",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "value_long"
       },
       {
         "id": "127854d6-706c-4784-af44-f8c1d071e512",
         "name": "seriesName",
         "field": "fezhr255-9e67-41e6-89a2-1c1bd5a0a5ce",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "seriesName"
       },
       {
         "id": "128854d6-706c-4784-af44-f8c1d071e512",
         "name": "département",
         "field": "eothr255-9e67-41e6-89a2-1c1bd5a0a5ce",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "département"
       }
     ]
   },
@@ -125,35 +140,40 @@
         "name": "position",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "position"
       },
       {
         "id": "62756f90-79f7-43c5-b56e-624ccdb40e84",
         "name": "humidite",
         "field": "9fc993db-ab5f-403d-883d-1bb3970692af",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "humidite"
       },
       {
         "id": "d5d4cda4-7ff3-4f19-ab69-7c95745888cf",
         "name": "heure_utc",
         "field": "qsdf622e-d44f-426b-bfdd-9b19e83f44da",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "heure_utc"
       },
       {
         "id": "da314951-82cb-4e93-9955-4654993f231c",
         "name": "temperature_en_degre_c",
         "field": "ea1f6255-9e67-41e6-89a2-1c1bd5a0a5ce",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "temperature_en_degre_c"
       },
       {
         "id": "eothr951-82cb-4e93-9955-4654993f231c",
         "name": "département",
         "field": "eothr255-9e67-41e6-89a2-1c1bd5a0a5ce",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "département"
       }
     ]
   },
@@ -166,28 +186,32 @@
         "name": "position",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "position"
       },
       {
         "id": "f70d8bcd-9580-4575-a4cd-b42f415aee38",
         "name": "Num_Acc",
         "field": "178c19cf-702c-4a0a-a218-cca5c0eef7d7",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "Num_Acc"
       },
       {
         "id": "aaaaaaaa-9580-4575-a4cd-b42f415aee38",
         "name": "image_raw",
         "field": "aaaaaaaa-dd45-4130-8668-7ecf77a00009",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "image_raw"
       },
       {
         "id": "d5d4cda4-7ff3-4f19-ab69-7c95745888cf",
         "name": "heure_utc",
         "field": "qsdf622e-d44f-426b-bfdd-9b19e83f44da",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "heure_utc"
       }
     ]
   },
@@ -200,21 +224,24 @@
         "name": "voie",
         "field": "d31a3850-0ec3-4ce1-b005-8b5fca5029cb",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "voie"
       },
       {
         "id": "38f7b6a1-1550-4451-a191-d25d24e6e61e",
         "name": "numero_accident_qui_a_eu_lieu",
         "field": "178c19cf-702c-4a0a-a218-cca5c0eef7d7",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "numero_accident_qui_a_eu_lieu"
       },
       {
         "id": "54a21924-5309-43cd-b8c6-f98a4712ca61",
         "name": "position",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "position"
       }
     ]
   },
@@ -227,35 +254,40 @@
         "name": "id_vehicule",
         "field": "9a27ad6c-94da-4176-b50d-3ec8f109a913",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "id_vehicule"
       },
       {
         "id": "1a1d9454-ca4f-493a-a309-ac50e1f4725a",
         "name": "num_acc",
         "field": "178c19cf-702c-4a0a-a218-cca5c0eef7d7",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "num_acc"
       },
       {
         "id": "bcd9a238-3333-4cec-803b-16b415f87445",
         "name": "an_nais",
         "field": "b1633f47-53f6-46ed-b197-0d0a7fb79ece",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "an_nais"
       },
       {
         "id": "30a7beb9-a358-47c4-b3d2-03e3ea776ed3",
         "name": "sexe",
         "field": "49156155-1e56-451b-b455-477cd9008959",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "sexe"
       },
       {
         "id": "fa3082bc-2acf-45c4-9af6-3ffd53e59330",
         "name": "position",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "position"
       }
     ]
   },
@@ -268,42 +300,48 @@
         "name": "id_vehicule",
         "field": "9a27ad6c-94da-4176-b50d-3ec8f109a913",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "id_vehicule"
       },
       {
         "id": "9d82213c-db91-42db-8675-5f2e70ae2f05",
         "name": "Num_Acc",
         "field": "178c19cf-702c-4a0a-a218-cca5c0eef7d7",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "Num_Acc"
       },
       {
         "id": "09b1dc99-5410-418b-9174-b3b13a102018",
         "name": "catv",
         "field": "97a3f75e-d488-49e8-85bd-42487c0d40d7",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "catv"
       },
       {
         "id": "dbf3917f-1af8-495e-94af-67d8315a7772",
         "name": "choc",
         "field": "d19f45cf-e932-4bfa-8f87-0b723e2f4354",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": true
+        "multiValued": true,
+        "technicalName": "choc"
       },
       {
         "id": "e1dc1e5c-1b85-4441-ab1a-cc2548c6a7c2",
         "name": "creation",
         "field": "e374bef3-dd45-4130-8668-7ecf77a00001",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "creation"
       },
       {
         "id": "4cf300b2-f56d-47de-b6a9-81a47de6af2e",
         "name": "position",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "position"
       }
     ]
   },
@@ -317,21 +355,24 @@
         "name": "nb_spots",
         "field": "79f91495-02e9-4208-8166-149a7a28e611",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "nb_spots"
       },
       {
         "id": "93c1c4b1-7191-4937-9f07-7d69eb63bd8e",
         "name": "parked_cars",
         "field": "79f91495-02e9-4208-8166-149a7a28e612",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "parked_cars"
       },
       {
         "id": "3c84e66a-461b-4857-ad55-64863b0a2354",
         "name": "seriesname",
         "field": "fezhr255-9e67-41e6-89a2-1c1bd5a0a5ce",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "seriesname"
       }
     ]
   },
@@ -345,7 +386,8 @@
         "name": "nb_illegal_parking",
         "field": "7503974-02e9-4208-8166-149a7a28e611",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "nb_illegal_parking"
       }
     ]
   },
@@ -358,28 +400,32 @@
         "name": "id",
         "field": "AAA97d0c-d81c-4927-aaa4-38710775633d",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "id"
       },
       {
         "id": "qsd4e66a-461b-4857-ad55-64863b0a2354",
         "name": "parent",
         "field": "AAA97d0c-d81c-4927-aaa4-38710775633d",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "parent"
       },
       {
         "id": "wxc45ad5-b027-42e0-8b88-1d10606758f6",
         "name": "name",
         "field": "4a641178-dca2-40ad-8ee4-063c69d5111d",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "name"
       },
       {
         "id": "dfg45ad5-b027-42e0-8b88-1d10606758f6",
         "name": "size",
         "field": "79f91495-02e9-4208-8166-149a7a28e610",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "size"
       }
     ]
   },
@@ -393,14 +439,16 @@
         "name": "type",
         "field": "29f91495-02e9-4208-8166-149a7a28e612",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "type"
       },
       {
         "id": "23c1c4b1-7191-4937-9f07-7d69eb63bd8e",
         "name": "count",
         "field": "29f91495-02e9-4208-8166-149a7a28e613",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "count"
       }
     ]
   },
@@ -414,14 +462,16 @@
         "name": "id",
         "field": "79f91495-02e9-4208-8166-149a7a28e613",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "id"
       },
       {
         "id": "4c87f8bc-f30e-4875-b03b-9c4fa97d7289",
         "name": "status",
         "field": "49f91495-02e9-4208-8166-149a7a28e613",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "status"
       }
     ]
   },
@@ -435,14 +485,16 @@
         "name": "position",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "position"
       },
       {
         "id": "12556f90-79f7-43c5-b56e-624ccdb40e84",
         "name": "is_broken",
         "field": "12341495-02e9-4208-8166-149a7a28e612",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "is_broken"
       }
     ]
   },
@@ -456,14 +508,16 @@
         "name": "position",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "position"
       },
       {
         "id": "12856f90-79f7-43c5-b56e-624ccdb40e84",
         "name": "is_broken",
         "field": "12341495-02e9-4208-8166-149a7a28e612",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac8",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "is_broken"
       }
     ]
   },
@@ -475,43 +529,50 @@
         "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
         "name": "station_longitude",
         "field": "497f6eca-6276-4993-bfeb-53cbbbba6f08-station_longitude",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "station_longitude"
       },
       {
         "id": "497f6eca-6276-4993-bfeb-53cbbbba6f09",
         "name": "position",
         "field": "497f6eca-6276-4993-bfeb-53cbbbba6f08-station_location",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "position"
       },
       {
         "id": "497f6eca-6276-4993-bfeb-53cbbbba6f10",
         "name": "geo_point_2d",
         "field": "497f6eca-6276-4993-bfeb-53cbbbba6f08-geo_point_2d",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "geo_point_2d"
       },
       {
         "id": "497f6eca-6276-4993-bfeb-53cbbbba6f11",
         "name": "station_nom",
         "field": "497f6eca-6276-4993-bfeb-53cbbbba6f08-station_nom",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "station_nom"
       },
       {
         "id": "347f6eca-6276-4993-bfeb-53cbbbba6f12",
         "name": "accroches_libres",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-accroches_libres",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "accroches_libres"
       },
       {
         "id": "347f6eca-6276-4993-bfeb-53cbbbba6f13",
         "name": "velos_disponibles",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-velos_disponibles",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "velos_disponibles"
       },
       {
         "id": "347f6eca-6276-4993-bfeb-53cbbbba6f14",
         "name": "nombre_emplacements",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-nombre_emplacements",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "nombre_emplacements"
       }
     ]
   },
@@ -523,13 +584,15 @@
         "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08point",
         "name": "location",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-point",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "location"
       },
       {
         "id": "347f6eca-6276-4993-bfeb-53cbbbba6f56pointi",
         "name": "velos_disponibles",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-velos_disponibles",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "velos_disponibles"
       }
     ]
   },
@@ -541,13 +604,15 @@
         "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08trajet",
         "name": "trajet",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-trajet",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "trajet"
       },
       {
         "id": "347f6eca-6276-4993-bfeb-53cbbbba6f08trajeti",
         "name": "velos_disponibles",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-velos_disponibles",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "velos_disponibles"
       }
     ]
   },
@@ -559,25 +624,29 @@
         "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08zone",
         "name": "zone",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-zone",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "zone"
       },
       {
         "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08trajet",
         "name": "multi-trajet",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-trajetM",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "multi-trajet"
       },
       {
         "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08point",
         "name": "location",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-point",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "location"
       },
       {
         "id": "347f6eca-6276-4993-bfeb-53cbbbba6f08zonei",
         "name": "velos_disponibles",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-velos_disponibles",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "velos_disponibles"
       }
     ]
   },
@@ -589,13 +658,15 @@
         "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08trajet",
         "name": "multi-trajet",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-trajetM",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "multi-trajet"
       },
       {
         "id": "347f6eca-6276-4993-bfeb-53cbbbba6f08trajeti",
         "name": "velos_disponibles",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-velos_disponibles",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "velos_disponibles"
       }
     ]
   },
@@ -607,13 +678,15 @@
         "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08zone",
         "name": "multi-zone",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-zoneM",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "multi-zone"
       },
       {
         "id": "347f6eca-6276-4993-bfeb-53cbbbba6f08zonei",
         "name": "velos_disponibles",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-velos_disponibles",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "velos_disponibles"
       }
     ]
   },
@@ -626,21 +699,24 @@
         "name": "id",
         "field": "79f91495-02e9-4208-8166-149a7a28e613",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "id"
       },
       {
         "id": "4c87f8bc-f30e-4875-b03b-9c4fa97d7289",
         "name": "status",
         "field": "49f91495-02e9-4208-8166-149a7a28e613",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "status"
       },
       {
         "id": "1a1d9454-ca4f-493a-a309-ac50e1f4725a",
         "name": "num_acc",
         "field": "178c19cf-702c-4a0a-a218-cca5c0eef7d7",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "num_acc"
       }
     ]
   },
@@ -655,7 +731,8 @@
         "field": "7000506c-049b-47d3-b92d-a2e823b46b80",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "0ecf31fd48_geo-shape"
+        "slug": "0ecf31fd48_geo-shape",
+        "technicalName": "position"
       },
       {
         "id": "b75a5d48-c015-46bf-b627-b802289e45a0",
@@ -663,7 +740,8 @@
         "field": "872ff200-b4cc-47e6-a45b-fe3ea9c1ab9f",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "7811ee4dc5_cat_dig"
+        "slug": "7811ee4dc5_cat_dig",
+        "technicalName": "cat_dig"
       },
       {
         "id": "115c8764-aad9-4870-8f90-803a8d9bc0c2",
@@ -671,7 +749,8 @@
         "field": "872ff200-b4cc-47e6-a45b-fe3ea9c1ab9f",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "1a5b25c617_ident"
+        "slug": "1a5b25c617_ident",
+        "technicalName": "ident"
       },
       {
         "id": "12d28397-8d77-4c94-9148-904c57e2f764",
@@ -679,7 +758,8 @@
         "field": "198955a5-3726-4f03-8907-57149d4b193e",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "bc6acd17df_sstheme"
+        "slug": "bc6acd17df_sstheme",
+        "technicalName": "sstheme"
       },
       {
         "id": "ef366030-9e28-43f2-829e-dc7ef4c66abe",
@@ -687,7 +767,8 @@
         "field": "198955a5-3726-4f03-8907-57149d4b193e",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "69eb8109a7_acronyme"
+        "slug": "69eb8109a7_acronyme",
+        "technicalName": "acronyme"
       },
       {
         "id": "42db1458-2c90-4d4a-8b5a-5f14ab90dd41",
@@ -695,7 +776,8 @@
         "field": "198955a5-3726-4f03-8907-57149d4b193e",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "70c1c6af69_nom"
+        "slug": "70c1c6af69_nom",
+        "technicalName": "nom"
       },
       {
         "id": "7240bc76-31e0-40a0-8eee-e9b604a8c12f",
@@ -703,7 +785,8 @@
         "field": "872ff200-b4cc-47e6-a45b-fe3ea9c1ab9f",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "29650f0c9a_git"
+        "slug": "29650f0c9a_git",
+        "technicalName": "gid"
       },
       {
         "id": "20f831f7-d38b-4197-8800-664425056958",
@@ -711,7 +794,8 @@
         "field": "872ff200-b4cc-47e6-a45b-fe3ea9c1ab9f",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "cb42ed459c_insee"
+        "slug": "cb42ed459c_insee",
+        "technicalName": "insee"
       },
       {
         "id": "e35a5627-d304-4d01-ac62-24fd64eb8200",
@@ -719,7 +803,8 @@
         "field": "198955a5-3726-4f03-8907-57149d4b193e",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "db120db21d_geom_o"
+        "slug": "db120db21d_geom_o",
+        "technicalName": "geom_o"
       },
       {
         "id": "d0392b6a-a640-4f40-9773-3883b3c67b6d",
@@ -727,7 +812,8 @@
         "field": "198955a5-3726-4f03-8907-57149d4b193e",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "3c9d70ca97_theme"
+        "slug": "3c9d70ca97_theme",
+        "technicalName": "theme"
       },
       {
         "id": "f72f7d7b-b29e-4040-8b2a-dcf85030971f",
@@ -735,7 +821,8 @@
         "field": "3911440f-07b1-44c5-b328-fc61353980d5",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "a74a674de7_mdate"
+        "slug": "a74a674de7_mdate",
+        "technicalName": "mdate"
       },
       {
         "id": "f629ef8a-8773-4e3b-914b-6ab838d255bb",
@@ -743,7 +830,8 @@
         "field": "198955a5-3726-4f03-8907-57149d4b193e",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "65f108a2a5_statut"
+        "slug": "65f108a2a5_statut",
+        "technicalName": "statut"
       },
       {
         "id": "378921a5-fd32-41a9-8509-8d028d82b12d",
@@ -751,7 +839,8 @@
         "field": "3911440f-07b1-44c5-b328-fc61353980d5",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "e184ebbdc0_cdate"
+        "slug": "e184ebbdc0_cdate",
+        "technicalName": "cdate"
       },
       {
         "id": "0cac6a09-1860-48fe-a280-1fdb76b61166",
@@ -759,7 +848,8 @@
         "field": "198955a5-3726-4f03-8907-57149d4b193e",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "fe90817974_adrpost"
+        "slug": "fe90817974_adrpost",
+        "technicalName": "adrpost"
       },
       {
         "id": "f2fd758b-bcc6-4e2b-b08a-2d575f1262ed",
@@ -767,7 +857,8 @@
         "field": "198955a5-3726-4f03-8907-57149d4b193e",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "c03f669468_geom_err"
+        "slug": "c03f669468_geom_err",
+        "technicalName": "geom_err"
       }
     ],
     "slug": "49ed93ebbd_equipements-publics"
@@ -784,7 +875,8 @@
         "description": "",
         "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-accroches_libres",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
-        "multiValued": false
+        "multiValued": false,
+        "technicalName": "azd"
       }
     ]
   },
@@ -799,7 +891,8 @@
         "field": "1c1a0637-d8b7-4962-ab95-166896378396",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "50dbfe635e_the_geom"
+        "slug": "50dbfe635e_the_geom",
+        "technicalName": "the_geom"
       },
       {
         "id": "1ebc5c61-9915-4c55-8645-cc3a0ed3b013",
@@ -807,7 +900,8 @@
         "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "2da46d7ad0_code_commun"
+        "slug": "2da46d7ad0_code_commun",
+        "technicalName": "code_commun"
       },
       {
         "id": "bec05aed-2961-4c50-a0fe-2566ec657604",
@@ -815,7 +909,8 @@
         "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "5e9ce59a98_ident"
+        "slug": "5e9ce59a98_ident",
+        "technicalName": "ident"
       },
       {
         "id": "a4c4dba3-545c-45b8-a479-6a97a1bce490",
@@ -823,7 +918,8 @@
         "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "9f27ca8120_gid"
+        "slug": "9f27ca8120_gid",
+        "technicalName": "gid"
       },
       {
         "id": "d4c53b01-4e7c-45e5-a7e7-1fc43e8a0b33",
@@ -831,7 +927,8 @@
         "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "2788afb70c_geom_o"
+        "slug": "2788afb70c_geom_o",
+        "technicalName": "geom_o"
       },
       {
         "id": "8718620f-8e7e-442a-a790-1f7956e4a326",
@@ -839,7 +936,8 @@
         "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "5d8b2e8c82_commune"
+        "slug": "5d8b2e8c82_commune",
+        "technicalName": "commune"
       },
       {
         "id": "feed8c2e-e4aa-4710-80f4-71c999863b0d",
@@ -847,7 +945,8 @@
         "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "3bb02d60b5_nbplaces"
+        "slug": "3bb02d60b5_nbplaces",
+        "technicalName": "nbplaces"
       },
       {
         "id": "b745e917-0550-45cd-b6c6-1ad1aae80733",
@@ -855,7 +954,8 @@
         "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "376576db81_mdate"
+        "slug": "376576db81_mdate",
+        "technicalName": "mdate"
       },
       {
         "id": "6054c562-c785-4e70-a633-5a1c1c2df84f",
@@ -863,7 +963,8 @@
         "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "d9b6186c4a_nbvelos"
+        "slug": "d9b6186c4a_nbvelos",
+        "technicalName": "nbvelos"
       },
       {
         "id": "cf1fb5e6-1dab-44b2-8a2a-628d62faf355",
@@ -871,7 +972,8 @@
         "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "f9fc4dbc95_type"
+        "slug": "f9fc4dbc95_type",
+        "technicalName": "type"
       },
       {
         "id": "44bf1e3f-fc9d-429f-a387-ba503fdd66bd",
@@ -879,7 +981,8 @@
         "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "5f233f3524_etat"
+        "slug": "5f233f3524_etat",
+        "technicalName": "etat"
       },
       {
         "id": "57cad86c-e77b-4e72-a9aa-309683a1aa58",
@@ -887,7 +990,8 @@
         "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "b909302d70_gml_id"
+        "slug": "b909302d70_gml_id",
+        "technicalName": "gml_id"
       },
       {
         "id": "7f487c6d-c9ae-4e4d-aee9-0a884d11cd81",
@@ -895,7 +999,8 @@
         "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "b666904d53_cdate"
+        "slug": "b666904d53_cdate",
+        "technicalName": "cdate"
       },
       {
         "id": "1a7a4f98-e40a-435b-a62e-2d1e2db347c5",
@@ -903,7 +1008,8 @@
         "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "372da71100_nbclassiq"
+        "slug": "372da71100_nbclassiq",
+        "technicalName": "nbclassiq"
       },
       {
         "id": "aa6fec5f-6e56-411b-a77b-9b690b78b50a",
@@ -911,7 +1017,8 @@
         "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "6ccd89a871_nom"
+        "slug": "6ccd89a871_nom",
+        "technicalName": "nom"
       },
       {
         "id": "284480f9-9d92-486b-a40c-278dffec98b6",
@@ -919,7 +1026,8 @@
         "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "cf2ace7168_insee"
+        "slug": "cf2ace7168_insee",
+        "technicalName": "insee"
       },
       {
         "id": "3271cd6c-f303-4e9b-85ba-31b1fd6d953d",
@@ -927,7 +1035,8 @@
         "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "afac949678_nbelec"
+        "slug": "afac949678_nbelec",
+        "technicalName": "nbelec"
       }
     ],
     "slug": "ce8dc8ebe4_vcub_lamb93",
@@ -944,7 +1053,8 @@
         "field": "7d3ad69f-5de4-4e34-88c3-83160f5d0bc2",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "11a48d93e7_nom"
+        "slug": "11a48d93e7_nom",
+        "technicalName": "nom"
       },
       {
         "id": "d62cb697-795e-44a6-b45b-bcaa4a7c6c13",
@@ -952,7 +1062,8 @@
         "field": "06d228e3-a873-4740-b99a-d5803044cc95",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "963bce741b_maille"
+        "slug": "963bce741b_maille",
+        "technicalName": "maille"
       },
       {
         "id": "6f48f845-75fc-484f-a6cf-6273e7afab5d",
@@ -960,7 +1071,8 @@
         "field": "06d228e3-a873-4740-b99a-d5803044cc95",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "325102451b_codegeo"
+        "slug": "325102451b_codegeo",
+        "technicalName": "codegeo"
       },
       {
         "id": "3a8ce754-2c4b-4e3c-b2a8-6596a8199c1e",
@@ -968,7 +1080,8 @@
         "field": "8caa4904-5680-4bf2-8921-25e076e4fa62",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "0db181a0c0_the_geom"
+        "slug": "0db181a0c0_the_geom",
+        "technicalName": "the_geom"
       },
       {
         "id": "4bfd453a-6f94-4ce2-87b2-d732b5a5a7cb",
@@ -976,7 +1089,8 @@
         "field": "06d228e3-a873-4740-b99a-d5803044cc95",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "5f5c507068_maille_p"
+        "slug": "5f5c507068_maille_p",
+        "technicalName": "maille_p"
       },
       {
         "id": "edca01dd-9b2d-4e74-b279-756fbf3f7c69",
@@ -984,7 +1098,8 @@
         "field": "06d228e3-a873-4740-b99a-d5803044cc95",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
-        "slug": "eceaacfe4b_codegeo_p"
+        "slug": "eceaacfe4b_codegeo_p",
+        "technicalName": "codegeo_p"
       }
     ],
     "slug": "7a6169df6e_territoires"

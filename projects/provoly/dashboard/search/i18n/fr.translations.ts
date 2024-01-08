@@ -46,6 +46,7 @@ export const frTranslations = {
         startWith: 'Commence par',
         endWith: 'Fini par',
         notEqualsString: 'Différent de',
+        notEqualsNumber: 'Différent de',
         equalsString: 'Exactement',
         equalsNumber: 'Egal',
         greaterThanNumber: 'Supérieur à',
