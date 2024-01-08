@@ -58,14 +58,20 @@ const generateMetadata = () => {
 };
 
 const wrapAttribute = (attr) => {
-  const visible = true;
+  const visible = casual.integer(0, 10) > -1;
   if (!attr.multiValued) {
-    return {
-      type: 'VALUE',
-      value: visible ? generateFieldValue(attr) : null,
-      metadata: generateMetadata(),
-      visible
-    };
+    return visible
+      ? {
+          type: 'VALUE',
+          metadata: generateMetadata(),
+          value: generateFieldValue(attr)
+        }
+      : {
+          type: 'VALUE',
+          metadata: generateMetadata(),
+          visible: false,
+          value: null
+        };
   } else {
     const howMany = Math.round(Math.random() * 100) % 5;
     const newAttr = Object.assign({}, attr, { multiValued: false });
