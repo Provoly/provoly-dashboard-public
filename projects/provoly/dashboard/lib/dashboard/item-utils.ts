@@ -29,7 +29,7 @@ export class ItemUtils {
             : ((item as Item).attributes[attribute.technicalName] as AttributeMultipleValue)) ?? {}
         ).values ?? []
       )
-        .map((v: AttributeSimpleValue) => ({ ...v, value: v.visible ? v.value : hiddenFieldText }))
+        .map((v: AttributeSimpleValue) => ({ ...v, value: v.visible === false ? hiddenFieldText : v.value }))
         .sort(ItemUtils.sortAttributes);
     }
     return (
@@ -51,11 +51,11 @@ export class ItemUtils {
       return (ItemUtils.getAttributeValue(item, attribute) as AttributeSimpleValue[]).map((v) => v.value);
     }
     const value = ItemUtils.getAttributeValue(item, attribute) as AttributeSimpleValue;
-    return value ? (value.visible ? value.value : hiddenFieldText) : (undefined as unknown as ValueType);
+    return value ? (value.visible === false ? hiddenFieldText : value.value) : (undefined as unknown as ValueType);
   }
 
   static sortAttributes(a: AttributeSimpleValue, b: AttributeSimpleValue): number {
-    const compareVisible = (b.visible ? 1 : -1) - (a.visible ? 1 : -1);
+    const compareVisible = (b.visible === false ? -1 : 1) - (a.visible === false ? -1 : 1);
     if (compareVisible !== 0) {
       return compareVisible;
     }

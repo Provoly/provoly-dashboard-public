@@ -338,7 +338,7 @@ export class WidgetMapUtils {
       value = value.values[0];
     }
 
-    if (!value.visible) {
+    if (value.visible === false) {
       console.warn(`Geometry not visible for item ${item.id}`);
       return;
     }

@@ -24,7 +24,7 @@ export interface AttributeSimpleValue {
   metadata?: {
     [key: string]: MetadataType;
   };
-  visible: boolean;
+  visible?: boolean;
 }
 
 export type ValueType = string | number | PointValue | MultipointValue | MultiMultipointValue;
