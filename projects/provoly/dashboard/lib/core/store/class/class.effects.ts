@@ -19,20 +19,6 @@ export class ClassEffects {
     )
   );
 
-  loadBusinessData$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(ClassActions.loadBusinessData),
-      mergeMap((action) =>
-        this.classService.getBusinessDatas().pipe(
-          map((businessData) => {
-            return ClassActions.loadBusinessDataSuccess({ datas: businessData });
-          }),
-          catchError((error) => [ClassActions.loadBusinessDataFailure({ error: error })])
-        )
-      )
-    )
-  );
-
   loadDatasetCount$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClassActions.loadDatasetCount),

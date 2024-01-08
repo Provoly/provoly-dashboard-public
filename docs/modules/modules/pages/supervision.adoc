@@ -1,9 +1,0 @@
-=== Supervision
-
-Le module `+Supervision+` offre la possibilité de monitorer les données
-de l’application. Il existe 4 sous menus :
-
-- Infrastructures: Contient tous les élements de l’infrastructure en place
-- Flux en entrée: Regroupe les flux d’entrées
-- Données métier: Regroupe les jeux de données
-- Erreurs d’intégration de données: Présente les erreurs lors de l’intégration des données

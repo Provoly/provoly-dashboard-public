@@ -13,19 +13,4 @@
       </ng-container>
     </ul>
   </ng-container>
-  <ng-container *ngIf="menus$ | async as menus">
-    <ng-container *ngIf="menus.length > 0">
-      <ul class="m-nav-links__list">
-        <ng-container *ngFor="let menu of menus">
-          <ng-container *ngIf="menu.module === 'supervision'">
-            <li *pryAccess="{ module: menu.module, page: menu.page }" class="m-nav-links__list__item">
-              <a [routerLink]="menu.menu" class="a-btn a-btn--secondary -width-full" [routerLinkActive]="'is-active'">
-                {{ baseMenuTranslation + menu.menu | i18n }}
-              </a>
-            </li>
-          </ng-container>
-        </ng-container>
-      </ul>
-    </ng-container>
-  </ng-container>
 </nav>

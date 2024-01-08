@@ -3,8 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { ClassSelectors, PRY_ACCESS_GUARD, PryDefaultAccessGuard } from '@provoly/dashboard';
-import { businessDatas } from '../../../mock/data/mockItemAdmin';
+import { PRY_ACCESS_GUARD, PryDefaultAccessGuard } from '@provoly/dashboard';
 import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockSortPipe } from '../../../mock/pipe/mock-sort.pipe';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
@@ -24,12 +23,7 @@ describe('AdminClassesComponent', () => {
       providers: [
         { provide: PRY_ACCESS_GUARD, useClass: PryDefaultAccessGuard },
         provideMockStore({
-          selectors: [
-            {
-              selector: ClassSelectors.classDatas,
-              value: businessDatas
-            }
-          ]
+          selectors: []
         })
       ],
       imports: [RouterTestingModule]

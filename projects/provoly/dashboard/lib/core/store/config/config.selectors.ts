@@ -10,7 +10,6 @@ const geoServerUrl = createSelector(feature, (state) => state?.geoServerUrl);
 const dataUrl = createSelector(pryUrl, (url) => `${url}/data`);
 const refUrl = createSelector(pryUrl, (url) => `${url}/ref`);
 const transfoUrl = createSelector(pryUrl, (url) => `${url}/transfo`);
-const monitorUrl = createSelector(pryUrl, (url) => `${url}/monitor`);
 const geocodingUrl = createSelector(pryUrl, (url) => `${url}/geocoding`);
 const replayUrl = createSelector(pryUrl, (url) => `${url}/replay`);
 const mapUrl = createSelector(feature, (state) => state?.mapUrl);
@@ -71,7 +70,6 @@ export const ConfigSelectors = {
   refUrl,
   transfoUrl,
   wsUrl,
-  monitorUrl,
   replayUrl,
   mapUrl,
   geoServerUrl,

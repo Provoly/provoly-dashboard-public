@@ -9,23 +9,6 @@ const dashboardDashboard: PryAccessModule = {
   }
 };
 
-const dashboardSupervision: PryAccessModule = {
-  pages: {
-    infrastructures: {
-      roles: undefined,
-      actions: {
-        scale: []
-      }
-    },
-    input_flows: {
-      roles: undefined
-    },
-    business_datas: {
-      roles: undefined
-    }
-  }
-};
-
 const dashboardAdmin: PryAccessModule = {
   pages: {
     abac_rules: {
@@ -87,7 +70,6 @@ const dashboardAdmin: PryAccessModule = {
 };
 export const ACCESS: PryAccess = {
   modules: {
-    supervision: dashboardSupervision,
     admin: dashboardAdmin,
     dashboard: dashboardDashboard
   }

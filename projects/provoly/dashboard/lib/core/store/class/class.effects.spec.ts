@@ -3,7 +3,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { businessDatas, mockDatasetsCounts } from '../../../../mock/data/mockItemAdmin';
+import { mockDatasetsCounts } from '../../../../mock/data/mockItemAdmin';
 import { ClassActions } from './class.actions';
 import { ClassEffects } from './class.effects';
 import { classesFeatureKey, ClassState, initialClassState } from './class.reducer';
@@ -28,7 +28,6 @@ describe('ClassEffects', () => {
           provide: ClassService,
           useValue: {
             getClasses: () => jest.fn(),
-            getBusinessDatas: () => of(businessDatas),
             getDatasetCounts: () => of(mockDatasetsCounts)
           }
         }
@@ -42,49 +41,6 @@ describe('ClassEffects', () => {
 
   it('should be created', () => {
     expect(effects).toBeTruthy();
-  });
-
-  describe('loadBusinessData', () => {
-    it('should set flows get by the http GET', () => {
-      const getSpy = jest.spyOn(classService, 'getBusinessDatas');
-      store.setState(
-        buildState({
-          ...initialClassState
-        })
-      );
-
-      actions$ = hot('--a-', {
-        a: ClassActions.loadBusinessData()
-      });
-
-      const expected$ = hot('--a-', {
-        a: ClassActions.loadBusinessDataSuccess({ datas: businessDatas })
-      });
-      expect(effects.loadBusinessData$).toBeObservable(expected$);
-      expect(effects.loadBusinessData$).toSatisfyOnFlush(() => {
-        expect(getSpy).toHaveBeenCalled();
-      });
-    });
-    it('should call loadFlows failure', () => {
-      const getSpy = jest.spyOn(classService, 'getBusinessDatas').mockReturnValue(throwError(() => new Error('error')));
-      store.setState(
-        buildState({
-          ...initialClassState
-        })
-      );
-
-      actions$ = hot('--a-', {
-        a: ClassActions.loadBusinessData()
-      });
-
-      const expected$ = hot('--a-', {
-        a: ClassActions.loadBusinessDataFailure({ error: new Error('error') })
-      });
-      expect(effects.loadBusinessData$).toBeObservable(expected$);
-      expect(effects.loadBusinessData$).toSatisfyOnFlush(() => {
-        expect(getSpy).toHaveBeenCalled();
-      });
-    });
   });
 
   describe('loadDatasetsCount', () => {

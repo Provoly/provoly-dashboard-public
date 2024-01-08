@@ -6,7 +6,6 @@ const classes = JSON.parse(fs.readFileSync('./data/classes.json', 'utf8'));
 const classesIds = classes.map((oClass) => oClass.id);
 let fields = JSON.parse(fs.readFileSync('./data/fields.json', 'utf8'));
 const categories = JSON.parse(fs.readFileSync('./data/categories.json', 'utf8'));
-const infrastructures = JSON.parse(fs.readFileSync('./data/infrastructures.json', 'utf8'));
 const predicates = JSON.parse(fs.readFileSync('./data/predicates.json', 'utf8'));
 const metadatas = JSON.parse(fs.readFileSync('./data/metadatas.json', 'utf8'));
 const userMetadatas = JSON.parse(fs.readFileSync('./data/userMetadata.json', 'utf8'));
@@ -19,7 +18,6 @@ const relationTypes = JSON.parse(fs.readFileSync('./data/relationTypes.json', 'u
 const links = JSON.parse(fs.readFileSync('./data/links.json', 'utf8'));
 const queryResponses = JSON.parse(fs.readFileSync('./data/queryResponses.json', 'utf8'));
 const queryResponseTypes = JSON.parse(fs.readFileSync('./data/namedQueryReturnTypes.json', 'utf8'));
-const integrationErrors = JSON.parse(fs.readFileSync('./data/integrationErrors.json', 'utf8'));
 const tasksDetailed = JSON.parse(fs.readFileSync('./data/tasksDetailed.json', 'utf8'));
 const procedures = JSON.parse(fs.readFileSync('./data/procedures.json', 'utf8'));
 const customClassJson = JSON.parse(fs.readFileSync('./data/customClass.json', 'utf8'));
@@ -76,17 +74,6 @@ const datasetCount = () => {
   return classes.map((clazz) => ({
     id: clazz.id,
     count: casual.integer((from = 0), (to = 100))
-  }));
-};
-
-const businessData = () => {
-  const idxClassWrongDate = casual.integer((from = 0), (to = classes.length - 1));
-  return classes.map((clazz, idx) => ({
-    id: clazz.id,
-    name: clazz.name,
-    icon: clazz.image,
-    count: casual.integer((from = 0), (to = 10000)),
-    date: idx === idxClassWrongDate ? null : casual.date('YYYY-MM-DDTHH:mm:ss.sssZ')
   }));
 };
 
@@ -368,16 +355,13 @@ module.exports = {
   users,
   relationTypes,
   links,
-  infrastructures,
   queryResponses,
-  integrationErrors,
   tasksDetailed,
   procedures,
   queryResponseTypes,
   imageData,
   docData,
   datasetCount,
-  businessData,
   itemsAsResultSet,
   itemsAsResultSetWithRelationsTo,
   customClassParams,

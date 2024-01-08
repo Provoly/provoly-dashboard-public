@@ -94,9 +94,6 @@ router.on(['OPTIONS', 'GET'], '/exec/about/version', (req, res, params) => {
 router.on(['OPTIONS', 'GET'], '/transfo/about/version', (req, res, params) => {
   makeResponseOk(res, { applicationVersion: 'dev-9c9476a3', chartVersion: '0.7.134' });
 });
-router.on(['OPTIONS', 'GET'], '/monitor/about/version', (req, res, params) => {
-  makeResponseOk(res, { applicationVersion: 'dev-9c9476a3', chartVersion: '0.7.134' });
-});
 router.on(['OPTIONS', 'GET'], '/ref/model/class', (req, res, params) => {
   makeResponseOk(res, dataModule.class.get());
 });
@@ -495,12 +492,6 @@ router.on(['DELETE'], '/ref/abac/context/:name', (req, res, params) => {
   }
 });
 
-router.on(['OPTIONS', 'GET'], '/monitor/status', (req, res, params) => {
-  makeResponseOk(res, dataModule.infrastructures);
-});
-router.on(['OPTIONS', 'GET'], '/monitor/businessdata', (req, res, params) => {
-  makeResponseOk(res, dataModule.businessData());
-});
 router.on(['OPTIONS', 'GET'], '/ref/model/class/datasets/count', (req, res, params) => {
   makeResponseOk(res, dataModule.datasetCount());
 });
@@ -510,26 +501,6 @@ router.on(['OPTIONS', 'GET'], '/ref/dataset-versions', (req, res, params) =>
 router.on(['OPTIONS', 'GET'], '/ref/datasets/id/:id/dataset-versions', (req, res, params) =>
   makeResponseOk(res, dataModule.datasetVersions.getById(params.id))
 );
-router.on(['OPTIONS', 'GET'], '/replay/integrations/errors', (req, res, params) => {
-  makeResponseOk(res, dataModule.integrationErrors);
-});
-router.on(['OPTIONS', 'POST'], '/replay/integrations/errors/replay/class', (req, res, params) => {
-  makeResponseOk(res);
-});
-router.on(['OPTIONS', 'POST'], '/replay/integrations/errors/acknowledge', (req, res, params) => {
-  readPayload(req).then((payload) => {
-    if (payload) {
-      payload.forEach((payloadValue) => {
-        let classIndex = dataModule.integrationErrors.findIndex((obj) => obj.oClass === payloadValue);
-        if (classIndex !== -1) {
-          dataModule.integrationErrors.splice(classIndex, 1);
-          fs.writeFileSync('./data/integrationErrors.json', JSON.stringify(dataModule.integrationErrors, null, 2));
-        }
-      });
-    }
-    makeResponseOk(res);
-  });
-});
 
 router.on('POST', '/data/items/search', (req, res, params) => {
   readPayload(req).then((payload) => {
@@ -853,25 +824,6 @@ router.on(
 
 router.on(['DELETE'], '/ref/users/me/dashboards/id/:presentationId/metadata/id/:metadataId', (req, res, params) => {
   makeResponseOk(res);
-});
-
-router.on(['OPTIONS', 'POST'], '/monitor/replicas/:any?', (req, res, params) => {
-  makeResponseOk(res);
-});
-router.on(['OPTIONS', 'PUT'], '/monitor/supervision/nifi/flow/:any?', (req, res, params) => {
-  makeResponseOk(res);
-});
-router.on(['OPTIONS', 'GET'], '/geocoding/reverse/', (req, res, params) => {
-  const query = url.parse(req.url, true).search;
-  const withTextAsQParameter = query.replace('?text=', '?q=');
-  axios
-    .get(`https://api-adresse.data.gouv.fr/reverse/${withTextAsQParameter}`, { data: params })
-    .then((response) => {
-      makeResponseOk(res, response.data);
-    })
-    .catch((error) => {
-      console.log('Error when calling data gouv address service');
-    });
 });
 
 router.on(['OPTIONS', 'GET'], '/data/file/icons', (req, res, params) => {

@@ -28,9 +28,6 @@
       "@provoly/dashboard/search": [
         "projects/provoly/dashboard/search"
       ],
-      "@provoly/dashboard/supervision": [
-        "projects/provoly/dashboard/supervision"
-      ],
       "@provoly/dashboard/toolbox": [
         "projects/provoly/dashboard/toolbox"
       ],

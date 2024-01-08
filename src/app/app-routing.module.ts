@@ -319,10 +319,6 @@ const routes: Routes = [
     loadChildren: () => import('@provoly/dashboard/admin').then((m) => m.PryAdminModule)
   },
   {
-    path: 'supervision',
-    loadChildren: () => import('@provoly/dashboard/supervision').then((m) => m.PrySupervisionModule)
-  },
-  {
     path: 'presentation',
     canActivate: [PRY_ACCESS_GUARD],
     children: [

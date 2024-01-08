@@ -10,7 +10,6 @@ export const enTranslations = {
       replay: 'Version replay : {{value}}',
       exec: 'Version Execution : {{value}}',
       transfo: 'Version Transformation : {{value}}',
-      monitor: 'Version Supervision : {{value}}',
       noVersion: 'Version not found'
     },
     header: {

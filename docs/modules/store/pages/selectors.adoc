@@ -33,8 +33,3 @@ par date de dernière execution
 ==== Notification
 
 * list: Liste des notifications
-
-==== Supervision
-
-* menus: Contenu du menu de supervision
-* actions: Contenu de la barre d’action du sous-menu courant

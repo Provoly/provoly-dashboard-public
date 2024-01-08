@@ -10,7 +10,6 @@ export const frTranslations = {
       replay: 'Rejeu',
       exec: 'Exécution',
       transfo: 'Transformation',
-      monitor: 'Supervision',
       noVersion: 'Version non trouvée'
     },
     header: {

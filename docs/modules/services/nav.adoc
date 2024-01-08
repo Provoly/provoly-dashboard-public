@@ -2,7 +2,6 @@
 ** xref:base.adoc[Général]
 ** xref:abac.adoc[ABAC]
 ** xref:admin.adoc[Admin]
-** xref:supervision.adoc[Supervision]
 ** xref:iframe.adoc[Message-iframe]
 ** xref:config.adoc[Configuration]
 ** xref:access.adoc[Accès]

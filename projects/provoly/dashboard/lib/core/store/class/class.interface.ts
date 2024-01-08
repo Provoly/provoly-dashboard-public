@@ -15,13 +15,6 @@ export interface Attribute {
   multiValued: boolean;
 }
 
-export interface BusinessData {
-  name: string;
-  count: number;
-  date: string;
-  icon?: string;
-}
-
 export interface Associations {
   id: string;
   associations: [

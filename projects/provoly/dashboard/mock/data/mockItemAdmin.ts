@@ -1,7 +1,6 @@
 import {
   Associations,
   Attribute,
-  BusinessData,
   Category,
   Class,
   DatasetCount,
@@ -23,14 +22,6 @@ export const envs: Environment[] = [{ type: VARIABLE_TYPE.STRING, name: 'myEnv',
 export const preds: Predicate[] = [{ id: 'bc7eabc4-7e2b-44b8-a64b-712c1edd1ad2', name: 'reader', value: 'true' }];
 export const metadata: IMetadata[] = [
   { name: 'meta', type: VARIABLE_TYPE.STRING, id: 'id', description: '', allowedValues: [] }
-];
-
-export const businessDatas: BusinessData[] = [
-  {
-    name: 'vehicule',
-    count: 3,
-    date: '01/01/01'
-  }
 ];
 
 export const mockDatasetsCounts: DatasetCount[] = [

@@ -1,7 +1,6 @@
 Le module principal est `+@provoly/dashboard+`. Il y a aussi
-`+@provoly/dashboard/admin+` avec l’écran d’administration ou
-`+@provoly/dashboard/supervision+`, avec ces ensembles de pages
-correspondants de disponibles. La recherche est proposée par le module
+`+@provoly/dashboard/admin+` avec l’écran d’administration.
+La recherche est proposée par le module
 `+@provoly/dashboard/search+`. Pour éditer les pipelines du moteur
 de transformation, on aura à disposition le module
 `+@provoly/dashboard/pipeline+` (couplé avec les modules d’éléments

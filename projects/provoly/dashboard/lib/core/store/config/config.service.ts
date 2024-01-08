@@ -132,31 +132,28 @@ export class ConfigService {
       this.store.select(ConfigSelectors.dataUrl),
       this.store.select(ConfigSelectors.replayUrl),
       this.store.select(ConfigSelectors.execUrl),
-      this.store.select(ConfigSelectors.transfoUrl),
-      this.store.select(ConfigSelectors.monitorUrl)
+      this.store.select(ConfigSelectors.transfoUrl)
     ]).pipe(
-      mergeMap(([ref, data, replay, exec, transfo, monitor]) => {
+      mergeMap(([ref, data, replay, exec, transfo]) => {
         const allVersions: Observable<BackendVersion | FrontendVersion>[] = [
           this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${ref}/about/version`))),
           this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${data}/about/version`))),
           this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${replay}/about/version`))),
           this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${exec}/about/version`))),
           this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${transfo}/about/version`))),
-          this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${monitor}/about/version`))),
           this.httpClient.get<string>(encodeURI(`/assets/pry.version`)).pipe(
             map((version) => (version ? { libVersion: version } : {})),
             catchError(() => of({}))
           )
         ];
         return combineLatest(allVersions).pipe(
-          map(([refVersion, dataVersion, replayVersion, execVersion, tranfoVersion, monitorVersion, frontend]) => {
+          map(([refVersion, dataVersion, replayVersion, execVersion, tranfoVersion, frontend]) => {
             const versions: Versions = {
               ref: refVersion,
               data: dataVersion,
               replay: replayVersion,
               exec: execVersion,
               transfo: tranfoVersion,
-              monitor: monitorVersion,
               front: frontend
             };
             return versions;
