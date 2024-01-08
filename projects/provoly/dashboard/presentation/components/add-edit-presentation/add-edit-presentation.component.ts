@@ -159,14 +159,14 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
       this.store.dispatch(
         DashboardActions.selectPresentation({
           presentation,
-          viewMode: this.edition ? ViewMode.CREATION : ViewMode.EDITION
+          viewMode: ViewMode.CREATION
         })
       );
     } else {
       this.store.dispatch(
         DashboardActions.loadPresentation({
           presentation,
-          viewMode: this.edition ? ViewMode.CREATION : ViewMode.EDITION
+          viewMode: ViewMode.EDITION
         })
       );
     }
