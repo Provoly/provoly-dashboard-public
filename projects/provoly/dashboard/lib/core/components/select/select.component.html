@@ -73,6 +73,19 @@
     [attr.required]="required"
     [attr.aria-readonly]="readonly"
   >
+    <div class="a-pry-select__options__option -hint" *ngIf="loading" [style.width.px]="modalWidth">
+      <div class="no-widget no-widget__loader">
+        <pry-icon
+          iconSvg="loader"
+          class="no-widget__loading"
+          [alt]="'@pry.widget.target.loading' | i18n"
+          [width]="30"
+          [height]="30"
+          *ngIf="loading"
+        />
+      </div>
+      <p>{{ '@pry.select.loading' | i18n }}...</p>
+    </div>
     <ng-container *ngFor="let item of matchingItems$ | async; let index = index">
       <div
         class="a-pry-select__options__option"
@@ -95,5 +108,12 @@
         </ng-template>
       </div>
     </ng-container>
+    <div
+      class="a-pry-select__options__option -hint"
+      *ngIf="(matchingItems$ | async).length === 0 && !loading && hasLoaded"
+      [style.width.px]="modalWidth"
+    >
+      <p>{{ '@pry.select.noSuggest' | i18n }}...</p>
+    </div>
   </div>
 </ng-template>

@@ -38,6 +38,18 @@
       line-height: 1.1875rem;
       font-weight: 400;
       font-style: normal;
+
+      &.-hint {
+        font-style: italic;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        p {
+          margin-bottom: 0;
+        }
+      }
     }
   }
 

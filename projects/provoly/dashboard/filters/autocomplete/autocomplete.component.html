@@ -5,16 +5,6 @@
   (keyup)="updateSearch($event)"
   #ref
 >
-  <div class="no-widget no-widget__loader">
-    <pry-icon
-      iconSvg="loader"
-      class="no-widget__loading"
-      [alt]="'@pry.widget.target.loading' | i18n"
-      [width]="20"
-      [height]="20"
-      *ngIf="loader"
-    />
-  </div>
   <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
   <pry-select
     [id]="filter.name"
@@ -27,5 +17,6 @@
     (blur)="updateSearch($event)"
     [elementRef]="ref"
     (cleared)="clear()"
+    [loading]="loader"
   ></pry-select>
 </div>

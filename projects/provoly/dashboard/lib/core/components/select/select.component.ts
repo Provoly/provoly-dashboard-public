@@ -11,8 +11,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import equal from 'fast-deep-equal/es6';
@@ -64,6 +63,18 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
   @Output() searched = new EventEmitter<string>();
   @Output() cleared = new EventEmitter<void>();
   search$ = new BehaviorSubject<string>('');
+
+  _loading = false;
+  hasLoaded: boolean = false;
+  @Input() set loading(loading: boolean) {
+    this._loading = loading;
+    if (this._loading) {
+      this.hasLoaded = true;
+    }
+  }
+  get loading() {
+    return this._loading;
+  }
 
   get disabled(): boolean {
     return this._disabled;

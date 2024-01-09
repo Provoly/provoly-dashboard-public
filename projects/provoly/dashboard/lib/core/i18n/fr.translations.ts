@@ -1,7 +1,9 @@
 export const frTranslations = {
   '@pry': {
     select: {
-      label: 'Liste des choix'
+      label: 'Liste des choix',
+      loading: 'Chargement en cours',
+      noSuggest: 'Aucune suggestion disponible'
     },
     about: {
       front: 'Librairie front',
