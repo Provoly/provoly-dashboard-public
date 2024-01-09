@@ -86,34 +86,34 @@
       </div>
       <p>{{ '@pry.select.loading' | i18n }}...</p>
     </div>
-    <ng-container *ngFor="let item of matchingItems$ | async; let index = index">
-      <div
-        class="a-pry-select__options__option"
-        [attr.aria-selected]="(valueItems$ | async).includes(item)"
-        [attr.aria-checked]="(valueItems$ | async).includes(item)"
-        [attr.aria-disabled]="disabled"
-        (click)="select($event, item, index)"
-        [style.width.px]="modalWidth"
-        role="option"
-        [id]="'select-option-' + index"
-      >
-        <ng-container *ngIf="template; else noTemplate">
-          <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
-        </ng-container>
-        <ng-template #noTemplate>
-          <pry-icon *ngIf="bindIcon" [iconSvg]="item[bindIcon]" [width]="iconSize[0]" [height]="iconSize[1]"></pry-icon>
-          <ng-container *ngIf="bindLabel ? item?.[bindLabel] : item as value">
-            {{ (i18nPrefix ? i18nPrefix : '') + value | i18n : { warn: false } }}
+    <ng-container *ngIf="!loading">
+      <ng-container *ngFor="let item of matchingItems$ | async; let index = index">
+        <div
+          class="a-pry-select__options__option"
+          [attr.aria-selected]="(valueItems$ | async).includes(item)"
+          [attr.aria-checked]="(valueItems$ | async).includes(item)"
+          [attr.aria-disabled]="disabled"
+          (click)="select($event, item, index)"
+          [style.width.px]="modalWidth"
+          role="option"
+          [id]="'select-option-' + index"
+        >
+          <ng-container *ngIf="template; else noTemplate">
+            <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
           </ng-container>
-        </ng-template>
-      </div>
+          <ng-template #noTemplate>
+            <pry-icon
+              *ngIf="bindIcon"
+              [iconSvg]="item[bindIcon]"
+              [width]="iconSize[0]"
+              [height]="iconSize[1]"
+            ></pry-icon>
+            <ng-container *ngIf="bindLabel ? item?.[bindLabel] : item as value">
+              {{ (i18nPrefix ? i18nPrefix : '') + value | i18n : { warn: false } }}
+            </ng-container>
+          </ng-template>
+        </div>
+      </ng-container>
     </ng-container>
-    <div
-      class="a-pry-select__options__option -hint"
-      *ngIf="(matchingItems$ | async).length === 0 && !loading && hasLoaded"
-      [style.width.px]="modalWidth"
-    >
-      <p>{{ '@pry.select.noSuggest' | i18n }}...</p>
-    </div>
   </div>
 </ng-template>

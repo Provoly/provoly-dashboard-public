@@ -16,6 +16,7 @@ import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import equal from 'fast-deep-equal/es6';
 import { SubscriptionnerDirective } from '../../../dashboard/components/subscriptionner.directive';
+import { tap } from 'rxjs/operators';
 
 let uniqueId = 0;
 
@@ -66,12 +67,14 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
 
   _loading = false;
   hasLoaded: boolean = false;
+
   @Input() set loading(loading: boolean) {
     this._loading = loading;
     if (this._loading) {
       this.hasLoaded = true;
     }
   }
+
   get loading() {
     return this._loading;
   }
@@ -102,10 +105,11 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
         this.autocomplete && term && term.length > 0 && !alreadySelected
           ? items.filter((i) => {
               const itemValue = this.bindLabel ? i?.[this.bindLabel] : i;
-              return itemValue.indexOf(term) > -1;
+              return itemValue.toLowerCase().indexOf(term.toLowerCase()) > -1;
             })
           : items
-      )
+      ),
+      tap(() => this._cd.detectChanges())
     );
     this.valueItems$ = combineLatest([this.value$, this._items$]).pipe(
       map(([value, items]) =>

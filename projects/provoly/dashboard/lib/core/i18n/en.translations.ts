@@ -2,8 +2,7 @@ export const enTranslations = {
   '@pry': {
     select: {
       label: 'Options list',
-      loading: 'Loading',
-      noSuggest: 'No option available'
+      loading: 'Loading'
     },
     about: {
       front: 'Version Front Library : {{value}} ',
