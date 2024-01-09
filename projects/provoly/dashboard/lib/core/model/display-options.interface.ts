@@ -89,7 +89,7 @@ export function getDisplayOptions(mode?: ViewMode): DisplayOptions {
           }, {} as ToolboxDisplayOptions)
         },
         edit_toggle: true,
-        widgetContextMenu: mode === ViewMode.EDITION
+        widgetContextMenu: true
       };
     default:
       return BASE_DISPLAY_OPTIONS;
