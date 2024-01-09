@@ -32,7 +32,8 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
             tap(() => (this.loader = false)),
             catchError((err) => {
               this.loader = false;
-              throw err;
+              console.error('Autocomplete failed', err);
+              return [];
             })
           );
         }
