@@ -9,59 +9,63 @@
   [attr.aria-owns]="open ? modalId : null"
   aria-haspopup="listbox"
 >
-  <ng-container *ngIf="autocomplete; else noAutocomplete">
-    <input
-      type="text"
-      class="a-pry-select__search"
-      [ngModel]="search$.getValue()"
-      (ngModelChange)="search($event)"
-      (focus)="toggle(true)"
-      aria-autocomplete="list"
-      [attr.aria-controls]="open ? modalId : null"
-      [attr.aria-disabled]="disabled"
-      [disabled]="disabled"
-    />
-  </ng-container>
-  <ng-template #noAutocomplete>
-    <ng-container *ngIf="(valueItems$ | async).length === 0; else selectedValues">
-      <span class="a-pry-select__placeholder">{{ placeholder }}</span>
+  <div class="a-pry-select__content">
+    <ng-container *ngIf="autocomplete; else noAutocomplete">
+      <input
+        type="text"
+        class="a-pry-select__search"
+        [ngModel]="search$.getValue()"
+        (ngModelChange)="search($event)"
+        (focus)="toggle(true)"
+        aria-autocomplete="list"
+        [attr.aria-controls]="open ? modalId : null"
+        [attr.aria-disabled]="disabled"
+        [disabled]="disabled"
+      />
     </ng-container>
-    <ng-template #selectedValues>
-      <ng-container *ngFor="let item of valueItems$ | async">
-        <div class="a-pry-select__value" [class.pry-select-form]="isForm" [class.-multiple]="multiple">
-          <ng-container *ngIf="template; else noTemplateLabel">
-            <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
-          </ng-container>
-          <ng-template #noTemplateLabel>
-            <pry-icon
-              *ngIf="bindIcon"
-              [iconSvg]="item[bindIcon]"
-              [width]="iconSize[0]"
-              [height]="iconSize[1]"
-            ></pry-icon>
-            <ng-container *ngIf="bindLabel ? item?.[bindLabel] : item as value">
-              {{ (i18nPrefix ?? '') + value | i18n : { warn: false } }}
-              <span
-                *ngIf="multiple && clearable"
-                class="a-pry-select__clear"
-                (click)="clear($event, item)"
-                aria-hidden="true"
-                >×</span
-              >
-            </ng-container>
-          </ng-template>
-        </div>
+    <ng-template #noAutocomplete>
+      <ng-container *ngIf="(valueItems$ | async).length === 0; else selectedValues">
+        <span class="a-pry-select__placeholder">{{ placeholder }}</span>
       </ng-container>
+      <ng-template #selectedValues>
+        <ng-container *ngFor="let item of valueItems$ | async">
+          <div class="a-pry-select__value" [class.pry-select-form]="isForm" [class.-multiple]="multiple">
+            <ng-container *ngIf="template; else noTemplateLabel">
+              <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
+            </ng-container>
+            <ng-template #noTemplateLabel>
+              <pry-icon
+                *ngIf="bindIcon"
+                [iconSvg]="item[bindIcon]"
+                [width]="iconSize[0]"
+                [height]="iconSize[1]"
+              ></pry-icon>
+              <ng-container *ngIf="bindLabel ? item?.[bindLabel] : item as value">
+                {{ (i18nPrefix ?? '') + value | i18n : { warn: false } }}
+                <span
+                  *ngIf="multiple && clearable"
+                  class="a-pry-select__clear"
+                  (click)="clear($event, item)"
+                  aria-hidden="true"
+                >×</span
+                >
+              </ng-container>
+            </ng-template>
+          </div>
+        </ng-container>
+      </ng-template>
+      <div class="a-pry-select__filler"></div>
     </ng-template>
-    <div class="a-pry-select__filler"></div>
-  </ng-template>
-  <span *ngIf="clearable" class="a-pry-select__clear" (click)="clearAll($event)" aria-hidden="true">×</span>
-  <pry-icon
-    class="a-pry-select__toggle"
-    [iconSvg]="open ? 'chevron_top' : 'chevron_bottom'"
-    [width]="iconSize[0]"
-    [height]="iconSize[1]"
-  ></pry-icon>
+  </div>
+  <div class="a-pry-select__actions">
+    <span *ngIf="clearable" class="a-pry-select__clear" (click)="clearAll($event)" aria-hidden="true">×</span>
+    <pry-icon
+      class="a-pry-select__toggle"
+      [iconSvg]="open ? 'chevron_top' : 'chevron_bottom'"
+      [width]="iconSize[0]"
+      [height]="iconSize[1]"
+    ></pry-icon>
+  </div>
 </div>
 <ng-template #optionsModal>
   <div

@@ -3,15 +3,35 @@
 /* Atom - Component pry-select  (lib) */
 .a-pry-select {
   display: flex;
-  flex-direction: row;
-  gap: toRem(10);
-  align-items: center;
+  justify-content: space-between;
   padding: toRem(10);
+  gap: toRem(10);
+
+  &__content {
+    display: flex;
+    flex-direction: row;
+    gap: toRem(10);
+    align-items: center;
+    overflow: auto;
+
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: toRem(5);
+    align-items: center;
+  }
 
   &__value {
     &.-multiple {
       padding: toRem(2) toRem(15);
       border-radius: toRem(15);
+      white-space: nowrap;
     }
   }
 
@@ -25,10 +45,8 @@
   }
 
   &__options {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
     overflow: auto;
+    max-height: toRem(calc(6 * 35)); // 6 items of height 35px
 
     &__option {
       cursor: pointer;

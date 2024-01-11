@@ -15,7 +15,7 @@
     <pry-checkbox [(ngModel)]="advancedTooltip">{{ '@pry.admin.customize.advanced' | i18n }}</pry-checkbox>
   </div>
 
-  <ng-container *ngIf="!advancedTooltip && currentClassConfig.type === 'attribute'">
+  <div class="m-form-label-field -width-xl" *ngIf="!advancedTooltip && currentClassConfig.type === 'attribute'">
     <label class="a-label" for="customize_simplified">{{ '@pry.admin.customize.simplified' | i18n }}</label>
     <pry-select
       id="customize_simplified"
@@ -27,7 +27,7 @@
       bindLabel="name"
       bindValue="id"
     ></pry-select>
-  </ng-container>
+  </div>
 
   <ng-container *ngIf="advancedTooltip">
     <textarea
