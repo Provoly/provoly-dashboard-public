@@ -55,8 +55,6 @@
                 <div class="o-presentation__item__image">
                   <img
                     alt=""
-                    [height]="presentation.cover ? 600 : 100"
-                    [width]="presentation.cover ? 600 : 100"
                     [class.is-full-width]="presentation.cover"
                     [src]="presentation.image | getSecuredImage | async"
                   />
