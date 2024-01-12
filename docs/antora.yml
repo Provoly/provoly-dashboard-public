@@ -15,8 +15,6 @@ ext:
   collector:
     - run:
         command: "npm run docs"
-    - run:
-        command: "cp -r ./compodoc /builds/cds-bdx/pole-edition/pry/pry-deploy"
       scan:
         dir: compodoc
         base: modules/compodoc/pages
