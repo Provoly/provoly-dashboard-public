@@ -16,7 +16,7 @@ ext:
     - run:
         command: "npm run docs"
     - run:
-        command: "cp -r ./compodoc /antora/documentation"
+        command: "cp -r ./compodoc /builds/cds-bdx/pole-edition/yap/yap-deploy/documentation/compodoc"
       scan:
         dir: compodoc
         base: modules/compodoc/pages
