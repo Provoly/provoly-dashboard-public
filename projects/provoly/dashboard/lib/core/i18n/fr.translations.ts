@@ -310,6 +310,29 @@ export const frTranslations = {
     metadata: {
       view: 'Consulter les metadonnées'
     },
+    components: {
+      searchData: 'Recherchez une donnée',
+      chipsSelector: {
+        datasource: {
+          select: 'Sélectionner une ou plusieurs source(s) de données :',
+          selection: 'Source(s) de données sélectionnées:',
+          selectItem: 'Sélectionner la source de données',
+          unselectItem: 'Désélectionner la source de données',
+          noItemSelected: 'Aucune source de données sélectionnée'
+        },
+        share: {
+          select: "Sélectionner un ou plusieurs groupe(s) d'utilisateurs :",
+          selection: "Groupe(s) d'utilisateurs sélectionnés:",
+          selectItem: "Sélectionner le groupe d'utilisateurs",
+          unselectItem: "Désélectionner le groupe d'utilisateurs",
+          noItemSelected: "Aucun groupe d'utilisateurs sélectionné",
+          groups: {
+            ALL: 'Publique',
+            CONNECTED: 'Les utilisateurs connectés'
+          }
+        }
+      }
+    },
     errors: {
       default:
         'Une erreur est survenue. Veuillez vérifiez les informations ou contacter votre administrateur si le problème persiste',

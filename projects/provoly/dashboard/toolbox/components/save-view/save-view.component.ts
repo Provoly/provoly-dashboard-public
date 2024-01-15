@@ -8,8 +8,6 @@ import {
   DashboardSelectors,
   LibraryTypes,
   ManifestDescription,
-  PryVisibility,
-  PryVisibilityType,
   ViewMode
 } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
@@ -34,7 +32,7 @@ export class SaveViewComponent extends ToolboxActionComponent {
   @ViewChild('templateSaveAs', { read: TemplateRef }) templateSaveAs!: TemplateRef<any>;
   overlayRefDirectSaveType?: OverlayRef;
   @ViewChild('templateDirectSaveType', { read: TemplateRef }) templateDirectSaveType!: TemplateRef<any>;
-  visibility: PryVisibility = { type: PryVisibilityType.PRIVATE };
+  accessGroups: string[] = [];
   type: LibraryTypes = LibraryTypes.ILLUSTRATION;
   saveTypeOpened = false;
   currentManifest?: ManifestDescription;
@@ -91,14 +89,14 @@ export class SaveViewComponent extends ToolboxActionComponent {
         id: v4(),
         description: this.currentManifest!.description,
         image: this.currentManifest!.image,
-        visibility: this.visibility,
+        groups: this.accessGroups,
         cover: this.currentManifest?.cover ?? false,
         owner: this.currentManifest?.owner
       };
       if (this.mode == 'directSave') {
         if (this.currentManifest) {
           presentation.id = this.currentManifest.id;
-          presentation.visibility = this.currentManifest.visibility;
+          presentation.groups = this.currentManifest.groups;
         }
       }
       this.store.dispatch(DashboardActions.saveManifest(presentation));
@@ -123,8 +121,8 @@ export class SaveViewComponent extends ToolboxActionComponent {
     this.close();
   }
 
-  changeVisibility($event: PryVisibility) {
-    this.currentManifest!.visibility = $event;
+  changeVisibility($event: string[]) {
+    this.currentManifest!.groups = $event;
   }
 
   changeValue($event: string) {

@@ -27,8 +27,7 @@ describe('PryPresentationComponent', () => {
   const presentation = {
     id: '1',
     name: 'presentation 1',
-    description: 'test-presentation',
-    visibility: { type: PryVisibilityType.PRIVATE }
+    description: 'test-presentation'
   } as ManifestDescription;
 
   beforeEach(async () => {

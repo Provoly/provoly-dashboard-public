@@ -3,7 +3,8 @@ import { TooltipOfClass } from '../../model/tooltip-of-class.interface';
 import { ChartOption } from '../../model/widget-chart-manifest.interface';
 import { Widget } from '../../model/widget.interface';
 import { IconDefinitions } from './icon-definitions.interface';
-import {Versions} from "./versions.interface";
+import { Versions } from './versions.interface';
+import { Group } from '../../components/share/share.model';
 
 export const ConfigActions = {
   defineUrls: createAction(
@@ -71,5 +72,7 @@ export const ConfigActions = {
   updateMaxAttributesInTiles: createAction('[Config] update max attributes in tiles', props<{ max: number }>()),
   loadVersions: createAction('[about] Load Versions'),
   loadVersionsSuccess: createAction('[about] (bus) Load Versions Success', props<{ versions: Versions }>()),
-  loadVersionsFailure: createAction('[about] Load Versions Failure', props<{ error: string }>())
+  loadVersionsFailure: createAction('[about] Load Versions Failure', props<{ error: string }>()),
+  loadAccessGroups: createAction('[Users] load access groups'),
+  loadAccessGroupsSuccess: createAction('[Config] load access groups Success', props<{ groups: Group[] }>())
 };

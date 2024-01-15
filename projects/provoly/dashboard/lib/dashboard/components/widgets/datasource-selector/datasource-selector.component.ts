@@ -1,97 +1,74 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { UNKNOWN_DATASOURCE } from '../../../../core/components/translate-id/translate-id.pipe';
-import { WidgetManifest } from '../../../../core/model/manifest.interface';
-import { Dataset, DataSource, NamedQuery } from '../../../../core/store/data-source/data-source.model';
+import { NamedQuery } from '../../../../core/store/data-source/data-source.model';
 import { DataSourceSelectors } from '../../../../core/store/data-source/data-source.selectors';
+import { ChipsSelectorComponent } from '../../../../core/components/chips-selector/chips-selector.component';
+import { WidgetManifest } from '../../../../core/model/manifest.interface';
 import { SubscriptionnerDirective } from '../../subscriptionner.directive';
-import { DatasourceUtils } from '../../../../core/store/data-source/datasource-utils';
+import { PryI18nService } from '../../../../core/i18n/i18n.service';
 
 @Component({
   selector: 'pry-datasource-selector',
-  templateUrl: './datasource-selector.component.html'
+  templateUrl: '../../../../core/components/chips-selector/chips-selector.component.html'
 })
-export class DatasourceSelectorComponent extends SubscriptionnerDirective {
+export class DatasourceSelectorComponent extends ChipsSelectorComponent implements SubscriptionnerDirective {
+  _usedItems$ = new BehaviorSubject([] as any[]);
+  usedDatasources$: Observable<NamedQuery[]>;
+
+  @Input() override set usedItems(items: any[]) {
+    this._usedItems$.next(items);
+  }
+
   @Input() set manifest(manifest: WidgetManifest | null) {
     this.manifest$.next(manifest);
   }
 
-  @Input() set datasourceIds(datasourceIds: string[]) {
-    this.usedDatasourceIds$.next(datasourceIds);
-  }
-
-  @Output() cancel = new EventEmitter();
-  @Output() validated = new EventEmitter();
-  @Output() previousTab = new EventEmitter();
-  @Output() nextTab = new EventEmitter();
-  @Output() datasourcesChanged = new EventEmitter<DataSource[]>();
-
   manifest$ = new BehaviorSubject<WidgetManifest | null>(null);
-  usedDatasourceIds$ = new BehaviorSubject<string[]>([]);
-  usedDatasources$: Observable<DataSource[]>;
-  allDataSources$: Observable<DataSource[]>;
-  unusedDatasources$: Observable<any>;
-  search$ = new BehaviorSubject('');
-  idToNameDatasource: { [id: string]: string | undefined } = {};
 
-  constructor(private store: Store, private cdr: ChangeDetectorRef) {
-    super();
-    this.allDataSources$ = combineLatest([
-      this.manifest$,
-      this.store.select(DataSourceSelectors.getDataSourcesSorted)
-    ]).pipe(
-      map(([manifest, allNamedQueries]) => {
-        let dss = [...allNamedQueries];
-        if (!!manifest) {
-          const manifestNamedQueries = Array.isArray(manifest.datasource) ? manifest.datasource : [manifest.datasource];
-          manifestNamedQueries.forEach((manifestNamedQuery) => {
-            const alreadyPresent = !!allNamedQueries.find((nq) => nq.id === manifestNamedQuery);
-            if (!alreadyPresent) {
-              dss.push(UNKNOWN_DATASOURCE(manifestNamedQuery ?? ''));
-            }
-          });
-        }
-        return dss;
-      })
-    );
+  constructor(private store: Store, cdr: ChangeDetectorRef, i18n: PryI18nService) {
+    super(cdr, i18n);
     this.subscriptions.add(
-      this.allDataSources$.subscribe((allDs) => allDs.forEach((ds) => (this.idToNameDatasource[ds.id] = ds.name)))
+      combineLatest([this.manifest$, this.store.select(DataSourceSelectors.getDataSourcesSorted)])
+        .pipe(
+          map(([manifest, allNamedQueries]) => {
+            let dss = [...allNamedQueries];
+            if (!!manifest) {
+              const manifestNamedQueries = Array.isArray(manifest.datasource)
+                ? manifest.datasource
+                : [manifest.datasource];
+              manifestNamedQueries.forEach((manifestNamedQuery) => {
+                const alreadyPresent = !!allNamedQueries.find((nq) => nq.id === manifestNamedQuery);
+                if (!alreadyPresent) {
+                  dss.push(UNKNOWN_DATASOURCE(manifestNamedQuery ?? ''));
+                }
+              });
+            }
+            return dss;
+          })
+        )
+        .subscribe((datasources) => {
+          this.items$.next(datasources);
+        })
     );
+
     this.usedDatasources$ = combineLatest([
-      this.usedDatasourceIds$,
+      this._usedItems$,
       this.store.select(DataSourceSelectors.getDataSources)
     ]).pipe(
       map(
-        ([ids, datasources]) =>
-          ids
-            .map((id) => datasources.find((ds) => ds.id === id) ?? id)
+        ([usedDatasources, datasources]) =>
+          usedDatasources
+            .map((usedDatasource) => datasources.find((ds) => ds.id === usedDatasource.id) ?? usedDatasource)
             .map((nq) => (typeof nq !== 'string' ? nq : UNKNOWN_DATASOURCE(nq))) as NamedQuery[]
       )
     );
-    this.usedDatasources$.subscribe((datasources) => this.datasourcesChanged.emit(datasources));
-    this.unusedDatasources$ = combineLatest([this.allDataSources$, this.usedDatasourceIds$, this.search$]).pipe(
-      map(([allDss, usedDsIds, search]) =>
-        allDss.filter((ds) => !usedDsIds.includes(ds.id) && ds.name.toLowerCase().includes(search.toLowerCase()))
-      )
+
+    this.subscriptions.add(
+      this.usedDatasources$.subscribe((usedDatasources) => {
+        this.usedItems$.next(usedDatasources);
+      })
     );
-  }
-
-  toogleDataSource(id: string) {
-    if (!this.usedDatasourceIds$.getValue().includes(id)) {
-      this.usedDatasourceIds$.next([...this.usedDatasourceIds$.getValue(), id]);
-    } else {
-      this.usedDatasourceIds$.next(this.usedDatasourceIds$.getValue().filter((dsId) => dsId !== id));
-    }
-    this.cdr.detectChanges();
-  }
-
-  isGeo(ds: NamedQuery | Dataset) {
-    return DatasourceUtils.isGeo(ds);
-  }
-
-  search($event: any) {
-    this.search$.next($event);
-    this.cdr.detectChanges();
   }
 }

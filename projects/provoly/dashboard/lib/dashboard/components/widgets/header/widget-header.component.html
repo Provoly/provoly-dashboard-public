@@ -180,12 +180,15 @@
 
 <ng-template #template>
   <pry-datasource-selector
+    bindLabel="name"
+    bindValue="id"
+    translationStringBase="@pry.components.chipsSelector.datasource."
     (cancel)="toggleDatasourceSelection()"
     (validated)="emitManifest()"
     (nextTab)="focusInputCatalog()"
     (previousTab)="focusValidation()"
-    (datasourcesChanged)="datasourcesChanged($event)"
-    [datasourceIds]="(selectedDataSourceIds$ | async) ?? []"
+    (itemsChanged)="datasourcesChanged($event)"
+    [usedItems]="(usedDatasources$ | async) ?? []"
   ></pry-datasource-selector>
 </ng-template>
 

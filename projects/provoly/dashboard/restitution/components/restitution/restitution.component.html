@@ -73,10 +73,13 @@
     <pry-step>
       <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.dataSource' | i18n }}</h4>
       <pry-datasource-selector
+        bindLabel="name"
+        bindValue="id"
+        translationStringBase="@pry.components.chipsSelector.datasource."
         (cancel)="prev(stepper)"
         (validated)="submit(stepper)"
-        (datasourcesChanged)="datasourcesChanged($event)"
-        [datasourceIds]="form.selectedDataSources"
+        (itemsChanged)="datasourcesChanged($event)"
+        [usedItems]="(usedDatasources$ | async) ?? []"
       ></pry-datasource-selector>
     </pry-step>
     <pry-step>

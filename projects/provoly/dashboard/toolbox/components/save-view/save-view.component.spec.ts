@@ -74,7 +74,7 @@ describe('SaveViewComponent', () => {
         description: 'description',
         image: 'http://...',
         cover: false,
-        visibility: { type: PryVisibilityType.PRIVATE }
+        groups: []
       })
     );
   });

@@ -20,6 +20,7 @@ import {
 import { ChartOptionDefault } from './config.widget.constants';
 import { OpenMapTilesService } from './open-map-tiles.service';
 import { Versions } from './versions.interface';
+import { Group } from '../../components/share/share.model';
 
 @Injectable()
 export class ConfigEffects {
@@ -160,7 +161,7 @@ export class ConfigEffects {
               ),
               type: 'error'
             });
-            return throwError(error);
+            return throwError(() => error);
           })
         )
       )
@@ -224,6 +225,7 @@ export class ConfigEffects {
       })
     )
   );
+
   loadVersions$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ConfigActions.loadVersions),
@@ -233,6 +235,26 @@ export class ConfigEffects {
             return ConfigActions.loadVersionsSuccess({ versions: versionsData });
           }),
           catchError((error) => [ConfigActions.loadVersionsFailure({ error: error })])
+        )
+      )
+    )
+  );
+
+  loadAccessGroups$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ConfigActions.loadAccessGroups),
+      withLatestFrom(this.store.select(ConfigSelectors.accessGroups)),
+      filter(([_, groups]) => groups.length === 0),
+      mergeMap((_) =>
+        this.configService.getAccessGroups().pipe(
+          map((groups: Group[]) => ConfigActions.loadAccessGroupsSuccess({ groups })),
+          catchError((error) => {
+            this.snackBar.open({
+              message: error,
+              type: 'error'
+            });
+            return throwError(() => error);
+          })
         )
       )
     )

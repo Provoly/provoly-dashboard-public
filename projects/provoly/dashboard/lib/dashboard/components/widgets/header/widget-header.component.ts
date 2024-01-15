@@ -15,7 +15,6 @@ import { Store } from '@ngrx/store';
 import equal from 'fast-deep-equal/es6';
 import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable, Subject, Subscription } from 'rxjs';
 import { v4 } from 'uuid';
-import { UNKNOWN_DATASOURCE } from '../../../../core/components/translate-id/translate-id.pipe';
 import { GeoMetadata } from '../../../../core/model/dataset.interface';
 import { DashboardGridLayout, DashboardManifest, WidgetManifest } from '../../../../core/model/manifest.interface';
 import { Widget } from '../../../../core/model/widget.interface';
@@ -144,7 +143,7 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective implement
     this.usedDatasources$ = combineLatest([
       this.store.select(DataSourceSelectors.getDataSourcesSorted),
       this.selectedDataSourceIds$
-    ]).pipe(map(([allDss, dsIds]) => dsIds.map((id) => allDss.find((ds) => ds.id === id) ?? UNKNOWN_DATASOURCE(id))));
+    ]).pipe(map(([allDss, dsIds]) => allDss.filter((ds) => dsIds.includes(ds.id))));
   }
 
   onArrowUp() {

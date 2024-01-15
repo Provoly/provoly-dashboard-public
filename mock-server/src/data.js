@@ -333,6 +333,24 @@ const deleteField = (id) => {
   fields = fields.filter((field) => field.id !== id);
 };
 
+const getGroups = () => [
+  {
+    id: casual.uuid,
+    name: 'ALL',
+    system: true
+  },
+  {
+    id: casual.uuid,
+    name: 'CONNECTED',
+    system: true
+  },
+  {
+    id: casual.uuid,
+    name: 'custom group',
+    system: true
+  }
+];
+
 module.exports = {
   class: {
     get: getClasses,
@@ -399,5 +417,6 @@ module.exports = {
   departements,
   association: {
     get: getAssociations
-  }
+  },
+  getGroups: getGroups
 };

@@ -8,6 +8,7 @@ import { Widget } from '../../model/widget.interface';
 import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from '../search/search.constants';
 import { ConfigSelectors } from './config.selectors';
 import { BackendVersion, FrontendVersion, Versions } from './versions.interface';
+import { Group } from '../../components/share/share.model';
 
 export interface ParamContent {
   domain: string;
@@ -161,5 +162,11 @@ export class ConfigService {
         );
       })
     );
+  }
+
+  getAccessGroups(): Observable<Group[]> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(mergeMap((url) => this.httpClient.get<Group[]>(encodeURI(`${url}/groups`))));
   }
 }

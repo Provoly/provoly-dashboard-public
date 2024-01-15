@@ -1,5 +1,4 @@
 import { createReducer, on } from '@ngrx/store';
-import { DashboardActions } from '../../../dashboard/store/dashboard.actions';
 import { TooltipOfClass } from '../../model/tooltip-of-class.interface';
 import { ChartOption } from '../../model/widget-chart-manifest.interface';
 import { Widget } from '../../model/widget.interface';
@@ -7,6 +6,7 @@ import { ConfigActions } from './config.actions';
 import { ChartOptionDefault, defaultColors } from './config.widget.constants';
 import { IconDefinitions } from './icon-definitions.interface';
 import { Versions } from './versions.interface';
+import { Group } from '../../components/share/share.model';
 
 export const configFeatureKey = '@pry/config';
 
@@ -29,6 +29,7 @@ export interface ConfigState {
   chartOption: ChartOption;
   maxAttributesInTiles: number;
   versions: Versions | null;
+  accessGroups: Group[];
 }
 
 export const initialConfigState: ConfigState = {
@@ -49,7 +50,8 @@ export const initialConfigState: ConfigState = {
   catalog: [],
   chartOption: ChartOptionDefault,
   maxAttributesInTiles: 5,
-  versions: null
+  versions: null,
+  accessGroups: []
 };
 
 export const configReducer = createReducer(
@@ -171,5 +173,9 @@ export const configReducer = createReducer(
   on(ConfigActions.loadVersionsFailure, (state) => ({
     ...state,
     versions: null
+  })),
+  on(ConfigActions.loadAccessGroupsSuccess, (state, action) => ({
+    ...state,
+    accessGroups: action.groups
   }))
 );

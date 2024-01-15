@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { mergeMap, Observable, of } from 'rxjs';
 import { catchError, map, withLatestFrom } from 'rxjs/operators';
-import { PryVisibility } from '../../core/components/share/share.model';
 import { PrySnackbarService } from '../../core/components/snackbar/snackbar.service';
 import { PryI18nService } from '../../core/i18n/i18n.service';
 import { GlobalManifest, ManifestDescription } from '../../core/model/manifest.interface';
@@ -65,12 +64,12 @@ export class ManifestService {
   save(
     name: string,
     manifest: GlobalManifest,
-    visibility: PryVisibility,
     id: string,
     description?: string,
     image?: string,
     cover?: boolean,
-    metadata?: { metadataDefId: string; value: string }[]
+    metadata?: { metadataDefId: string; value: string }[],
+    groups?: string[]
   ): Observable<{ id: string; name: string; manifest: GlobalManifest }> {
     return this.store.select(ConfigSelectors.refUrl).pipe(
       mergeMap((url) =>
@@ -82,10 +81,10 @@ export class ManifestService {
             description,
             manifest,
             image,
-            visibility,
             cover,
             metadata,
-            datasource: ManifestUtils.getDatasourcesUsedByManifest(manifest).map((ds) => ds.datasetId)
+            datasource: ManifestUtils.getDatasourcesUsedByManifest(manifest).map((ds) => ds.datasetId),
+            groups
           }
         )
       )

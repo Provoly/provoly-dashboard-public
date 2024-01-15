@@ -22,7 +22,7 @@ export interface ManifestDescription {
   cover: boolean;
   creationDate: string;
   modificationDate: string;
-  visibility: PryVisibility;
+  groups: string[];
   owner: boolean;
   datasource: string[];
   metadata: MetadataValue[];

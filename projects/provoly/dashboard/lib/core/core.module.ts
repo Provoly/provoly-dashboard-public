@@ -50,6 +50,7 @@ import { TabGroupComponent } from './components/tabs/tab-group.component';
 import { TabComponent } from './components/tabs/tab.component';
 import { PRY_GEOAUTH_TOKEN, PryDefaultGeoAuthService } from './auth/geoAuth.service';
 import { EllipsisDirective } from './components/ellipsis.directive';
+import { ChipsSelectorComponent } from './components/chips-selector/chips-selector.component';
 
 const SELECTORS = [
   TranslateIdPipe,
@@ -58,6 +59,7 @@ const SELECTORS = [
   BaseLayoutComponent,
   BaseMenuComponent,
   BaseToolboxComponent,
+  ChipsSelectorComponent,
   PryNqColorSelectorComponent,
   PryAccessDirective,
   PryUploadComponent,

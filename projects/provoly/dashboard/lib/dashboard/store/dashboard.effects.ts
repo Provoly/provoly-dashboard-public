@@ -9,7 +9,6 @@ import {
   PryDialogConfirmData
 } from '../../core/components/overlay/dialog-confirm.component';
 import { PryDialogService } from '../../core/components/overlay/dialog.service';
-import { PryVisibilityType } from '../../core/components/share/share.model';
 import { PrySnackbarService } from '../../core/components/snackbar/snackbar.service';
 import { PryI18nService } from '../../core/i18n/i18n.service';
 import { DashboardGridLayout, GlobalManifest, WidgetManifest } from '../../core/model/manifest.interface';
@@ -344,12 +343,12 @@ export class DashboardEffects {
           .save(
             action.name,
             action.manifest ?? currentManifest,
-            action.visibility ?? { type: PryVisibilityType.PRIVATE },
             action.id,
             action.description,
             action.image,
             action.cover,
-            action.metadata
+            action.metadata,
+            action.groups
           )
           .pipe(
             tap(() =>

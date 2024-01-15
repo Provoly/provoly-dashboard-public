@@ -38,9 +38,9 @@
             *ngFor="let presentation of filteredPresentations$ | async; let index = index"
           >
             <div class="o-presentation__item__header">
-              <ng-container *ngIf="presentation.visibility.type === PryVisibilityType.PRIVATE">
+              <ng-container *ngIf="presentation.groups.length === 0">
                 <pry-icon
-                  [iconSvg]="presentation.visibility.type.toLowerCase()"
+                  iconSvg="private"
                   class="is-private a-tooltip -tooltip-no-wrap"
                   [attr.data-tooltip]="'@pry.presentation.private' | i18n"
                   [height]="17"
@@ -146,7 +146,7 @@
         </button>
       </div>
     </div>
-    <pry-share [ngModel]="selectedPresentation.visibility" (ngModelChange)="visibility = $event"></pry-share>
+    <pry-group-share [ngModel]="selectedPresentation.groups" (ngModelChange)="accessGroups = $event"></pry-group-share>
     <div class="m-btn-group">
       <button type="button" class="a-btn a-btn--secondary" (click)="toggleModal()">
         {{ '@pry.toolbox.manifest.close' | i18n }}

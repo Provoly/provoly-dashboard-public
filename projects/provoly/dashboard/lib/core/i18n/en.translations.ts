@@ -306,6 +306,29 @@ export const enTranslations = {
     metadata: {
       view: 'View metadata'
     },
+    components: {
+      chipsSelector: {
+        datasource: {
+          select: 'Select one or more data source(s):',
+          selection: 'Selected data source(s):',
+          selectItem: 'Select this data source',
+          unselectItem: 'Unselect this data source',
+          noItemSelected: 'No data source selected'
+        },
+        share: {
+          select: 'Select one or more user group:',
+          selection: 'Selected user groups:',
+          selectItem: 'Select this user group',
+          unselectItem: 'Unselect this user group',
+          noItemSelected: 'No user group selected',
+          groups: {
+            ALL: 'Public',
+            CONNECTED: 'Connected users'
+          }
+        }
+      },
+      searchData: 'Search'
+    },
     errors: {
       default: 'There is an error. Try again or contact your administrator',
       codes: {

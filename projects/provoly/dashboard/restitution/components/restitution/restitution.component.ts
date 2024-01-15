@@ -9,6 +9,7 @@ import {
   DashboardActions,
   DataSource,
   DataSourceActions,
+  DataSourceSelectors,
   DEFAULT_RESTITUTION_ICON_URL,
   FieldActions,
   getDisplayOptions,
@@ -64,6 +65,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
   @Input() bindId: any;
   image: string = DEFAULT_RESTITUTION_ICON_URL;
   widgetTypes: { icon: string; label: string; type: string; manifest: WidgetManifest }[] = [];
+  usedDatasources$: Observable<DataSource[]>;
 
   constructor(
     private toolboxManifestService: ToolboxManifestService,
@@ -88,6 +90,9 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
           .reduce((acc, items) => [...acc, ...items], [])
       )
     );
+    this.usedDatasources$ = this.store
+      .select(DataSourceSelectors.getDataSourcesSorted)
+      .pipe(map((allDss) => allDss.filter((datasource) => this.form.selectedDataSources.includes(datasource.id))));
   }
 
   ngOnInit(): void {

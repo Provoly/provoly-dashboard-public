@@ -794,8 +794,8 @@ router.on('PUT', '/ref/users/me/dashboards/id/:id/default', (req, res, params) =
 });
 router.on('POST', '/ref/users/me/dashboards', (req, res, params) => {
   readPayload(req).then((payload) => {
-    const { id, name, description, creationDate, modificationDate, manifest, image, visibility } = payload;
-    manifestModule.save(id, name, description, creationDate, modificationDate, manifest, image, visibility);
+    const { id, name, description, creationDate, modificationDate, manifest, image, groups } = payload;
+    manifestModule.save(id, name, description, creationDate, modificationDate, manifest, image, groups);
     makeResponseOk(res, undefined, 204);
   });
 });
@@ -824,6 +824,10 @@ router.on(
 
 router.on(['DELETE'], '/ref/users/me/dashboards/id/:presentationId/metadata/id/:metadataId', (req, res, params) => {
   makeResponseOk(res);
+});
+
+router.on(['GET'], '/ref/groups', (req, res, params) => {
+  makeResponseOk(res, dataModule.getGroups());
 });
 
 router.on(['OPTIONS', 'GET'], '/data/file/icons', (req, res, params) => {

@@ -1,5 +1,4 @@
 import { createAction, props } from '@ngrx/store';
-import { PryVisibility } from '../../core/components/share/share.model';
 import { PrySnackMessage } from '../../core/components/snackbar/snack.interface';
 import { DisplayOptions } from '../../core/model/display-options.interface';
 import { Filter } from '../../core/model/filter.interface';
@@ -156,9 +155,9 @@ export const DashboardActions = {
       id: string;
       description?: string;
       image?: string;
-      visibility?: PryVisibility;
       cover?: boolean;
       metadata?: { metadataDefId: string; value: string }[];
+      groups?: string[];
     }>()
   ),
   solveCollisions: createAction('[Dashboard] solving collisions'),

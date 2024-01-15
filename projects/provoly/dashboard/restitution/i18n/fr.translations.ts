@@ -28,10 +28,6 @@ export const frTranslations = {
       consultRestitution: 'Consulter la restitution',
       catalog: 'Catalogue des restitutions',
       add_icon: 'Ajouter cette restitution sur la présentation',
-      selection: 'Source(s) de données sélectionnées:',
-      select: 'Sélectionner une ou plusieurs source(s) de données :',
-      selectDataSource: 'Sélectionner la source de données',
-      unselectDataSource: 'Désélectionner la source de données',
       dataSource: 'Donnée(s)',
       noDataSource: 'Aucune donnée disponible',
       delete: 'Supprimer la restitution',
@@ -39,7 +35,6 @@ export const frTranslations = {
       lock: 'Restitution privée',
       update: 'Modifier les informations',
       cover: "L'image doit couvrir la carte de la restitution",
-      noDataSourceSelected: 'Aucune source de données sélectionnée',
       catalogTabs: {
         model: 'Modèles de restitution',
         noModel: 'Restitutions du catalogue'

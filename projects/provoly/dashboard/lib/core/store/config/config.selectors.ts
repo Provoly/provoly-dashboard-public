@@ -62,6 +62,7 @@ const catalog = createSelector(feature, (config) => config.catalog);
 const chartOption = createSelector(feature, (config) => config.chartOption);
 const maxAttributesInTiles = createSelector(feature, (config) => config.maxAttributesInTiles);
 const selectVersions = createSelector(feature, (state) => state.versions);
+const accessGroups = createSelector(feature, (state) => state.accessGroups);
 
 export const ConfigSelectors = {
   feature,
@@ -88,5 +89,6 @@ export const ConfigSelectors = {
   chartOption,
   maxAttributesInTiles,
   execUrl,
-  selectVersions
+  selectVersions,
+  accessGroups
 };
