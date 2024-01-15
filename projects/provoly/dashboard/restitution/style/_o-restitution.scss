@@ -1,7 +1,6 @@
 @use '../../styles/abstracts/index' as *;
 
 .o-restitution {
-  height: 100%;
   margin: 0 auto;
   border-collapse: collapse;
   font-size: toRem(14);
@@ -35,5 +34,21 @@
       padding: toRem(2) 0;
       border-radius: 50%;
     }
+  }
+
+  // o-pry-stepper__content.m-btn-group.actions styles
+  .m-btn-group.o-datasources__bottom {
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - 40px);
+    padding-top: toRem(25);
+    padding-bottom: toRem(20);
+    background-color: #f5f7f9;
+    transform: translateX(-3px);
+    justify-content: space-evenly;
+  }
+
+  .m-namedqueries-wrapper {
+    padding-bottom: 30px;
   }
 }

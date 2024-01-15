@@ -126,7 +126,7 @@
         </form>
       </pry-step>
       <pry-step>
-        <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.broadcast' | i18n }}</h4>
+        <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.share' | i18n }}</h4>
         <pry-share [(ngModel)]="visibility" (ngModelChange)="changeVisibility($event)"></pry-share>
         <div class="m-btn-group">
           <button type="button" class="a-btn a-btn--secondary" (click)="stepper.prev()">
@@ -139,7 +139,7 @@
             (click)="save()"
             (keydown.tab)="focusCrossElement()"
           >
-            {{ '@pry.restitution.broadcast' | i18n }}
+            {{ '@pry.restitution.share' | i18n }}
           </button>
         </div>
       </pry-step>
