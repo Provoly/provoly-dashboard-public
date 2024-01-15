@@ -228,36 +228,36 @@ describe('FilterSettingsComponent', () => {
   });
 
   describe('attribute$', () => {
-    it('should return a list of attributes of the classes of the namedqueries present in the presentation', () => {
+    it('should return an alphabetical list of attributes of the classes of the namedqueries present in the presentation', () => {
       const expected$ = hot('a', {
         a: [
           {
             datasource: 'fakeid',
-            id: 'loc',
-            label: 'loc / ds-name / class-name',
-            technicalName: 'loc',
-            type: 'string'
+            id: 'intensity',
+            label: 'intensity / ds-name',
+            technicalName: 'intensity',
+            type: 'keyword'
           },
           {
             datasource: 'fakeid',
             id: 'lat',
-            label: 'lat / ds-name / class-name',
+            label: 'lat / ds-name',
             technicalName: 'lat',
             type: 'string'
           },
           {
             datasource: 'fakeid',
             id: 'lng',
-            label: 'lng / ds-name / class-name',
+            label: 'lng / ds-name',
             technicalName: 'lng',
             type: 'string'
           },
           {
             datasource: 'fakeid',
-            id: 'intensity',
-            label: 'intensity / ds-name / class-name',
-            technicalName: 'intensity',
-            type: 'keyword'
+            id: 'loc',
+            label: 'loc / ds-name',
+            technicalName: 'loc',
+            type: 'string'
           }
         ]
       });
@@ -266,7 +266,7 @@ describe('FilterSettingsComponent', () => {
   });
 
   describe('filter available attributes', () => {
-    // first arg, second arg, expected result
+    // filter type, available attributes, attributes filtered to the type that should be accessible in the filter
     const cases: [string, Attribute[], Attribute[]][] = [
       ['text', attributes, [attributes[0], attributes[4]]],
       ['date', [...attributes], [attributes[1]]],
@@ -274,10 +274,14 @@ describe('FilterSettingsComponent', () => {
       ['list', attributes, attributes]
     ];
 
-    test.each(cases)('should return attributes of the filter type (%p)', (firstArg, secondArg, expectedResult) => {
-      const result = component.filterAttributes(firstArg, secondArg);
-      expect(result).toEqual(expectedResult);
-    });
+    test.each(cases)(
+      'should return attributes of the filter type (%p)',
+      (filterComponentType, unfilteredAttributes, filteredAttributes) => {
+        expect(
+          unfilteredAttributes.filter((attr) => component.isValidAttributeForComponentType(filterComponentType, attr))
+        ).toEqual(filteredAttributes);
+      }
+    );
 
     /* it('should return attributes of the same type as the first selected attribute, if filter type is list/custom', () => {
       component.selectedAttribute$.next([attributes[0].id]);

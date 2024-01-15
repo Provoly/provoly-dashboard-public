@@ -130,20 +130,19 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
         let dataSourcesInPres = dataSources.filter((dataSource) =>
           Object.keys(currentDataSources).includes(dataSource.id) ? dataSource : false
         );
-        const attributes: Attribute[] = [];
-        dataSourcesInPres.forEach((dataSource) => {
-          const clazz = this.getDatasourceClass(dataSource, classes);
-          clazz?.attributes.forEach((attr) => {
-            attributes.push({
+        return dataSourcesInPres
+          .map((dataSource) =>
+            (this.getDatasourceClass(dataSource, classes)?.attributes ?? []).map((attr) => ({
               id: attr.id,
               technicalName: attr.technicalName,
-              label: [attr.name, dataSource.name, clazz.name].join(' / '),
+              label: `${attr.name} / ${dataSource.name}`,
               datasource: dataSource.id,
               type: fields.find((field) => field.id === attr.field)?.type ?? FieldType.STRING
-            });
-          });
-        });
-        return this.filterAttributes(componentType, attributes);
+            }))
+          )
+          .flat()
+          .sort((attr1, attr2) => attr1.label.localeCompare(attr2.label))
+          .filter((attr) => this.isValidAttributeForComponentType(componentType, attr));
       })
     );
   }
@@ -162,16 +161,16 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
     return clazz;
   }
 
-  filterAttributes(componentType: string, attributes: Attribute[]): Attribute[] {
+  isValidAttributeForComponentType(componentType: string, attribute: Attribute): boolean {
     switch (componentType) {
       case 'date':
-        return attributes.filter((attr) => attr.type === FieldType.INSTANT);
+        return attribute.type === FieldType.INSTANT;
       case 'number':
-        return attributes.filter((attr) => [FieldType.INTEGER, FieldType.DECIMAL, FieldType.LONG].includes(attr.type));
+        return [FieldType.INTEGER, FieldType.DECIMAL, FieldType.LONG].includes(attribute.type);
       case 'text':
-        return attributes.filter((attr) => [FieldType.STRING, FieldType.KEYWORD].includes(attr.type));
+        return [FieldType.STRING, FieldType.KEYWORD].includes(attribute.type);
       default:
-        return attributes;
+        return true;
     }
   }
 
