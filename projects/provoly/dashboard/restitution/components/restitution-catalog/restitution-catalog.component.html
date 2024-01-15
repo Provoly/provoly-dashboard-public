@@ -81,7 +81,9 @@
               (click)="selectRestitution(restitution)"
               [attr.data-tooltip]="'@pry.restitution.consultRestitution' | i18n"
             >
-              <h3 class="a-h3">{{ restitution.name }}</h3>
+              <div class="o-presentation__item__title-container" ellipsis textElementSelector=".a-h3">
+                <h3 class="a-h3">{{ restitution.name }}</h3>
+              </div>
               <p class="a-p -date">{{ restitution.modificationDate | sinceDate }}</p>
             </div>
 

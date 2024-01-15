@@ -76,7 +76,9 @@
               </ng-container>
             </div>
             <div class="o-presentation__item__txt" (click)="fetch(presentation)">
-              <h3 class="a-h3">{{ presentation.name }}</h3>
+              <div class="o-presentation__item__title-container" ellipsis textElementSelector=".a-h3">
+                <h3 class="a-h3">{{ presentation.name }}</h3>
+              </div>
               <div class="o-presentation__item__description-container" ellipsis textElementSelector=".a-p">
                 <div class="o-presentation__item__description a-p">
                   {{ presentation.description }}
