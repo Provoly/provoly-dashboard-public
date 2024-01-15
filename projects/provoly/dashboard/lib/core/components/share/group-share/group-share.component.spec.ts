@@ -7,7 +7,7 @@ import { PryVisibilityType } from '../../share/share.model';
 import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
 import { MockPryChipsSelectorComponent } from '@provoly/dashboard/mock/components/mock-pry-chips-selector.component';
 import { provideMockStore } from '@ngrx/store/testing';
-import { cold, hot } from 'jest-marbles';
+import { hot } from 'jest-marbles';
 
 const groups = [
   {

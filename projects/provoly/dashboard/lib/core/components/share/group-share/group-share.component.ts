@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { ConfigSelectors } from '../../../store/config/config.selectors';
 import { ConfigActions } from '../../../store/config/config.actions';
 import { SubscriptionnerDirective } from '../../../../dashboard/components/subscriptionner.directive';
+import equal from 'fast-deep-equal/es6';
 
 @Component({
   selector: 'pry-group-share',
@@ -20,16 +21,18 @@ import { SubscriptionnerDirective } from '../../../../dashboard/components/subsc
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PryGroupShareComponent extends SubscriptionnerDirective implements ControlValueAccessor {
-  private _onChange = (_: any) => {};
+  private _onChange = (groups: string[]) => groups;
   private _onTouched = () => {};
   _disabled = false;
 
+  // for tracking input
+  assignedGroupNames$ = new BehaviorSubject<string[]>([]);
+
   radioValue = PryVisibilityType.PRIVATE;
-  groups$: Observable<Group[]>;
   assignedGroups$: Observable<Group[]>;
+  groups$: Observable<Group[]>;
   PryVisibilityType = PryVisibilityType;
   visibilityTypes: { label: string; value: PryVisibilityType }[] = [];
-  assignedGroupNames$ = new BehaviorSubject<string[]>([]);
 
   constructor(private store: Store, private _cd: ChangeDetectorRef) {
     super();
@@ -52,8 +55,14 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
   }
 
   writeValue(value: string[] | undefined) {
-    this.assignedGroupNames$.next(value ?? []);
-    this.updateRadioValue(value ?? []);
+    value = value ?? [];
+    if (!equal(this.assignedGroupNames$.getValue(), value)) {
+      this._onChange(value);
+      this.assignedGroupNames$.next(value);
+      this.updateRadioValue(value);
+      this._onTouched();
+      this._cd.markForCheck();
+    }
   }
 
   registerOnChange(fn: any): void {
@@ -99,7 +108,7 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
 
   changeGroups(groups: (Group | string)[] | null) {
     if (groups) {
-      this._onChange(this.assignedGroupNames$.getValue());
+      this._onChange(groups.map((group) => (typeof group === 'string' ? group : group.name)));
       this._onTouched();
       this._cd.markForCheck();
     }
