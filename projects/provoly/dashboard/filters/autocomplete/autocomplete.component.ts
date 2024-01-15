@@ -26,7 +26,7 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
       distinctUntilChanged((p, v) => equal(p, v)),
       debounceTime(500),
       switchMap((search) => {
-        if (!!search && search.length > 2) {
+        if (!!search && search.length > 1) {
           this.loader = true;
           return this.searchService.autocomplete(this.filter?.attributes, search, this.filter?.limit).pipe(
             tap(() => (this.loader = false)),
