@@ -54,8 +54,6 @@
                 <div class="o-presentation__item__image">
                   <img
                     alt=""
-                    [height]="restitution.cover ? 600 : 128"
-                    [width]="restitution.cover ? 600 : 128"
                     [class.is-full-width]="restitution.cover"
                     [src]="restitution.image | getSecuredImage : [600, 600] | async"
                     class="pointer"
@@ -78,12 +76,17 @@
               </ng-container>
             </div>
             <div
-              class="o-presentation__item__txt a-tooltip -tooltip-no-wrap"
+              class="o-presentation__item__txt"
               (click)="selectRestitution(restitution)"
               [attr.data-tooltip]="'@pry.restitution.consultRestitution' | i18n"
             >
               <div class="o-presentation__item__title-container" ellipsis textElementSelector=".a-h3">
                 <h3 class="a-h3">{{ restitution.name }}</h3>
+              </div>
+              <div class="o-presentation__item__description-container" ellipsis textElementSelector=".a-p">
+                <div class="o-presentation__item__description a-p">
+                  {{ restitution.description }}
+                </div>
               </div>
               <p class="a-p -date">{{ restitution.modificationDate | sinceDate }}</p>
             </div>
