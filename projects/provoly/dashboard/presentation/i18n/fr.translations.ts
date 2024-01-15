@@ -30,7 +30,7 @@ export const frTranslations = {
       homeView: "Afficher en page d'accueil",
       erase: 'Supprimer le tableau de bord',
       change: 'Modifier le tableau de bord',
-      create: 'Créer',
+      create: 'Créer un tableau de bord',
       configuration: 'Construire le tableau de bord',
       required: 'Ce champ est requis',
       maxLength: 'Nombre de caractères autorisés : {{len}}',

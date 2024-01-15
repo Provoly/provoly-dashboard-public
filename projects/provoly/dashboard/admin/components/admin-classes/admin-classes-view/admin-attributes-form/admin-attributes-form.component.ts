@@ -16,7 +16,8 @@ import {
   FIELD_OPTIONS,
   FieldActions,
   FieldSelectors,
-  PryI18nService
+  PryI18nService,
+  SubscriptionnerDirective
 } from '@provoly/dashboard';
 import {
   BehaviorSubject,
@@ -26,7 +27,6 @@ import {
   map,
   Observable,
   startWith,
-  Subscription,
   switchMap
 } from 'rxjs';
 import { v4 as uuid } from 'uuid';
@@ -38,9 +38,8 @@ import { AdminClassActions } from '../../store/admin-class.actions';
   selector: 'pry-admin-attributes-form',
   templateUrl: './admin-attributes-form.component.html'
 })
-export class AdminAttributesFormComponent implements OnInit, OnDestroy {
+export class AdminAttributesFormComponent extends SubscriptionnerDirective implements OnInit, OnDestroy {
   attrForm: UntypedFormGroup;
-  sub = new Subscription();
 
   attributeNames?: string[];
   attributeTechnicalNames?: string[];
@@ -73,6 +72,7 @@ export class AdminAttributesFormComponent implements OnInit, OnDestroy {
     private viewContainerRef: ViewContainerRef,
     private i18nService: PryI18nService
   ) {
+    super();
     this.store.dispatch(FieldActions.load());
     this.fields$ = this.store.select(FieldSelectors.fields);
     this.store.dispatch(CategoryActions.load());
@@ -122,19 +122,19 @@ export class AdminAttributesFormComponent implements OnInit, OnDestroy {
         .valueChanges.pipe(
           map((value) => !!this.attributeNames?.includes(value) && value != this.selectedAttribute?.name)
         );
-      this.sub.add(this.nameAlreadyExists$.subscribe((value) => (this.nameAlreadyExists = value)));
+      this.subscriptions.add(this.nameAlreadyExists$.subscribe((value) => (this.nameAlreadyExists = value)));
     }
 
-    this.attrForm
-      .get('technicalName')!
-      .valueChanges.pipe(distinctUntilChanged(), debounceTime(500))
-      .subscribe((value) => {
-        if (!this.attrForm.get('name')?.value) {
+    this.subscriptions.add(
+      this.attrForm
+        .get('technicalName')!
+        .valueChanges.pipe(distinctUntilChanged(), debounceTime(500))
+        .subscribe((value) => {
           this.attrForm.patchValue({
             name: value.slice(0, 50)
           });
-        }
-      });
+        })
+    );
 
     if (this.attributeTechnicalNames) {
       this.technicalNameAlreadyExists$ = this.attrForm
@@ -144,7 +144,7 @@ export class AdminAttributesFormComponent implements OnInit, OnDestroy {
             (value) => !!this.attributeTechnicalNames?.includes(value) && value != this.selectedAttribute?.technicalName
           )
         );
-      this.sub.add(
+      this.subscriptions.add(
         this.technicalNameAlreadyExists$.subscribe((value) => {
           this.technicalNameAlreadyExists = value;
         })
@@ -165,10 +165,6 @@ export class AdminAttributesFormComponent implements OnInit, OnDestroy {
         );
       })
     );
-  }
-
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
   }
 
   goBack() {

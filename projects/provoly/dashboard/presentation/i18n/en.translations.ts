@@ -29,7 +29,7 @@ export const enTranslations = {
       homeView: 'Show on homepage',
       erase: 'Delete presentation',
       change: 'Modify the presentation',
-      create: 'Create a presentation',
+      create: 'Create presentation',
       configuration: 'Build presentation',
       required: 'This field is required',
       maxLength: 'Allowed length : {{len}}',

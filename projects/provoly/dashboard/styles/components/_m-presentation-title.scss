@@ -4,6 +4,7 @@
 
 .m-presentation-title {
   display: flex;
+  gap: toRem(10);
 
   &__text {
     display: flex;
