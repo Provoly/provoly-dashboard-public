@@ -19,18 +19,19 @@ export class CqlUtils {
         const attributeName = attributesReference.find((attr) => attr.id === cond.attribute)?.technicalName;
 
         if (attributeName && cond.value && (typeof cond.value !== 'string' || cond.value.length > 0)) {
+          const quoteSafeValue = `${cond.value}`.replace(/'/g, "''");
           switch (cond.operator) {
             case 'EQUALS':
-              conditions.push(`${attributeName}='${cond.value}'`);
+              conditions.push(`${attributeName}='${quoteSafeValue}'`);
               break;
             case 'CONTAINS':
-              conditions.push(`${attributeName} LIKE '%${cond.value}%'`);
+              conditions.push(`${attributeName} LIKE '%${quoteSafeValue}%'`);
               break;
             case 'START_WITH':
-              conditions.push(`${attributeName} LIKE '${cond.value}%'`);
+              conditions.push(`${attributeName} LIKE '${quoteSafeValue}%'`);
               break;
             case 'END_WITH':
-              conditions.push(`${attributeName} LIKE '%${cond.value}'`);
+              conditions.push(`${attributeName} LIKE '%${quoteSafeValue}'`);
               break;
             case 'GREATER_THAN':
               conditions.push(`${attributeName}>${cond.value}`);
