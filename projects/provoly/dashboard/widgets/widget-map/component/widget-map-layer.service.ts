@@ -26,7 +26,7 @@ import { Heatmap, Tile } from 'ol/layer';
 import BaseLayer from 'ol/layer/Base';
 import VectorLayer from 'ol/layer/Vector';
 import VectorTileLayer from 'ol/layer/VectorTile';
-import { Cluster, TileWMS, Vector, WMTS, XYZ } from 'ol/source';
+import { Cluster, ImageWMS, TileWMS, Vector, WMTS, XYZ } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
 import VectorTile from 'ol/source/VectorTile';
 import { Circle, Fill, Stroke, Style, Text } from 'ol/style';
@@ -34,6 +34,7 @@ import CircleStyle from 'ol/style/Circle';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import { ProjectionLike } from 'ol/proj';
 import { WidgetMapUtils } from '../utils/widget-map.utils';
+import ImageLayer from 'ol/layer/Image';
 
 export type AttributesForClass = {
   [key: string]: {
@@ -386,18 +387,32 @@ export class WidgetMapLayerService {
       itemStyles: ItemStyles,
       map: Map
     ) => {
-      const impl = new Tile({
-        minZoom: layer.minZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MIN,
-        maxZoom: layer.maxZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MAX,
-        opacity: (layer.opacity ?? 100) / 100,
-        source: new TileWMS({
-          attributions: [layer.attribution ?? ''],
-          crossOrigin: 'anonymous',
-          url: layer.url,
-          tileLoadFunction: (tile: any, str: string) => this.geoAuthService?.customLoader(tile, str),
-          params: { LAYERS: layer.paramLayer, TILED: layer.paramTiled, ...(layer.additionalParameters ?? {}) }
-        })
-      });
+      const impl =
+        layer.paramTiled === undefined || layer.paramTiled
+          ? new Tile({
+              minZoom: layer.minZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MIN,
+              maxZoom: layer.maxZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MAX,
+              opacity: (layer.opacity ?? 100) / 100,
+              source: new TileWMS({
+                attributions: [layer.attribution ?? ''],
+                crossOrigin: 'anonymous',
+                url: layer.url,
+                tileLoadFunction: (tile: any, str: string) => this.geoAuthService?.customLoader(tile, str),
+                params: { LAYERS: layer.paramLayer, TILED: layer.paramTiled, ...(layer.additionalParameters ?? {}) }
+              })
+            })
+          : new ImageLayer({
+              minZoom: layer.minZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MIN,
+              maxZoom: layer.maxZoom ?? WidgetMapUtils.DEFAULT_ZOOM_MAX,
+              opacity: (layer.opacity ?? 100) / 100,
+              source: new ImageWMS({
+                attributions: [layer.attribution ?? ''],
+                crossOrigin: 'anonymous',
+                url: layer.url,
+                imageLoadFunction: (tile: any, str: string) => this.geoAuthService?.customLoader(tile, str),
+                params: { LAYERS: layer.paramLayer, TILED: layer.paramTiled, ...(layer.additionalParameters ?? {}) }
+              })
+            });
       impl.set('url', layer.url);
       impl.set('paramLayer', layer.paramLayer);
       impl.set('oClass', layer.oClass);
