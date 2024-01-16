@@ -552,7 +552,7 @@ describe('DashboardEffects', () => {
         })
       );
 
-      const serviceSpySnack = jest.spyOn(snackbarService, 'open').mockReturnValue(of(undefined));
+      const serviceSpySnack = jest.spyOn(snackbarService, 'open').mockReturnValue();
       const serviceSpyTranslate = jest.spyOn(translateService, 'instant').mockReturnValue('translated');
 
       store.setState(
@@ -615,7 +615,7 @@ describe('DashboardEffects', () => {
         })
       );
 
-      const serviceSpySnack = jest.spyOn(snackbarService, 'open').mockReturnValue(of(undefined));
+      const serviceSpySnack = jest.spyOn(snackbarService, 'open').mockReturnValue();
       const serviceSpyTranslate = jest.spyOn(translateService, 'instant').mockReturnValue('translated');
 
       store.setState(

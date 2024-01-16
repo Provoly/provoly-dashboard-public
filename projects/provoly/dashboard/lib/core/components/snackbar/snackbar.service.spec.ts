@@ -56,7 +56,7 @@ describe('SnackbarService', () => {
     const spyRemove = jest.spyOn(mockOverlayRef, 'dispose');
 
     service.setRootViewContainerRef(viewRef);
-    const ref = service.open({ message: 'message', type: 'info' });
+    const ref = service.notMitigatedOpen({ message: 'message', type: 'info' });
     expect(ref).toBeDefined();
     expect(PrySnackbarService.count).toEqual(1);
 

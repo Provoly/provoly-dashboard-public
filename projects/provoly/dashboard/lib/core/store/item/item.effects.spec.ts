@@ -33,7 +33,8 @@ describe('Item Effects', () => {
         {
           provide: PrySnackbarService,
           useValue: {
-            open: () => null
+            open: () => null,
+            notMitigatedOpen: () => null
           }
         }
       ]
@@ -91,7 +92,7 @@ describe('Item Effects', () => {
   });
 
   it('should open snackbar on success', () => {
-    const spy = jest.spyOn(snackbarService, 'open');
+    const spy = jest.spyOn(snackbarService, 'notMitigatedOpen');
 
     actions$ = hot('a', {
       a: ItemActions.createSuccess({ id: 'id' })

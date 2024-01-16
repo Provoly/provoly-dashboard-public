@@ -36,7 +36,7 @@ export class ItemEffects {
       this.actions$.pipe(
         ofType(ItemActions.createSuccess),
         tap((action) => {
-          const actionClicked$ = this.snackBar.open({
+          const actionClicked$ = this.snackBar.notMitigatedOpen({
             type: 'success',
             message: this.translateService.instant('@pry.context.createObject.created'),
             action: this.translateService.instant('@pry.context.createObject.details'),

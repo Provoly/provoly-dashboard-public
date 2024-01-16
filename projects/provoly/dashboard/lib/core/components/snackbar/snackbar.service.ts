@@ -37,7 +37,9 @@ export class PrySnackbarService {
       false
     );
 
-    this.messageEvents$.pipe(distinctUntilChanged((p, v) => equal(p, v))).subscribe((message) => this.open(message));
+    this.messageEvents$
+      .pipe(distinctUntilChanged((p, v) => equal(p, v)))
+      .subscribe((message) => this.notMitigatedOpen(message));
   }
 
   setRootViewContainerRef(viewContainerRef: ViewContainerRef) {
@@ -48,7 +50,7 @@ export class PrySnackbarService {
     document.dispatchEvent(new CustomEvent(PRY_CUSTOMEVENT_TYPE, { detail: message }));
   }
 
-  open(message: PrySnackMessage): Observable<void> | null {
+  notMitigatedOpen(message: PrySnackMessage): Observable<void> | null {
     this.overlayRef = this.overlay.create(
       new OverlayConfig({
         hasBackdrop: false
@@ -75,5 +77,9 @@ export class PrySnackbarService {
     }, message.timeout ?? DEFAULT_MSG_TIMEOUT);
 
     return component.instance.actionClicked;
+  }
+
+  open(message: PrySnackMessage) {
+    this.messageEvents$.next(message);
   }
 }

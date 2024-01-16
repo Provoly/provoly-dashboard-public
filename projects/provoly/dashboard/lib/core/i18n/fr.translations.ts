@@ -383,6 +383,9 @@ export const frTranslations = {
         number: 'Numérique',
         autocomplete: 'Liste avec suggestion'
       }
+    },
+    geoAuth: {
+      failure: 'Erreur geoserver'
     }
   }
 };

@@ -378,6 +378,9 @@ export const enTranslations = {
         number: 'Number',
         autocomplete: 'Autocomplete'
       }
+    },
+    geoAuth: {
+      failure: 'Geoserver error'
     }
   }
 };

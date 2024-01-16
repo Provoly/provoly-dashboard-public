@@ -127,7 +127,7 @@ describe('Config Service', () => {
     });
 
     it('should open snackbar on error', () => {
-      const spy = jest.spyOn(snackbar, 'open').mockReturnValue(null);
+      const spy = jest.spyOn(snackbar, 'notMitigatedOpen').mockReturnValue(null);
       service.getAllWidgets().subscribe({
         next: () => {},
         error: (e) => {}

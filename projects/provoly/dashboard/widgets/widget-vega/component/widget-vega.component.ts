@@ -154,7 +154,7 @@ export class WidgetVegaComponent extends DataWidgetComponent implements AfterVie
       // @ts-ignore
       this.optionsCopy.baseSpec = JSON.parse($event.currentTarget.value);
     } catch (e) {
-      const message = this.snackService.open({
+      const message = this.snackService.notMitigatedOpen({
         type: 'error',
         message: this.translateService.instant('@pry.widget.vega.notParseableSpec'),
         action: this.translateService.instant('@pry.widget.vega.specReinit')
