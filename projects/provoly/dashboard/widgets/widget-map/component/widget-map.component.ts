@@ -1179,8 +1179,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     layer: MapWidgetHeatMapLayerOptions | MapWidgetBubbleLayerOptions
   ) {
     return (
-      (classObj || { attributes: [] }).attributes.find((attr) => attr.technicalName === layer?.intensityAttribute ?? '') ??
-      (undefined as unknown as Attribute)
+      (classObj || { attributes: [] }).attributes.find(
+        (attr) => attr.technicalName === layer?.intensityAttribute ?? ''
+      ) ?? (undefined as unknown as Attribute)
     );
   }
 
@@ -1330,7 +1331,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     layer.paramLayer = $event.currentTarget?.value;
   }
 
-  changeParamTiled($event: boolean, layer: MapWMSLayerLayerOptions) {
+  changeParamTiled($event: boolean, layer: MapWMSLayerLayerOptions | MapGeoServerLayerOptions) {
     layer.paramTiled = $event;
   }
 

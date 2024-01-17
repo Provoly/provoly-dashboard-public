@@ -224,23 +224,25 @@
         <fieldset
           *ngIf="
             layer.type === 'wms' ||
+            layer.type === 'geoserver' ||
             layer.type === 'wmts' ||
             layer.type === 'featurelayer' ||
             layer.type === 'vectortile' ||
             layer.type === 'rastertile'
           "
         >
-          <legend class="u-visually-hidden">{{ '@pry.widget.map.tile' | i18n }}</legend>
-          <div class="m-form-label-field">
-            <label class="a-label" for="map_wms_url">{{ '@pry.widget.map.wms.url' | i18n }}</label>
-            <input
-              id="map_wms_url"
-              class="a-form-field"
-              type="text"
-              (input)="changeUrl($event, layer)"
-              [value]="layer.url"
-            />
-          </div>
+          <ng-container *ngIf="layer.type !== 'geoserver'">
+            <div class="m-form-label-field">
+              <label class="a-label" for="map_wms_url">{{ '@pry.widget.map.wms.url' | i18n }}</label>
+              <input
+                id="map_wms_url"
+                class="a-form-field"
+                type="text"
+                (input)="changeUrl($event, layer)"
+                [value]="layer.url"
+              />
+            </div>
+          </ng-container>
 
           <div class="m-form-label-field" *ngIf="layer.type === 'wms' || layer.type === 'wmts'">
             <label class="a-label" for="map_wms_paramLayer">{{ '@pry.widget.map.wms.paramLayer' | i18n }}</label>
@@ -275,7 +277,8 @@
             />
           </div>
 
-          <div class="m-form-label-field" *ngIf="layer.type === 'wms'">
+          <div class="m-form-label-field" *ngIf="layer.type === 'wms' || layer.type === 'geoserver'">
+            <legend class="u-visually-hidden">{{ '@pry.widget.map.tile' | i18n }}</legend>
             <pry-checkbox (ngModelChange)="changeParamTiled($event, layer)" [ngModel]="layer?.paramTiled ?? false">
               {{ '@pry.widget.map.wms.paramTiled' | i18n }}
             </pry-checkbox>
