@@ -1,7 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BaseFilterComponent, SearchService } from '@provoly/dashboard';
-import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, Observable, of, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  Observable,
+  of,
+  skipUntil,
+  Subject,
+  switchMap
+} from 'rxjs';
 import equal from 'fast-deep-equal/es6';
 import { tap } from 'rxjs/operators';
 
@@ -13,6 +23,7 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
   search$ = new BehaviorSubject<string>('');
   autocomplete$?: Observable<string[]>;
   loader: boolean = false;
+  inhibateInitCall$ = new Subject<void>();
 
   constructor(store: Store, private searchService: SearchService) {
     super(store);
@@ -21,9 +32,10 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
 
   override ngOnInit() {
     super.ngOnInit();
-    this.search$.next(this._value);
+    this.search$.next(`${this._value}`);
     this.autocomplete$ = this.search$.pipe(
       distinctUntilChanged((p, v) => equal(p, v)),
+      skipUntil(this.inhibateInitCall$),
       debounceTime(500),
       switchMap((search) => {
         if (!!search && search.length > 1) {
@@ -40,6 +52,7 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
         return of([] as string[]);
       })
     );
+    setTimeout(() => this.inhibateInitCall$.next(), 200);
   }
 
   setFilter(value: string) {

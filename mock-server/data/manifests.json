@@ -643,7 +643,8 @@
             }
           ],
           "operator": "EQUALS",
-          "limit": 3
+          "limit": 3,
+          "value": 12234
         }
       ]
     }
