@@ -161,6 +161,8 @@
     z-index: 400;
     gap: 0;
     align-items: flex-start;
+    top: toRem(5);
+    left: toRem(5);
 
     .a-btn {
       @include outlineOnFocus($border-radius: 4px);
@@ -202,7 +204,7 @@
       background: white;
       border-radius: toRem(6);
       border: none;
-      top: toRem(40);
+      top: toRem(45);
       z-index: 1;
 
       &.-with-header {
