@@ -5,3 +5,4 @@
 ** xref:css-atobem.adoc[Methodologie CSS ATOBEM]
 ** xref:css-architecture.adoc[Architecture CSS de la lib]
 ** xref:collisions.adoc[Algorithme de résolution de collisions entre widgets]
+** xref:data-proxy.adoc[Proxy d'accès aux données on-time]

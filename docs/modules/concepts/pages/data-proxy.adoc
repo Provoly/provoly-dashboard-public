@@ -1,0 +1,24 @@
+= Accès aux données pertinentes on-time
+
+== Problématique
+
+Les quantités de données récupérées par l'application ont beaucoup grandi lors de l'ajout de réelles descriptions géographiques
+( par exemple les coordonnées géographiques des régions avec une précision assez grande). Alors que ces données n'étaient pas
+forcément utiles pour toutes les représentations (par exemple, une carte en a besoin, mais un graphique ou un tableau, non).
+
+Il a donc été décidé d'exclure les données géographiques si elles n'étaient pas nécessaire. Cependant, il nous fallait un moyen d'éviter
+de modifier l'ensemble de ces accès, et on ne voulait pas non plus ne pas permettre l'utilisation conjointe de données (car
+actuellement, les widgets partagent leurs données), ni modifier les modèles.
+
+== Solution
+
+Afin d'arriver à réaliser cela, et rester le plus transparent possible, nous avons donc utilisé des link:https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Proxy[Proxy].
+C'est une technique qui n'est pas forcément très récente (2016), mais rarement utilisée en JS en comparaison d'autres langages (Java par exemple).
+
+L'idée, c'est que pour les jeux de données dont les données géographiques n'ont pas été récupérées, le modèle est le même que
+pour les autres données. Tout fonctionne correctement, cependant, lorsque l'application essaie d'accéder à une donnée du modèle qui n'est pas présente,
+alors le proxy détecte ce manque et va demander au système de récupérer les données complètes, de manière transparente, car c'est l'accès à la donnée
+en lui-même qui déclenche cette récupération.
+
+Le fait que les données soient stockées sous forme d'un magasin réactif permet de mettre à jour les représentations dépendantes
+suite à cette récupération de données.
