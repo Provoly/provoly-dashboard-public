@@ -770,7 +770,14 @@ const internalReducer = createReducer<DashboardState>(
         [action.url]: action.capability
       }
     };
-  })
+  }),
+  on(DashboardActions.loadPresentation, (state) => ({
+    ...state,
+    manifests: {
+      ...state.manifests,
+      loading: true
+    }
+  }))
 );
 
 export function dashboardReducer(state: DashboardState, action: Action) {

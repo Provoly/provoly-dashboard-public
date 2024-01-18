@@ -107,14 +107,6 @@ export class DashboardEffects {
     )
   );
 
-  fetchStaticManifestLoading$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(DashboardActions.fetchStaticManifest),
-      delay(5000),
-      map((action) => DashboardActions.endLoading())
-    )
-  );
-
   loadAndActivateManifest$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.loadAndActivateManifest, DashboardActions.loadManifest),
@@ -177,6 +169,13 @@ export class DashboardEffects {
         })
       ),
     { dispatch: false }
+  );
+
+  endLoadingAfterFollowingManifestRoute$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DashboardActions.followManifestRoute),
+      map((action) => DashboardActions.endLoading())
+    )
   );
 
   requestManifestRoute$ = createEffect(() =>
@@ -375,7 +374,7 @@ export class DashboardEffects {
                 ),
                 type: 'error'
               });
-              return throwError(error);
+              return throwError(() => error);
             })
           )
       ),
