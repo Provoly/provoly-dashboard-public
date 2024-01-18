@@ -1,5 +1,15 @@
 = Résolutions des collisions
 
+== Problématique
+
+Il n'existait jusqu'ici aucune librairie existante sur le marché permettant la mise en place d'un système de grille/widget étant à la fois simple et puissant,
+permettant de positionner des composants potentiellement complexes sur celle-ci.
+
+Il a donc été créé une première version de la grille permettant de réaliseer ce point, en utilisant des principes de déplacement,
+redimensionnement, ...
+
+Il est rapidement apparu un problème d'utilisation lors de la collision/essai de déplacement de widgets qui a necessité le développement d'algorithmes spécifiques.
+
 == Général
 
 Lorsque la librairie résoud l'emplacement supposé des widgets, un algorithme est appliqué:
@@ -8,9 +18,9 @@ Lorsque la librairie résoud l'emplacement supposé des widgets, un algorithme e
 
 * Celui-ci prends ensuite par ordre de priorité : le widget en cours de modification, puis les autres widgets classés de haut en bas (et de droite à gauche parmi ceux à la même hauteur).
 
-* Les widgets sont ensuite décalés vers le bas afin de ne plus se superposer aux autres.
+* Les widgets qui entrent en collision sont ensuite décalés vers le bas afin de ne plus se superposer aux autres.
 
-* Le nombre de lignes global est ensuite recalculé en fonction de ce qui est nécessaire, mais sans diminution pour éviter une boucle infinie.
+* Le nombre de lignes global est ensuite recalculé en fonction de ce qui est nécessaire (mais sans diminution pour éviter une boucle infinie).
 
 == Mode gravité inversée
 
