@@ -920,12 +920,13 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         const nbCalculatedExtents = extents.filter((extent) => !extent.error).length;
 
         if (nbCalculatedExtents >= neededCalculatedExtents) {
-          this.fitMapForObjects(selectedIds, extents, filters);
-          this.map.updateSize();
-
           setTimeout(() => {
             const toApplyLayers = [...layers, ...mapStyleLayer];
             this.map.setLayers(toApplyLayers);
+
+            this.fitMapForObjects(selectedIds, extents);
+            this.map.updateSize();
+
             this.map
               .getAllLayers()
               .filter((layer) => !(layer instanceof Tile))
@@ -1105,10 +1106,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     extents: {
       datasource: string;
       extent: Coordinate[];
-    }[] = [],
-    filters: {
-      [p: string]: FilterContext[];
-    } = {}
+    }[] = []
   ) {
     let extent = createEmpty();
     const listOfMarkers = [] as any[];

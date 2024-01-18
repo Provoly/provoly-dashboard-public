@@ -3,7 +3,7 @@
   [attr.aria-disabled]="disabled"
   #selectElement
   [class.-focused]="focused"
-  (click)="toggle()"
+  (click)="handleClick()"
   role="combobox"
   [attr.aria-expanded]="open"
   [attr.aria-owns]="open ? modalId : null"
@@ -16,7 +16,7 @@
         class="a-pry-select__search"
         [ngModel]="search$.getValue()"
         (ngModelChange)="search($event)"
-        (focus)="toggle(true)"
+        (focus)="onInputFocus(true)"
         aria-autocomplete="list"
         [attr.aria-controls]="open ? modalId : null"
         [attr.aria-disabled]="disabled"
@@ -47,7 +47,7 @@
                   class="a-pry-select__clear"
                   (click)="clear($event, item)"
                   aria-hidden="true"
-                >×</span
+                  >×</span
                 >
               </ng-container>
             </ng-template>

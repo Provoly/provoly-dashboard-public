@@ -222,7 +222,14 @@ export class DashboardEffects {
               .map((widManifest) => this.widgetFactoryService.datasourcesToAutoLoad(widManifest))
               .flat()
               .reduce(
-                (p, c) => ({ ...p, [c.datasetId]: { ...p[c.datasetId], ...c } }),
+                (p, c) => ({
+                  ...p,
+                  [c.datasetId]: {
+                    ...p[c.datasetId],
+                    ...c,
+                    excludeGeo: p[c.datasetId]?.excludeGeo === false ? p[c.datasetId].excludeGeo : c.excludeGeo
+                  }
+                }),
                 {} as { [key: string]: { datasetId: string; excludeGeo: boolean } }
               )
           )

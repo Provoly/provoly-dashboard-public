@@ -239,9 +239,21 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
         } else {
           this.overlayRef?.dispose();
           this.overlayRef = undefined;
+          this.focused = false;
         }
       }
     }
+  }
+
+  handleClick() {
+    if (!this.focused) {
+      this.onInputFocus();
+    }
+  }
+
+  onInputFocus(force?: boolean) {
+    this.toggle(force);
+    this.focused = true;
   }
 
   private getOverlayConfig(): OverlayConfig {
