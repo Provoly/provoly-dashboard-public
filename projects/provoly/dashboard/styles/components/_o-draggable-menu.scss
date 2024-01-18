@@ -8,6 +8,14 @@
   width: toRem(170);
   padding: toRem(6);
 
+  &.-dropdown {
+    width: fit-content;
+
+    button {
+      border: none;
+    }
+  }
+
   &__list {
     @extend %list-unstyled;
 

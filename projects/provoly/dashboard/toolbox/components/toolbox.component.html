@@ -36,7 +36,7 @@
       cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
       (backdropClick)="isDropdownOpen = false"
     >
-      <div class="o-draggable-menu" aria-labelledby="">
+      <div class="o-draggable-menu -dropdown" aria-labelledby="">
         <ul class="o-draggable-menu__list">
           <ng-container *ngFor="let action of dropdownActions$ | async">
             <ng-container *ngIf="action.visible">

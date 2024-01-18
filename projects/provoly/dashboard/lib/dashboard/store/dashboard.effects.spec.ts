@@ -187,7 +187,10 @@ describe('DashboardEffects', () => {
               new_tab: false,
               refresh_datasets: false,
               save_view: false,
-              save_view_as: false
+              save_view_as: false,
+              edit_presentation_content: false,
+              share: false,
+              delete: false
             },
             useFilters: false,
             edit_toggle: false,

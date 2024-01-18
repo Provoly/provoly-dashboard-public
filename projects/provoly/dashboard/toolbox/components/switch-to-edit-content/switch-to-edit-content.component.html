@@ -1,0 +1,5 @@
+<ng-container *ngIf="this.presentation?.current?.owner">
+  <button type="button" class="a-btn a-btn--secondary -size-md" (click)="trigger()">
+    <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.switchEditContent' | i18n }}</ng-container>
+  </button>
+</ng-container>

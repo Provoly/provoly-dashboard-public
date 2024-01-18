@@ -119,7 +119,6 @@ export const frTranslations = {
       rename: 'Enregistrer sous',
       restore: 'Restaurer les pages',
       save: 'Enregistrer',
-      share: 'Partager',
       drag: 'Restitution...',
       dragIndication: 'Insérer un',
       barchart: 'Barres',
@@ -165,7 +164,11 @@ export const frTranslations = {
         '1/4': '1/4 écran',
         '1/4_detailled':
           "Affichage de 4 restitutions maximum sur l’écran découpé en quatre zones , l'ajout de restitution se fait dans les zones vides. Le placement est guidé par le système."
-      }
+      },
+      switchEdit: 'Modifier',
+      switchEditContent: 'Modifier la composition',
+      share: 'Partager',
+      delete: 'Supprimer'
     },
     manifest: {
       name: 'Nom',

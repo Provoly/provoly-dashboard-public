@@ -19,6 +19,9 @@ export interface ToolboxDisplayOptions {
   default_size: boolean;
   refresh_datasets: boolean;
   automate_refresh: boolean;
+  edit_presentation_content: boolean;
+  share: boolean;
+  delete: boolean;
 }
 
 export interface WidgetContextMenuDisplayOptions {
@@ -44,7 +47,10 @@ export const BASE_DISPLAY_OPTIONS = {
     clear_view: false,
     default_size: false,
     refresh_datasets: false,
-    automate_refresh: false
+    automate_refresh: false,
+    edit_presentation_content: false,
+    share: false,
+    delete: false
   },
   edit_toggle: false,
   widgetContextMenu: {
@@ -64,7 +70,14 @@ export function getDisplayOptions(mode?: ViewMode): DisplayOptions {
       return {
         ...BASE_DISPLAY_OPTIONS,
         useFilters: true,
-        toolbox: { ...BASE_DISPLAY_OPTIONS.toolbox, save_view_as: true, refresh_datasets: true },
+        toolbox: {
+          ...BASE_DISPLAY_OPTIONS.toolbox,
+          save_view_as: true,
+          refresh_datasets: true,
+          edit_presentation_content: true,
+          share: true,
+          delete: true
+        },
         widgetContextMenu: false
       };
     case ViewMode.SEARCH:
@@ -83,10 +96,17 @@ export function getDisplayOptions(mode?: ViewMode): DisplayOptions {
         catalog: true,
         useFilters: true,
         toolbox: {
-          ...(Object.keys(BASE_DISPLAY_OPTIONS.toolbox) as (keyof ToolboxDisplayOptions)[]).reduce((acc, key) => {
-            acc[key] = true;
-            return acc;
-          }, {} as ToolboxDisplayOptions)
+          save_view: true,
+          save_view_as: true,
+          filter_settings: true,
+          new_tab: true,
+          clear_view: true,
+          default_size: true,
+          refresh_datasets: true,
+          automate_refresh: true,
+          edit_presentation_content: false,
+          share: true,
+          delete: false
         },
         edit_toggle: true,
         widgetContextMenu: true

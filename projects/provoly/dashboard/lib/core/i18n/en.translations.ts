@@ -162,7 +162,11 @@ export const enTranslations = {
         '1/4': '1/4 screen',
         '1/4_detailled':
           'Display of 4 renders maximum, on a split screen in 4 zones, the render addtion is made in an empty zone, the placement is system guided.'
-      }
+      },
+      switchEdit: 'Edit',
+      switchEditContent: 'Edit composition',
+      share: 'Share',
+      delete: 'Delete'
     },
     manifest: {
       name: 'Name',

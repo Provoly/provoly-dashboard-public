@@ -30,6 +30,9 @@ import { ToolboxActionComponent } from './components/toolbox-action/toolbox-acti
 import { RefreshDatasetsComponent } from './components/refresh-datasets/refresh-datasets.component';
 import { AutomateRefreshComponent } from './components/automate-refresh/automate-refresh.component';
 import { A11yModule } from '@angular/cdk/a11y';
+import { SwitchToEditContentComponent } from './components/switch-to-edit-content/switch-to-edit-content.component';
+import { ShareComponent } from './components/share/share.component';
+import { DeleteComponent } from './components/delete/delete.component';
 
 const components = [
   ToolboxActionComponent,
@@ -45,7 +48,10 @@ const components = [
   PrySelectGridLayoutCssComponent,
   PryFilterSettingsComponent,
   RefreshDatasetsComponent,
-  AutomateRefreshComponent
+  AutomateRefreshComponent,
+  SwitchToEditContentComponent,
+  ShareComponent,
+  DeleteComponent
 ];
 
 @NgModule({

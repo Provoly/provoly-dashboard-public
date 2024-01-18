@@ -29,7 +29,10 @@ export class AppComponent {
     { name: 'default_size', order: 3 },
     { name: 'new_tab', order: 4 },
     { name: 'automate_refresh', order: 5 },
-    { name: 'clear_view', order: 6 }
+    { name: 'clear_view', order: 6 },
+    { name: 'edit_presentation_content', order: 7 },
+    { name: 'share', order: 8 },
+    { name: 'delete', order: 9 }
   ];
 
   constructor(

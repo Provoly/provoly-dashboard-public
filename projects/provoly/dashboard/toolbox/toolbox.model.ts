@@ -8,6 +8,9 @@ import { RefreshDatasetsComponent } from './components/refresh-datasets/refresh-
 import { SaveViewComponent } from './components/save-view/save-view.component';
 import { SelectGridLayoutComponent } from './components/select-grid-layout/select-grid-layout.component';
 import { ToolboxActionComponent } from './components/toolbox-action/toolbox-action.component';
+import { SwitchToEditContentComponent } from './components/switch-to-edit-content/switch-to-edit-content.component';
+import { ShareComponent } from './components/share/share.component';
+import { DeleteComponent } from './components/delete/delete.component';
 
 export interface ToolboxAction {
   name: string;
@@ -64,6 +67,23 @@ export const ACTIONS: ToolboxAction[] = [
     component: AutomateRefreshComponent,
     visible: true,
     access: { module: 'dashboard', page: 'toolbox', action: 'automate_refresh' }
+  },
+  {
+    name: 'edit_presentation_content',
+    component: SwitchToEditContentComponent,
+    visible: true,
+    access: { module: 'dashboard', page: 'toolbox', action: 'edit_presentation_content' }
+  },
+  {
+    name: 'share',
+    component: ShareComponent,
+    visible: true,
+    access: { module: 'dashboard', page: 'toolbox', action: 'share' }
+  },
+  {
+    name: 'delete',
+    component: DeleteComponent,
+    visible: true,
+    access: { module: 'dashboard', page: 'toolbox', action: 'delete' }
   }
-  // { name: 'drag_widget', component: DragWidgetsComponent, visible: true }
 ];

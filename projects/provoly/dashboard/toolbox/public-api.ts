@@ -12,5 +12,8 @@ export * from './components/toolbox-action/toolbox-action.component';
 export * from './components/toolbox-action-instanciator/toolbox-action-instanciator.component';
 export * from './components/refresh-datasets/refresh-datasets.component';
 export * from './components/automate-refresh/automate-refresh.component';
+export * from './components/delete/delete.component';
+export * from './components/share/share.component';
+export * from './components/switch-to-edit-content/switch-to-edit-content.component';
 export * from './style/css.component';
 export * from './toolbox.model';

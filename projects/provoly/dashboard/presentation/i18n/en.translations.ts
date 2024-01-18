@@ -34,6 +34,7 @@ export const enTranslations = {
       required: 'This field is required',
       maxLength: 'Allowed length : {{len}}',
       edition: 'Edit',
+      editionContent: 'Edit content',
       delete: 'Delete',
       backToCatalog: 'Back to catalog',
       search: 'Search',

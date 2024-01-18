@@ -184,6 +184,16 @@
       </li>
       <li class="m-context-menu__list__item">
         <button
+          class="a-btn -link-like"
+          (click)="editContent(selectedPresentation)"
+          [disabled]="!selectedPresentation.owner"
+          *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'edit' }"
+        >
+          {{ '@pry.presentation.editionContent' | i18n }}
+        </button>
+      </li>
+      <li class="m-context-menu__list__item">
+        <button
           (click)="toggleModal(selectedPresentation)"
           class="a-btn -link-like"
           aria-haspopup="dialog"

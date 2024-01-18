@@ -248,4 +248,13 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     }
     this.submit.nativeElement.focus();
   }
+
+  editContent(selectedPresentation: ManifestDescription) {
+    this.store.dispatch(
+      DashboardActions.loadPresentation({ presentation: selectedPresentation, viewMode: ViewMode.EDITION })
+    );
+    this.ngZone.run(() => {
+      this.router?.navigateByUrl(this.consultStartUrl);
+    });
+  }
 }
