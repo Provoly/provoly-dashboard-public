@@ -9,3 +9,4 @@
 ** xref:map.adoc[Carte]
 ** xref:table.adoc[Tableau]
 ** xref:template.adoc[Template]
+** xref:vega.adoc[Vega]

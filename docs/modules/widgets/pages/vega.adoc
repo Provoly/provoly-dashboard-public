@@ -1,0 +1,30 @@
+==== Widget Vega (Graphique avancé)
+
+Permet la restitution des données et de leurs details dans des graphiques, en utilisant une configuration type link:https://vega.github.io/vega/docs/config/[vega].
+
+Cela permet de réaliser des graphiques plus précis si l'utilisateur connaît ses données, voire de réaliser des prétraitements, ...
+
+Exemple de manifest :
+
+[source,js]
+----
+{
+    type: 'vega',
+    layout: {
+        x: 1,
+        y: 1,
+        height: 12,
+        width: 12
+    },
+    options: {
+      placeData: ['data', 0, 'values'],
+      baseSpec: /* configuration vega */
+    },
+    datasource: '39061554-298f-4f56-8cd2-51ccec998307'
+}
+----
+
+`baseSpec` sera le template utilisé pour être fourni à vega. `placeData` permet d'indiquer dans quelle partie de la spec on souhaite déposer les données
+liées au widget par les moyens classiques.
+
+Selon les données disponibles, tous les link:https://vega.github.io/vega/examples/[exemples vega de cette page] peuvent être reproduits dans Provoly.
