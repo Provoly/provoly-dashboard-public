@@ -1,21 +1,14 @@
 @use '../../../styles/abstracts/index' as *;
 
-.m-layer-legend {
+.m-map-layer-action {
+  display: flex;
+  gap: toRem(6);
   z-index: 2;
   right: toRem(8);
 
   &.ol-control {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-
     border: none;
-    background: white;
-  }
-
-  button {
-    background-color: #fafafa !important;
-    color: black;
+    background-color: transparent;
   }
 
   .-hidden {
@@ -23,17 +16,45 @@
   }
 
   &__toggle {
-    align-self: flex-end;
+    order: 2;
     width: toRem(30);
     height: toRem(30);
+  }
+
+  button {
+    background-color: #fafafa !important;
+    color: black;
   }
 
   &__title {
     display: flex;
     flex-direction: row;
     align-items: center;
+    font-size: 12px;
+
+    &:hover {
+      cursor: pointer;
+      background-color: #fafafa !important;
+    }
+  }
+
+  &__container {
+    color: #113b6e;
     background-color: white;
-    justify-content: space-between;
+    border-radius: toRem(2);
+    padding: toRem(5) toRem(8);
+
+    .a-h4 {
+      font-size: 12px;
+    }
+
+    button.m-map-layer-action__toggle {
+      border-radius: 50%;
+
+      &:hover {
+        outline: none;
+      }
+    }
   }
 
   &__image {
@@ -47,53 +68,21 @@
   }
 }
 
-.m-layer-switcher {
-  z-index: 2;
-  right: toRem(8);
-  display: flex;
-  flex-direction: column;
-  align-items: normal;
-
-  &.ol-control {
-    border: none;
-    background: white;
-    align-self: flex-end;
-  }
-
-  button {
-    background-color: #fafafa !important;
-    color: black;
-  }
-
-  .-hidden {
-    display: none;
-  }
-
-  &__toggle {
-    width: toRem(30);
-    height: toRem(30);
-    align-self: flex-end;
-  }
-
+.m-layer-legend {
   &__title {
-    display: flex;
-    flex-direction: row;
-    background-color: white;
-    justify-content: space-between;
-    gap: toRem(10);
-    padding: 5px;
+    align-items: flex-start;
+    gap: toRem(5);
   }
 
-  &__image {
-    background: white;
-    overflow: scroll;
+  &__dropdown-icon {
+    margin-top: toRem(2);
   }
+}
 
-  &__error {
-    font-style: italic;
-    color: #c74646;
+.m-layer-switcher {
+  &__title {
+    align-items: flex-start;
   }
-
 }
 
 .m-map-slide-legend {

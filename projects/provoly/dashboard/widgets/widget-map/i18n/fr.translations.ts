@@ -70,8 +70,10 @@ export const frTranslations = {
         click: 'Sélectionner par clic',
         zoom: 'Zoom par rectangle',
         export: 'Exporter la carte',
+        legendsTitle: 'Légende',
         legend: 'Légende de la couche {{layer}}',
         legendNotProvided: 'Légende non fournie par le serveur',
+        layersTitle: 'Couches',
         selectLayers: 'Sélectionner les couches',
         legends: 'Afficher la légende',
         singleLayer: 'Mode mono-couche',
@@ -86,7 +88,8 @@ export const frTranslations = {
         open: 'Ouverture/Fermeture menu',
         zoomIn: 'Zoomer',
         zoomOut: 'Dézoomer',
-        slideTitle: 'Données affichées'
+        slideTitle: 'Données affichées',
+        layerLoadError: 'Erreur de chargement de la couche'
       }
     }
   }

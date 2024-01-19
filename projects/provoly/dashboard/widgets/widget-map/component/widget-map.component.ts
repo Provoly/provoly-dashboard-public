@@ -895,13 +895,15 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     );
 
     this.layersTop$ = combineLatest([this.legendTop$, this.legendLayers$]).pipe(
-      map(([legendTop, layers]) => legendTop + ((layers.length ?? 0) > 0 ? 38 : 0))
+      map(([legendTop, layers]) => legendTop + ((layers.length ?? 0) > 0 ? 35 : 0))
     );
     this.subscriptions.add(
-      combineLatest([this.layersTop$, this.legendLayers$, this.olZoomElement$]).subscribe(
-        ([layersTop, legend, zoomElement]) => {
+      combineLatest([this.layersTop$, this.legendLayers$, this.olZoomElement$, this.displayHeader$]).subscribe(
+        ([layersTop, legend, zoomElement, displayHeader]) => {
           if (zoomElement) {
-            zoomElement.style.top = `${layersTop + ((legend.length ?? 0) > 0 ? 5 : 0)}px`;
+            zoomElement.style.top = `${
+              layersTop + ((legend.length ?? 0) > 0 ? 5 : 0) + (!displayHeader ? WIDGET_HEADER_HEIGHT : 0)
+            }px`;
           }
         }
       )

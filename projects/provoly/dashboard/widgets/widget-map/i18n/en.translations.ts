@@ -72,7 +72,9 @@ export const enTranslations = {
         export: 'Export map',
         legend: 'Legend of layer {{layer}}',
         legendNotProvided: 'Legend not provided by server',
+        layersTitle: 'Layers',
         selectLayers: 'Select layers',
+        legendsTitle: 'Legend',
         legends: 'Display legend',
         singleLayer: 'Single layer mode',
         autoLayer: 'Automatic datasource layers configuration',
@@ -86,7 +88,8 @@ export const enTranslations = {
         open: 'Open/Close menu',
         zoomIn: 'Zoom In',
         zoomOut: 'Zoom Out',
-        slideTitle: 'Displayed data'
+        slideTitle: 'Displayed data',
+        layerLoadError: 'Error loading in layer data'
       }
     }
   }

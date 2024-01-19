@@ -397,84 +397,99 @@
   </div>
 
   <div
-    class="ol-control m-layer-switcher"
+    class="ol-control m-layer-switcher m-map-layer-action"
     *ngIf="((layers$ | async)?.length ?? 0) > 0"
     [style.top.px]="layersTop$ | async"
   >
     <button
-      class="m-layer-switcher__toggle a-tooltip"
+      class="m-map-layer-action__toggle"
+      [class.a-tooltip]="!this.layersTabOpen"
+      [class.-tooltip-no-wrap]="!this.layersTabOpen"
       (click)="toggleLayersWindow()"
       [attr.data-tooltip]="'@pry.widget.map.selectLayers' | i18n"
       data-tooltip-position="left"
     >
       <pry-icon iconSvg="layers" [width]="22" [height]="22"></pry-icon>
     </button>
-    <ng-container *ngFor="let layer of mapLayers; let index = index">
-      <div class="m-layer-switcher__title" [class.-hidden]="!layersTabOpen">
-        {{ layer.get('title') }}
-        <ng-container *ngIf="!(options$ | async)?.singleLayer; else singleLayer">
-          <pry-checkbox [ngModel]="layer.getVisible()" (change)="changeVisibility(layer)"></pry-checkbox>
-        </ng-container>
-        <ng-template #singleLayer>
-          <input
-            type="radio"
-            name="layer"
-            [id]="'radio-layer-' + layer.get('title').split(' ')[0]"
-            [ngModel]="layerVisibleIdx"
-            [value]="index"
+    <div class="m-map-layer-action__container" [class.-hidden]="!layersTabOpen">
+      <span class="a-h4">{{ '@pry.widget.map.layersTitle' | i18n }}</span>
+      <ng-container *ngFor="let layer of mapLayers; let index = index">
+        <div class="m-map-layer-action__title m-layer-switcher__title" [class.-hidden]="!layersTabOpen">
+          <pry-checkbox
+            *ngIf="!(options$ | async)?.singleLayer; else singleLayer"
+            [ngModel]="layer.getVisible()"
             (change)="changeVisibility(layer)"
-          />
-        </ng-template>
-      </div>
-    </ng-container>
+          ></pry-checkbox>
+          <ng-template #singleLayer>
+            <input
+              type="radio"
+              name="layer"
+              [id]="'radio-layer-' + layer.get('title').split(' ')[0]"
+              [ngModel]="layerVisibleIdx"
+              [value]="index"
+              (change)="changeVisibility(layer)"
+            />
+          </ng-template>
+          {{ layer.get('title') }}
+        </div>
+      </ng-container>
+    </div>
   </div>
 
   <div
-    class="ol-control m-layer-legend"
+    class="ol-control m-map-layer-action m-layer-legend"
     *ngIf="((legendLayers$ | async)?.length ?? 0) > 0"
     [style.top.px]="legendTop$ | async"
   >
     <button
-      class="m-layer-legend__toggle a-tooltip"
+      class="m-map-layer-action__toggle"
+      [class.a-tooltip]="!this.legendTabOpen"
+      [class.-tooltip-no-wrap]="!this.legendTabOpen"
       (click)="toggleLegendWindow()"
       [attr.data-tooltip]="'@pry.widget.map.legends' | i18n"
       data-tooltip-position="left"
     >
       <pry-icon iconSvg="legend" [width]="22" [height]="22"></pry-icon>
     </button>
-    <ng-container *ngFor="let geoLayer of legendLayers$ | async; let index = index">
-      <div class="m-layer-legend__title" [class.-hidden]="!legendTabOpen">
-        {{ geoLayer.title }}
-        <ng-container *ngIf="isLayerRendered(geoLayer)">
-          <button class="m-layer-legend__toggle" (click)="toggleLegend(index)">
-            <pry-icon
-              [iconSvg]="legendTab === index ? 'chevron_top' : 'chevron_bottom'"
-              [width]="22"
-              [height]="22"
-            ></pry-icon>
-          </button>
-        </ng-container>
-        <ng-container *ngIf="!isLayerRendered(geoLayer)">
-          <pry-icon [iconSvg]="'close'" [width]="22" [height]="22"></pry-icon>
-        </ng-container>
-      </div>
-      <div
-        class="m-layer-legend__image"
-        [class.-hidden]="!legendTabOpen || legendTab !== index || !isLayerRendered(geoLayer)"
-        [style.max-height.px]="legendHeight$ | async"
-      >
-        <ng-container *ngIf="geoLayer | legendUrl : { capabilities: (wmsCapabilities$ | async) } as url">
-          <img
-            [src]="url | getSecuredImage | async"
-            [alt]="'@pry.widget.map.legend' | i18n : { layer: geoLayer.title }"
-            (error)="imageNotProvided[index] = true"
-          />
-        </ng-container>
-        <ng-container *ngIf="!(geoLayer | legendUrl : { capabilities: (wmsCapabilities$ | async) })">
-          <p class="m-layer-legend__error">{{ '@pry.widget.map.legendNotProvided' | i18n }}</p>
-        </ng-container>
-      </div>
-    </ng-container>
+    <div class="m-map-layer-action__container" [class.-hidden]="!legendTabOpen">
+      <span class="a-h4">{{ '@pry.widget.map.legendsTitle' | i18n }}</span>
+      <ng-container *ngFor="let geoLayer of legendLayers$ | async; let index = index">
+        <div class="m-map-layer-action__title m-layer-legend__title" (click)="toggleLegend(index)">
+          <pry-icon
+            *ngIf="isLayerRendered(geoLayer) && !!geoLayer.title"
+            class="m-layer-legend__dropdown-icon"
+            [iconSvg]="legendTab === index ? 'chevron_top' : 'chevron_bottom'"
+            [width]="12"
+            [height]="12"
+          ></pry-icon>
+          {{ geoLayer.title }}
+          <pry-icon
+            *ngIf="!isLayerRendered(geoLayer)"
+            class="a-tooltip"
+            [attr.data-tooltip]="'@pry.widget.map.layerLoadError' | i18n"
+            [iconSvg]="'close'"
+            [width]="22"
+            [height]="22"
+          ></pry-icon>
+        </div>
+        <div
+          class="m-map-layer-action__image"
+          [class.-hidden]="!legendTabOpen || legendTab !== index || !isLayerRendered(geoLayer)"
+          [style.max-height.px]="legendHeight$ | async"
+        >
+          <ng-container *ngIf="geoLayer | legendUrl : { capabilities: (wmsCapabilities$ | async) } as url">
+            <img
+              [src]="url | getSecuredImage | async"
+              [alt]="'@pry.widget.map.legend' | i18n : { layer: geoLayer.title }"
+              (error)="imageNotProvided[index] = true"
+            />
+          </ng-container>
+          <ng-container *ngIf="!(geoLayer | legendUrl : { capabilities: (wmsCapabilities$ | async) })">
+            <p class="m-map-layer-action__error">{{ '@pry.widget.map.legendNotProvided' | i18n }}</p>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
   </div>
 
   <div class="m-map-slide-legend -left" *ngIf="leftSlideLayers.length > 0" [style.top.px]="legendTop$ | async">
