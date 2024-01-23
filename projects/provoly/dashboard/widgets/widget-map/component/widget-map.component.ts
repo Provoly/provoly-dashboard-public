@@ -611,7 +611,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     );
 
     this.hasSlideLayer$ = this.options$.pipe(
-      map((options) => (options.layers ?? []).map((layer) => !!layer.slide).reduce((a, b) => a || b, false))
+      map((options) =>
+        (options.layers ?? []).map((layer) => !!layer.slide && layer.slide !== 'all').reduce((a, b) => a || b, false)
+      )
     );
   }
 
@@ -1565,6 +1567,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   changeSlideOption($event: any) {
     this.optionsCopy.slide = $event;
+    if ($event === false) {
+      this.optionsCopy.layers?.forEach((layer) => (layer.slide = 'all'));
+    }
   }
 
   toggleMenu() {

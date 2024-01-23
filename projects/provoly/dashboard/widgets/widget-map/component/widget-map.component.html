@@ -53,7 +53,7 @@
         {{ '@pry.widget.map.attributions' | i18n }}
       </pry-checkbox>
 
-      <pry-checkbox (ngModelChange)="changeSlideOption($event)" [ngModel]="optionsCopy.slide ?? false">
+      <pry-checkbox (ngModelChange)="changeSlideOption($event)" [ngModel]="hasSlideLayer$ | async">
         {{ '@pry.widget.map.slide.global' | i18n }}
       </pry-checkbox>
 
