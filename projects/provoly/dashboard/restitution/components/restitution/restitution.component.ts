@@ -216,8 +216,8 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
     }, 150);
   }
 
-  goNext(stepper: PryStepperComponent) {
-    stepper.next();
+  goNext(stepper: PryStepperComponent, submit?: boolean) {
+    submit ? this.submit(stepper) : stepper.next();
   }
 
   prev(stepper: PryStepperComponent) {

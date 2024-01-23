@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { PryNotification } from '@provoly/dashboard';
+import { PryI18nService, PryNotification } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NotificationActions } from '../../../store/notification.actions';
@@ -28,7 +28,7 @@ export class PryNotificationContentComponent implements DoCheck, AfterViewInit {
   @ViewChild('button') button!: ElementRef<HTMLButtonElement>;
   left: number = 0;
 
-  constructor(protected store: Store, private router: Router) {
+  constructor(protected store: Store, private router: Router, private i18nService: PryI18nService) {
     this.notifications$ = this.store
       .select(NotificationSelectors.list)
       .pipe(
@@ -66,5 +66,9 @@ export class PryNotificationContentComponent implements DoCheck, AfterViewInit {
 
   closeToEscape() {
     this.closed.next(true);
+  }
+
+  hasTranslation(title: string, translationBase: string) {
+    return this.i18nService.instant(translationBase + title) !== translationBase + title;
   }
 }

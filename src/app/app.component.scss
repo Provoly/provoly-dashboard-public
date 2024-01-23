@@ -93,3 +93,104 @@
     }
   }
 }
+
+.o-pry-stepper {
+  flex: 1;
+  max-width: 100%;
+  max-height: 100%;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    max-height: calc(100% - 70px); // full height minus header
+
+    &.active-step {
+      flex: 1;
+      max-height: 100%;
+    }
+  }
+}
+
+.o-restitution-catalog {
+  .o-manifest-layout__content {
+    display: flex;
+    flex-direction: column;
+
+    .restitution {
+      display: flex;
+      flex: 1;
+      max-height: 100%;
+    }
+  }
+}
+
+.o-main-layout {
+  &__workspace {
+    .o-workspace {
+      &__dashboard {
+        // works until here
+        pry-restitution-catalog {
+          // doesn't work
+          background-color: blue;
+          .o-manifest-layout {
+            background-color: green;
+            &__content {
+              background-color: red;
+              .restitution {
+                .o-restitution {
+                  flex: 1;
+                  max-height: 100%;
+                }
+              }
+            }
+          }
+        }
+
+        // doesn't work
+        .o-manifest-layout {
+          background-color: green;
+          &__content {
+            background-color: red;
+            .restitution {
+              .o-restitution {
+                flex: 1;
+                max-height: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// doesn't work
+.o-pry-stepper {
+  display: flex;
+  flex: 1;
+  max-height: 100%;
+  background-color: red;
+}
+
+// doesn't work
+.o-restitution {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-height: 100%;
+}
+
+// doesn't work
+.o-manifest-layout {
+  background-color: blue;
+  &__content {
+    background-color: red;
+    .restitution {
+      .o-restitution {
+        flex: 1;
+        max-height: 100%;
+      }
+    }
+  }
+}

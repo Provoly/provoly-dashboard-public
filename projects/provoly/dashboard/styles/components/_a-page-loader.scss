@@ -6,7 +6,7 @@
 
   position: absolute;
 
-  z-index: 10000;
+  z-index: 999; // 1 smaller than the .cdk-overlay-container
 
   &.backdrop {
     background-color: rgba(0, 0, 0, 0.5);

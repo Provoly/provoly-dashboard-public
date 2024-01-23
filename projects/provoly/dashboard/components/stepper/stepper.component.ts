@@ -8,7 +8,8 @@ import {
   Output,
   QueryList,
   ViewChildren,
-  ViewContainerRef
+  ViewContainerRef,
+  ViewEncapsulation
 } from '@angular/core';
 import { PryStepComponent } from './step/step.component';
 
@@ -20,7 +21,8 @@ export enum Status {
 
 @Component({
   selector: 'pry-stepper',
-  templateUrl: './stepper.component.html'
+  templateUrl: './stepper.component.html',
+  encapsulation: ViewEncapsulation.None
 })
 export class PryStepperComponent implements AfterContentInit, AfterViewInit {
   activeIndex: number = 0;

@@ -33,8 +33,9 @@
         text-transform: uppercase;
         padding-bottom: 0;
         padding-left: toRem(15);
-        font-size: toRem(14);
+        font-size: toRem(11);
         font-weight: 500;
+        letter-spacing: toRem(0.5);
       }
 
       &__query {
@@ -46,11 +47,12 @@
           overflow: hidden;
           padding-left: toRem(10);
           padding-bottom: 0;
-          font-size: toRem(14);
+          font-size: toRem(11);
           font-weight: 500;
           text-overflow: ellipsis;
           white-space: nowrap;
           text-transform: uppercase;
+          letter-spacing: toRem(0.5);
         }
 
         &__color-point {

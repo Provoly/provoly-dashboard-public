@@ -6,69 +6,67 @@
   <pry-stepper #stepper [isConsultMode]="consultMode || edit" (lastStepCompleted)="lastStepCompleted()">
     <pry-step>
       <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.configure' | i18n }}</h4>
-      <div>
-        <div class="m-form-label-field">
-          <label for="restitution" class="a-label">{{ '@pry.restitution.restitution_type' | i18n }}</label>
-          <pry-select
-            id="restitution"
-            [items]="types$ | async"
-            [(ngModel)]="form.selectedWidget"
-            [disabled]="consultMode"
-            bindIcon="icon"
-            bindLabel="label"
-            bindValue="type"
-          >
-          </pry-select>
-        </div>
-        <div *ngIf="form.selectedWidget !== ''">
-          <div class="m-form-label-field">
-            <label for="graphTitle" class="a-label">{{ '@pry.restitution.graph_title' | i18n }}</label>
-            <input
-              name="title"
-              id="graphTitle"
-              class="a-form-field"
-              [(ngModel)]="form.title"
-              type="text"
-              [disabled]="consultMode"
-              maxlength="30"
-              ngDefaultControl
-            />
-          </div>
-          <div class="m-form-label-field">
-            <label for="description" class="a-label">{{ '@pry.restitution.description' | i18n }}</label>
-            <textarea
-              name="description"
-              id="description"
-              class="a-form-field"
-              [(ngModel)]="form.description"
-              style="resize: none"
-              [disabled]="consultMode"
-              maxlength="255"
-              ngDefaultControl
-            >
-            </textarea>
-          </div>
-          <div class="m-form-label-field -width-full">
-            <label class="a-label">{{ '@pry.presentation.form.image' | i18n }}</label>
-            <div class="o-file-input">
-              <pry-select-image (changed)="image = $event" [iconUrl]="image" [mode]="type"></pry-select-image>
-              <pry-checkbox [(ngModel)]="form.cover" name="cover"> {{ '@pry.restitution.cover' | i18n }}</pry-checkbox>
-            </div>
-          </div>
-          <div class="m-btn-group -space-evenly actions">
-            <button (click)="cancel(stepper)" type="button" class="a-btn a-btn--secondary">
-              {{ '@pry.restitution.close' | i18n }}
-            </button>
-            <button
-              (click)="goNext(stepper)"
-              [disabled]="form.selectedWidget === '' || form.title.trim().length === 0"
-              class="a-btn a-btn--primary"
-            >
-              {{ '@pry.restitution.validate' | i18n }}
-            </button>
-          </div>
-        </div>
+      <div class="m-form-label-field">
+        <label for="restitution" class="a-label">{{ '@pry.restitution.restitution_type' | i18n }}</label>
+        <pry-select
+          id="restitution"
+          [items]="types$ | async"
+          [(ngModel)]="form.selectedWidget"
+          [disabled]="consultMode"
+          bindIcon="icon"
+          bindLabel="label"
+          bindValue="type"
+        >
+        </pry-select>
       </div>
+      <ng-container *ngIf="form.selectedWidget !== ''">
+        <div class="m-form-label-field">
+          <label for="graphTitle" class="a-label">{{ '@pry.restitution.graph_title' | i18n }}</label>
+          <input
+            name="title"
+            id="graphTitle"
+            class="a-form-field"
+            [(ngModel)]="form.title"
+            type="text"
+            [disabled]="consultMode"
+            maxlength="30"
+            ngDefaultControl
+          />
+        </div>
+        <div class="m-form-label-field">
+          <label for="description" class="a-label">{{ '@pry.restitution.description' | i18n }}</label>
+          <textarea
+            name="description"
+            id="description"
+            class="a-form-field"
+            [(ngModel)]="form.description"
+            style="resize: none"
+            [disabled]="consultMode"
+            maxlength="255"
+            ngDefaultControl
+          >
+          </textarea>
+        </div>
+        <div class="m-form-label-field -width-full">
+          <label class="a-label">{{ '@pry.presentation.form.image' | i18n }}</label>
+          <div class="o-file-input">
+            <pry-select-image (changed)="image = $event" [iconUrl]="image" [mode]="type"></pry-select-image>
+            <pry-checkbox [(ngModel)]="form.cover" name="cover"> {{ '@pry.restitution.cover' | i18n }}</pry-checkbox>
+          </div>
+        </div>
+        <div class="m-btn-group -space-evenly actions">
+          <button (click)="cancel(stepper)" type="button" class="a-btn a-btn--secondary">
+            {{ '@pry.restitution.close' | i18n }}
+          </button>
+          <button
+            (click)="goNext(stepper)"
+            [disabled]="form.selectedWidget === '' || form.title.trim().length === 0"
+            class="a-btn a-btn--primary"
+          >
+            {{ '@pry.restitution.validate' | i18n }}
+          </button>
+        </div>
+      </ng-container>
     </pry-step>
     <pry-step>
       <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.dataSource' | i18n }}</h4>
@@ -76,11 +74,11 @@
         bindLabel="name"
         bindValue="id"
         translationStringBase="@pry.components.chipsSelector.datasource."
-        (cancel)="prev(stepper)"
-        (validated)="submit(stepper)"
         (itemsChanged)="datasourcesChanged($event)"
         [usedItems]="(usedDatasources$ | async) ?? []"
+        [showActionButtons]="false"
       ></pry-datasource-selector>
+      <ng-container [ngTemplateOutlet]="buttons" [ngTemplateOutletContext]="{ submit: true }"></ng-container>
     </pry-step>
     <pry-step>
       <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.visualize' | i18n }}</h4>
@@ -92,32 +90,23 @@
           (manifestModified)="updateManifest($event)"
         ></pry-widget-instanciator>
       </div>
-      <div class="m-btn-group -space-evenly actions" *ngIf="!consultMode; else consult">
-        <button (click)="prev(stepper)" type="button" class="a-btn a-btn--secondary">
-          {{ '@pry.restitution.close' | i18n }}
-        </button>
-        <button (click)="goNext(stepper)" type="button" class="a-btn a-btn--primary">
-          {{ '@pry.restitution.validate' | i18n }}
-        </button>
-      </div>
+      <ng-container [ngTemplateOutlet]="buttons"></ng-container>
     </pry-step>
     <pry-step>
       <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.share' | i18n }}</h4>
-      <div class="">
-        <h3>{{ '@pry.restitution.access' | i18n }}</h3>
-        {{ '@pry.restitution.choice' | i18n }}
-        <ul>
-          <li>
-            {{ '@pry.restitution.public' | i18n }}
-          </li>
-        </ul>
-        {{ '@pry.restitution.or' | i18n }}
-        <ul>
-          <li>
-            {{ '@pry.restitution.private' | i18n }}
-          </li>
-        </ul>
-      </div>
+      <h3>{{ '@pry.restitution.access' | i18n }}</h3>
+      {{ '@pry.restitution.choice' | i18n }}
+      <ul>
+        <li>
+          {{ '@pry.restitution.public' | i18n }}
+        </li>
+      </ul>
+      {{ '@pry.restitution.or' | i18n }}
+      <ul>
+        <li>
+          {{ '@pry.restitution.private' | i18n }}
+        </li>
+      </ul>
       <pry-share
         [(ngModel)]="visibility"
         [users$]="users$"
@@ -125,28 +114,18 @@
         valueProperty="id"
         [disabled]="consultMode"
       ></pry-share>
-      <div class="m-btn-group -space-evenly actions" *ngIf="!consultMode; else consult">
-        <button (click)="prev(stepper)" type="button" class="a-btn a-btn--secondary">
-          {{ '@pry.restitution.close' | i18n }}
-        </button>
-        <button (click)="goNext(stepper)" type="button" class="a-btn a-btn--primary">
-          {{ '@pry.restitution.share' | i18n }}
-        </button>
-      </div>
+      <ng-container [ngTemplateOutlet]="buttons"></ng-container>
     </pry-step>
   </pry-stepper>
 </div>
 
-<ng-template #consult>
+<ng-template #buttons let-submit="submit">
   <div class="m-btn-group -space-evenly actions">
     <button (click)="prev(stepper)" type="button" class="a-btn a-btn--secondary">
       {{ '@pry.restitution.close' | i18n }}
     </button>
-    <button (click)="goNext(stepper)" type="button" class="a-btn a-btn--primary">
-      {{ '@pry.restitution.next' | i18n }}
+    <button (click)="goNext(stepper, submit)" type="button" class="a-btn a-btn--primary">
+      {{ (consultMode ? '@pry.restitution.share' : '@pry.restitution.next') | i18n }}
     </button>
   </div>
-</ng-template>
-<ng-template #noDatasource>
-  <p class="search-home__container-search">{{ '@pry.restitution.noDataSource' | i18n }}</p>
 </ng-template>

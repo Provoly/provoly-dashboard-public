@@ -16,11 +16,7 @@ export class PryNotificationComponent extends SubscriptionnerDirective {
   isOpened: boolean = false;
   dialogRef?: PryDialogRef<PryNotificationContentComponent>;
 
-  constructor(
-    private dialog: PryDialogService,
-    private overlay: Overlay,
-    protected store: Store<any>
-  ) {
+  constructor(private dialog: PryDialogService, private overlay: Overlay, protected store: Store<any>) {
     super();
     this.notifications$ = this.store.select(NotificationSelectors.list);
   }
@@ -32,6 +28,7 @@ export class PryNotificationComponent extends SubscriptionnerDirective {
       {
         overlayConfig: new OverlayConfig({
           hasBackdrop: true,
+          backdropClass: 'cdk-overlay-transparent-backdrop',
           scrollStrategy: this.overlay.scrollStrategies.noop(),
           positionStrategy: this.overlay
             .position()

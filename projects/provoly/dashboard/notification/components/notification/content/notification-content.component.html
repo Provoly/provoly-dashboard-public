@@ -15,7 +15,7 @@
     <ng-template #notification>
       <div class="m-btn-group">
         <button type="button" #button class="a-btn a-btn--primary" (click)="deleteAll()">
-          {{ '@pry.notif.deleteAll' | i18n: { count: (notifications$ | async)?.length } }}
+          {{ '@pry.notif.deleteAll' | i18n : { count: (notifications$ | async)?.length } }}
         </button>
       </div>
     </ng-template>
@@ -23,37 +23,33 @@
   <div class="m-notifications-list__content">
     <ul class="m-notifications-list__items">
       <li class="m-notifications-list__items__li" *ngFor="let notification of notifications$ | async; let last = last">
-        <div
-          class="m-notifications-list__items__li__txt"
-          *ngIf="
-            ('@pry.notif.title.' + notification.text.code | i18n) !== '@pry.notif.title.' + notification.text.code;
-            else noTranslation
-          "
-        >
-          <h3 class="a-h3">{{ '@pry.notif.title.' + notification.text.code | i18n }}</h3>
-          <p class="a-p date">{{ notification.creationDate | date: "dd/MM/yyyy, H'h'mm" }}</p>
-          <p class="a-p desc">{{ '@pry.notif.message.' + notification.text.code | i18n: notification.text.param }}</p>
+        <div class="m-notifications-list__items__li__txt">
+          <h3 class="a-h3">
+            {{
+              hasTranslation(notification.text.code, '@pry.notif.title.')
+                ? ('@pry.notif.title.' + notification.text.code | i18n)
+                : notification.text.title
+            }}
+            <span>{{ notification.creationDate | date : "dd/MM'&nbsp;&nbsp;&nbsp;'H':'mm" }}</span>
+          </h3>
+          <p class="a-p desc">
+            {{
+              hasTranslation(notification.text.code, '@pry.notif.title.')
+                ? ('@pry.notif.message.' + notification.text.code | i18n : notification.text.param)
+                : notification.text.code
+            }}
+          </p>
           <a *ngIf="!!notification.link" (click)="goTo(notification)">
             {{ '@pry.notif.link' | i18n }}
           </a>
         </div>
-        <ng-template #noTranslation>
-          <div class="m-notifications-list__items__li__txt">
-            <h3 class="a-h3">{{ notification.text.title }}</h3>
-            <p class="a-p date">{{ notification.creationDate | date: "dd/MM/yyyy, H'h'mm" }}</p>
-            <p class="a-p desc">{{ notification.text.code }}</p>
-            <a *ngIf="!!notification.link" (click)="goTo(notification)">
-              {{ '@pry.notif.link' | i18n }}
-            </a>
-          </div>
-        </ng-template>
         <button
-          class="a-btn a-btn--deletenotification"
+          class="a-btn a-btn--delete"
           (click)="delete(notification)"
           (keydown.tab)="last ? closeToEscape() : null"
           title="{{ '@pry.notif.delete' | i18n }}"
         >
-          <pry-icon iconSvg="close"></pry-icon>
+          <pry-icon [height]="20" [width]="20" iconSvg="close"></pry-icon>
           <span class="u-visually-hidden">{{ '@pry.notif.delete' | i18n }}</span>
         </button>
       </li>

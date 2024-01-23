@@ -5,6 +5,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 100%;
+  min-height: toRem(200);
 
   &__header {
     display: flex;
@@ -84,16 +86,6 @@
         flex-direction: column;
         padding: 20px 0;
       }
-    }
-
-    .m-btn-group.actions {
-      position: fixed;
-      bottom: 0;
-      width: calc(100% - 40px);
-      padding-top: toRem(25);
-      padding-bottom: toRem(20);
-      background-color: #f5f7f9;
-      transform: translateX(-3px);
     }
   }
 }

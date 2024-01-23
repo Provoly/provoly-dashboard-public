@@ -84,25 +84,24 @@
       justify-content: space-between;
       align-items: center;
       padding: toRem(13) 0 toRem(15) 0;
+      gap: toRem(5);
 
       &:last-of-type {
         padding-bottom: toRem(5);
       }
 
       &__txt {
+        flex: 1;
+
         .a-h3 {
+          display: flex;
+          justify-content: space-between;
           margin-bottom: 0;
           padding-bottom: toRem(3);
-          padding-right: toRem(16);
         }
 
         .a-p {
-          padding-right: toRem(16);
           padding-bottom: 0;
-
-          &.date {
-            margin-bottom: toRem(7);
-          }
 
           &.desc {
             margin-bottom: 0;
@@ -116,7 +115,7 @@
         }
       }
 
-      .a-btn.a-btn--deletenotification {
+      .a-btn--delete {
         position: relative;
         width: toRem(22);
         height: toRem(22);

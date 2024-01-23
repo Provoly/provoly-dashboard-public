@@ -3,32 +3,18 @@
 
 .o-restitution-catalog {
   .o-manifest-layout__toolbox {
-    height: toRem(84);
-    display: flex;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
-
-    div:first-child {
-      margin-left: auto;
-    }
-  }
-
-  .o-catalog__search {
-    position: relative;
-
-    .a-icon {
-      position: absolute;
-      right: 0.6875rem;
-      bottom: 0.5625rem;
-      opacity: 0.5;
-      pointer-events: none;
-    }
   }
 
   .o-manifest-layout__content {
-    .o-restitution-wrapper .o-restitution {
-      width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .restitution {
+      display: flex;
+      flex: 1;
+      max-height: 100%;
     }
   }
 }

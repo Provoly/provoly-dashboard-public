@@ -1,8 +1,8 @@
 <pry-dataset-css></pry-dataset-css>
 <div class="o-dataset-layout" [ngSwitch]="selectedMode">
   <ng-container *ngSwitchCase="ViewMode.CATALOG">
-    <div class="o-manifest-layout__toolbox">
-      <div class="o-pry-dataset__search">
+    <div class="o-manifest-layout__toolbox o-manifest-layout__toolbox--only-search">
+      <div class="o-manifest-layout__toolbox__search o-pry-dataset__search">
         <label id="catalog-search-label" for="catalog-search" class="u-visually-hidden">
           <span>{{ '@pry.toolbox.catalog.filter.name' | i18n }}</span>
         </label>

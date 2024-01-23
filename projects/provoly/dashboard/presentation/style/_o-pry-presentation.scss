@@ -11,22 +11,6 @@
     &.-u-hidden {
       display: none;
     }
-
-    &__search {
-      position: relative;
-
-      .a-form-field {
-        min-height: 10px;
-      }
-
-      .a-icon {
-        position: absolute;
-        right: 0.6875rem;
-        top: toRem(5);
-        opacity: 0.5;
-        pointer-events: none;
-      }
-    }
   }
 
   &__content {

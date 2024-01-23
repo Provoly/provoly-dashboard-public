@@ -89,7 +89,8 @@ import {
   of,
   startWith,
   Subscription,
-  switchMap
+  switchMap,
+  withLatestFrom
 } from 'rxjs';
 import { InteractionManager } from '../interaction/interaction-manager.class';
 import { CqlUtils } from '../utils/cql-utils.class';
@@ -914,15 +915,17 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       map(([legendTop, layers]) => legendTop + ((layers.length ?? 0) > 0 ? 35 : 0))
     );
     this.subscriptions.add(
-      combineLatest([this.layersTop$, this.legendLayers$, this.olZoomElement$, this.displayHeader$]).subscribe(
-        ([layersTop, legend, zoomElement, displayHeader]) => {
+      combineLatest([this.layersTop$, this.legendLayers$, this.olZoomElement$, this.displayHeader$])
+        .pipe(withLatestFrom(this.layers$))
+        .subscribe(([[layersTop, legend, zoomElement, displayHeader], layers]) => {
           if (zoomElement) {
             zoomElement.style.top = `${
-              layersTop + ((legend.length ?? 0) > 0 ? 5 : 0) + (!displayHeader ? WIDGET_HEADER_HEIGHT : 0)
+              layersTop +
+              ((legend.length ?? 0) > 0 || layers.length > 0 ? 5 : 0) +
+              (!displayHeader ? WIDGET_HEADER_HEIGHT : 0)
             }px`;
           }
-        }
-      )
+        })
     );
 
     this.subscriptions.add(
