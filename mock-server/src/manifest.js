@@ -22,6 +22,7 @@ module.exports = {
         modificationDate: manifest.modificationDate,
         image: manifest.image ?? '/assets/svgs/default.svg',
         groups: manifest.groups ?? [],
+        visibility: manifest.visibility ?? { type: 'PRIVATE' },
         owner: true,
         cover: casual.boolean,
         datasource: [
@@ -46,10 +47,10 @@ module.exports = {
     });
   },
   get: (id) => {
-    let manifestById = (manifests.find((manifest) => manifest.id === id) || {}).manifest;
+    let manifestById = manifests.find((manifest) => manifest.id === id)?.manifest;
     if (!manifestById) {
       // allow searching by name
-      manifestById = (manifests.find((manifest) => manifest.name === id) || {}).manifest;
+      manifestById = manifests.find((manifest) => manifest.name === id)?.manifest;
     }
     return manifestById;
   },
@@ -58,7 +59,7 @@ module.exports = {
       manifests.findIndex((manifest) => manifest.id === id),
       1
     ),
-  save: (id, name, description, creationDate, modificationDate, manifest, image, groups) => {
+  save: (id, name, description, creationDate, modificationDate, manifest, image, groups, visibility) => {
     let previous = manifests.find((m) => m.id === id);
     if (!previous) {
       manifests.push({});
@@ -69,11 +70,12 @@ module.exports = {
     } else {
       previous.modificationDate = new Date().toISOString();
     }
-    previous.id = !!id ? id : casual.uuid;
+    previous.id = id ?? casual.uuid;
     previous.name = name;
     previous.description = description;
     previous.manifest = manifest;
     previous.image = image;
     previous.groups = groups;
+    previous.visibility = visibility;
   }
 };

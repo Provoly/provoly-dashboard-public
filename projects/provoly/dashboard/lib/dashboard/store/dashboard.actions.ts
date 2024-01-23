@@ -14,6 +14,7 @@ import { Relation } from '../../core/model/relation.interface';
 import { OrderValue } from '../../core/model/result-order.interface';
 import { ResultSet, ResultSets } from '../../core/model/result-set.interface';
 import { GetCapabilitiesResponse } from './wms.service';
+import { PryVisibility } from '../../core/components/share/share.model';
 
 export type DashboardCellParams = {
   gridWidth: number;
@@ -158,6 +159,7 @@ export const DashboardActions = {
       cover?: boolean;
       metadata?: { metadataDefId: string; value: string }[];
       groups?: string[];
+      visibility?: PryVisibility;
     }>()
   ),
   solveCollisions: createAction('[Dashboard] solving collisions'),

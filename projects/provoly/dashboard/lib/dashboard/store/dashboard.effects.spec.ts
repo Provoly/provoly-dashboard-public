@@ -591,7 +591,8 @@ describe('DashboardEffects', () => {
           undefined,
           undefined,
           undefined,
-          undefined
+          undefined,
+          { type: 'PRIVATE' }
         );
         expect(serviceSpy).toHaveBeenNthCalledWith(
           2,
@@ -602,7 +603,8 @@ describe('DashboardEffects', () => {
           undefined,
           undefined,
           undefined,
-          undefined
+          undefined,
+          { type: 'PRIVATE' }
         );
         expect(serviceSpySnack).toHaveBeenNthCalledWith(1, { message: 'translated', type: 'success' });
         expect(serviceSpySnack).toHaveBeenNthCalledWith(2, { message: 'translated', type: 'success' });
@@ -654,7 +656,8 @@ describe('DashboardEffects', () => {
           undefined,
           undefined,
           undefined,
-          undefined
+          undefined,
+          { type: 'PRIVATE' }
         );
         expect(serviceSpy).toHaveBeenNthCalledWith(
           2,
@@ -665,7 +668,8 @@ describe('DashboardEffects', () => {
           undefined,
           undefined,
           undefined,
-          undefined
+          undefined,
+          { type: 'PRIVATE' }
         );
         expect(serviceSpySnack).toHaveBeenNthCalledWith(1, { message: 'translated', type: 'success' });
         expect(serviceSpySnack).toHaveBeenNthCalledWith(2, { message: 'translated', type: 'success' });

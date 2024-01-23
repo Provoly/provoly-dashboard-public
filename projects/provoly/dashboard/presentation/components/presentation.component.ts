@@ -10,6 +10,8 @@ import {
   DashboardSelectors,
   ManifestDescription,
   PryTitleService,
+  PryVisibility,
+  PryVisibilityType,
   SubscriptionnerDirective,
   ViewMode
 } from '@provoly/dashboard';
@@ -36,6 +38,8 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   @ViewChild('crossVisibility') crossVisibility!: ElementRef<HTMLButtonElement>;
   @ViewChild('visibilityModal') visibilityModal!: ElementRef;
   overlayRef?: OverlayRef;
+  visibility: PryVisibility = { type: PryVisibilityType.PRIVATE };
+  PryVisibilityType = PryVisibilityType;
   accessGroups: string[] = [];
   @Input() editionStartUrl: string = '/';
   @Input() consultStartUrl: string = '/';
@@ -85,7 +89,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
           )
         ),
       this.listOfManifests$
-    ]).pipe(map(([dynamics, statics]) => (!!statics ? statics : dynamics)));
+    ]).pipe(map(([dynamics, statics]) => statics ?? dynamics));
 
     this.staticManifest$ = this.store
       .select(DashboardSelectors.staticManifest)
@@ -109,9 +113,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     this.subscriptions.add(
       this.store.select(DashboardSelectors.presentation).subscribe((presentation) => {
         this.selectedMode = presentation?.viewMode ?? this.ViewMode.CATALOG;
-        if (!!presentation.current) {
-          this.selectedPresentation$.next(presentation.current ?? null);
-        }
+        this.selectedPresentation$.next(presentation.current ?? null);
       })
     );
     this.titleService.changeTitle('@pry.presentation.title');
@@ -138,6 +140,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
         id: v4(),
         name: '',
         description: '',
+        visibility: { type: PryVisibilityType.PRIVATE },
         groups: [] as string[],
         owner: true
       } as ManifestDescription,
@@ -228,7 +231,8 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
           name: presentation.name ?? '',
           description: presentation.description ?? '',
           image: presentation.image ?? '',
-          groups: this.accessGroups
+          groups: this.accessGroups,
+          visibility: this.visibility
         })
       );
     }

@@ -93,7 +93,7 @@
           <pry-metadata-editor
             [targetId]="selectedPresentation.id"
             [isModification]="true"
-            [metadata]="selectedPresentation.metadata"
+            [metadata]="selectedPresentation.metadata ?? []"
             (removeMeta)="removeMetadata($event)"
             (addMeta)="addMetadata($event)"
             [type]="'meta'"

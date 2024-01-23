@@ -127,7 +127,7 @@
       </pry-step>
       <pry-step>
         <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.share' | i18n }}</h4>
-        <pry-group-share [ngModel]="accessGroups" (ngModelChange)="changeVisibility($event)"></pry-group-share>
+        <pry-share [(ngModel)]="visibility" (ngModelChange)="changeVisibility($event)"></pry-share>
         <div class="m-btn-group">
           <button type="button" class="a-btn a-btn--secondary" (click)="stepper.prev()">
             {{ '@pry.action.back' | i18n }}

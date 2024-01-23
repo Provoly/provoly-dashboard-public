@@ -23,10 +23,7 @@
         </button>
       </div>
     </div>
-    <pry-group-share
-      [ngModel]="selectedPresentation.current?.groups"
-      (ngModelChange)="accessGroups = $event"
-    ></pry-group-share>
+    <pry-share [ngModel]="visibility" (ngModelChange)="visibility = $event"></pry-share>
     <div class="m-btn-group">
       <button type="button" class="a-btn a-btn--secondary" (click)="toggleModal()">
         {{ '@pry.toolbox.manifest.close' | i18n }}
