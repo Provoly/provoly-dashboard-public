@@ -691,12 +691,14 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       this.classes$,
       this.additionalLayers$,
       this.itemStyles$,
-      this.datasourceFilters$
+      this.datasourceFilters$,
+      this.fields$
     ]).pipe(
       filter(
-        ([resultSet, options, classes, additionalLayers, itemStyles, filters]) => !!resultSet && !!options && !!classes
+        ([resultSet, options, classes, additionalLayers, itemStyles, filters, fields]) =>
+          !!resultSet && !!options && !!classes && !!fields
       ),
-      map(([resultSet, options, classes, additionalLayers, itemStyles, filters]) => {
+      map(([resultSet, options, classes, additionalLayers, itemStyles, filters, fields]) => {
         let hasRelationLayer = null as unknown as VectorLayer<VectorSource<any>>;
 
         this.clearLayers(this.previousLayers);
@@ -773,7 +775,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
               resultLayer.set('title', layer.title);
 
               if (layer.type === 'geoserver') {
-                const cql_filter = CqlUtils.getCQLParamsFor(layer.datasourceId, filters, classes);
+                const cql_filter = CqlUtils.getCQLParamsFor(layer.datasourceId, filters, classes, fields);
 
                 if (cql_filter) {
                   // Adding CQL query to geoserver layers

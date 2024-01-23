@@ -1,10 +1,11 @@
-import { Class, FilterContext } from '@provoly/dashboard';
+import { Class, Field, FilterContext, TextFieldTypes } from '@provoly/dashboard';
 
 export class CqlUtils {
   static getCQLParamsFor(
     datasourceId: string,
     filters: { [p: string]: FilterContext[] },
-    classes: Class[]
+    classes: Class[],
+    fields: Field[]
   ): string | null {
     if (!filters || !datasourceId || !filters[datasourceId] || filters[datasourceId].length === 0) {
       return null;
@@ -16,13 +17,19 @@ export class CqlUtils {
       .map((cond) => {
         const conditions = [];
 
-        const attributeName = attributesReference.find((attr) => attr.id === cond.attribute)?.technicalName;
+        const attribute = attributesReference.find((attr) => attr.id === cond.attribute);
+        const field = fields.find((f) => f.id === attribute?.field);
+        const attributeName = attribute?.technicalName;
 
         if (attributeName && cond.value && (typeof cond.value !== 'string' || cond.value.length > 0)) {
           const quoteSafeValue = `${cond.value}`.replace(/'/g, "''");
           switch (cond.operator) {
             case 'EQUALS':
-              conditions.push(`${attributeName}='${quoteSafeValue}'`);
+              if (!field || TextFieldTypes.includes(field?.type)) {
+                conditions.push(`${attributeName}='${quoteSafeValue}'`);
+              } else {
+                conditions.push(`${attributeName}=${cond.value}`);
+              }
               break;
             case 'CONTAINS':
               conditions.push(`${attributeName} LIKE '%${quoteSafeValue}%'`);

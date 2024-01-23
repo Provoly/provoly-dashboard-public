@@ -35,3 +35,4 @@ export const GeometricFieldTypes = [
 ] as string[];
 
 export const NumericFieldTypes = [FieldType.INTEGER, FieldType.DECIMAL, FieldType.INSTANT, FieldType.LONG] as string[];
+export const TextFieldTypes = [FieldType.STRING, FieldType.KEYWORD] as string[];
