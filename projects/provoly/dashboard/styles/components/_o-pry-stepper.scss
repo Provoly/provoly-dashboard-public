@@ -6,7 +6,8 @@
   flex-direction: column;
   align-items: center;
   max-width: 100%;
-  min-height: toRem(200);
+  flex: 1;
+  max-height: 100%;
 
   &__header {
     display: flex;
@@ -76,6 +77,10 @@
   &__content {
     position: relative;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    max-height: calc(100% - 70px); // full height minus header
 
     pry-step {
       display: none;
@@ -85,6 +90,8 @@
         display: flex;
         flex-direction: column;
         padding: 20px 0;
+        flex: 1;
+        max-height: 100%;
       }
     }
   }
