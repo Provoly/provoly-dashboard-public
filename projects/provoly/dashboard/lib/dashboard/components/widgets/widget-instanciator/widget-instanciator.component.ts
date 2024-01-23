@@ -96,6 +96,7 @@ export class WidgetInstanciatorComponent extends SubscriptionnerDirective implem
             .resolveComponent(widgetManifest)
             .pipe(delay(1))
             .subscribe((component) => {
+              this.release();
               this.instanciatedComponent = !!component
                 ? this.componentRef.createComponent(component)
                 : this.componentRef.createComponent(WidgetPlaceholderComponent);
@@ -118,11 +119,20 @@ export class WidgetInstanciatorComponent extends SubscriptionnerDirective implem
     );
   }
 
-  override ngOnDestroy() {
-    super.ngOnDestroy();
+  release() {
     if (this.instanciatedComponent) {
       this.instanciatedComponent.destroy();
+      // @ts-ignore
+      this.instanciatedComponent = null;
     }
+    this.instanceSubscription?.unsubscribe();
+    // @ts-ignore
+    this.instanceSubscription = null;
+  }
+
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    this.release();
     this.cdRef.detectChanges();
   }
 }

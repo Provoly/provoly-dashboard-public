@@ -88,6 +88,7 @@ import {
   Observable,
   of,
   startWith,
+  Subscription,
   switchMap
 } from 'rxjs';
 import { InteractionManager } from '../interaction/interaction-manager.class';
@@ -211,6 +212,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   actionMenuOpen$ = new BehaviorSubject(false);
   attributions$: Observable<boolean>;
   olZoomElement$ = new BehaviorSubject<HTMLDivElement | null>(null);
+  previousLayers: BaseLayer[] = [];
+  previousTooltip?: ComponentRef<BaseTooltipComponent>;
+  previousTooltipSub?: Subscription;
 
   constructor(
     store: Store<any>,
@@ -650,30 +654,34 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       })
     );
 
-    this.options$
-      .pipe(
-        map((options) => ({
-          center: fromLonLat(options.center ?? WidgetMapUtils.DEFAULT_MAP_CENTER),
-          maxZoom: options.zoom?.max ?? WidgetMapUtils.DEFAULT_ZOOM_MAX,
-          minZoom: options.zoom?.min ?? WidgetMapUtils.DEFAULT_ZOOM_MIN,
-          zoom: options.zoom?.start ?? WidgetMapUtils.DEFAULT_ZOOM_START
-        })),
-        distinctUntilChanged()
-      )
-      .subscribe((view) => this.map.setView(new View(view)));
+    this.subscriptions.add(
+      this.options$
+        .pipe(
+          map((options) => ({
+            center: fromLonLat(options.center ?? WidgetMapUtils.DEFAULT_MAP_CENTER),
+            maxZoom: options.zoom?.max ?? WidgetMapUtils.DEFAULT_ZOOM_MAX,
+            minZoom: options.zoom?.min ?? WidgetMapUtils.DEFAULT_ZOOM_MIN,
+            zoom: options.zoom?.start ?? WidgetMapUtils.DEFAULT_ZOOM_START
+          })),
+          distinctUntilChanged()
+        )
+        .subscribe((view) => this.map.setView(new View(view)))
+    );
 
-    this.options$
-      .pipe(
-        map((options) => options.attributions),
-        distinctUntilChanged()
-      )
-      .subscribe((attributions) => {
-        if (!attributions) {
-          this.map.removeControl(this.attributions);
-        } else {
-          this.map.addControl(this.attributions);
-        }
-      });
+    this.subscriptions.add(
+      this.options$
+        .pipe(
+          map((options) => options.attributions),
+          distinctUntilChanged()
+        )
+        .subscribe((attributions) => {
+          if (!attributions) {
+            this.map.removeControl(this.attributions);
+          } else {
+            this.map.addControl(this.attributions);
+          }
+        })
+    );
 
     this.layers$ = combineLatest([
       this.resultSet$,
@@ -688,6 +696,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       ),
       map(([resultSet, options, classes, additionalLayers, itemStyles, filters]) => {
         let hasRelationLayer = null as unknown as VectorLayer<VectorSource<any>>;
+
+        this.clearLayers(this.previousLayers);
 
         const layers = (options?.layers || [])
           .filter(
@@ -816,6 +826,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         const _layers = this.addEmptyWebGlLayerBelowSlideHeatmaps(layers);
 
         _layers.forEach((layer, index, arr) => layer.set('zIndex', arr.length - index));
+
+        this.previousLayers = _layers;
 
         return _layers;
       })
@@ -1062,8 +1074,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }): Promise<ComponentRef<BaseTooltipComponent> | null> {
     return new Promise((resolve) => {
       const component$ = this.tooltipFactoryService.generateTooltip(value.oClass, this.injector, this.popupContent);
-      component$.subscribe((component) => {
+      this.previousTooltipSub?.unsubscribe();
+      this.previousTooltipSub = component$.subscribe((component) => {
         if (component) {
+          if (this.previousTooltip) {
+            this.previousTooltip.destroy();
+          }
           component.instance.data.item = value;
           component.instance.popup = this.popup;
           resolve(component);
@@ -1495,6 +1511,16 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   override ngOnDestroy() {
     super.ngOnDestroy();
     this.store.dispatch(DashboardActions.resetWmsFeatures());
+
+    // Trying to release objects
+    this.clearLayers(this.map.getLayers().getArray());
+    this.map.getRenderer()!.dispose();
+    // @ts-ignore
+    delete this.map;
+    // @ts-ignore
+    this.map = null;
+    this.previousTooltipSub?.unsubscribe();
+    this.previousTooltip?.destroy();
   }
 
   getStyle(_layer: MapWidgetLayerOptions) {
@@ -1570,5 +1596,20 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   changeSelection(action: 'click' | 'lasso' | 'rectangle' | 'zoom' | 'move' | 'export' | 'upload') {
     this.interactionManager.selectionInteraction.changeSelection(action);
     this.toggleMenu();
+  }
+
+  private clearLayers(layers: BaseLayer[]) {
+    layers.forEach((layer) => {
+      this.map.removeLayer(layer);
+      if (layer instanceof VectorLayer && (layer as VectorLayer<VectorSource>).getSource()) {
+        (layer as VectorLayer<VectorSource>).getSource()!.clear();
+        layer.setSource(undefined);
+      }
+      if (layer instanceof TileLayer && (layer as TileLayer<any>).getSource()) {
+        (layer as TileLayer<any>).getSource().clear();
+        layer.setSource(undefined);
+      }
+      layer.dispose();
+    });
   }
 }

@@ -26,6 +26,7 @@ import { GeoJSON } from 'ol/format';
 import { XMLUtils } from './xml-utils.class';
 
 export class WidgetMapUtils {
+  static geoJSON = new GeoJSON();
   static populateLocationAttribute(
     layer: MapWidgetLayerOptions,
     resultSet: ResultSet,
@@ -345,7 +346,7 @@ export class WidgetMapUtils {
 
     let geometry;
     try {
-      geometry = new GeoJSON().readGeometry(value.value as any, {
+      geometry = WidgetMapUtils.geoJSON.readGeometry(value.value as any, {
         featureProjection: projection
       }) as Geometry;
     } catch (e) {
