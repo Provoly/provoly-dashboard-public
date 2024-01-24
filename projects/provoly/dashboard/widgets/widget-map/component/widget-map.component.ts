@@ -702,8 +702,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       map(([resultSet, options, classes, additionalLayers, itemStyles, filters, fields]) => {
         let hasRelationLayer = null as unknown as VectorLayer<VectorSource<any>>;
 
-        this.clearLayers(this.previousLayers);
-
         const layers = (options?.layers || [])
           .filter(
             // @ts-ignore
@@ -832,7 +830,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
         _layers.forEach((layer, index, arr) => layer.set('zIndex', arr.length - index));
 
-        this.previousLayers = _layers;
+        this.previousLayers.push(..._layers);
 
         return _layers;
       })
@@ -1521,6 +1519,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
     // Trying to release objects
     this.clearLayers(this.map.getLayers().getArray());
+    this.clearLayers(this.previousLayers);
     this.map.getRenderer()!.dispose();
     // @ts-ignore
     delete this.map;
