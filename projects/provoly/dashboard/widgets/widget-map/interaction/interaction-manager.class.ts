@@ -94,7 +94,8 @@ export class InteractionManager {
         bar: true,
         steps: 4,
         text: true,
-        minWidth: 140
+        minWidth: 140,
+        dpi: 90
       });
       this.component.map.addControl(this.scaleControl);
     }
