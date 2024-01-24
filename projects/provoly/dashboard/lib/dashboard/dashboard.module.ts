@@ -96,7 +96,7 @@ const components = [
     PryI18nModule
   ],
   exports: [...components],
-  providers: [WidgetFactoryService]
+  providers: []
 })
 export class PryDashboardModule {
   static forRoot(
@@ -133,7 +133,8 @@ export class PryDashboardModule {
         RefreshService,
         PryTitleService,
         WebsocketService,
-        ConfigService
+        ConfigService,
+        WidgetFactoryService
       ]
     };
   }
