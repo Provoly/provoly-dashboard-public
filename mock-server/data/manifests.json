@@ -176,7 +176,8 @@
         }
       ]
     }
-  },{
+  },
+  {
     "name": "manifest indépendant ?",
     "manifest": {
       "windows": [
@@ -1947,6 +1948,52 @@
                 "3aef0cbf-6d73-49e6-9e50-aebfaa211bf1",
                 "37e084ee-f714-4dc3-afe5-5a7cd203986c"
               ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "lrtzc-chart",
+    "manifest": {
+      "windows": [
+        {
+          "grid": {
+            "rows": 10,
+            "layout": "1/2v"
+          },
+          "widgets": [
+            {
+              "datasource": "11111111-69a6-474e-8f46-7cc8796ed151",
+              "options": {
+                "title": "test",
+                "customTitle": "test",
+                "type": "arc",
+                "subtype": "default",
+                "aggregation": "sum",
+                "selectedVariables": [
+                  {
+                    "label": "Nom du réseau de chaleur",
+                    "type": "nominal",
+                    "name": "station_nom"
+                  },
+                  {
+                    "label": "Coût (€ TTC) de electricité",
+                    "type": "quantitative",
+                    "name": "velos_disponibles"
+                  }
+                ]
+              },
+              "type": "legacy-chart",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "height": 12,
+                "width": 12
+              },
+              "header": false,
+              "title": "test"
             }
           ]
         }

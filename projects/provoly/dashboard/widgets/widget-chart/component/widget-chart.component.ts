@@ -440,7 +440,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
             field: `attributes.${variables[1].name}.value`,
             title: variables[1].label,
             type: variables[1].type,
-            aggregate: 'count'
+            aggregate: options.aggregation ?? Aggregation.COUNT
           },
           color: {
             field: `attributes.${variables[0].name}.value`,

@@ -69,6 +69,13 @@ import { SearchContainerComponent } from './search-container/search-container.co
             ),
           autoLoadDatasource: 'aggregate'
         },
+        'legacy-chart': {
+          name: 'legacy-chart',
+          load: () =>
+            import('@provoly/dashboard/widgets/widget-chart').then((module) =>
+              widgetLoader(module, 'WidgetChartModule')
+            )
+        },
         detail: {
           name: 'detail',
           load: () =>
