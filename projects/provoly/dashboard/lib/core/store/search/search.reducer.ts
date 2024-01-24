@@ -22,7 +22,7 @@ export const searchReducer = createReducer(
   initialSearchState,
   on(SearchActions.search, (state, action) => ({
     ...state,
-    searchLoading: [...new Set([...state.searchLoading, DEFAULT_NAMED_QUERY_ID])],
+    searchLoading: [...new Set([...state.searchLoading, action.id ?? DEFAULT_NAMED_QUERY_ID])],
     payload: action.payload,
     id: action.id
   })),
