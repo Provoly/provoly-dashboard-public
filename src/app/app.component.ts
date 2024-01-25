@@ -10,7 +10,8 @@ import {
   latLonToGeographicFieldTransformation,
   PrySnackbarService,
   SearchService,
-  solvingCollisionOptions
+  solvingCollisionOptions,
+  ViewMode
 } from '@provoly/dashboard';
 import { environment } from '../environments/environment';
 
@@ -62,5 +63,6 @@ export class AppComponent {
     this.searchService.addTransformation(
       latLonToGeographicFieldTransformation('Latitude', 'Longitude', 'location-auto')
     );
+    this.store.dispatch(DashboardActions.updateDisplayOptions({ mode: ViewMode.EDITION }));
   }
 }
