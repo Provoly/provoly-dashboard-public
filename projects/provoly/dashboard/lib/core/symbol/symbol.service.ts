@@ -240,14 +240,12 @@ export class SymbolService {
         resolve(image);
       };
 
-      if (url.startsWith(INTERNALLY_STORED_IMAGE_PREFIX)) {
-        const regexp = new RegExp('^' + INTERNALLY_STORED_IMAGE_PREFIX);
-        this.imageService.getImage(url.replace(regexp, '')).subscribe((res) => {
+      const regexp = new RegExp('^' + INTERNALLY_STORED_IMAGE_PREFIX);
+      this.imageService
+        .getImage(url.replace(regexp, ''), !url.startsWith(INTERNALLY_STORED_IMAGE_PREFIX))
+        .subscribe((res) => {
           image.src = this.sanitizer.sanitize(SecurityContext.URL, res.url) ?? DEFAULT_ICON_URL;
         });
-      } else {
-        image.src = this.sanitizer.sanitize(SecurityContext.URL, url) ?? DEFAULT_ICON_URL;
-      }
     });
 
     return this.cache[url];

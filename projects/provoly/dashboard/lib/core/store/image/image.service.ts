@@ -39,11 +39,11 @@ export class ImageService {
     );
   }
 
-  getImage(path: string): Observable<{ type: string; url: SafeUrl }> {
+  getImage(path: string, externalUrl = false): Observable<{ type: string; url: SafeUrl }> {
     return this.store.select(ConfigSelectors.dataUrl).pipe(
       mergeMap((url) => {
         return this.httpClient
-          .get(encodeURI(`${url}/file/icons/${path}`), {
+          .get(encodeURI(externalUrl ? path : `${url}/file/icons/${path}`), {
             observe: 'response',
             responseType: 'blob'
           })
