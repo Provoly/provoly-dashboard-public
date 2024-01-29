@@ -54,6 +54,7 @@ export interface MonoClassSearchPayload {
     attribute: string;
     direction: string;
   };
+  limit?: number;
 }
 
 export interface OperatorOption {

@@ -398,4 +398,23 @@ describe('Config Reducer', () => {
       maxAttributesInTiles: 2
     });
   });
+
+  describe('defineLimits', () => {
+    it('should put limits in the store', () => {
+      expect(
+        configReducer(
+          {
+            ...initialState,
+            limits: {}
+          },
+          ConfigActions.defineLimits({ limits: { dataset: 20 } })
+        )
+      ).toEqual({
+        ...initialState,
+        limits: {
+          dataset: 20
+        }
+      });
+    });
+  });
 });

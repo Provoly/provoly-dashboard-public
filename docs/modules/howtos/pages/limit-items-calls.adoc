@@ -34,3 +34,16 @@ PryDashboardModule.forRoot(
         ...
     })
 ----
+
+=== Limitation du nombre d'éléments retournés
+
+Lorsqu'on appelle le backend pour récupérer des items (mode search ou items), une limite peut être imposée pour ne pas récupérer
+trop d'élements. Cette limite est par défaut positionnée à 200. Il est parfois nécessaire de modifier cette limite, que ce soit pour une datasource spécifique
+ou la valeur par défaut. Cela se fait comme suit:
+
+[source,js]
+----
+this.store.dispatch(
+  ConfigActions.defineLimits({ limits: { default: 300, 'a35a3287-a622-4af3-a663-926744d94b40': 400 } })
+);
+----

@@ -21,10 +21,14 @@ export type ResultsetTransformation = (id: string, result: ResultSet) => ResultS
 export class SearchService {
   transformations: ResultsetTransformation[] = [];
   filters: { [datasource: string]: FilterContext[] } = {};
+  limits: { [p: string]: number } = {};
 
   constructor(private httpClient: HttpClient, private store: Store<ConfigState | SearchState>) {
     store.select(DashboardSelectors.datasourceFilters).subscribe((filters) => {
       this.filters = filters;
+    });
+    store.select(ConfigSelectors.limits).subscribe((limits) => {
+      this.limits = limits;
     });
   }
 
@@ -55,6 +59,8 @@ export class SearchService {
           params = params.append('filter', `${filter.attribute},${filter.operator},${filter.value}`);
         });
     }
+    const limit = this.limits[id] ?? this.limits['default'];
+    params = params.append('limit', limit);
     return params;
   }
 
@@ -73,15 +79,17 @@ export class SearchService {
   search(condition: MonoClassSearchPayload | MultiClassSearchPayload | FullTextSearchPayload): Observable<ResultSet> {
     return combineLatest([
       this.store.select(ConfigSelectors.dataUrl),
-      this.store.select(DashboardSelectors.quickOrder)
+      this.store.select(DashboardSelectors.quickOrder),
+      this.store.select(ConfigSelectors.limits)
     ]).pipe(
-      mergeMap(([url, quickOrder]) => {
+      mergeMap(([url, quickOrder, limits]) => {
         const params = {} as { [key: string]: string };
         if (quickOrder[DEFAULT_NAMED_QUERY_ID]) {
           params['order'] = `${quickOrder[DEFAULT_NAMED_QUERY_ID]?.attribute},${
             quickOrder[DEFAULT_NAMED_QUERY_ID]?.asc ?? ''
           }`;
         }
+        condition.limit = limits[DEFAULT_NAMED_QUERY_ID] ?? limits['default'];
         return this.httpClient.post<ResultSet>(encodeURI(`${url}/items/search`), condition, { params });
       }),
       map((rs) => this.applyTransformations(DEFAULT_NAMED_QUERY_ID, rs))

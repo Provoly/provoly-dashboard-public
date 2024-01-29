@@ -30,6 +30,7 @@ export interface ConfigState {
   maxAttributesInTiles: number;
   versions: Versions | null;
   accessGroups: Group[];
+  limits: { [key: string]: number };
 }
 
 export const initialConfigState: ConfigState = {
@@ -51,7 +52,8 @@ export const initialConfigState: ConfigState = {
   chartOption: ChartOptionDefault,
   maxAttributesInTiles: 5,
   versions: null,
-  accessGroups: []
+  accessGroups: [],
+  limits: {}
 };
 
 export const configReducer = createReducer(
@@ -177,5 +179,9 @@ export const configReducer = createReducer(
   on(ConfigActions.loadAccessGroupsSuccess, (state, action) => ({
     ...state,
     accessGroups: action.groups
+  })),
+  on(ConfigActions.defineLimits, (state, action) => ({
+    ...state,
+    limits: { ...state.limits, ...action.limits }
   }))
 );

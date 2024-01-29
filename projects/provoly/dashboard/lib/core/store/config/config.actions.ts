@@ -6,6 +6,8 @@ import { IconDefinitions } from './icon-definitions.interface';
 import { Versions } from './versions.interface';
 import { Group } from '../../components/share/share.model';
 
+export const DEFAULT_SEARCH_LIMIT_NUMBER = 200;
+
 export const ConfigActions = {
   defineUrls: createAction(
     '[Config] (bus) defining urls',
@@ -74,5 +76,6 @@ export const ConfigActions = {
   loadVersionsSuccess: createAction('[about] (bus) Load Versions Success', props<{ versions: Versions }>()),
   loadVersionsFailure: createAction('[about] Load Versions Failure', props<{ error: string }>()),
   loadAccessGroups: createAction('[Users] load access groups'),
-  loadAccessGroupsSuccess: createAction('[Config] load access groups Success', props<{ groups: Group[] }>())
+  loadAccessGroupsSuccess: createAction('[Config] load access groups Success', props<{ groups: Group[] }>()),
+  defineLimits: createAction('[Config] defining limits', props<{ limits: { [key: string]: number } }>())
 };

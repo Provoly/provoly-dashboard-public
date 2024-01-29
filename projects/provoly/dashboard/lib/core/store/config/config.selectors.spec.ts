@@ -113,4 +113,17 @@ describe('Config Selectors', () => {
     });
     expect(result).toEqual(5);
   });
+
+  describe('limits', () => {
+    it('should return default limit to 200', () => {
+      const result = ConfigSelectors.limits.projector(initialState);
+
+      expect(result).toEqual({ default: 200 });
+    });
+    it('should return current limit with default potentially overloaded', () => {
+      const result = ConfigSelectors.limits.projector({ ...initialState, limits: { default: 500, dataset: 1200 } });
+
+      expect(result).toEqual({ default: 500, dataset: 1200 });
+    });
+  });
 });

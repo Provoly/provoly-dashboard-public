@@ -1,6 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromConfig from './config.reducer';
 import { DEFAULT_ICON_URL, IconDefinitions, IconPosition } from './icon-definitions.interface';
+import { DEFAULT_SEARCH_LIMIT_NUMBER } from './config.actions';
 
 const feature = createFeatureSelector<fromConfig.ConfigState>(fromConfig.configFeatureKey);
 
@@ -63,6 +64,10 @@ const chartOption = createSelector(feature, (config) => config.chartOption);
 const maxAttributesInTiles = createSelector(feature, (config) => config.maxAttributesInTiles);
 const selectVersions = createSelector(feature, (state) => state.versions);
 const accessGroups = createSelector(feature, (state) => state.accessGroups);
+const limits = createSelector(
+  feature,
+  (state) => ({ default: DEFAULT_SEARCH_LIMIT_NUMBER, ...(state.limits ?? {}) } as { [key: string]: number })
+);
 
 export const ConfigSelectors = {
   feature,
@@ -90,5 +95,6 @@ export const ConfigSelectors = {
   maxAttributesInTiles,
   execUrl,
   selectVersions,
-  accessGroups
+  accessGroups,
+  limits
 };

@@ -28,6 +28,7 @@ export interface MultiSearchPayload {
 export interface MultiClassSearchPayload extends MultiSearchPayload {
   fullSearch: null;
   fields: MultiClassField[];
+  limit?: number;
 }
 
 export interface MultiClassField {
@@ -41,4 +42,5 @@ export interface FullTextSearchPayload extends MultiSearchPayload {
   fullSearch: {
     value: string;
   };
+  limit?: number;
 }
