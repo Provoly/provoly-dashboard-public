@@ -183,10 +183,10 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
       this.overlayRef.attach(new TemplatePortal(this.templateModalActions, this.viewContainerRef));
       const contextMenu = document.querySelector('div.m-context-menu') as HTMLDivElement;
       if (!!contextMenu && moreButton) {
-        const toggleActionsModalButton = document.querySelector('#' + moreButton.id);
-        const rect = toggleActionsModalButton?.getBoundingClientRect();
+        const rect = moreButton.getBoundingClientRect();
+        contextMenu.style.minWidth = '185px'
         contextMenu.style.left = (rect?.left ?? 0) - (contextMenu?.clientWidth ?? 0) + 23 + 'px';
-        contextMenu.style.top = (rect?.top ?? 0) + 25 + 'px';
+        contextMenu.style.top = (rect?.top ?? 0) + 30 + 'px';
       }
     } else {
       this.overlayRef?.dispose();
