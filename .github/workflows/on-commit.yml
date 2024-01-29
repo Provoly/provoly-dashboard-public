@@ -11,7 +11,7 @@ jobs:
     container: node:18-bullseye
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Manage Dependencies
         run: npm ci
       - name: Running Tests
