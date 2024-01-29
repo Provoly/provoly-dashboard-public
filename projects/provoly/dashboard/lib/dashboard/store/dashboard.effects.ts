@@ -30,7 +30,6 @@ import { RefreshService } from './refresh.service';
 import { PryTitleService } from './title.service';
 import { WmsService } from './wms.service';
 import { WidgetFactoryService } from '../components/widgets/widget-instanciator/widget-factory.service';
-import { PryVisibilityType } from '../../core/components/share/share.model';
 
 @Injectable()
 export class DashboardEffects {
@@ -355,8 +354,7 @@ export class DashboardEffects {
             action.image,
             action.cover,
             action.metadata,
-            action.groups,
-            action.visibility ?? { type: PryVisibilityType.PRIVATE }
+            action.groups
           )
           .pipe(
             tap(() =>

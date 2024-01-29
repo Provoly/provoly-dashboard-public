@@ -327,7 +327,7 @@ export const enTranslations = {
           noItemSelected: 'No user group selected',
           groups: {
             ALL: 'Public',
-            CONNECTED: 'Connected users'
+            AUTHENTICATED: 'Connected users'
           }
         }
       },

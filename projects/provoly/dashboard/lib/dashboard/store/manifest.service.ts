@@ -9,7 +9,6 @@ import { GlobalManifest, ManifestDescription } from '../../core/model/manifest.i
 import { ConfigSelectors } from '../../core/store/config/config.selectors';
 import { ManifestUtils } from './manifest-utils.class';
 import { DashboardSelectors } from './dashboard.selectors';
-import { PryVisibility } from '../../core/components/share/share.model';
 
 @Injectable({
   providedIn: 'root'
@@ -70,8 +69,7 @@ export class ManifestService {
     image?: string,
     cover?: boolean,
     metadata?: { metadataDefId: string; value: string }[],
-    groups?: string[],
-    visibility?: PryVisibility
+    groups?: string[]
   ): Observable<{ id: string; name: string; manifest: GlobalManifest }> {
     return this.store.select(ConfigSelectors.refUrl).pipe(
       mergeMap((url) =>
@@ -86,8 +84,7 @@ export class ManifestService {
             cover,
             metadata,
             datasource: ManifestUtils.getDatasourcesUsedByManifest(manifest).map((ds) => ds.datasetId),
-            groups,
-            visibility
+            groups
           }
         )
       )

@@ -331,7 +331,7 @@ export const frTranslations = {
           noItemSelected: "Aucun groupe d'utilisateurs sélectionné",
           groups: {
             ALL: 'Publique',
-            CONNECTED: 'Les utilisateurs connectés'
+            AUTHENTICATED: 'Les utilisateurs connectés'
           }
         }
       }

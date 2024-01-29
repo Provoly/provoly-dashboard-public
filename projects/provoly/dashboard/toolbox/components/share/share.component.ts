@@ -5,8 +5,6 @@ import {
   DashboardSelectors,
   GlobalManifest,
   ManifestDescription,
-  PryVisibility,
-  PryVisibilityType,
   ViewMode
 } from '@provoly/dashboard';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
@@ -28,7 +26,6 @@ export class ShareComponent extends ToolboxActionComponent {
   modalOpened = false;
   overlayRef?: OverlayRef;
   accessGroups: string[] = [];
-  visibility: PryVisibility = { type: PryVisibilityType.PRIVATE };
   @ViewChild('modal', { read: TemplateRef }) template!: TemplateRef<any>;
 
   constructor(store: Store, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
@@ -37,7 +34,6 @@ export class ShareComponent extends ToolboxActionComponent {
       this.store.select(DashboardSelectors.presentation).subscribe((prez) => {
         this.presentation = prez;
         this.accessGroups = prez?.current!.groups;
-        this.visibility = prez?.current!.visibility ?? { type: PryVisibilityType.PRIVATE };
       })
     );
   }
@@ -78,8 +74,7 @@ export class ShareComponent extends ToolboxActionComponent {
           name: this.presentation.current!.name ?? '',
           description: this.presentation.current!.description ?? '',
           image: this.presentation.current!.image ?? '',
-          groups: this.accessGroups,
-          visibility: this.visibility
+          groups: this.accessGroups
         })
       );
     }

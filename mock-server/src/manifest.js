@@ -22,7 +22,6 @@ module.exports = {
         modificationDate: manifest.modificationDate,
         image: manifest.image ?? '/assets/svgs/default.svg',
         groups: manifest.groups ?? [],
-        visibility: manifest.visibility ?? { type: 'PRIVATE' },
         owner: true,
         cover: casual.boolean,
         datasource: [
@@ -59,7 +58,7 @@ module.exports = {
       manifests.findIndex((manifest) => manifest.id === id),
       1
     ),
-  save: (id, name, description, creationDate, modificationDate, manifest, image, groups, visibility) => {
+  save: (id, name, description, creationDate, modificationDate, manifest, image, groups) => {
     let previous = manifests.find((m) => m.id === id);
     if (!previous) {
       manifests.push({});
@@ -76,6 +75,5 @@ module.exports = {
     previous.manifest = manifest;
     previous.image = image;
     previous.groups = groups;
-    previous.visibility = visibility;
   }
 };

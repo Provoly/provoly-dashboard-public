@@ -341,7 +341,7 @@ const getGroups = () => [
   },
   {
     id: casual.uuid,
-    name: 'CONNECTED',
+    name: 'AUTHENTICATED',
     system: true
   },
   {

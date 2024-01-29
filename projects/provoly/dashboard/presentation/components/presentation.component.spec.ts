@@ -1,13 +1,7 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import {
-  DashboardActions,
-  ManifestDescription,
-  PryTitleService,
-  PryVisibilityType,
-  ViewMode
-} from '@provoly/dashboard';
+import { DashboardActions, ManifestDescription, PryTitleService, ViewMode } from '@provoly/dashboard';
 import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pry-icon.component';
 import { MockPryShareComponent } from '@provoly/dashboard/mock/components/mock-pry-share.component';
 import { MockNgModelDirective } from '@provoly/dashboard/mock/directive/mock-ng-model.directive';
@@ -27,8 +21,7 @@ describe('PryPresentationComponent', () => {
   const presentation = {
     id: '1',
     name: 'presentation 1',
-    description: 'test-presentation',
-    visibility: { type: 'PRIVATE' }
+    description: 'test-presentation'
   } as ManifestDescription;
 
   beforeEach(async () => {
