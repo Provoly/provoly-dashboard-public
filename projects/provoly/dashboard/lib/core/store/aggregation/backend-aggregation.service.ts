@@ -107,7 +107,7 @@ export class PryBackendAggregationService extends PryAggregationService {
     if (options.graph && options.graph.sort) {
       params = params.set('sort', `${options.graph.sort.direction},${(options.graph.sort.value ?? '').toUpperCase()}`);
     }
-    params = this.searchService.getItemsFilter(targetDatasource, params);
+    params = this.searchService.getItemsFilter(targetDatasource, params, false);
 
     const key = `${this.dataUrl}_${params.toString()}`;
     if (!this.cache[key] || this.cache[key].time + 1000 < new Date().getTime()) {

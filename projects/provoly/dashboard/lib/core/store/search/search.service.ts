@@ -50,7 +50,7 @@ export class SearchService {
     return '|' + this.getItemsFilter(id, this.getOrder(quickOrder[id])).toString() + '|';
   }
 
-  getItemsFilter(id: string, cumulative?: HttpParams): HttpParams {
+  getItemsFilter(id: string, cumulative?: HttpParams, includeLimit = true): HttpParams {
     let params = cumulative ?? new HttpParams();
     if (this.filters[id]) {
       this.filters[id]
@@ -59,8 +59,10 @@ export class SearchService {
           params = params.append('filter', `${filter.attribute},${filter.operator},${filter.value}`);
         });
     }
-    const limit = this.limits[id] ?? this.limits['default'];
-    params = params.append('limit', limit);
+    if (includeLimit) {
+      const limit = this.limits[id] ?? this.limits['default'];
+      params = params.append('limit', limit);
+    }
     return params;
   }
 
