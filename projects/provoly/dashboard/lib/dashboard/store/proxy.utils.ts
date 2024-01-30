@@ -47,7 +47,7 @@ export class ProxyUtils {
       }>(JSON.parse(JSON.stringify(item.attributes)), {
         get: (original, prop, proxy) => {
           if (prop === 'toJSON') {
-            return () => JSON.stringify(original);
+            return () => original;
           } else {
             if (original[prop as string]) {
               return original[prop as string];

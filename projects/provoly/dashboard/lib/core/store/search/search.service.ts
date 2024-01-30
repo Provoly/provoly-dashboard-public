@@ -91,8 +91,8 @@ export class SearchService {
             quickOrder[DEFAULT_NAMED_QUERY_ID]?.asc ?? ''
           }`;
         }
-        condition.limit = limits[DEFAULT_NAMED_QUERY_ID] ?? limits['default'];
-        return this.httpClient.post<ResultSet>(encodeURI(`${url}/items/search`), condition, { params });
+        const _condition = { ...condition, limit: limits[DEFAULT_NAMED_QUERY_ID] ?? limits['default'] };
+        return this.httpClient.post<ResultSet>(encodeURI(`${url}/items/search`), _condition, { params });
       }),
       map((rs) => this.applyTransformations(DEFAULT_NAMED_QUERY_ID, rs))
     );
