@@ -256,7 +256,8 @@ export class DashboardEffects {
               SearchActions.getDatasourceItems({
                 // @ts-ignore
                 id: action.id as string,
-                excludeGeo: true,
+                // @ts-ignore
+                excludeGeo: action.excludeGeo != undefined ? action.excludeGeo : true,
                 from: 'DashboardEffects.assertResultSets$-2'
               })
             ];

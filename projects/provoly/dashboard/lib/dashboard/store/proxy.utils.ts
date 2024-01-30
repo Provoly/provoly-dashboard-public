@@ -46,14 +46,18 @@ export class ProxyUtils {
         [key: string]: AttributeSimpleValue | AttributeMultipleValue;
       }>(JSON.parse(JSON.stringify(item.attributes)), {
         get: (original, prop, proxy) => {
-          if (original[prop as string]) {
-            return original[prop as string];
+          if (prop === 'toJSON') {
+            return () => JSON.stringify(original);
           } else {
-            if (!this.currentlyLoading.includes(rsId) && this.requested[prop as string] !== false) {
-              this.requested[prop as string] = false;
-              this.store.dispatch(
-                SearchActions.getDatasourceItems({ id: rsId, excludeGeo: false, from: 'ProxyUtils.Item()' })
-              );
+            if (original[prop as string]) {
+              return original[prop as string];
+            } else {
+              if (!this.currentlyLoading.includes(rsId) && this.requested[prop as string] !== false) {
+                this.requested[prop as string] = false;
+                this.store.dispatch(
+                  SearchActions.getDatasourceItems({ id: rsId, excludeGeo: false, from: 'ProxyUtils.Item()' })
+                );
+              }
             }
           }
           return {
