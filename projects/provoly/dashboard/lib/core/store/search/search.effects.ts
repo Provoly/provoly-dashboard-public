@@ -42,7 +42,7 @@ export class SearchEffects {
         (props: { payload: MonoClassSearchPayload | MultiClassSearchPayload | FullTextSearchPayload; id?: string }) =>
           this.searchService.search(props.payload).pipe(
             map((resultSet) => SearchActions.searchSuccess({ resultSet, id: props.id })),
-            catchError((error) => [SearchActions.searchFailure({ error })])
+            catchError((error) => [SearchActions.searchFailure({ error, id: props.id })])
           )
       )
     )
