@@ -3,16 +3,22 @@ import { AttributeMultipleValue, AttributeSimpleValue, Item } from '../../core/m
 import { ResultSet, ResultSets } from '../../core/model/result-set.interface';
 import { SearchActions } from '../../core/store/search/search.actions';
 import { SearchSelectors } from '../../core/store/search/search.selectors';
+import { ClassSelectors } from '../../core/store/class/class.selectors';
+import { Class } from '../../core/store/class/class.interface';
 
 export class ProxyUtils {
   static store: Store;
   static currentlyLoading: string[];
   static requested = {} as { [rsId: string]: boolean };
+  static classes: Class[];
 
   static init(store: Store) {
     this.store = store;
     store.select(SearchSelectors.searchLoading).subscribe((searchLoading) => {
       this.currentlyLoading = searchLoading;
+    });
+    store.select(ClassSelectors.classes).subscribe((classes) => {
+      this.classes = classes;
     });
   }
 
@@ -52,10 +58,18 @@ export class ProxyUtils {
             if (original[prop as string]) {
               return original[prop as string];
             } else {
-              if (!this.currentlyLoading.includes(rsId) && this.requested[prop as string] !== false) {
-                this.requested[prop as string] = false;
-                this.store.dispatch(
-                  SearchActions.getDatasourceItems({ id: rsId, excludeGeo: false, from: 'ProxyUtils.Item()' })
+              const clazz = this.classes.find((cl) => cl.id === item.oClass);
+              const attr = clazz?.attributes.find((attr) => attr.technicalName === prop);
+              if (!!attr) {
+                if (!this.currentlyLoading.includes(rsId) && this.requested[prop as string] !== false) {
+                  this.requested[prop as string] = false;
+                  this.store.dispatch(
+                    SearchActions.getDatasourceItems({ id: rsId, excludeGeo: false, from: 'ProxyUtils.Item()' })
+                  );
+                }
+              } else {
+                console.warn(
+                  `Trying to access property ${prop as string} from class ${clazz?.name} but does not exist in model`
                 );
               }
             }

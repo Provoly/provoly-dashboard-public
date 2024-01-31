@@ -41,4 +41,8 @@
     color: themed($theme-map, 'color', 'primary', 500);
     background-color: themed($theme-map, 'color', 'primary', 200);
   }
+
+  &__clear {
+    color: themed($theme-map, 'color', 'grey', 500);
+  }
 }
