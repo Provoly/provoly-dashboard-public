@@ -8,6 +8,10 @@
   [attr.aria-expanded]="open"
   [attr.aria-owns]="open ? modalId : null"
   aria-haspopup="listbox"
+  tabindex="0"
+  cdkMonitorElementFocus
+  (cdkFocusChange)="onFocusChange($event)"
+  (keydown)="onKeydownSelect($event)"
 >
   <div class="a-pry-select__content">
     <ng-container *ngIf="autocomplete; else noAutocomplete">
@@ -16,11 +20,12 @@
         class="a-pry-select__search"
         [ngModel]="search$.getValue()"
         (ngModelChange)="search($event)"
-        (focus)="onInputFocus(true)"
         aria-autocomplete="list"
         [attr.aria-controls]="open ? modalId : null"
         [attr.aria-disabled]="disabled"
         [disabled]="disabled"
+        (keydown)="onKeydownAutocompleteInput($event)"
+        #input
       />
     </ng-container>
     <ng-template #noAutocomplete>
@@ -76,6 +81,8 @@
     [attr.aria-multiselectable]="multiple"
     [attr.required]="required"
     [attr.aria-readonly]="readonly"
+    cdkTrapFocus="!autocomplete"
+    [cdkTrapFocusAutoCapture]="true"
   >
     <div class="a-pry-select__options__option -hint" *ngIf="loading" [style.width.px]="modalWidth">
       <div class="no-widget no-widget__loader">
@@ -91,16 +98,19 @@
       <p>{{ '@pry.select.loading' | i18n }}...</p>
     </div>
     <ng-container *ngIf="!loading">
-      <ng-container *ngFor="let item of matchingItems$ | async; let index = index">
+      <ng-container *ngFor="let item of matchingItems$ | async; let index = index; let first = first; let last = last">
         <div
           class="a-pry-select__options__option"
           [attr.aria-selected]="(valueItems$ | async).includes(item)"
           [attr.aria-checked]="(valueItems$ | async).includes(item)"
           [attr.aria-disabled]="disabled"
           (click)="select($event, item, index)"
+          (keydown)="onKeydownOption($event, item, index, optionDivRef, first, last)"
           [style.width.px]="modalWidth"
           role="option"
           [id]="'select-option-' + index"
+          tabindex="0"
+          #optionDivRef
         >
           <ng-container *ngIf="template; else noTemplate">
             <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>

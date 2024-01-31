@@ -2,6 +2,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  EmbeddedViewRef,
   EventEmitter,
   forwardRef,
   Input,
@@ -17,6 +18,8 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import equal from 'fast-deep-equal/es6';
 import { SubscriptionnerDirective } from '../../../dashboard/components/subscriptionner.directive';
 import { tap } from 'rxjs/operators';
+import { SelectA11yService } from './select-a11y.service';
+import { FocusOrigin } from '@angular/cdk/a11y';
 
 let uniqueId = 0;
 
@@ -29,7 +32,8 @@ let uniqueId = 0;
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => PrySelectComponent),
       multi: true
-    }
+    },
+    SelectA11yService
   ]
 })
 export class PrySelectComponent extends SubscriptionnerDirective implements ControlValueAccessor {
@@ -85,8 +89,10 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
 
   overlayRef?: OverlayRef;
   @ViewChild('optionsModal', { read: TemplateRef }) optionsModal!: TemplateRef<any>;
+  optionsModalRef?: EmbeddedViewRef<any>;
   @ViewChild('selectElement') public selectElement!: ElementRef<HTMLDivElement>;
   @Input() elementRef!: HTMLDivElement;
+  @ViewChild('input') input?: ElementRef<HTMLInputElement>;
 
   private _onChange = (_: any) => {};
   private _onTouched = () => {};
@@ -98,7 +104,12 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
     return 'select-modal-' + this.id;
   }
 
-  constructor(private _cd: ChangeDetectorRef, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
+  constructor(
+    private _cd: ChangeDetectorRef,
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef,
+    public a11yService: SelectA11yService
+  ) {
     super();
     this.matchingItems$ = combineLatest([this._items$, this.search$, this.searchSelected$]).pipe(
       map(([items, term, alreadySelected]) =>
@@ -136,6 +147,8 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
         }
       })
     );
+
+    this.a11yService.setToggle((force?: boolean) => this.toggle(force));
   }
 
   registerOnChange(fn: any): void {
@@ -190,7 +203,7 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
     this.searchSelected$.next(false);
   }
 
-  select($event: Event, item: any, index: number) {
+  select($event: Event, item: any, index: number, forceClose = true) {
     const itemValue = this.bindValue ? item?.[this.bindValue] : item;
     const keyProp = this.bindValue ?? this.bindLabel ?? 'id';
     if (this.multiple) {
@@ -213,7 +226,7 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
     } else {
       this.writeValue(itemValue);
     }
-    if (this.closeOnSelect) {
+    if (this.closeOnSelect || forceClose) {
       this.toggle(false);
     }
     this.activeDescendant = index;
@@ -235,25 +248,28 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
               this.writeValue(this.search$.getValue());
             }
           });
-          this.overlayRef.attach(new TemplatePortal(this.optionsModal, this.viewContainerRef));
+          this.optionsModalRef = this.overlayRef.attach(new TemplatePortal(this.optionsModal, this.viewContainerRef));
+          this.focusInitialSelection();
         } else {
           this.overlayRef?.dispose();
           this.overlayRef = undefined;
-          this.focused = false;
+          this.focusSelect();
         }
       }
     }
   }
 
   handleClick() {
-    if (!this.focused) {
-      this.onInputFocus();
-    }
+    this.focused = true;
+    this.toggle();
   }
 
-  onInputFocus(force?: boolean) {
-    this.toggle(force);
-    this.focused = true;
+  toggleFocus() {
+    this.focused = !this.focused;
+  }
+
+  focusSelect() {
+    return this.autocomplete ? this.input?.nativeElement.focus() : this.selectElement?.nativeElement.focus();
   }
 
   private getOverlayConfig(): OverlayConfig {
@@ -289,4 +305,33 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
   get _elementRef(): HTMLDivElement {
     return this.elementRef ?? this.selectElement.nativeElement;
   }
+
+  onFocusChange = (origin: FocusOrigin) =>
+    this.a11yService.onFocusChange(
+      origin,
+      this.autocomplete,
+      () => this.toggleFocus(),
+      () => this.focusSelect()
+    );
+  onKeydownSelect = (event: KeyboardEvent) => this.a11yService.onKeydownSelect(event, this.autocomplete);
+  onKeydownAutocompleteInput = (event: KeyboardEvent) =>
+    this.a11yService.onKeydownAutocompleteInput(event, this.open, this.search$.getValue(), this.optionsModalRef);
+  onKeydownOption = (
+    event: KeyboardEvent,
+    item: any,
+    index: number,
+    optionDivRef: HTMLDivElement,
+    first: boolean,
+    last: boolean
+  ) =>
+    this.a11yService.onKeydownOption(
+      event,
+      optionDivRef,
+      first,
+      last,
+      this.autocomplete,
+      this.selectElement.nativeElement,
+      () => this.select(event, item, index, !this.multiple)
+    );
+  focusInitialSelection = () => this.a11yService.focusInitialSelection(this.optionsModalRef);
 }
