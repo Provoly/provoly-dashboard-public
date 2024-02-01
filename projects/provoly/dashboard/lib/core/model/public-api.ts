@@ -24,3 +24,4 @@ export * from './dataset.interface';
 export * from './filter.interface';
 export * from './admin-api.model';
 export * from './display-options.interface';
+export * from './automatic-grid-layout-definition.interface';

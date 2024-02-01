@@ -95,7 +95,6 @@ describe('PryAddEditPresentationComponent', () => {
     expect(spy).toHaveBeenCalledWith(
       DashboardActions.saveManifest({
         name: '',
-        description: null,
         id: '1',
         cover: false,
         image: '/assets/svgs/default-restitution.svg',

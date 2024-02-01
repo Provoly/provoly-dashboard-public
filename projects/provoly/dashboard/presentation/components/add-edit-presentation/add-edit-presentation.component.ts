@@ -106,7 +106,7 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
       ...this.selectedPresentation$.value!,
       id: this.selectedPresentation$.value?.id || uuidv4(),
       name: this.form.value.name ?? '',
-      description: this.form.value.description,
+      description: this.form.value.description ?? undefined,
       cover: this.form.value.cover ?? false,
       image: this.image ?? DEFAULT_RESTITUTION_ICON_URL,
       metadata: this.metadata()

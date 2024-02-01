@@ -3,6 +3,7 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { Component, ElementRef, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
+  AutomaticGridLayoutDefinition,
   ConfigActions,
   DashboardActions,
   DashboardGridLayout,
@@ -12,7 +13,6 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
-import { AutomaticGridLayoutDefinition } from '../../../lib/core/model/automatic-grid-layout-definition.interface';
 
 @Component({
   selector: 'pry-select-grid-layout',

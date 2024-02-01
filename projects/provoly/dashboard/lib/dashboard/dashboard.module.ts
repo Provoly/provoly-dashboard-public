@@ -50,7 +50,6 @@ import { BaseTooltipComponent } from './tooltip/base-tooltip.component';
 import { DefaultTooltipComponent } from './tooltip/components/default/default.tooltip.component';
 import { TOOLTIP_DEFINITION, TooltipDefinition } from './tooltip/tooltip-factory.service';
 import { PryFilterGroupCssComponent } from './filter/style/css.component';
-import { ProxyUtils } from './store/proxy.utils';
 import { AutomaticGridLayoutDefinition } from '../core/model/automatic-grid-layout-definition.interface';
 
 const components = [
@@ -131,7 +130,5 @@ export class PryDashboardModule {
     };
   }
 
-  constructor(store: Store) {
-    ProxyUtils.init(store);
-  }
+  constructor(store: Store) {}
 }

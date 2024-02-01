@@ -14,7 +14,6 @@ import { ResultSet, ResultSets } from '../../core/model/result-set.interface';
 import { DashboardCellParams } from './dashboard.actions';
 import { DashboardState } from './dashboard.reducers';
 import { ManifestUtils } from './manifest-utils.class';
-import { ProxyUtils } from './proxy.utils';
 import { BASE_DISPLAY_OPTIONS } from '../../core/model/display-options.interface';
 
 const NEW_WINDOW_TARGET = -1;
@@ -70,10 +69,7 @@ const targetTenantsIndexes = createSelector(manifests, rank, (manifests, rank) =
 ]);
 const results = createSelector(feature, (state: DashboardState) => state?.results);
 
-const resultSets = createSelector(
-  results,
-  (results) => (ProxyUtils.ResultSets(results.resultSets) as ResultSets) ?? ({} as ResultSets)
-);
+const resultSets = createSelector(results, (results) => results.resultSets ?? ({} as ResultSets));
 const resultSetsParams = createSelector(
   results,
   (results) => results.resultSetsParams ?? ({} as { [id: string]: string | undefined })
