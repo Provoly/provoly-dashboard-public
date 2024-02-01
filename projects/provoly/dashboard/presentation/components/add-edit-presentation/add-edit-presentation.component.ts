@@ -31,7 +31,7 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
   image: string = DEFAULT_RESTITUTION_ICON_URL;
   @Output() goBack = new EventEmitter<void>();
   type: LibraryTypes = LibraryTypes.ILLUSTRATION;
-  chosenLayout: DashboardGridLayout = DashboardGridLayout.FULL;
+  chosenLayout: string = DashboardGridLayout.FULL;
   possibleThemes: string[] = [];
   metadataDefs: IMetadata[] | undefined;
   metadataThemeId: string = '';

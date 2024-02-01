@@ -12,14 +12,15 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
+import { AutomaticGridLayoutDefinition } from '../../../lib/core/model/automatic-grid-layout-definition.interface';
 
 @Component({
   selector: 'pry-select-grid-layout',
   templateUrl: './select-grid-layout.component.html'
 })
 export class SelectGridLayoutComponent extends ToolboxActionComponent {
-  availableLayouts$: Observable<{ translation: any; value: any; image: string }[]>;
-  chosenLayout: DashboardGridLayout = DashboardGridLayout.MANUAL;
+  availableLayouts$: Observable<AutomaticGridLayoutDefinition[]>;
+  chosenLayout: string = DashboardGridLayout.MANUAL;
   canDispatch = false;
   @ViewChild('template', { read: TemplateRef }) template!: TemplateRef<any>;
   @ViewChild('firstButton') firstButton!: ElementRef<HTMLButtonElement>;
@@ -34,15 +35,9 @@ export class SelectGridLayoutComponent extends ToolboxActionComponent {
     );
     this.availableLayouts$ = this.store.select(DashboardSelectors.windowManifest).pipe(
       map((manifest) =>
-        WidgetPlacementUtils.getLayouts()
-          .filter((layout) => {
-            return WidgetPlacementUtils.placesForLayout(layout.key) >= (manifest.widgets ?? []).length;
-          })
-          .map((layout) => ({
-            value: layout.key,
-            translation: '@pry.toolbox.layout.' + layout.key,
-            image: layout.image
-          }))
+        WidgetPlacementUtils.layouts.filter((layout) => {
+          return layout.places.length === 0 || layout.places.length >= (manifest.widgets ?? []).length;
+        })
       )
     );
 
@@ -51,7 +46,7 @@ export class SelectGridLayoutComponent extends ToolboxActionComponent {
     }, 100);
   }
 
-  changeLayout(layout: DashboardGridLayout) {
+  changeLayout(layout: string) {
     this.chosenLayout = layout;
   }
 

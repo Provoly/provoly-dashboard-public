@@ -38,7 +38,7 @@ export interface GridLayout {
   columns?: number;
   gap?: number;
   rows?: number;
-  layout?: DashboardGridLayout;
+  layout?: string;
 }
 
 export enum DashboardGridLayout {

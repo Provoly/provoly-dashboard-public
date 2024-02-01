@@ -36,16 +36,25 @@
             type="button"
             #firstButton
             class="a-btn"
-            [attr.aria-pressed]="chosenLayout === layout.value"
-            [class.selected]="chosenLayout === layout.value"
-            (click)="changeLayout(layout.value)"
+            [attr.aria-pressed]="chosenLayout === layout.type"
+            [class.selected]="chosenLayout === layout.type"
+            (click)="changeLayout(layout.type)"
           >
-            <div class="u-txt-center">
-              <img [src]="layout.image" />
-              <strong>{{ layout.translation | i18n }}</strong>
+            <div class="o-select-grid-layout__item__preview">
+              <pry-dashboard
+                [staticDashboard]="{
+                  widgets: [],
+                  grid: { layout: layout.type, rows: layout.rows, columns: layout.columns, gap: 3 }
+                }"
+                [breakpoint]="10"
+                [noBackground]="true"
+              ></pry-dashboard>
             </div>
             <p class="a-p">
-              {{ layout.translation + '_detailled' | i18n }}
+              <strong>{{ layout.label ?? '' | i18n }}</strong>
+            </p>
+            <p class="a-p">
+              {{ layout.description ?? '' | i18n }}
             </p>
           </button>
         </li>

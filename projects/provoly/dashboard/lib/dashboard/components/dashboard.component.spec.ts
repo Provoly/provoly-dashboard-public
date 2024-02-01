@@ -84,6 +84,8 @@ describe('DashboardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
+    component.params.rows = 10;
+    component.params.columns = 12;
     fixture.detectChanges();
   });
 

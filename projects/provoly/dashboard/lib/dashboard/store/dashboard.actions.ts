@@ -4,7 +4,6 @@ import { DisplayOptions } from '../../core/model/display-options.interface';
 import { Filter } from '../../core/model/filter.interface';
 import { Item } from '../../core/model/item.interface';
 import {
-  DashboardGridLayout,
   DashboardManifest,
   GlobalManifest,
   ManifestDescription,
@@ -202,7 +201,7 @@ export const DashboardActions = {
     '[Dashboard] (bus) quick order',
     props<{ datasourceId: string; attribute: string; asc: OrderValue }>()
   ),
-  setGridLayout: createAction('[Dashboard] set grid layout', props<{ layout: DashboardGridLayout }>()),
+  setGridLayout: createAction('[Dashboard] set grid layout', props<{ layout: string }>()),
   propagateGridLayout: createAction(
     '[Dashboard] (bus) change grid layout',
     props<{ manifest: DashboardManifest; rank: number }>()

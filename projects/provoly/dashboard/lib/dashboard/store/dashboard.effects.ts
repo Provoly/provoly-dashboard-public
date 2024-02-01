@@ -576,7 +576,7 @@ export class DashboardEffects {
         // Trying all placement options
         for (const actualRank of sequence) {
           const windowLayout = manifestGlobal.windows[actualRank].grid?.layout ?? DashboardGridLayout.FULL;
-          const options = WidgetPlacementUtils.placementOptions(newWidgetManifest, windowLayout, params);
+          const options = WidgetPlacementUtils.placementOptions(newWidgetManifest, windowLayout);
           if (!found) {
             for (const option of options) {
               if (!found) {
@@ -600,11 +600,7 @@ export class DashboardEffects {
           const currentWindowLayout = manifestGlobal.windows[rank].grid?.layout ?? DashboardGridLayout.FULL;
 
           // si non trouvé : nouvelle page, première position suggérée
-          const firstProposedLayout = WidgetPlacementUtils.placementOptions(
-            newWidgetManifest,
-            currentWindowLayout,
-            params
-          )[0];
+          const firstProposedLayout = WidgetPlacementUtils.placementOptions(newWidgetManifest, currentWindowLayout)[0];
 
           manifestGlobal.windows.push({ widgets: [firstProposedLayout], grid: { layout: currentWindowLayout } });
         }

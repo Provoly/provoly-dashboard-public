@@ -91,6 +91,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
 
   @Input() CloseOnDragOut = true;
   @Input() displayOptions?: DisplayOptions;
+  @Input() noBackground = false;
 
   @ViewChild('grid') gridRef!: ElementRef;
   private canCalculateView = false;
@@ -107,7 +108,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
     offsetTop: 0,
     mobileMode: false
   };
-  private breakpoint: number = 0;
+  @Input() breakpoint: number = 0;
   @Output() rowHeight = new EventEmitter<number>();
   @Output() rows = new EventEmitter<number>();
   currentlyModifiedManifest: WidgetManifest | null = null;
@@ -126,7 +127,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
   gridTemplateRows$: Observable<string>;
   gridTemplateColumns$: Observable<string>;
   DashboardGridLayout = DashboardGridLayout;
-  layout: DashboardGridLayout = DashboardGridLayout.MANUAL;
+  layout: string = DashboardGridLayout.MANUAL;
   backgroundArea$: Observable<string>;
   private confirmRemoveRef?: OverlayRef;
   Array: any;
@@ -155,11 +156,10 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
         const wManifest = JSON.parse(JSON.stringify(_wManifest));
         if (wManifest.grid?.layout && wManifest.grid.layout !== DashboardGridLayout.MANUAL) {
           // Complete with placeholders
-          const size = WidgetPlacementUtils.placesForLayout(wManifest.grid.layout);
+          const size = WidgetPlacementUtils.getLayout(wManifest.grid.layout)?.places.length ?? 0;
           const places = WidgetPlacementUtils.placementOptions(
             { type: 'filler', layout: { x: 1, y: 1, width: 1, height: 1 } },
-            wManifest.grid.layout,
-            wManifest.grid
+            wManifest.grid.layout
           );
           let added = true;
           while (wManifest.widgets.length < size && added) {
@@ -297,9 +297,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
       .select(DashboardSelectors.gridLayout)
       .pipe(
         map((layout) =>
-          layout === DashboardGridLayout.MANUAL
-            ? []
-            : WidgetPlacementUtils.getLayoutSize(layout, { rows: 1, columns: 1 })
+          layout === DashboardGridLayout.MANUAL ? [] : WidgetPlacementUtils.getLayout(layout)?.places ?? []
         )
       );
   }
@@ -375,9 +373,9 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
       return '1 / 1';
     }
     if (layout.width > 1) {
-      return `${Math.min(layout.x, this.dashboardParams.columns - layout.width + 1)} / ${Math.min(
+      return `${Math.min(layout.x, this.params.columns - layout.width + 1)} / ${Math.min(
         layout.x + layout.width,
-        this.dashboardParams.columns + 1
+        this.params.columns + 1
       )}`;
     } else {
       return `${layout.x}`;
@@ -395,9 +393,9 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
       return `${previousHeight ?? 1} / ${(previousHeight ?? 1) + layout.height}`;
     }
     if (layout.height > 1) {
-      return `${Math.max(1, Math.min(layout.y, this.dashboardParams.rows - layout.height + 1))} / ${Math.min(
+      return `${Math.max(1, Math.min(layout.y, this.params.rows - layout.height + 1))} / ${Math.min(
         layout.y + layout.height,
-        this.dashboardParams.rows + 1
+        this.params.rows + 1
       )}`;
     } else {
       return `${layout.y}`;
@@ -515,9 +513,12 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
           this.currentlyModifiedManifest.layout.height = parseInt(h, 10);
         } else {
           // Use grid size
-          const layout = WidgetPlacementUtils.getLayoutSize(this.layout, this.dashboardParams)[
+          const layout = (WidgetPlacementUtils.getLayout(this.layout)?.places ?? [])[
             this.initialWidgetManifestList.length
-          ];
+          ] ?? {
+            width: 1,
+            height: 1
+          };
           this.currentlyModifiedManifest.layout.width = layout.width;
           this.currentlyModifiedManifest.layout.height = layout.height;
         }

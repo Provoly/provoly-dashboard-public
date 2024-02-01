@@ -1,5 +1,4 @@
 import { DashboardGridLayout, WidgetManifest } from '../../../../core/model/manifest.interface';
-import { DashboardCellParams } from '../../../store/dashboard.actions';
 import { WidgetPlacementUtils } from './widget-placement.utils';
 
 describe('WidgetPlacementUtils', () => {
@@ -93,193 +92,89 @@ describe('WidgetPlacementUtils', () => {
   describe('placementOptions', () => {
     it('should do not do anything if wrong parameters', () => {
       expect(
-        WidgetPlacementUtils.placementOptions(
-          {} as WidgetManifest,
-          undefined as unknown as DashboardGridLayout,
-          {
-            columns: 12,
-            rows: 18
-          } as DashboardCellParams
-        )
+        WidgetPlacementUtils.placementOptions({} as WidgetManifest, undefined as unknown as DashboardGridLayout)
       ).toEqual([]);
     });
     it('should propose correct placement with fullscreen size', () => {
-      expect(
-        WidgetPlacementUtils.placementOptions({} as WidgetManifest, DashboardGridLayout.FULL, {
-          columns: 12,
-          rows: 18
-        } as DashboardCellParams)
-      ).toEqual([{ layout: { height: 18, width: 12, x: 1, y: 1 } }]);
-    });
-    it('should propose correct placement with halfscreen horizontal size', () => {
-      expect(
-        WidgetPlacementUtils.placementOptions({} as WidgetManifest, DashboardGridLayout.HALF_HORIZONTAL, {
-          columns: 12,
-          rows: 18
-        } as DashboardCellParams)
-      ).toEqual([{ layout: { height: 9, width: 12, x: 1, y: 1 } }, { layout: { height: 9, width: 12, x: 1, y: 10 } }]);
-    });
-    it('should propose correct placement with halfscreen vertical size', () => {
-      expect(
-        WidgetPlacementUtils.placementOptions({} as WidgetManifest, DashboardGridLayout.HALF_VERTICAL, {
-          columns: 12,
-          rows: 18
-        } as DashboardCellParams)
-      ).toEqual([{ layout: { height: 18, width: 6, x: 1, y: 1 } }, { layout: { height: 18, width: 6, x: 7, y: 1 } }]);
-    });
-    it('should propose correct placement with third horizontal size', () => {
-      expect(
-        WidgetPlacementUtils.placementOptions({} as WidgetManifest, DashboardGridLayout.THIRD_HORIZONTAL, {
-          columns: 12,
-          rows: 18
-        } as DashboardCellParams)
-      ).toEqual([
-        { layout: { height: 6, width: 12, x: 1, y: 1 } },
-        { layout: { height: 6, width: 12, x: 1, y: 7 } },
-        { layout: { height: 6, width: 12, x: 1, y: 13 } }
+      expect(WidgetPlacementUtils.placementOptions({} as WidgetManifest, DashboardGridLayout.FULL)).toEqual([
+        { layout: { x: 1, y: 1, width: 12, height: 12 } }
       ]);
     });
+    it('should propose correct placement with halfscreen horizontal size', () => {
+      expect(WidgetPlacementUtils.placementOptions({} as WidgetManifest, DashboardGridLayout.HALF_HORIZONTAL)).toEqual([
+        { layout: { x: 1, y: 1, width: 12, height: 6 } },
+        { layout: { x: 1, y: 7, width: 12, height: 6 } }
+      ]);
+    });
+    it('should propose correct placement with halfscreen vertical size', () => {
+      expect(WidgetPlacementUtils.placementOptions({} as WidgetManifest, DashboardGridLayout.HALF_VERTICAL)).toEqual([
+        { layout: { x: 1, y: 1, width: 6, height: 12 } },
+        { layout: { x: 7, y: 1, width: 6, height: 12 } }
+      ]);
+    });
+    it('should propose correct placement with third horizontal size', () => {
+      expect(WidgetPlacementUtils.placementOptions({} as WidgetManifest, DashboardGridLayout.THIRD_HORIZONTAL)).toEqual(
+        [
+          { layout: { x: 1, y: 1, width: 12, height: 4 } },
+          { layout: { x: 1, y: 5, width: 12, height: 4 } },
+          { layout: { x: 1, y: 9, width: 12, height: 4 } }
+        ]
+      );
+    });
     it('should propose correct placement with third vertical size', () => {
-      expect(
-        WidgetPlacementUtils.placementOptions({} as WidgetManifest, DashboardGridLayout.THIRD_VERTICAL, {
-          columns: 12,
-          rows: 18
-        } as DashboardCellParams)
-      ).toEqual([
-        {
-          layout: {
-            height: 18,
-            width: 4,
-            x: 1,
-            y: 1
-          }
-        },
-        {
-          layout: {
-            height: 18,
-            width: 4,
-            x: 5,
-            y: 1
-          }
-        },
-        {
-          layout: {
-            height: 18,
-            width: 4,
-            x: 9,
-            y: 1
-          }
-        }
+      expect(WidgetPlacementUtils.placementOptions({} as WidgetManifest, DashboardGridLayout.THIRD_VERTICAL)).toEqual([
+        { layout: { x: 1, y: 1, width: 4, height: 12 } },
+        { layout: { x: 5, y: 1, width: 4, height: 12 } },
+        { layout: { x: 9, y: 1, width: 4, height: 12 } }
       ]);
     });
     it('should propose correct placement with quarter size', () => {
-      expect(
-        WidgetPlacementUtils.placementOptions({} as WidgetManifest, DashboardGridLayout.QUARTER, {
-          columns: 12,
-          rows: 18
-        } as DashboardCellParams)
-      ).toEqual([
-        {
-          layout: {
-            height: 9,
-            width: 6,
-            x: 1,
-            y: 1
-          }
-        },
-        {
-          layout: {
-            height: 9,
-            width: 6,
-            x: 7,
-            y: 1
-          }
-        },
-        {
-          layout: {
-            height: 9,
-            width: 6,
-            x: 1,
-            y: 10
-          }
-        },
-        {
-          layout: {
-            height: 9,
-            width: 6,
-            x: 7,
-            y: 10
-          }
-        }
+      expect(WidgetPlacementUtils.placementOptions({} as WidgetManifest, DashboardGridLayout.QUARTER)).toEqual([
+        { layout: { x: 1, y: 1, width: 6, height: 6 } },
+        { layout: { x: 1, y: 7, width: 6, height: 6 } },
+        { layout: { x: 7, y: 1, width: 6, height: 6 } },
+        { layout: { x: 7, y: 7, width: 6, height: 6 } }
       ]);
     });
   });
   describe('initializeLayoutSize', () => {
     it('should prepare for correct sizes for full screen', () => {
-      expect(
-        WidgetPlacementUtils.getLayoutSize(DashboardGridLayout.FULL, {
-          columns: 12,
-          rows: 18
-        } as DashboardCellParams)
-      ).toEqual([{ height: 18, width: 12, x: 1, y: 1 }]);
+      expect(WidgetPlacementUtils.getLayout(DashboardGridLayout.FULL)?.places).toEqual([
+        { x: 1, y: 1, width: 12, height: 12 }
+      ]);
     });
     it('should prepare for correct sizes for half vertical screen', () => {
-      expect(
-        WidgetPlacementUtils.getLayoutSize(DashboardGridLayout.HALF_VERTICAL, {
-          columns: 12,
-          rows: 18
-        } as DashboardCellParams)
-      ).toEqual([
-        { height: 18, width: 6, x: 1, y: 1 },
-        { height: 18, width: 6, x: 1, y: 1 }
+      expect(WidgetPlacementUtils.getLayout(DashboardGridLayout.HALF_VERTICAL)?.places).toEqual([
+        { x: 1, y: 1, width: 6, height: 12 },
+        { x: 7, y: 1, width: 6, height: 12 }
       ]);
     });
     it('should prepare for correct sizes for half horizontal screen', () => {
-      expect(
-        WidgetPlacementUtils.getLayoutSize(DashboardGridLayout.HALF_HORIZONTAL, {
-          columns: 12,
-          rows: 18
-        } as DashboardCellParams)
-      ).toEqual([
-        { height: 9, width: 12, x: 1, y: 1 },
-        { height: 9, width: 12, x: 1, y: 1 }
+      expect(WidgetPlacementUtils.getLayout(DashboardGridLayout.HALF_HORIZONTAL)?.places).toEqual([
+        { x: 1, y: 1, width: 12, height: 6 },
+        { x: 1, y: 7, width: 12, height: 6 }
       ]);
     });
     it('should prepare for correct sizes for third vertical screen', () => {
-      expect(
-        WidgetPlacementUtils.getLayoutSize(DashboardGridLayout.THIRD_VERTICAL, {
-          columns: 12,
-          rows: 18
-        } as DashboardCellParams)
-      ).toEqual([
-        { height: 18, width: 4, x: 1, y: 1 },
-        { height: 18, width: 4, x: 1, y: 1 },
-        { height: 18, width: 4, x: 1, y: 1 }
+      expect(WidgetPlacementUtils.getLayout(DashboardGridLayout.THIRD_VERTICAL)?.places).toEqual([
+        { x: 1, y: 1, width: 4, height: 12 },
+        { x: 5, y: 1, width: 4, height: 12 },
+        { x: 9, y: 1, width: 4, height: 12 }
       ]);
     });
     it('should prepare for correct sizes for third horizontal screen', () => {
-      expect(
-        WidgetPlacementUtils.getLayoutSize(DashboardGridLayout.THIRD_HORIZONTAL, {
-          columns: 12,
-          rows: 18
-        } as DashboardCellParams)
-      ).toEqual([
-        { height: 6, width: 12, x: 1, y: 1 },
-        { height: 6, width: 12, x: 1, y: 1 },
-        { height: 6, width: 12, x: 1, y: 1 }
+      expect(WidgetPlacementUtils.getLayout(DashboardGridLayout.THIRD_HORIZONTAL)?.places).toEqual([
+        { x: 1, y: 1, width: 12, height: 4 },
+        { x: 1, y: 5, width: 12, height: 4 },
+        { x: 1, y: 9, width: 12, height: 4 }
       ]);
     });
     it('should prepare for correct sizes for quarter screen', () => {
-      expect(
-        WidgetPlacementUtils.getLayoutSize(DashboardGridLayout.QUARTER, {
-          columns: 12,
-          rows: 18
-        } as DashboardCellParams)
-      ).toEqual([
-        { height: 9, width: 6, x: 1, y: 1 },
-        { height: 9, width: 6, x: 1, y: 1 },
-        { height: 9, width: 6, x: 1, y: 1 },
-        { height: 9, width: 6, x: 1, y: 1 }
+      expect(WidgetPlacementUtils.getLayout(DashboardGridLayout.QUARTER)?.places).toEqual([
+        { x: 1, y: 1, width: 6, height: 6 },
+        { x: 1, y: 7, width: 6, height: 6 },
+        { x: 7, y: 1, width: 6, height: 6 },
+        { x: 7, y: 7, width: 6, height: 6 }
       ]);
     });
   });

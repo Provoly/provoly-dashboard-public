@@ -568,12 +568,14 @@ const internalReducer = createReducer<DashboardState>(
     }
     newWindows[myRank].grid.layout = action.layout;
     if (action.layout !== DashboardGridLayout.MANUAL) {
+      const layout = WidgetPlacementUtils.getLayout(action.layout);
       // Reorder layouts
-      const params = {
-        rows: newWindows[myRank].grid.rows,
-        columns: newWindows[myRank].grid.columns
+      newWindows[myRank].grid = {
+        ...newWindows[myRank].grid,
+        rows: layout?.rows ?? DEFAULT_ROWS_NUMBER,
+        columns: layout?.columns ?? DEFAULT_COLUMNS_NUMBER
       };
-      const places = WidgetPlacementUtils.placementOptions({} as WidgetManifest, action.layout, params);
+      const places = WidgetPlacementUtils.placementOptions({} as WidgetManifest, action.layout);
 
       newWindows[myRank].widgets.forEach((widget: WidgetManifest, idx: number) => {
         let targetLayout = places[idx]?.layout;

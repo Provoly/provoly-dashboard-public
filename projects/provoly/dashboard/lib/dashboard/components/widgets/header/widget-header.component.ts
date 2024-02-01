@@ -398,9 +398,7 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective implement
 
   toggleChangeSpot() {
     if (!this.spotRef) {
-      this.places = WidgetPlacementUtils.placementOptions({ type: 'icon' } as WidgetManifest, this.currentLayout, {
-        ...this.windowManifest?.grid
-      });
+      this.places = WidgetPlacementUtils.placementOptions({ type: 'icon' } as WidgetManifest, this.currentLayout);
 
       this.spotRef = this.overlay.create(
         new OverlayConfig({

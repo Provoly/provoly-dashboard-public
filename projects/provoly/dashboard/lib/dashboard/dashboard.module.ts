@@ -36,11 +36,7 @@ import {
 import { WidgetInstanciatorComponent } from './components/widgets/widget-instanciator/widget-instanciator.component';
 import { WidgetDefinition } from './components/widgets/widget-instanciator/widgets-definition.model';
 import { WidgetPlaceholderComponent } from './components/widgets/widget-placeholder/widget-placeholder.component';
-import {
-  LayoutPlacementOptionImplementationFn,
-  LayoutSizeImplementationFn,
-  WidgetPlacementUtils
-} from './components/widgets/widget-placement/widget-placement.utils';
+import { WidgetPlacementUtils } from './components/widgets/widget-placement/widget-placement.utils';
 import { BaseFilterComponent } from './filter/base-filter.component';
 import { FilterInstanciatorComponent } from './filter/components/filter-instanciator/filter-instanciator.component';
 import { FilterGroupComponent } from './filter/components/filter-group/filter-group.component';
@@ -55,6 +51,7 @@ import { DefaultTooltipComponent } from './tooltip/components/default/default.to
 import { TOOLTIP_DEFINITION, TooltipDefinition } from './tooltip/tooltip-factory.service';
 import { PryFilterGroupCssComponent } from './filter/style/css.component';
 import { ProxyUtils } from './store/proxy.utils';
+import { AutomaticGridLayoutDefinition } from '../core/model/automatic-grid-layout-definition.interface';
 
 const components = [
   DashboardComponent,
@@ -110,15 +107,10 @@ export class PryDashboardModule {
     },
     tooltipReference: { [key: string]: TooltipDefinition },
     filterReference: { [key: string]: FilterDefinition },
-    additionalGridImplementations: {
-      type: string;
-      sizeImpl: LayoutSizeImplementationFn;
-      placementImpl: LayoutPlacementOptionImplementationFn;
-      image?: string;
-    }[] = []
+    additionalGridLayouts: AutomaticGridLayoutDefinition[] = []
   ): ModuleWithProviders<PryDashboardModule> {
-    additionalGridImplementations.forEach((impl) => {
-      WidgetPlacementUtils.addLayoutImplementation(impl.type, impl.sizeImpl, impl.placementImpl, impl.image);
+    additionalGridLayouts.forEach((impl) => {
+      WidgetPlacementUtils.addGridLayout(impl);
     });
     return {
       ngModule: PryDashboardModule,

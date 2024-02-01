@@ -82,7 +82,7 @@ export class PrySearchHomeComponent implements OnInit, OnDestroy {
   refreshRates$!: Observable<{ [p: string]: number }>;
   refreshId: string = '';
   deleteError$?: Observable<any>;
-  layout$!: Observable<DashboardGridLayout>;
+  layout$!: Observable<string>;
   DashboardGridLayout = DashboardGridLayout;
 
   constructor(

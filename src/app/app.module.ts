@@ -8,9 +8,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import {
-  DashboardCellParams,
-  DEFAULT_COLUMNS_NUMBER,
-  DEFAULT_ROWS_NUMBER,
   filterLoader,
   PryAboutModule,
   PryAggregationService,
@@ -24,9 +21,7 @@ import {
   PryIconModule,
   PrySelectModule,
   tooltipLoader,
-  WidgetLayout,
-  widgetLoader,
-  WidgetManifest
+  widgetLoader
 } from '@provoly/dashboard';
 import { PryCardModule } from '@provoly/dashboard/components/card';
 import { PryExpandPanelModule } from '@provoly/dashboard/components/expand-panel';
@@ -183,53 +178,14 @@ import { SearchContainerComponent } from './search-container/search-container.co
       [
         {
           type: '2/1',
-          image: 'assets/svgs/grid_2_gauche_1_droite.svg',
-          sizeImpl: (
-            outLayout: { x: number; y: number; height: number; width: number },
-            params: Partial<DashboardCellParams>
-          ) => {
-            return [
-              {
-                ...outLayout,
-                height: Math.floor((params.rows ?? DEFAULT_ROWS_NUMBER) / 2),
-                width: Math.floor((params.columns ?? DEFAULT_COLUMNS_NUMBER) / 2)
-              },
-              {
-                ...outLayout,
-                height: Math.floor((params.rows ?? DEFAULT_ROWS_NUMBER) / 2),
-                width: Math.floor((params.columns ?? DEFAULT_COLUMNS_NUMBER) / 2)
-              },
-              {
-                ...outLayout,
-                height: params.rows ?? DEFAULT_ROWS_NUMBER,
-                width: Math.floor((params.columns ?? DEFAULT_COLUMNS_NUMBER) / 2)
-              }
-            ];
-          },
-          placementImpl: (
-            widgetToPlace: WidgetManifest,
-            sizes: WidgetLayout[],
-            params: Partial<DashboardCellParams>
-          ) => [
-            { ...widgetToPlace, layout: { ...widgetToPlace.layout, ...sizes[0], x: 1, y: 1 } },
-            {
-              ...widgetToPlace,
-              layout: {
-                ...widgetToPlace.layout,
-                ...sizes[1],
-                x: 1,
-                y: Math.floor((params.columns ?? DEFAULT_COLUMNS_NUMBER) / 2) + 1
-              }
-            },
-            {
-              ...widgetToPlace,
-              layout: {
-                ...widgetToPlace.layout,
-                ...sizes[2],
-                x: Math.floor((params.rows ?? DEFAULT_ROWS_NUMBER) / 2) + 1,
-                y: 1
-              }
-            }
+          label: '@pry.toolbox.layout.2/1',
+          description: '@pry.toolbox.layout.2/1_detailled',
+          rows: 2,
+          columns: 2,
+          places: [
+            { x: 1, y: 1, width: 1, height: 1 },
+            { x: 1, y: 2, width: 1, height: 1 },
+            { x: 2, y: 1, width: 1, height: 2 }
           ]
         }
       ]

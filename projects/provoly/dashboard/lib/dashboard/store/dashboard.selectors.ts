@@ -45,7 +45,7 @@ const windowManifest = createSelector(
 );
 const gridLayout = createSelector(
   windowManifest,
-  (manifest) => (manifest.grid ?? {}).layout ?? DashboardGridLayout.MANUAL
+  (manifest) => ((manifest.grid ?? {}).layout ?? DashboardGridLayout.MANUAL) as string
 );
 const memoizeWidgetManifest = {} as any;
 const widgetManifest = (index: number) => {
