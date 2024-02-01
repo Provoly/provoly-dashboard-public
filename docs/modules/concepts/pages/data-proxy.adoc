@@ -12,13 +12,6 @@ actuellement, les widgets partagent leurs données), ni modifier les modèles.
 
 == Solution
 
-Afin d'arriver à réaliser cela, et rester le plus transparent possible, nous avons donc utilisé des link:https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Proxy[Proxy].
-C'est une technique qui n'est pas forcément très récente (2016), mais rarement utilisée en JS en comparaison d'autres langages (Java par exemple).
-
-L'idée, c'est que pour les jeux de données dont les données géographiques n'ont pas été récupérées, le modèle est le même que
-pour les autres données. Tout fonctionne correctement, cependant, lorsque l'application essaie d'accéder à une donnée du modèle qui n'est pas présente,
-alors le proxy détecte ce manque et va demander au système de récupérer les données complètes, de manière transparente, car c'est l'accès à la donnée
-en lui-même qui déclenche cette récupération.
-
-Le fait que les données soient stockées sous forme d'un magasin réactif permet de mettre à jour les représentations dépendantes
-suite à cette récupération de données.
+Afin d'arriver à réaliser cela, un paramètre excludeGeo peut-être ajouté aux requêtes afin d'ignorer ces attributs.
+Celui-ci est déterminé en fonction de chaque type de widget, grâce à la propriété
+(détails dans le chapitre "Comment faire pour limiter les appels à /items") autoLoadDatasource.

@@ -1,8 +1,7 @@
 === Personnaliser les grilles
 
-Pour les cas particuliers, il est possible de créer ses propres grilles de dépose de placement automatique des restitutions dans un dashboard. Cela se fait en fournissant 2 fonctions (pour gérer la taille et l'emplacement).
-
-Lors de l'ajout d'une grille, il est possible d'ajouter une image personnalisé en passant le lien vers cette image.
+Pour les cas particuliers, il est possible de créer ses propres grilles de dépose de placement automatique des restitutions dans un dashboard.
+Cela se fait en fournissant un manifest de gabarit
 
 Voici un exemple, avec le type '2/1' pour le type de grille:
 ----
@@ -12,47 +11,22 @@ PryDashboardModule.forRoot(
       [
         {
           type: '2/1',
-          image: 'assets/svgs/monimage.svg',
-          sizeImpl: (
-            outLayout: { x: number; y: number; height: number; width: number },
-            params: Partial<DashboardCellParams>
-          ) => {
-            return [
-              {
-                ...outLayout,
-                height: Math.floor((params.rows ?? DEFAULT_ROWS_NUMBER) / 2),
-                width: Math.floor((params.columns ?? DEFAULT_COLUMNS_NUMBER) / 2)
-              },
-              {
-                ...outLayout,
-                height: Math.floor((params.rows ?? DEFAULT_ROWS_NUMBER) / 2),
-                width: Math.floor((params.columns ?? DEFAULT_COLUMNS_NUMBER) / 2)
-              },
-              {
-                ...outLayout,
-                height: params.rows ?? DEFAULT_ROWS_NUMBER,
-                width: Math.floor((params.columns ?? DEFAULT_COLUMNS_NUMBER) / 2)
-              }
-            ];
-          },
-          placementImpl: (
-            widgetToPlace: WidgetManifest,
-            sizes: WidgetLayout[],
-            params: Partial<DashboardCellParams>
-          ) => [
-            { ...widgetToPlace, layout: { ...widgetToPlace.layout, ...sizes[0], x: 1, y: 1 } },
-            { ...widgetToPlace, layout: { ...widgetToPlace.layout, ...sizes[1], x: 1, y: 7 } },
-            { ...widgetToPlace, layout: { ...widgetToPlace.layout, ...sizes[2], x: 7, y: 1 } }
+          label: '@pry.toolbox.layout.2/1',
+          description: '@pry.toolbox.layout.2/1_detailled',
+          rows: 2,
+          columns: 2,
+          places: [
+            { x: 1, y: 1, width: 1, height: 1 },
+            { x: 1, y: 2, width: 1, height: 1 },
+            { x: 2, y: 1, width: 1, height: 2 }
           ]
         }
       ]
     ),
 ----
 
-`sizeImpl` retourne un tableau des tailles des widgets dans leur ordre d'ajout automatique.
-`placementImpl` retourne un tableau des widgets configurés et placés dans leur ordre d'ajout automatique.
-
-Pour proposer des libellés pour cette nouvelle grille utilisable par les utilisateurs, il faudra le faire de cette façon :
+Dans cet exemple les libellés pour cette nouvelle grille utilisable par les utilisateurs sont ajoutés
+de cette manière mais on pourrait aussi les mettre directement et ne pas les internationaliser :
 ----
 this.translateService.addLangObject('fr', 'custom-grid', {
       '@pry': {
@@ -66,3 +40,5 @@ this.translateService.addLangObject('fr', 'custom-grid', {
       }
     });
 ----
+
+Un rendu de l'affichage sur un dashboard miniature sera proposé en représentation pour le choix du gabarit.
