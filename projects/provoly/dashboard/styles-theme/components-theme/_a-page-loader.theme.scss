@@ -1,0 +1,9 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+.a-page-loader {
+  &.backdrop {
+    color: themed($theme-map, 'color', 'accent', 50);
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
