@@ -97,11 +97,11 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     ]).pipe(
       map(([presentations, search, inputSearch]) =>
         presentations.filter((presentations) => {
-          const [name, description] = [presentations.name.toLowerCase(), presentations.description.toLowerCase()];
+          const [name, description] = [presentations.name.toLowerCase(), presentations.description?.toLowerCase()];
           const [searchQuery, inputSearchQuery] = [search?.toLowerCase(), inputSearch?.toLowerCase()];
           return !!searchQuery || !!inputSearchQuery
-            ? (!!searchQuery && (name.includes(searchQuery) || description.includes(searchQuery))) ||
-                (!!inputSearchQuery && (name.includes(inputSearchQuery) || description.includes(inputSearchQuery)))
+            ? (!!searchQuery && (name.includes(searchQuery) || description?.includes(searchQuery))) ||
+                (!!inputSearchQuery && (name.includes(inputSearchQuery) || description?.includes(inputSearchQuery)))
             : true;
         })
       )
@@ -135,7 +135,6 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
       presentation: {
         id: v4(),
         name: '',
-        description: '',
         groups: [] as string[],
         owner: true
       } as ManifestDescription,
@@ -179,7 +178,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
       const contextMenu = document.querySelector('div.m-context-menu') as HTMLDivElement;
       if (!!contextMenu && moreButton) {
         const rect = moreButton.getBoundingClientRect();
-        contextMenu.style.minWidth = '185px'
+        contextMenu.style.minWidth = '185px';
         contextMenu.style.left = (rect?.left ?? 0) - (contextMenu?.clientWidth ?? 0) + 23 + 'px';
         contextMenu.style.top = (rect?.top ?? 0) + 30 + 'px';
       }
@@ -224,7 +223,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
         DashboardActions.saveManifest({
           id: presentation.id ?? '',
           name: presentation.name ?? '',
-          description: presentation.description ?? '',
+          description: presentation.description,
           image: presentation.image ?? '',
           groups: this.accessGroups
         })

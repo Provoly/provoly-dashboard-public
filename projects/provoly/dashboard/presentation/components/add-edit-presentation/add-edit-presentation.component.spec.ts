@@ -45,7 +45,6 @@ describe('PryAddEditPresentationComponent', () => {
                 {
                   id: '1',
                   name: 'test',
-                  description: 'test descr',
                   cover: false,
                   manifestUrl: '/dashboard/manifest/test',
                   creationDate: '2022-01-01',
@@ -73,7 +72,6 @@ describe('PryAddEditPresentationComponent', () => {
     component.selectedPresentation = {
       id: '1',
       name: 'test',
-      description: 'test descr',
       cover: false,
       manifestUrl: '/dashboard/manifest/test',
       creationDate: '2022-01-01',
@@ -97,8 +95,8 @@ describe('PryAddEditPresentationComponent', () => {
     expect(spy).toHaveBeenCalledWith(
       DashboardActions.saveManifest({
         name: '',
+        description: null,
         id: '1',
-        description: '',
         cover: false,
         image: '/assets/svgs/default-restitution.svg',
         manifest: {

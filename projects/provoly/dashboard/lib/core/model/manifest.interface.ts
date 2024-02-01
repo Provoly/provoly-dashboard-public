@@ -15,7 +15,7 @@ import { VegaWidgetOptions } from './widget-vega-manifest.interface';
 export interface ManifestDescription {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   manifestUrl: string;
   image: string;
   cover: boolean;
