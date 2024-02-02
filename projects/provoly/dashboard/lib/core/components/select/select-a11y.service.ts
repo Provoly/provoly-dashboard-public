@@ -11,7 +11,9 @@ export class SelectA11yService {
     toggleFocus();
     switch (origin) {
       case 'mouse':
-        this.toggle(true);
+        if (!autocomplete) {
+          this.toggle(true);
+        }
         break;
       case 'keyboard':
         if (autocomplete) {
@@ -36,9 +38,13 @@ export class SelectA11yService {
     optionsModalRef?: EmbeddedViewRef<any>
   ) {
     if (event.key === 'Tab') {
+      if (open) this.toggle();
       return;
     }
-    if (!open && searchValue?.length > 2 && /[\W]*/.exec(event.key)) {
+
+    if (!open && searchValue?.length > 2 && event.key.length === 1) {
+      this.toggle();
+    } else if (open && event.key === 'Enter') {
       this.toggle();
     } else if (open && event.key === 'ArrowDown') {
       optionsModalRef?.rootNodes[0].querySelector('[aria-selected="false"]').focus();
