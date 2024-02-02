@@ -82,7 +82,7 @@
     [attr.required]="required"
     [attr.aria-readonly]="readonly"
     cdkTrapFocus="!autocomplete"
-    [cdkTrapFocusAutoCapture]="true"
+    [cdkTrapFocusAutoCapture]="!autocomplete"
   >
     <div class="a-pry-select__options__option -hint" *ngIf="loading" [style.width.px]="modalWidth">
       <div class="no-widget no-widget__loader">

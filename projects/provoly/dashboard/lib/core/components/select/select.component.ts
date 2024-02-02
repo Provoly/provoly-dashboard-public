@@ -203,7 +203,7 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
     this.searchSelected$.next(false);
   }
 
-  select($event: Event, item: any, index: number, forceClose = true) {
+  select($event: Event, item: any, index: number) {
     const itemValue = this.bindValue ? item?.[this.bindValue] : item;
     const keyProp = this.bindValue ?? this.bindLabel ?? 'id';
     if (this.multiple) {
@@ -226,7 +226,7 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
     } else {
       this.writeValue(itemValue);
     }
-    if (this.closeOnSelect || forceClose) {
+    if (this.closeOnSelect) {
       this.toggle(false);
     }
     this.activeDescendant = index;
@@ -331,7 +331,7 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
       last,
       this.autocomplete,
       this.selectElement.nativeElement,
-      () => this.select(event, item, index, !this.multiple)
+      () => this.select(event, item, index)
     );
-  focusInitialSelection = () => this.a11yService.focusInitialSelection(this.optionsModalRef);
+  focusInitialSelection = () => this.a11yService.focusInitialSelection(this.autocomplete, this.optionsModalRef);
 }

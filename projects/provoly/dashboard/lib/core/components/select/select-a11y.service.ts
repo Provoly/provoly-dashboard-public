@@ -99,10 +99,12 @@ export class SelectA11yService {
     }
   }
 
-  focusInitialSelection(optionsModalRef?: EmbeddedViewRef<any>) {
-    let selectedOption: HTMLDivElement =
-      optionsModalRef?.rootNodes[0].querySelector('[aria-selected="true"]') ??
-      optionsModalRef?.rootNodes[0].querySelector('[aria-selected="false"]');
-    selectedOption?.setAttribute('cdkFocusInitial', '');
+  focusInitialSelection(autocomplete: boolean, optionsModalRef?: EmbeddedViewRef<any>) {
+    if (!autocomplete) {
+      let selectedOption: HTMLDivElement =
+        optionsModalRef?.rootNodes[0].querySelector('[aria-selected="true"]') ??
+        optionsModalRef?.rootNodes[0].querySelector('[aria-selected="false"]');
+      selectedOption?.setAttribute('cdkFocusInitial', '');
+    }
   }
 }
