@@ -229,6 +229,24 @@
           </div>
           <div class="o-settings__popup__content__fields -condensed">
             <div class="m-form-label-field">
+              <pry-checkbox (ngModelChange)="toggleLimitItems()" [ngModel]="!!optionsCopy.graph.limitItems">
+                {{ '@pry.widget.chart.limit' | i18n }}
+              </pry-checkbox>
+            </div>
+            <ng-container *ngIf="!!optionsCopy.graph.limitItems">
+              <div class="m-form-label-field">
+                <label class="a-label" for="chart_limitItemsValue">{{ '@pry.widget.chart.limitMaxNb' | i18n }}</label>
+                <input
+                  type="number"
+                  id="chart_limitItemsValue"
+                  class="a-form-field"
+                  [(ngModel)]="optionsCopy.graph.limitItems"
+                />
+              </div>
+            </ng-container>
+          </div>
+          <div class="o-settings__popup__content__fields -condensed">
+            <div class="m-form-label-field">
               <pry-checkbox (ngModelChange)="toggleSort($event)" [ngModel]="!!optionsCopy.graph.sort"
                 >{{ '@pry.widget.chart.sort.title' | i18n }}
               </pry-checkbox>

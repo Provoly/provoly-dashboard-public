@@ -89,6 +89,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   noAggregationData$: Observable<boolean>;
   allowedClasses$: Observable<Class[]>;
   colors = vega.scheme('Provoly');
+  DEFAULT_ITEM_LIMIT = 20;
 
   constructor(
     store: Store<any>,
@@ -559,8 +560,8 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           embed(this.vega.nativeElement, JSON.parse(JSON.stringify(spec)), {
             actions: false,
             renderer: 'canvas',
-            formatLocale: this.translateService.instantObject('@pry.widget.chart.numberLocale') as any,
-            timeFormatLocale: this.translateService.instantObject('@pry.widget.chart.timeFormatLocale') as any,
+            formatLocale: this.translateService.instantObject('@pry.widget.chart.numberLocale'),
+            timeFormatLocale: this.translateService.instantObject('@pry.widget.chart.timeFormatLocale'),
             tooltip: {
               theme: 'custom'
             }
@@ -897,11 +898,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   }
 
   changeTimeLimit($event: any) {
-    if (
-      this.optionsCopy$.value &&
-      this.optionsCopy$.value.abscissa.limit &&
-      this.optionsCopy$.value.abscissa.limit.isTimeLimit
-    ) {
+    if (this.optionsCopy$.value?.abscissa?.limit?.isTimeLimit) {
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         abscissa: {
@@ -965,7 +962,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   }
 
   changeColorScheme($event: any) {
-    if (this.optionsCopy$.value && this.optionsCopy$.value.groupBy) {
+    if (this.optionsCopy$.value?.groupBy) {
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         groupBy: {
@@ -1030,6 +1027,18 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
         graph: {
           ...this.optionsCopy$.value?.graph,
           sort: { ...this.optionsCopy$.value?.graph.sort!, direction: $event }
+        }
+      });
+    }
+  }
+
+  toggleLimitItems() {
+    if (this.optionsCopy$.value) {
+      this.optionsCopy$.next({
+        ...this.optionsCopy$.value,
+        graph: {
+          ...this.optionsCopy$.value.graph,
+          limitItems: this.DEFAULT_ITEM_LIMIT
         }
       });
     }

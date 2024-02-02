@@ -53,6 +53,7 @@ export const enTranslations = {
         dataLabel: 'Data label',
         origin: 'Axis containing 0',
         limit: 'Limit elements',
+        limitMaxNb: 'Maximum number of elements',
         asc: 'Biggest elements',
         desc: 'Smallest elements',
         timeInterval: 'Time interval',

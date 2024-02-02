@@ -52,6 +52,7 @@ export const frTranslations = {
         dataLabel: 'Libellé de la donnée',
         origin: 'Axe contenant 0',
         limit: 'Limiter les éléments',
+        limitMaxNb: "Nombre d'élements maximum",
         asc: 'Aux plus grands éléments',
         desc: 'Aux plus petits éléments',
         timeInterval: 'Intervalle de temps',
