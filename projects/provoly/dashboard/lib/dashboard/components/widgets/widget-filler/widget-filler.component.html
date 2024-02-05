@@ -1,3 +1,5 @@
-<div class="a-indicator-block">
-  <p>{{ index + 1 }}</p>
+<div class="filler-backdrop" (click)="moveToPlace()">
+  <div class="a-indicator-block">
+    <p>{{ index === -1 ? '-' : index + 1 }}</p>
+  </div>
 </div>

@@ -143,7 +143,7 @@ describe('DashboardComponent', () => {
     expect(spyDispatch).toHaveBeenCalledWith(
       DashboardActions.updateDashboardManifest({
         manifest: {
-          grid: { rows: 14 },
+          grid: { rows: 12 },
           widgets: [
             { type: 'c', layout: { x: 4, y: 3, width: 3, height: 12 } },
             { type: 'a', layout: { x: 1, y: 1, width: 1, height: 1 } },
@@ -314,7 +314,7 @@ describe('DashboardComponent', () => {
     );
   });
 
-  it('should resize (SE) element corresponding to mouse move', () => {
+  it('should resize (SE) element corresponding to mouse move (but blocked by widgets)', () => {
     const spyDispatch = jest.spyOn(store, 'dispatch').mockReturnValue(undefined);
 
     component.manifest = exampleManifest;
@@ -340,12 +340,11 @@ describe('DashboardComponent', () => {
     expect(spyDispatch).toHaveBeenCalledWith(
       DashboardActions.updateDashboardManifest({
         manifest: {
-          grid: { rows: 14 },
           widgets: [
-            { type: 'a', layout: { x: 1, y: 1, width: 2, height: 6 } },
+            { type: 'a', layout: { x: 1, y: 1, width: 1, height: 1 } },
             {
               type: 'b',
-              layout: { x: 2, y: 7, width: 10, height: 8 }
+              layout: { x: 2, y: 1, width: 10, height: 8 }
             }
           ]
         }
@@ -516,7 +515,7 @@ describe('DashboardComponent', () => {
     expect(spyDispatch).toHaveBeenCalledWith(
       DashboardActions.updateDashboardManifest({
         manifest: {
-          grid: { rows: 14 },
+          grid: { rows: 12 },
           widgets: [
             { type: 'new', layout: { x: 6, y: 3, width: 3, height: 12 } },
             { type: 'a', layout: { x: 1, y: 1, width: 1, height: 1 } },

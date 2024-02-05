@@ -19,7 +19,6 @@ import { GeoMetadata } from '../../../../core/model/dataset.interface';
 import { DashboardGridLayout, DashboardManifest, WidgetManifest } from '../../../../core/model/manifest.interface';
 import { Widget } from '../../../../core/model/widget.interface';
 import { ConfigActions } from '../../../../core/store/config/config.actions';
-import { DEFAULT_ICON_URL } from '../../../../core/store/config/icon-definitions.interface';
 import { Dataset, DataSource, NamedQuery } from '../../../../core/store/data-source/data-source.model';
 import { DataSourceSelectors } from '../../../../core/store/data-source/data-source.selectors';
 import { LibraryTypes } from '../../../../core/store/image/image.service';
@@ -29,6 +28,7 @@ import { DashboardSelectors } from '../../../store/dashboard.selectors';
 import { SubscriptionnerDirective } from '../../subscriptionner.directive';
 import { WidgetPlacementUtils } from '../widget-placement/widget-placement.utils';
 import { WidgetContextMenuDisplayOptions } from '../../../../core/model/display-options.interface';
+import { DEFAULT_COLUMNS_NUMBER, DEFAULT_ROWS_NUMBER } from '../../../store/dashboard.contants';
 
 export const WIDGET_HEADER_HEIGHT = 30;
 
@@ -64,6 +64,7 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective implement
   selectedItem?: Element | null;
   usedDatasources$: Observable<DataSource[]>;
   openSub?: Subscription;
+  targetManifest?: DashboardManifest;
 
   @Input() set manifest(manifest: WidgetManifest | null) {
     this.manifest$.next(manifest);
@@ -399,6 +400,7 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective implement
   toggleChangeSpot() {
     if (!this.spotRef) {
       this.places = WidgetPlacementUtils.placementOptions({ type: 'icon' } as WidgetManifest, this.currentLayout);
+      this.placesManifest();
 
       this.spotRef = this.overlay.create(
         new OverlayConfig({
@@ -416,35 +418,6 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective implement
       this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name + '-spot' }));
       this.menuOpen();
     }
-  }
-
-  moveToPlace(place: WidgetManifest) {
-    const startLayout = this.manifest$.getValue()!.layout;
-    const targetLayout = place.layout;
-    const newWindowManifest = JSON.parse(JSON.stringify(this.windowManifest)) as DashboardManifest;
-
-    const targetWidgetIndex = newWindowManifest.widgets.findIndex(
-      (w) =>
-        w.layout.x === targetLayout.x &&
-        w.layout.y === targetLayout.y &&
-        w.layout.width === targetLayout.width &&
-        w.layout.height === targetLayout.height
-    );
-    const startWidgetIndex = newWindowManifest.widgets.findIndex(
-      (w) =>
-        w.layout.x === startLayout.x &&
-        w.layout.y === startLayout.y &&
-        w.layout.width === startLayout.width &&
-        w.layout.height === startLayout.height
-    );
-    if (targetWidgetIndex !== -1) {
-      newWindowManifest.widgets[targetWidgetIndex].layout = startLayout;
-    }
-    newWindowManifest.widgets[startWidgetIndex].layout = targetLayout;
-
-    this.store.dispatch(DashboardActions.updateDashboardManifest({ manifest: newWindowManifest }));
-
-    this.toggleChangeSpot();
   }
 
   focusCrossElement() {
@@ -481,7 +454,35 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective implement
     return ds.metadata?.find((m) => m.metadataDef.name === GeoMetadata.NAMESPACE) !== undefined;
   }
 
-  protected readonly DEFAULT_ICON_URL = DEFAULT_ICON_URL;
+  placesManifest() {
+    const currentLayout = this.manifest$.getValue()?.layout!;
+    this.targetManifest = {
+      widgets: this.places.map((place, idx) => ({
+        ...place,
+        type: 'filler',
+        options: {
+          index: equal(currentLayout, place.layout)
+            ? -1
+            : this.places.findIndex(
+                (pl) =>
+                  place.layout.x === pl.layout.x &&
+                  place.layout.y === pl.layout.y &&
+                  place.layout.width === pl.layout.width &&
+                  place.layout.height === pl.layout.height
+              ),
+          sourcePlace: currentLayout,
+          targetPlace: place.layout,
+          windowManifest: this.windowManifest
+        }
+      })),
+      grid: {
+        layout: this.currentLayout,
+        rows: this.windowManifest?.grid?.rows ?? DEFAULT_ROWS_NUMBER,
+        columns: this.windowManifest?.grid?.columns ?? DEFAULT_COLUMNS_NUMBER,
+        gap: 3
+      }
+    };
+  }
 
   override ngOnDestroy() {
     super.ngOnDestroy();

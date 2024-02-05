@@ -80,6 +80,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
   @ViewChildren(WidgetInstanciatorComponent) instanciators?: QueryList<WidgetInstanciatorComponent>;
   dataFetching$: Observable<string[]>;
   params: DashboardCellParams = {} as DashboardCellParams;
+  forceModeEdition$ = new BehaviorSubject<boolean | undefined>(undefined);
 
   get widgetsInstances() {
     return this.instanciators?.map((instanciator) => instanciator.instanciatedComponent.instance) ?? [];
@@ -87,6 +88,10 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
 
   @Input() set staticDashboard(window: DashboardManifest) {
     this.staticDashboard$.next(window);
+  }
+
+  @Input() set forceModeEdition(mode: boolean) {
+    this.forceModeEdition$.next(mode);
   }
 
   @Input() CloseOnDragOut = true;
@@ -136,7 +141,10 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
     super();
     this.loading$ = this.store.select(DashboardSelectors.loading);
     this.dataFetching$ = this.store.select(SearchSelectors.searchLoading).pipe(delay(10));
-    this.modeEdition$ = this.store.select(DashboardSelectors.dashboardEditionMode);
+    this.modeEdition$ = combineLatest([
+      this.store.select(DashboardSelectors.dashboardEditionMode),
+      this.forceModeEdition$
+    ]).pipe(map(([storeMode, forceMode]) => (forceMode === undefined ? storeMode : forceMode)));
     this.subscriptions.add(
       this.modeEdition$.subscribe((mode) => {
         this.modeEdition = mode;
@@ -286,10 +294,10 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
     this.backgroundArea$ = combineLatest([this.windowManifest$, this.stacked$]).pipe(
       map(([manifest, stacked]) =>
         !stacked
-          ? `3/3/${(manifest.grid?.rows ?? DEFAULT_ROWS_NUMBER) - 1}/${
-              (manifest.grid?.columns ?? DEFAULT_COLUMNS_NUMBER) - 1
+          ? `1/1/${(manifest.grid?.rows ?? DEFAULT_ROWS_NUMBER) + 1}/${
+              (manifest.grid?.columns ?? DEFAULT_COLUMNS_NUMBER) + 1
             }`
-          : `3/1/${(manifest.grid?.columns ?? DEFAULT_COLUMNS_NUMBER) - 1}/1`
+          : `1/1/${(manifest.grid?.columns ?? DEFAULT_COLUMNS_NUMBER) + 1}/1`
       )
     );
 
@@ -781,5 +789,32 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
 
   trackWidgets(index: number, widgetManifest: WidgetManifest) {
     return index + '-' + widgetManifest.type + '-' + JSON.stringify(widgetManifest.layout);
+  }
+
+  changeSize(direction: string, offset: number) {
+    const minRows =
+      (this.manifest?.widgets.map((w) => w.layout.height + w.layout.y).reduce((a, b) => (a > b ? a : b), 2) ?? 2) - 1;
+    const minColumns =
+      (this.manifest?.widgets.map((w) => w.layout.width + w.layout.x).reduce((a, b) => (a > b ? a : b), 2) ?? 2) - 1;
+
+    const futureSize = {
+      rows: Math.max(minRows, (this.manifest!.grid?.rows ?? DEFAULT_ROWS_NUMBER) + (direction === 'rows' ? offset : 0)),
+      columns: Math.max(
+        minColumns,
+        (this.manifest!.grid?.columns ?? DEFAULT_COLUMNS_NUMBER) + (direction === 'columns' ? offset : 0)
+      )
+    };
+
+    this.store.dispatch(
+      DashboardActions.updateDashboardManifest({
+        manifest: {
+          ...this.manifest!,
+          grid: {
+            ...(this.manifest?.grid ?? {}),
+            ...futureSize
+          }
+        }
+      })
+    );
   }
 }

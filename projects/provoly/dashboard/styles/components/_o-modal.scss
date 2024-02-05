@@ -38,6 +38,12 @@
   flex-direction: column;
   flex: 1 auto;
 
+  &.-place {
+    pry-dashboard {
+      height: toRem(200px);
+    }
+  }
+
   &__top {
     display: flex;
     margin-bottom: toRem(25);

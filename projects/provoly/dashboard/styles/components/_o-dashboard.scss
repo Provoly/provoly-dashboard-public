@@ -8,6 +8,26 @@
   height: 100%;
 }
 
+.o-dashboard-add {
+  position: absolute;
+  display: flex;
+  justify-content: space-evenly;
+  z-index: 2;
+
+  &.-cols {
+    transform: translateY(-50%);
+  }
+
+  &.-rows {
+    flex-direction: column;
+    transform: translateX(-50%);
+
+    pry-icon span {
+      transform: rotate(90deg);
+    }
+  }
+}
+
 .o-dashboard-widget {
   position: relative;
   z-index: 1;
@@ -146,6 +166,11 @@
   &__loader {
     width: toRem(20);
   }
+}
+
+.filler-backdrop {
+  width: 100%;
+  height: 100%;
 }
 
 .a-indicator-block {

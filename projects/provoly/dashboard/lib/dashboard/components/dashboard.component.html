@@ -11,6 +11,24 @@
   (dragleave)="dragLeave($event)"
   (dragenter)="dragEnter($event)"
 >
+  <ng-container *ngIf="modeEdition$ | async">
+    <div class="o-dashboard-add -rows" [style.height.px]="this.params.gridHeight">
+      <button class="a-btn a-btn--primary a-btn--icon-only" (click)="changeSize('rows', -1)">
+        <pry-icon iconSvg="contract-left" [width]="16" [height]="16"></pry-icon>
+      </button>
+      <button class="a-btn a-btn--primary a-btn--icon-only" (click)="changeSize('rows', +1)">
+        <pry-icon iconSvg="expand-right" [width]="16" [height]="16"></pry-icon>
+      </button>
+    </div>
+    <div class="o-dashboard-add -cols" [style.width.px]="this.params.gridWidth">
+      <button class="a-btn a-btn--primary a-btn--icon-only" (click)="changeSize('columns', -1)">
+        <pry-icon iconSvg="contract-left" [width]="16" [height]="16"></pry-icon>
+      </button>
+      <button class="a-btn a-btn--primary a-btn--icon-only" (click)="changeSize('columns', +1)">
+        <pry-icon iconSvg="expand-right" [width]="16" [height]="16"></pry-icon>
+      </button>
+    </div>
+  </ng-container>
   <ng-container
     *ngFor="
       let widgetManifest of (windowManifest$ | async)?.widgets || [];
@@ -85,7 +103,7 @@
                   ? '@pry.widget.target.none_manual'
                   : '@pry.widget.target.none_auto'
                 ) | i18n
-              }} {{ backgroundArea$ | async }}"
+              }}"
             />
             <span class="no-widget__text">{{
               (layout === DashboardGridLayout.MANUAL

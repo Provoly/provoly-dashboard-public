@@ -33,7 +33,7 @@ export class ShareComponent extends ToolboxActionComponent {
     this.subscriptions.add(
       this.store.select(DashboardSelectors.presentation).subscribe((prez) => {
         this.presentation = prez;
-        this.accessGroups = prez?.current!.groups;
+        this.accessGroups = prez?.current?.groups ?? [];
       })
     );
   }

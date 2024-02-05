@@ -26,54 +26,39 @@ export function solveCollisions(
   initialWidgetManifestList: WidgetManifest[],
   dashboardManifest: DashboardManifest
 ): DashboardManifest {
-  let rows = dashboardManifest.grid?.rows ?? DEFAULT_ROWS_NUMBER;
   const nextWidgetList: WidgetManifest[] = candidateWidget
     ? JSON.parse(
         JSON.stringify([
           {
             ...candidateWidget,
-            layout: { ...(candidateWidget?.layout ?? { x: 1, y: 1, width: 1, height: 1 }), weight: 10 }
+            layout: { ...(candidateWidget?.layout ?? { x: 1, y: 1, width: 1, height: 1 }) }
           },
           ...initialWidgetManifestList
         ])
       )
     : [];
-  let nonBlocking = 10000;
 
   // Force all layout values to be positive and cannot be outside the grid
-  const actualCols = dashboardManifest.grid?.columns ?? DEFAULT_COLUMNS_NUMBER;
+  const columns = dashboardManifest.grid?.columns ?? DEFAULT_COLUMNS_NUMBER;
   nextWidgetList.forEach((w) => {
     w.layout.height = w.layout.height <= 0 ? 1 : w.layout.height;
     w.layout.width = w.layout.width <= 0 ? 1 : w.layout.width;
     w.layout.x =
-      w.layout.x <= 0 ? 1 : w.layout.x + w.layout.width > actualCols ? actualCols - w.layout.width + 1 : w.layout.x;
+      w.layout.x <= 0 ? 1 : w.layout.x + w.layout.width > columns ? columns - w.layout.width + 1 : w.layout.x;
     w.layout.y = w.layout.y <= 0 ? 1 : w.layout.y;
   });
+  let rows = dashboardManifest.grid?.rows ?? DEFAULT_ROWS_NUMBER;
 
-  let overlappingWidgets = WidgetPlacementUtils.getOverlaps(nextWidgetList);
-  while (overlappingWidgets.length > 0 && nonBlocking > 0) {
-    overlappingWidgets.forEach((widgets) => {
-      // Keep upmost widget (and leftmost with lower priority)
-      const [stayingWidget, ...movingWidgets] = [...widgets].sort(orderWidgetsAccordingToPlacement);
-      stayingWidget.layout.y = Math.min(...widgets.map((w) => w.layout.y));
-      movingWidgets.forEach(
-        (movingWidget) => (movingWidget.layout.y = stayingWidget.layout.y + stayingWidget.layout.height)
-      );
-    });
-
-    overlappingWidgets = WidgetPlacementUtils.getOverlaps(nextWidgetList);
-    nonBlocking--;
+  let overlappingWidgets = WidgetPlacementUtils.getOverlaps(initialWidgetManifestList);
+  if (overlappingWidgets.length > 0) {
+    console.warn('Widgets are already overlapping. We cannot have a correct solution for this.');
   }
-
-  // Adding rows if needed
-  rows = Math.max(rows, ...nextWidgetList.map((widget) => widget.layout.y + widget.layout.height - 1));
-
-  nextWidgetList.forEach((widget: WidgetManifest & { layout: { weight?: number } }) => delete widget.layout.weight);
 
   const layout = dashboardManifest.grid?.layout ?? DashboardGridLayout.MANUAL;
 
+  let result = undefined;
   if (!solvingCollisionOptions.invertedGravity || layout !== DashboardGridLayout.MANUAL) {
-    return {
+    result = {
       ...dashboardManifest,
       grid: { ...dashboardManifest.grid, rows },
       widgets: nextWidgetList
@@ -98,13 +83,15 @@ export function solveCollisions(
       });
     }
 
-    return {
+    result = {
       ...dashboardManifest,
       grid: {
-        ...dashboardManifest.grid,
-        rows: Math.max(solvingCollisionOptions.minRows, ...nextWidgetList.map((w) => w.layout.y + w.layout.height - 1))
+        ...dashboardManifest.grid
       },
       widgets: nextWidgetList
     };
   }
+
+  const newOverlaps = WidgetPlacementUtils.getOverlaps(result.widgets);
+  return newOverlaps.length > 0 ? dashboardManifest : result;
 }

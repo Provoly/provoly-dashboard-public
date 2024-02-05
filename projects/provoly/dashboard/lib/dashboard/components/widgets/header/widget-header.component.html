@@ -258,7 +258,7 @@
 </ng-template>
 
 <ng-template #overlaySpot>
-  <div class="o-modal">
+  <div class="o-modal -place">
     <div class="o-modal__top">
       <div class="o-modal__top__title">
         <h2 class="a-h2">
@@ -272,12 +272,11 @@
         </button>
       </div>
     </div>
-    <ng-container *ngFor="let place of places; let i = index">
-      <ng-container *ngIf="currentPlacementIndex !== i">
-        <button type="button" class="a-btn" (click)="moveToPlace(place)">
-          <span>{{ '@pry.widget.tooltip.spotName' | i18n : { place: i + 1 } }}</span>
-        </button>
-      </ng-container>
-    </ng-container>
+    <pry-dashboard
+      [staticDashboard]="targetManifest!"
+      [breakpoint]="10"
+      [noBackground]="true"
+      [forceModeEdition]="false"
+    ></pry-dashboard>
   </div>
 </ng-template>
