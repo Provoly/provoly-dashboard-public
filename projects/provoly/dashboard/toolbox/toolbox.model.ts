@@ -17,6 +17,7 @@ export interface ToolboxAction {
   component: Type<ToolboxActionComponent>;
   access: PryAccessCheck;
   visible: boolean;
+  needsOwner: boolean;
 }
 
 export const ACTIONS: ToolboxAction[] = [
@@ -24,66 +25,77 @@ export const ACTIONS: ToolboxAction[] = [
     name: 'filter_settings',
     component: PryFilterSettingsComponent,
     visible: true,
-    access: { module: 'dashboard', page: 'toolbox', action: 'filter_settings' }
+    access: { module: 'dashboard', page: 'toolbox', action: 'filter_settings' },
+    needsOwner: false
   },
   {
     name: 'save_view',
     component: SaveViewComponent,
     visible: true,
-    access: { module: 'dashboard', page: 'toolbox', action: 'save' }
+    access: { module: 'dashboard', page: 'toolbox', action: 'save' },
+    needsOwner: true
   },
   {
     name: 'save_view_as',
     component: SaveViewComponent,
     visible: true,
-    access: { module: 'dashboard', page: 'toolbox', action: 'save' }
+    access: { module: 'dashboard', page: 'toolbox', action: 'save' },
+    needsOwner: false
   },
   {
     name: 'new_tab',
     component: LaunchTabComponent,
     visible: true,
-    access: { module: 'dashboard', page: 'toolbox', action: 'new_tab' }
+    access: { module: 'dashboard', page: 'toolbox', action: 'new_tab' },
+    needsOwner: false
   },
   {
     name: 'clear_view',
     component: ClearViewComponent,
     visible: true,
-    access: { module: 'dashboard', page: 'toolbox', action: 'clear_view' }
+    access: { module: 'dashboard', page: 'toolbox', action: 'clear_view' },
+    needsOwner: false
   },
   {
     name: 'default_size',
     component: SelectGridLayoutComponent,
     visible: true,
-    access: { module: 'dashboard', page: 'toolbox', action: 'default_size' }
+    access: { module: 'dashboard', page: 'toolbox', action: 'default_size' },
+    needsOwner: false
   },
   {
     name: 'refresh_datasets',
     component: RefreshDatasetsComponent,
     visible: true,
-    access: { module: 'dashboard', page: 'toolbox', action: 'refresh_datasets' }
+    access: { module: 'dashboard', page: 'toolbox', action: 'refresh_datasets' },
+    needsOwner: false
   },
   {
     name: 'automate_refresh',
     component: AutomateRefreshComponent,
     visible: true,
-    access: { module: 'dashboard', page: 'toolbox', action: 'automate_refresh' }
+    access: { module: 'dashboard', page: 'toolbox', action: 'automate_refresh' },
+    needsOwner: false
   },
   {
     name: 'edit_presentation_content',
     component: SwitchToEditContentComponent,
     visible: true,
-    access: { module: 'dashboard', page: 'toolbox', action: 'edit_presentation_content' }
+    access: { module: 'dashboard', page: 'toolbox', action: 'edit_presentation_content' },
+    needsOwner: true
   },
   {
     name: 'share',
     component: ShareComponent,
     visible: true,
-    access: { module: 'dashboard', page: 'toolbox', action: 'share' }
+    access: { module: 'dashboard', page: 'toolbox', action: 'share' },
+    needsOwner: true
   },
   {
     name: 'delete',
     component: DeleteComponent,
     visible: true,
-    access: { module: 'dashboard', page: 'toolbox', action: 'delete' }
+    access: { module: 'dashboard', page: 'toolbox', action: 'delete' },
+    needsOwner: true
   }
 ];

@@ -4,8 +4,11 @@ import {
   DashboardGridLayout,
   DashboardSelectors,
   DisplayOptions,
+  GlobalManifest,
+  ManifestDescription,
   PRY_ACCESS_TOKEN,
-  PryBaseAccess
+  PryBaseAccess,
+  ViewMode
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { ACTIONS, ToolboxAction } from '../toolbox.model';
@@ -18,7 +21,6 @@ export class ToolboxComponent implements OnInit {
   actions$ = new BehaviorSubject<ToolboxAction[]>(ACTIONS);
   _dropdownActions$ = new BehaviorSubject<{ name: string; order: number }[]>([]);
   @Input() displayLabels = true;
-  hasInitialPresentation$: Observable<boolean>;
   isManualMode$: Observable<boolean>;
   allActions$!: Observable<ToolboxAction[]>;
   mainActions$!: Observable<ToolboxAction[]>;
@@ -27,6 +29,14 @@ export class ToolboxComponent implements OnInit {
   isDropdownOpen = false;
   actionsAvailable$: Observable<DisplayOptions | undefined>;
   showEditToggle$: Observable<boolean>;
+  private presentation$: Observable<
+    | {
+        current: ManifestDescription | undefined;
+        viewMode?: ViewMode;
+        initial: GlobalManifest | undefined;
+      }
+    | undefined
+  >;
 
   @Input() set actions(actions: ToolboxAction[]) {
     this.actions$.next(actions);
@@ -37,7 +47,7 @@ export class ToolboxComponent implements OnInit {
   }
 
   constructor(store: Store, @Optional() @Inject(PRY_ACCESS_TOKEN) private role: PryBaseAccess) {
-    this.hasInitialPresentation$ = store.select(DashboardSelectors.presentation).pipe(map((pres) => !!pres.initial));
+    this.presentation$ = store.select(DashboardSelectors.presentation);
     this.isManualMode$ = store
       .select(DashboardSelectors.windowManifest)
       .pipe(map((pres) => (pres.grid?.layout ?? DashboardGridLayout.MANUAL) === DashboardGridLayout.MANUAL));
@@ -46,25 +56,30 @@ export class ToolboxComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.allActions$ = combineLatest([this.actions$, this.actionsAvailable$]).pipe(
-      switchMap(([actions, displayOptions]) =>
+    this.allActions$ = combineLatest([
+      this.actions$,
+      this.actionsAvailable$,
+      this.presentation$.pipe(map((pres) => pres?.current?.owner ?? false))
+    ]).pipe(
+      switchMap(([actions, displayOptions, isOwner]) =>
         combineLatest(
           actions.map((action) => {
             // @ts-ignore
             const actionAvailable = action.visible && displayOptions.toolbox[action.name];
+            const restraintOwner = !action.needsOwner || isOwner;
             return this.role
               ? this.role.hasRole(null, action.access.module, action.access.page, action.access.action).pipe(
                   map(
                     (hasRole) =>
                       ({
                         ...action,
-                        visible: actionAvailable && (!this.role || hasRole)
+                        visible: actionAvailable && (!this.role || hasRole) && restraintOwner
                       } as ToolboxAction)
                   )
                 )
               : of({
                   ...action,
-                  visible: actionAvailable
+                  visible: actionAvailable && restraintOwner
                 } as ToolboxAction);
           })
         )
