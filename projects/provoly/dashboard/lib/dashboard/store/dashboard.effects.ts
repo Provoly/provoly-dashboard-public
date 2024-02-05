@@ -391,6 +391,7 @@ export class DashboardEffects {
       ofType(DashboardActions.fetchManifestsList),
       withLatestFrom(this.store.select(DashboardSelectors.rank)),
       filter(([action, rank]) => rank === 0 || rank === -1),
+      debounceTime(100),
       mergeMap(([action, rank]) =>
         this.manifestService.list().pipe(map((manifests) => DashboardActions.updateManifestsList({ manifests })))
       )
