@@ -34,7 +34,12 @@
       </ng-container>
       <ng-template #selectedValues>
         <ng-container *ngFor="let item of valueItems$ | async">
-          <div class="a-pry-select__value" [class.pry-select-form]="isForm" [class.-multiple]="multiple">
+          <div
+            class="a-pry-select__value"
+            [class.pry-select-form]="isForm"
+            [class.-multiple]="multiple"
+            [ngClass]="item[bindClasses] ?? {}"
+          >
             <ng-container *ngIf="template; else noTemplateLabel">
               <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
             </ng-container>

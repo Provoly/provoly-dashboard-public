@@ -15,6 +15,10 @@
   &__value {
     &.-multiple {
       background-color: themed($theme-map, 'color', 'accent', 100);
+
+      &.-warn {
+        background-color: themed($theme-map, 'color', 'status', warning);
+      }
     }
   }
 

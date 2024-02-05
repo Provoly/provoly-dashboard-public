@@ -89,7 +89,11 @@ export class ChipsSelectorComponent extends SubscriptionnerDirective {
     const labelTranslated = this.itemTranslationStringBase
       ? this.i18n.instant(this.itemTranslationStringBase + label)
       : label;
-    return labelTranslated.startsWith(this.itemTranslationStringBase) ? label : labelTranslated;
+    return typeof labelTranslated === 'string'
+      ? labelTranslated.startsWith(this.itemTranslationStringBase)
+        ? label
+        : labelTranslated
+      : '--object--';
   }
 
   areItemsEqual(item1: any, item2: any) {

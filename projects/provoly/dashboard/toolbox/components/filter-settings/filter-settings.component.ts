@@ -17,7 +17,8 @@ import {
   FilterFactoryService,
   GlobalManifest,
   MonoClassSearchPayload,
-  NamedQueryTypes
+  NamedQueryTypes,
+  PryI18nService
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
@@ -82,7 +83,8 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private filterFactoryService: FilterFactoryService,
-    private injector: Injector
+    private injector: Injector,
+    private i18nService: PryI18nService
   ) {
     super(store);
     this.manifest$ = store.select(DashboardSelectors.globalManifest);
@@ -143,7 +145,24 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
           .flat()
           .sort((attr1, attr2) => attr1.label.localeCompare(attr2.label))
           .filter((attr) => this.isValidAttributeForComponentType(componentType, attr));
-      })
+      }),
+      map(
+        (attributes) =>
+          [
+            ...attributes,
+            ...this.filter.attributes
+              .map((attr) =>
+                attributes.map((a) => a.id).includes(attr.id)
+                  ? undefined
+                  : {
+                      ...attr,
+                      label: `${this.i18nService.instant('@pry.toolbox.notInDsAttr')} - ${attr.label}`,
+                      classes: '-warn'
+                    }
+              )
+              .filter((attr) => !!attr)
+          ] as { id: string; technicalName: string; label: string; datasource: string; type: string }[]
+      )
     );
   }
 

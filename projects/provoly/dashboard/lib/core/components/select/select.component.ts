@@ -67,6 +67,7 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
   @Input() i18nPrefix: string | null = null;
   @Output() searched = new EventEmitter<string>();
   @Output() cleared = new EventEmitter<void>();
+  @Input() bindClasses: any;
   search$ = new BehaviorSubject<string>('');
 
   _loading = false;
@@ -182,7 +183,15 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
     this.writeValue(
       this.value$
         .getValue()
-        .filter((i: any) => (typeof itemValue === 'object' ? i[keyProp] !== itemValue[keyProp] : i !== itemValue))
+        .filter((i: any) =>
+          typeof itemValue === 'object'
+            ? typeof i === 'object'
+              ? i[keyProp] !== itemValue[keyProp]
+              : i !== itemValue[keyProp]
+            : typeof i === 'object'
+            ? i[keyProp] !== itemValue
+            : i !== itemValue
+        )
     );
   }
 
@@ -214,9 +223,12 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
           typeof itemValue === 'object'
             ? this.value$
                 .getValue()
-                .map((val: any) => val[keyProp])
+                .map((val: any) => (typeof val === 'object' ? val[keyProp] : val))
                 .includes(itemValue[keyProp])
-            : this.value$.getValue().includes(itemValue)
+            : this.value$
+                .getValue()
+                .map((val: any) => (typeof val === 'object' ? val[keyProp] : val))
+                .includes(itemValue)
         ) {
           this.clear($event, item);
         } else {

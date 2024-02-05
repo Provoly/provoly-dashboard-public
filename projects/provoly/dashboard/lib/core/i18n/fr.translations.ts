@@ -168,7 +168,8 @@ export const frTranslations = {
       switchEdit: 'Modifier',
       switchEditContent: 'Modifier la composition',
       share: 'Partager',
-      delete: 'Supprimer'
+      delete: 'Supprimer',
+      notInDsAttr: 'Attribut indisponible'
     },
     manifest: {
       name: 'Nom',

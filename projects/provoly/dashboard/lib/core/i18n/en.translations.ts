@@ -166,7 +166,8 @@ export const enTranslations = {
       switchEdit: 'Edit',
       switchEditContent: 'Edit composition',
       share: 'Share',
-      delete: 'Delete'
+      delete: 'Delete',
+      notInDsAttr: 'Unavailable attribute'
     },
     manifest: {
       name: 'Name',
