@@ -23,8 +23,8 @@ export class ResultsetUtils {
 
     const uniqueRelations = [
       ...new Set([
-        ...rs1Copy.relations.map((rel) => `${rel.relationType}|${rel.source}|${rel.destination}`),
-        ...rs2.relations.map((rel) => `${rel.relationType}|${rel.source}|${rel.destination}`)
+        ...(rs1Copy.relations ?? []).map((rel) => `${rel.relationType}|${rel.source}|${rel.destination}`),
+        ...(rs2.relations ?? []).map((rel) => `${rel.relationType}|${rel.source}|${rel.destination}`)
       ])
     ];
     rs1Copy.relations = uniqueRelations.map((key) => {
