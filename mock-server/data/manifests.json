@@ -359,6 +359,7 @@
   },
   {
     "name": "issue-163",
+    "description": "Description de issue-163",
     "manifest": {
       "windows": [
         {
@@ -368,27 +369,27 @@
               "layout": {
                 "x": 1,
                 "y": 1,
-                "width": 5,
-                "height": 9
+                "width": 6,
+                "height": 6
               },
               "options": {}
             },
             {
               "type": "map",
               "layout": {
-                "x": 7,
-                "y": 1,
-                "width": 12,
-                "height": 12
+                "x": 1,
+                "y": 7,
+                "width": 6,
+                "height": 6
               }
             },
             {
               "type": "table",
               "layout": {
-                "x": 6,
-                "y": 13,
-                "height": 12,
-                "width": 7
+                "x": 7,
+                "y": 1,
+                "width": 6,
+                "height": 6
               },
               "options": {},
               "datasource": "19061554-298f-4f56-8cd2-51ccec998307"
@@ -396,10 +397,10 @@
             {
               "type": "map",
               "layout": {
-                "x": 6,
-                "y": 25,
-                "height": 8,
-                "width": 5
+                "x": 7,
+                "y": 7,
+                "width": 6,
+                "height": 6
               },
               "options": {
                 "fit": true,
@@ -414,11 +415,20 @@
             }
           ],
           "grid": {
-            "rows": 32
-          }
+            "rows": 12,
+            "layout": "0",
+            "columns": 12
+          },
+          "route": "/"
         }
       ]
-    }
+    },
+    "image": "/assets/svgs/default.svg",
+    "cover": true,
+    "datasource": [
+      "19061554-298f-4f56-8cd2-51ccec998307"
+    ],
+    "groups": []
   },
   {
     "name": "front-aggregation",
