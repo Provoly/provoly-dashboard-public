@@ -12,11 +12,7 @@ export class PryTitleService {
   displayPageNumber = true;
   pageCount = 0;
 
-  constructor(
-    private title: Title,
-    private translateService: PryI18nService,
-    private store: Store
-  ) {
+  constructor(private title: Title, private translateService: PryI18nService, private store: Store) {
     this.store.select(DashboardSelectors.rank).subscribe((rank) => (this.rank = rank));
     this.store.select(DashboardSelectors.tenants).subscribe((tenants) => (this.pageCount = tenants.length));
   }
@@ -26,7 +22,7 @@ export class PryTitleService {
   }
 
   changeTitle(key?: string) {
-    const nextTitle = !!key ? this.translateService.instant(key) : this.title.getTitle().split('[')[0];
+    const nextTitle = !!key ? this.translateService.instant(key, {}, false) : this.title.getTitle().split('[')[0];
     const pageNumber =
       this.displayPageNumber && this.pageCount > 1
         ? `[${this.translateService.instant('@pry.view.name', {

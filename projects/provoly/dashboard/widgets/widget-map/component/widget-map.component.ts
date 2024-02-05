@@ -416,7 +416,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     ]).pipe(
       map(([manifest, resultSet, classes, fields, mapStyles, geoLayers, capabilities, autoDatasetLayers]) => {
         // auto determine layers parameters to provide a working view
-        const autoOptions = JSON.parse(JSON.stringify(manifest.options)) as MapWidgetOptions;
+        const autoOptions = JSON.parse(JSON.stringify(manifest.options ?? {})) as MapWidgetOptions;
         if (!autoOptions.tooltipMode) {
           autoOptions.tooltipMode = TooltipMode.CLICK;
         }
