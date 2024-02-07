@@ -38,7 +38,7 @@
             class="a-pry-select__value"
             [class.pry-select-form]="isForm"
             [class.-multiple]="multiple"
-            [ngClass]="item[bindClasses] ?? {}"
+            [ngClass]="item ? item[bindClasses ?? ''] ?? {} : {}"
           >
             <ng-container *ngIf="template; else noTemplateLabel">
               <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>

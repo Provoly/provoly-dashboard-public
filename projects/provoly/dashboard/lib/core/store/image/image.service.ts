@@ -42,8 +42,9 @@ export class ImageService {
   getImage(path: string, externalUrl = false): Observable<{ type: string; url: SafeUrl }> {
     return this.store.select(ConfigSelectors.dataUrl).pipe(
       mergeMap((url) => {
+        const calculatedPath = externalUrl ? path : `${url}/file/icons/${path}`;
         return this.httpClient
-          .get(encodeURI(externalUrl ? path : `${url}/file/icons/${path}`), {
+          .get(encodeURI(calculatedPath), {
             observe: 'response',
             responseType: 'blob'
           })
@@ -56,7 +57,7 @@ export class ImageService {
                   url: this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(response.body as Blob))
                 };
               }
-              throw { type: 'unknown', error: 'unknown doc type' };
+              throw new Error(`Getting ${header} when asked for an image on url ${calculatedPath}`);
             })
           );
       })

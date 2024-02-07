@@ -8,10 +8,7 @@ import { mergeMap } from 'rxjs';
   providedIn: 'root'
 })
 export class NotificationService {
-  constructor(
-    private httpClient: HttpClient,
-    private store: Store<any>
-  ) {}
+  constructor(private httpClient: HttpClient, private store: Store<any>) {}
 
   deleteNotification(id: string) {
     return this.store

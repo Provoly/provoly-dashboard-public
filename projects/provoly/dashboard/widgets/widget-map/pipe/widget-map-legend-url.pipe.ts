@@ -35,14 +35,15 @@ export class WidgetMapLegendUrlPipe implements PipeTransform {
     return '';
   }
 
-  returnStyleForLayer(style: ChildNode) {
+  returnStyleForLayer(style: ChildNode): string {
     const legendUrl = XMLUtils.find(style.childNodes, 'LegendURL');
     if (legendUrl) {
       const resource = XMLUtils.find(legendUrl.childNodes, 'OnlineResource');
       if (resource) {
         // @ts-ignore
-        return resource.getAttribute('xlink:href');
+        return decodeURIComponent(resource.getAttribute('xlink:href'));
       }
     }
+    return '';
   }
 }
