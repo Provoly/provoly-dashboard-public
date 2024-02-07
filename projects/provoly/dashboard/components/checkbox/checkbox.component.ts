@@ -37,13 +37,13 @@ export class PryCheckboxComponent implements ControlValueAccessor, AfterViewInit
       this.checked = checked;
       this.onChange(this.checked);
       this.onTouch();
-      this._cd.markForCheck();
+      this._cd.detectChanges();
     }
   }
 
   setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
-    this._cd.markForCheck();
+    this._cd.detectChanges();
   }
 
   ngAfterViewInit(): void {
