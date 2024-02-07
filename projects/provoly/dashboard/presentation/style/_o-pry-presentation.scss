@@ -95,6 +95,7 @@
         position: absolute;
         top: toRem(10);
         left: toRem(10);
+        z-index: 1;
       }
 
       .a-tooltip {
