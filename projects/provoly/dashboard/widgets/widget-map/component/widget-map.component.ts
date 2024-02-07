@@ -70,7 +70,7 @@ import VectorLayer from 'ol/layer/Vector';
 import { Pixel } from 'ol/pixel';
 import { fromLonLat } from 'ol/proj';
 import { register } from 'ol/proj/proj4';
-import { DataTile, TileWMS } from 'ol/source';
+import { DataTile, ImageWMS, TileWMS } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
 import { Style } from 'ol/style';
 import proj4 from 'proj4';
@@ -1397,7 +1397,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       ? []
       : this.map
           .getAllLayers()
-          .filter((layer) => layer.getSource() instanceof TileWMS)
+          .filter((layer) => layer.getSource() instanceof TileWMS || layer.getSource() instanceof ImageWMS)
           // @ts-ignore
           .filter((layer) => layer.rendered === true);
   }
