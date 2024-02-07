@@ -335,6 +335,10 @@ export class WidgetMapUtils {
     }
 
     let value = item.attributes[attribute.technicalName];
+    if (!value) {
+      console.warn(`Geometry attribute excluded for item ${item.id}`);
+      return;
+    }
     if (value.type === 'MULTI') {
       value = value.values[0];
     }

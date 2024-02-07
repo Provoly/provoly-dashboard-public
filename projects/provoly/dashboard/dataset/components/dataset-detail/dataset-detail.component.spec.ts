@@ -64,7 +64,7 @@ describe('PryDatasetDetailComponent', () => {
 
     expect(spyDsItems).toHaveBeenCalledWith({
       id: mockDataset.id,
-      excludeGeo: true,
+      excludeGeo: false,
       from: 'PryDatasetDetailComponent.refresh()'
     });
     expect(spyDsVersions).toHaveBeenCalled();

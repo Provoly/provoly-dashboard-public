@@ -63,7 +63,7 @@ export class PryDatasetDetailComponent implements OnInit {
     this.store.dispatch(
       SearchActions.getDatasourceItems({
         id: this.dataset.id,
-        excludeGeo: true,
+        excludeGeo: false,
         from: 'PryDatasetDetailComponent.ngOnInit()'
       })
     );
@@ -91,7 +91,7 @@ export class PryDatasetDetailComponent implements OnInit {
     this.store.dispatch(
       SearchActions.getDatasourceItems({
         id: this.dataset.id,
-        excludeGeo: true,
+        excludeGeo: false,
         from: 'PryDatasetDetailComponent.refresh()'
       })
     );
