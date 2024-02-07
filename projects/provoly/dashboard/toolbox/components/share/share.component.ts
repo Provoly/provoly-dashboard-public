@@ -74,6 +74,7 @@ export class ShareComponent extends ToolboxActionComponent {
           name: this.presentation.current!.name ?? '',
           description: this.presentation.current!.description ?? '',
           image: this.presentation.current!.image ?? '',
+          cover: this.presentation.current!.cover ?? false,
           groups: this.accessGroups
         })
       );
