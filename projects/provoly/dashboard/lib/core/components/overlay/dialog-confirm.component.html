@@ -32,8 +32,6 @@
           type="button"
           [class.a-btn--primary]="action.color === 'primary' || action.color === undefined"
           [class.a-btn--secondary]="action.color === 'secondary'"
-          [class.a-btn--tertiary]="action.color === 'tertiary'"
-          [class.a-btn--ghost]="action.color === 'ghost'"
           [ngClass]="{ 'a-btn--icon-text': action.icon }"
         >
           <pry-icon *ngIf="action.icon" [iconSvg]="action.icon"></pry-icon>

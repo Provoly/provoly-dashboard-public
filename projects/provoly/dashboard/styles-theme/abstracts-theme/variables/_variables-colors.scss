@@ -2,24 +2,19 @@
 
 // Primary palette
 $theme-colors-primary: (
-  50: #ffffff,
-  100: #f9fafb,
-  200: #f5f7f9,
-  300: #dfe5ec,
-  400: #bccad8,
-  500: #7b96b2,
-  600: #3e546a,
-  700: #263340,
-  800: #131920,
+  50: #FFFFFF,
+  100: #F9FAFB,
+  200: #F5F7F9,
+  300: #D8E7F7, // hover - card, button ("Bleu Clair" in figma)
+  400: #BCCAD8, //filter border
+  500: #7B96B2,
+  600: #113B6E, // new primary color
+  700: #3E546A, // all typography
+  750: #263340, // typography - titles, categories
+  800: #131920, // focus, active button
+
   'contrast': (
-    50: #263340,
-    100: #263340,
-    200: #263340,
-    400: #263340,
-    500: #ffffff,
-    600: #ffffff,
-    700: #ffffff,
-    800: #ffffff
+    50: #FFFFFF,
   )
 );
 
@@ -32,14 +27,9 @@ $theme-colors-accent: (
   600: #40b688,
   700: #3caa7f,
   800: #328f6b,
+
   'contrast': (
-    50: #263340,
-    100: #ffffff,
-    400: #ffffff,
-    500: #ffffff,
-    600: #ffffff,
-    700: #ffffff,
-    800: #ffffff
+    50: #ffffff,
   )
 );
 
@@ -48,10 +38,13 @@ $theme-colors-grey: (
   50: #fafafa,
   100: #f5f5f5,
   200: #eeeeee,
+  300: #DFE5EC, // card inner border
   400: #bdbdbd,
   500: #9e9e9e,
   600: #757575,
+  800: #424B5A, // filter label ("Grey Primary" in Figma)
   1000: #000000,
+
   'contrast': (
     50: #263340,
     100: #263340,
@@ -65,7 +58,7 @@ $theme-colors-grey: (
 
 // Status palette
 $theme-colors-status: (
-  'ok': #35b99f,
+  'ok': #0AC865,
   'warning': #f8cd59,
   'error': #fc5640,
   'active': #242a47,

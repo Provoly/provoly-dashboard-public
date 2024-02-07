@@ -5,7 +5,7 @@
 .o-search-fulltext {
   &__classes {
     color: themed($theme-map, 'color', 'graph', 01);
-    background-color: themed($theme-map, 'color', 'primary', 'contrast', 700);
+    background-color: themed($theme-map, 'color', 'primary', 'contrast', 50);
 
     &__content {
       color: themed($theme-map, 'color', 'graph', 01);
@@ -28,7 +28,7 @@
       }
 
       &__selected {
-        color: themed($theme-map, 'color', 'primary', 'contrast', 200);
+        color: themed($theme-map, 'color', 'primary', 'contrast', 50);
         background-color: themed($theme-map, 'color', 'primary', 200);
       }
     }

@@ -1,0 +1,11 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme - Molecule m-info-icon */
+
+.m-info-icon {
+  border: 1px solid themed($theme-map, 'color', 'primary', 700);
+  font-size: toRem(10);
+  font-weight: 600;
+  font-family: Arial, sans-serif;
+}

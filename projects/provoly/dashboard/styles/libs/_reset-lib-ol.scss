@@ -4,15 +4,19 @@
 
 .ol-control button,
 .ol-searchbar button {
-  width: 30px !important;
-  height: 30px !important;
+  width: 40px !important;
+  height: 40px !important;
   cursor: pointer;
 }
 
 .ol-zoom {
-  border-width: toRem(1);
-  border-style: solid;
-  border-radius: toRem(7);
+  .ol-zoom-in {
+    border-radius: toRem(8) toRem(8) 0 0 !important;
+  }
+
+  .ol-zoom-out {
+    border-radius: 0 0 toRem(8) toRem(8) !important;
+  }
 }
 
 .ol-searchbar {

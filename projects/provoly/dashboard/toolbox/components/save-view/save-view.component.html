@@ -4,7 +4,7 @@
       <button
         type="button"
         #directiveSave
-        class="a-btn a-btn--primary -size-md"
+        class="a-btn a-btn--primary"
         (click)="directSave()"
         [disabled]="!(isCurrentPresentationModified$ | async)"
         [hidden]="!(isCurrentPresentationOwner$ | async)"
@@ -23,7 +23,7 @@
       <button
         type="button"
         #saveAs
-        class="a-btn a-btn--secondary -size-md"
+        class="a-btn a-btn--secondary"
         (click)="toggleSaveAs()"
         aria-haspopup="dialog"
       >

@@ -6,30 +6,39 @@
 .ol-control button {
   border-color: themed($theme-map, 'color', 'primary', 400);
   background-color: themed($theme-map, 'color', 'grey', 50);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
 }
 
 .ol-zoom {
   .ol-zoom-in,
   .ol-zoom-out {
-    color: themed($theme-map, 'color', 'primary', 500);
+    font-family: Arial, sans-serif;
+    font-weight: 300;
+    font-size: toRem(24);
+    color: themed($theme-map, 'color', 'primary', 600);
     background-color: themed($theme-map, 'color', 'grey', 50);
 
     &:hover,
     &:focus {
-      background-color: themed($theme-map, 'color', 'grey', 200);
+      @include changeBgColor(
+        $targetBgColor: themed($theme-map, 'color', 'primary', 600),
+        $targetTextColor: themed($theme-map, 'color', 'primary', 'contrast', 50),
+        $targetBorderColor: themed($theme-map, 'color', 'primary', 600)
+      )
     }
   }
 }
 
 .ol-searchbar button,
 .layer-switcher button {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
   border-color: themed($theme-map, 'color', 'primary', 400) !important;
   background-color: themed($theme-map, 'color', 'grey', 50) !important;
 }
 
 .ol-control button:hover,
 .ol-control button:focus {
-  background-color: themed($theme-map, 'color', 'grey', 200) !important;
+  background-color: themed($theme-map, 'color', 'grey', 200);
 }
 
 .ol-searchbar,

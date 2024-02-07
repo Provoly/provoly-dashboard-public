@@ -13,7 +13,7 @@
     <li class="m-actions-list__item">
       <button
         type="button"
-        class="a-btn a-btn--primary -size-md"
+        class="a-btn a-btn--primary"
         cdkOverlayOrigin
         #trigger="cdkOverlayOrigin"
         id="options"
@@ -24,7 +24,7 @@
         <ng-container *ngIf="displayLabels"
           ><span class="u-visually-hidden">{{ '@pry.toolbox.options' | i18n }}</span>
           <span>{{ '@pry.toolbox.options' | i18n }}</span>
-          <pry-icon [width]="14" [height]="14" iconSvg="chevron_bottom"></pry-icon>
+          <pry-icon [width]="10" [height]="13" iconSvg="chevron_bottom"></pry-icon>
         </ng-container>
       </button>
     </li>
@@ -34,6 +34,8 @@
       [cdkConnectedOverlayOpen]="isDropdownOpen"
       [cdkConnectedOverlayHasBackdrop]="true"
       cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+      [cdkConnectedOverlayPositions]="dropdownPosition"
+      [cdkConnectedOverlayOffsetY]="5"
       (backdropClick)="isDropdownOpen = false"
     >
       <div class="o-draggable-menu -dropdown" aria-labelledby="">

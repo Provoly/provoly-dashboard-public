@@ -7,7 +7,7 @@
         <label id="catalog-search-label" for="catalog-search" class="a-label u-visually-hidden">
           <span>{{ '@pry.toolbox.catalog.filter.name' | i18n }}</span>
         </label>
-        <pry-icon iconSvg="search" [width]="17" [height]="17"></pry-icon>
+        <pry-icon class="search-icon" iconSvg="search" [width]="17" [height]="17"></pry-icon>
         <input
           id="catalog-search"
           type="text"
@@ -113,7 +113,7 @@
 
   <ng-template [ngIf]="selectedMode === mode.CREATION">
     <div class="o-catalog__create">
-      <button class="a-btn a-btn--ghost" (click)="selectMode(mode.CATALOG)">
+      <button class="a-btn a-btn--secondary" (click)="selectMode(mode.CATALOG)">
         {{ '@pry.restitution.cancel' | i18n }}
       </button>
     </div>

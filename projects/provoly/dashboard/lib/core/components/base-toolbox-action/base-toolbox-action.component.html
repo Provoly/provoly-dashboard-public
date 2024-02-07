@@ -10,7 +10,7 @@
         #origin="cdkOverlayOrigin"
       >
         <ng-container *ngIf="!iconAction; else iconActionTpl">
-          <pry-icon *ngIf="action.icon" [iconSvg]="action.icon"></pry-icon>
+          <pry-icon *ngIf="action.icon" [iconSvg]="action.icon" [height]="20" [width]="20"></pry-icon>
           {{ baseToolboxTranslation + action.label | i18n }}
           <pry-icon *ngIf="action.actions" iconSvg="fleche_bas"></pry-icon>
         </ng-container>

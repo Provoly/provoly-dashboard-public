@@ -14,7 +14,7 @@ export interface PryDialogConfirmAction {
   id: number;
   label: string;
   icon?: string;
-  color?: 'primary' | 'secondary' | 'tertiary' | 'ghost';
+  color?: 'primary' | 'secondary';
   actions?: Action[];
 }
 

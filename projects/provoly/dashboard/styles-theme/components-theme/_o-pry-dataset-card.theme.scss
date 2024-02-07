@@ -15,4 +15,12 @@
     border-top: 1px themed($theme-map, 'color', 'primary', 300) solid;
     border-bottom: 1px themed($theme-map, 'color', 'primary', 300) solid;
   }
+
+  &:hover {
+    background-color: themed($theme-map, 'color', 'primary', 300);
+
+    .o-pry-dataset-card__footer {
+      border-top: 1px themed($theme-map, 'color', 'primary', 400) solid;
+    }
+  }
 }

@@ -1,0 +1,32 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Atom - chip */
+
+.a-chip {
+  color: themed($theme-map, 'color', 'primary', 'contrast', 50);
+  background-color: themed($theme-map, 'color', 'primary', 600);
+
+  &:hover {
+    @include changeBgColor(
+      $targetBgColor: themed($theme-map, 'color', 'primary', 300),
+      $targetTextColor: themed($theme-map, 'color', 'primary', 600)
+    );
+  }
+
+  &.-not-found {
+    opacity: 0.4;
+  }
+
+  &--light {
+    background-color: themed($theme-map, 'color', 'primary', 50);
+    color: themed($theme-map, 'color', 'primary', 600);
+    box-shadow: 0px 4px 4px rgba(17, 59, 110, 0.12);
+
+    &:hover {
+      @include changeBgColor(
+        $targetBgColor: themed($theme-map, 'color', 'primary', 300)
+      );
+    }
+  }
+}

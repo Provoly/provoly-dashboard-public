@@ -24,7 +24,7 @@
 
   &__options {
     color: themed($theme-map, 'color', 'graph', 01);
-    background-color: themed($theme-map, 'color', 'primary', 'contrast', 700);
+    background-color: themed($theme-map, 'color', 'primary', 'contrast', 50);
     border: 1px solid themed($theme-map, 'color', 'primary', 400);
     box-shadow: 0 4px 4px #113b6e1f;
 
@@ -32,11 +32,11 @@
       background-color: #ffffff;
 
       &[aria-selected="true"], &:hover {
-        background-color: themed($theme-map, 'color', 'accent', 50);
+        background-color: themed($theme-map, 'color', 'primary', 300);
       }
 
       &:hover {
-        color: themed($theme-map, 'color', 'primary', 'contrast', 100);
+        color: themed($theme-map, 'color', 'primary', 750);
       }
     }
   }
@@ -48,5 +48,9 @@
 
   &__clear {
     color: themed($theme-map, 'color', 'grey', 500);
+  }
+
+  &__toggle {
+    color: themed($theme-map, 'color', 'accent', 600);
   }
 }

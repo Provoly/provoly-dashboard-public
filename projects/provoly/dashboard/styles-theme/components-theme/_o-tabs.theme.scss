@@ -16,7 +16,7 @@
 
       &[aria-selected='false'] {
         &:before {
-          border-color: themed($theme-map, 'color', 'primary', 300);
+          border-color: themed($theme-map, 'color', 'accent', 400);
         }
       }
     }

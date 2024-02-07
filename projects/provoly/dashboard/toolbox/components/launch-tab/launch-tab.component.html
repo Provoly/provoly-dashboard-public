@@ -1,7 +1,7 @@
-<button type="button" class="a-btn a-btn--secondary -size-md" (click)="launchNewWindow()">
+<button type="button" class="a-btn a-btn--secondary" (click)="launchNewWindow()">
   <ng-container *ngIf="displayLabels"
     ><span class="u-visually-hidden">{{ '@pry.toolbox.launchIndication' | i18n }}</span
     >{{ '@pry.toolbox.launch' | i18n }}
   </ng-container>
-  <pry-icon iconSvg="launch"></pry-icon>
+  <pry-icon iconSvg="launch" [width]="20" [height]="20"></pry-icon>
 </button>

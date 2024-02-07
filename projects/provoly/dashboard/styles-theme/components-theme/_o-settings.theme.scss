@@ -34,7 +34,7 @@
 
         &:hover,
         &:active {
-          color: themed($theme-map, 'color', 'accent', 500);
+          color: themed($theme-map, 'color', 'primary', 600);
         }
 
         &[data-func='delete'] {

@@ -6,6 +6,14 @@
   &__item {
     @extend %card-with-hover;
 
+    &:hover {
+      background-color: themed($theme-map, 'color', 'primary', 300);
+
+      .o-presentation__item__footer {
+        border-top: 1px themed($theme-map, 'color', 'primary', 400) solid;
+      }
+    }
+
     &__header {
       background-color: themed($theme-map, 'color', 'primary', 100);
 
@@ -15,27 +23,17 @@
     }
 
     &__txt {
-      .a-p {
-        &.-date {
-          color: themed($theme-map, 'color', 'primary', 500);
-        }
+      .a-h3 {
+        color: themed($theme-map, 'color', 'primary', 600);
       }
     }
 
     &__footer {
-      border-top: 1px themed($theme-map, 'color', 'primary', 300) solid;
+      border-top: 1px themed($theme-map, 'color', 'grey', 300) solid;
 
       pry-icon {
-        color: themed($theme-map, 'color', 'accent', 400);
+        color: themed($theme-map, 'color', 'primary', 600);
       }
-    }
-  }
-
-  .more-button {
-    background: transparent;
-
-    .a-btn {
-      background-color: themed($theme-map, 'color', 'primary', 50);
     }
   }
 }

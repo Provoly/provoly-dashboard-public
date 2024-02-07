@@ -5,12 +5,11 @@
       <button
         type="button"
         (click)="selectMode(mode.CREATION)"
-        class="a-btn a-btn--primary a-tooltip -tooltip-no-wrap"
-        [attr.data-tooltip]="'@pry.restitution.create' | i18n"
+        class="a-btn a-btn--primary"
         data-tooltip-position="bottom"
         *pryAccess="{ module: 'dashboard', page: 'restitution', action: 'create' }"
       >
-        {{ '@pry.context.create' | i18n }}
+        {{ '@pry.restitution.create' | i18n }}
       </button>
       <div>
         <div class="o-catalog__search o-manifest-layout__toolbox__search">

@@ -13,6 +13,17 @@
   min-width: toRem(330);
   height: toRem(150);
 
+  &:hover {
+    cursor: pointer;
+
+    .o-pry-dataset-card__footer {
+      pry-icon {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+
   &__header {
     display: flex;
     gap: toRem(15);
@@ -45,10 +56,21 @@
     }
   }
 
-    &__footer {
+  &__footer {
     display: flex;
     align-items: center;
-      justify-content: center;
+    justify-content: center;
+
+    .a-btn {
+      margin-left: toRem(20); // needed for centering the footer text
+    }
+
+    pry-icon {
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 100ms linear , opacity 100ms linear;
+      margin-left: toRem(3);
+    }
   }
 
   .dataset-name {

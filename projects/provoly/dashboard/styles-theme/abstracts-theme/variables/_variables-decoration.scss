@@ -8,14 +8,14 @@
 $theme-focus-visible: (
   'border-color-light': white,
   'border-color-dark': #35b99f,
-  'border-radius': 22px
+  'border-radius': 5px
 );
 
 // Border-radius
 $theme-border-radius: (
   'scrollbar-thumb': 6px,
   'button': (
-    'default': 22px
+    'default': 5px
   ),
   'checkbox': 3px,
   'card': (

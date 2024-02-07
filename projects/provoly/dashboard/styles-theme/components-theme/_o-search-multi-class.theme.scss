@@ -4,24 +4,19 @@
 /* Theme Organism - Search multi class */
 
 .o-search-multi-class {
-  // background-color: themed($theme-map, 'color', 'primary', 500);
   &__header {
     .a-h3 {
-      // color: themed($theme-map, 'color', 'primary', 'contrast', 500);
       font-size: toRem(14);
     }
   }
 
   &__add-condition {
     .a-btn.a-btn--secondary {
-      // border-color: themed($theme-map, 'color', 'primary', 'contrast', 500);
       border-width: 1px;
-      // color: themed($theme-map, 'color', 'primary', 'contrast', 500);
     }
   }
 
   .a-btn.a-btn--icon-text {
-    // color: themed($theme-map, 'color', 'primary', 'contrast', 500);
     font-size: toRem(13);
     font-weight: 400;
   }

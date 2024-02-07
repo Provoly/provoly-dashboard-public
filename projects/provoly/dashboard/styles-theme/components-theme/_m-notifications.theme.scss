@@ -4,18 +4,18 @@
 /* Theme Molecule - notifications */
 .m-notifications {
   .a-btn {
-    color: themed($theme-map, 'color', 'accent', 600);
+    color: themed($theme-map, 'color', 'primary', 600);
 
     &:before {
-      background-color: themed($theme-map, 'color', 'accent', 50);
+      background-color: themed($theme-map, 'color', 'primary', 300);
     }
 
     &:hover {
       transition: none;
-      color: themed($theme-map, 'color', 'accent', 'contrast', 600);
+      color: themed($theme-map, 'color', 'primary', 'contrast', 50);
 
       &:before {
-        background-color: themed($theme-map, 'color', 'accent', 600);
+        background-color: themed($theme-map, 'color', 'primary', 600);
       }
     }
   }
@@ -54,6 +54,10 @@
 
   &__items {
     &__li {
+      &:hover {
+        background-color: themed($theme-map, 'color', 'primary', 300);
+      }
+
       &__txt {
         .a-h3 {
           font-size: toRem(16);

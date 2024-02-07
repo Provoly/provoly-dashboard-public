@@ -1,0 +1,17 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme - Molecule m-form-radio-group */
+
+.m-form-radio-group {
+  &__item {
+    input[type="radio"] {
+      border-color: themed($theme-map, 'color', 'primary', 400);
+      accent-color: themed($theme-map, 'color', 'primary', 600);
+
+      &:checked {
+        border-color: themed($theme-map, 'color', 'primary', 400);
+      }
+    }
+  }
+}

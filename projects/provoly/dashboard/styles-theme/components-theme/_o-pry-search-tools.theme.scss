@@ -4,13 +4,7 @@
 /* Theme Organism - pry search tools */
 
 .o-pry-search-tools {
-  // color: themed($theme-map, 'color', 'primary', 'contrast', 500);
   border-right: 1px themed($theme-map, 'color', 'primary', 300) solid;
-  // background-color: themed($theme-map, 'color', 'primary', 500);
-
-  /*.a-btn.-back{
-    color: themed($theme-map, 'color', 'primary', 'contrast', 600);
-  }*/
 
   &.is-close {
     border-right-color: themed($theme-map, 'color', 'primary', 400);
@@ -20,23 +14,18 @@
     border-bottom-color: themed($theme-map, 'color', 'primary', 400);
 
     [class*='a-h'] {
-      color: themed($theme-map, 'color', 'primary', 'contrast', 600);
+      color: themed($theme-map, 'color', 'primary', 'contrast', 50);
     }
 
     .a-btn {
-      color: themed($theme-map, 'color', 'primary', 'contrast', 600);
+      color: themed($theme-map, 'color', 'primary', 'contrast', 50);
     }
   }
 
   &__content {
     #btn_reset {
-      // color: themed($theme-map, 'color', 'primary', 'contrast', 600);
       font-weight: 300;
     }
-
-    /*.a-toggle {
-      color: themed($theme-map, 'color', 'primary', 'contrast', 600);
-    }*/
   }
 
   &__footer {

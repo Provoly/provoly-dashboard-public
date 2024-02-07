@@ -66,7 +66,7 @@
       <ng-template #templateOption let-item="item">
         <div class="aligned-option">
           <p>{{ item.name }}</p>
-          <div class="a-chips" *ngIf="item.crs">{{ item.crs }}</div>
+          <div class="a-chip" *ngIf="item.crs">{{ item.crs }}</div>
         </div>
       </ng-template>
       <div
@@ -159,7 +159,7 @@
         <tbody>
           <tr *ngFor="let cat of categories$ | async">
             <td>
-              <button type="button" class="a-btn a-btn--ghost select-it" (click)="setCategory(cat)">
+              <button type="button" class="a-btn a-btn--secondary select-it" (click)="setCategory(cat)">
                 <span class="u-visually-hidden">{{ '@pry.admin.classes.category.selectIt' | i18n }}</span>
                 {{ cat.name }}
               </button>

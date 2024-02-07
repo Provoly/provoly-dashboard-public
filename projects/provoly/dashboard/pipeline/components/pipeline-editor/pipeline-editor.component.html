@@ -26,11 +26,11 @@
 
   <div class="o-pipeline__workspace">
     <div class="o-pipeline-layout__toolbox">
-      <button class="a-btn a-btn--secondary --size-md" type="button" (click)="goBack()">
+      <button class="a-btn a-btn--secondary" type="button" (click)="goBack()">
         {{ '@pry.pipeline.backToDescription' | i18n }}
       </button>
       <ng-container *ngFor="let action of actions">
-        <button type="button" (click)="clickedAction(action)" class="a-btn a-btn--secondary --size-md">
+        <button type="button" (click)="clickedAction(action)" class="a-btn a-btn--secondary">
           {{ '@pry.pipeline.' + action.type | i18n }}
           <pry-icon [iconSvg]="action.icon"></pry-icon>
         </button>

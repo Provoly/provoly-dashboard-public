@@ -38,9 +38,10 @@
     top: 4px;
     z-index: 11;
     left: 50%;
-    color: #263340;
+    color: white;
     opacity: 0.7;
   }
+
   &:after {
     content: '';
     position: absolute;
@@ -50,7 +51,7 @@
     display: block;
     width: 38px;
     height: 25px;
-    background-color: #d4efe5;
+    background-color: #113B6E;
     border-radius: 0 0 6px 6px;
     box-shadow: 0px 3px 3px rgba(17, 59, 110, 0.12);
   }
@@ -68,6 +69,7 @@
       top: 0;
       left: 50%;
       transform: translateX(-50%);
+      padding-bottom: 50px;
     }
   }
 }
@@ -84,12 +86,14 @@
     font-size: 14px;
     padding: 5px;
     color: white;
-    background-color: #40b688;
+    background-color: #113B6E;
     text-decoration: none;
     white-space: nowrap;
     border-radius: toRem(5);
     &:hover {
-      background-color: #328f6b;
+      background-color: #D8E7F7;
+      color: #113B6E;
+      border: 1px #113B6E solid;
     }
   }
 }

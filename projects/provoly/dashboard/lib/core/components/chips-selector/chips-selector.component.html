@@ -14,17 +14,14 @@
   <div *ngIf="((usedItems$ | async) ?? []).length > 0; else noItems">
     <h4 class="a-h4">{{ translationStringBase + 'selection' | i18n }}</h4>
     <div>
-      <ul class="o-datasources__list o-datasources__list--selected">
-        <li *ngFor="let item of usedItems$ | async" class="o-datasources__item">
-          <button class="o-datasources__card -selected" (click)="toggleItemSelection(item)" type="button">
+      <ul class="o-chips-selector__list o-chips-selector__list--selected">
+        <li *ngFor="let item of usedItems$ | async" class="o-chips-selector__item">
+          <button class="a-chip -md o-chips-selector__chip" (click)="toggleItemSelection(item)" type="button">
             <p>
               {{ getItemLabel(item) }}
             </p>
-            <pry-icon *ngIf="isGeo(item)" iconSvg="globe"></pry-icon>
-            <div class="a-btn a-btn--primary a-btn--icon-only">
-              <pry-icon [iconSvg]="'close'" [width]="17" [height]="17"></pry-icon>
-              <span class="u-visually-hidden">{{ translationStringBase + 'unselectItem' | i18n }}</span>
-            </div>
+            <pry-icon *ngIf="isGeo(item)" iconSvg="globe" [width]="22" [height]="22"></pry-icon>
+            <pry-icon [iconSvg]="'close'" [width]="17" [height]="17"></pry-icon>
           </button>
         </li>
       </ul>
@@ -34,18 +31,18 @@
     <h4 class="a-h4">{{ translationStringBase + 'noItemSelected' | i18n }}</h4>
   </ng-template>
   <h4 class="a-h4">{{ translationStringBase + 'select' | i18n }}</h4>
-  <div class="o-datasources__main">
-    <ul class="o-datasources__list">
-      <li *ngFor="let item of unusedItems$ | async" class="o-datasources__item">
-        <button class="o-datasources__card" (click)="toggleItemSelection(item)">
+  <div class="o-chips-selector__main">
+    <ul class="o-chips-selector__list">
+      <li *ngFor="let item of unusedItems$ | async" class="o-chips-selector__item">
+        <button class="a-chip a-chip--light -md o-chips-selector__chip" (click)="toggleItemSelection(item)">
           <span class="u-visually-hidden">{{ translationStringBase + 'selectItem' | i18n }}</span>
           <p class="a-p">{{ getItemLabel(item) }}</p>
-          <pry-icon *ngIf="isGeo(item)" iconSvg="globe"></pry-icon>
+          <pry-icon *ngIf="isGeo(item)" iconSvg="globe" [width]="22" [height]="22"></pry-icon>
         </button>
       </li>
     </ul>
   </div>
-  <div *ngIf="showActionButtons" class="m-btn-group o-datasources__bottom">
+  <div *ngIf="showActionButtons" class="m-btn-group o-chips-selector__bottom">
     <button type="button" (click)="cancel.emit()" class="a-btn a-btn--secondary">
       {{ '@pry.toolbox.manifest.close' | i18n }}
     </button>

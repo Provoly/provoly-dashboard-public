@@ -5,30 +5,28 @@
 .o-pry-stepper {
   .m-stepper-item {
     &__count {
-      background-color: #c2d1d9;
+      background-color: themed($theme-map, 'color', 'primary', 400);
 
       &.-active {
-        // background-color: #424B5A;
-        background-color: themed($theme-map, 'color', 'accent', 700);
+        background-color: themed($theme-map, 'color', 'primary', 600);
       }
 
       &.-complete {
-        // background-color: #6C7784;
-        background-color: themed($theme-map, 'color', 'accent', 400);
+        background-color: themed($theme-map, 'color', 'primary', 600);
       }
     }
   }
 
   .m-stepper-line {
-    background: themed($theme-map, 'color', 'accent', 100);
+    background-color: themed($theme-map, 'color', 'primary', 400);
 
     &__percent {
       &.-active {
-        background-color: themed($theme-map, 'color', 'accent', 800);
+        background-color: themed($theme-map, 'color', 'primary', 600);
       }
 
       &.-complete {
-        background-color: themed($theme-map, 'color', 'accent', 600);
+        background-color: themed($theme-map, 'color', 'primary', 600);
       }
     }
   }

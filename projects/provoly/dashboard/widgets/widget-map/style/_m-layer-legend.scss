@@ -1,10 +1,14 @@
-@use '../../../styles/abstracts/index' as *;
+@use '../../../styles/abstracts' as *;
 
 .m-map-layer-action {
   display: flex;
   gap: toRem(6);
   z-index: 2;
   right: toRem(8);
+
+  button {
+    border-radius: 8px;
+  }
 
   &.ol-control {
     border: none;
@@ -19,11 +23,6 @@
     order: 2;
     width: toRem(30);
     height: toRem(30);
-  }
-
-  button {
-    background-color: #fafafa !important;
-    color: #113b6e;
   }
 
   &__title {
@@ -41,7 +40,7 @@
   &__container {
     color: #113b6e;
     background-color: white;
-    border-radius: toRem(2);
+    border-radius: toRem(8);
     padding: toRem(5) toRem(8);
 
     .a-h4 {
@@ -90,7 +89,7 @@
   position: absolute;
   z-index: 1;
   background-color: white;
-  border-radius: toRem(5);
+  border-radius: toRem(8);
   padding: toRem(5);
 
   &.-left {

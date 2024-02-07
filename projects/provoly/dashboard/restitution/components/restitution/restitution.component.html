@@ -3,7 +3,7 @@
   <h3 class="a-h2 o-restitution__title">
     {{ (consultMode ? '@pry.restitution.consult' : edit ? '@pry.restitution.edit' : '@pry.restitution.create') | i18n }}
   </h3>
-  <pry-stepper #stepper [isConsultMode]="consultMode || edit" (lastStepCompleted)="lastStepCompleted()">
+  <pry-stepper #stepper [isConsultMode]="consultMode" (lastStepCompleted)="lastStepCompleted()">
     <pry-step>
       <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.configure' | i18n }}</h4>
       <div class="m-form-label-field">
@@ -13,6 +13,7 @@
           [items]="types$ | async"
           [(ngModel)]="form.selectedWidget"
           [disabled]="consultMode"
+          [closeOnSelect]="true"
           bindIcon="icon"
           bindLabel="label"
           bindValue="type"

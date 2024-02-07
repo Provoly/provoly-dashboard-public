@@ -17,11 +17,9 @@
   user-select: none;
   transition: all 0.24s ease-in-out;
 
-  gap: toRem(3);
-  height: toRem(30);
-  padding: toRem(8) toRem(12);
-  font-size: toRem(12);
-  line-height: toRem(13);
+  gap: toRem(5);
+  height: toRem(34);
+  padding: 0 toRem(30);
 
   &.-circle {
     width: toRem(34);
@@ -172,31 +170,15 @@
     }
   }
 
-  &.-size-md {
-    gap: toRem(5);
-    height: toRem(34);
-    padding-left: toRem(15);
-    padding-right: toRem(15);
+  &.-size-s {
+    gap: toRem(3);
+    height: toRem(30);
+    padding: toRem(8) toRem(12);
     font-size: toRem(12);
-    line-height: toRem(14);
-
-    &.-circle {
-      width: toRem(34);
-      height: toRem(34);
-    }
-
-    pry-icon,
-    .a-icon {
-      width: 17px !important;
-      height: auto;
-    }
+    line-height: toRem(13);
   }
 
   &.-width-full {
     width: 100%;
   }
 }
-
-/*a[href].a-btn {
-  color: inherit;
-}*/

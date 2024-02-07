@@ -1,4 +1,5 @@
 @use '../../styles/abstracts' as *;
+@use '../../styles/base/utils' as *;
 @use '../abstracts-theme/variables.theme' as *;
 
 /* Theme - Atom a-btn */
@@ -9,106 +10,71 @@
 
   // Default btn settings
   border-radius: $btn-radius-default;
-  color: themed($theme-map, 'color', 'graph', 01);
+  border-color: themed($theme-map, 'color', 'primary', 600);
+  color: themed($theme-map, 'color', 'primary', 600);
   @include typography-level(themed($theme-map, 'typography', 'button'));
 
   &--primary,
   &.a-btn--primary.-circle {
-    color: themed($theme-map, 'color', 'accent', 'contrast', 600);
-    background-color: themed($theme-map, 'color', 'accent', 600);
+    border-width: 1px;
+    color: themed($theme-map, 'color', 'primary', 'contrast', 50);
+    background-color: themed($theme-map, 'color', 'primary', 600);
 
     &:hover {
-      color: themed($theme-map, 'color', 'accent', 'contrast', 700);
-      background-color: themed($theme-map, 'color', 'accent', 700);
+      @include changeBgColor(
+        $targetBgColor: themed($theme-map, 'color', 'primary', 300),
+        $targetTextColor: themed($theme-map, 'color', 'primary', 600),
+        $targetBorderColor: themed($theme-map, 'color', 'primary', 600)
+      );
     }
 
     &:focus,
     &:active {
-      color: themed($theme-map, 'color', 'accent', 'contrast', 800);
-      background-color: themed($theme-map, 'color', 'accent', 800);
+      // TODO Jessica
+      @include changeBgColor(
+          $targetBgColor: themed($theme-map, 'color', 'primary', 800),
+          $targetTextColor: themed($theme-map, 'color', 'primary', 'contrast', 50)
+      );
     }
 
     &.-disabled,
     &:disabled {
-      color: themed($theme-map, 'color', 'accent', 'contrast', 100);
-      background-color: themed($theme-map, 'color', 'accent', 100);
+      opacity: 0.5;
     }
   }
 
   &--secondary,
   &.a-btn--secondary.-circle {
-    border: 1px solid themed($theme-map, 'color', 'primary', 500);
-    color: themed($theme-map, 'color', 'graph', 01);
-    background-color: transparent;
+    border-width: 1px;
+    color: themed($theme-map, 'color', 'primary', 600);
+    background-color: themed($theme-map, 'color', 'primary', 'contrast', 50);
 
     &:hover {
-      border: 1px solid themed($theme-map, 'color', 'primary', 600);
-      color: themed($theme-map, 'color', 'graph', 01);
+      // TODO Jessica
+      @include changeBgColor(
+        $targetBgColor: themed($theme-map, 'color', 'primary', 300)
+      );
     }
 
     &:focus,
     &:active {
-      border: 1px solid themed($theme-map, 'color', 'primary', 800);
-      color: themed($theme-map, 'color', 'primary', 800);
+      // TODO Jessica
+      background-color: themed($theme-map, 'color', 'primary', 400);
     }
 
     &.-disabled,
     &:disabled {
-      border: 1px solid themed($theme-map, 'color', 'primary', 400);
-      color: themed($theme-map, 'color', 'primary', 400);
+      // TODO Jessica
+      opacity: 0.5;
     }
 
     &.is-active {
-      background-color: themed($theme-map, 'color', 'primary', 300);
-    }
-  }
-
-  &--tertiary {
-    border: 2px themed($theme-map, 'color', 'primary', 400) solid;
-    color: themed($theme-map, 'color', 'primary', 'contrast', 600);
-    background-color: transparent;
-
-    &:hover,
-    &:active,
-    &.is-active {
-      border-color: themed($theme-map, 'color', 'primary', 400);
       background-color: themed($theme-map, 'color', 'primary', 400);
-    }
-  }
-
-  &--ghost {
-    color: themed($theme-map, 'color', 'primary', 600);
-    background-color: transparent;
-
-    &:hover,
-    &:active {
-      text-decoration: underline;
     }
   }
 
   &--icon-only {
     @include outlineOnFocus($border-radius: 5px);
-  }
-
-  &--real-ghost,
-  &--real-ghost.-circle,
-  &.a-btn--real-ghost.-circle {
-    color: themed($theme-map, 'color', 'accent', 'contrast', 400);
-    background-color: themed($theme-map, 'color', 'primary', 500);
-
-    &:hover {
-      background-color: themed($theme-map, 'color', 'accent', 600);
-    }
-
-    &:focus,
-    &:active {
-      background-color: themed($theme-map, 'color', 'accent', 700);
-    }
-
-    &.-disabled,
-    &:disabled {
-      background-color: themed($theme-map, 'color', 'accent', 100);
-    }
   }
 
   &--action {
@@ -120,7 +86,7 @@
     &:hover,
     &:active,
     &.is-active {
-      color: themed($theme-map, 'color', 'primary', 'contrast', 400);
+      color: themed($theme-map, 'color', 'primary', 'contrast', 50);
       background-color: themed($theme-map, 'color', 'primary', 400);
     }
 
@@ -132,7 +98,7 @@
   // Action button displayed close to an form input field, icon + circle background (ex: add/remove)
   &--input-action {
     .a-icon {
-      color: themed($theme-map, 'color', 'primary', 'contrast', 400);
+      color: themed($theme-map, 'color', 'primary', 'contrast', 50);
     }
 
     &:before {
@@ -148,7 +114,7 @@
 
   // Action add item, circled icon on left + text on right
   &--iconcircle-text {
-    color: themed($theme-map, 'color', 'graph', 01);
+    color: themed($theme-map, 'color', 'primary', 700);
     font-weight: 400;
     font-size: 14px;
 
@@ -159,28 +125,35 @@
     }
 
     .a-icon {
-      color: themed($theme-map, 'color', 'primary', 'contrast', 400);
+      color: themed($theme-map, 'color', 'primary', 'contrast', 50);
     }
   }
 
   &--select {
     border-radius: toRem(5);
     color: themed($theme-map, 'color', 'primary', 600);
-    background-color: themed($theme-map, 'color', 'primary', 'contrast', 600);
+    background-color: themed($theme-map, 'color', 'primary', 'contrast', 50);
     font-weight: 400;
   }
 
   // Button more dots ( ...)
   &--more {
+    background-color: themed($theme-map, 'color', 'primary', 50);
     color: themed($theme-map, 'color', 'primary', 500);
 
-    &:hover {
-      color: themed($theme-map, 'color', 'primary', 600);
-      background-color: themed($theme-map, 'color', 'primary', 200);
+    &:hover,
+    &:active {
+      @include changeBgColor(
+        $targetBgColor: themed($theme-map, 'color', 'primary', 600),
+        $targetTextColor: themed($theme-map, 'color', 'primary', 'contrast', 50),
+        $targetBorderColor: themed($theme-map, 'color', 'primary', 600)
+      );
     }
 
     &:active {
-      background-color: themed($theme-map, 'color', 'primary', 300);
+      background-color:themed($theme-map, 'color', 'primary', 600);
+      color: themed($theme-map, 'color', 'primary', 'contrast', 50),
+
     }
 
     &:disabled {
@@ -210,6 +183,6 @@
   /* MODIFIERS */
 
   &.-circle {
-    background: themed($theme-map, 'color', 'primary', 50);
+    background: themed($theme-map, 'color', 'primary', 'contrast', 50);
   }
 }

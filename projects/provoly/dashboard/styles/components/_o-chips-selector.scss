@@ -10,7 +10,7 @@
   padding-right: toRem(15);
 }
 
-.o-datasources {
+.o-chips-selector {
   &__list {
     @extend %list-unstyled;
     gap: toRem(15) toRem(30);
@@ -21,21 +21,20 @@
 
   &__main {
     flex: 1 1;
-    overflow: overlay;
   }
 
   &__bottom {
     padding: toRem(5);
   }
 
-  &__card,
-  .o-pry-card {
+  &__chip {
     border-radius: toRem(15);
     padding: toRem(5) toRem(10);
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 5px;
+    min-height: toRem(35);
 
     p {
       margin-bottom: 0;

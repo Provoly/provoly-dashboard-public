@@ -321,3 +321,16 @@
 *  Effects
 *
 */
+
+@mixin changeBgColor($targetBgColor, $targetTextColor: false, $targetBorderColor: false) {
+  transition: background-color 0.3s ease,
+    color 0.3s ease;
+
+  background-color: $targetBgColor;
+  @if $targetTextColor {
+    color: $targetTextColor;
+  }
+  @if $targetBorderColor {
+    border-color: $targetBorderColor;
+  }
+}

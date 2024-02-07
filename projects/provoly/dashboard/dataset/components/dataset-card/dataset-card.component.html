@@ -1,5 +1,5 @@
 <pry-dataset-css></pry-dataset-css>
-<div class="o-pry-dataset-card">
+<div class="o-pry-dataset-card" (click)="goToDetailView()">
   <div class="o-pry-dataset-card__header">
     <img
       alt=""
@@ -24,6 +24,9 @@
   </div>
 
   <div class="o-pry-dataset-card__footer">
-      <button class="a-btn" (click)="goToDetailView()">{{ '@pry.dataset.consult' | i18n }}</button>
+    <button class="a-btn">
+      {{ '@pry.dataset.consult' | i18n }}
+      <pry-icon [width]="20" [height]="20" iconSvg="arrow_right"></pry-icon>
+    </button>
   </div>
 </div>

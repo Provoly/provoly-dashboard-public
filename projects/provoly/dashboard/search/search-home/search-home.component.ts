@@ -164,7 +164,7 @@ export class PrySearchHomeComponent implements OnInit, OnDestroy {
     const data: PryDialogConfirmData = {
       title: '@pry.search.namedQuery.delete',
       actions: [
-        { id: 0, label: '@pry.toolbox.manifest.close', color: 'ghost' },
+        { id: 0, label: '@pry.toolbox.manifest.close', color: 'secondary' },
         { id: 1, label: '@pry.search.namedQuery.delete' }
       ]
     };

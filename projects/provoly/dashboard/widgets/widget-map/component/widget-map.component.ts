@@ -586,7 +586,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.attributions$ = this.options$.pipe(map((options) => !!options.attributions));
 
     this.legendTop$ = combineLatest([this.displayHeader$, this.attributions$]).pipe(
-      map(([header, attr]) => 5 + (header ? WIDGET_HEADER_HEIGHT : 0) + (attr ? 41 : 0))
+      map(([header, attr]) => 5 + (header ? WIDGET_HEADER_HEIGHT : 0) + (attr ? 61 : 0))
     );
 
     this.legendHeight$ = combineLatest([this.widgetSize$.pipe(debounceTime(100)), this.legendTop$]).pipe(
@@ -910,7 +910,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     );
 
     this.layersTop$ = combineLatest([this.legendTop$, this.legendLayers$]).pipe(
-      map(([legendTop, layers]) => legendTop + ((layers.length ?? 0) > 0 ? 35 : 0))
+      map(([legendTop, layers]) => legendTop + ((layers.length ?? 0) > 0 ? 50 : 0))
     );
     this.subscriptions.add(
       combineLatest([this.layersTop$, this.legendLayers$, this.olZoomElement$, this.displayHeader$])
@@ -919,7 +919,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           if (zoomElement) {
             zoomElement.style.top = `${
               layersTop +
-              ((legend.length ?? 0) > 0 || layers.length > 0 ? 5 : 0) +
+              ((legend.length ?? 0) > 0 || layers.length > 0 ? 20 : 0) +
               (!displayHeader ? WIDGET_HEADER_HEIGHT : 0)
             }px`;
           }

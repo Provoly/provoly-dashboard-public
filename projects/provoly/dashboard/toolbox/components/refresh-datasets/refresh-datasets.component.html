@@ -1,4 +1,4 @@
-<button type="button" class="a-btn a-btn--secondary -size-md" (click)="refresh()" [disabled]="datasetCount < 1">
+<button type="button" class="a-btn a-btn--secondary" (click)="refresh()" [disabled]="datasetCount < 1">
   <ng-container *ngIf="displayLabels">
     {{ '@pry.toolbox.refresh' | i18n }}
   </ng-container>

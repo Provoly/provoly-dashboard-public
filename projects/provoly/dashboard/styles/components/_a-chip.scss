@@ -1,0 +1,13 @@
+@use '../abstracts' as *;
+
+.a-chip {
+  border-radius: toRem(24);
+  height: toRem(14);
+  font-size: toRem(10);
+  padding: toRem(2) toRem(7);
+
+  &.-md {
+    height: toRem(20);
+    font-size: toRem(12);
+  }
+}

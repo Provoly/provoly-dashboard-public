@@ -247,21 +247,21 @@ Exemple CSS - Block + éléments imbriqués
 [source, css]
 ----
 /* Block parent */
-.m-blockname{
+.m-blockname {
 
   /* propriétés css */
 
-  &__element1{  /* Child element 1 */
+  &__element1 {  /* Child element 1 */
     /* propriétés css */
 
-      &--special{  /* Variante element 1 */
+      &--special {  /* Variante element 1 */
         /* propriétés css variante */
       }
 
-      &__element2{    /* Child element 2 */
+      &__element2 {    /* Child element 2 */
         /* propriétés css */
 
-          &__element3{ // Child element 3
+          &__element3 { // Child element 3
           /* propriétés css */
           }
 
@@ -294,18 +294,18 @@ Exemple CSS - Block + variantes + modifiers
       /* propriétés css modifier */
   }
 
-  &.-size-lg{
+  &.-size-lg {
     /* propriétés css modifier */
   }
 }
 
 
 // Modifiers créés en dehors d'un bloc, peuvent s'appliquer sur n'importe quel élément
-.-size-lg{
+.-size-lg {
   /* Propriétés css */
 }
 
-.-size-md{
+.-size-md {
   /* Propriétés css */
 }
 

@@ -25,16 +25,45 @@
     @include typography-level(themed($theme-map, 'typography', 'panel'));
   }
 
+  .ol-control {
+    button {
+      color: themed($theme-map, 'color', 'primary', 600);
+
+      &:hover {
+        @include changeBgColor(
+          $targetBgColor: themed($theme-map, 'color', 'primary', 600),
+          $targetTextColor: themed($theme-map, 'color', 'primary', 'contrast', 50),
+          $targetBorderColor: themed($theme-map, 'color', 'primary', 600)
+        );
+      }
+    }
+  }
+
   .m-btn-group.-selection-choice, .m-btn-group.-map-selection-choice {
     border-color: themed($theme-map, 'color', 'primary', 400);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+
+    &.-map-export {
+      &:hover {
+        @include changeBgColor(
+          $targetBgColor: themed($theme-map, 'color', 'primary', 600),
+          $targetTextColor: themed($theme-map, 'color', 'primary', 'contrast', 50),
+          $targetBorderColor: themed($theme-map, 'color', 'primary', 600)
+        );
+
+        button {
+          color: themed($theme-map, 'color', 'primary', 50);
+        }
+      }
+    }
 
     .a-btn {
-      color: #113b6e;
+      color: themed($theme-map, 'color', 'primary', 600);
       background-color: transparent;
 
       &.-selected {
         color: themed($theme-map, 'color', 'accent', 500);
-        background-color: themed($theme-map, 'color', 'primary', 'contrast', 500);
+        background-color: themed($theme-map, 'color', 'primary', 'contrast', 50);
       }
     }
   }

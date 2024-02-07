@@ -10,7 +10,7 @@
   &__input-wrapper {
     border: 1px solid themed($theme-map, 'color', 'primary', 400);
     color: themed($theme-map, 'color', 'graph', 01);
-    background-color: themed($theme-map, 'color', 'primary', 'contrast', 700);
+    background-color: themed($theme-map, 'color', 'primary', 'contrast', 50);
 
     .pry-select {
       font-size: 12px;
@@ -22,8 +22,8 @@
       border-color: themed($theme-map, 'color', 'accent', 600);
     }
 
-    &:has(input:not(focus)) {
-      outline:none;
+    &:has(input:not(:focus)) {
+      outline: none;
       border-color: themed($theme-map, 'color', 'primary', 400);
     }
   }
@@ -32,20 +32,11 @@
     background: transparent;
     font-size: 12px;
     font-weight: bold;
-    color: #424B5A; // color for label taken from figma
+    color: themed($theme-map, 'color', 'grey', 800);
   }
 
   &__input {
     border: none transparent;
     font-size: 12px;
-  }
-
-  // colors that make the clear button look like the ng-select clear button
-  &__clear-wrapper {
-    color: #999999;
-
-    &:hover {
-      color: #D0021B
-    }
   }
 }

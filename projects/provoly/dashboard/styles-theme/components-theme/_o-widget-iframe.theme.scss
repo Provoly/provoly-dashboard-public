@@ -11,13 +11,13 @@
       background-color: transparent;
 
       &:hover {
-        color: themed($theme-map, 'color', 'accent', 'contrast', 500);
+        color: themed($theme-map, 'color', 'accent', 'contrast', 50);
         background-color: themed($theme-map, 'color', 'accent', 500);
       }
 
       &:focus,
       &:active {
-        color: themed($theme-map, 'color', 'accent', 'contrast', 500);
+        color: themed($theme-map, 'color', 'accent', 'contrast', 50);
         background-color: themed($theme-map, 'color', 'accent', 600);
       }
 

@@ -61,7 +61,7 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
   @Input() autocomplete: boolean = false;
   @Input() bindValue: string | undefined;
   @Input() bindLabel: string | undefined;
-  @Input() iconSize = [14, 14];
+  @Input() iconSize = [10, 16];
   @Input() bindIcon: any;
   @Input() template?: TemplateRef<any>;
   @Input() i18nPrefix: string | null = null;

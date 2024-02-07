@@ -33,7 +33,7 @@
       #{$this}__btn__sign {
         &:before,
         &:after {
-          background-color: themed($theme-map, 'color', 'accent', 'contrast', 500);
+          background-color: themed($theme-map, 'color', 'accent', 'contrast', 50);
         }
       }
 
@@ -43,7 +43,7 @@
 
         #{$this}__btn__sign:before,
         #{$this}__btn__sign:after {
-          background-color: themed($theme-map, 'color', 'accent', 'contrast', 500);
+          background-color: themed($theme-map, 'color', 'accent', 'contrast', 50);
         }
       }
     }

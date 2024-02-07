@@ -6,31 +6,7 @@
   &__list {
     display: flex;
     flex-direction: column;
-
-    &__item {
-      .a-btn {
-        border: none;
-        color: #40b688;
-        font-weight: 500;
-        margin-bottom: toRem(-5);
-      }
-
-      .a-btn:disabled {
-        color: #40b688;
-        opacity: 0.5;
-      }
-
-      .a-btn::before {
-        content: '\2192';
-        font-size: toRem(20);
-        padding-bottom: toRem(10);
-      }
-
-      pry-toolbox-action-instanciator {
-        .a-tooltip[data-tooltip][data-tooltip-position=bottom]::after {
-          top: calc(100% - 10px);
-        }
-      }
-    }
+    padding: toRem(4) 0;
+    align-items: flex-end;
   }
 }

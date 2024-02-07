@@ -76,19 +76,14 @@
 
   &__items {
     @extend %list-unstyled;
-    padding: 0 15px;
 
     &__li {
       position: relative;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: toRem(13) 0 toRem(15) 0;
+      align-items: stretch;
+      padding: toRem(15);
       gap: toRem(5);
-
-      &:last-of-type {
-        padding-bottom: toRem(5);
-      }
 
       &__txt {
         flex: 1;
@@ -117,9 +112,8 @@
 
       .a-btn--delete {
         position: relative;
-        width: toRem(22);
-        height: toRem(22);
-        padding: toRem(3);
+        padding: 0 toRem(3);
+        height: auto
       }
     }
   }

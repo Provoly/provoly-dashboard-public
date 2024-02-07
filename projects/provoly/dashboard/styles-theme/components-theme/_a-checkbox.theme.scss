@@ -10,12 +10,12 @@
     border-radius: themed($theme-map, 'decoration', 'border-radius', 'checkbox');
 
     &:checked {
-      border-color: themed($theme-map, 'color', 'accent', 600);
-      background-color: themed($theme-map, 'color', 'accent', 600);
+      border-color: themed($theme-map, 'color', 'primary', 600);
+      background-color: themed($theme-map, 'color', 'primary', 600);
 
       &:before,
       &:after {
-        background-color: themed($theme-map, 'color', 'accent', 'contrast', 600);
+        background-color: themed($theme-map, 'color', 'primary', 'contrast', 50);
       }
     }
   }
@@ -23,46 +23,4 @@
   &__text {
     @include typography-level(themed($theme-map, 'typography', 'form-field'));
   }
-
-  /*&__input {
-    // No focus-visible on button but on button__content
-    &:focus {
-      & ~ #{$this}__checkmark {
-        outline: 2px solid themed($theme-map, 'decoration', 'focus-visible', 'border-color-dark');
-      }
-    }
-    &:focus:not(:focus-visible) {
-      & ~ #{$this}__checkmark {
-        outline: 0;
-      }
-    }
-    &:focus-visible {
-      & ~ #{$this}--circle #{$this}__checkmark {
-        @include eltFocusVisible(
-          $color1: themed($theme-map, 'decoration', 'focus-visible', 'border-color-light'),
-          $color2: themed($theme-map, 'decoration', 'focus-visible', 'border-color-dark'),
-          $border-radius: 9px
-        );
-      }
-    }
-  }*/
-
-  /*&--circle {
-    #{$this}__checkmark {
-      border-color: themed($theme-map, 'color', 'primary', 400);
-      &:before {
-        border-color: themed($theme-map, 'color', 'accent', 'contrast', 400);
-        background-color: themed($theme-map, 'color', 'accent', 400);
-      }
-    }
-  }*/
-
-  /* &__text {
-
-   }*/
-
-  /*&__input:checked ~ #{$this}__checkmark {
-    border-color: themed($theme-map, 'color', 'accent', 600);
-    background-color: themed($theme-map, 'color', 'accent', 600);
-  }*/
 }

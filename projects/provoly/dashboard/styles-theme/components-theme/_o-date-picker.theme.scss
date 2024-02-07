@@ -3,11 +3,11 @@
 
 /* Theme Atom - date picker */
 .o-date-picker {
-  background: themed($theme-map, 'color', 'primary', 'contrast', 600);
+  background: themed($theme-map, 'color', 'primary', 'contrast', 50);
 
   &__header__dropdown {
     color: themed($theme-map, 'color', 'primary', 600);
-    background-color: themed($theme-map, 'color', 'primary', 'contrast', 600);
+    background-color: themed($theme-map, 'color', 'primary', 'contrast', 50);
   }
 
   .a-icon {

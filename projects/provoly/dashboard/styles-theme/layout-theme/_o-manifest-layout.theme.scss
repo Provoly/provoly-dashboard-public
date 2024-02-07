@@ -6,7 +6,13 @@
 .o-manifest-layout {
   &__toolbox {
     border-bottom-color: themed($theme-map, 'color', 'primary', 300);
-    color: themed($theme-map, 'color', 'primary', 'contrast', 100);
+    color: themed($theme-map, 'color', 'primary', 'contrast', 50);
+
+    &__search {
+      .a-icon {
+        color: themed($theme-map, 'color', 'primary', 600);
+      }
+    }
   }
 
   .o-card-manifest {
@@ -22,7 +28,7 @@
       }
     }
 
-    .m-btn-group .a-btn {
+    .m-btn-group .search-icon {
       color: themed($theme-map, 'color', 'primary', 400);
 
       &:hover {

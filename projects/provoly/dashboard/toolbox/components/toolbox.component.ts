@@ -12,6 +12,7 @@ import {
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { ACTIONS, ToolboxAction } from '../toolbox.model';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'pry-toolbox',
@@ -21,6 +22,14 @@ export class ToolboxComponent implements OnInit {
   actions$ = new BehaviorSubject<ToolboxAction[]>(ACTIONS);
   _dropdownActions$ = new BehaviorSubject<{ name: string; order: number }[]>([]);
   @Input() displayLabels = true;
+  @Input() dropdownPosition: ConnectedPosition[] = [
+    {
+      originX: 'end',
+      originY: 'bottom',
+      overlayX: 'end',
+      overlayY: 'top'
+    }
+  ];
   isManualMode$: Observable<boolean>;
   allActions$!: Observable<ToolboxAction[]>;
   mainActions$!: Observable<ToolboxAction[]>;

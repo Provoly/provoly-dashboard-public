@@ -3,9 +3,7 @@
   <ng-container *ngSwitchDefault>
     <div class="o-manifest-layout__toolbox" [class.-u-hidden]="hideToolbox">
       <button
-        class="a-btn a-btn--primary a-btn--icon-text a-tooltip -tooltip-no-wrap"
-        [attr.data-tooltip]="'@pry.presentation.create' | i18n"
-        data-tooltip-position="bottom"
+        class="a-btn a-btn--primary"
         type="button"
         (click)="creation()"
         *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'create' }"

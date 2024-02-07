@@ -216,7 +216,7 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
       new OverlayConfig({
         hasBackdrop: true,
         panelClass: ['o-modal-wrapper', 'o-select-grid-layout-modal-wrapper'],
-        backdropClass: 'backdrop'
+        backdropClass: 'backdrop--with-color'
       })
     );
     this.store.dispatch(ConfigActions.addingOverlay({ id: this.constructor.name }));
