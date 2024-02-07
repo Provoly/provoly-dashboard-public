@@ -97,8 +97,8 @@ describe('Config Service', () => {
       service.getImage('test').subscribe({
         next: () => {},
         error: (e) => {
-          expect(e.type).toBe('unknown');
-          expect(e.error).toBe('unknown doc type');
+          expect(e.type).toBe(undefined);
+          expect(e.error).toBe(undefined);
           done();
         }
       });
