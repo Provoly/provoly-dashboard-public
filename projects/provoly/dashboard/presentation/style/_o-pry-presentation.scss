@@ -29,6 +29,7 @@
 
   .o-manifest-layout__content,
   .o-dashboard-widget {
+    grid-area: middle;
     flex: 100% 1 1;
   }
 }

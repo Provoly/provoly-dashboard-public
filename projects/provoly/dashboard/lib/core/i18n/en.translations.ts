@@ -387,5 +387,9 @@ export const enTranslations = {
     geoAuth: {
       failure: 'Geoserver error'
     }
+  },
+  grid: {
+    rows: 'Rows',
+    columns: 'Columns'
   }
 };

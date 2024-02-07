@@ -390,6 +390,10 @@ export const frTranslations = {
     },
     geoAuth: {
       failure: 'Erreur geoserver'
+    },
+    grid: {
+      rows: 'Lignes',
+      columns: 'Colonnes'
     }
   }
 };

@@ -1,136 +1,141 @@
-<div
-  class="o-dashboard-grid"
-  [style.gridTemplateColumns]="gridTemplateColumns$ | async"
-  [style.gridTemplateRows]="gridTemplateRows$ | async"
-  [style.gridGap]="dashboardParams.gridGap + 'px'"
-  [style.padding]="'0 ' + dashboardParams.gridGap + 'px'"
-  #grid
-  (mousemove)="movingMouse($event)"
-  (drop)="dropping($event)"
-  (dragover)="dragMove($event)"
-  (dragleave)="dragLeave($event)"
-  (dragenter)="dragEnter($event)"
->
-  <ng-container *ngIf="modeEdition$ | async">
-    <div class="o-dashboard-add -rows" [style.height.px]="this.params.gridHeight">
-      <button class="a-btn a-btn--primary a-btn--icon-only" (click)="changeSize('rows', -1)">
-        <pry-icon iconSvg="contract-left" [width]="16" [height]="16"></pry-icon>
-      </button>
-      <button class="a-btn a-btn--primary a-btn--icon-only" (click)="changeSize('rows', +1)">
-        <pry-icon iconSvg="expand-right" [width]="16" [height]="16"></pry-icon>
-      </button>
-    </div>
-    <div class="o-dashboard-add -cols" [style.width.px]="this.params.gridWidth">
-      <button class="a-btn a-btn--primary a-btn--icon-only" (click)="changeSize('columns', -1)">
-        <pry-icon iconSvg="contract-left" [width]="16" [height]="16"></pry-icon>
-      </button>
-      <button class="a-btn a-btn--primary a-btn--icon-only" (click)="changeSize('columns', +1)">
-        <pry-icon iconSvg="expand-right" [width]="16" [height]="16"></pry-icon>
-      </button>
-    </div>
-  </ng-container>
-  <ng-container
-    *ngFor="
-      let widgetManifest of (windowManifest$ | async)?.widgets || [];
-      let widgetIndex = index;
-      trackBy: trackWidgets
-    "
+<div class="o-dashboard-edit" [class.-edit]="modeEdition$ | async">
+  <div class="o-dashboard-add -rows">
+    <button (click)="changeSize('rows', -1)">
+      <pry-icon iconSvg="remove" [width]="12" [height]="12"></pry-icon>
+    </button>
+    <button (click)="changeSize('rows', +1)">
+      <pry-icon iconSvg="add" [width]="12" [height]="12"></pry-icon>
+    </button>
+    <p>{{ '@pry.grid.rows' | i18n }}</p>
+  </div>
+  <div class="o-dashboard-add -cols">
+    <p>{{ '@pry.grid.columns' | i18n }}</p>
+    <button (click)="changeSize('columns', -1)">
+      <pry-icon iconSvg="remove" [width]="12" [height]="12"></pry-icon>
+    </button>
+    <button (click)="changeSize('columns', +1)">
+      <pry-icon iconSvg="add" [width]="12" [height]="12"></pry-icon>
+    </button>
+  </div>
+  <div
+    class="o-dashboard-grid"
+    [style.gridTemplateColumns]="gridTemplateColumns$ | async"
+    [style.gridTemplateRows]="gridTemplateRows$ | async"
+    [style.gridGap]="dashboardParams.gridGap + 'px'"
+    #grid
+    (mousemove)="movingMouse($event)"
+    (drop)="dropping($event)"
+    (dragover)="dragMove($event)"
+    (dragleave)="dragLeave($event)"
+    (dragenter)="dragEnter($event)"
   >
-    <div
-      class="o-dashboard-widget"
-      [class.-edited]="modeEdition"
-      [style.gridColumn]="gridColumn(widgetManifest.layout)"
-      [style.gridRow]="gridRow(widgetManifest.layout)"
-      (drop)="droppingInWidget($event, widgetIndex)"
-    >
-      <ng-container *ngIf="modeEdition">
-        <div class="resize nw-resize" (mousedown)="startResize($event, widgetIndex, 'resize-nw')">
-          <pry-icon iconSvg="north_west" [animation]="false"></pry-icon>
-        </div>
-        <div class="resize sw-resize" (mousedown)="startResize($event, widgetIndex, 'resize-sw')">
-          <pry-icon iconSvg="south_west" [animation]="false"></pry-icon>
-        </div>
-        <div class="resize ne-resize" (mousedown)="startResize($event, widgetIndex, 'resize-ne')">
-          <pry-icon iconSvg="north_east" [animation]="false"></pry-icon>
-        </div>
-        <div class="resize se-resize" (mousedown)="startResize($event, widgetIndex, 'resize-se')">
-          <pry-icon iconSvg="south_east" [animation]="false"></pry-icon>
-        </div>
-        <div class="resize delete" (mousedown)="toggleRemoveConfirm($event, widgetIndex)">
-          <pry-icon iconSvg="close" [animation]="false"></pry-icon>
-        </div>
-        <div class="move" draggable="true" (dragstart)="dragStart($event, widgetIndex)">
-          <div class="move-inside move-{{ widgetManifest.type }}">
-            <span>{{ widgetManifest.title ?? ('@pry.toolbox.' + widgetManifest.type | i18n) }}</span>
-          </div>
-        </div>
-      </ng-container>
-      <ng-container *ngIf="!modeEdition">
-        <pry-widget-instanciator
-          [staticManifest]="widgetManifest"
-          [widgetIndex]="widgetIndex"
-        ></pry-widget-instanciator>
-      </ng-container>
-    </div>
-  </ng-container>
-
-  <ng-container *ngIf="!noBackground">
     <ng-container
-      *ngIf="{
-        noWidgets: (nonFillerWidgets$ | async) === 0,
-        globalLoading: loading$ | async,
-        fetchLoading: (dataFetching$ | async)?.length ?? 1 > 0
-      } as data"
+      *ngFor="
+        let widgetManifest of (windowManifest$ | async)?.widgets || [];
+        let widgetIndex = index;
+        trackBy: trackWidgets
+      "
     >
-      <ng-container *ngIf="data.noWidgets">
-        <div *ngIf="data.globalLoading; else notLoading" class="no-widget" [style.grid-area]="backgroundArea$ | async">
-          <pry-icon
-            iconSvg="loader"
-            class="no-widget__loading"
-            [alt]="'@pry.widget.target.loading' | i18n"
-            [width]="100"
-            [height]="100"
-          />
-          <span class="no-widget__text">{{ '@pry.widget.target.loading' | i18n }}...</span>
-        </div>
-        <ng-template #notLoading>
-          <div class="no-widget" [style.grid-area]="backgroundArea$ | async">
-            <img
-              class="no-widget__search"
-              src="../../../assets/svgs/pry_recherche.svg"
-              alt="{{
+      <div
+        class="o-dashboard-widget"
+        [class.-edited]="modeEdition"
+        [style.gridColumn]="gridColumn(widgetManifest.layout)"
+        [style.gridRow]="gridRow(widgetManifest.layout)"
+        (drop)="droppingInWidget($event, widgetIndex)"
+      >
+        <ng-container *ngIf="modeEdition">
+          <div class="resize nw-resize" (mousedown)="startResize($event, widgetIndex, 'resize-nw')">
+            <pry-icon iconSvg="north_west" [animation]="false"></pry-icon>
+          </div>
+          <div class="resize sw-resize" (mousedown)="startResize($event, widgetIndex, 'resize-sw')">
+            <pry-icon iconSvg="south_west" [animation]="false"></pry-icon>
+          </div>
+          <div class="resize ne-resize" (mousedown)="startResize($event, widgetIndex, 'resize-ne')">
+            <pry-icon iconSvg="north_east" [animation]="false"></pry-icon>
+          </div>
+          <div class="resize se-resize" (mousedown)="startResize($event, widgetIndex, 'resize-se')">
+            <pry-icon iconSvg="south_east" [animation]="false"></pry-icon>
+          </div>
+          <div class="resize delete" (mousedown)="toggleRemoveConfirm($event, widgetIndex)">
+            <pry-icon iconSvg="close" [animation]="false"></pry-icon>
+          </div>
+          <div class="move" draggable="true" (dragstart)="dragStart($event, widgetIndex)">
+            <div class="move-inside move-{{ widgetManifest.type }}">
+              <span>{{ widgetManifest.title ?? ('@pry.toolbox.' + widgetManifest.type | i18n) }}</span>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!modeEdition">
+          <pry-widget-instanciator
+            [staticManifest]="widgetManifest"
+            [widgetIndex]="widgetIndex"
+          ></pry-widget-instanciator>
+        </ng-container>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!noBackground">
+      <ng-container
+        *ngIf="{
+          noWidgets: (nonFillerWidgets$ | async) === 0,
+          globalLoading: loading$ | async,
+          fetchLoading: (dataFetching$ | async)?.length ?? 1 > 0
+        } as data"
+      >
+        <ng-container *ngIf="data.noWidgets">
+          <div
+            *ngIf="data.globalLoading; else notLoading"
+            class="no-widget"
+            [style.grid-area]="backgroundArea$ | async"
+          >
+            <pry-icon
+              iconSvg="loader"
+              class="no-widget__loading"
+              [alt]="'@pry.widget.target.loading' | i18n"
+              [width]="100"
+              [height]="100"
+            />
+            <span class="no-widget__text">{{ '@pry.widget.target.loading' | i18n }}...</span>
+          </div>
+          <ng-template #notLoading>
+            <div class="no-widget" [style.grid-area]="backgroundArea$ | async">
+              <img
+                class="no-widget__search"
+                src="../../../assets/svgs/pry_recherche.svg"
+                alt="{{
+                  (layout === DashboardGridLayout.MANUAL
+                    ? '@pry.widget.target.none_manual'
+                    : '@pry.widget.target.none_auto'
+                  ) | i18n
+                }}"
+              />
+              <span class="no-widget__text">{{
                 (layout === DashboardGridLayout.MANUAL
                   ? '@pry.widget.target.none_manual'
                   : '@pry.widget.target.none_auto'
                 ) | i18n
-              }}"
-            />
-            <span class="no-widget__text">{{
-              (layout === DashboardGridLayout.MANUAL
-                ? '@pry.widget.target.none_manual'
-                : '@pry.widget.target.none_auto'
-              ) | i18n
-            }}</span>
-          </div>
-        </ng-template>
+              }}</span>
+            </div>
+          </ng-template>
+        </ng-container>
+        <div
+          class="a-page-loader backdrop"
+          [style.display]="data.fetchLoading && !data.globalLoading ? 'flex' : 'none'"
+          [style.width.px]="params.gridWidth"
+          [style.height.px]="params.gridHeight"
+        >
+          <pry-icon
+            iconSvg="loader"
+            class="no-widget__loading"
+            [alt]="'@pry.widget.target.loading' | i18n"
+            [width]="200"
+            [height]="200"
+          />
+          <p>{{ '@pry.widget.target.loading' | i18n }}...</p>
+        </div>
       </ng-container>
-      <div
-        class="a-page-loader backdrop"
-        [style.display]="data.fetchLoading && !data.globalLoading ? 'flex' : 'none'"
-        [style.width.px]="params.gridWidth"
-        [style.height.px]="params.gridHeight"
-      >
-        <pry-icon
-          iconSvg="loader"
-          class="no-widget__loading"
-          [alt]="'@pry.widget.target.loading' | i18n"
-          [width]="200"
-          [height]="200"
-        />
-        <p>{{ '@pry.widget.target.loading' | i18n }}...</p>
-      </div>
     </ng-container>
-  </ng-container>
+  </div>
 </div>
 <pry-context-menu></pry-context-menu>
 
