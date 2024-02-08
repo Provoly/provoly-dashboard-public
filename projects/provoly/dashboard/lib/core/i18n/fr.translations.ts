@@ -232,7 +232,7 @@ export const frTranslations = {
       editProfil: 'Editer le profil',
       choice: 'Choisir un ....',
       choiceInList: 'Choisir un élément dans la liste',
-      text: 'Remplisser le champ',
+      text: 'Remplir le champ',
       sortableColumnHeader: "Utilisez les boutons d'en-tête de colonne pour trier.",
       viewDetails: 'Voir les détails',
       selectDate: 'Choisir une date',
