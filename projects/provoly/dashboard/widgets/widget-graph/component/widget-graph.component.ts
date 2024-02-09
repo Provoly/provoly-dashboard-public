@@ -75,7 +75,6 @@ export class WidgetGraphComponent extends DataWidgetComponent implements AfterVi
   relationTypes: RelationType[] = [];
   move$ = new Subject<MouseEvent>();
   mode: 'move' | 'rectangle' = 'move';
-  bottomLeft$: Observable<string>;
   offset = [0, 0];
   additionnalOffset: [number, number] = [0, 0];
   layouts = [{ key: 'simple' }, { key: 'force' }];
@@ -216,14 +215,6 @@ export class WidgetGraphComponent extends DataWidgetComponent implements AfterVi
     );
 
     this.move$.pipe(auditTime(30)).subscribe(($event) => this.moveCallback($event));
-
-    this.bottomLeft$ = combineLatest([this.widgetSize$, this.displayHeader$]).pipe(
-      map(
-        ([size, displayHeader]) =>
-          `translate(10px ,calc(-10px - ${displayHeader ? WIDGET_HEADER_HEIGHT + 'px' : '0px'}))`
-      ),
-      delay(10)
-    );
   }
 
   initSimulation(options: GraphWidgetOptions, size: [number, number]) {

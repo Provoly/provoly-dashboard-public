@@ -1,5 +1,5 @@
 <pry-widget-force-graph-css></pry-widget-force-graph-css>
-<div class="o-widget o-widget--graph">
+<div class="o-widget o-widget--graph" [class.-has-header]="displayHeader$ | async">
   <pry-widget-header
     [datasourceIds]="(datasourceIds$ | async) ?? []"
     *ngIf="displayHeader$ | async"
@@ -50,7 +50,7 @@
     />
     <span class="no-result__text">{{ '@pry.widget.graph.empty' | i18n }}</span>
   </div>
-  <div class="m-btn-group -selection-choice" [style.transform]="bottomLeft$ | async">
+  <div class="m-btn-group -selection-choice">
     <button
       type="button"
       class="a-btn a-btn--icon-only a-tooltip a-tooltip--move"

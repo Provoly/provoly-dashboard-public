@@ -162,7 +162,7 @@ describe('WidgetAggregatedChartComponent', () => {
       expect(spec).toEqual({
         $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
         width: 'container',
-        height: 270,
+        height: 268,
         padding: 10,
         autosize: { type: 'fit', contains: 'padding' },
         data: { values: [{ key: 'A', value: 'V' }] },
@@ -238,7 +238,7 @@ describe('WidgetAggregatedChartComponent', () => {
       expect(spec).toEqual({
         $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
         width: 'container',
-        height: 270,
+        height: 268,
         padding: 10,
         autosize: { type: 'fit', contains: 'padding' },
         data: { values: [{ key: 'A', value: 'V' }] },
@@ -308,7 +308,7 @@ describe('WidgetAggregatedChartComponent', () => {
       expect(spec).toEqual({
         $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
         width: 'container',
-        height: 270,
+        height: 268,
         padding: 10,
         autosize: { type: 'fit', contains: 'padding' },
         data: { values: [{ key: 'A', value: 'V', series: 'ORD' }] },
@@ -393,7 +393,7 @@ describe('WidgetAggregatedChartComponent', () => {
       expect(spec).toEqual({
         $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
         width: 'container',
-        height: 270,
+        height: 268,
         padding: 10,
         autosize: { type: 'fit', contains: 'padding' },
         data: { values: [{ key: 'A', value: 'V', series: 'ORD' }] },

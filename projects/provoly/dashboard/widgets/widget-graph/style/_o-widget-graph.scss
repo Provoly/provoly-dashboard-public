@@ -3,6 +3,20 @@
 /* Organism - widget graph */
 /* Extends o-widget */
 
+.o-widget {
+  &--graph {
+    &__canvas {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .m-btn-group.-selection-choice {
+    transform: translate(10px, 10px);
+  }
+}
+
 .a-tooltip {
   &--move {
     &[data-tooltip]:not([data-tooltip-position])::after {
