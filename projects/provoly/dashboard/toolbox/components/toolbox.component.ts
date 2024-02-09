@@ -57,9 +57,17 @@ export class ToolboxComponent implements OnInit {
 
   constructor(store: Store, @Optional() @Inject(PRY_ACCESS_TOKEN) private role: PryBaseAccess) {
     this.presentation$ = store.select(DashboardSelectors.presentation);
-    this.isManualMode$ = store
-      .select(DashboardSelectors.windowManifest)
-      .pipe(map((pres) => (pres.grid?.layout ?? DashboardGridLayout.MANUAL) === DashboardGridLayout.MANUAL));
+    this.isManualMode$ = combineLatest([
+      store.select(DashboardSelectors.staticManifest),
+      store.select(DashboardSelectors.gridLayout)
+    ]).pipe(
+      map(
+        ([staticManifest, gridLayout]) =>
+          (staticManifest.windows[0]?.grid?.layout !== undefined
+            ? staticManifest.windows[0]?.grid?.layout
+            : gridLayout) === DashboardGridLayout.MANUAL
+      )
+    );
     this.actionsAvailable$ = store.select(DashboardSelectors.displayOptions);
     this.showEditToggle$ = this.actionsAvailable$.pipe(map((actions) => !!actions?.edit_toggle));
   }
