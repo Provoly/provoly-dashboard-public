@@ -9,11 +9,11 @@
   "sources": {
     "openmaptiles": {
       "type": "vector",
-      "url": "https://map.provoly.net/data/v3.json"
+      "url": "https://maps.provoly.net/data/openmaptiles.json"
     }
   },
-  "sprite": "https://map.provoly.net/styles/osm-bright/sprite",
-  "glyphs": "https://map.provoly.net/fonts/{fontstack}/{range}.pbf",
+  "sprite":"https://maps.provoly.net/styles/test-style/sprite",
+  "glyphs":"https://maps.provoly.net/fonts/{fontstack}/{range}.pbf",
   "layers": [
     {
       "id": "background",
