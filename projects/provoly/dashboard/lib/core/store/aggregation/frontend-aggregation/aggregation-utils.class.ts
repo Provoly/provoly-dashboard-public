@@ -191,8 +191,6 @@ export class AggregationUtils {
     let value = AggregationUtils.getValueFromAttribute(item, attribute)?.value as string | number;
     let date1: Date, date2: Date;
 
-    console.log(operator);
-
     switch (operator) {
       case 'EQUALS':
         return value === filterValue;
@@ -206,7 +204,7 @@ export class AggregationUtils {
         return (value as string).endsWith(filterValue as string);
       case 'GREATER_THAN':
         if (typeof filterValue === 'number') {
-          return value > filterValue;
+          return (value as number) > filterValue;
         } else if (typeof filterValue === 'string') {
           return new Date(value) > new Date(filterValue);
         } else {
@@ -214,7 +212,7 @@ export class AggregationUtils {
         }
       case 'LOWER_THAN':
         if (typeof filterValue === 'number') {
-          return value < filterValue;
+          return (value as number) < filterValue;
         } else if (typeof filterValue === 'string') {
           return new Date(value) < new Date(filterValue);
         } else {

@@ -533,7 +533,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
           return !!options.packing?.id && !!options.packing.parentId && !!options.packing.packField;
         case MarkType.RADAR:
           return (
-            ((options.radar?.compare === 'item' && (options.radar.props?.length ?? []) > 2) ||
+            ((options.radar?.compare === 'item' && (options.radar.props?.length ?? 0) > 2) ||
               (options.radar?.compare !== 'item' &&
                 !!options.radar?.keyProp &&
                 !!options.radar.valueProp &&

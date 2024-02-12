@@ -115,11 +115,11 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "provoly-dashboard:build:production"
+              "buildTarget": "provoly-dashboard:build:production"
             },
             "development": {
-              "browserTarget": "provoly-dashboard:build:development",
-              "port": 4201
+              "port": 4201,
+              "buildTarget": "provoly-dashboard:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -127,11 +127,11 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "provoly-dashboard:build"
+            "buildTarget": "provoly-dashboard:build"
           }
         },
         "test": {
-          "builder": "@angular-builders/jest:run",
+          "builder": "@angular-devkit/build-angular:jest",
           "options": {
             "polyfills": [
               "src/polyfills.ts"
@@ -174,7 +174,7 @@
           "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular-builders/jest:run",
+          "builder": "@angular-devkit/build-angular:jest",
           "options": {
             "tsConfig": "projects/provoly/dashboard/tsconfig.spec.json"
           }

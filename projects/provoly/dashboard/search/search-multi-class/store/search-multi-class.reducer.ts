@@ -77,7 +77,7 @@ export const searchMultiClassReducer = createReducer(
   })),
   on(SearchMultiClassActions.resetSearch, (state) => ({
     ...state,
-    multiType: 'AND',
+    multiType: 'AND' as const,
     conditions: []
   }))
 );

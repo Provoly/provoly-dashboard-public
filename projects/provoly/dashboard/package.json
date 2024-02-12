@@ -7,14 +7,14 @@
     "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json schematics/migration.json ../../../dist/@provoly/dashboard/"
   },
   "peerDependencies": {
-    "@angular/cdk": "14.x || 15.x || 16.x",
-    "@angular/common": "15.x || 16.x",
-    "@angular/core": "15.x || 16.x",
-    "@angular/platform-browser": "15.x || 16.x",
-    "@angular/router": "15.x || 16.x",
-    "@ngrx/effects": "16.x",
-    "@ngrx/entity": "16.x",
-    "@ngrx/store": "16.x",
+    "@angular/cdk": "16.x || 17.x",
+    "@angular/common": "16.x || 17.x",
+    "@angular/core": "16.x || 17.x",
+    "@angular/platform-browser": "16.x || 17.x",
+    "@angular/router": "16.x || 17.x",
+    "@ngrx/effects": "17.x",
+    "@ngrx/entity": "17.x",
+    "@ngrx/store": "17.x",
     "buffer": "^6.0.0",
     "css-element-queries": "^1.2.3",
     "d3-drag": "^3.0.0",
@@ -29,7 +29,7 @@
     "vega": "^5.21.0",
     "vega-embed": "^6.23.0",
     "vega-lite": "^5.2.0",
-    "zone.js": "~0.13.0"
+    "zone.js": "~0.14.3"
   },
   "peerDependenciesMeta": {
     "d3-drag": {

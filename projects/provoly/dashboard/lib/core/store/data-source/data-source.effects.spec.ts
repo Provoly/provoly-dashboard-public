@@ -26,7 +26,6 @@ export const namedQueryList: NamedQuery[] = [
     description: 'fakedescription',
     request: {
       type: NamedQueryTypes.MONO_CLASS,
-      fullSearch: null,
       oClass: '9e397c90-b109-423d-812b-3c4ff815ce71',
       condition: {
         type: 'AND',
@@ -45,7 +44,6 @@ export const namedQueryList: NamedQuery[] = [
     description: 'fakedescription2',
     request: {
       type: NamedQueryTypes.MONO_CLASS,
-      fullSearch: null,
       oClass: '9e397c90-b109-423d-812b-3c4ff815ce71',
       condition: {
         type: 'AND',

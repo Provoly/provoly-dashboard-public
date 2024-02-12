@@ -235,7 +235,7 @@ function addProvolyForRoot(options: ProjectSetupOptions, context: SchematicConte
       },
       []
     )`
-    );
+    ) as unknown as Rule;
   } catch (e) {
     context.logger.info('Project module not found: You have to manually add Provoly import');
     return;
@@ -274,8 +274,12 @@ function addPipelinesImport(options: ProjectSetupOptions, context: SchematicCont
       tree.commitUpdate(recorder);
 
       // Add an import `MyLibModule` from `provoly/dashboard` to the root of the user's project.
-      return modules.map((module) =>
-        addRootImport(options.projectName, ({ code, external }) => code`${external(module.name, module.path)}`)
+      return modules.map(
+        (module) =>
+          addRootImport(
+            options.projectName,
+            ({ code, external }) => code`${external(module.name, module.path)}`
+          ) as unknown as Rule
       );
     } catch (e) {
       context.logger.info('Cannot automatically add pipelines imports.');
