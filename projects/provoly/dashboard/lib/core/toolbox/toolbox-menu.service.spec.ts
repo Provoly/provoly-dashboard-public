@@ -7,11 +7,12 @@ import { ToolboxMenuService } from './toolbox-menu.service';
 
 describe('ToolboxMenuService', () => {
   let service: ToolboxMenuService;
-  const mockWidgetFactoryService = { resolveComponent: jest.fn(() => WidgetImageComponent) };
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [{ provide: WidgetFactoryService, useValue: mockWidgetFactoryService }, provideMockStore({})]
+      providers: [
+        { provide: WidgetFactoryService, useValue: { resolveComponent: jest.fn(() => WidgetImageComponent) } },
+        provideMockStore({})
+      ]
     });
     service = TestBed.inject(ToolboxMenuService);
   });

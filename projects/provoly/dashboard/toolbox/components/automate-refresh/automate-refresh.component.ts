@@ -2,7 +2,7 @@ import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ConfigActions, DashboardActions, DashboardSelectors } from '@provoly/dashboard';
+import { ConfigActions, DashboardActions, DashboardSelectors, WidgetFactoryService } from '@provoly/dashboard';
 import { combineLatest, map, Observable, take } from 'rxjs';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
@@ -23,11 +23,20 @@ export class AutomateRefreshComponent extends ToolboxActionComponent implements 
   private overlayRefDatasourceList?: OverlayRef;
   private overlayRefRefreshList?: OverlayRef;
 
-  constructor(store: Store, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
+  constructor(
+    store: Store,
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef,
+    private widgetFactoryService: WidgetFactoryService
+  ) {
     super(store);
     this.datasources$ = this.store
-      .select(DashboardSelectors.manifestDatasources)
-      .pipe(map((dss) => dss.map((ds) => ds.datasetId)));
+      .select(DashboardSelectors.globalManifest)
+      .pipe(
+        map((manifest) => [
+          ...new Set(this.widgetFactoryService.getObjectsToAutoLoad(manifest).datasources.map((ds) => ds.datasetId))
+        ])
+      );
   }
 
   ngOnInit() {

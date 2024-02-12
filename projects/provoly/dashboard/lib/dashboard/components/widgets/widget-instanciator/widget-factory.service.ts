@@ -1,6 +1,6 @@
 import { Inject, Injectable, InjectionToken, Injector, Type } from '@angular/core';
 import { BehaviorSubject, from, map, Observable, of } from 'rxjs';
-import { WidgetManifest } from '../../../../core/model/manifest.interface';
+import { GlobalManifest, WidgetManifest } from '../../../../core/model/manifest.interface';
 import { BaseWidgetComponent } from '../base-widget.component';
 import { WidgetFillerComponent } from '../widget-filler/widget-filler.component';
 import { WidgetPlaceholderComponent } from '../widget-placeholder/widget-placeholder.component';
@@ -96,5 +96,24 @@ export class WidgetFactoryService {
     return datasourcesArray.filter(
       () => widgetDefinition.autoLoadDatasource === undefined || widgetDefinition.autoLoadDatasource === 'aggregate'
     );
+  }
+
+  getObjectsToAutoLoad(manifest: GlobalManifest) {
+    const datasources: { datasetId: string; excludeGeo: boolean }[] = [];
+    const aggregates: string[] = [];
+
+    manifest.windows.forEach((windowManifest) => {
+      windowManifest.widgets.forEach((widgetManifest) => {
+        this.datasourcesToAutoLoad(widgetManifest).forEach((res: { datasetId: string; excludeGeo: boolean }) => {
+          if (res.datasetId) {
+            datasources.push(res);
+          }
+        });
+
+        this.aggregatesToAutoLoad(widgetManifest).forEach((ds: string) => aggregates.push(ds));
+      });
+    });
+
+    return { datasources, aggregates };
   }
 }

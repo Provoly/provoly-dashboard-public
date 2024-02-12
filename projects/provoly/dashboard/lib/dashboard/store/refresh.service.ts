@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { filter, interval, Subscription } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { SearchActions } from '../../core/store/search/search.actions';
+import { WidgetFactoryService } from '../components/widgets/widget-instanciator/widget-factory.service';
 import { DashboardSelectors } from './dashboard.selectors';
 
 @Injectable({
@@ -11,7 +12,7 @@ import { DashboardSelectors } from './dashboard.selectors';
 export class RefreshService {
   subscription?: Subscription;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private widgetFactoryService: WidgetFactoryService) {}
 
   stop() {
     this.subscription?.unsubscribe();
@@ -23,15 +24,17 @@ export class RefreshService {
         .pipe(
           withLatestFrom(
             this.store.select(DashboardSelectors.refreshRates),
-            this.store.select(DashboardSelectors.manifestDatasources)
+            this.store.select(DashboardSelectors.globalManifest)
           ),
-          map(([interval, refreshRates, datasources]) =>
-            Object.keys(refreshRates)
+          map(([interval, refreshRates, globalManifest]) => {
+            const datasources = this.widgetFactoryService.getObjectsToAutoLoad(globalManifest).datasources;
+
+            return Object.keys(refreshRates)
               .filter((key) => datasources.map((ds) => ds.datasetId).includes(key))
               .filter((key) => refreshRates[key] !== undefined && refreshRates[key] !== 0)
               .filter((key) => interval % refreshRates[key] === 0)
-              .map((dsId) => datasources.find((ds) => ds.datasetId === dsId)!)
-          ),
+              .map((dsId) => datasources.find((ds) => ds.datasetId === dsId)!);
+          }),
           filter((rs) => rs.length > 0)
         )
         .subscribe((resultSetsToUpdate) => {

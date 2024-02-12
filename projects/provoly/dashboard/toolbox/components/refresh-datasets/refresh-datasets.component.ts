@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { DashboardSelectors, GlobalManifest, ManifestUtils, SearchActions } from '@provoly/dashboard';
+import { Action, Store } from '@ngrx/store';
+import {
+  DashboardActions,
+  DashboardSelectors,
+  GlobalManifest,
+  SearchActions,
+  WidgetFactoryService
+} from '@provoly/dashboard';
 import { Observable } from 'rxjs';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
@@ -13,7 +19,7 @@ export class RefreshDatasetsComponent extends ToolboxActionComponent {
   manifest?: GlobalManifest;
   datasetCount = 0;
 
-  constructor(store: Store) {
+  constructor(store: Store, private widgetFactoryService: WidgetFactoryService) {
     super(store);
     this.manifest$ = this.store.select(DashboardSelectors.globalManifest);
     this.subscriptions.add(this.manifest$.subscribe((manifest) => (this.manifest = manifest)));
@@ -35,19 +41,20 @@ export class RefreshDatasetsComponent extends ToolboxActionComponent {
 
   refresh() {
     if (this.manifest) {
-      ManifestUtils.getDatasourcesUsedByManifest(this.manifest).forEach(
-        (res: { datasetId: string; excludeGeo: boolean }) => {
-          if (res.datasetId) {
-            this.store.dispatch(
-              SearchActions.getDatasourceItems({
-                id: res.datasetId,
-                excludeGeo: res.excludeGeo,
-                from: 'RefreshDatasetsComponent.refresh()'
-              })
-            );
-          }
-        }
-      );
+      const dsAgg = this.widgetFactoryService.getObjectsToAutoLoad(this.manifest);
+
+      const actions = [
+        ...dsAgg.datasources.map((ds) =>
+          SearchActions.getDatasourceItems({
+            id: ds.datasetId,
+            excludeGeo: ds.excludeGeo,
+            from: 'RefreshDatasetsComponent.refresh()'
+          })
+        ),
+        ...dsAgg.aggregates.map((agg) => DashboardActions.triggerAggregate({ id: agg }))
+      ] as Action[];
+
+      actions.forEach((action) => this.store.dispatch(action));
     }
     this.close();
   }
