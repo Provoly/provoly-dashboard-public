@@ -1,3 +1,3 @@
 = Provoly frontend documentation
 
-Bienvenu dans la documentation Provoly pour le module link:https://www.npmjs.com/package/@provoly/dashboard[@provoly/dashboard]
+Bienvenue dans la documentation Provoly pour le module link:https://www.npmjs.com/package/@provoly/dashboard[@provoly/dashboard]
