@@ -68,6 +68,8 @@
       padding-right: toRem(15);
 
       .a-btn {
+        border-radius: 50%;
+
         &:not(:last-child) {
           margin-right: 5px;
         }

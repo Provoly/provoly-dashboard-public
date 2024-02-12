@@ -5,9 +5,10 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { PryI18nModule } from '../../i18n/i18n.module';
 import { PryIconModule } from '../icon/icon.module';
 import { PrySelectComponent } from './select.component';
+import { PryCheckboxModule } from '@provoly/dashboard/components/checkbox';
 
 @NgModule({
-  imports: [A11yModule, CommonModule, FormsModule, PryIconModule, PryI18nModule],
+	imports: [A11yModule, CommonModule, FormsModule, PryIconModule, PryI18nModule, PryCheckboxModule],
   declarations: [PrySelectComponent],
   exports: [PrySelectComponent]
 })

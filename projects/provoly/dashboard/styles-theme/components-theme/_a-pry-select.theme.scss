@@ -14,10 +14,12 @@
 
   &__value {
     &.-multiple {
-      background-color: themed($theme-map, 'color', 'accent', 100);
+      color: themed($theme-map, 'color', 'primary', 'contrast', 50);
+      background-color: themed($theme-map, 'color', 'primary', 600);
 
       &.-warn {
         background-color: themed($theme-map, 'color', 'status', warning);
+        color: themed($theme-map, 'color', 'grey', 1000);
       }
     }
   }
@@ -30,10 +32,6 @@
 
     &__option {
       background-color: #ffffff;
-
-      &[aria-selected="true"], &:hover {
-        background-color: themed($theme-map, 'color', 'primary', 300);
-      }
 
       &:hover {
         color: themed($theme-map, 'color', 'primary', 750);
@@ -51,6 +49,6 @@
   }
 
   &__toggle {
-    color: themed($theme-map, 'color', 'accent', 600);
+    color: themed($theme-map, 'color', 'primary', 600);
   }
 }

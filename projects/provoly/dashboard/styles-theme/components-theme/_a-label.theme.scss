@@ -4,6 +4,7 @@
 /* Theme Atom - form label */
 .a-label {
   @include typography-level(themed($theme-map, 'typography', 'label'));
+  color: themed($theme-map, 'color', 'primary', 750);
 
   &--help {
     color: themed($theme-map, 'color', 'graph', 01);

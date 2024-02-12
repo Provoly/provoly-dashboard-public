@@ -30,17 +30,13 @@ export class PrySelectImageComponent implements OnInit {
   @Output() toggled = new EventEmitter<boolean>();
   @Output() changed = new EventEmitter<string>();
   @Input() iconUrl = '';
-  @Input() size = 50;
+  @Input() size = 25;
   @Input() mode: string = LibraryTypes.ICON;
   id: number;
   images$?: Observable<Image[]>;
   loading$: Observable<ImageState>;
 
-  constructor(
-    private store: Store,
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef
-  ) {
+  constructor(private store: Store, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
     this.store.dispatch(ImageActions.load());
     this.id = uniqueId++;
     this.loading$ = this.store.select(ImagesSelectors.images);

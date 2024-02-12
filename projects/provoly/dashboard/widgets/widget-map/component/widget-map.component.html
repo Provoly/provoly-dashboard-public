@@ -351,7 +351,6 @@
           type="button"
           class="a-btn a-btn--icon-only a-tooltip a-tooltip--{{ action }}"
           (click)="changeSelection(action)"
-          [class.-selected]="(interactionManager.selectionInteraction.selectionType$ | async) === action"
           [attr.data-tooltip]="'@pry.widget.map.' + action | i18n"
           data-tooltip-position="right"
         >

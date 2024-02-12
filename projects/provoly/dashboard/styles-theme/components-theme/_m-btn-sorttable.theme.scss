@@ -4,7 +4,7 @@
 /* Theme Molecule button to sort table rows */
 .m-btn-sorttable {
   @include typography-level(themed($theme-map, 'typography', 'button'));
-  color: themed($theme-map, 'color', 'primary', 600);
+  color: themed($theme-map, 'color', 'primary', 750);
   font-size: toRem(14);
   font-weight: 700;
 
@@ -34,12 +34,12 @@
 
 [aria-sort='ascending'] > .m-btn-sorttable {
   .m-btn-sorttable__icnmark.-asc {
-    color: themed($theme-map, 'color', 'accent', 600);
+    color: themed($theme-map, 'color', 'primary', 600);
   }
 }
 
 [aria-sort='descending'] > .m-btn-sorttable {
   .m-btn-sorttable__icnmark.-desc {
-    color: themed($theme-map, 'color', 'accent', 600);
+    color: themed($theme-map, 'color', 'primary', 600);
   }
 }

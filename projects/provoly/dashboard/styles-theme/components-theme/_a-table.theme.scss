@@ -5,14 +5,14 @@
 
 .a-table {
   background-color: white;
-  color: themed($theme-map, 'color', 'primary', 600);
+  color: themed($theme-map, 'color', 'primary', 700);
 
   thead {
     tr {
       border-bottom-color: themed($theme-map, 'color', 'graph', 01);
 
       th {
-        color: themed($theme-map, 'color', 'primary', 600);
+        color: themed($theme-map, 'color', 'primary', 750);
 
         /*&:hover {
           background-color: themed($theme-map, 'color', 'primary', 50);

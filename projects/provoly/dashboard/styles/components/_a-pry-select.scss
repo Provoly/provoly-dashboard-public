@@ -4,6 +4,7 @@
 .a-pry-select {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: toRem(10);
   gap: toRem(10);
 
@@ -28,6 +29,11 @@
   }
 
   &__value {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: toRem(10);
+
     &.-multiple {
       padding: toRem(2) toRem(15);
       border-radius: toRem(15);
@@ -49,6 +55,9 @@
     max-height: toRem(calc(6 * 35)); // 6 items of height 35px
 
     &__option {
+      display: flex;
+      align-items: center;
+      gap: toRem(10);
       cursor: pointer;
       padding: toRem(8) toRem(10);
       font-family: Ubuntu,sans-serif;
@@ -67,6 +76,10 @@
         p {
           margin-bottom: 0;
         }
+      }
+
+      pry-checkbox {
+        margin-bottom: -10px;
       }
     }
   }

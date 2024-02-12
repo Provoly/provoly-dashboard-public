@@ -6,6 +6,7 @@
 .o-base-layout {
   &__title {
     border-right: 1px themed($theme-map, 'color', 'primary', 400) solid;
+    border-bottom: 1px themed($theme-map, 'color', 'primary', 400) solid;
 
     .a-btn {
       color: themed($theme-map, 'color', 'primary', 'contrast', 50);

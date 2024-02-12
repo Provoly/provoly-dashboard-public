@@ -112,13 +112,10 @@
       justify-content: space-between;
 
       .a-h3 {
-        font-size: toRem(14);
         padding-bottom: toRem(5);
       }
 
       .a-p {
-        font-size: toRem(13);
-
         &.-date {
           padding-top: toRem(10);
           margin-bottom: 0;

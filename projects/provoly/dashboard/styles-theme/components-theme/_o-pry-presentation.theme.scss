@@ -24,7 +24,16 @@
 
     &__txt {
       .a-h3 {
+        font-size: toRem(14);
         color: themed($theme-map, 'color', 'primary', 600);
+      }
+
+      .a-p {
+        font-size: toRem(12);
+
+        &.-date {
+          font-size: toRem(11);
+        }
       }
     }
 

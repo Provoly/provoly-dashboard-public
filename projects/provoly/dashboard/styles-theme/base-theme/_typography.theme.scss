@@ -2,27 +2,30 @@
 @use '../abstracts-theme/variables.theme' as *;
 
 body {
-  color: themed($theme-map, 'color', 'graph', 01);
+  color: themed($theme-map, 'color', 'primary', 700);
   @include typography-level(themed($theme-map, 'typography', 'body'));
 }
 
 .a-h1,
 h1 {
-  color: themed($theme-map, 'color', 'graph', 02);
+  color: themed($theme-map, 'color', 'primary', 750);
   @include typography-level(themed($theme-map, 'typography', 'title-1'));
 }
 
 .a-h2,
 h2 {
+  color: themed($theme-map, 'color', 'primary', 750);
   @include typography-level(themed($theme-map, 'typography', 'title-2'));
 }
 
 .a-h3,
 h3 {
+  color: themed($theme-map, 'color', 'primary', 750);
   @include typography-level(themed($theme-map, 'typography', 'title-3'));
 }
 
 .a-h4,
 h4 {
+  color: themed($theme-map, 'color', 'primary', 750);
   @include typography-level(themed($theme-map, 'typography', 'title-4'));
 }

@@ -6,7 +6,7 @@
           *pryAccess="{ module: menu.module, page: menu.page, subMenu: menu.subMenu }"
           class="m-nav-links__list__item"
         >
-          <a [routerLink]="menu.menu" class="a-btn a-btn--secondary -width-full" [routerLinkActive]="'is-active'">
+          <a [routerLink]="menu.menu" class="a-btn -width-full" [routerLinkActive]="'is-active'">
             {{ baseMenuTranslation + menu.menu | i18n }}
           </a>
         </li>

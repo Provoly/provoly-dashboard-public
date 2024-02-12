@@ -8,7 +8,8 @@
         (click)="creation()"
         *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'create' }"
       >
-        {{ '@pry.context.create' | i18n }}
+        <pry-icon iconSvg="add"></pry-icon>
+        {{ '@pry.presentation.create' | i18n }}
       </button>
       <div>
         <div class="o-manifest-layout__toolbox__search">

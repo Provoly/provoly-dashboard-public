@@ -9,9 +9,10 @@ $theme-colors-primary: (
   400: #BCCAD8, //filter border
   500: #7B96B2,
   600: #113B6E, // new primary color
-  700: #3E546A, // all typography
-  750: #263340, // typography - titles, categories
-  800: #131920, // focus, active button
+  700: #3E546A, // figma 600, all typography
+  750: #263340, // figma 700, typography - titles, categories
+  800: #131920,
+  850: #092B54, // hover - slider, active - button
 
   'contrast': (
     50: #FFFFFF,

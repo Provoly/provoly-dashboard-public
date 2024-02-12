@@ -8,16 +8,11 @@
 
   &__list {
     @extend %list-unstyled;
-    margin: toRem(18) toRem(20);
 
     &__item {
-      margin-bottom: toRem(12);
-
-      [class*='a-btn--'] {
+      [class*='a-btn'] {
         justify-content: flex-start;
-        // height: toRem(55);
-        // padding: 0.5rem 1rem;
-        // border-radius: toRem(28);
+        border-radius: 0;
         text-align: left;
       }
     }

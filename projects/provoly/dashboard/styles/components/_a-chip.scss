@@ -1,6 +1,8 @@
 @use '../abstracts' as *;
 
 .a-chip {
+  display: flex;
+  align-items: center;
   border-radius: toRem(24);
   height: toRem(14);
   font-size: toRem(10);
@@ -9,5 +11,9 @@
   &.-md {
     height: toRem(20);
     font-size: toRem(12);
+  }
+
+  &.-no-wrap {
+    white-space: nowrap;
   }
 }

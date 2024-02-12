@@ -30,9 +30,8 @@
 
     &:focus,
     &:active {
-      // TODO Jessica
       @include changeBgColor(
-          $targetBgColor: themed($theme-map, 'color', 'primary', 800),
+          $targetBgColor: themed($theme-map, 'color', 'primary', 850),
           $targetTextColor: themed($theme-map, 'color', 'primary', 'contrast', 50)
       );
     }
@@ -50,7 +49,6 @@
     background-color: themed($theme-map, 'color', 'primary', 'contrast', 50);
 
     &:hover {
-      // TODO Jessica
       @include changeBgColor(
         $targetBgColor: themed($theme-map, 'color', 'primary', 300)
       );
@@ -58,18 +56,16 @@
 
     &:focus,
     &:active {
-      // TODO Jessica
-      background-color: themed($theme-map, 'color', 'primary', 400);
+      background-color: themed($theme-map, 'color', 'primary', 600);
     }
 
     &.-disabled,
     &:disabled {
-      // TODO Jessica
       opacity: 0.5;
     }
 
     &.is-active {
-      background-color: themed($theme-map, 'color', 'primary', 400);
+      background-color: themed($theme-map, 'color', 'primary', 600);
     }
   }
 

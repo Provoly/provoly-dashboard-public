@@ -2,3 +2,21 @@
 @use '../abstracts-theme/variables.theme' as *;
 
 /* Theme Molecule - base menu */
+
+.m-nav-links {
+
+  &__list {
+    &__item {
+      border-bottom: 1px solid themed($theme-map, 'color', 'primary', 400);
+
+      &:hover {
+        background-color: themed($theme-map, 'color', 'primary', 300);
+      }
+
+      [class*='is-active'] {
+        background-color: themed($theme-map, 'color', 'primary', 300);
+        color: themed($theme-map, 'color', 'primary', 600);
+      }
+    }
+  }
+}

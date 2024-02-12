@@ -121,6 +121,7 @@
             <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
           </ng-container>
           <ng-template #noTemplate>
+            <pry-checkbox (click)="$event.preventDefault()" *ngIf="multiple" [ngModel]="(valueItems$ | async).includes(item)"></pry-checkbox>
             <pry-icon
               *ngIf="bindIcon"
               [iconSvg]="item[bindIcon]"
