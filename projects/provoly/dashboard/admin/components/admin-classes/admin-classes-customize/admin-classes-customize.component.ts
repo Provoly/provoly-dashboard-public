@@ -9,6 +9,7 @@ import {
   ConfigActions,
   ConfigSelectors,
   Field,
+  FieldActions,
   FieldSelectors,
   ItemUtils,
   SubscriptionnerDirective
@@ -42,6 +43,7 @@ export class AdminClassesCustomizeComponent extends SubscriptionnerDirective imp
       )
     );
     this.store.dispatch(ClassActions.load());
+    this.store.dispatch(FieldActions.load());
     this.store.dispatch(ConfigActions.loadCustomization());
     this.fields$ = this.store.select(FieldSelectors.fields);
     this.currentClass$ = combineLatest([
@@ -59,8 +61,8 @@ export class AdminClassesCustomizeComponent extends SubscriptionnerDirective imp
       this.currentPropertiesConfig$.pipe(combineLatestWith(this.currentClass$)).subscribe(([attrs, clazz]) => {
         this.defaultAttributes = JSON.parse(JSON.stringify(attrs));
         this.otherAttributes = (clazz ?? { attributes: [] }).attributes
-          .filter((attr) => !attrs.includes(attr.technicalName))
-          .map((attr) => attr.technicalName);
+          .filter((attr) => !attrs.includes(attr.name))
+          .map((attr) => attr.name);
       })
     );
     this.currentTilePropertiesConfig$ = this.store.select(ConfigSelectors.tileAttributesDefinitions).pipe(
@@ -74,8 +76,8 @@ export class AdminClassesCustomizeComponent extends SubscriptionnerDirective imp
       this.currentTilePropertiesConfig$.pipe(combineLatestWith(this.currentClass$)).subscribe(([attrs, clazz]) => {
         this.defaultTileAttributes = JSON.parse(JSON.stringify(attrs));
         this.otherTileAttributes = (clazz ?? { attributes: [] }).attributes
-          .filter((attr) => !attrs.includes(attr.technicalName))
-          .map((attr) => attr.technicalName);
+          .filter((attr) => !attrs.includes(attr.name))
+          .map((attr) => attr.name);
       })
     );
     this.subscriptions.add(

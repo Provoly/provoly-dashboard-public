@@ -142,7 +142,7 @@ export class ItemUtils {
           const attrField = fields.find((f) => f.id === attr.field);
           return attrField && !GeometricFieldTypes.includes(attrField.type);
         })
-        .map((attr) => attr.technicalName)
+        .map((attr) => attr.name)
     );
   }
 

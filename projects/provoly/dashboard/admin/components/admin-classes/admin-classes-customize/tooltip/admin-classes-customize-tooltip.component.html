@@ -21,7 +21,7 @@
       id="customize_simplified"
       (ngModelChange)="changeAttributes($event)"
       [ngModel]="currentClassConfig.options.attributes"
-      [items]="possibleAttributes"
+      [items]="attributesOfClass$ | async"
       [multiple]="true"
       [closeOnSelect]="false"
       bindLabel="name"

@@ -15,15 +15,18 @@ import {
   AttributeSimpleValue,
   BaseTooltipComponent,
   Class,
+  ClassSelectors,
   ConfigActions,
   ConfigSelectors,
+  Field,
+  FieldSelectors,
   Item,
   PryI18nService,
   SubscriptionnerDirective,
   TooltipFactoryService,
   TooltipOfClass
 } from '@provoly/dashboard';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { v4 } from 'uuid';
 
 @Component({
@@ -35,7 +38,6 @@ export class AdminClassesCustomizeTooltipComponent extends SubscriptionnerDirect
   currentClassConfig: TooltipOfClass = { type: 'default' };
   possibleTooltipTypes$: Observable<{ value: string; label: string }[]>;
   advancedTooltip: boolean = false;
-  possibleAttributes: Attribute[] = [];
   possibleNonAttributesFields = [
     {
       name: 'id',
@@ -47,24 +49,26 @@ export class AdminClassesCustomizeTooltipComponent extends SubscriptionnerDirect
     }
   ] as Attribute[];
   @Output() backPressed = new EventEmitter<void>();
-  private _currentClass: Class = {} as Class;
-  private fields: Attribute[] = [];
+  private _currentClass$ = new BehaviorSubject<Class>({} as Class);
   strOptions: string = '';
   tmpComponent?: ComponentRef<BaseTooltipComponent>;
   defs: { [p: string]: TooltipOfClass } = {};
   noTooltip: boolean = false;
+  classes$: Observable<Class[]>;
+  fields$: Observable<Field[]>;
+  attributesOfClass$: Observable<Attribute[]>;
+  mockData: any;
+  attributes: Attribute[] = [];
 
   @Input() set currentClass(clazz: Class | null | undefined) {
-    this._currentClass = clazz ?? ({} as Class);
-    this.fields = (clazz ?? { attributes: [] }).attributes ?? [];
-    this.possibleAttributes = this.possibleNonAttributesFields
-      .concat(this.fields)
-      .sort((f1, f2) => f1.name.localeCompare(f2.name));
-    this.currentClassConfig = JSON.parse(JSON.stringify(this.defs[this.currentClass.id] ?? { type: 'default' }));
+    this._currentClass$.next(clazz ?? ({} as Class));
+    this.currentClassConfig = this.removeUnknown(
+      JSON.parse(JSON.stringify(this.defs[this.currentClass.id] ?? { type: 'default' }))
+    );
   }
 
   get currentClass(): Class {
-    return this._currentClass;
+    return this._currentClass$.value;
   }
 
   constructor(
@@ -88,12 +92,38 @@ export class AdminClassesCustomizeTooltipComponent extends SubscriptionnerDirect
         this.currentClassConfig = JSON.parse(JSON.stringify(defs[this.currentClass.id] ?? { type: 'default' }));
       })
     );
+    this.classes$ = this.store.select(ClassSelectors.classes);
+    this.fields$ = this.store.select(FieldSelectors.fields);
+    this.attributesOfClass$ = combineLatest([this._currentClass$, this.classes$]).pipe(
+      map(([clazz, classes]) => classes.find((cl) => cl.id === clazz.id)?.attributes ?? []),
+      map((attrs) => [...attrs, ...this.possibleNonAttributesFields].sort((f1, f2) => f1.name.localeCompare(f2.name)))
+    );
+    this.subscriptions.add(
+      this.attributesOfClass$.subscribe((attrs) => {
+        this.attributes = attrs;
+        this.mockData = attrs
+          .map((attr) => ({
+            [attr.technicalName]: {
+              type: 'VALUE',
+              value:
+                '«' + this.translateService.instant('@pry.admin.customize.exemple', { expr: attr.technicalName }) + '»',
+              visible: true
+            } as AttributeSimpleValue
+          }))
+          .reduce((p, c) => ({ ...p, attributes: { ...p.attributes, ...c } }), {
+            oClass: this.currentClass.id,
+            id: v4(),
+            label: '«' + this.translateService.instant('@pry.admin.customize.exemple', { expr: 'label' }) + '»',
+            attributes: {} as { [key: string]: AttributeSimpleValue }
+          } as Item);
+      })
+    );
   }
 
   tooltipTypeChanged($event: any) {
     this.currentClassConfig.type = $event;
     if (this.currentClassConfig.type === 'attribute') {
-      this.currentClassConfig.options = { attributes: this.possibleAttributes.map((attr) => attr.id) };
+      this.currentClassConfig.options = { attributes: this.attributes.map((attr) => attr.id) };
     } else {
       this.currentClassConfig.options = {};
     }
@@ -119,21 +149,7 @@ export class AdminClassesCustomizeTooltipComponent extends SubscriptionnerDirect
     component$.subscribe((component) => {
       this.noTooltip = !component;
       if (component) {
-        component.instance.data.item = this.fields
-          .map((attr) => ({
-            [attr.technicalName]: {
-              type: 'VALUE',
-              value:
-                '«' + this.translateService.instant('@pry.admin.customize.exemple', { expr: attr.technicalName }) + '»',
-              visible: true
-            } as AttributeSimpleValue
-          }))
-          .reduce((p, c) => ({ ...p, attributes: { ...p.attributes, ...c } }), {
-            oClass: this.currentClass.id,
-            id: v4(),
-            label: '«' + this.translateService.instant('@pry.admin.customize.exemple', { expr: 'label' }) + '»',
-            attributes: {} as { [key: string]: AttributeSimpleValue }
-          } as Item);
+        component.instance.data.item = this.mockData;
 
         this.tmpComponent = component;
 
@@ -158,5 +174,18 @@ export class AdminClassesCustomizeTooltipComponent extends SubscriptionnerDirect
   changeAttributes($event: any) {
     this.currentClassConfig.options.attributes = $event;
     setTimeout(() => this.updateExample(), 100);
+  }
+
+  private removeUnknown(config: TooltipOfClass): TooltipOfClass {
+    if (config.type === 'attribute') {
+      const toRemove: string[] = [];
+      config.options.attributes.forEach((attr: string) => {
+        if (!this.attributes.map((attr) => attr.id).includes(attr)) {
+          toRemove.push(attr);
+        }
+      });
+      config.options.attributes = config.options.attributes.filter((attr: string) => !toRemove.includes(attr));
+    }
+    return config;
   }
 }

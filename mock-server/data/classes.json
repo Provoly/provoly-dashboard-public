@@ -221,7 +221,7 @@
     "attributes": [
       {
         "id": "ea1f6255-9e67-41e6-89a2-1c1bd5a0a5ce",
-        "name": "voie",
+        "name": "LIBvoie",
         "field": "d31a3850-0ec3-4ce1-b005-8b5fca5029cb",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
@@ -229,7 +229,7 @@
       },
       {
         "id": "38f7b6a1-1550-4451-a191-d25d24e6e61e",
-        "name": "numero_accident_qui_a_eu_lieu",
+        "name": "LIBnumero_accident_qui_a_eu_lieu",
         "field": "178c19cf-702c-4a0a-a218-cca5c0eef7d7",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
@@ -237,7 +237,7 @@
       },
       {
         "id": "54a21924-5309-43cd-b8c6-f98a4712ca61",
-        "name": "position",
+        "name": "LIBposition",
         "field": "59853619-9773-418a-ace5-70b80fd4dc74",
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
