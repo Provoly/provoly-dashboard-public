@@ -113,8 +113,8 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
   ) {
     super();
     this.matchingItems$ = combineLatest([this._items$, this.search$, this.searchSelected$]).pipe(
-      map(([items, term, alreadySelected]) =>
-        this.autocomplete && term && term.length > 0 && !alreadySelected
+      map(([items, term]) =>
+        this.autocomplete && term && term.length > 0
           ? items.filter((i) => {
               const itemValue = this.bindLabel ? i?.[this.bindLabel] : i;
               return itemValue.toLowerCase().indexOf(term.toLowerCase()) > -1;
