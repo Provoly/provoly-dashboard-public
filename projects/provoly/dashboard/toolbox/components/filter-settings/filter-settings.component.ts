@@ -77,6 +77,7 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
   attributes$: Observable<{ id: string; technicalName: string; label: string; datasource: string; type: string }[]>;
   selectedAttribute$ = new BehaviorSubject<string[]>(this.filter.attributes.map((attr) => attr.id));
   @ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
+  attributes: { id: string; technicalName: string; label: string; datasource: string; type: string }[] = [];
 
   constructor(
     store: Store,
@@ -164,6 +165,8 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
           ] as { id: string; technicalName: string; label: string; datasource: string; type: string }[]
       )
     );
+
+    this.subscriptions.add(this.attributes$.subscribe((attrs) => (this.attributes = attrs)));
   }
 
   getDatasourceClass(dataSource: DataSource, classes: Class[]): Class | undefined {
@@ -270,6 +273,9 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
   }
 
   submitFilter() {
+    this.filter.attributes = this.filter.attributes.map((attr) =>
+      typeof attr === 'string' ? this.attributes.find((attrObj) => attrObj.id === attr)! : attr
+    );
     this.store.dispatch(DashboardActions.updateFilters({ filter: this.filter }));
     this.goBack();
   }
