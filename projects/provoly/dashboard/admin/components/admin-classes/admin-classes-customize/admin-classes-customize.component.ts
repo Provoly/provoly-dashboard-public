@@ -54,7 +54,7 @@ export class AdminClassesCustomizeComponent extends SubscriptionnerDirective imp
     this.currentPropertiesConfig$ = this.store.select(ConfigSelectors.tableDefaultAttributesDefinitions).pipe(
       combineLatestWith(this.currentClass$, this.fields$),
       map(([defs, clazz, fields]) =>
-        ItemUtils.getAttributesDefinitionForClass((clazz ?? { attributes: [] }) as Class, defs, fields)
+        ItemUtils.getClassNonGeoAttributesNames((clazz ?? { attributes: [] }) as Class, defs, fields)
       )
     );
     this.subscriptions.add(
@@ -68,7 +68,7 @@ export class AdminClassesCustomizeComponent extends SubscriptionnerDirective imp
     this.currentTilePropertiesConfig$ = this.store.select(ConfigSelectors.tileAttributesDefinitions).pipe(
       combineLatestWith(this.currentClass$, this.fields$),
       map(([defs, clazz, fields]) =>
-        ItemUtils.getAttributesDefinitionForClass((clazz ?? { attributes: [] }) as Class, defs, fields)
+        ItemUtils.getClassNonGeoAttributesNames((clazz ?? { attributes: [] }) as Class, defs, fields)
       ),
       map((attrs) => attrs.filter((_, i) => i < this.maxTilesAttributes))
     );

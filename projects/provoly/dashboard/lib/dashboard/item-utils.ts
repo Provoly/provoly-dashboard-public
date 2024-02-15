@@ -123,18 +123,14 @@ export class ItemUtils {
         Object.keys(resultSet?.items || {})
           .map((classId) => classes.find((cl) => cl.id === classId) as Class)
           .filter((oClass) => oClass !== undefined)
-          .map((oClass) =>
-            oClass.attributes.filter((attr) =>
-              ItemUtils.getAttributesDefinitionForClass(oClass, definitions, fields).includes(attr.technicalName)
-            )
-          )
+          .map((oClass) => oClass.attributes)
           .reduce((p, c) => [...p, ...c], [])
           .filter((attr: Attribute) => !!fields.find((f) => f.id === attr.field))
       )
     ];
   }
 
-  static getAttributesDefinitionForClass(clazz: Class, defs: { [key: string]: string[] }, fields: Field[]) {
+  static getClassNonGeoAttributesNames(clazz: Class, defs: { [key: string]: string[] }, fields: Field[]) {
     return (
       defs[clazz.id ?? ''] ??
       (clazz ?? { attributes: [] }).attributes

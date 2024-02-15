@@ -191,14 +191,14 @@ export class WidgetTableComponent extends DataWidgetComponent {
         ...Object.keys(rs.items)
           .map((classId) => (classes.find((cl) => cl.id === classId) ?? { attributes: [] }).attributes)
           .flat()
-          .map((attr) => attr.technicalName)
+          .map((attr) => ({ technicalName: attr.technicalName, name: attr.name }))
       ]),
       map((props) => {
         const sortedProps = [...props];
-        sortedProps.sort((pA, pB) => pA.toLocaleLowerCase().localeCompare(pB.toLocaleLowerCase()));
+        sortedProps.sort((pA, pB) => pA.name.toLocaleLowerCase().localeCompare(pB.name.toLocaleLowerCase()));
         return sortedProps;
       }),
-      map((props) => props.map((prop) => ({ label: prop, property: prop }))),
+      map((props) => props.map((prop) => ({ label: prop.name, property: prop.technicalName }))),
       tap(() => setTimeout(() => this.refresh(), 500))
     );
 
