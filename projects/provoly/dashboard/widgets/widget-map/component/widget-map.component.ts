@@ -216,6 +216,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   previousLayers: BaseLayer[] = [];
   previousTooltip?: ComponentRef<BaseTooltipComponent>;
   previousTooltipSub?: Subscription;
+  popupOverlay?: Overlay;
 
   constructor(
     store: Store<any>,
@@ -972,15 +973,19 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       })
     );
     this.subscriptions.add(
-      combineLatest([this.wmsFeatures$, this.classicFeatures$, this.widgetSize$, this.displayHeader$]).subscribe(
-        ([wmsFeatures, classicFeatures, size, header]) => {
+      combineLatest([this.wmsFeatures$, this.classicFeatures$])
+        .pipe(withLatestFrom(this.widgetSize$, this.displayHeader$))
+        .subscribe(([[wmsFeatures, classicFeatures], size, header]) => {
           if (this.map) {
             this.tooltipIndex = 0;
-            const popupOverlay = new Overlay({
+            if (this.popupOverlay !== null) {
+              this.clearTooltip();
+            }
+            this.popupOverlay = new Overlay({
               element: this.popup.nativeElement,
               offset: [9, 9]
             });
-            this.map.addOverlay(popupOverlay);
+            this.map.addOverlay(this.popupOverlay);
             this.popupContent.clear();
             const componentPromises = [] as Promise<ComponentRef<BaseTooltipComponent> | null>[];
             wmsFeatures.forEach((value) => {
@@ -995,7 +1000,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
               this.tooltipNumber = realComponents.length;
               if (realComponents.length <= 0) {
                 this.popup.nativeElement.hidden = true;
-                popupOverlay.setPosition([-9999999999, -9999999999]);
+                this.popupOverlay?.setPosition([-9999999999, -9999999999]);
               } else {
                 this.popup.nativeElement.hidden = false;
                 // Do not go outside the map
@@ -1013,13 +1018,23 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                 setTimeout(() => {
                   this.tooltipMove(0);
                 }, 10);
-                popupOverlay.setPosition(this.map.getCoordinateFromPixel(pixel ?? [0, 0]));
+                this.popupOverlay?.setPosition(this.map.getCoordinateFromPixel(pixel ?? [0, 0]));
               }
             });
           }
-        }
-      )
+        })
     );
+
+    window.addEventListener('forceCloseMapTooltip', () => {
+      this.clearTooltip();
+    });
+  }
+
+  clearTooltip() {
+    if (this.popupOverlay) this.map.removeOverlay(this.popupOverlay);
+    this.popupContent.clear();
+    this.previousTooltip?.destroy();
+    this.previousTooltipSub?.unsubscribe();
   }
 
   private addEmptyWebGlLayerBelowSlideHeatmaps(layers: BaseLayer[]) {
@@ -1421,7 +1436,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           FEATURE_COUNT: 10,
           ...layer.getProperties()['getFeatureInfoAdditionalParameters']
         });
-      if (url) {
+      if (url && url.indexOf('I=-1') === -1 && url.indexOf('J=-1') === -1) {
         this.store.dispatch(
           DashboardActions.getWmsFeatures({
             url,
