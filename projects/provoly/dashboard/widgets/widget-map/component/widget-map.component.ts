@@ -769,6 +769,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
               resultLayer.set('type', layer.type);
               resultLayer.set('slide', layer.slide);
               resultLayer.set('order', layer.order);
+              resultLayer.setZIndex(layer.order || idx);
               if (layer.type === 'relation') {
                 hasRelationLayer = resultLayer as unknown as VectorLayer<VectorSource>;
               }
@@ -828,11 +829,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
         /* Resolve bug drawing webgllayer without nothing underneath: add empty layer below */
         const _layers = this.addEmptyWebGlLayerBelowSlideHeatmaps(layers);
-
-        _layers.forEach((layer, index, arr) => layer.set('zIndex', arr.length - index));
-
         this.previousLayers.push(..._layers);
-
         return _layers;
       })
     );
