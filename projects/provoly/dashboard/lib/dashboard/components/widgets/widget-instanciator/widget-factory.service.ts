@@ -79,10 +79,11 @@ export class WidgetFactoryService {
       .filter((datasource) => {
         const matching = this.datasources.find((ds) => ds.id === datasource)!;
         return (
-          widgetDefinition.autoLoadDatasource === undefined ||
-          widgetDefinition.autoLoadDatasource === 'all' ||
-          (widgetDefinition.autoLoadDatasource === 'geo' && DatasourceUtils.isGeo(matching)) ||
-          (widgetDefinition.autoLoadDatasource === 'not-geo' && !DatasourceUtils.isGeo(matching))
+          !!matching &&
+          (widgetDefinition.autoLoadDatasource === undefined ||
+            widgetDefinition.autoLoadDatasource === 'all' ||
+            (widgetDefinition.autoLoadDatasource === 'geo' && DatasourceUtils.isGeo(matching)) ||
+            (widgetDefinition.autoLoadDatasource === 'not-geo' && !DatasourceUtils.isGeo(matching)))
         );
       })
       .map((ds) => ({ datasetId: ds, excludeGeo: manifest.type !== 'map' }));
