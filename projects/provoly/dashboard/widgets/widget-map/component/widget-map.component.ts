@@ -394,7 +394,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         .pipe(
           map((manifest) =>
             (
-              ((manifest.options ?? { layers: [] }) as MapWidgetOptions).layers?.filter((layer) =>
+              (((manifest.options ?? { layers: [] }) as MapWidgetOptions).layers ?? []).filter((layer) =>
                 ['wms'].includes(layer.type)
               ) as MapWMSLayerLayerOptions[]
             ).map((layer) => layer.url)
