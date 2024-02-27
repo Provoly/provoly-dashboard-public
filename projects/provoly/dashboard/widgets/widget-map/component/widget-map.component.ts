@@ -769,7 +769,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
               resultLayer.set('type', layer.type);
               resultLayer.set('slide', layer.slide);
               resultLayer.set('order', layer.order);
-              resultLayer.setZIndex(layer.order || idx);
+              resultLayer.setZIndex((layer.order ?? idx) + 1);
               if (layer.type === 'relation') {
                 hasRelationLayer = resultLayer as unknown as VectorLayer<VectorSource>;
               }
