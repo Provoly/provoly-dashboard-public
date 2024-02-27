@@ -9,7 +9,7 @@ export function filterLoader(module: any, prop: string): (injector: Injector) =>
     if (!!moduleRefCache[prop]) {
       return moduleRefCache[prop].getComponent() as unknown as Type<BaseFilterComponent>;
     } else {
-      if (module.hasOwnProperty(prop)) {
+      if (!!module[prop]) {
         const moduleRef = createNgModule(module[prop], Injector.create({ parent: injector, providers: [] }));
         moduleRefCache[prop] = moduleRef.instance as BaseFilterModule;
         return moduleRefCache[prop].getComponent() as unknown as Type<BaseFilterComponent>;

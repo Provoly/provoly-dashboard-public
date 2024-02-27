@@ -10,7 +10,7 @@ export function tooltipLoader(module: any, prop: string): (injector: Injector) =
     if (!!moduleRefCache[prop]) {
       return moduleRefCache[prop].getComponent() as unknown as Type<BaseTooltipComponent>;
     } else {
-      if (module.hasOwnProperty(prop)) {
+      if (!!module[prop]) {
         const moduleRef = createNgModule(module[prop], Injector.create({ parent: injector, providers: [] }));
         moduleRefCache[prop] = moduleRef.instance as BaseTooltipModule;
         return moduleRefCache[prop].getComponent() as unknown as Type<BaseTooltipComponent>;
