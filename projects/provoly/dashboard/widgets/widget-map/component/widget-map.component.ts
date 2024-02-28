@@ -712,7 +712,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
             // @ts-ignore
             (layer) => this.widgetMapLayerService.dontNeedIntensity.includes(layer.type) || !!layer.intensityAttribute
           )
-          .map((layer: MapWidgetLayerOptions, idx) => {
+          .map((layer: MapWidgetLayerOptions, idx, array) => {
             const attributesForClass = Object.keys(resultSet.items)
               .map((classId) => ({
                 classId,
@@ -769,7 +769,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
               resultLayer.set('type', layer.type);
               resultLayer.set('slide', layer.slide);
               resultLayer.set('order', layer.order);
-              resultLayer.setZIndex((layer.order ?? idx) + 1);
+              const maxLayerOrder = Math.max(...array.map((l) => l.order ?? 0));
+              resultLayer.setZIndex((maxLayerOrder + 1) - (layer.order ?? idx));
               if (layer.type === 'relation') {
                 hasRelationLayer = resultLayer as unknown as VectorLayer<VectorSource>;
               }
