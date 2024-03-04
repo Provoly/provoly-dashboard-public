@@ -12,7 +12,8 @@ import {
   LibraryTypes,
   ManifestDescription,
   SubscriptionnerDirective,
-  ViewMode
+  ViewMode,
+  WidgetPlacementUtils
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, Observable, take } from 'rxjs';
 import { MetadataActions, MetadataSelectors, MetaEventType } from '@provoly/dashboard/components/metadata-editor';
@@ -146,7 +147,18 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
     if (!this.edition) {
       this.store.dispatch(
         DashboardActions.updateManifest({
-          manifest: { windows: [{ widgets: [], grid: { layout: this.chosenLayout } }] },
+          manifest: {
+            windows: [
+              {
+                widgets: [],
+                grid: {
+                  layout: this.chosenLayout,
+                  columns: WidgetPlacementUtils.getLayout(this.chosenLayout)?.columns,
+                  rows: WidgetPlacementUtils.getLayout(this.chosenLayout)?.rows
+                }
+              }
+            ]
+          },
           selectedIds: [],
           manifestId: selectedPresentation.id
         })
