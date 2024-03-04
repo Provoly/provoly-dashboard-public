@@ -1029,8 +1029,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   clearTooltip() {
-    if (this.popupOverlay) this.map.removeOverlay(this.popupOverlay);
-    this.popupContent.clear();
+    if (this.popupOverlay) this.map?.removeOverlay(this.popupOverlay);
+    this.popupContent?.clear();
     this.previousTooltip?.destroy();
     this.previousTooltipSub?.unsubscribe();
   }
@@ -1368,6 +1368,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   changeParamTiled($event: boolean, layer: MapWMSLayerLayerOptions | MapGeoServerLayerOptions) {
     layer.paramTiled = $event;
+    this.clearTooltip();
   }
 
   changeMatrixSet($event: Event, layer: MapWMTSLayerLayerOptions) {
