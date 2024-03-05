@@ -770,7 +770,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
               resultLayer.set('slide', layer.slide);
               resultLayer.set('order', layer.order);
               const maxLayerOrder = Math.max(...array.map((l) => l.order ?? 0));
-              resultLayer.setZIndex((maxLayerOrder + 1) - (layer.order ?? idx));
+              resultLayer.setZIndex(maxLayerOrder + 1 - (layer.order ?? idx));
               if (layer.type === 'relation') {
                 hasRelationLayer = resultLayer as unknown as VectorLayer<VectorSource>;
               }
@@ -972,7 +972,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     );
     this.subscriptions.add(
       combineLatest([this.wmsFeatures$, this.classicFeatures$])
-        .pipe(withLatestFrom(this.widgetSize$, this.displayHeader$))
+        .pipe(debounceTime(50), withLatestFrom(this.widgetSize$, this.displayHeader$))
         .subscribe(([[wmsFeatures, classicFeatures], size, header]) => {
           if (this.map) {
             this.tooltipIndex = 0;
