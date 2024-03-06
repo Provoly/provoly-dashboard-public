@@ -15,6 +15,7 @@ export class ChipsSelectorComponent extends SubscriptionnerDirective {
   @Input() translationStringBase = '';
   @Input() itemTranslationStringBase = '';
   @Input() showActionButtons = true;
+  @Input() showSearchbar = true;
 
   @Input() set items(items: any[]) {
     this.items$.next(items);

@@ -4,6 +4,8 @@
     "name": "ds-open",
     "oClass": "06406e7e-37cd-41ce-b5fc-36d233e5ae5c",
     "type": "OPEN",
+    "owner": true,
+    "groups": [],
     "metadata": [
       {
         "metadataDef": {
@@ -33,6 +35,8 @@
     "oClass": "17b90da3-f448-4cc3-bfd8-74c8b8481590",
     "type": "MODIFIABLE",
     "description": "test de l'ajout d'une description",
+    "owner": true,
+    "groups": [],
     "metadata": [
       {
         "metadataDef": {
@@ -52,6 +56,8 @@
     "name": "ds-closed",
     "oClass": "d260d53d-3529-4712-bedb-6517ecad5784",
     "type": "CLOSED",
+    "owner": true,
+    "groups": [],
     "metadata": [
       {
         "metadataDef":   {
@@ -68,6 +74,8 @@
     "name": "data-parking",
     "oClass": "5032106e-ca16-4742-a8f9-a43757c99d67",
     "type": "CLOSED",
+    "owner": true,
+    "groups": [],
     "metadata": []
   },
   {
@@ -75,6 +83,8 @@
     "name": "Tronçon de route",
     "oClass": "123456789-69a6-474e-8f46-7cc8796ed151",
     "type": "OPEN",
+    "owner": true,
+    "groups": [],
     "metadata": [
       {
         "metadataDef": {
@@ -99,6 +109,8 @@
     "name": "CKDo:EquipementsPublics",
     "oClass": "0e745c78-4a74-4bfd-9789-06ec93f7d364",
     "type": "OPEN",
+    "owner": true,
+    "groups": [],
     "metadata": [
       {
         "metadataDef": {
@@ -131,6 +143,8 @@
     "name": "Ponts",
     "oClass": "123456789-69a6-474e-8f46-7cc8796ed151",
     "type": "OPEN",
+    "owner": true,
+    "groups": [],
     "metadata": [
       {
         "metadataDef": {
@@ -163,6 +177,8 @@
     "name": "Geodata",
     "oClass": "44444444-69a6-474e-8f46-7cc8796ed151",
     "type": "OPEN",
+    "owner": true,
+    "groups": [],
     "metadata": []
   },
   {
@@ -170,6 +186,8 @@
     "name": "Geodata (geoserver)",
     "oClass": "17b90da3-f448-4cc3-bfd8-74c8b8481590",
     "type": "OPEN",
+    "owner": true,
+    "groups": [],
     "metadata": [
       {
         "metadataDef": {
@@ -194,6 +212,8 @@
     "name": "VCUB Lambert 93",
     "oClass": "48804bd2-e940-4ff8-8d45-62123279eb6a",
     "type": "OPEN",
+    "owner": false,
+    "groups": [],
     "metadata": []
   },
   {
@@ -201,6 +221,8 @@
     "name": "Territoires sélectionables",
     "oClass": "class-territoires-selectionnables",
     "type": "CLOSED",
+    "owner": false,
+    "groups": [],
     "metadata": []
   },
   {
@@ -208,6 +230,8 @@
     "name": "Aggrégation pont inondation",
     "oClass": "class-aggregation-fntp",
     "type": "CLOSED",
+    "owner": false,
+    "groups": [],
     "metadata": []
   }
 ]

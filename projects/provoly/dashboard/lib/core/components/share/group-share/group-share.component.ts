@@ -33,6 +33,7 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
   groups$: Observable<Group[]>;
   PryVisibilityType = PryVisibilityType;
   visibilityTypes: { label: string; value: PryVisibilityType }[] = [];
+  templateData$: Observable<{ groups: Group[]; assignedGroups: Group[] }>;
 
   constructor(private store: Store, private _cd: ChangeDetectorRef) {
     super();
@@ -52,6 +53,9 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
       label: label.toLowerCase(),
       value: PryVisibilityType[<keyof typeof PryVisibilityType>label]
     }));
+    this.templateData$ = combineLatest([this.groups$, this.assignedGroups$]).pipe(
+      map(([groups, assignedGroups]) => ({ groups, assignedGroups }))
+    );
   }
 
   writeValue(value: string[] | undefined) {

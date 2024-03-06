@@ -14,6 +14,7 @@ export const frTranslations = {
       addAttribute: 'Ajouter un attribut',
       create: 'Créer',
       upload: 'Ajouter une image',
+      share: 'Partager',
       cancel: 'Annuler',
       back: 'Retour',
       next: 'Suivant',
@@ -136,6 +137,7 @@ export const frTranslations = {
         delete:
           "L'ensemble des versions et des données associées seront supprimées. Les restitutions et présentations utilisant ce jeu de données n'afficheront plus les données correspondantes. Confirmez-vous la suppression ?",
         title: 'Jeux de données',
+        details: 'Détails du jeu de données',
         id: 'Identifiant',
         name: 'Nom',
         oClass: 'Modèle métier',

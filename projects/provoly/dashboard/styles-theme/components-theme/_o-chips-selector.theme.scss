@@ -1,0 +1,9 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+.o-chips-selector {
+  .-no-items {
+    font-size: toRem(12);
+    color: themed($theme-map, 'color', 'primary', 500);
+  }
+}

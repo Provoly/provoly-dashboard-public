@@ -2,7 +2,7 @@
   *ngIf="selectedDataset$ | async as dataset"
   [id]="'panel-dataset-' + dataset.id"
   [attr.aria-labelledby]="'button-dataset-' + dataset.id"
-  class="o-panel"
+  class="o-panel o-pry-admin-dataset-select"
 >
   <div class="o-panel__header">
     <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
@@ -11,13 +11,14 @@
     </button>
 
     <h3 class="a-h3">
-      {{ '@pry.admin.metadata.details' | i18n }}
+      {{ '@pry.admin.dataset.details' | i18n }}
     </h3>
   </div>
 
   <pry-tab-group translationStringBase="@pry.admin.">
     <pry-tab [templateRef]="datasetMetadata" name="metadata.title"></pry-tab>
     <pry-tab [templateRef]="datasetAssociations" name="classes.associations"></pry-tab>
+    <pry-tab *ngIf="dataset.owner" [templateRef]="shareDataset" name="share"></pry-tab>
   </pry-tab-group>
 
   <ng-template #datasetMetadata>
@@ -35,6 +36,15 @@
     <div *ngIf="associations$ | async as associations" class="o-tabs__panels__item__content">
       <h4 class="a-h4">{{ '@pry.admin.classes.associations' | i18n }}</h4>
       <pry-association [associations]="associations"></pry-association>
+    </div>
+  </ng-template>
+
+  <ng-template #shareDataset>
+    <div class="o-pry-admin-dataset-select__share">
+      <pry-group-share [ngModel]="dataset.groups" (ngModelChange)="accessGroups = $event"></pry-group-share>
+      <button type="submit" class="a-btn a-btn--primary u-self-end" #submit (click)="share(dataset)">
+        {{ '@pry.admin.validate' | i18n }}
+      </button>
     </div>
   </ng-template>
 </div>

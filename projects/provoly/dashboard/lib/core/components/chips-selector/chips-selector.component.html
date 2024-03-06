@@ -1,5 +1,5 @@
-<div class="m-namedqueries-wrapper" role="dialog" aria-modal="true" aria-labelledby="dialog_namedqueries">
-  <div class="o-widget__search">
+<div class="o-chips-selector" role="dialog" aria-modal="true" aria-labelledby="dialog_namedqueries">
+  <div *ngIf="showSearchbar" class="o-widget__search">
     <input
       id="catalog-search"
       (keydown.shift.tab)="previousTab.emit()"
@@ -11,7 +11,7 @@
     />
     <pry-icon iconSvg="search" [width]="17" [height]="17"></pry-icon>
   </div>
-  <div *ngIf="((usedItems$ | async) ?? []).length > 0; else noItems">
+  <div *ngIf="((usedItems$ | async) ?? []).length > 0; else noItems" class="o-chips-selector__selected-items">
     <h4 class="a-h4">{{ translationStringBase + 'selection' | i18n }}</h4>
     <div>
       <ul class="o-chips-selector__list o-chips-selector__list--selected">
@@ -28,19 +28,21 @@
     </div>
   </div>
   <ng-template #noItems>
-    <h4 class="a-h4">{{ translationStringBase + 'noItemSelected' | i18n }}</h4>
+    <span class="-no-items">{{ translationStringBase + 'noItemSelected' | i18n }}</span>
   </ng-template>
-  <h4 class="a-h4">{{ translationStringBase + 'select' | i18n }}</h4>
-  <div class="o-chips-selector__main">
-    <ul class="o-chips-selector__list">
-      <li *ngFor="let item of unusedItems$ | async" class="o-chips-selector__item">
-        <button class="a-chip a-chip--light -md o-chips-selector__chip" (click)="toggleItemSelection(item)">
-          <span class="u-visually-hidden">{{ translationStringBase + 'selectItem' | i18n }}</span>
-          <p class="a-p">{{ getItemLabel(item) }}</p>
-          <pry-icon *ngIf="isGeo(item)" iconSvg="globe" [width]="22" [height]="22"></pry-icon>
-        </button>
-      </li>
-    </ul>
+  <div class="o-chips-selector__unused-items">
+    <h4 class="a-h4">{{ translationStringBase + 'select' | i18n }}</h4>
+    <div class="o-chips-selector__main">
+      <ul class="o-chips-selector__list">
+        <li *ngFor="let item of unusedItems$ | async" class="o-chips-selector__item">
+          <button class="a-chip a-chip--light -md o-chips-selector__chip" (click)="toggleItemSelection(item)">
+            <span class="u-visually-hidden">{{ translationStringBase + 'selectItem' | i18n }}</span>
+            <p class="a-p">{{ getItemLabel(item) }}</p>
+            <pry-icon *ngIf="isGeo(item)" iconSvg="globe" [width]="22" [height]="22"></pry-icon>
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
   <div *ngIf="showActionButtons" class="m-btn-group o-chips-selector__bottom">
     <button type="button" (click)="cancel.emit()" class="a-btn a-btn--secondary">

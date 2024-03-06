@@ -11,12 +11,15 @@
 }
 
 .o-chips-selector {
+  display: flex;
+  flex-direction: column;
+  gap: toRem(15);
+
   &__list {
     @extend %list-unstyled;
     gap: toRem(15) toRem(30);
     display: flex;
     flex-wrap: wrap;
-    margin: toRem(10) 0;
   }
 
   &__main {
@@ -39,5 +42,13 @@
     p {
       margin-bottom: 0;
     }
+  }
+
+  .a-h4 {
+    margin-bottom: 0;
+  }
+
+  .-no-items {
+    margin-left: toRem(5);
   }
 }

@@ -84,30 +84,34 @@
             <ng-container
               *ngIf="version.state !== 'LOADING' && version.state !== 'INDEXING' && version.state !== 'ERROR'"
             >
-              <ng-container *pryAccess="{ module: 'dashboard', page: 'list-dataset', action: 'activate' }">
-                <button
-                  type="button"
-                  class="a-btn a-btn--primary a-btn--icon-text ng-star-inserted"
-                  (click)="handleButtonAction(version)"
-                >
-                  {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
-                </button>
-                <ng-container *ngIf="version.state === 'ACTIVE' || version.state === 'INACTIVE'">
-                  <div
-                    class="m-info-icon a-tooltip -tooltip-width-lg"
-                    [attr.data-tooltip]="
-                      (version.state === 'ACTIVE'
-                        ? '@pry.dataset.tooltip.invalidateButton'
-                        : '@pry.dataset.tooltip.validateButton'
-                      ) | i18n
-                    "
-                    data-tooltip-position="right"
+              <ng-container *ngIf="!dataset.owner && (version.state === 'ACTIVE' || version.state === 'INACTIVE')">
+                <ng-container *pryAccess="{ module: 'dashboard', page: 'list-dataset', action: 'activate' }">
+                  <button
+                    type="button"
+                    class="a-btn a-btn--primary a-btn--icon-text ng-star-inserted"
+                    (click)="handleButtonAction(version)"
                   >
-                    <span>i</span>
-                  </div>
+                    {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
+                  </button>
+                  <ng-container *ngIf="version.state === 'ACTIVE' || version.state === 'INACTIVE'">
+                    <div
+                      class="m-info-icon a-tooltip -tooltip-width-lg"
+                      [attr.data-tooltip]="
+                        (version.state === 'ACTIVE'
+                          ? '@pry.dataset.tooltip.invalidateButton'
+                          : '@pry.dataset.tooltip.validateButton'
+                        ) | i18n
+                      "
+                      data-tooltip-position="right"
+                    >
+                      <span>i</span>
+                    </div>
+                  </ng-container>
                 </ng-container>
               </ng-container>
             </ng-container>
+          </td>
+          <td>
             <ng-container *ngIf="version.hasWarnings || version.state === 'ERROR'">
               <button
                 type="button"

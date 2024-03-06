@@ -1,0 +1,13 @@
+@use '../../styles/abstracts' as *;
+
+.o-pry-admin-dataset-select {
+  &__share {
+    display: flex;
+    flex-direction: column;
+    gap: toRem(15);
+  }
+
+  &__errors {
+    margin: toRem(10) 0;
+  }
+}

@@ -26,6 +26,7 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
   currentTypeTranslation = '';
   datasetMetadata$: Observable<MetadataValue[]>;
   editable$: Observable<boolean>;
+  accessGroups: string[] = [];
 
   constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
     super();
@@ -40,35 +41,46 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
     this.subscriptions.add(
       this.selectedDataset$.subscribe((dataset) => {
         if (dataset) {
+          this.accessGroups = dataset?.groups ?? [];
           const editPath = this.router.createUrlTree(['.', 'dataset', 'edit', dataset.id], {
             relativeTo: this.route
           });
-          this.store.dispatch(
-            AdminActions.mainActions({
-              actions: [
-                {
-                  action: AdminActions.routeTo({ path: editPath.toString() }),
-                  label: 'edit',
-                  icon: 'edit',
-                  moduleAccess: 'admin',
-                  pageAccess: 'dataset',
-                  actionAccess: 'write'
-                },
-                {
-                  action: DataSourceActions.dataset.confirmDataSourceDeletion({
-                    name: dataset.id,
-                    route: this.router.createUrlTree(['.', 'dataset'], { relativeTo: this.route }).toString(),
-                    addRoute: this.router.createUrlTree(['.', 'dataset', 'new'], { relativeTo: this.route }).toString()
-                  }),
-                  label: 'delete',
-                  icon: 'delete',
-                  moduleAccess: 'admin',
-                  pageAccess: 'dataset',
-                  actionAccess: 'write'
-                }
-              ]
-            })
-          );
+          if (dataset.owner) {
+            this.store.dispatch(
+              AdminActions.mainActions({
+                actions: [
+                  {
+                    action: AdminActions.routeTo({ path: editPath.toString() }),
+                    label: 'edit',
+                    icon: 'edit',
+                    moduleAccess: 'admin',
+                    pageAccess: 'dataset',
+                    actionAccess: 'write'
+                  },
+                  {
+                    action: DataSourceActions.dataset.confirmDataSourceDeletion({
+                      name: dataset.id,
+                      route: this.router.createUrlTree(['.', 'dataset'], { relativeTo: this.route }).toString(),
+                      addRoute: this.router
+                        .createUrlTree(['.', 'dataset', 'new'], { relativeTo: this.route })
+                        .toString()
+                    }),
+                    label: 'delete',
+                    icon: 'delete',
+                    moduleAccess: 'admin',
+                    pageAccess: 'dataset',
+                    actionAccess: 'write'
+                  }
+                ]
+              })
+            );
+          } else {
+            this.store.dispatch(
+              AdminActions.mainActions({
+                actions: []
+              })
+            );
+          }
         }
       })
     );
@@ -107,6 +119,12 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
         metadataId: metadata.metadataId,
         value: metadata.value
       })
+    );
+  }
+
+  share(dataset: Dataset) {
+    this.store.dispatch(
+      DataSourceActions.dataset.update({ dataset: { ...dataset, groups: this.accessGroups }, route: '' })
     );
   }
 }

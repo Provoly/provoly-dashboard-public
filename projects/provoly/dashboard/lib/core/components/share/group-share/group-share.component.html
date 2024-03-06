@@ -12,16 +12,18 @@
     <label [for]="type.label" class="a-label">{{ '@pry.share.' + type.label | i18n }}</label>
   </div>
 </div>
-
-<ng-container *ngIf="radioValue === PryVisibilityType.RESTRICTED">
-  <pry-chips-selector
-    bindLabel="name"
-    bindValue="name"
-    translationStringBase="@pry.components.chipsSelector.share."
-    itemTranslationStringBase="@pry.components.chipsSelector.share.groups."
-    [showActionButtons]="false"
-    [items]="(groups$ | async) ?? []"
-    (itemsChanged)="changeGroups($event)"
-    [usedItems]="(assignedGroups$ | async) ?? []"
-  ></pry-chips-selector>
-</ng-container>
+@if (radioValue === PryVisibilityType.RESTRICTED) {
+  @if(templateData$ | async; as data) {
+    <pry-chips-selector
+      bindLabel="name"
+      bindValue="name"
+      translationStringBase="@pry.components.chipsSelector.share."
+      itemTranslationStringBase="@pry.components.chipsSelector.share.groups."
+      [showActionButtons]="false"
+      [items]="data.groups"
+      (itemsChanged)="changeGroups($event)"
+      [usedItems]="data.assignedGroups"
+      [showSearchbar]="data.groups.length > 6"
+    ></pry-chips-selector>
+  }
+}
