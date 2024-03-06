@@ -57,6 +57,11 @@ textarea.a-form-field {
     }
   }
 
+  &[type='datetime-local'] {
+    @extend %a-form-field-text-theme;
+    display: unset;
+  }
+
   &[aria-invalid='true'] {
     border-color: themed($theme-map, 'color', 'status', 'error');
   }
