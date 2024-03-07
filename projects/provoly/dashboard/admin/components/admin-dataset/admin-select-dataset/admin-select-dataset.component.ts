@@ -3,14 +3,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   Associations,
+  DashboardSelectors,
   Dataset,
   DataSourceActions,
   DataSourceSelectors,
   MetadataValue,
+  PryI18nService,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
 import { MetadataActions, MetadataSelectors, MetaEventType } from '@provoly/dashboard/components/metadata-editor';
-import { Observable, Subscription } from 'rxjs';
+import { map, Observable, Subscription, withLatestFrom } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminSelectors } from '../../../store/admin.selectors';
 
@@ -27,14 +29,33 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
   datasetMetadata$: Observable<MetadataValue[]>;
   editable$: Observable<boolean>;
   accessGroups: string[] = [];
+  conflictGroups$: Observable<{ [key: string]: { groups: string[]; entityName: string } } | undefined>;
 
-  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private store: Store<any>,
+    private router: Router,
+    private route: ActivatedRoute,
+    private i18n: PryI18nService
+  ) {
     super();
     this.store.dispatch(MetadataActions.loadMetadata());
     this.selectedDataset$ = this.store.select(DataSourceSelectors.selectedDataset);
     this.datasetMetadata$ = this.store.select(DataSourceSelectors.selectedDatasetMetadata);
     this.associations$ = this.store.select(AdminSelectors.selectedAssociation);
     this.editable$ = this.store.select(MetadataSelectors.editable);
+    this.conflictGroups$ = this.store.select(DataSourceSelectors.selectedDatasetConflictGroups).pipe(
+      withLatestFrom(this.store.select(DashboardSelectors.manifestsList)),
+      map(([conflict, manifests]) => {
+        const result: { [key: string]: { groups: string[]; entityName: string } } = {};
+        Object.keys(conflict ?? {}).forEach((entityId) => {
+          result[entityId] = {
+            groups: conflict?.[entityId] ?? [],
+            entityName: manifests.find((m) => m.id === entityId)?.name ?? entityId
+          };
+        });
+        return Object.keys(result).length > 0 ? result : undefined;
+      })
+    );
   }
 
   ngOnInit(): void {
@@ -126,5 +147,11 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
     this.store.dispatch(
       DataSourceActions.dataset.update({ dataset: { ...dataset, groups: this.accessGroups }, route: '' })
     );
+  }
+
+  getGroupLabel(groupName: string) {
+    const i18nBase = '@pry.components.chipsSelector.share.groups.';
+    const label = this.i18n.instant(i18nBase + groupName);
+    return label.startsWith(i18nBase) ? groupName : label;
   }
 }

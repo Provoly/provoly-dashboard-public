@@ -190,6 +190,15 @@ const saveDatasets = (dataset) => {
 
 const updateDataset = (newDataset) => {
   datasets = getDataSetWithMetadata().map((dataset) => (dataset.id === newDataset.id ? newDataset : dataset));
+  return [
+    undefined,
+    {
+      conflictGroupsByEntity: {
+        's6406e7e-37cd-41ce-b5fc-36d233e6ae5c': ['conflict group', 'AUTHENTICATED'],
+        'dashboard-id': ['conflict group']
+      }
+    }
+  ][casual.integer(0, 1)];
 };
 
 const deleteDataset = (id) => {

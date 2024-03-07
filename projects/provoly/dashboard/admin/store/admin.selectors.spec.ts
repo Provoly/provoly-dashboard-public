@@ -1,7 +1,7 @@
 import * as fromAdmin from './admin.reducer';
-import { AdminState, initialAdminState } from './admin.reducer';
+import { initialAdminState } from './admin.reducer';
 import { AdminSelectors } from './admin.selectors';
-import {associations} from "@provoly/dashboard/mock/data/mockItemAdmin";
+import { associations } from '@provoly/dashboard/mock/data/mockItemAdmin';
 
 describe('Admin Selectors', () => {
   const initialState = Object.assign({}, initialAdminState);

@@ -206,21 +206,10 @@ export class DataSourceEffects {
     )
   );
 
-  updateDataset$ = createEffect(() =>
+  unsetConflictGroupsOnDatasetSelection$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DataSourceActions.dataset.update),
-      switchMap((props: { dataset: Dataset; route: string }) =>
-        this.dataSourceService
-          .updateDataset(props.dataset)
-          .pipe(
-            mergeMap(() => [
-              DataSourceActions.dataset.loadDataset(),
-              DataSourceActions.dataset.unselectDataset(),
-              DataSourceActions.dataset.updated({ path: props.route })
-            ])
-          )
-      ),
-      catchError((error: any) => [DataSourceActions.dataset.failure({ error })])
+      ofType(DataSourceActions.dataset.selectDataset),
+      map(() => DataSourceActions.dataset.setConflictGroups({ conflictGroups: undefined }))
     )
   );
 

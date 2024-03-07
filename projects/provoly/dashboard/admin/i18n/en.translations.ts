@@ -136,6 +136,7 @@ export const enTranslations = {
         delete:
           'All versions and associated data will be deleted. Restitutions and presentations using this dataset will no longer display the corresponding data. Do you confirm the deletion?',
         title: 'Dataset',
+        details: 'Dataset details',
         id: 'Id',
         name: 'Name',
         oClass: 'Business model',
@@ -149,7 +150,11 @@ export const enTranslations = {
         },
         OPEN: 'Open',
         CLOSED: 'Closed',
-        MODIFIABLE: 'Modifiable'
+        MODIFIABLE: 'Modifiable',
+        conflict: 'Careful, the following dashboards are shared to groups which can no longer access this datasource:',
+        entities: {
+          dashboard: 'Dashboard'
+        }
       },
       'abac-rules': {
         delete: 'Delete',

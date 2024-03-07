@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { IMetadata, Predicate, RelationTypesActions, VARIABLE_TYPE } from '@provoly/dashboard';
+import { DataSourceService, IMetadata, Predicate, RelationTypesActions, VARIABLE_TYPE } from '@provoly/dashboard';
 import { MetadataActions, MetadataService } from '@provoly/dashboard/components/metadata-editor';
 import { associations } from '@provoly/dashboard/mock/data/mockItemAdmin';
 import { hot } from 'jest-marbles';
@@ -75,6 +75,12 @@ describe('AdminEffects', () => {
             getMetadataList: () => of(metadata),
             getMetadata: () => of(metadata[0]),
             postMetadata: () => of(null)
+          }
+        },
+        {
+          provide: DataSourceService,
+          useValue: {
+            updateDataset: () => of(null)
           }
         }
       ]

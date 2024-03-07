@@ -10,6 +10,7 @@ import { ConfigSelectors } from '../config/config.selectors';
 import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from '../search/search.constants';
 import { Dataset, DatasetVersion, NamedQuery } from './data-source.model';
 import { DataSourceState } from './data-source.reducer';
+import { ShareConflict } from '../../components/share/share.model';
 
 export interface ResponseRequest {
   data: {
@@ -102,10 +103,14 @@ export class DataSourceService {
       .pipe(mergeMap((url) => this.httpClient.post<void>(encodeURI(`${url}/datasets`), dataset)));
   }
 
-  updateDataset(dataset: Dataset): Observable<void> {
+  updateDataset(dataset: Dataset): Observable<undefined | ShareConflict> {
     return this.store
       .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.put<void>(encodeURI(`${url}/datasets`), dataset)));
+      .pipe(
+        mergeMap((url) =>
+          this.httpClient.put<undefined | ShareConflict>(encodeURI(`${url}/datasets`), dataset)
+        )
+      );
   }
 
   deleteDataset(id: string) {

@@ -45,6 +45,21 @@
       <button type="submit" class="a-btn a-btn--primary u-self-end" #submit (click)="share(dataset)">
         {{ '@pry.admin.validate' | i18n }}
       </button>
+      @if(conflictGroups$ | async; as conflictGroups) {
+        <div class="u-display-flex -column">
+          <span>{{ '@pry.admin.dataset.conflict' | i18n }}</span>
+          @for(conflict of conflictGroups | keyvalue; track conflict.key) {
+            <div>
+              {{ '@pry.admin.dataset.entities.dashboard' | i18n }} <strong>{{ conflict.value.entityName }}</strong>
+              <div class="u-display-flex">
+                @for(group of conflict.value.groups; track group) {
+                  <span class="a-chip">{{ getGroupLabel(group) }}</span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
     </div>
   </ng-template>
 </div>

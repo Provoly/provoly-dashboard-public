@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { DataSourceActions, RelationTypesActions } from '@provoly/dashboard';
+import { DataSourceActions, DataSourceService, RelationTypesActions, ShareConflict } from '@provoly/dashboard';
 import { MetadataActions } from '@provoly/dashboard/components/metadata-editor';
-import { catchError, map, mergeMap } from 'rxjs';
+import { catchError, map, mergeMap, switchMap } from 'rxjs';
 import { AdminActions } from './admin.actions';
 import { AdminService } from './admin.service';
+import { Action } from '@ngrx/store';
 
 @Injectable()
 export class AdminEffects {
@@ -137,5 +138,31 @@ export class AdminEffects {
     )
   );
 
-  constructor(private actions$: Actions, private service: AdminService, private router: Router) {}
+  // TODO move this effect into an admin-datasource store (provoly-dashboard#586)
+  updateDataset$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DataSourceActions.dataset.update),
+      switchMap((action) =>
+        this.dsService.updateDataset(action.dataset).pipe(
+          mergeMap((conflict?: ShareConflict) => {
+            let actions: Action[] = [
+              DataSourceActions.dataset.setConflictGroups({ conflictGroups: conflict?.conflictGroupsByEntity }),
+              DataSourceActions.dataset.loadDataset()
+            ];
+            if (action.route)
+              actions.push(DataSourceActions.dataset.unselectDataset(), AdminActions.routeTo({ path: action.route }));
+            return actions;
+          })
+        )
+      ),
+      catchError((error: any) => [DataSourceActions.dataset.failure({ error })])
+    )
+  );
+
+  constructor(
+    private actions$: Actions,
+    private service: AdminService,
+    private router: Router,
+    private dsService: DataSourceService
+  ) {}
 }

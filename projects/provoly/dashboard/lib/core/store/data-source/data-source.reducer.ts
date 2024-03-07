@@ -2,6 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { DatasetPreview } from '../../model/dataset.interface';
 import { DataSourceActions } from './data-source.actions';
 import { Dataset, DatasetVersion, NamedQuery } from './data-source.model';
+import { ConflictGroupsByEntity } from '../../components/share/share.model';
 
 export const dataSourceFeatureKey = '@pry/datasources';
 
@@ -17,6 +18,7 @@ export interface DataSourceState {
   datasetVersions: DatasetVersion[];
   selectedDatasetVersion: DatasetVersion | null;
   previews: DatasetPreview[];
+  conflictGroups?: ConflictGroupsByEntity;
 }
 
 export const initialDataSourceState: DataSourceState = {
@@ -69,6 +71,10 @@ export const dataSourceReducer = createReducer(
     ...state,
     datasets: action.datasets,
     isLoading: false
+  })),
+  on(DataSourceActions.dataset.setConflictGroups, (state, { conflictGroups }) => ({
+    ...state,
+    conflictGroups
   })),
   on(DataSourceActions.dataset.unselectDataset, (state) => ({
     ...state,

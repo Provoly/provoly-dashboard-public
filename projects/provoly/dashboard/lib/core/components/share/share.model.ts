@@ -10,6 +10,15 @@ export interface Group {
   system: boolean;
 }
 
+export interface ConflictGroupsByEntity {
+  // UUID: [group1, group2, ...]
+  [key: string]: string[];
+}
+
+export interface ShareConflict {
+  conflictGroupsByEntity: ConflictGroupsByEntity;
+}
+
 // TODO remove when removed all usages (dashboards, restitutions, widgets)
 export interface PryVisibility {
   type: PryVisibilityType;

@@ -151,7 +151,12 @@ export const frTranslations = {
         },
         OPEN: 'Ouvert',
         CLOSED: 'Fermé',
-        MODIFIABLE: 'Modifiable'
+        MODIFIABLE: 'Modifiable',
+        conflict:
+          "Attention les tableaux de bord suivant sont partagés à des groupes qui n'auront plus accès aux données :",
+        entities: {
+          dashboard: 'Tableaux de bord'
+        }
       },
       'abac-rules': {
         delete: 'Supprimer',
@@ -364,7 +369,7 @@ export const frTranslations = {
           POSTGIS:
             "Ce stockage est conseillé en cas de stockage de données géographique complexes ou dans des systèmes de coordonnées différents de WGS 84. Il est recommandé de ne stocker dans cette base que des modèles métier dont la volumétrie de données estimée (en terme de nombre d'items) n'est pas trop élevée.",
           ELASTIC:
-            'Ce stockage est conseillé en cas de forte volumétrie de données prévue pour ce modèle métier (grand nombre d\'items). Si vous souhaitez stocker des données géographiques dans ce modèle, des formes simples sont conseillées et le système de coordonnées de référence utilisé doit être WGS 84. Ce système de stockage offre une scalabilité horizontale'
+            "Ce stockage est conseillé en cas de forte volumétrie de données prévue pour ce modèle métier (grand nombre d'items). Si vous souhaitez stocker des données géographiques dans ce modèle, des formes simples sont conseillées et le système de coordonnées de référence utilisé doit être WGS 84. Ce système de stockage offre une scalabilité horizontale"
         },
         options: {
           POSTGIS: 'PostGIS',

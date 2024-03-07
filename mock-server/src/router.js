@@ -954,8 +954,7 @@ router.on('POST', '/ref/datasets', (req, res, params) => {
 });
 router.on('PUT', '/ref/datasets', (req, res, params) => {
   readPayload(req).then((payload) => {
-    dataModule.dataset.update(payload);
-    makeResponseOk(res, undefined, 204);
+    makeResponseOk(res, dataModule.dataset.update(payload));
   });
 });
 router.on(['DELETE'], '/ref/datasets/id/:id', (req, res, params) => {
