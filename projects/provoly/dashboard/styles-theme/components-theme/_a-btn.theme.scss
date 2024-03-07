@@ -54,8 +54,8 @@
       );
     }
 
-    &:focus,
     &:active {
+      color: themed($theme-map, 'color', 'primary', 'contrast', 50);
       background-color: themed($theme-map, 'color', 'primary', 600);
     }
 
