@@ -303,7 +303,12 @@ export const frTranslations = {
       public: 'Public',
       restricted: 'Restreint',
       type: 'Visibilité',
-      users: 'Utilisateurs autorisés'
+      users: 'Utilisateurs autorisés',
+      conflict: {
+        title: 'Warning',
+        main: 'Attention, les sources de données suivantes ne seront pas visible de toutes les personnes accédant à la présentation : ',
+        unavailable: 'inaccessible aux groupes : '
+      }
     },
     homepage: {
       menu: {

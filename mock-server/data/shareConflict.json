@@ -1,0 +1,11 @@
+{
+  "missingGroupsByEntity": {
+    "s6406e7e-37cd-41ce-b5fc-36d233e6ae5c": [
+      "missing group",
+      "AUTHENTICATED"
+    ],
+    "dashboard-id": [
+      "missing group"
+    ]
+  }
+}

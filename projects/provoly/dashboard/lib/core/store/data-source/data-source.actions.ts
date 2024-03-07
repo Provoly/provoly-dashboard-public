@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { ConflictGroupsByEntity, PryVisibility } from '../../components/share/share.model';
+import { MissingGroupsByEntity, PryVisibility } from '../../components/share/share.model';
 import { DatasetPreview } from '../../model/dataset.interface';
 import { MonoClassSearchPayload } from '../../model/search-mono-class.model';
 import { FullTextSearchPayload, MultiClassSearchPayload } from '../../model/search-multi-class.model';
@@ -51,9 +51,9 @@ export const DataSourceActions = {
       props<{ path: string; params?: { [p: string]: string } }>()
     ),
     update: createAction('[Dataset] update Dataset', props<{ dataset: Dataset; route?: string }>()),
-    setConflictGroups: createAction(
-      '[Dataset] set conflict groups',
-      props<{ conflictGroups?: ConflictGroupsByEntity }>()
+    setMissingGroups: createAction(
+      '[Dataset] set missing groups',
+      props<{ missingGroups?: MissingGroupsByEntity }>()
     ),
     updated: createAction(
       '[Dataset] Dataset is updated call to admin',

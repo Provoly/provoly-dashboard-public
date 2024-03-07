@@ -106,11 +106,7 @@ export class DataSourceService {
   updateDataset(dataset: Dataset): Observable<undefined | ShareConflict> {
     return this.store
       .select(ConfigSelectors.refUrl)
-      .pipe(
-        mergeMap((url) =>
-          this.httpClient.put<undefined | ShareConflict>(encodeURI(`${url}/datasets`), dataset)
-        )
-      );
+      .pipe(mergeMap((url) => this.httpClient.put<undefined | ShareConflict>(encodeURI(`${url}/datasets`), dataset)));
   }
 
   deleteDataset(id: string) {

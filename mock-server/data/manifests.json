@@ -2011,5 +2011,12 @@
         }
       ]
     }
+  },
+  {
+    "id": "share-group-warning-when-dataset-groups-missing",
+    "name": "sharing warning",
+    "manifest": {
+      "windows": []
+    }
   }
 ]

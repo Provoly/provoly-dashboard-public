@@ -10,13 +10,13 @@ export interface Group {
   system: boolean;
 }
 
-export interface ConflictGroupsByEntity {
+export interface MissingGroupsByEntity {
   // UUID: [group1, group2, ...]
   [key: string]: string[];
 }
 
 export interface ShareConflict {
-  conflictGroupsByEntity: ConflictGroupsByEntity;
+  missingGroupsByEntity: MissingGroupsByEntity;
 }
 
 // TODO remove when removed all usages (dashboards, restitutions, widgets)

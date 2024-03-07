@@ -9,6 +9,7 @@ const manifests = JSON.parse(fs.readFileSync('./data/manifests.json', 'utf8')).m
 });
 
 const metadatas = JSON.parse(fs.readFileSync('./data/metadatas.json', 'utf8'));
+let shareConflict = JSON.parse(fs.readFileSync('./data/shareConflict.json', 'utf8'));
 
 module.exports = {
   list: () => {
@@ -75,5 +76,7 @@ module.exports = {
     previous.manifest = manifest;
     previous.image = image;
     previous.groups = groups;
+
+    return id === 'share-group-warning-when-dataset-groups-missing' ? shareConflict : undefined;
   }
 };

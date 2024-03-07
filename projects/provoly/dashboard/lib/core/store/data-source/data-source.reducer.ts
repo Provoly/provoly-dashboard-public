@@ -2,7 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { DatasetPreview } from '../../model/dataset.interface';
 import { DataSourceActions } from './data-source.actions';
 import { Dataset, DatasetVersion, NamedQuery } from './data-source.model';
-import { ConflictGroupsByEntity } from '../../components/share/share.model';
+import { MissingGroupsByEntity } from '../../components/share/share.model';
 
 export const dataSourceFeatureKey = '@pry/datasources';
 
@@ -18,7 +18,7 @@ export interface DataSourceState {
   datasetVersions: DatasetVersion[];
   selectedDatasetVersion: DatasetVersion | null;
   previews: DatasetPreview[];
-  conflictGroups?: ConflictGroupsByEntity;
+  missingGroups?: MissingGroupsByEntity;
 }
 
 export const initialDataSourceState: DataSourceState = {
@@ -72,9 +72,9 @@ export const dataSourceReducer = createReducer(
     datasets: action.datasets,
     isLoading: false
   })),
-  on(DataSourceActions.dataset.setConflictGroups, (state, { conflictGroups }) => ({
+  on(DataSourceActions.dataset.setMissingGroups, (state, { missingGroups }) => ({
     ...state,
-    conflictGroups
+    missingGroups
   })),
   on(DataSourceActions.dataset.unselectDataset, (state) => ({
     ...state,

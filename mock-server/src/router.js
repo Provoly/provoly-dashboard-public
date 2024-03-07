@@ -795,8 +795,11 @@ router.on('PUT', '/ref/users/me/dashboards/id/:id/default', (req, res, params) =
 router.on('POST', '/ref/users/me/dashboards', (req, res, params) => {
   readPayload(req).then((payload) => {
     const { id, name, description, creationDate, modificationDate, manifest, image, groups } = payload;
-    manifestModule.save(id, name, description, creationDate, modificationDate, manifest, image, groups);
-    makeResponseOk(res, undefined, 204);
+    makeResponseOk(
+      res,
+      manifestModule.save(id, name, description, creationDate, modificationDate, manifest, image, groups),
+      200
+    );
   });
 });
 router.on(['OPTIONS', 'DELETE'], '/ref/users/me/dashboards/default', (req, res, params) => {

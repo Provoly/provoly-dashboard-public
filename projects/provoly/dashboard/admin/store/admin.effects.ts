@@ -146,7 +146,7 @@ export class AdminEffects {
         this.dsService.updateDataset(action.dataset).pipe(
           mergeMap((conflict?: ShareConflict) => {
             let actions: Action[] = [
-              DataSourceActions.dataset.setConflictGroups({ conflictGroups: conflict?.conflictGroupsByEntity }),
+              DataSourceActions.dataset.setMissingGroups({ missingGroups: conflict?.missingGroupsByEntity }),
               DataSourceActions.dataset.loadDataset()
             ];
             if (action.route)

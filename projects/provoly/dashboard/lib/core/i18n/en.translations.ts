@@ -300,7 +300,12 @@ export const enTranslations = {
       public: 'Public',
       restricted: 'Restricted',
       type: 'Visibility',
-      users: 'Authorized users'
+      users: 'Authorized users',
+      conflict: {
+        title: 'Warning',
+        main: 'The following data sources are not accessible to the selected user groups:',
+        unavailable: 'inaccessible aux groupes : '
+      }
     },
     homepage: {
       menu: {

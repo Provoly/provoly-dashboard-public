@@ -9,6 +9,7 @@ import { GlobalManifest, ManifestDescription } from '../../core/model/manifest.i
 import { ConfigSelectors } from '../../core/store/config/config.selectors';
 import { ManifestUtils } from './manifest-utils.class';
 import { DashboardSelectors } from './dashboard.selectors';
+import { ShareConflict } from '../../core/components/share/share.model';
 
 @Injectable({
   providedIn: 'root'
@@ -70,24 +71,29 @@ export class ManifestService {
     cover?: boolean,
     metadata?: { metadataDefId: string; value: string }[],
     groups?: string[]
-  ): Observable<{ id: string; name: string; manifest: GlobalManifest }> {
+  ): Observable<{ id: string; name: string; manifest: GlobalManifest } | ShareConflict> {
     return this.store.select(ConfigSelectors.refUrl).pipe(
-      mergeMap((url) =>
-        this.httpClient.post<{ id: string; description: string; name: string; manifest: GlobalManifest }>(
-          encodeURI(`${url}/users/me/dashboards`),
-          {
-            id,
-            name,
-            description,
-            manifest,
-            image,
-            cover,
-            metadata,
-            datasource: ManifestUtils.getDatasourcesUsedByManifest(manifest).map((ds) => ds.datasetId),
-            groups
-          }
-        )
-      )
+      mergeMap((url) => {
+        return this.httpClient.post<
+          | {
+              id: string;
+              description: string;
+              name: string;
+              manifest: GlobalManifest;
+            }
+          | ShareConflict
+        >(encodeURI(`${url}/users/me/dashboards`), {
+          id,
+          name,
+          description,
+          manifest,
+          image,
+          cover,
+          metadata,
+          datasource: ManifestUtils.getDatasourcesUsedByManifest(manifest).map((ds) => ds.datasetId),
+          groups
+        });
+      })
     );
   }
 

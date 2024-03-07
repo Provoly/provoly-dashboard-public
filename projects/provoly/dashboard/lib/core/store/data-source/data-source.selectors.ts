@@ -40,7 +40,7 @@ const getDataSourcesSorted = createSelector(
 const selectedDatasetId = createSelector(selectFeature, (state) => state?.selectedDataset?.id);
 const selectedDataset = createSelector(selectFeature, (state) => state?.selectedDataset);
 const selectedDatasetMetadata = createSelector(selectFeature, (state) => state?.selectedDataset?.metadata ?? []);
-const selectedDatasetConflictGroups = createSelector(selectFeature, (state) => state?.conflictGroups);
+const selectedDatasetMissingGroups = createSelector(selectFeature, (state) => state?.missingGroups);
 const datasetVersions = createSelector(selectFeature, (state) => state?.datasetVersions ?? []);
 const memoizeDatasetVersions = {} as any;
 const matchingDatasetVersions = (datasetId: string) => {
@@ -71,7 +71,7 @@ export const DataSourceSelectors = {
   getDataSourcesSorted,
   selectedDataset,
   selectedDatasetMetadata,
-  selectedDatasetConflictGroups,
+  selectedDatasetMissingGroups,
   datasetVersions,
   selectedDatasetId,
   matchingDatasetVersions,

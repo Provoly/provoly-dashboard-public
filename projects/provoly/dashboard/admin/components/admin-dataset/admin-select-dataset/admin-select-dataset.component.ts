@@ -29,7 +29,7 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
   datasetMetadata$: Observable<MetadataValue[]>;
   editable$: Observable<boolean>;
   accessGroups: string[] = [];
-  conflictGroups$: Observable<{ [key: string]: { groups: string[]; entityName: string } } | undefined>;
+  missingGroups$: Observable<{ [key: string]: { groups: string[]; entityName: string } } | undefined>;
 
   constructor(
     private store: Store<any>,
@@ -43,7 +43,7 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
     this.datasetMetadata$ = this.store.select(DataSourceSelectors.selectedDatasetMetadata);
     this.associations$ = this.store.select(AdminSelectors.selectedAssociation);
     this.editable$ = this.store.select(MetadataSelectors.editable);
-    this.conflictGroups$ = this.store.select(DataSourceSelectors.selectedDatasetConflictGroups).pipe(
+    this.missingGroups$ = this.store.select(DataSourceSelectors.selectedDatasetMissingGroups).pipe(
       withLatestFrom(this.store.select(DashboardSelectors.manifestsList)),
       map(([conflict, manifests]) => {
         const result: { [key: string]: { groups: string[]; entityName: string } } = {};

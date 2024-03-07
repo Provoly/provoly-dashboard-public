@@ -206,10 +206,10 @@ export class DataSourceEffects {
     )
   );
 
-  unsetConflictGroupsOnDatasetSelection$ = createEffect(() =>
+  unsetMissingGroupsOnDatasetSelection$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DataSourceActions.dataset.selectDataset),
-      map(() => DataSourceActions.dataset.setConflictGroups({ conflictGroups: undefined }))
+      map(() => DataSourceActions.dataset.setMissingGroups({ missingGroups: undefined }))
     )
   );
 

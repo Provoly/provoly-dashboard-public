@@ -45,14 +45,14 @@
       <button type="submit" class="a-btn a-btn--primary u-self-end" #submit (click)="share(dataset)">
         {{ '@pry.admin.validate' | i18n }}
       </button>
-      @if(conflictGroups$ | async; as conflictGroups) {
+      @if(missingGroups$ | async; as missingGroups) {
         <div class="u-display-flex -column">
           <span>{{ '@pry.admin.dataset.conflict' | i18n }}</span>
-          @for(conflict of conflictGroups | keyvalue; track conflict.key) {
+          @for(missing of missingGroups | keyvalue; track missing.key) {
             <div>
-              {{ '@pry.admin.dataset.entities.dashboard' | i18n }} <strong>{{ conflict.value.entityName }}</strong>
+              {{ '@pry.admin.dataset.entities.dashboard' | i18n }} <strong>{{ missing.value.entityName }}</strong>
               <div class="u-display-flex">
-                @for(group of conflict.value.groups; track group) {
+                @for(group of missing.value.groups; track group) {
                   <span class="a-chip">{{ getGroupLabel(group) }}</span>
                 }
               </div>

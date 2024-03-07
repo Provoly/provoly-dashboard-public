@@ -25,6 +25,7 @@ const widgetList = JSON.parse(fs.readFileSync('./data/catalog.json', 'utf8'));
 let datasets = JSON.parse(fs.readFileSync('./data/datasets.json', 'utf8'));
 let transfos = JSON.parse(fs.readFileSync('./data/transfos.json', 'utf8'));
 let departements = JSON.parse(fs.readFileSync('./data/departements.json', 'utf8'));
+let shareConflict = JSON.parse(fs.readFileSync('./data/shareConflict.json', 'utf8'));
 
 const getClasses = () =>
   classes.map((oClass) => ({
@@ -190,15 +191,7 @@ const saveDatasets = (dataset) => {
 
 const updateDataset = (newDataset) => {
   datasets = getDataSetWithMetadata().map((dataset) => (dataset.id === newDataset.id ? newDataset : dataset));
-  return [
-    undefined,
-    {
-      conflictGroupsByEntity: {
-        's6406e7e-37cd-41ce-b5fc-36d233e6ae5c': ['conflict group', 'AUTHENTICATED'],
-        'dashboard-id': ['conflict group']
-      }
-    }
-  ][casual.integer(0, 1)];
+  return [undefined, shareConflict][casual.integer(0, 1)];
 };
 
 const deleteDataset = (id) => {

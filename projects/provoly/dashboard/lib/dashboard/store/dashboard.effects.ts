@@ -30,6 +30,7 @@ import { RefreshService } from './refresh.service';
 import { PryTitleService } from './title.service';
 import { WmsService } from './wms.service';
 import { WidgetFactoryService } from '../components/widgets/widget-instanciator/widget-factory.service';
+import { DataSourceSelectors } from '../../core/store/data-source/data-source.selectors';
 
 @Injectable()
 export class DashboardEffects {
@@ -345,7 +346,8 @@ export class DashboardEffects {
     this.actions$.pipe(
       ofType(DashboardActions.saveManifest),
       withLatestFrom(this.store.select(DashboardSelectors.globalManifest)),
-      mergeMap(([action, currentManifest]) =>
+      withLatestFrom(this.store.select(DataSourceSelectors.datasets)),
+      mergeMap(([[action, currentManifest], datasets]) =>
         this.manifestService
           .save(
             action.name,
@@ -358,12 +360,35 @@ export class DashboardEffects {
             action.groups
           )
           .pipe(
-            tap(() =>
+            tap((response) => {
               this.snackBar.open({
                 message: this.translateService.instant('@pry.toolbox.manifest.saved', { viewId: action.name }),
                 type: 'success'
-              })
-            ),
+              });
+              if (response && 'missingGroupsByEntity' in response) {
+                const data: PryDialogConfirmData = {
+                  title: '@pry.share.conflict.title',
+                  message:
+                    this.i18nService.instant('@pry.share.conflict.main') +
+                    '\r\n' +
+                    Object.keys(response.missingGroupsByEntity)
+                      .map(
+                        (entity) =>
+                          (datasets.find((ds) => ds.id === entity)?.name ?? entity) +
+                          ' : ' +
+                          response.missingGroupsByEntity[entity].join(', ')
+                      )
+                      .join('\r\n'),
+                  actions: [
+                    {
+                      id: 0,
+                      label: '@pry.toolbox.close'
+                    }
+                  ]
+                };
+                this.pryDialog.open(PryDialogConfirmComponent, { data });
+              }
+            }),
             map(() => action.manifest ?? currentManifest),
             catchError((error) => {
               this.snackBar.open({
@@ -797,7 +822,8 @@ export class DashboardEffects {
     private searchService: SearchService,
     private pryDialog: PryDialogService,
     private wmsService: WmsService,
-    private widgetFactoryService: WidgetFactoryService
+    private widgetFactoryService: WidgetFactoryService,
+    private i18nService: PryI18nService
   ) {
     dashboardInitService.init();
     refreshService.start();
