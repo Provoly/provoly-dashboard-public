@@ -18,6 +18,11 @@
         background-color: themed($theme-map, 'color', 'primary', 'contrast', 50);
       }
     }
+
+    &:hover {
+      border-color: themed($theme-map, 'color', 'primary', 600);
+      background-color: themed($theme-map, 'color', 'primary', 600);
+    }
   }
 
   &__text {
