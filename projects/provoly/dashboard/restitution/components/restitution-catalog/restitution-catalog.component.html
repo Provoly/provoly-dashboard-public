@@ -162,7 +162,11 @@
       </button>
     </div>
     <div class="o-manifest-layout__content">
-      <pry-restitution (restitutionCreated)="closeRestitution($event)" class="restitution"></pry-restitution>
+      <pry-restitution
+        [edit]="false"
+        (restitutionCreated)="closeRestitution($event)"
+        class="restitution"
+      ></pry-restitution>
     </div>
   </ng-template>
   <ng-template [ngIf]="selectedMode === mode.EDITION">
