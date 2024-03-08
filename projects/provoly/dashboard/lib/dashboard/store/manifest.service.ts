@@ -71,18 +71,10 @@ export class ManifestService {
     cover?: boolean,
     metadata?: { metadataDefId: string; value: string }[],
     groups?: string[]
-  ): Observable<{ id: string; name: string; manifest: GlobalManifest } | ShareConflict> {
+  ): Observable<ShareConflict> {
     return this.store.select(ConfigSelectors.refUrl).pipe(
       mergeMap((url) => {
-        return this.httpClient.post<
-          | {
-              id: string;
-              description: string;
-              name: string;
-              manifest: GlobalManifest;
-            }
-          | ShareConflict
-        >(encodeURI(`${url}/users/me/dashboards`), {
+        return this.httpClient.post<ShareConflict>(encodeURI(`${url}/users/me/dashboards`), {
           id,
           name,
           description,

@@ -28,7 +28,6 @@
       );
     }
 
-    &:focus,
     &:active {
       @include changeBgColor(
           $targetBgColor: themed($theme-map, 'color', 'primary', 850),

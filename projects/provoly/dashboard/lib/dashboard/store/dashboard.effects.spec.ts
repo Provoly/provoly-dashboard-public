@@ -2,7 +2,14 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { ConfigSelectors, SearchService, WidgetFactoryService, WidgetManifest, WmsService } from '@provoly/dashboard';
+import {
+  ConfigSelectors,
+  DataSourceSelectors,
+  SearchService,
+  WidgetFactoryService,
+  WidgetManifest,
+  WmsService
+} from '@provoly/dashboard';
 import { hot } from 'jest-marbles';
 import { Observable, of } from 'rxjs';
 import { PrySnackbarService } from '../../core/components/snackbar/snackbar.service';
@@ -50,7 +57,8 @@ describe('DashboardEffects', () => {
           initialState: buildState({}),
           selectors: [
             { selector: DashboardSelectors.windowManifest, value: { route: 'a' } },
-            { selector: ConfigSelectors.catalog, value: [] }
+            { selector: ConfigSelectors.catalog, value: [] },
+            { selector: DataSourceSelectors.datasets, value: [] }
           ]
         }),
         {
@@ -550,13 +558,7 @@ describe('DashboardEffects', () => {
 
   describe('currentManifest$', () => {
     it('should send save action with current manifest if manifest not included in action and open snack', () => {
-      const serviceSpy = jest.spyOn(manifestService, 'save').mockReturnValue(
-        of({
-          id: 'id',
-          name: 'mId',
-          manifest: {} as GlobalManifest
-        })
-      );
+      const serviceSpy = jest.spyOn(manifestService, 'save').mockReturnValue(of({ missingGroupsByEntity: {} }));
 
       const serviceSpySnack = jest.spyOn(snackbarService, 'open').mockReturnValue();
       const serviceSpyTranslate = jest.spyOn(translateService, 'instant').mockReturnValue('translated');
@@ -613,13 +615,7 @@ describe('DashboardEffects', () => {
       });
     });
     it("should send save action with action's manifest if included in action and open snack", () => {
-      const serviceSpy = jest.spyOn(manifestService, 'save').mockReturnValue(
-        of({
-          id: 'id',
-          name: 'name',
-          manifest: {} as GlobalManifest
-        })
-      );
+      const serviceSpy = jest.spyOn(manifestService, 'save').mockReturnValue(of({ missingGroupsByEntity: {} }));
 
       const serviceSpySnack = jest.spyOn(snackbarService, 'open').mockReturnValue();
       const serviceSpyTranslate = jest.spyOn(translateService, 'instant').mockReturnValue('translated');

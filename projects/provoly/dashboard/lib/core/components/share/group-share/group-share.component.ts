@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Group, PryVisibilityType } from '../share.model';
 import { BehaviorSubject, map, Observable, combineLatest } from 'rxjs';
@@ -23,7 +23,6 @@ import equal from 'fast-deep-equal/es6';
 export class PryGroupShareComponent extends SubscriptionnerDirective implements ControlValueAccessor {
   private _onChange = (groups: string[]) => groups;
   private _onTouched = () => {};
-  _disabled = false;
 
   // for tracking input
   assignedGroupNames$ = new BehaviorSubject<string[]>([]);
@@ -33,14 +32,40 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
   groups$: Observable<Group[]>;
   PryVisibilityType = PryVisibilityType;
   visibilityTypes: { label: string; value: PryVisibilityType }[] = [];
-  templateData$: Observable<{ groups: Group[]; assignedGroups: Group[] }>;
+  templateData$: Observable<{
+    groups: Group[];
+    assignedGroups: Group[];
+    disableRadios: { [key in PryVisibilityType]: boolean };
+  }>;
+
+  _disableRadios$: BehaviorSubject<{ [key in PryVisibilityType]: boolean }> = new BehaviorSubject<{
+    [key in PryVisibilityType]: boolean;
+  }>({
+    [PryVisibilityType.PRIVATE]: false,
+    [PryVisibilityType.RESTRICTED]: false,
+    [PryVisibilityType.PUBLIC]: false
+  });
+  @Input() set disableRadios(value: { [key in PryVisibilityType]: boolean } | null) {
+    if (value) this._disableRadios$.next(value);
+  }
+
+  _allowedGroups$: BehaviorSubject<string[] | undefined> = new BehaviorSubject<string[] | undefined>(undefined);
+  @Input() set allowedGroups(value: string[] | null) {
+    if (value) this._allowedGroups$.next(value);
+  }
 
   constructor(private store: Store, private _cd: ChangeDetectorRef) {
     super();
     this.store.dispatch(ConfigActions.loadAccessGroups());
-    this.groups$ = this.store
-      .select(ConfigSelectors.accessGroups)
-      .pipe(map((groups) => groups.filter((group) => group.name !== 'ALL')));
+    this.groups$ = combineLatest([this.store.select(ConfigSelectors.accessGroups), this._allowedGroups$]).pipe(
+      map(([groups, allowedGroups]) =>
+        groups
+          .filter((group) => group.name !== 'ALL')
+          .filter((group) =>
+            allowedGroups?.includes('ALL') || !allowedGroups ? true : allowedGroups.includes(group.name)
+          )
+      )
+    );
     this.assignedGroups$ = combineLatest([this.groups$, this.assignedGroupNames$]).pipe(
       map(
         ([groups, groupNames]) =>
@@ -53,8 +78,8 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
       label: label.toLowerCase(),
       value: PryVisibilityType[<keyof typeof PryVisibilityType>label]
     }));
-    this.templateData$ = combineLatest([this.groups$, this.assignedGroups$]).pipe(
-      map(([groups, assignedGroups]) => ({ groups, assignedGroups }))
+    this.templateData$ = combineLatest([this.groups$, this.assignedGroups$, this._disableRadios$]).pipe(
+      map(([groups, assignedGroups, disableRadios]) => ({ groups, assignedGroups, disableRadios }))
     );
   }
 
@@ -75,11 +100,6 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
 
   registerOnTouched(fn: any): void {
     this._onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this._disabled = isDisabled;
-    this._cd.markForCheck();
   }
 
   updateRadioValue(groups: string[]) {

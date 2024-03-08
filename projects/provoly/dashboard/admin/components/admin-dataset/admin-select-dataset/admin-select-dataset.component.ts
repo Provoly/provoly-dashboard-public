@@ -8,6 +8,7 @@ import {
   DataSourceActions,
   DataSourceSelectors,
   MetadataValue,
+  MissingGroupsByEntity,
   PryI18nService,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
@@ -15,6 +16,10 @@ import { MetadataActions, MetadataSelectors, MetaEventType } from '@provoly/dash
 import { map, Observable, Subscription, withLatestFrom } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminSelectors } from '../../../store/admin.selectors';
+
+interface MissingGroups {
+  [key: string]: { groups: string[]; entityName: string };
+}
 
 @Component({
   selector: 'pry-admin-select-dataset',
@@ -29,7 +34,8 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
   datasetMetadata$: Observable<MetadataValue[]>;
   editable$: Observable<boolean>;
   accessGroups: string[] = [];
-  missingGroups$: Observable<{ [key: string]: { groups: string[]; entityName: string } } | undefined>;
+  selectedDatasetMissingGroups$: Observable<MissingGroupsByEntity | undefined>;
+  missingGroups$: Observable<MissingGroups | undefined>;
 
   constructor(
     private store: Store<any>,
@@ -43,7 +49,8 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
     this.datasetMetadata$ = this.store.select(DataSourceSelectors.selectedDatasetMetadata);
     this.associations$ = this.store.select(AdminSelectors.selectedAssociation);
     this.editable$ = this.store.select(MetadataSelectors.editable);
-    this.missingGroups$ = this.store.select(DataSourceSelectors.selectedDatasetMissingGroups).pipe(
+    this.selectedDatasetMissingGroups$ = this.store.select(DataSourceSelectors.selectedDatasetMissingGroups);
+    this.missingGroups$ = this.selectedDatasetMissingGroups$.pipe(
       withLatestFrom(this.store.select(DashboardSelectors.manifestsList)),
       map(([conflict, manifests]) => {
         const result: { [key: string]: { groups: string[]; entityName: string } } = {};
@@ -153,5 +160,10 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
     const i18nBase = '@pry.components.chipsSelector.share.groups.';
     const label = this.i18n.instant(i18nBase + groupName);
     return label.startsWith(i18nBase) ? groupName : label;
+  }
+
+  changeGroup($event: any[]) {
+    this.accessGroups = $event;
+    this.store.dispatch(DataSourceActions.dataset.setMissingGroups({ missingGroups: undefined }));
   }
 }

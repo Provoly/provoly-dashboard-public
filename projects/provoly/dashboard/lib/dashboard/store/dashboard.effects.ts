@@ -365,7 +365,7 @@ export class DashboardEffects {
                 message: this.translateService.instant('@pry.toolbox.manifest.saved', { viewId: action.name }),
                 type: 'success'
               });
-              if (response && 'missingGroupsByEntity' in response) {
+              if (Object.keys(response.missingGroupsByEntity).length > 0) {
                 const data: PryDialogConfirmData = {
                   title: '@pry.share.conflict.title',
                   message:

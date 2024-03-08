@@ -191,7 +191,7 @@ const saveDatasets = (dataset) => {
 
 const updateDataset = (newDataset) => {
   datasets = getDataSetWithMetadata().map((dataset) => (dataset.id === newDataset.id ? newDataset : dataset));
-  return [undefined, shareConflict][casual.integer(0, 1)];
+  return [{ missingGroupsByEntity: {} }, shareConflict][casual.integer(0, 1)];
 };
 
 const deleteDataset = (id) => {

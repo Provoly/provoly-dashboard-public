@@ -152,8 +152,9 @@ export const frTranslations = {
         OPEN: 'Ouvert',
         CLOSED: 'Fermé',
         MODIFIABLE: 'Modifiable',
+        success: 'Modification effectuée avec succès',
         conflict:
-          "Attention les tableaux de bord suivant sont partagés à des groupes qui n'auront plus accès aux données :",
+          "Attention, les tableaux de bord suivants sont partagés à des groupes qui n'auront plus accès aux données :",
         entities: {
           dashboard: 'Tableaux de bord'
         }

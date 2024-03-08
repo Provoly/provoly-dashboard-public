@@ -8,10 +8,14 @@ import {
   DashboardGridLayout,
   DashboardManifest,
   DashboardSelectors,
+  DataSourceSelectors,
   ManifestDescription,
   PryTitleService,
+  PryVisibilityType,
   SubscriptionnerDirective,
-  ViewMode
+  ViewMode,
+  canManifestBeMadePublic,
+  getCommonDatasourceGroupsForManifest
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable, startWith } from 'rxjs';
 import { v4 } from 'uuid';
@@ -44,6 +48,9 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   search$ = new BehaviorSubject('');
   filteredPresentations$: Observable<ManifestDescription[]>;
   listOfManifests$ = new BehaviorSubject<ManifestDescription[] | null>(null);
+  disableShareRadios$: Observable<{ [key in PryVisibilityType]: boolean }>;
+  allowedShareGroups$: Observable<string[]>;
+
   @Input() mode: 'theme' | 'meta' = 'meta';
 
   @Input() set listOfManifests(manifests: ManifestDescription[] | null) {
@@ -105,6 +112,31 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
             : true;
         })
       )
+    );
+    this.disableShareRadios$ = combineLatest([
+      this.selectedPresentation$,
+      this.store.select(DataSourceSelectors.datasets)
+    ]).pipe(
+      map(([presentation, datasets]) => {
+        return {
+          [PryVisibilityType.PRIVATE]: false,
+          [PryVisibilityType.PUBLIC]: presentation ? !canManifestBeMadePublic(presentation, datasets) : true,
+          [PryVisibilityType.RESTRICTED]: presentation
+            ? !(
+                canManifestBeMadePublic(presentation, datasets) ||
+                getCommonDatasourceGroupsForManifest(presentation, datasets).length > 0
+              )
+            : true
+        };
+      })
+    );
+    this.allowedShareGroups$ = combineLatest([
+      this.selectedPresentation$,
+      this.store.select(DataSourceSelectors.datasets)
+    ]).pipe(
+      map(([presentation, datasets]) => {
+        return presentation ? getCommonDatasourceGroupsForManifest(presentation, datasets) : [];
+      })
     );
     this.subscriptions.add(
       this.store.select(DashboardSelectors.presentation).subscribe((presentation) => {

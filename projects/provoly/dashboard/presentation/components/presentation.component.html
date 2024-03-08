@@ -145,7 +145,12 @@
         </button>
       </div>
     </div>
-    <pry-group-share [ngModel]="selectedPresentation.groups" (ngModelChange)="accessGroups = $event"></pry-group-share>
+    <pry-group-share
+      [ngModel]="selectedPresentation.groups"
+      (ngModelChange)="accessGroups = $event"
+      [disableRadios]="disableShareRadios$ | async"
+      [allowedGroups]="allowedShareGroups$ | async"
+    ></pry-group-share>
     <div class="m-btn-group">
       <button type="button" class="a-btn a-btn--secondary" (click)="toggleModal()">
         {{ '@pry.toolbox.manifest.close' | i18n }}

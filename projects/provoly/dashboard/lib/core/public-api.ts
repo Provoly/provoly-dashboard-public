@@ -93,6 +93,7 @@ export * from './components/range/range.module';
 export * from './components/share/share.component';
 export * from './components/share/group-share/group-share.component';
 export * from './components/share/share.model';
+export * from './components/share/share.utils';
 export * from './components/share/share.module';
 export * from './components/snackbar/snack.interface';
 export * from './components/snackbar/snackbar.module';

@@ -77,6 +77,6 @@ module.exports = {
     previous.image = image;
     previous.groups = groups;
 
-    return id === 'share-group-warning-when-dataset-groups-missing' ? shareConflict : undefined;
+    return id === 'share-group-warning-when-dataset-groups-missing' ? shareConflict : { missingGroupsByEntity: {} };
   }
 };
