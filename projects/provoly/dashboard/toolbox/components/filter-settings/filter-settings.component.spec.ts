@@ -43,6 +43,7 @@ const filter: Filter = {
 const attributes: Attribute[] = [
   {
     id: '1',
+    customId: 'string-attr-ds-id',
     technicalName: 'string-attr',
     label: 'string-attr / ds / class',
     datasource: 'ds-id',
@@ -50,6 +51,7 @@ const attributes: Attribute[] = [
   },
   {
     id: '2',
+    customId: 'date-attr-ds-id',
     technicalName: 'date-attr',
     label: 'date-attr / ds / class',
     datasource: 'ds-id',
@@ -57,14 +59,23 @@ const attributes: Attribute[] = [
   },
   {
     id: '3',
+    customId: 'number-attr-ds-id',
     technicalName: 'number-attr',
     label: 'number-attr / ds / class',
     datasource: 'ds-id',
     type: FieldType.INTEGER
   },
-  { id: '4', technicalName: 'other-attr', label: 'other-attr / ds / class', datasource: 'ds-id', type: FieldType.RAW },
+  {
+    id: '4',
+    customId: 'other-attr-ds-id',
+    technicalName: 'other-attr',
+    label: 'other-attr / ds / class',
+    datasource: 'ds-id',
+    type: FieldType.RAW
+  },
   {
     id: '5',
+    customId: 'string-attr2-ds-id',
     technicalName: 'string-attr2',
     label: 'string-attr2 / ds / class',
     datasource: 'ds-id',
@@ -234,6 +245,7 @@ describe('FilterSettingsComponent', () => {
           {
             datasource: 'fakeid',
             id: 'intensity',
+            customId: 'intensity-fakeid',
             label: 'intensity / ds-name',
             technicalName: 'intensity',
             type: 'keyword'
@@ -241,6 +253,7 @@ describe('FilterSettingsComponent', () => {
           {
             datasource: 'fakeid',
             id: 'lat',
+            customId: 'lat-fakeid',
             label: 'lat / ds-name',
             technicalName: 'lat',
             type: 'string'
@@ -248,6 +261,7 @@ describe('FilterSettingsComponent', () => {
           {
             datasource: 'fakeid',
             id: 'lng',
+            customId: 'lng-fakeid',
             label: 'lng / ds-name',
             technicalName: 'lng',
             type: 'string'
@@ -255,6 +269,7 @@ describe('FilterSettingsComponent', () => {
           {
             datasource: 'fakeid',
             id: 'loc',
+            customId: 'loc-fakeid',
             label: 'loc / ds-name',
             technicalName: 'loc',
             type: 'string'
@@ -294,6 +309,7 @@ describe('FilterSettingsComponent', () => {
   it('should select attributes', () => {
     let attribute = {
       id: 'id',
+      customId: 'test-attr-ds',
       name: 'test-attr',
       technicalName: 'tech-test-attr',
       label: 'Test Attr',

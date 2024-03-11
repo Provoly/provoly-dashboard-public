@@ -2,7 +2,7 @@ export interface Filter {
   id: string;
   name: string;
   type: string;
-  attributes: { id: string; technicalName: string; label: string; datasource: string }[];
+  attributes: { id: string; customId: string; technicalName: string; label: string; datasource: string }[];
   operator?: string;
   value?: string | number;
   possibleValues?: string;

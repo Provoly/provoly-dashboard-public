@@ -33,6 +33,7 @@ export enum FilterSteps {
 
 export interface Attribute {
   id: string;
+  customId: string;
   technicalName: string;
   label: string;
   datasource: string;
@@ -74,10 +75,10 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
   ];
   currentOperators$ = new BehaviorSubject(this.operators);
   classes: Class[] = [];
-  attributes$: Observable<{ id: string; technicalName: string; label: string; datasource: string; type: string }[]>;
+  attributes$: Observable<Attribute[]>;
   selectedAttribute$ = new BehaviorSubject<string[]>(this.filter.attributes.map((attr) => attr.id));
   @ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
-  attributes: { id: string; technicalName: string; label: string; datasource: string; type: string }[] = [];
+  attributes: Attribute[] = [];
 
   constructor(
     store: Store,
@@ -137,6 +138,7 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
           .map((dataSource) =>
             (this.getDatasourceClass(dataSource, classes)?.attributes ?? []).map((attr) => ({
               id: attr.id,
+              customId: this.getCustomAttributeId(attr.id, dataSource.id),
               technicalName: attr.technicalName,
               label: `${attr.name} / ${dataSource.name}`,
               datasource: dataSource.id,
@@ -162,7 +164,7 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
                     }
               )
               .filter((attr) => !!attr)
-          ] as { id: string; technicalName: string; label: string; datasource: string; type: string }[]
+          ] as Attribute[]
       )
     );
 
@@ -263,7 +265,12 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
   }
 
   goToEdition(filter: Filter) {
-    this.filter = { ...filter };
+    this.filter = {
+      ...filter,
+      attributes: [
+        ...filter.attributes.map((attr) => ({ ...attr, customId: this.getCustomAttributeId(attr.id, attr.datasource) }))
+      ]
+    };
     this.currentStep = FilterSteps.EDITION;
   }
 
@@ -274,7 +281,7 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
 
   submitFilter() {
     this.filter.attributes = this.filter.attributes.map((attr) =>
-      typeof attr === 'string' ? this.attributes.find((attrObj) => attrObj.id === attr)! : attr
+      typeof attr === 'string' ? this.attributes.find((attrObj) => attrObj.customId === attr)! : attr
     );
     this.store.dispatch(DashboardActions.updateFilters({ filter: this.filter }));
     this.goBack();
@@ -308,6 +315,10 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
           return operator;
       }
     });
+  }
+
+  getCustomAttributeId(attributeId: string, datasetId: string): string {
+    return `${attributeId}@${datasetId}`;
   }
 
   protected readonly FilterSteps = FilterSteps;
