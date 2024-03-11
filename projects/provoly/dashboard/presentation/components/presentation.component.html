@@ -147,9 +147,10 @@
     </div>
     <pry-group-share
       [ngModel]="selectedPresentation.groups"
-      (ngModelChange)="accessGroups = $event"
       [disableRadios]="disableShareRadios$ | async"
       [allowedGroups]="allowedShareGroups$ | async"
+      (ngModelChange)="updateAccessGroups($event)"
+      (radioValueChange)="updateVisibility($event)"
     ></pry-group-share>
     <div class="m-btn-group">
       <button type="button" class="a-btn a-btn--secondary" (click)="toggleModal()">
@@ -161,6 +162,7 @@
         #submit
         (keydown.tab)="focusCrossElement()"
         (click)="changeVisibility(selectedPresentation)"
+        [disabled]="disableShareButton$ | async"
       >
         {{ '@pry.toolbox.manifest.check' | i18n }}
       </button>

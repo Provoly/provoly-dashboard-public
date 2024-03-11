@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  Output
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Group, PryVisibilityType } from '../share.model';
 import { BehaviorSubject, map, Observable, combineLatest } from 'rxjs';
@@ -53,6 +61,8 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
   @Input() set allowedGroups(value: string[] | null) {
     if (value) this._allowedGroups$.next(value);
   }
+
+  @Output() radioValueChange = new EventEmitter<PryVisibilityType>();
 
   constructor(private store: Store, private _cd: ChangeDetectorRef) {
     super();
@@ -115,6 +125,7 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
   changeGroupsBasedOnRadioValue(type: PryVisibilityType): void {
     if (this.radioValue !== type) {
       this.radioValue = type;
+      this.radioValueChange.emit(type);
 
       switch (type) {
         case PryVisibilityType.PRIVATE:

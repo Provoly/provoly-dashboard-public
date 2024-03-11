@@ -41,8 +41,8 @@
 
   <ng-template #shareDataset>
     <div class="o-pry-admin-dataset-select__share">
-      <pry-group-share [ngModel]="dataset.groups" (ngModelChange)="changeGroup($event)"></pry-group-share>
-      <button type="submit" class="a-btn a-btn--primary u-self-end" #submit (click)="share(dataset)">
+      <pry-group-share [ngModel]="dataset.groups" (ngModelChange)="changeGroup($event)" (radioValueChange)="updateVisibility($event)"></pry-group-share>
+      <button type="submit" class="a-btn a-btn--primary u-self-end" #submit (click)="share(dataset)" [disabled]="disableShareButton$ | async">
         {{ '@pry.admin.validate' | i18n }}
       </button>
       @if(selectedDatasetMissingGroups$ | async) {

@@ -50,6 +50,8 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   listOfManifests$ = new BehaviorSubject<ManifestDescription[] | null>(null);
   disableShareRadios$: Observable<{ [key in PryVisibilityType]: boolean }>;
   allowedShareGroups$: Observable<string[]>;
+  shareRadioValue$ = new BehaviorSubject<PryVisibilityType | undefined>(undefined);
+  disableShareButton$ = new BehaviorSubject<boolean>(false);
 
   @Input() mode: 'theme' | 'meta' = 'meta';
 
@@ -286,5 +288,25 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     this.ngZone.run(() => {
       this.router?.navigateByUrl(this.consultStartUrl);
     });
+  }
+
+  updateAccessGroups($event: string[]) {
+    this.accessGroups = $event;
+    this.updateDisableButtonValue();
+  }
+
+  updateVisibility($event: PryVisibilityType) {
+    this.shareRadioValue$.next($event);
+    this.updateDisableButtonValue();
+  }
+
+  updateDisableButtonValue() {
+    if (this.shareRadioValue$.getValue() === PryVisibilityType.RESTRICTED && this.accessGroups.length === 0) {
+      this.disableShareButton$.next(true);
+    } else {
+      if (this.disableShareButton$.getValue()) {
+        this.disableShareButton$.next(false);
+      }
+    }
   }
 }

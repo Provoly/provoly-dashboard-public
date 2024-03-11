@@ -10,7 +10,9 @@
         (ngModelChange)="changeGroupsBasedOnRadioValue($event)"
         [disabled]="data.disableRadios[type.value]"
       />
-      <label [for]="type.label" class="a-label">{{ '@pry.share.' + type.label | i18n }}</label>
+      <label [for]="type.label" class="a-label" [class.a-label--disabled]="data.disableRadios[type.value]">
+        {{ '@pry.share.' + type.label | i18n }}
+      </label>
     </div>
   </div>
   @if (radioValue === PryVisibilityType.RESTRICTED) {

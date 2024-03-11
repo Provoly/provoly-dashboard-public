@@ -10,10 +10,11 @@ import {
   MetadataValue,
   MissingGroupsByEntity,
   PryI18nService,
+  PryVisibilityType,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
 import { MetadataActions, MetadataSelectors, MetaEventType } from '@provoly/dashboard/components/metadata-editor';
-import { map, Observable, Subscription, withLatestFrom } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subscription, withLatestFrom } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminSelectors } from '../../../store/admin.selectors';
 
@@ -36,6 +37,8 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
   accessGroups: string[] = [];
   selectedDatasetMissingGroups$: Observable<MissingGroupsByEntity | undefined>;
   missingGroups$: Observable<MissingGroups | undefined>;
+  shareRadioValue$ = new BehaviorSubject<PryVisibilityType | undefined>(undefined);
+  disableShareButton$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     private store: Store<any>,
@@ -162,8 +165,24 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
     return label.startsWith(i18nBase) ? groupName : label;
   }
 
-  changeGroup($event: any[]) {
+  changeGroup($event: string[]) {
     this.accessGroups = $event;
+    this.updateDisableButtonValue();
     this.store.dispatch(DataSourceActions.dataset.setMissingGroups({ missingGroups: undefined }));
+  }
+
+  updateVisibility($event: PryVisibilityType) {
+    this.shareRadioValue$.next($event);
+    this.updateDisableButtonValue();
+  }
+
+  updateDisableButtonValue() {
+    if (this.shareRadioValue$.getValue() === PryVisibilityType.RESTRICTED && this.accessGroups.length === 0) {
+      this.disableShareButton$.next(true);
+    } else {
+      if (this.disableShareButton$.getValue()) {
+        this.disableShareButton$.next(false);
+      }
+    }
   }
 }
