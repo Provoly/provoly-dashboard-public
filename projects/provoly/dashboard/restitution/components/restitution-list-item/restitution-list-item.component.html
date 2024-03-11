@@ -25,7 +25,7 @@
     [src]="widget.icon | getSecuredImage : [600, 600] | async"
     [height]="widget.cover ? 600 : 53"
     [width]="widget.cover ? 600 : 53"
-    [class.is-full-width]="widget.cover"
+    class="is-full-width"
   />
   <p class="o-catalog__list__item__libelle" *ngIf="widget.isCustom; else translate">{{ widget.label }}</p>
   <ng-template #translate>

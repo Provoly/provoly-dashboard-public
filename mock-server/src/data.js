@@ -133,9 +133,8 @@ const updateCustomClassParams = (classId, domain, payload) => {
 
 const getWidgets = () => {
   return widgetList.map((widget) => ({
-    ...widget,
-    cover: casual.boolean
-  }));
+    ...widget
+  }));c
 };
 
 const saveWidget = (widget) => {

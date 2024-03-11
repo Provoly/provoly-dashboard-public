@@ -68,7 +68,6 @@ export class ManifestService {
     id: string,
     description?: string,
     image?: string,
-    cover?: boolean,
     metadata?: { metadataDefId: string; value: string }[],
     groups?: string[]
   ): Observable<ShareConflict> {
@@ -80,7 +79,7 @@ export class ManifestService {
           description,
           manifest,
           image,
-          cover,
+          cover: true,
           metadata,
           datasource: ManifestUtils.getDatasourcesUsedByManifest(manifest).map((ds) => ds.datasetId),
           groups

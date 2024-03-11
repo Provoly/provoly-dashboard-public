@@ -45,7 +45,6 @@ describe('PryAddEditPresentationComponent', () => {
                 {
                   id: '1',
                   name: 'test',
-                  cover: false,
                   manifestUrl: '/dashboard/manifest/test',
                   creationDate: '2022-01-01',
                   modificationDate: '2022-01-01',
@@ -72,7 +71,6 @@ describe('PryAddEditPresentationComponent', () => {
     component.selectedPresentation = {
       id: '1',
       name: 'test',
-      cover: false,
       manifestUrl: '/dashboard/manifest/test',
       creationDate: '2022-01-01',
       modificationDate: '2022-01-01'
@@ -96,7 +94,6 @@ describe('PryAddEditPresentationComponent', () => {
       DashboardActions.saveManifest({
         name: '',
         id: '1',
-        cover: false,
         image: '/assets/svgs/default-restitution.svg',
         manifest: {
           windows: []

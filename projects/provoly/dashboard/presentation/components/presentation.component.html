@@ -52,11 +52,7 @@
                 [attr.data-tooltip]="'@pry.presentation.view' | i18n"
               >
                 <div class="o-presentation__item__image">
-                  <img
-                    alt=""
-                    [class.is-full-width]="presentation.cover"
-                    [src]="presentation.image | getSecuredImage | async"
-                  />
+                  <img alt="" class="is-full-width" [src]="presentation.image | getSecuredImage | async" />
                 </div>
               </div>
               <ng-container *ngIf="presentation.owner">

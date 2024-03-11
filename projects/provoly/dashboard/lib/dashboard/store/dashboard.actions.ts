@@ -154,7 +154,6 @@ export const DashboardActions = {
       id: string;
       description?: string;
       image?: string;
-      cover?: boolean;
       metadata?: { metadataDefId: string; value: string }[];
       groups?: string[];
     }>()

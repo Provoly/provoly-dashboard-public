@@ -18,7 +18,6 @@ export interface ManifestDescription {
   description?: string;
   manifestUrl: string;
   image: string;
-  cover: boolean;
   creationDate: string;
   modificationDate: string;
   groups: string[];
@@ -80,7 +79,6 @@ export interface WidgetManifest {
   options?: WidgetOptions;
   datasource?: string | string[];
   header?: boolean;
-  cover?: boolean;
   contextMenu?: boolean;
 }
 

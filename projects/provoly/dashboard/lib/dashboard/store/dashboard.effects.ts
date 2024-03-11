@@ -355,7 +355,6 @@ export class DashboardEffects {
             action.id,
             action.description,
             action.image,
-            action.cover,
             action.metadata,
             action.groups
           )

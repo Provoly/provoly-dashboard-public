@@ -259,7 +259,6 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
           name: presentation.name ?? '',
           description: presentation.description,
           image: presentation.image ?? '',
-          cover: presentation.cover ?? false,
           groups: this.accessGroups
         })
       );

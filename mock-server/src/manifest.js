@@ -24,7 +24,6 @@ module.exports = {
         image: manifest.image ?? '/assets/svgs/default.svg',
         groups: manifest.groups ?? [],
         owner: true,
-        cover: casual.boolean,
         datasource: [
           ...new Set(
             manifest.manifest.windows

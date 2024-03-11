@@ -9,6 +9,5 @@ export interface Widget {
   visibility?: PryVisibility;
   datasource: string[];
   owner?: boolean;
-  cover?: boolean;
   modificationDate: string;
 }

@@ -19,7 +19,6 @@ export const frTranslations = {
         categories: 'Catégories',
         categoryInput: 'Saisir la/les catégories',
         grid: 'Grille actuelle: ',
-        cover: "L'image doit couvrir la carte du tableau de bord",
         theme: 'Thématique'
       },
       share: 'Partager',

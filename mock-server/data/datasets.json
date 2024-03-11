@@ -230,7 +230,25 @@
     "name": "Aggrégation pont inondation",
     "oClass": "class-aggregation-fntp",
     "type": "CLOSED",
-    "owner": false,
+    "owner": true,
+    "groups": [],
+    "metadata": []
+  },
+  {
+    "id": "anna-1",
+    "name": "anna-1",
+    "oClass": "534ff6cd-0a85-4612-82c0-7f83e9ce2caa",
+    "type": "OPEN",
+    "owner": true,
+    "groups": [],
+    "metadata": []
+  },
+  {
+    "id": "anna-2",
+    "name": "anna-2",
+    "oClass": "534ff6cd-0a85-4612-82c0-7f83e9ce2caa",
+    "type": "OPEN",
+    "owner": true,
     "groups": [],
     "metadata": []
   }

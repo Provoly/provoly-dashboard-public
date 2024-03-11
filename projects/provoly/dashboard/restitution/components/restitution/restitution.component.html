@@ -52,7 +52,6 @@
           <label class="a-label">{{ '@pry.presentation.form.image' | i18n }}</label>
           <div class="o-file-input">
             <pry-select-image (changed)="image = $event" [iconUrl]="image" [mode]="type"></pry-select-image>
-            <pry-checkbox [(ngModel)]="form.cover" name="cover"> {{ '@pry.restitution.cover' | i18n }}</pry-checkbox>
           </div>
         </div>
         <div class="m-btn-group -space-evenly actions">

@@ -71,7 +71,6 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
     this.form = new FormGroup({
       name: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
       description: new FormControl(undefined, [Validators.maxLength(200)]),
-      cover: new FormControl(false),
       theme: new FormControl('')
     });
     this.image = this.selectedPresentation$.value?.image ?? DEFAULT_RESTITUTION_ICON_URL;
@@ -108,7 +107,6 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
       id: this.selectedPresentation$.value?.id || uuidv4(),
       name: this.form.value.name ?? '',
       description: this.form.value.description ?? undefined,
-      cover: this.form.value.cover ?? false,
       image: this.image ?? DEFAULT_RESTITUTION_ICON_URL,
       metadata: this.metadata()
     };
@@ -140,7 +138,6 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
       name: this.form.value.name ?? '',
       description: this.form.value.description,
       image: this.image ?? DEFAULT_RESTITUTION_ICON_URL,
-      cover: this.form.value.cover ?? false,
       metadata: this.metadata()
     };
 

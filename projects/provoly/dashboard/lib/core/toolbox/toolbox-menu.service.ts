@@ -116,7 +116,6 @@ export class ToolboxMenuService {
                 description: widget.description,
                 isCustom: true,
                 visibility: widget.visibility,
-                cover: widget.cover
               }))
             ]
           })

@@ -50,7 +50,7 @@ export class SaveViewComponent extends ToolboxActionComponent {
       this.store.select(DashboardSelectors.presentation).subscribe((presentation) => {
         this.currentManifest = presentation.current
           ? JSON.parse(JSON.stringify(presentation.current))
-          : ({ name: '', image: '', description: '', cover: false } as ManifestDescription);
+          : ({ name: '', image: '', description: '' } as ManifestDescription);
         this.initialNbPages = presentation.initial?.windows.length ?? 0;
         this.hasInitial = !!presentation.initial;
       })
@@ -91,7 +91,6 @@ export class SaveViewComponent extends ToolboxActionComponent {
         description: this.currentManifest!.description,
         image: this.currentManifest!.image,
         groups: this.accessGroups,
-        cover: this.currentManifest?.cover ?? false,
         owner: this.currentManifest?.owner,
         metadata: undefined
       };

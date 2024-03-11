@@ -71,6 +71,7 @@ export class ConfigService {
   saveWidget(widget: Widget) {
     const params = {
       ...widget,
+      cover: true,
       datasource: widget.datasource.filter((ds) => ![DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID].includes(ds))
     };
     return this.store

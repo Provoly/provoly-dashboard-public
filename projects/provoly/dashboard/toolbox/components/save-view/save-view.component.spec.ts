@@ -73,7 +73,6 @@ describe('SaveViewComponent', () => {
         name: 'name',
         description: 'description',
         image: 'http://...',
-        cover: false,
         groups: []
       })
     );

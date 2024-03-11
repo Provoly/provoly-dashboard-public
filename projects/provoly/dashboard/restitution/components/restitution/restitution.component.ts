@@ -46,8 +46,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
     selectedDataSources: [],
     title: '',
     image: DEFAULT_RESTITUTION_ICON_URL,
-    description: '',
-    cover: false
+    description: ''
   };
   visibility: PryVisibility = {
     type: PryVisibilityType.PRIVATE,
@@ -156,7 +155,6 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
         selectedWidget: this.customManifest.type,
         selectedDataSources: (this.customManifest.datasource ?? []) as string[],
         title: this.selectedRestitution.name,
-        cover: this.selectedRestitution.cover,
         ...this.selectedRestitution
       };
     }
@@ -169,7 +167,6 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
     this.form.title = '';
     this.form.description = '';
     this.form.image = '';
-    this.form.cover = false;
     if (this.consultMode || this.selectedRestitution) {
       this.restitutionCreated.emit();
       return;
@@ -194,7 +191,6 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
       type: this.form.selectedWidget,
       title: this.form.title,
       datasource: this.form.selectedDataSources ?? [],
-      cover: this.form.cover ?? false,
       header: true,
       options: {
         ...widgetType?.manifest.options,
@@ -241,7 +237,6 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
             image: this.form.image ?? '',
             visibility: this.visibility,
             datasource: this.form.selectedDataSources ?? [],
-            cover: this.form.cover ?? false,
             modificationDate: ''
           }
         })
