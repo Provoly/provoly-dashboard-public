@@ -14,6 +14,7 @@ export class MockPryChipsSelectorComponent {
   @Input() showActionButtons: any;
   @Input() usedItems: any;
   @Input() items: any;
+  @Input() showSearchbar = true;
 
   @Output() cancel = new EventEmitter();
   @Output() validated = new EventEmitter();

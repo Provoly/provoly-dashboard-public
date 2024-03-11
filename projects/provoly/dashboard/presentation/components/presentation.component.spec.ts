@@ -11,6 +11,7 @@ import { MockPryPresentationCssComponent } from '@provoly/dashboard/mock/style/m
 import { PryPresentationComponent } from '@provoly/dashboard/presentation';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+import { MockPryGroupShareComponent } from '@provoly/dashboard/mock/components/mock-pry-group-share.component';
 
 describe('PryPresentationComponent', () => {
   let component: PryPresentationComponent;
@@ -30,7 +31,7 @@ describe('PryPresentationComponent', () => {
         MockI18nPipe,
         MockPryIconComponent,
         MockPryPresentationCssComponent,
-        MockPryShareComponent,
+        MockPryGroupShareComponent,
         MockNgModelDirective,
         MockPryAccessDirective
       ],
