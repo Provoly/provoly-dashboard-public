@@ -84,7 +84,7 @@
             <ng-container
               *ngIf="version.state !== 'LOADING' && version.state !== 'INDEXING' && version.state !== 'ERROR'"
             >
-              <ng-container *ngIf="!dataset.owner && (version.state === 'ACTIVE' || version.state === 'INACTIVE')">
+              <ng-container *ngIf="dataset.owner && (version.state === 'ACTIVE' || version.state === 'INACTIVE')">
                 <ng-container *pryAccess="{ module: 'dashboard', page: 'list-dataset', action: 'activate' }">
                   <button
                     type="button"
