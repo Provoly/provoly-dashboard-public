@@ -72,7 +72,9 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
         groups
           .filter((group) => group.name !== 'ALL')
           .filter((group) =>
-            allowedGroups?.includes('ALL') || !allowedGroups ? true : allowedGroups.includes(group.name)
+            allowedGroups?.includes('ALL') || allowedGroups?.includes('AUTHENTICATED') || !allowedGroups
+              ? true
+              : allowedGroups.includes(group.name)
           )
       )
     );
