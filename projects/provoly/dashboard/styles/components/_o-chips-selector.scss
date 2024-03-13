@@ -14,20 +14,13 @@
   display: flex;
   flex-direction: column;
   gap: toRem(15);
+  height: 100%;
 
   &__list {
     @extend %list-unstyled;
     gap: toRem(15) toRem(30);
     display: flex;
     flex-wrap: wrap;
-  }
-
-  &__main {
-    flex: 1 1;
-  }
-
-  &__bottom {
-    padding: toRem(5);
   }
 
   &__chip {
@@ -48,7 +41,16 @@
     margin-bottom: 0;
   }
 
-  .-no-items {
-    margin-left: toRem(5);
+  &__items {
+    max-height: 85%;
+    overflow: auto;
+  }
+
+  &__used-items {
+    margin-bottom: toRem(10);
+  }
+
+  &__unused-items {
+    margin-bottom: toRem(1);
   }
 }
