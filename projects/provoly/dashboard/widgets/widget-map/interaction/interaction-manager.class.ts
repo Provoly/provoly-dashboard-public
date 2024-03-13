@@ -58,7 +58,7 @@ export class InteractionManager {
         .map((value) => ({
           oClass: value?.get('oClass'),
           coordinates: event.coordinate,
-          values: value?.getKeys().reduce((p, c) => ({ ...p, [c]: value.get(c) }), {})
+          values: value ? Object.keys(value).reduce((p, c) => ({ ...p, [c]: value.get(c) }), {}) : undefined
         }));
       this.component.classicFeatures$.next(valuesToDisplay);
       const wmsLayers = this.component.getWMSLayers();
