@@ -226,7 +226,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
 
   lastStepCompleted() {
     this.form.image = this.image;
-    if (this.edit) {
+    if (!this.consultMode) {
       this.store.dispatch(
         ConfigActions.saveWidget({
           widget: {
