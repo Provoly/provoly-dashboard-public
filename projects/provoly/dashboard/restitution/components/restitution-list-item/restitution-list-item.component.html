@@ -22,10 +22,9 @@
   </ng-container>
   <img
     [alt]="widget.label | i18n : { warn: false }"
-    [src]="widget.icon | getSecuredImage : [600, 600] | async"
-    [height]="widget.cover ? 600 : 53"
-    [width]="widget.cover ? 600 : 53"
-    class="is-full-width"
+    [src]="widget.icon | getSecuredImage : [53, 53] | async"
+    [height]="53"
+    [width]="53"
   />
   <p class="o-catalog__list__item__libelle" *ngIf="widget.isCustom; else translate">{{ widget.label }}</p>
   <ng-template #translate>
