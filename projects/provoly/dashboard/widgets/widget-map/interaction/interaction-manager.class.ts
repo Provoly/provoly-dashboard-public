@@ -6,6 +6,7 @@ import { toLonLat } from 'ol/proj';
 // This is not a circular dependency
 import type { WidgetMapComponent } from '../component/widget-map.component';
 import { SelectionInteraction } from './selection-interaction.class';
+import { FeatureLike } from 'ol/Feature';
 
 export class InteractionManager {
   interactionPopupOverlay?: Overlay;
@@ -49,17 +50,16 @@ export class InteractionManager {
       }
     },
     popup: (event: MapBrowserEvent<MouseEvent>) => {
-      const values = this.component.map.getFeaturesAtPixel(event.pixel, { hitTolerance: 5 }) as (
-        | Feature<Circle>
-        | Feature<Point>
-      )[];
+      const values = this.component.map.getFeaturesAtPixel(event.pixel, { hitTolerance: 5 });
       const valuesToDisplay = [...new Set(values.map((value) => value.get('id')).filter((id) => !!id))]
         .map((id) => values.find((value) => value.get('id') === id))
         .map((value) => ({
           oClass: value?.get('oClass'),
           coordinates: event.coordinate,
-          values: value ? Object.keys(value).reduce((p, c) => ({ ...p, [c]: value.get(c) }), {}) : undefined
-        }));
+          values:
+            value instanceof Feature ? value.getKeys().reduce((p, c) => ({ ...p, [c]: value?.get(c) }), {}) : undefined
+        }))
+        .filter((value) => value.oClass);
       this.component.classicFeatures$.next(valuesToDisplay);
       const wmsLayers = this.component.getWMSLayers();
       if (wmsLayers) {
