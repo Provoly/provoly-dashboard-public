@@ -423,7 +423,7 @@
         }
       ]
     },
-    "image": "/assets/svgs/default.svg",
+    "image": "/assets/svgs/default-dashboard.svg",
     "datasource": [
       "19061554-298f-4f56-8cd2-51ccec998307"
     ],

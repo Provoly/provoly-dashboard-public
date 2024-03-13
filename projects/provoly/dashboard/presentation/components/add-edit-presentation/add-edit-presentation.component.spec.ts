@@ -2,7 +2,12 @@ import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { DashboardActions, DashboardSelectors, ManifestDescription } from '@provoly/dashboard';
+import {
+  DashboardActions,
+  DashboardSelectors,
+  DEFAULT_DASHBOARD_ICON_URL,
+  ManifestDescription
+} from '@provoly/dashboard';
 import { MockPryCheckboxComponent } from '@provoly/dashboard/mock/components/mock-pry-checkbox.component';
 import { MockPrySelectGridLayoutComponent } from '@provoly/dashboard/mock/components/mock-pry-select-grid-layout.component';
 import { MockPrySelectImageComponent } from '@provoly/dashboard/mock/components/mock-pry-select-image.component';
@@ -94,7 +99,8 @@ describe('PryAddEditPresentationComponent', () => {
       DashboardActions.saveManifest({
         name: '',
         id: '1',
-        image: '/assets/svgs/default-restitution.svg',
+        description: undefined,
+        image: DEFAULT_DASHBOARD_ICON_URL,
         manifest: {
           windows: []
         },

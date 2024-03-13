@@ -44,7 +44,7 @@
   },
   {
     "id": "667a4062-2249-478f-8a22-75d711428914",
-    "image": "/assets/images/co2.png",
+    "image": "/assets/svgs/default-restitution.svg",
     "name": "Estimer l'impact de vos aménagements",
     "description": "Widget Alter Carbon",
     "content": "{\"type\":\"iframe\",\"layout\":{\"x\":1,\"y\":1,\"width\":12,\"height\":12},\"options\":{\"src\":\"https://carbon-demo.provoly.net/\"},\"header\":false,\"title\":\"Estimer l'impact de vos aménagements\"}",

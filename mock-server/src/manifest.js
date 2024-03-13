@@ -21,9 +21,10 @@ module.exports = {
         manifestUrl: `/dashboard/manifest/${manifest.name}`,
         creationDate: manifest.creationDate,
         modificationDate: manifest.modificationDate,
-        image: manifest.image ?? '/assets/svgs/default.svg',
+        image: manifest.image ?? '/assets/svgs/default-dashboard.svg',
         groups: manifest.groups ?? [],
         owner: true,
+        cover: true,
         datasource: [
           ...new Set(
             manifest.manifest.windows

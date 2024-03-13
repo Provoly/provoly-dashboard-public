@@ -14,6 +14,7 @@ export type IconDefinitions = {
 
 export const DEFAULT_ICON_URL = '/assets/svgs/default.svg';
 export const DEFAULT_RESTITUTION_ICON_URL = '/assets/svgs/default-restitution.svg';
+export const DEFAULT_DASHBOARD_ICON_URL = '/assets/svgs/default-dashboard.svg';
 
 export enum IconPosition {
   FULL = 'FULL',
