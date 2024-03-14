@@ -1428,13 +1428,16 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   getFeatureFromServer(wmsLayers: Layer<any>[], pixel: Pixel) {
     for (const layer of wmsLayers) {
-      const url = layer
+      let url = layer
         .getSource()
         .getFeatureInfoUrl(pixel, this.map.getView().getResolution(), this.map.getView().getProjection(), {
           INFO_FORMAT: 'application/json',
           FEATURE_COUNT: 10,
           ...layer.getProperties()['getFeatureInfoAdditionalParameters']
         });
+      if (layer.getProperties()['getFeatureInfoAdditionalParameters']['STYLES']) {
+        url = url.replace('STYLES=', `STYLES=${layer.getProperties()['getFeatureInfoAdditionalParameters']['STYLES']}`);
+      }
       if (url && url.indexOf('I=-1') === -1 && url.indexOf('J=-1') === -1) {
         this.store.dispatch(
           DashboardActions.getWmsFeatures({
