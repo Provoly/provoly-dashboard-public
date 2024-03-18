@@ -731,6 +731,48 @@ export class DashboardEffects {
     )
   );
 
+  getWfsFeaturesForPointStack = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DashboardActions.getWfsFeaturesForPointStackTooltips),
+      mergeMap((action) => combineLatest([of(action), this.wmsService.getWmsFeatures(action.url)])),
+      mergeMap(([action, wmsJson]) => {
+        // check if data is actually a stack of points
+        if (
+          wmsJson.features[0] &&
+          wmsJson.features[0].properties.count &&
+          wmsJson.features[0].properties.countunique &&
+          wmsJson.features[0].properties.count > 1 &&
+          wmsJson.features[0].properties.countunique === 1
+        ) {
+          let envBBOXCoords: number[] = [...wmsJson.features[0].properties.envBBOX.matchAll(/\d+.\d+/g)].map(
+            (m) => m[0]
+          );
+          return this.wmsService
+            .getWfsFeatures(action.url, envBBOXCoords)
+            .pipe(map((wfsJson) => ({ action, json: wfsJson })));
+        }
+        // if data is not a stack just add features without calling wfs service
+        return of({ action, json: wmsJson });
+      }),
+      map(({ action, json }) =>
+        DashboardActions.addWmsFeatures({
+          features: json.features.map((feature: any) => ({
+            id: feature.id,
+            oClass: action.oClass,
+            coordinates: action.coordinates,
+            properties: Object.keys(feature.properties)
+              .map((property) => ({ key: property, value: feature.properties[property] }))
+              .filter((prop) => !!prop.value)
+          }))
+        })
+      ),
+      catchError((error) => {
+        console.error('Error while fetching WFS features', error);
+        return of(DashboardActions.addWmsFeatures({ features: [] }));
+      })
+    )
+  );
+
   addManifestMetadata = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.addManifestMetadata),

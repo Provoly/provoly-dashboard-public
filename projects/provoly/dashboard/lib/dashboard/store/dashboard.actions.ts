@@ -223,6 +223,14 @@ export const DashboardActions = {
     props<{ url: string; oClass: string; coordinates: number[] }>()
   ),
   addWmsFeatures: createAction('[Widget map] Set Wms layer features', props<{ features: any }>()),
+  getWfsFeatures: createAction(
+    '[Widget map] Get wfs Features for point',
+    props<{ url: string; oClass: string; coordinates: number[]; style: string }>()
+  ),
+  getWfsFeaturesForPointStackTooltips: createAction(
+    '[Widget map] Get wfs Features for showing stack tooltips',
+    props<{ url: string; oClass: string; coordinates: number[] }>()
+  ),
   updateDisplayOptions: createAction(
     '[Dashboard/Display] (bus) Update displayed dashboard management features',
     props<{ mode: ViewMode; customDisplay?: DisplayOptions }>()

@@ -1435,17 +1435,30 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           FEATURE_COUNT: 10,
           ...layer.getProperties()['getFeatureInfoAdditionalParameters']
         });
-      if (layer.getProperties()['getFeatureInfoAdditionalParameters']['STYLES']) {
-        url = url.replace('STYLES=', `STYLES=${layer.getProperties()['getFeatureInfoAdditionalParameters']['STYLES']}`);
-      }
-      if (url && url.indexOf('I=-1') === -1 && url.indexOf('J=-1') === -1) {
+      if (
+        (
+          this.optionsCopy.layers?.find((l) => {
+            return l.title === layer.getProperties()['title'];
+          }) as MapGeoServerLayerOptions
+        )?.getWfsFeaturesForTooltips
+      ) {
         this.store.dispatch(
-          DashboardActions.getWmsFeatures({
+          DashboardActions.getWfsFeaturesForPointStackTooltips({
             url,
             oClass: layer.getProperties()['oClass'] ?? '',
             coordinates: pixel
           })
         );
+      } else {
+        if (url && url.indexOf('I=-1') === -1 && url.indexOf('J=-1') === -1) {
+          this.store.dispatch(
+            DashboardActions.getWmsFeatures({
+              url,
+              oClass: layer.getProperties()['oClass'] ?? '',
+              coordinates: pixel
+            })
+          );
+        }
       }
     }
   }

@@ -126,6 +126,7 @@ export interface MapGeoServerLayerOptions extends BaseWidgetMapLayerOptions {
   datasourceId: string;
   namespace: string;
   name: string;
+  getWfsFeaturesForTooltips?: boolean;
   additionalParameters?: any;
 }
 
