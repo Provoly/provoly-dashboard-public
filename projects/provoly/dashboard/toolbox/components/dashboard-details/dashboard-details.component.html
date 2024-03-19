@@ -1,0 +1,45 @@
+<pry-toolbox-css></pry-toolbox-css>
+@if (currentPresentation$ | async; as currentPresentation) {
+  @if (currentPresentation.html) {
+    <button
+      class="a-btn o-dashboard-details"
+      cdkOverlayOrigin
+      #trigger="cdkOverlayOrigin"
+      id="dashboard-details"
+      aria-controls="dashboard-details-panel"
+      aria-expanded="false"
+      (click)="openPanel($event)"
+    >
+      <pry-icon iconSvg="dashboard-about"></pry-icon>
+      {{ '@pry.toolbox.about' | i18n }}
+    </button>
+
+    <ng-template
+      cdkConnectedOverlay
+      [cdkConnectedOverlayOrigin]="trigger"
+      [cdkConnectedOverlayOpen]="isPanelOpen"
+      [cdkConnectedOverlayHasBackdrop]="true"
+      cdkConnectedOverlayPanelClass="o-modal-wrapper"
+      cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+      [cdkConnectedOverlayPositions]="panelPosition"
+      (backdropClick)="isPanelOpen = false"
+    >
+      <div class="o-modal" id="dashboard-details-panel">
+        <div class="o-modal__top">
+          <div class="o-modal__top__title">
+            <h2 class="a-h2" id="dialog_title">
+              {{ '@pry.toolbox.about' | i18n }}
+            </h2>
+          </div>
+          <div class="o-modal__top__close">
+            <button class="a-btn a-btn--icon-only" (click)="closePanel($event)">
+              <pry-icon iconSvg="close" [height]="20" [width]="20"></pry-icon>
+              <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+            </button>
+          </div>
+        </div>
+        <div class="o-modal__content" [innerHTML]="currentPresentation.html"></div>
+      </div>
+    </ng-template>
+  }
+}

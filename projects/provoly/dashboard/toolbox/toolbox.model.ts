@@ -11,6 +11,7 @@ import { ToolboxActionComponent } from './components/toolbox-action/toolbox-acti
 import { SwitchToEditContentComponent } from './components/switch-to-edit-content/switch-to-edit-content.component';
 import { ShareComponent } from './components/share/share.component';
 import { DeleteComponent } from './components/delete/delete.component';
+import { DashboardDetailsComponent } from './components/dashboard-details/dashboard-details.component';
 
 export interface ToolboxAction {
   name: string;
@@ -97,5 +98,12 @@ export const ACTIONS: ToolboxAction[] = [
     visible: true,
     access: { module: 'dashboard', page: 'toolbox', action: 'delete' },
     needsOwner: true
-  }
+  },
+  {
+    name: 'dashboard_details',
+    component: DashboardDetailsComponent,
+    visible: true,
+    access: { module: 'dashboard', page: 'toolbox', action: 'delete' },
+    needsOwner: false
+  },
 ];

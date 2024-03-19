@@ -33,6 +33,7 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { SwitchToEditContentComponent } from './components/switch-to-edit-content/switch-to-edit-content.component';
 import { ShareComponent } from './components/share/share.component';
 import { DeleteComponent } from './components/delete/delete.component';
+import { DashboardDetailsComponent } from './components/dashboard-details/dashboard-details.component';
 
 const components = [
   ToolboxActionComponent,
@@ -51,7 +52,8 @@ const components = [
   AutomateRefreshComponent,
   SwitchToEditContentComponent,
   ShareComponent,
-  DeleteComponent
+  DeleteComponent,
+  DashboardDetailsComponent
 ];
 
 @NgModule({

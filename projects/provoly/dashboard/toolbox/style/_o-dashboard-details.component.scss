@@ -1,0 +1,67 @@
+@use '../../styles/abstracts/index' as *;
+@use '../../styles/abstracts/functions' as *;
+@use '../../styles/abstracts/mixins' as *;
+@use '../../styles-theme/abstracts-theme/variables.theme' as *;
+
+.o-dashboard-details {
+  &.a-btn {
+    gap: toRem(8);
+
+    &:hover {
+      @include changeBgColor(
+        $targetBgColor: themed($theme-map, 'color', 'primary', 300)
+      );
+    }
+  }
+}
+
+#dashboard-details-panel {
+  .o-modal__top {
+    margin: 0;
+    padding: 0;
+  }
+
+  .o-modal__top__title {
+    font-size: toRem(18);
+    color: themed($theme-map, 'color', 'grey', 700);
+    padding-bottom: toRem(5);
+  }
+
+  .o-modal__content {
+    padding: 0;
+  }
+
+  h5 {
+    font-weight: bold;
+    font-size: toRem(14);
+    color: themed($theme-map, 'color', 'grey', 700);
+    padding: 0;
+    margin: 0;
+  }
+
+  span, p {
+    font-size: toRem(14);
+    color: themed($theme-map, 'color', 'primary', 750);
+  }
+
+  div {
+    padding-bottom: 10px;
+  }
+
+  ul {
+    margin: 0;
+  }
+
+  li {
+    color: themed($theme-map, 'color', 'grey', 700);
+    font-size: toRem(14);
+  }
+}
+
+.o-modal-wrapper {
+  &:has(#dashboard-details-panel) {
+    max-height: toRem(400);
+    padding: toRem(8) toRem(15) toRem(15) toRem(10);
+  }
+}
+

@@ -24,6 +24,7 @@ export interface ManifestDescription {
   owner: boolean;
   datasource: string[];
   metadata?: MetadataValue[];
+  html?: string;
 }
 
 export interface WidgetLayout {

@@ -22,6 +22,7 @@ export interface ToolboxDisplayOptions {
   edit_presentation_content: boolean;
   share: boolean;
   delete: boolean;
+  dashboard_details: boolean;
 }
 
 export interface WidgetContextMenuDisplayOptions {
@@ -50,7 +51,8 @@ export const BASE_DISPLAY_OPTIONS = {
     automate_refresh: false,
     edit_presentation_content: false,
     share: false,
-    delete: false
+    delete: false,
+    dashboard_details: false
   },
   edit_toggle: false,
   widgetContextMenu: {
@@ -76,7 +78,8 @@ export function getDisplayOptions(mode?: ViewMode): DisplayOptions {
           refresh_datasets: true,
           edit_presentation_content: true,
           share: true,
-          delete: true
+          delete: true,
+          dashboard_details: true
         },
         widgetContextMenu: false
       };
@@ -106,7 +109,8 @@ export function getDisplayOptions(mode?: ViewMode): DisplayOptions {
           automate_refresh: true,
           edit_presentation_content: false,
           share: true,
-          delete: false
+          delete: false,
+          dashboard_details: true
         },
         edit_toggle: true,
         widgetContextMenu: true

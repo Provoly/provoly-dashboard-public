@@ -1,15 +1,15 @@
 <ul class="m-actions-list" #input>
-  <ng-container *ngFor="let action of mainActions$ | async">
-    <ng-container *ngIf="action.visible">
-      <li class="m-actions-list__item" *pryAccess="action.access">
+  @for (action of mainActions$ | async; track action.name) {
+    @if (action.visible) {
+      <li class="m-actions-list__item -{{action.name}}" *pryAccess="action.access">
         <pry-toolbox-action-instanciator
           [action]="action"
           [displayLabels]="displayLabels"
         ></pry-toolbox-action-instanciator>
       </li>
-    </ng-container>
-  </ng-container>
-  <ng-container *ngIf="showDropdownButton$ | async">
+    }
+  }
+  @if (showDropdownButton$ | async) {
     <li class="m-actions-list__item">
       <button
         type="button"
@@ -21,11 +21,11 @@
         aria-expanded="false"
         (click)="openDropdown($event)"
       >
-        <ng-container *ngIf="displayLabels"
-          ><span class="u-visually-hidden">{{ '@pry.toolbox.options' | i18n }}</span>
+        @if (displayLabels) {
+          <span class="u-visually-hidden">{{ '@pry.toolbox.options' | i18n }}</span>
           <span>{{ '@pry.toolbox.options' | i18n }}</span>
           <pry-icon [width]="10" [height]="13" iconSvg="chevron_bottom"></pry-icon>
-        </ng-container>
+        }
       </button>
     </li>
     <ng-template
@@ -40,8 +40,8 @@
     >
       <div class="o-draggable-menu -dropdown" aria-labelledby="">
         <ul class="o-draggable-menu__list">
-          <ng-container *ngFor="let action of dropdownActions$ | async">
-            <ng-container *ngIf="action.visible">
+          @for (action of dropdownActions$ | async; track action.name) {
+            @if (action.visible) {
               <li class="o-draggable-menu__list__item" [style.order]="getOrder(action.name)">
                 <pry-toolbox-action-instanciator
                   [action]="action"
@@ -49,18 +49,21 @@
                   (closeOptions)="closeDropdown($event)"
                 ></pry-toolbox-action-instanciator>
               </li>
-            </ng-container>
-          </ng-container>
+            }
+          }
         </ul>
       </div>
     </ng-template>
-  </ng-container>
-  <ng-container *ngIf="showEditToggle$ | async">
-    <li class="m-actions-list__item" *ngIf="isManualMode$ | async">
-      <pry-edit-mode-toggle
-        *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'edit_dashboard' }"
-        [displayLabels]="displayLabels"
-      ></pry-edit-mode-toggle>
-    </li>
-  </ng-container>
+  }
+
+  @if (showEditToggle$ | async) {
+    @if (isManualMode$ | async) {
+      <li class="m-actions-list__item">
+        <pry-edit-mode-toggle
+          *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'edit_dashboard' }"
+          [displayLabels]="displayLabels"
+        ></pry-edit-mode-toggle>
+      </li>
+    }
+  }
 </ul>

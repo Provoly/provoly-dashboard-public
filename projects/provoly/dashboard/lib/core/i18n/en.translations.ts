@@ -96,6 +96,7 @@ export const enTranslations = {
           NAME_ALREADY_USED: 'A restitution called "{{name}}" already exists, please select another name.'
         }
       },
+      about: 'About',
       edit: 'Modify layout',
       editOff: 'Visualize layout',
       launch: 'New tab',
