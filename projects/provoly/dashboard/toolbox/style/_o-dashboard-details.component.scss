@@ -16,6 +16,15 @@
 }
 
 #dashboard-details-panel {
+  background-color: themed($theme-map, 'color', 'primary', 50);
+  box-shadow: themed($theme-map, 'decoration', 'shadow', 'modal');
+  width: 100%;
+  max-width: toRem(500);
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: toRem(400);
+  padding: toRem(8) toRem(15) toRem(15) toRem(10);
+
   .o-modal__top {
     margin: 0;
     padding: 0;
@@ -55,13 +64,6 @@
   li {
     color: themed($theme-map, 'color', 'grey', 700);
     font-size: toRem(14);
-  }
-}
-
-.o-modal-wrapper {
-  &:has(#dashboard-details-panel) {
-    max-height: toRem(400);
-    padding: toRem(8) toRem(15) toRem(15) toRem(10);
   }
 }
 

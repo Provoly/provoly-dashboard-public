@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
-import { DashboardSelectors, ManifestDescription } from '@provoly/dashboard';
+import { DashboardSelectors, GlobalManifest, ManifestDescription } from '@provoly/dashboard';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
@@ -17,18 +17,21 @@ export class DashboardDetailsComponent extends ToolboxActionComponent {
       originY: 'bottom',
       overlayX: 'end',
       overlayY: 'top',
-      offsetY: 5,
-      offsetX: 200
+      offsetY: 5
+    },
+    {
+      originX: 'start',
+      originY: 'bottom',
+      overlayX: 'start',
+      overlayY: 'top',
+      offsetY: 5
     }
   ];
-  currentPresentation$: Observable<ManifestDescription | undefined>;
+  globalManifest$: Observable<GlobalManifest>;
 
   constructor(store: Store) {
     super(store);
-
-    this.currentPresentation$ = this.store
-      .select(DashboardSelectors.presentation)
-      .pipe(map((presentation) => presentation.current));
+    this.globalManifest$ = this.store.select(DashboardSelectors.globalManifest);
   }
 
   openPanel($event: Event) {

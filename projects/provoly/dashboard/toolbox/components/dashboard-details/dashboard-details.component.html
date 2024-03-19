@@ -1,6 +1,6 @@
 <pry-toolbox-css></pry-toolbox-css>
-@if (currentPresentation$ | async; as currentPresentation) {
-  @if (currentPresentation.html) {
+@if (globalManifest$ | async; as manifest) {
+  @if (manifest.html) {
     <button
       class="a-btn o-dashboard-details"
       cdkOverlayOrigin
@@ -19,7 +19,6 @@
       [cdkConnectedOverlayOrigin]="trigger"
       [cdkConnectedOverlayOpen]="isPanelOpen"
       [cdkConnectedOverlayHasBackdrop]="true"
-      cdkConnectedOverlayPanelClass="o-modal-wrapper"
       cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
       [cdkConnectedOverlayPositions]="panelPosition"
       (backdropClick)="isPanelOpen = false"
@@ -38,7 +37,7 @@
             </button>
           </div>
         </div>
-        <div class="o-modal__content" [innerHTML]="currentPresentation.html"></div>
+        <div class="o-modal__content" [innerHTML]="manifest.html"></div>
       </div>
     </ng-template>
   }

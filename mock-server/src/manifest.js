@@ -42,8 +42,7 @@ module.exports = {
               casual.integer(0, metadatas.find((metadata) => metadata.name === '_theme').allowedValues.length - 1)
             ]
           }
-        ],
-        html: '<div class="m-section"><h3 class="a-h3">Heading3</h3><span class="a-p">Span content</span></div><div class="m-section"><ul><li>test1</li><li>very long li to check if the wrapping works correctly Lorem ipsum dolos sit amet</li></ul></div><h5 class="a-h5">Heading5</h5><p class="a-p">Paragraph content</p>'
+        ]
       };
     });
   },
