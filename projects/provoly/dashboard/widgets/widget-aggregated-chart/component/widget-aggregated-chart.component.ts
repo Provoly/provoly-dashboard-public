@@ -125,10 +125,10 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     this.fields$ = this.store.select(FieldSelectors.fields);
     this.classes$ = this.store.select(ClassSelectors.classes);
 
-    this.operations$ = combineLatest([this.resultSet$, this.classes$, this.fields$]).pipe(
-      map(([rs, classes, fields]) =>
+    this.operations$ = combineLatest([this.usedDatasources$, this.classes$, this.fields$]).pipe(
+      map(([datasources, classes, fields]) =>
         classes
-          .filter((clazz) => Object.keys(rs.items).includes(clazz.id))
+          .filter((clazz) => datasources.map((ds) => ('oClass' in ds ? ds.oClass : undefined)).includes(clazz.id))
           .map((clazz) => clazz.attributes)
           .map((attrs) =>
             attrs.filter((attr) => {
