@@ -193,6 +193,8 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
         return [FieldType.INTEGER, FieldType.DECIMAL, FieldType.LONG].includes(attribute.type);
       case 'text':
         return [FieldType.STRING, FieldType.KEYWORD].includes(attribute.type);
+      case 'autocomplete':
+        return [FieldType.KEYWORD].includes(attribute.type);
       default:
         return true;
     }
@@ -234,7 +236,17 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
 
   updateFilterType($event: any) {
     this.filter.type = $event;
-    this.filter.operator = $event === 'list' ? 'EQUALS' : this.filter.operator;
+    switch ($event) {
+      case 'list':
+        this.filter.operator = 'EQUALS';
+        break;
+      case 'autocomplete':
+        this.filter.operator = 'CONTAINS';
+        break;
+      default:
+        this.filter.operator = this.filter.operator;
+        break;
+    }
     if (this.filter.type !== '' && this.container) {
       let component = this.filterFactoryService.generateFilter(this.filter.type, this.injector, this.container);
       this.subscriptions.add(
@@ -310,7 +322,7 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
         case 'text':
           return ['CONTAINS', 'EQUALS', 'NOT_EQUALS', 'START_WITH', 'END_WITH'].includes(operator.value);
         case 'autocomplete':
-          return ['EQUALS'].includes(operator.value);
+          return ['CONTAINS'].includes(operator.value);
         default:
           return operator;
       }

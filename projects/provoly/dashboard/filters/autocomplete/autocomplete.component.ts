@@ -11,6 +11,7 @@ import {
   Observable,
   of,
   skipUntil,
+  startWith,
   Subject,
   switchMap
 } from 'rxjs';
@@ -28,6 +29,7 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
   loader: boolean = false;
   preventInitCall$ = new Subject<void>();
   items$!: Observable<string[]>;
+
   constructor(store: Store, private searchService: SearchService) {
     super(store);
     this.type = 'autocomplete';
@@ -35,12 +37,14 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
 
   override ngOnInit() {
     super.ngOnInit();
-    this.store.dispatch(
-      SearchActions.getPossibleFilterValues({
-        filterId: this.filter?.id ?? '',
-        attributes: this.filter?.attributes as Omit<Attribute, 'customId'>[]
-      })
-    );
+    if (this.filter?.attributes) {
+      this.store.dispatch(
+        SearchActions.getPossibleFilterValues({
+          filterId: this.filter?.id ?? '',
+          attributes: this.filter?.attributes as Omit<Attribute, 'customId'>[]
+        })
+      );
+    }
 
     this.search$.next(`${this._value}`);
     this.autocomplete$ = this.search$.pipe(
@@ -65,7 +69,7 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
     setTimeout(() => this.preventInitCall$.next(), 200);
     this.items$ = combineLatest([
       this.store.select(SearchSelectors.possibleFilterValues(this.filter?.id)),
-      this.autocomplete$
+      this.autocomplete$.pipe(startWith([] as string[]))
     ]).pipe(map(([possibleValues, autocomplete]) => (autocomplete.length > 0 ? autocomplete : possibleValues)));
   }
 
