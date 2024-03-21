@@ -60,4 +60,15 @@ export class SearchEffects {
       )
     )
   );
+
+  getPossibleFilterValues$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SearchActions.getPossibleFilterValues),
+      mergeMap((action) =>
+        this.searchService
+          .autocomplete(action.attributes, '')
+          .pipe(map((values) => SearchActions.setPossibleFilterValues({ filterId: action.filterId, values })))
+      )
+    )
+  );
 }

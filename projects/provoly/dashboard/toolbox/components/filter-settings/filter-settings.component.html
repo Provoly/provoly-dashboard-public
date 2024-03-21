@@ -140,7 +140,10 @@
             [placeholder]="'@pry.filters.attributes.operator' | i18n"
             bindLabel="label"
             bindValue="value"
-            [disabled]="(currentFilterComponentType$ | async) === 'list'"
+            [disabled]="
+              (currentFilterComponentType$ | async) === 'list' ||
+              (currentFilterComponentType$ | async) === 'autocomplete'
+            "
           >
           </pry-select>
         </div>

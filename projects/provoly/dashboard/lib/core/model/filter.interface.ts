@@ -5,7 +5,7 @@ export interface Filter {
   attributes: { id: string; customId?: string; technicalName: string; label: string; datasource: string }[];
   operator?: string;
   value?: string | number;
-  possibleValues?: string;
+  possibleValues?: string; // only used in list-filter
   hasDateRange?: boolean;
   limit?: number;
 }

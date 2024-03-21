@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { BaseFilterComponent, SearchService } from '@provoly/dashboard';
+import { BaseFilterComponent, SearchActions, SearchSelectors, SearchService } from '@provoly/dashboard';
 import {
   BehaviorSubject,
   catchError,
+  combineLatest,
   debounceTime,
   distinctUntilChanged,
+  map,
   Observable,
   of,
   skipUntil,
@@ -14,6 +16,7 @@ import {
 } from 'rxjs';
 import equal from 'fast-deep-equal/es6';
 import { tap } from 'rxjs/operators';
+import { Attribute } from '@provoly/dashboard/toolbox';
 
 @Component({
   selector: 'pry-autocomplete',
@@ -23,8 +26,8 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
   search$ = new BehaviorSubject<string>('');
   autocomplete$?: Observable<string[]>;
   loader: boolean = false;
-  inhibateInitCall$ = new Subject<void>();
-
+  preventInitCall$ = new Subject<void>();
+  items$!: Observable<string[]>;
   constructor(store: Store, private searchService: SearchService) {
     super(store);
     this.type = 'autocomplete';
@@ -32,10 +35,17 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
 
   override ngOnInit() {
     super.ngOnInit();
+    this.store.dispatch(
+      SearchActions.getPossibleFilterValues({
+        filterId: this.filter?.id ?? '',
+        attributes: this.filter?.attributes as Omit<Attribute, 'customId'>[]
+      })
+    );
+
     this.search$.next(`${this._value}`);
     this.autocomplete$ = this.search$.pipe(
       distinctUntilChanged((p, v) => equal(p, v)),
-      skipUntil(this.inhibateInitCall$),
+      skipUntil(this.preventInitCall$),
       debounceTime(500),
       switchMap((search) => {
         if (!!search && search.length > 1) {
@@ -52,7 +62,11 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
         return of([] as string[]);
       })
     );
-    setTimeout(() => this.inhibateInitCall$.next(), 200);
+    setTimeout(() => this.preventInitCall$.next(), 200);
+    this.items$ = combineLatest([
+      this.store.select(SearchSelectors.possibleFilterValues(this.filter?.id)),
+      this.autocomplete$
+    ]).pipe(map(([possibleValues, autocomplete]) => (autocomplete.length > 0 ? autocomplete : possibleValues)));
   }
 
   setFilter(value: string) {

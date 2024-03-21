@@ -23,5 +23,16 @@ export const SearchActions = {
   setSearchLoading: createAction(
     '[Search Api] (bus) set Search loading datasource status',
     props<{ datasources: string[]; start: boolean }>()
+  ),
+  getPossibleFilterValues: createAction(
+    '[Dashboard] (bus) get possible filter values',
+    props<{
+      filterId: string;
+      attributes: { id: string; technicalName: string; label: string; datasource: string }[];
+    }>()
+  ),
+  setPossibleFilterValues: createAction(
+    '[Dashboard] (bus) set possible filter values',
+    props<{ filterId: string; values: string[] }>()
   )
 };

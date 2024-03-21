@@ -3,6 +3,8 @@ import { MonoClassSearchPayload } from '../../model/search-mono-class.model';
 import { FullTextSearchPayload, MultiClassSearchPayload } from '../../model/search-multi-class.model';
 import { SearchActions } from './search.actions';
 import { DEFAULT_NAMED_QUERY_ID } from './search.constants';
+import { DashboardActions } from '../../../dashboard/store/dashboard.actions';
+import { Filter } from '../../model/filter.interface';
 
 export const searchFeatureKey = '@pry/search';
 
@@ -10,12 +12,14 @@ export interface SearchState {
   searchLoading: string[];
   payload?: MonoClassSearchPayload | MultiClassSearchPayload | FullTextSearchPayload;
   id?: string;
+  possibleFilterValues: { [key: string]: string[]}
 }
 
 export const initialSearchState: SearchState = {
   searchLoading: [],
   payload: undefined,
-  id: undefined
+  id: undefined,
+  possibleFilterValues: {}
 };
 
 export const searchReducer = createReducer(
@@ -43,5 +47,12 @@ export const searchReducer = createReducer(
     searchLoading: action.start
       ? [...new Set([...state.searchLoading, ...action.datasources])]
       : [...state.searchLoading.filter((id) => !action.datasources.includes(id))]
+  })),
+  on(SearchActions.setPossibleFilterValues, (state, { filterId, values }) => ({
+    ...state,
+    possibleFilterValues: {
+      ...state.possibleFilterValues,
+      [filterId]: values
+    }
   }))
 );

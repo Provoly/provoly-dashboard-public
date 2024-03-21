@@ -127,7 +127,7 @@ export class SearchService {
         }[]
       | undefined,
     search: string = '',
-    limit = 10
+    limit?: number
   ) {
     return this.store.select(ConfigSelectors.dataUrl).pipe(
       switchMap((url) =>
