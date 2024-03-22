@@ -19,7 +19,7 @@
         type="text"
         class="a-pry-select__search"
         [ngModel]="search$.getValue()"
-        (ngModelChange)="search($event)"
+        (ngModelChange)="search($event, true)"
         aria-autocomplete="list"
         [attr.aria-controls]="open ? modalId : null"
         [attr.aria-disabled]="disabled"

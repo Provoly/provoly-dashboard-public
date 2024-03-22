@@ -13,10 +13,12 @@
     (ngModelChange)="setFilter($event)"
     [clearable]="true"
     [autocomplete]="true"
+    [externalAutocompleteService]="true"
     aria-labelledby="item-label"
     (blur)="updateSearch($event)"
     [elementRef]="ref"
     (cleared)="clear()"
     [loading]="loader"
+    (click)="selectClicked.emit()"
   ></pry-select>
 </div>

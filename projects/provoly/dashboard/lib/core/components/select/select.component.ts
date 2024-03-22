@@ -59,6 +59,8 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
   @Input() name?: any;
   @Input() readonly = false;
   @Input() autocomplete: boolean = false;
+  @Input() alwaysShowAutosuggestedValues: boolean = false;
+  @Input() externalAutocompleteService: boolean = false;
   @Input() bindValue: string | undefined;
   @Input() bindLabel: string | undefined;
   @Input() iconSize = [10, 16];
@@ -113,8 +115,13 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
   ) {
     super();
     this.matchingItems$ = combineLatest([this._items$, this.search$, this.searchSelected$]).pipe(
-      map(([items, term]) =>
-        this.autocomplete && term && term.length > 0
+      map(([items, term, alreadySelected]) =>
+        this.autocomplete &&
+        term &&
+        term.length > 0 &&
+        !alreadySelected &&
+        !this.alwaysShowAutosuggestedValues &&
+        !this.externalAutocompleteService
           ? items.filter((i) => {
               const itemValue = this.bindLabel ? i?.[this.bindLabel] : i;
               return itemValue.toLowerCase().indexOf(term.toLowerCase()) > -1;
@@ -148,6 +155,10 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
         }
       })
     );
+
+    if (this.externalAutocompleteService) {
+      this.subscriptions.add(this._items$.subscribe((_) => this.toggle()));
+    }
 
     this.a11yService.setToggle((force?: boolean) => this.toggle(force));
   }
@@ -189,8 +200,8 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
               ? i[keyProp] !== itemValue[keyProp]
               : i !== itemValue[keyProp]
             : typeof i === 'object'
-            ? i[keyProp] !== itemValue
-            : i !== itemValue
+              ? i[keyProp] !== itemValue
+              : i !== itemValue
         )
     );
   }
@@ -206,10 +217,13 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
     this.cleared.next();
   }
 
-  search($event: string) {
+  search($event: string, fromTemplate: boolean = false) {
     this.search$.next($event);
     this.searched.next($event);
     this.searchSelected$.next(false);
+    if (fromTemplate && this.autocomplete && this.externalAutocompleteService) {
+      this.writeValue($event);
+    }
   }
 
   select($event: Event, item: any, index: number) {

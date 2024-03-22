@@ -42,7 +42,7 @@ export class SelectA11yService {
       return;
     }
 
-    if (!open && searchValue?.length > 2 && event.key.length === 1) {
+    if (!open && searchValue?.length > 0 && (event.key.length === 1 || event.key === 'Backspace')) {
       this.toggle();
     } else if (open && event.key === 'Enter') {
       this.toggle();
