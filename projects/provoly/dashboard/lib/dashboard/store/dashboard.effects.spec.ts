@@ -15,7 +15,6 @@ import { Observable, of } from 'rxjs';
 import { PrySnackbarService } from '../../core/components/snackbar/snackbar.service';
 import { PryI18nService } from '../../core/i18n/i18n.service';
 import { Item } from '../../core/model/item.interface';
-import { GlobalManifest } from '../../core/model/manifest.interface';
 import { ResultSet } from '../../core/model/result-set.interface';
 import { DataSourceService } from '../../core/store/data-source/data-source.service';
 import { ItemService } from '../../core/store/item/item.service';
@@ -191,6 +190,7 @@ describe('DashboardEffects', () => {
             presentationTitle: true,
             search: false,
             toolbox: {
+              edit_action: false,
               automate_refresh: false,
               clear_view: false,
               default_size: false,

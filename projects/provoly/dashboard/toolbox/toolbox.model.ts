@@ -12,6 +12,7 @@ import { SwitchToEditContentComponent } from './components/switch-to-edit-conten
 import { ShareComponent } from './components/share/share.component';
 import { DeleteComponent } from './components/delete/delete.component';
 import { DashboardDetailsComponent } from './components/dashboard-details/dashboard-details.component';
+import { EditModeActionComponent } from './components/edit-mode-action/edit-mode-action.component';
 
 export interface ToolboxAction {
   name: string;
@@ -22,6 +23,13 @@ export interface ToolboxAction {
 }
 
 export const ACTIONS: ToolboxAction[] = [
+  {
+    name: 'edit_action',
+    component: EditModeActionComponent,
+    visible: true,
+    access: { module: 'dashboard', page: 'toolbox', action: 'edit' },
+    needsOwner: true
+  },
   {
     name: 'filter_settings',
     component: PryFilterSettingsComponent,

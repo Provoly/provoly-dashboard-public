@@ -19,6 +19,7 @@ export interface ToolboxDisplayOptions {
   default_size: boolean;
   refresh_datasets: boolean;
   automate_refresh: boolean;
+  edit_action: boolean;
   edit_presentation_content: boolean;
   share: boolean;
   delete: boolean;
@@ -41,6 +42,7 @@ export const BASE_DISPLAY_OPTIONS = {
   catalog: false,
   useFilters: false,
   toolbox: {
+    edit_action: false,
     save_view: false,
     save_view_as: false,
     filter_settings: false,
@@ -99,6 +101,7 @@ export function getDisplayOptions(mode?: ViewMode): DisplayOptions {
         catalog: true,
         useFilters: true,
         toolbox: {
+          edit_action: false,
           save_view: true,
           save_view_as: true,
           filter_settings: true,
