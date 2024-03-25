@@ -30,8 +30,7 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
   preventInitCall$ = new Subject<void>();
   possibleFilterValues$!: Observable<string[]>;
   possibleFilterValues: string[] = [];
-  items$ = new Subject<string[]>();
-  selectClicked = new EventEmitter<void>();
+  items$ = new BehaviorSubject<string[]>([]);
 
   constructor(
     store: Store,
@@ -83,8 +82,12 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
         .pipe(map(([possibleValues, autocomplete]) => (autocomplete.length > 0 ? autocomplete : possibleValues)))
         .subscribe((values) => this.items$.next(values))
     );
+  }
 
-    this.selectClicked.subscribe((_) => this.items$.next(this.possibleFilterValues));
+  resetAutocompleteValues() {
+    if (this.items$.getValue().length !== this.possibleFilterValues.length) {
+      this.items$.next(this.possibleFilterValues);
+    }
   }
 
   setFilter(value: string) {

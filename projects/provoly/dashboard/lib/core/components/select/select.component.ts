@@ -69,6 +69,7 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
   @Input() i18nPrefix: string | null = null;
   @Output() searched = new EventEmitter<string>();
   @Output() cleared = new EventEmitter<void>();
+  @Output() clicked = new EventEmitter<void>();
   @Input() bindClasses: any;
   search$ = new BehaviorSubject<string>('');
 
@@ -288,6 +289,7 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
   handleClick() {
     this.focused = true;
     this.toggle();
+    this.clicked.emit();
   }
 
   toggleFocus() {
