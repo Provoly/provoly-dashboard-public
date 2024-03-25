@@ -20,3 +20,4 @@ export * from './components/save-view/save-view.component';
 export * from './components/select-grid-layout/select-grid-layout.component';
 export * from './components/share/share.component';
 export * from './components/switch-to-edit-content/switch-to-edit-content.component';
+export * from './components/edit-mode-action/edit-mode-action.component';
