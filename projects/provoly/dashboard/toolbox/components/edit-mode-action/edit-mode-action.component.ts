@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
 @Component({
-  selector: 'pry-edit-mode-toggle',
+  selector: 'pry-edit-mode-action',
   templateUrl: './edit-mode-action.component.html'
 })
 export class EditModeActionComponent extends ToolboxActionComponent {
