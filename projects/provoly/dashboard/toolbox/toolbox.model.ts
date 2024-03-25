@@ -105,5 +105,5 @@ export const ACTIONS: ToolboxAction[] = [
     visible: true,
     access: { module: 'dashboard', page: 'toolbox', action: 'delete' },
     needsOwner: false
-  },
+  }
 ];

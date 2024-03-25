@@ -34,6 +34,7 @@ import { SwitchToEditContentComponent } from './components/switch-to-edit-conten
 import { ShareComponent } from './components/share/share.component';
 import { DeleteComponent } from './components/delete/delete.component';
 import { DashboardDetailsComponent } from './components/dashboard-details/dashboard-details.component';
+import { EditModeActionComponent } from './components/edit-mode-action/edit-mode-action.component';
 
 const components = [
   ToolboxActionComponent,
@@ -53,7 +54,8 @@ const components = [
   SwitchToEditContentComponent,
   ShareComponent,
   DeleteComponent,
-  DashboardDetailsComponent
+  DashboardDetailsComponent,
+  EditModeActionComponent
 ];
 
 @NgModule({
