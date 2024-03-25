@@ -29,6 +29,7 @@ export const SearchActions = {
     props<{
       filterId: string;
       attributes: { id: string; technicalName: string; label: string; datasource: string }[];
+      limit: number;
     }>()
   ),
   setPossibleFilterValues: createAction(

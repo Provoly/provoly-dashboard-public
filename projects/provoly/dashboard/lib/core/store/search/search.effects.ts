@@ -66,7 +66,7 @@ export class SearchEffects {
       ofType(SearchActions.getPossibleFilterValues),
       mergeMap((action) =>
         this.searchService
-          .autocomplete(action.attributes, '')
+          .autocomplete(action.attributes, '', action.limit)
           .pipe(map((values) => SearchActions.setPossibleFilterValues({ filterId: action.filterId, values })))
       )
     )
