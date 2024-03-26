@@ -8,7 +8,6 @@ on:
 jobs:
   test:
     runs-on: provoly-runner
-    container: "${{ vars.REGISTRY_URL }}/docker-mirror/library/node:18-bullseye"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
