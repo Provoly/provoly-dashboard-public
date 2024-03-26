@@ -16,7 +16,7 @@ ext:
     - run:
         command: "npm run docs"
     - run:
-        command: "cp -r ./compodoc /builds/cds-bdx/pole-edition/yap/yap-deploy/documentation/compodoc"
+        command: "cp -r ./compodoc /home/runner/_work/provoly-doc/provoly-doc/compodoc"
       scan:
         dir: compodoc
         base: modules/compodoc/pages
