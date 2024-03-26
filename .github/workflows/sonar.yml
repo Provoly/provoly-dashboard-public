@@ -6,8 +6,8 @@ on:
 
 jobs:
   sonar:
-    runs-on: self-hosted
-    container: sonarsource/sonar-scanner-cli
+    runs-on: provoly-runner
+    container: "${{ vars.REGISTRY_URL }}/docker-mirror/sonarsource/sonar-scanner-cli"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
