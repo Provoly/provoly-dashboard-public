@@ -10,6 +10,12 @@ jobs:
     runs-on: provoly-runner
     container: "${{ vars.REGISTRY_URL }}/docker-mirror/sonarsource/sonar-scanner-cli"
     steps:
+      - name: Login to Harbor
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ vars.CI_REGISTRY_SERVER }}
+          username: ${{ secrets.CI_REGISTRY_USER }}
+          password: ${{ secrets.CI_REGISTRY_PASSWORD }}
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Export sonar URL
