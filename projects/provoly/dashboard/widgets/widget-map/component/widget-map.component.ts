@@ -1294,7 +1294,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     const order = this.optionsCopy.layers.some((layer) => layer.order)
       ? Math.max(...this.optionsCopy.layers.map((layer) => layer.order ?? 0)) + 1
       : this.optionsCopy.layers.length + 1;
-    this.optionsCopy.layers.unshift({
+    this.optionsCopy.layers.push({
       attribute: '',
       group: group.name,
       title,
@@ -1790,9 +1790,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
       let newOrder = toIndex;
       if (toIndex === 0) {
-        newOrder = (this.optionsCopy.layers[toIndex]!.order ?? toIndex) + 1;
-      } else if (toIndex === this.optionsCopy.layers.length - 1) {
         newOrder = (this.optionsCopy.layers[toIndex]!.order ?? toIndex) / 2;
+      } else if (toIndex === this.optionsCopy.layers.length - 1) {
+        newOrder = (this.optionsCopy.layers[toIndex]!.order ?? toIndex) + 1;
       } else {
         if (direction > 0) {
           newOrder =
