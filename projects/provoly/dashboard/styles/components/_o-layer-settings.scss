@@ -1,0 +1,139 @@
+@use '../abstracts' as *;
+
+/* Organism - map layer settings */
+
+.o-layer-settings {
+  padding: toRem(20) toRem(20);
+  margin: 20px -20px 0 -20px;
+
+  &__group {
+    margin-top: toRem(30);
+    padding-bottom: toRem(10);
+
+    .m-form-radio-group {
+      gap: toRem(10);
+      margin: toRem(5) 0 toRem(5) toRem(10);
+
+      .a-label {
+        font-weight: 400;
+      }
+    }
+
+    .a-btn.-link-like {
+      font-size: toRem(12);
+      font-weight: 700;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .m-tooltip {
+      margin-left: toRem(10);
+    }
+  }
+
+  &__group-title {
+
+    &.m-form-label-field {
+      margin-bottom: 0;
+    }
+
+    .u-display-flex {
+      align-items: center;
+      padding-right: toRem(15);
+
+      .o-layer-settings__delete-group {
+        margin-bottom: toRem(10);
+
+        &:after {
+          top: calc(50% + 4px);
+        }
+      }
+
+      pry-edit-input {
+        flex: 1;
+      }
+    }
+  }
+
+  &__layers {
+    display: flex;
+    flex-direction: column;
+    gap: toRem(10);
+  }
+
+  &__layer-wrapper {
+    .drag-placeholder {
+      background: white;
+      min-height: 55px;
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  &__layer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 toRem(5);
+
+    .u-display-flex {
+      gap: 0;
+    }
+
+    .a-btn--icon-only {
+      height: auto;
+      width: auto;
+    }
+
+    .a-h5 {
+      margin: 0;
+      font-size: toRem(14);
+    }
+
+    .unfold-layer {
+      margin-top: -6px;
+    }
+  }
+
+  &__layer-content {
+    padding: 0 toRem(20);
+
+    &.-collapsed {
+      display: none;
+    }
+  }
+
+  .a-label {
+    font-weight: 700;
+  }
+
+  .m-form-label-field {
+    .a-label {
+      font-weight: 700;
+    }
+  }
+
+  .drag-handle {
+    cursor: pointer;
+
+    &.-disabled {
+      cursor: unset;
+      opacity: 0.5;
+    }
+  }
+
+  .a-tooltip {
+    &:after{
+      white-space: nowrap;
+    }
+  }
+}
+
+.cdk-drop-list-dragging .cdk-drag {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-animating {
+  transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
+}

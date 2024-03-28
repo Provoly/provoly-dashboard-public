@@ -23,7 +23,7 @@ export const frTranslations = {
       updatedInView: 'La restitution a été mise à jour sur la page n°{{index}}',
       settings: {
         title: 'Paramétrage',
-        changeTitle: 'Titre du widget',
+        changeTitle: 'Titre de la restitution',
         validateUpdating: 'Valider la modification'
       },
       defineCatalog: 'Définissez votre entrée de catalogue',
@@ -231,6 +231,7 @@ export const frTranslations = {
       delete: 'Supprimer',
       edit: 'Editer',
       editProfil: 'Editer le profil',
+      editTitle: 'Editer le titre',
       choice: 'Choisir un ....',
       choiceInList: 'Choisir un élément dans la liste',
       text: 'Remplir le champ',
@@ -262,7 +263,8 @@ export const frTranslations = {
     },
     theme: {
       editInput: {
-        toggle: 'Editer'
+        toggle: 'Editer',
+        confirm: 'Confirmer'
       },
       previousMonth: 'Mois précédent',
       nextMonth: 'Mois suivant',

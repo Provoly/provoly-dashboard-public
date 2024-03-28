@@ -13,6 +13,7 @@ export const frTranslations = {
         layer: 'Couche n°{{index}}',
         layerOptions: 'Options de la couche',
         layerTitle: 'Libellé de la couche',
+        order: 'Ordre de la couche',
         layerType: {
           title: 'Type',
           heatmap: 'Chaleur',
@@ -89,7 +90,27 @@ export const frTranslations = {
         zoomIn: 'Zoomer',
         zoomOut: 'Dézoomer',
         slideTitle: 'Données affichées',
-        layerLoadError: 'Erreur de chargement de la couche'
+        layerLoadError: 'Erreur de chargement de la couche',
+        layerSettings: {
+          title: 'Paramétrer les couches :',
+          addLayerGroup: 'Ajouter un groupe de couche',
+          layerGroupName: 'Titre du groupe de couche',
+          optionalColon: ' :',
+          singleLayer: 'Mono sélection',
+          multipleLayer: 'Multi sélection',
+          unfoldAll: 'Tout déplier',
+          foldAll: 'Tout réplier',
+          noLayer: 'Aucune couche',
+          selectLayers: 'Sélectionnez les couches à afficher :',
+          group: 'Groupe',
+          deleteGroup: 'Supprimer le groupe',
+          deleteLayer: 'Supprimer la couche',
+          confirmDelete: 'Est-ce que vous êtes sûr de vouloir supprimer ce groupe de couches ?',
+          editLayerTitle: 'Modifier le titre de la couche',
+          editGroupName: 'Modifier le nom du groupe'
+        },
+        missingTitle: 'Titre manquant',
+        noGroup: 'Sans groupe'
       }
     }
   }

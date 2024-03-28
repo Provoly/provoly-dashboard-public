@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  Output
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 let uniqueId = 0;
@@ -23,7 +31,11 @@ export class PryEditInputComponent implements ControlValueAccessor {
   _onChange = (_: any) => {};
   _onTouched = () => {};
   editMode = false;
+  showButton = false;
   @Input() label: string = '';
+  @Input() editButtonTooltip: string = '@pry.theme.editInput.toggle';
+  @Input() confirmButtonTooltip: string = '@pry.theme.editInput.confirm';
+  @Output() validated = new EventEmitter<string>();
 
   constructor(private _cd: ChangeDetectorRef) {}
 
@@ -50,5 +62,8 @@ export class PryEditInputComponent implements ControlValueAccessor {
 
   toggle(force?: boolean) {
     this.editMode = force !== undefined ? force : !this.editMode;
+    if (this.editMode === false) {
+      this.validated.emit(this.value);
+    }
   }
 }

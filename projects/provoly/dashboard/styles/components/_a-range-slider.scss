@@ -18,12 +18,9 @@
 
   &[type='range'] {
     width: 100%;
-    height: 7px;
+    height: 4px;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.6);
-    background-image: linear-gradient(#426EA4, #4081d0);
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
+    background: #113B6E;
     box-shadow: 0 0 2px 2px #F5F7F9;
     -webkit-appearance: none;
   }
@@ -59,24 +56,11 @@
   &__max {
     position: absolute;
     z-index: 0;
-    bottom: -6px;
+    top: 0;
     width: 20px;
     color: #113B6E;
     opacity: 0.7;
     text-align: center;
-
-    &:before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: -11px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 2px;
-      height: 10px;
-      background-color: #113B6E;
-      border-radius: 2px;
-    }
   }
 
   &__min {
@@ -90,15 +74,15 @@
   // Selected value
   &__selected-value {
     position: absolute;
-    top: -3px;
+    bottom: -7px;
     transform: translateX(-50%);
     display: flex;
     align-items: center;
     justify-content: center;
     min-width: 30px;
     height: 22px;
-    border-radius: 10px;
     font-size: 13px;
     font-weight: 600;
+    background-color: #FFFFFF;
   }
 }

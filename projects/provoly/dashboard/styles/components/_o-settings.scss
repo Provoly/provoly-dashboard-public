@@ -23,7 +23,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: toRem(20);
+      padding: toRem(8) toRem(20) toRem(10);
 
       .a-h2 {
         padding-bottom: 0;
@@ -38,7 +38,7 @@
       overflow-x: hidden;
       overflow-y: auto;
       width: 100%;
-      padding: toRem(20);
+      padding: 0 toRem(20);
 
       &__actions {
         display: flex;
@@ -52,6 +52,10 @@
           border-top-width: toRem(2);
           border-top-style: solid;
         }
+      }
+
+      .m-form-label-field {
+        margin-bottom: toRem(10);
       }
 
       &__fields {

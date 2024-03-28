@@ -29,7 +29,6 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    font-size: 12px;
 
     &:hover {
       cursor: pointer;
@@ -38,13 +37,20 @@
   }
 
   &__container {
-    color: #113b6e;
-    background-color: white;
     border-radius: toRem(8);
-    padding: toRem(5) toRem(8);
+    padding: toRem(8) toRem(10);
+
+    &--layers {
+      max-width: toRem(220);
+    }
 
     .a-h4 {
-      font-size: 12px;
+      font-size: 16px;
+    }
+
+    .a-h5 {
+      font-size: 14px;
+      margin: 0;
     }
 
     button.m-map-layer-action__toggle {
@@ -79,8 +85,27 @@
 }
 
 .m-layer-switcher {
+  &__group-title {
+    font-weight: 700;
+    margin-bottom: toRem(5);
+  }
+
   &__title {
     align-items: flex-start;
+  }
+
+  &--radios {
+    display: flex;
+    flex-direction: column;
+    gap: toRem(5);
+
+    input {
+      margin-top: toRem(3);
+    }
+
+    .a-label {
+      margin-left: toRem(5)
+    }
   }
 }
 

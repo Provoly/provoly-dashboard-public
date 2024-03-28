@@ -3,7 +3,35 @@
 /* Organism - component pry edit */
 
 .o-pry-edit {
-  .m-form-label-field__edit-inline__txtvalue {
-    font-size: toRem(16);
+  .m-form-label-field__edit-inline {
+    position: relative;
+
+    &__txtvalue {
+      margin-top: 0;
+    }
+  }
+
+  .a-btn {
+    display: none;
+    opacity: 0;
+  }
+
+  .-button-visible {
+    display: block;
+    opacity: 1;
+    transition: opacity 0.3s;
+    position: absolute;
+    top: 0;
+    right: 10px;
+  }
+
+  &.-edit {
+    .m-form-label-field__edit-inline {
+      margin-top: -2px;
+    }
+
+    .-button-visible {
+      top: 4px;
+    }
   }
 }

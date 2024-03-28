@@ -1,0 +1,32 @@
+@use '../../styles/abstracts' as *;
+@use '../abstracts-theme/variables.theme' as *;
+
+/* Theme Organism - layer settings */
+
+.o-layer-settings {
+  background-color: themed($theme-map, 'color', 'primary', 200);
+
+  input.a-form-field {
+    &:focus {
+      border-color: themed($theme-map, 'color', 'primary', 200);
+    }
+  }
+
+  &__group {
+    border-bottom: 1px solid themed($theme-map, 'color', 'grey', 400);
+
+    &:last-child {
+      border: none;
+    }
+  }
+
+  &__layer-header {
+    .a-h5 {
+      color: themed($theme-map, 'color', 'primary', 750);
+    }
+  }
+
+  .-obligatory-red {
+    color: #DC0303;
+  }
+}

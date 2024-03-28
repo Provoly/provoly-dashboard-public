@@ -22,6 +22,7 @@ import {
   DEFAULT_ROWS_NUMBER
 } from './dashboard.contants';
 import { GetCapabilitiesResponse } from './wms.service';
+import { MapWidgetOptions } from '../../core/model/widget-map-manifest.interface';
 
 export const dashboardFeatureKey = '@pry/dashboard';
 
@@ -343,8 +344,8 @@ const internalReducer = createReducer<DashboardState>(
           !action.cumulative
             ? [action.id]
             : state.results.selectedItems.find((id) => id === action.id)
-            ? state.results.selectedItems.filter((id) => id !== action.id)
-            : [...state.results.selectedItems, action.id]
+              ? state.results.selectedItems.filter((id) => id !== action.id)
+              : [...state.results.selectedItems, action.id]
         )
       ]
     }
@@ -778,6 +779,79 @@ const internalReducer = createReducer<DashboardState>(
     manifests: {
       ...state.manifests,
       loading: true
+    }
+  })),
+  on(DashboardActions.initDefaultLayerGroup, (state, action) => ({
+    ...state,
+    manifests: {
+      ...state.manifests,
+      manifest: {
+        ...state.manifests.manifest,
+        layerGroups: state.manifests.manifest.layerGroups?.some((group) => group.name === 'DEFAULT')
+          ? state.manifests.manifest.layerGroups.map((group) =>
+              action.layers ? { ...group, visibleLayers: action.layers } : group
+            )
+          : [
+              ...(state.manifests.manifest.layerGroups ?? []),
+              {
+                name: 'DEFAULT',
+                singleLayer: false,
+                visibleLayers: action.layers ? action.layers : ([] as string[])
+              }
+            ]
+      }
+    }
+  })),
+  on(DashboardActions.addLayerGroup, (state, action) => ({
+    ...state,
+    manifests: {
+      ...state.manifests,
+      manifest: {
+        ...state.manifests.manifest,
+        layerGroups: [
+          {
+            name: action.defaultTitle + ' ' + ((state.manifests.manifest.layerGroups?.length ?? 0) + 1).toString(),
+            singleLayer: false,
+            visibleLayers: [] as string[]
+          },
+          ...(state.manifests.manifest.layerGroups ?? [])
+        ]
+      }
+    }
+  })),
+  on(DashboardActions.updateLayerGroup, (state, action) => ({
+    ...state,
+    manifests: {
+      ...state.manifests,
+      manifest: {
+        ...state.manifests.manifest,
+        layerGroups: [
+          ...(state.manifests.manifest.layerGroups ?? []).map((group) =>
+            group.name === action.name
+              ? {
+                  ...group,
+                  name: action.newName ?? group.name,
+                  singleLayer: action.singleLayer ?? group.singleLayer,
+                  visibleLayers: action.visibleLayers
+                    ? typeof action.visibleLayers === 'string'
+                      ? [...group.visibleLayers, action.visibleLayers]
+                      : action.visibleLayers
+                    : group.visibleLayers
+                }
+              : group
+          )
+        ]
+      }
+    }
+  })),
+  on(DashboardActions.deleteLayerGroup, (state, action) => ({
+    ...state,
+    manifests: {
+      ...state.manifests,
+      manifest: {
+        ...state.manifests.manifest,
+        layerGroups: state.manifests.manifest.layerGroups!.filter((group) => group.name !== action.name)
+      }
     }
   }))
 );

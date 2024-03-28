@@ -19,7 +19,7 @@
       class="o-settings"
     >
       <div class="m-form-label-field">
-        <label class="a-label" for="map_style">{{ '@pry.widget.map.style' | i18n }}</label>
+        <label class="a-label" for="map_style">{{ '@pry.widget.map.style' | i18n }} :</label>
         <pry-select
           (ngModelChange)="changeStyle($event)"
           [items]="styles$ | async"
@@ -41,10 +41,6 @@
         />
       </div>
 
-      <pry-checkbox (ngModelChange)="changeSingleLayer($event)" [ngModel]="optionsCopy.singleLayer ?? false">
-        {{ '@pry.widget.map.singleLayer' | i18n }}
-      </pry-checkbox>
-
       <pry-checkbox (ngModelChange)="changeAutoLayer($event)" [ngModel]="optionsCopy.automaticLayers ?? false">
         {{ '@pry.widget.map.autoLayer' | i18n }}
       </pry-checkbox>
@@ -57,285 +53,392 @@
         {{ '@pry.widget.map.slide.global' | i18n }}
       </pry-checkbox>
 
-      <div class="o-settings__popup__content__actions -has-separator">
-        <button type="button" (click)="addLayer()" class="a-btn a-btn--icon-text -link-like">
-          <pry-icon iconSvg="library_add"></pry-icon>
-          {{ '@pry.widget.map.addLayer' | i18n }}
-        </button>
-      </div>
-
-      <div *ngFor="let layer of optionsCopy?.layers; let i = index" class="o-settings__popup__content__fields">
-        <div class="o-settings__popup__content__fields__head">
-          <h3 class="a-h3 settings-layer-title__title">{{ '@pry.widget.map.layer' | i18n : { index: i + 1 } }}</h3>
+      <div class="o-layer-settings" cdkDropListGroup cdkDragBoundary>
+        <h4 class="a-label">{{ '@pry.widget.map.layerSettings.title' | i18n }}</h4>
+        <div class="u-display-flex -justify-center">
+          <button class="a-btn a-btn--primary" (click)="addLayerGroup()" type="button">
+            {{ '@pry.widget.map.layerSettings.addLayerGroup' | i18n }}
+          </button>
+        </div>
+        <div *ngFor="let group of layerGroups$ | async; let groupIdx = index" class="o-layer-settings__group">
+          <div class="m-form-label-field o-layer-settings__group-title">
+            <label class="a-label" for="map_layerGroupTitle-{{ groupIdx }}">
+              {{ '@pry.widget.map.layerSettings.layerGroupName' | i18n }}<span class="-obligatory-red">*</span
+              >{{ '@pry.widget.map.layerSettings.optionalColon' | i18n }}
+            </label>
+            <div class="u-display-flex">
+              <pry-edit-input
+                editButtonTooltip="@pry.widget.map.layerSettings.editGroupName"
+                (validated)="updateLayerGroup(group.name, $event)"
+                [ngModel]="group.name === DEFAULT_LAYER_GROUP ? ('@pry.widget.map.noGroup' | i18n) : group.name"
+              ></pry-edit-input>
+              <button
+                class="a-btn--icon-only a-tooltip o-layer-settings__delete-group"
+                [attr.data-tooltip]="'@pry.widget.map.layerSettings.deleteGroup' | i18n"
+                data-tooltip-position="left"
+                (click)="deleteLayerGroup(group.name)"
+              >
+                <pry-icon [height]="16" [width]="16" iconSvg="bin_normal"></pry-icon>
+              </button>
+            </div>
+          </div>
+          <div class="m-form-radio-group">
+            <div class="m-form-radio-group__item">
+              <input
+                type="radio"
+                id="multiselection-{{ groupIdx }}"
+                [ngModel]="group.singleLayer"
+                (ngModelChange)="updateLayerGroup(group.name, undefined, $event)"
+                [value]="false"
+                [name]="group.name"
+              />
+              <label class="a-label" for="multiselection-{{ groupIdx }}">{{
+                '@pry.widget.map.layerSettings.multipleLayer' | i18n
+              }}</label>
+            </div>
+            <div class="m-form-radio-group__item">
+              <input
+                type="radio"
+                id="monoselection-{{ groupIdx }}"
+                [ngModel]="group.singleLayer"
+                (ngModelChange)="updateLayerGroup(group.name, undefined, $event, group.visibleLayers)"
+                [value]="true"
+                [name]="group.name"
+              />
+              <label class="a-label" for="monoselection-{{ groupIdx }}">{{
+                '@pry.widget.map.layerSettings.singleLayer' | i18n
+              }}</label>
+            </div>
+          </div>
           <div class="m-btn-group">
-            <button type="button" class="a-btn a-btn--icon-only" (click)="invertLayers(i, i - 1)" *ngIf="i > 0">
-              <pry-icon iconSvg="fleche_haut"></pry-icon>
-              <span class="u-visually-hidden">{{ '@pry.action.moveUp' | i18n }}</span>
+            <div class="u-display-flex -align-center">
+              <button (click)="addLayer(group)" class="a-btn -link-like" type="button">
+                + {{ '@pry.widget.map.addLayer' | i18n }}
+              </button>
+            </div>
+            <button (click)="toggleExpandAll(group)" class="a-btn -link-like" type="button">
+              {{
+                layerSettingsExpandedState[group.name]
+                  ? ('@pry.widget.map.layerSettings.foldAll' | i18n)
+                  : ('@pry.widget.map.layerSettings.unfoldAll' | i18n)
+              }}
             </button>
-            <button
-              type="button"
-              class="a-btn a-btn--icon-only"
-              (click)="invertLayers(i, i + 1)"
-              *ngIf="i < (optionsCopy?.layers?.length ?? 0) - 1"
-            >
-              <pry-icon iconSvg="fleche_bas"></pry-icon>
-              <span class="u-visually-hidden">{{ '@pry.action.moveDown' | i18n }}</span>
-            </button>
           </div>
-        </div>
+          <div cdkDropList class="o-layer-settings__layers" (cdkDropListDropped)="drop($event, group)" [attr.data-layer-group]="group.name">
+            <ng-container *ngFor="let layer of optionsCopy?.layers; let i = index">
+              <div
+                *ngIf="layer.group === group.name"
+                class="o-layer-settings__layer-wrapper"
+                cdkDrag
+                [cdkDragData]="layer"
+                [cdkDragDisabled]="layerSettingsExpandedState[layer.title!]"
+              >
+                <div class="drag-placeholder" *cdkDragPlaceholder></div>
+                <div class="o-layer-settings__layer-header">
+                  <div class="u-display-flex -align-center">
+                    <pry-icon
+                      [class.-disabled]="layerSettingsExpandedState[layer.title!]"
+                      class="drag-handle"
+                      [height]="16"
+                      [width]="16"
+                      iconSvg="drag_indicator"
+                    ></pry-icon>
+                    <button
+                      class="a-btn--icon-only unfold-layer"
+                      (click)="toggleLayerExpand(layer, group)"
+                      type="button"
+                    >
+                      <pry-icon
+                        [height]="5"
+                        [width]="9"
+                        [iconSvg]="layerSettingsExpandedState[layer.title!] ? 'chevron_top' : 'chevron_bottom'"
+                      ></pry-icon>
+                    </button>
+                    <h5 class="a-h5">{{ layer.title ?? ('@pry.widget.map.layer' | i18n: { index: i + 1 }) }}</h5>
+                  </div>
+                  <button
+                    class="o-layer-settings__delete-layer a-btn--icon-only a-tooltip"
+                    [attr.data-tooltip]="'@pry.widget.map.layerSettings.deleteLayer' | i18n"
+                    data-tooltip-position="left"
+                    (click)="deleteLayer(i, layer)"
+                  >
+                    <pry-icon [height]="16" [width]="16" iconSvg="bin_normal"></pry-icon>
+                  </button>
+                </div>
+                <div *ngIf="layerSettingsExpandedState[layer.title!]" class="o-layer-settings__layer-content">
+                  <div class="o-settings__popup__content__fields__content">
+                    <pry-range
+                      [ngModel]="(layer?.opacity ?? 100) + ''"
+                      (ngModelChange)="changeOpacity(layer, $event)"
+                      labelTranslate="@pry.widget.map.opacity"
+                      min="0"
+                      max="100"
+                    ></pry-range>
 
-        <div class="o-settings__popup__content__fields__content">
-          <pry-range
-            [ngModel]="(layer?.opacity ?? 100) + ''"
-            (ngModelChange)="changeOpacity(layer, $event)"
-            labelTranslate="@pry.widget.map.opacity"
-            min="0"
-            max="100"
-          ></pry-range>
+                    <fieldset>
+                      <legend class="u-visually-hidden">
+                        {{ '@pry.widget.map.layerOptions' | i18n: { index: i + 1 } }}
+                      </legend>
+                      <div class="m-form-label-field">
+                        <pry-edit-input
+                          label="@pry.widget.map.layerTitle"
+                          editButtonTooltip="@pry.widget.map.layerSettings.editLayerTitle"
+                          (validated)="changeTitle($event, layer, group)"
+                          [ngModel]="layer.title"
+                        ></pry-edit-input>
+                      </div>
+                      <div class="m-form-label-field" *ngIf="!['geoserver', 'auto'].includes(layer.type)">
+                        <label class="a-label" for="map_layerType">{{
+                          '@pry.widget.map.layerType.title' | i18n
+                        }}</label>
+                        <pry-select
+                          (ngModelChange)="changeLayerType($event, i)"
+                          [items]="layerTypes"
+                          [ngModel]="layer.type"
+                          i18nPrefix="@pry.widget.map.layerType."
+                          id="map_layerType"
+                        ></pry-select>
+                      </div>
 
-          <fieldset>
-            <legend class="u-visually-hidden">{{ '@pry.widget.map.layerOptions' | i18n : { index: i + 1 } }}</legend>
-            <div class="m-form-label-field">
-              <label class="a-label" for="map_layerTitle">{{ '@pry.widget.map.layerTitle' | i18n }}</label>
-              <input
-                id="map_layerTitle"
-                class="a-form-field"
-                type="text"
-                (input)="changeTitle($event, layer)"
-                [value]="layer.title ?? ''"
-              />
-            </div>
+                      <div class="m-form-label-field" *ngIf="['geoserver', 'wms'].includes(layer.type)">
+                        <ng-container *ngIf="getAsWmsType(layer) as wmslayer">
+                          <label class="a-label" for="map_layerStyle">{{ '@pry.widget.map.layerStyle' | i18n }}</label>
+                          <pry-select
+                            (ngModelChange)="changeLayerStyle($event, layer)"
+                            [items]="layerStyleOptions(layer)"
+                            [ngModel]="getStyle(layer)"
+                            bindLabel="label"
+                            bindValue="id"
+                            id="map_layerStyle"
+                          ></pry-select>
+                        </ng-container>
+                      </div>
 
-            <div class="m-form-label-field" *ngIf="!['geoserver', 'auto'].includes(layer.type)">
-              <label class="a-label" for="map_layerType">{{ '@pry.widget.map.layerType.title' | i18n }}</label>
-              <pry-select
-                (ngModelChange)="changeLayerType($event, i)"
-                [items]="layerTypes"
-                [ngModel]="layer.type"
-                i18nPrefix="@pry.widget.map.layerType."
-                id="map_layerType"
-              ></pry-select>
-            </div>
+                      <div class="m-form-label-field">
+                        <pry-checkbox (ngModelChange)="changeFit($event, layer)" [ngModel]="layer.fit">
+                          {{ '@pry.widget.map.fit' | i18n }}
+                        </pry-checkbox>
+                      </div>
 
-            <div class="m-form-label-field" *ngIf="['geoserver', 'wms'].includes(layer.type)">
-              <ng-container *ngIf="getAsWmsType(layer) as wmslayer">
-                <label class="a-label" for="map_layerStyle">{{ '@pry.widget.map.layerStyle' | i18n }}</label>
-                <pry-select
-                  (ngModelChange)="changeLayerStyle($event, layer)"
-                  [items]="layerStyleOptions(layer)"
-                  [ngModel]="getStyle(layer)"
-                  bindLabel="label"
-                  bindValue="id"
-                  id="map_layerStyle"
-                ></pry-select>
-              </ng-container>
-            </div>
+                      <div
+                        *ngIf="
+                          layer.type !== 'relation' &&
+                          layer.type !== 'wms' &&
+                          layer.type !== 'wmts' &&
+                          layer.type !== 'geoserver' &&
+                          layer.type !== 'featurelayer' &&
+                          layer.type !== 'vectortile' &&
+                          layer.type !== 'rastertile' &&
+                          layer.type !== 'auto'
+                        "
+                        class="m-form-label-field"
+                      >
+                        <label class="a-label" for="map_classes">{{ '@pry.widget.map.classes' | i18n }}</label>
+                        <pry-select
+                          (ngModelChange)="changeClasses($event, layer)"
+                          [items]="usedClasses$ | async"
+                          [multiple]="true"
+                          [ngModel]="layer.classes"
+                          bindLabel="name"
+                          bindValue="id"
+                          id="map_classes"
+                        ></pry-select>
+                      </div>
+                    </fieldset>
+                  </div>
 
-            <pry-checkbox (ngModelChange)="changeFit($event, layer)" [ngModel]="layer.fit">
-              {{ '@pry.widget.map.fit' | i18n }}
-            </pry-checkbox>
+                  <fieldset
+                    *ngIf="
+                      layer.type !== 'relation' &&
+                      layer.type !== 'wms' &&
+                      layer.type !== 'wmts' &&
+                      layer.type !== 'geoserver' &&
+                      layer.type !== 'featurelayer' &&
+                      layer.type !== 'vectortile' &&
+                      layer.type !== 'rastertile'
+                    "
+                  >
+                    <legend class="u-visually-hidden">{{ '@pry.widget.map.locationAttr' | i18n }}</legend>
+                    <ng-container
+                      *ngIf="
+                        layer
+                          | geometryFieldsFor: { resultSet: resultSet$, classes: layer.classes, type: layer.type }
+                          | async as fields
+                      "
+                    >
+                      <div
+                        *ngIf="
+                          [
+                            'heatmap',
+                            'bubble',
+                            'marker',
+                            'point',
+                            'line',
+                            'polygon',
+                            'multi-line',
+                            'multi-polygon'
+                          ].indexOf(layer.type) >= 0
+                        "
+                      >
+                        <div class="m-form-label-field">
+                          <label class="a-label" for="map_locationAttribute_both">{{
+                            '@pry.widget.map.locationAttribute.both' | i18n
+                          }}</label>
+                          <pry-select
+                            (ngModelChange)="changeLocationAttributes($event, layer)"
+                            [items]="fields"
+                            [ngModel]="layer.attribute"
+                            bindLabel="name"
+                            bindValue="name"
+                            id="map_locationAttribute_both"
+                          ></pry-select>
+                        </div>
+                      </div>
 
-            <div
-              *ngIf="
-                layer.type !== 'relation' &&
-                layer.type !== 'wms' &&
-                layer.type !== 'wmts' &&
-                layer.type !== 'geoserver' &&
-                layer.type !== 'featurelayer' &&
-                layer.type !== 'vectortile' &&
-                layer.type !== 'rastertile' &&
-                layer.type !== 'auto'
-              "
-              class="m-form-label-field"
-            >
-              <label class="a-label" for="map_classes">{{ '@pry.widget.map.classes' | i18n }}</label>
-              <pry-select
-                (ngModelChange)="changeClasses($event, layer)"
-                [items]="usedClasses$ | async"
-                [multiple]="true"
-                [ngModel]="layer.classes"
-                bindLabel="name"
-                bindValue="id"
-                id="map_classes"
-              ></pry-select>
-            </div>
-          </fieldset>
-        </div>
+                      <div *ngIf="['heatmap', 'bubble'].indexOf(layer.type) >= 0">
+                        <div class="m-form-label-field">
+                          <label class="a-label" for="map_intensityAttribute">{{
+                            '@pry.widget.map.intensityAttribute' | i18n
+                          }}</label>
+                          <pry-select
+                            (ngModelChange)="changeIntensityAttributes($event, layer)"
+                            [items]="fields"
+                            [ngModel]="layerHasIntensity(layer).intensityAttribute"
+                            bindLabel="name"
+                            bindValue="name"
+                            id="map_intensityAttribute"
+                          ></pry-select>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </fieldset>
 
-        <fieldset
-          *ngIf="
-            layer.type !== 'relation' &&
-            layer.type !== 'wms' &&
-            layer.type !== 'wmts' &&
-            layer.type !== 'geoserver' &&
-            layer.type !== 'featurelayer' &&
-            layer.type !== 'vectortile' &&
-            layer.type !== 'rastertile'
-          "
-        >
-          <legend class="u-visually-hidden">{{ '@pry.widget.map.locationAttr' | i18n }}</legend>
-          <ng-container
-            *ngIf="
-              layer
-                | geometryFieldsFor : { resultSet: resultSet$, classes: layer.classes, type: layer.type }
-                | async as fields
-            "
-          >
-            <div
-              *ngIf="
-                ['heatmap', 'bubble', 'marker', 'point', 'line', 'polygon', 'multi-line', 'multi-polygon'].indexOf(
-                  layer.type
-                ) >= 0
-              "
-            >
-              <div class="m-form-label-field">
-                <label class="a-label" for="map_locationAttribute_both">{{
-                  '@pry.widget.map.locationAttribute.both' | i18n
-                }}</label>
-                <pry-select
-                  (ngModelChange)="changeLocationAttributes($event, layer)"
-                  [items]="fields"
-                  [ngModel]="layer.attribute"
-                  bindLabel="name"
-                  bindValue="name"
-                  id="map_locationAttribute_both"
-                ></pry-select>
+                  <fieldset
+                    *ngIf="
+                      layer.type === 'wms' ||
+                      layer.type === 'geoserver' ||
+                      layer.type === 'wmts' ||
+                      layer.type === 'featurelayer' ||
+                      layer.type === 'vectortile' ||
+                      layer.type === 'rastertile'
+                    "
+                  >
+                    <ng-container *ngIf="layer.type !== 'geoserver'">
+                      <div class="m-form-label-field">
+                        <label class="a-label" for="map_wms_url">{{ '@pry.widget.map.wms.url' | i18n }}</label>
+                        <input
+                          id="map_wms_url"
+                          class="a-form-field"
+                          type="text"
+                          (input)="changeUrl($event, layer)"
+                          [value]="layer.url"
+                        />
+                      </div>
+                    </ng-container>
+
+                    <div class="m-form-label-field" *ngIf="layer.type === 'wms' || layer.type === 'wmts'">
+                      <label class="a-label" for="map_wms_paramLayer">{{
+                        '@pry.widget.map.wms.paramLayer' | i18n
+                      }}</label>
+                      <input
+                        id="map_wms_paramLayer"
+                        class="a-form-field"
+                        type="text"
+                        (input)="changeParamLayer($event, layer)"
+                        [value]="layer.paramLayer"
+                      />
+                    </div>
+
+                    <div class="m-form-label-field" *ngIf="layer.type === 'wmts'">
+                      <label class="a-label" for="map_wms_matrixSet">{{
+                        '@pry.widget.map.wms.matrixSet' | i18n
+                      }}</label>
+                      <input
+                        id="map_wms_matrixSet"
+                        class="a-form-field"
+                        type="text"
+                        (input)="changeMatrixSet($event, layer)"
+                        [value]="layer.matrixSet"
+                      />
+                    </div>
+
+                    <div class="m-form-label-field" *ngIf="layer.type === 'wmts'">
+                      <label class="a-label" for="map_wms_style">{{ '@pry.widget.map.wms.style' | i18n }}</label>
+                      <input
+                        id="map_wms_style"
+                        class="a-form-field"
+                        type="text"
+                        (input)="changeParamStyle($event, layer)"
+                        [value]="layer.style"
+                      />
+                    </div>
+
+                    <div class="m-form-label-field" *ngIf="layer.type === 'wms' || layer.type === 'geoserver'">
+                      <legend class="u-visually-hidden">{{ '@pry.widget.map.tile' | i18n }}</legend>
+                      <pry-checkbox
+                        (ngModelChange)="changeParamTiled($event, layer)"
+                        [ngModel]="layer?.paramTiled ?? false"
+                      >
+                        {{ '@pry.widget.map.wms.paramTiled' | i18n }}
+                      </pry-checkbox>
+                    </div>
+                  </fieldset>
+
+                  <fieldset *ngIf="layer.type === 'marker'">
+                    <legend class="u-visually-hidden">{{ '@pry.widget.map.clustering' | i18n }}</legend>
+                    <div class="m-form-label-field">
+                      <pry-checkbox (ngModelChange)="changeClustered(layer, $event)" [ngModel]="layer.clustered">
+                        {{ '@pry.widget.map.clustered' | i18n }}
+                      </pry-checkbox>
+                    </div>
+                    <div *ngIf="layer.clustered">
+                      <pry-range
+                        [ngModel]="layer.clustered"
+                        (ngModelChange)="changeClusterDistance(layer, $event)"
+                        labelTranslate="@pry.widget.map.clusterDistance"
+                        min="1"
+                        max="500"
+                      ></pry-range>
+                    </div>
+                  </fieldset>
+
+                  <div class="m-form-label-field" *ngIf="optionsCopy.slide ?? false">
+                    <label class="a-label" for="slide_select">{{ '@pry.widget.map.slide.title' | i18n }}</label>
+                    <pry-select
+                      (ngModelChange)="changeSlide($event, layer)"
+                      [items]="slides"
+                      [ngModel]="layer.slide ?? 'all'"
+                      bindLabel="label"
+                      bindValue="id"
+                      id="slide_select"
+                    ></pry-select>
+                  </div>
+
+                  <div class="m-form-label-field" *ngIf="optionsCopy.attributions">
+                    <label class="a-label" for="attribution">{{ '@pry.widget.map.attribution' | i18n }}</label>
+                    <input
+                      id="attribution"
+                      class="a-form-field"
+                      type="text"
+                      (input)="changeAttribution($event, layer)"
+                      [value]="layer.attribution ? layer.attribution : ''"
+                    />
+                  </div>
+                  <div class="m-form-label-field">
+                    <label class="a-label" for="map_layerType">{{ '@pry.widget.map.order' | i18n }}</label>
+                    <input
+                      id="map_layer_order"
+                      class="a-form-field"
+                      type="number"
+                      (input)="updateOrder($event, layer)"
+                      [value]="layer.order ?? -1"
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-
-            <div *ngIf="['heatmap', 'bubble'].indexOf(layer.type) >= 0">
-              <div class="m-form-label-field">
-                <label class="a-label" for="map_intensityAttribute">{{
-                  '@pry.widget.map.intensityAttribute' | i18n
-                }}</label>
-                <pry-select
-                  (ngModelChange)="changeIntensityAttributes($event, layer)"
-                  [items]="fields"
-                  [ngModel]="layerHasIntensity(layer).intensityAttribute"
-                  bindLabel="name"
-                  bindValue="name"
-                  id="map_intensityAttribute"
-                ></pry-select>
-              </div>
-            </div>
-          </ng-container>
-        </fieldset>
-
-        <fieldset
-          *ngIf="
-            layer.type === 'wms' ||
-            layer.type === 'geoserver' ||
-            layer.type === 'wmts' ||
-            layer.type === 'featurelayer' ||
-            layer.type === 'vectortile' ||
-            layer.type === 'rastertile'
-          "
-        >
-          <ng-container *ngIf="layer.type !== 'geoserver'">
-            <div class="m-form-label-field">
-              <label class="a-label" for="map_wms_url">{{ '@pry.widget.map.wms.url' | i18n }}</label>
-              <input
-                id="map_wms_url"
-                class="a-form-field"
-                type="text"
-                (input)="changeUrl($event, layer)"
-                [value]="layer.url"
-              />
-            </div>
-          </ng-container>
-
-          <div class="m-form-label-field" *ngIf="layer.type === 'wms' || layer.type === 'wmts'">
-            <label class="a-label" for="map_wms_paramLayer">{{ '@pry.widget.map.wms.paramLayer' | i18n }}</label>
-            <input
-              id="map_wms_paramLayer"
-              class="a-form-field"
-              type="text"
-              (input)="changeParamLayer($event, layer)"
-              [value]="layer.paramLayer"
-            />
+            </ng-container>
           </div>
-
-          <div class="m-form-label-field" *ngIf="layer.type === 'wmts'">
-            <label class="a-label" for="map_wms_matrixSet">{{ '@pry.widget.map.wms.matrixSet' | i18n }}</label>
-            <input
-              id="map_wms_matrixSet"
-              class="a-form-field"
-              type="text"
-              (input)="changeMatrixSet($event, layer)"
-              [value]="layer.matrixSet"
-            />
-          </div>
-
-          <div class="m-form-label-field" *ngIf="layer.type === 'wmts'">
-            <label class="a-label" for="map_wms_style">{{ '@pry.widget.map.wms.style' | i18n }}</label>
-            <input
-              id="map_wms_style"
-              class="a-form-field"
-              type="text"
-              (input)="changeParamStyle($event, layer)"
-              [value]="layer.style"
-            />
-          </div>
-
-          <div class="m-form-label-field" *ngIf="layer.type === 'wms' || layer.type === 'geoserver'">
-            <legend class="u-visually-hidden">{{ '@pry.widget.map.tile' | i18n }}</legend>
-            <pry-checkbox (ngModelChange)="changeParamTiled($event, layer)" [ngModel]="layer?.paramTiled ?? false">
-              {{ '@pry.widget.map.wms.paramTiled' | i18n }}
-            </pry-checkbox>
-          </div>
-        </fieldset>
-
-        <fieldset *ngIf="layer.type === 'marker'">
-          <legend class="u-visually-hidden">{{ '@pry.widget.map.clustering' | i18n }}</legend>
-          <div class="m-form-label-field">
-            <pry-checkbox (ngModelChange)="changeClustered(layer, $event)" [ngModel]="layer.clustered">
-              {{ '@pry.widget.map.clustered' | i18n }}
-            </pry-checkbox>
-          </div>
-          <div *ngIf="layer.clustered">
-            <pry-range
-              [ngModel]="layer.clustered"
-              (ngModelChange)="changeClusterDistance(layer, $event)"
-              labelTranslate="@pry.widget.map.clusterDistance"
-              min="1"
-              max="500"
-            ></pry-range>
-          </div>
-        </fieldset>
-
-        <div class="m-form-label-field" *ngIf="optionsCopy.slide ?? false">
-          <label class="a-label" for="slide_select">{{ '@pry.widget.map.slide.title' | i18n }}</label>
-          <pry-select
-            (ngModelChange)="changeSlide($event, layer)"
-            [items]="slides"
-            [ngModel]="layer.slide ?? 'all'"
-            bindLabel="label"
-            bindValue="id"
-            id="slide_select"
-          ></pry-select>
         </div>
-
-        <div class="m-form-label-field" *ngIf="optionsCopy.attributions">
-          <label class="a-label" for="attribution">{{ '@pry.widget.map.attribution' | i18n }}</label>
-          <input
-            id="attribution"
-            class="a-form-field"
-            type="text"
-            (input)="changeAttribution($event, layer)"
-            [value]="layer.attribution ? layer.attribution : ''"
-          />
-        </div>
-
-        <button
-          type="button"
-          (click)="deleteLayer(i, layer)"
-          class="a-btn a-btn--icon-text -link-like"
-          *ngIf="layer.type !== 'geoserver'"
-          data-func="delete"
-        >
-          <pry-icon iconSvg="delete" [width]="19" [height]="19"></pry-icon>
-          <span>{{ '@pry.widget.map.deleteLayer' | i18n }}</span>
-        </button>
       </div>
     </pry-settings>
   </pry-widget-header>
@@ -410,27 +513,60 @@
     >
       <pry-icon iconSvg="layers" [width]="18" [height]="18"></pry-icon>
     </button>
-    <div class="m-map-layer-action__container" [class.-hidden]="!layersTabOpen">
-      <span class="a-h4">{{ '@pry.widget.map.layersTitle' | i18n }}</span>
-      <ng-container *ngFor="let layer of mapLayers; let index = index">
-        <div class="m-map-layer-action__title m-layer-switcher__title" [class.-hidden]="!layersTabOpen">
-          <pry-checkbox
-            *ngIf="!(options$ | async)?.singleLayer; else singleLayer"
-            [ngModel]="layer.getVisible()"
-            (change)="changeVisibility(layer)"
-          ></pry-checkbox>
-          <ng-template #singleLayer>
-            <input
-              type="radio"
-              name="layer"
-              [id]="'radio-layer-' + layer.get('title').split(' ')[0]"
-              [ngModel]="layerVisibleIdx"
-              [value]="index"
-              (change)="changeVisibility(layer)"
-            />
-          </ng-template>
-          {{ layer.get('title') }}
+    <div class="m-map-layer-action__container m-map-layer-action__container--layers" [class.-hidden]="!layersTabOpen">
+      <h4 class="a-h4">{{ '@pry.widget.map.layerSettings.selectLayers' | i18n }}</h4>
+      <ng-container *ngFor="let group of layerGroups$ | async">
+        <div class="m-map-layer-action__title m-layer-switcher__group-title">
+          <h5 class="a-h5">
+            {{ group.name === DEFAULT_LAYER_GROUP ? ('@pry.widget.map.noGroup' | i18n) : group.name }}
+          </h5>
         </div>
+        <ng-container *ngIf="!group.singleLayer; else singleLayer">
+          <ng-container *ngFor="let layer of optionsCopy.layers; let index = index">
+            <ng-container *ngIf="layer.group === group.name">
+              <div class="m-map-layer-action__title m-layer-switcher__title" [class.-hidden]="!layersTabOpen">
+                <pry-checkbox
+                  [ngModel]="isLayerVisible(layer, group)"
+                  (change)="changeVisibility(group, layer)"
+                  id="checkbox-layer-{{ index }}"
+                ></pry-checkbox>
+                <label class="a-label" for="checkbox-layer-{{ index }}">
+                  {{ layer.title ?? ('@pry.widget.map.missingTitle' | i18n) }}
+                </label>
+              </div>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+        <ng-template #singleLayer>
+          <div class="m-layer-switcher--radios">
+            <div class="m-map-layer-action__title m-layer-switcher__title" [class.-hidden]="!layersTabOpen">
+              <input
+                type="radio"
+                [name]="group.name"
+                id="radio-no-layer"
+                [ngModel]="group.visibleLayers.length"
+                [value]="0"
+                (change)="changeVisibility(group)"
+              />
+              <label class="a-label" for="radio-no-layer">{{ '@pry.widget.map.layerSettings.noLayer' | i18n }}</label>
+            </div>
+            <ng-container *ngFor="let layer of optionsCopy.layers; let index = index">
+              <ng-container *ngIf="layer.group === group.name">
+                <div class="m-map-layer-action__title m-layer-switcher__title" [class.-hidden]="!layersTabOpen">
+                  <input
+                    type="radio"
+                    [name]="group.name"
+                    [id]="'radio-layer-' + index"
+                    [ngModel]="group.visibleLayers[0]"
+                    [value]="layer.title"
+                    (change)="changeVisibility(group, layer)"
+                  />
+                  <label class="a-label" for="radio-layer-{{ index }}">{{ layer.title ?? 'MISSING TITLE' }}</label>
+                </div>
+              </ng-container>
+            </ng-container>
+          </div>
+        </ng-template>
       </ng-container>
     </div>
   </div>
@@ -451,7 +587,7 @@
       <pry-icon iconSvg="legend" [width]="18" [height]="15"></pry-icon>
     </button>
     <div class="m-map-layer-action__container" [class.-hidden]="!legendTabOpen">
-      <span class="a-h4">{{ '@pry.widget.map.legendsTitle' | i18n }}</span>
+      <h4 class="a-h4">{{ '@pry.widget.map.legendsTitle' | i18n }}</h4>
       <ng-container *ngFor="let geoLayer of legendLayers$ | async; let index = index">
         <div class="m-map-layer-action__title m-layer-legend__title" (click)="toggleLegend(index)">
           <pry-icon
@@ -461,7 +597,7 @@
             [width]="12"
             [height]="12"
           ></pry-icon>
-          {{ geoLayer.title }}
+          <h5 class="a-h5">{{ geoLayer.title }}</h5>
           <pry-icon
             *ngIf="!isLayerRendered(geoLayer)"
             class="a-tooltip"
@@ -476,14 +612,14 @@
           [class.-hidden]="!legendTabOpen || legendTab !== index || !isLayerRendered(geoLayer)"
           [style.max-height.px]="legendHeight$ | async"
         >
-          <ng-container *ngIf="geoLayer | legendUrl : { capabilities: (wmsCapabilities$ | async) } as url">
+          <ng-container *ngIf="geoLayer | legendUrl: { capabilities: (wmsCapabilities$ | async) } as url">
             <img
               [src]="url | getSecuredImage | async"
-              [alt]="'@pry.widget.map.legend' | i18n : { layer: geoLayer.title }"
+              [alt]="'@pry.widget.map.legend' | i18n: { layer: geoLayer.title }"
               (error)="imageNotProvided[index] = true"
             />
           </ng-container>
-          <ng-container *ngIf="!(geoLayer | legendUrl : { capabilities: (wmsCapabilities$ | async) })">
+          <ng-container *ngIf="!(geoLayer | legendUrl: { capabilities: (wmsCapabilities$ | async) })">
             <p class="m-map-layer-action__error">{{ '@pry.widget.map.legendNotProvided' | i18n }}</p>
           </ng-container>
         </div>

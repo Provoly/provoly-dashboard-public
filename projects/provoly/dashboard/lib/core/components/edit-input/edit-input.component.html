@@ -1,25 +1,30 @@
 <div class="o-pry-edit" [class.-edit]="editMode">
-  <div class="m-form-label-field">
-    <label id="edit-input-label-{{ id }}" for="edit-input-{{ id }}" class="a-label">
-      {{ label | i18n }}
-      <span class="u-visually-hidden">({{ label | i18n }})</span>
-    </label>
-    <div class="m-form-label-field__edit-inline">
-      <p class="m-form-label-field__edit-inline__txtvalue" *ngIf="!editMode">
-        {{ value }}
-      </p>
-      <input
-        id="edit-input-{{ id }}"
-        type="text"
-        class="a-form-field"
-        [ngModel]="value"
-        (ngModelChange)="writeValue($event)"
-        *ngIf="editMode"
-      />
-      <button type="button" class="a-btn a-btn--secondary a-btn--icon-only -circle -size-xs" (click)="toggle()">
-        <pry-icon [width]="16" [height]="16" [iconSvg]="editMode ? 'check' : 'edit'"></pry-icon>
-        <span class="u-visually-hidden">{{ '@pry.theme.editInput.toggle' | i18n }}</span>
-      </button>
-    </div>
+  <label id="edit-input-label-{{ id }}" for="edit-input-{{ id }}" class="a-label">
+    {{ label | i18n }}
+    <span class="u-visually-hidden">({{ label | i18n }})</span>
+  </label>
+  <div class="m-form-label-field__edit-inline" (mouseenter)="showButton = true" (mouseleave)="showButton = false">
+    <p class="m-form-label-field__edit-inline__txtvalue" *ngIf="!editMode">
+      {{ value }}
+    </p>
+    <input
+      *ngIf="editMode"
+      id="edit-input-{{ id }}"
+      type="text"
+      class="a-form-field"
+      [ngModel]="value"
+      (ngModelChange)="writeValue($event)"
+    />
+    <button
+      [class.-button-visible]="showButton || editMode"
+      type="button"
+      class="a-btn a-btn--icon-only -size-xs a-tooltip"
+      (click)="toggle()"
+      [attr.data-tooltip]="editMode ? confirmButtonTooltip : (editButtonTooltip | i18n)"
+      data-tooltip-position="left"
+    >
+      <pry-icon [width]="16" [height]="16" [iconSvg]="editMode ? 'check' : 'edit'"></pry-icon>
+      <span class="u-visually-hidden">{{ '@pry.theme.editInput.toggle' | i18n }}</span>
+    </button>
   </div>
 </div>

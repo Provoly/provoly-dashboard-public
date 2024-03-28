@@ -44,6 +44,7 @@ export interface BaseWidgetMapLayerOptions {
   background?: boolean;
   fit?: boolean;
   slide?: 'left' | 'right' | 'all';
+  group?: string;
 }
 
 export interface MapWidgetHeatMapLayerOptions extends BaseWidgetMapLayerOptions {
@@ -155,5 +156,11 @@ export const widgetMapConfig = {
     'upload'
   ])
 };
+
+export interface LayerGroup {
+  name: string;
+  singleLayer: boolean;
+  visibleLayers: string[];
+}
 
 export const DEFAULT_PROJECTION = 'EPSG:4326';

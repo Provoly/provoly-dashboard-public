@@ -13,6 +13,7 @@ export const enTranslations = {
         layer: 'Layer n°{{index}}',
         layerOptions: 'Layer options',
         layerTitle: 'Layer Label',
+        order: 'Order of the layer',
         layerType: {
           title: 'Type',
           heatmap: 'Heatmap',
@@ -89,7 +90,26 @@ export const enTranslations = {
         zoomIn: 'Zoom In',
         zoomOut: 'Zoom Out',
         slideTitle: 'Displayed data',
-        layerLoadError: 'Error loading in layer data'
+        layerLoadError: 'Error loading in layer data',
+        layerSettings: {
+          title: 'Configure layers',
+          addLayerGroup: 'Add layer group',
+          layerGroupName: 'Layer group title',
+          optionalColon: '',
+          singleLayer: 'Single layer selection',
+          multipleLayer: 'Multi layer selection',
+          unfoldAll: 'Unfold all layers',
+          foldAll: 'Fold all layers',
+          noLayer: 'No layer',
+          selectLayers: 'Select layers to display',
+          group: 'Group',
+          deleteGroup: 'Delete group',
+          deleteLayer: 'Delete layer',
+          editLayerTitle: 'Edit layer title',
+          editGroupName: 'Edit group name'
+        },
+        missingTitle: 'Missing title',
+        noGroup: 'Without group'
       }
     }
   }

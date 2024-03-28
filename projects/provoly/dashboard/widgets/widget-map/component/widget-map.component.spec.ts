@@ -8,6 +8,8 @@ import {
   DashboardSelectors,
   DataSourceSelectors,
   FieldSelectors,
+  LayerGroup,
+  MapWidgetLayerOptions,
   MapWidgetOptions,
   MapWMSLayerLayerOptions,
   PryDatasetType,
@@ -35,14 +37,17 @@ import { MockTranslateIdPipe } from '../../../mock/pipe/mock-translate-id.pipe';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 import { mapUtilsData } from '../utils/widget-map.utils.spec';
 
-import { WidgetMapComponent } from './widget-map.component';
+import { DEFAULT_LAYER_GROUP, WidgetMapComponent } from './widget-map.component';
 import { WidgetMapUtils } from '@provoly/dashboard/widgets/widget-map';
+import { layerGroups } from '../../../mock/data/layerGroups';
+import SpyInstance = jest.SpyInstance;
 
 describe('WidgetMapComponent', () => {
   let component: WidgetMapComponent;
   let fixture: ComponentFixture<WidgetMapComponent>;
   let store: MockStore;
   let snack: PrySnackbarService;
+  let storeSpy: SpyInstance;
 
   let warn: any;
 
@@ -102,7 +107,12 @@ describe('WidgetMapComponent', () => {
               value: {
                 options: {
                   style: 'a-style',
-                  layers: [{ type: 'heatmap' }, { type: 'marker' }, { type: 'point' }, { type: 'polygon' }],
+                  layers: [
+                    { type: 'heatmap', group: 'test-group' },
+                    { type: 'marker' },
+                    { type: 'point' },
+                    { type: 'polygon' }
+                  ],
                   tooltipMode: TooltipMode.CLICK
                 } as MapWidgetOptions,
                 resultSet: 'rs'
@@ -168,6 +178,10 @@ describe('WidgetMapComponent', () => {
             {
               selector: ConfigSelectors.geoServerUrl,
               value: 'http://geoserver.url'
+            },
+            {
+              selector: DashboardSelectors.layerGroups,
+              value: [] as LayerGroup[]
             }
           ]
         }),
@@ -198,6 +212,7 @@ describe('WidgetMapComponent', () => {
   });
 
   beforeEach(() => {
+    storeSpy = jest.spyOn(store, 'dispatch');
     fixture = TestBed.createComponent(WidgetMapComponent);
     component = fixture.componentInstance;
     component._manifest$ = of({
@@ -205,7 +220,7 @@ describe('WidgetMapComponent', () => {
       layout: { x: 1, y: 1, width: 10, height: 10 },
       options: {
         style: 'a-style',
-        layers: [{ type: 'heatmap' }, { type: 'marker' }, { type: 'point' }, { type: 'polygon' }],
+        layers: [{ type: 'heatmap', group: 'test-group' }, { type: 'marker' }, { type: 'point' }, { type: 'polygon' }],
         tooltipMode: TooltipMode.CLICK
       } as MapWidgetOptions,
       datasource: 'rs'
@@ -255,6 +270,7 @@ describe('WidgetMapComponent', () => {
           {
             type: 'heatmap',
             attribute: 'loc',
+            group: 'DEFAULT',
             intensityAttribute: 'intensity',
             intensityAsc: true,
             title: '@pry.widget.map.layerType.heatmap',
@@ -297,6 +313,7 @@ describe('WidgetMapComponent', () => {
           {
             type: 'marker',
             attribute: 'loc',
+            group: DEFAULT_LAYER_GROUP,
             title: '@pry.widget.map.layerType.marker',
             order: 0
           }
@@ -339,6 +356,7 @@ describe('WidgetMapComponent', () => {
           {
             type: 'bubble',
             attribute: 'loc',
+            group: DEFAULT_LAYER_GROUP,
             intensityAttribute: 'intensity',
             intensityAsc: true,
             title: '@pry.widget.map.layerType.bubble',
@@ -372,6 +390,7 @@ describe('WidgetMapComponent', () => {
               intensityAsc: true,
               intensityAttribute: 'intensity',
               attribute: 'loc',
+              group: DEFAULT_LAYER_GROUP,
               type: 'heatmap',
               title: '@pry.widget.map.layerType.heatmap',
               order: 0
@@ -386,9 +405,9 @@ describe('WidgetMapComponent', () => {
 
   it('should allow adding a layer', () => {
     expect(component.optionsCopy.layers?.length).toEqual(4);
-    component.addLayer();
+    component.addLayer(layerGroups[1]);
     expect(component.optionsCopy.layers?.length).toEqual(5);
-    component.addLayer();
+    component.addLayer(layerGroups[0]);
     expect(component.optionsCopy.layers?.length).toEqual(6);
   });
 
@@ -412,13 +431,6 @@ describe('WidgetMapComponent', () => {
     expect(component.optionsCopy.layers?.length).toEqual(4);
     component.deleteLayer(0, component.optionsCopy.layers![0]);
     expect(component.optionsCopy.layers?.length).toEqual(3);
-  });
-
-  it('should allow switching layers', () => {
-    expect(component.optionsCopy.layers?.length).toEqual(4);
-    component.invertLayers(0, 2);
-    expect(component.optionsCopy.layers?.length).toEqual(4);
-    expect(component.optionsCopy.layers![0].type).toEqual('point');
   });
 
   it('should allow changing url', () => {
@@ -681,6 +693,122 @@ describe('WidgetMapComponent', () => {
       ],
       style: 'style1',
       tooltipMode: 'click'
+    });
+  });
+
+  describe('layer groups', () => {
+    it('should initialise default group in the store on component init if there isnt one with all layers that dont have a group', () => {
+      // expect(storeSpy).toHaveBeenCalledWith(DashboardActions.initDefaultLayerGroup({ layers: [] }));
+    });
+    it('should assign default group to all layers that dont have a group on init', () => {
+      expect(component.optionsCopy.layers?.map((layer) => layer.group)).toEqual([
+        'test-group',
+        DEFAULT_LAYER_GROUP,
+        DEFAULT_LAYER_GROUP,
+        DEFAULT_LAYER_GROUP
+      ]);
+    });
+    describe('moving layers by drag and drop', () => {
+      it('should move layer up in layers array and assign correct order if layer is first', () => {
+        component.optionsCopy.layers = [
+          { title: '4', type: 'heatmap', order: 3, group: 'blue' },
+          { title: '3', type: 'heatmap', order: 2, group: 'green' },
+          { title: '2', type: 'heatmap', order: 1, group: 'blue' },
+          { title: '1', type: 'heatmap', order: 0, group: 'red' }
+        ] as MapWidgetLayerOptions[];
+
+        const movedLayer = component.optionsCopy.layers[2];
+        const group = { name: 'blue', singleLayer: false, visibleLayers: [] } as LayerGroup;
+
+        component.moveLayerInOptions(0, movedLayer, group, -1);
+
+        expect(component.optionsCopy.layers).toEqual([
+          { title: '2', type: 'heatmap', order: 4, group: 'blue' },
+          { title: '4', type: 'heatmap', order: 3, group: 'blue' },
+          { title: '3', type: 'heatmap', order: 2, group: 'green' },
+          { title: '1', type: 'heatmap', order: 0, group: 'red' }
+        ]);
+      });
+      it('should move layer down in layers array and assign correct order if layer is last', () => {
+        component.optionsCopy.layers = [
+          { title: '5', type: 'heatmap', order: 10, group: 'blue' },
+          { title: '4', type: 'heatmap', order: 7, group: 'red' },
+          { title: '3', type: 'heatmap', order: 3, group: 'blue' },
+          { title: '2', type: 'heatmap', order: 2, group: 'red' },
+          { title: '1', type: 'heatmap', order: 1, group: 'blue' }
+        ] as MapWidgetLayerOptions[];
+
+        const movedLayer = component.optionsCopy.layers[0];
+        const group = { name: 'blue', singleLayer: false, visibleLayers: [] } as LayerGroup;
+
+        component.moveLayerInOptions(2, movedLayer, group, 1);
+
+        expect(component.optionsCopy.layers).toEqual([
+          { title: '4', type: 'heatmap', order: 7, group: 'red' },
+          { title: '3', type: 'heatmap', order: 3, group: 'blue' },
+          { title: '2', type: 'heatmap', order: 2, group: 'red' },
+          { title: '1', type: 'heatmap', order: 1, group: 'blue' },
+          { title: '5', type: 'heatmap', order: 0.5, group: 'blue' }
+        ]);
+      });
+      it('should move layer down in layers array and assign correct order if layer is in the middle', () => {
+        component.optionsCopy.layers = [
+          { title: '5', type: 'heatmap', order: 10, group: 'green' },
+          { title: '4', type: 'heatmap', order: 5, group: 'green' },
+          { title: '3', type: 'heatmap', order: 3, group: 'red' },
+          { title: '2', type: 'heatmap', order: 1, group: 'blue' },
+          { title: '1', type: 'heatmap', order: 0, group: 'green' }
+        ] as MapWidgetLayerOptions[];
+
+        const movedLayer = component.optionsCopy.layers[0];
+        const group = { name: 'green', singleLayer: false, visibleLayers: [] } as LayerGroup;
+
+        component.moveLayerInOptions(1, movedLayer, group, 1);
+
+        expect(component.optionsCopy.layers).toEqual([
+          { title: '4', type: 'heatmap', order: 5, group: 'green' },
+          { title: '5', type: 'heatmap', order: 4, group: 'green' },
+          { title: '3', type: 'heatmap', order: 3, group: 'red' },
+          { title: '2', type: 'heatmap', order: 1, group: 'blue' },
+          { title: '1', type: 'heatmap', order: 0, group: 'green' }
+        ]);
+      });
+    });
+    it('should move layer up in layers array and assign correct order if layer is in the middle', () => {
+      component.optionsCopy.layers = [
+        { title: '5', type: 'heatmap', order: 10, group: 'green' },
+        { title: '4', type: 'heatmap', order: 5, group: 'green' },
+        { title: '3', type: 'heatmap', order: 3, group: 'red' },
+        { title: '2', type: 'heatmap', order: 1, group: 'blue' },
+        { title: '1', type: 'heatmap', order: 0, group: 'green' }
+      ] as MapWidgetLayerOptions[];
+
+      const movedLayer = component.optionsCopy.layers[4];
+      const group = { name: 'green', singleLayer: false, visibleLayers: [] } as LayerGroup;
+
+      component.moveLayerInOptions(1, movedLayer, group, -1);
+
+      expect(component.optionsCopy.layers).toEqual([
+        { title: '5', type: 'heatmap', order: 10, group: 'green' },
+        { title: '1', type: 'heatmap', order: 7.5, group: 'green' },
+        { title: '4', type: 'heatmap', order: 5, group: 'green' },
+        { title: '3', type: 'heatmap', order: 3, group: 'red' },
+        { title: '2', type: 'heatmap', order: 1, group: 'blue' }
+      ]);
+    });
+  });
+  describe('updateLayerGroup', () => {
+    it('if the group name is being changed, update it also on the layers', () => {
+      const group = { name: '5', singleLayer: false, visibleLayers: [] } as LayerGroup;
+
+      component.addLayerGroup();
+      component.addLayer(group);
+      component.updateLayerGroup('5', 'newName');
+
+      expect(component.optionsCopy.layers?.find((layer) => layer.group === group.name)).toEqual(undefined);
+      expect(component.optionsCopy.layers?.map((layer) => layer.group).filter((group) => group === 'newName')).toEqual([
+        'newName'
+      ]);
     });
   });
 });

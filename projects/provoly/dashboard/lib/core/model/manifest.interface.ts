@@ -6,7 +6,7 @@ import { DetailWidgetOptions } from './widget-detail-manifest.interface';
 import { GraphWidgetOptions } from './widget-graph-manifest.interface';
 import { IframeWidgetOptions } from './widget-iframe-manifest.interface';
 import { ImageWidgetOptions } from './widget-image-manifest.interface';
-import { MapWidgetOptions } from './widget-map-manifest.interface';
+import { LayerGroup, MapWidgetOptions } from './widget-map-manifest.interface';
 import { TableWidgetOptions } from './widget-table-manifest.interface';
 import { TemplateWidgetOptions } from './widget-template-manifest.interface';
 import { TileWidgetOptions } from './widget-tile-manifest.interface';
@@ -71,6 +71,7 @@ export interface GlobalManifest {
   refreshRates?: { [key: string]: number };
   filters?: Filter[];
   html?: string;
+  layerGroups?: LayerGroup[];
 }
 
 export interface WidgetManifest {

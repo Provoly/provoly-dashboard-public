@@ -259,7 +259,8 @@ export const enTranslations = {
     },
     theme: {
       editInput: {
-        toggle: 'Edit'
+        toggle: 'Edit',
+        confirm: 'Confirm'
       },
       previousMonth: 'Previous month',
       nextMonth: 'Next month',

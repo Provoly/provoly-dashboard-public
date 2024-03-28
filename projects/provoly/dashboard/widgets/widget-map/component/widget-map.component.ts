@@ -34,6 +34,7 @@ import {
   GeometricFieldTypes,
   GetCapabilitiesResponse,
   ItemUtils,
+  LayerGroup,
   MapAutoLayerOptions,
   MapFeatureLayerOptions,
   MapGeoServerLayerOptions,
@@ -103,9 +104,11 @@ import TileLayer from 'ol/layer/Tile';
 import WebGLTileLayer from 'ol/layer/WebGLTile';
 import { Attribution, defaults } from 'ol/control';
 import VectorTileLayer from 'ol/layer/VectorTile';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 export const TOOLTIP_PADDING = 15;
 export const NON_MANDATORY_FIT_LAYER_TYPES = ['wms', 'geoserver'];
+export const DEFAULT_LAYER_GROUP = 'DEFAULT';
 
 // Define Lambert Projection
 proj4.defs(
@@ -217,6 +220,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   previousTooltip?: ComponentRef<BaseTooltipComponent>;
   previousTooltipSub?: Subscription;
   popupOverlay?: Overlay;
+  layerGroups$: Observable<LayerGroup[]>;
+  layerSettingsExpandedState: { [key: string]: boolean } = {};
 
   constructor(
     store: Store<any>,
@@ -273,10 +278,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
             return dataSource.sourceType === 'dataset'
               ? dataSource.oClass === classItem.id
               : dataSource.sourceType === 'namedQuery' && 'oClass' in dataSource.request
-              ? dataSource.request.oClass === classItem.id
-              : dataSource.sourceType === 'namedQuery' && 'type' in dataSource.request
-              ? dataSource.request.type === NamedQueryTypes.MONO_CLASS
-              : false;
+                ? dataSource.request.oClass === classItem.id
+                : dataSource.sourceType === 'namedQuery' && 'type' in dataSource.request
+                  ? dataSource.request.type === NamedQueryTypes.MONO_CLASS
+                  : false;
           })
         );
       })
@@ -382,7 +387,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                     subType: geo.field!.type,
                     classes: [ds.oClass],
                     attribute: geo.attr.technicalName
-                  } as MapAutoLayerOptions)
+                  }) as MapAutoLayerOptions
               );
             })
             .flat() as MapAutoLayerOptions[]
@@ -467,8 +472,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           ...geoLayers.filter((layer) => !actualLayerKeys.includes(layer.key))
         ].filter((layer) => !!layer);
 
-        autoOptions.layers.forEach((layer) => {
-          this.setDefaultLayerTitle(layer, capabilities);
+        autoOptions.layers.forEach((layer, index) => {
+          this.setDefaultLayerTitle(layer, index, capabilities);
         });
 
         if (
@@ -529,6 +534,14 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.subscriptions.add(
       this.options$.pipe(filter((opt) => !!opt)).subscribe((options) => {
         this.optionsCopy = JSON.parse(JSON.stringify(options));
+        this.optionsCopy.layers?.forEach(
+          (layer) => (this.layerSettingsExpandedState[layer.title ?? 'MISSING TITLE'] = false)
+        );
+        if (this.optionsCopy.layers && this.optionsCopy.layers.some((layer) => !layer.group))
+          this.optionsCopy.layers = this.optionsCopy.layers.map((layer) => ({
+            ...layer,
+            group: layer.group ?? DEFAULT_LAYER_GROUP
+          }));
       })
     );
 
@@ -617,6 +630,18 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         (options.layers ?? []).map((layer) => !!layer.slide && layer.slide !== 'all').reduce((a, b) => a || b, false)
       )
     );
+
+    this.layerGroups$ = this.store.select(DashboardSelectors.layerGroups);
+    this.store.dispatch(
+      DashboardActions.initDefaultLayerGroup({
+        layers: this.optionsCopy.layers
+          ?.filter((layer) => layer.group === undefined)
+          .map(
+            (layer) =>
+              layer.title ?? this.translateService.instant(`@pry.widget.map.layerType.${layer.type}`, { ...layer })
+          )
+      })
+    );
   }
 
   initInteractionManager() {
@@ -700,7 +725,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         ([resultSet, options, classes, additionalLayers, itemStyles, filters, fields]) =>
           !!resultSet && !!options && !!classes && !!fields
       ),
-      map(([resultSet, options, classes, additionalLayers, itemStyles, filters, fields]) => {
+      withLatestFrom(this.layerGroups$),
+      map(([[resultSet, options, classes, additionalLayers, itemStyles, filters, fields], layerGroups]) => {
         let hasRelationLayer = null as unknown as VectorLayer<VectorSource<any>>;
 
         const layers = (options?.layers || [])
@@ -822,11 +848,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         }
         layers.push(...additionalLayers);
 
-        if (options.singleLayer) {
-          layers.forEach((layer, idx) => {
-            layer.setVisible(idx === 0);
-          });
-        }
+        const visibleLayers = layerGroups.map((group) => group.visibleLayers).flat();
+        layers.forEach((layer, idx) => {
+          if (!visibleLayers.includes(layer.get('title'))) {
+            layer.setVisible(false);
+          }
+        });
 
         /* Resolve bug drawing webgllayer without nothing underneath: add empty layer below */
         const _layers = this.addEmptyWebGlLayerBelowSlideHeatmaps(layers);
@@ -1109,6 +1136,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   setDefaultLayerTitle(
     layer: MapWidgetLayerOptions,
+    index: number,
     capabilities:
       | {
           [p: string]: GetCapabilitiesResponse | null;
@@ -1258,11 +1286,26 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     }
   }
 
-  addLayer() {
+  addLayer(group: LayerGroup) {
     if (!this.optionsCopy.layers) {
       this.optionsCopy.layers = [];
     }
-    this.optionsCopy.layers.push({ attribute: '' } as MapWidgetLayerOptions);
+    const title = this.translateService.instant(`@pry.widget.map.layer`, { index: this.optionsCopy.layers.length + 1 });
+    const order = this.optionsCopy.layers.some((layer) => layer.order)
+      ? Math.max(...this.optionsCopy.layers.map((layer) => layer.order ?? 0)) + 1
+      : this.optionsCopy.layers.length + 1;
+    this.optionsCopy.layers.unshift({
+      attribute: '',
+      group: group.name,
+      title,
+      order,
+      type: 'marker'
+    });
+    this.layerSettingsExpandedState[title] = false;
+
+    this.store.dispatch(
+      DashboardActions.updateLayerGroup({ name: group.name, visibleLayers: [...group.visibleLayers, title] })
+    );
   }
 
   changeLayerType($event: any, i: number) {
@@ -1283,13 +1326,18 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       options.url = options.url ?? '';
     }
     if (['featurelayer', 'vectortile', 'rastertile'].includes(this.optionsCopy.layers[i].type)) {
-      const options = this.optionsCopy.layers[i] as MapFeatureLayerOptions;
+      let options: MapFeatureLayerOptions;
+      options = this.optionsCopy.layers[i] as MapFeatureLayerOptions;
       options.url = options.url ?? '';
     }
   }
 
-  changeTitle($event: any, layer: MapWidgetLayerOptions) {
-    layer.title = $event.currentTarget?.value;
+  changeTitle($event: any, layer: MapWidgetLayerOptions, group: LayerGroup) {
+    const visibleLayers = group.visibleLayers.map((layerTitle) => (layerTitle === layer.title ? $event : layerTitle));
+    this.store.dispatch(DashboardActions.updateLayerGroup({ name: group.name, visibleLayers }));
+    delete this.layerSettingsExpandedState[layer.title!];
+    layer.title = $event;
+    this.layerSettingsExpandedState[$event] = true;
   }
 
   emitManifest() {
@@ -1328,17 +1376,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.optionsCopy?.layers?.splice(i, 1);
     if (layer.type === 'auto') {
       this.optionsCopy.ignoreAutoLayer = [...(this.optionsCopy.ignoreAutoLayer ?? []), layer.key + '-' + layer.subType];
-    }
-  }
-
-  invertLayers(idx: number, idxWith: number) {
-    if (!!this.optionsCopy && !!this.optionsCopy.layers) {
-      const tmpOrder = this.optionsCopy.layers[idxWith].order;
-      this.optionsCopy.layers[idxWith].order = this.optionsCopy.layers[idx].order;
-      this.optionsCopy.layers[idx].order = tmpOrder;
-      const tmpIndex = this.optionsCopy.layers[idxWith];
-      this.optionsCopy.layers[idxWith] = this.optionsCopy.layers[idx];
-      this.optionsCopy.layers[idx] = tmpIndex;
     }
   }
 
@@ -1418,12 +1455,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   isLayerRendered(layer: any) {
     return !!this.getWMSLayers().find((wmsLayer) => wmsLayer.get('title') === layer.title);
-  }
-
-  isLayerVisible(layer: any) {
-    return !!this.getWMSLayers()
-      .find((wmsLayer) => wmsLayer.get('title') === layer.title)
-      ?.getVisible();
   }
 
   getFeatureFromServer(wmsLayers: Layer<any>[], pixel: Pixel) {
@@ -1518,18 +1549,38 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     return this.mapLayers.filter((layer) => layer.get('slide') === 'left');
   }
 
-  changeVisibility(layer: BaseLayer) {
-    if (this.optionsCopy.singleLayer) {
-      this.mapLayers.forEach((layer) => layer.setVisible(false));
-      layer.setVisible(true);
+  changeVisibility(group: LayerGroup, _layer?: MapWidgetLayerOptions) {
+    const olLayer = this.mapLayers.find((layer) => layer.getProperties()['title'] === _layer?.title);
+    if (group.singleLayer) {
+      const groupLayers =
+        this.optionsCopy.layers?.filter((l) => l.group === group.name).map((layer) => layer.title) ?? [];
+
+      this.mapLayers.forEach((layer) => {
+        if (groupLayers.includes(layer.getProperties()['title'])) {
+          layer.setVisible(false);
+        }
+      });
+      olLayer?.setVisible(true);
+
+      _layer
+        ? this.store.dispatch(DashboardActions.updateLayerGroup({ name: group.name, visibleLayers: [_layer.title!] }))
+        : this.store.dispatch(DashboardActions.updateLayerGroup({ name: group.name, visibleLayers: [] }));
     } else {
-      layer.setVisible(!layer.getVisible());
+      olLayer?.setVisible(!olLayer?.getVisible());
+
+      const visibleLayers = group.visibleLayers.includes(_layer?.title!)
+        ? group.visibleLayers.filter((layer) => layer !== _layer?.title)
+        : [...group.visibleLayers, _layer?.title!];
+      this.store.dispatch(DashboardActions.updateLayerGroup({ name: group.name, visibleLayers }));
     }
     this.map.updateSize();
   }
 
-  changeSingleLayer($event: any) {
-    this.optionsCopy.singleLayer = $event;
+  isLayerVisible(layer: MapWidgetLayerOptions, group: LayerGroup) {
+    if (group.visibleLayers) {
+      return group.visibleLayers.includes(layer.title ?? '');
+    }
+    return false;
   }
 
   changeAutoLayer($event: any) {
@@ -1540,7 +1591,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   get layerVisibleIdx() {
-    return this.mapLayers.map((layer, idx) => (layer.getVisible() ? idx : 0)).reduce((a, b) => a + b);
+    return this.mapLayers.map((layer, idx) => (layer.getVisible() ? idx : 0)).reduce((a, b) => a + b) || -1;
   }
 
   override ngOnDestroy() {
@@ -1651,4 +1702,137 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       layer.dispose();
     });
   }
+
+  addLayerGroup() {
+    this.store.dispatch(
+      DashboardActions.addLayerGroup({
+        defaultTitle: this.translateService.instant('@pry.widget.map.layerSettings.group')
+      })
+    );
+  }
+
+  updateLayerGroup(name: string, newName?: string, singleLayer?: boolean, visibleLayers?: string[]) {
+    if (singleLayer !== undefined && visibleLayers !== undefined) {
+      this.store.dispatch(
+        DashboardActions.updateLayerGroup({
+          name,
+          newName,
+          singleLayer,
+          visibleLayers: singleLayer ? [visibleLayers[0]] : visibleLayers
+        })
+      );
+    } else if (name !== newName) {
+      this.store.dispatch(DashboardActions.updateLayerGroup({ name, newName, singleLayer, visibleLayers }));
+      if (newName !== undefined && this.optionsCopy.layers) {
+        this.optionsCopy.layers = this.optionsCopy.layers.map((layer) =>
+          layer.group === name
+            ? {
+                ...layer,
+                group: newName
+              }
+            : layer
+        );
+      }
+    }
+  }
+
+  updateLayerGroupTitle($event: Event, name: string) {
+    this.updateLayerGroup(name, ($event.currentTarget as HTMLInputElement)?.value);
+  }
+
+  deleteLayerGroup(name: string) {
+    this.store.dispatch(DashboardActions.confirmLayerGroupDeletion({ name }));
+  }
+
+  drop(event: CdkDragDrop<MapWidgetLayerOptions[]>, group: LayerGroup): void {
+    // if layer is moved between two groups
+    if (event.previousContainer.id !== event.container.id) {
+      const movedLayer = this.optionsCopy.layers?.find(
+        (layer) => layer.title === (event.item.data as MapWidgetLayerOptions)?.title
+      );
+      if (movedLayer) {
+        // remove it from old group
+        this.store.dispatch(
+          DashboardActions.updateLayerGroup({
+            name: movedLayer.group ?? DEFAULT_LAYER_GROUP,
+            visibleLayers: group?.visibleLayers.filter((layer) => layer !== movedLayer.title)
+          })
+        );
+
+        const newGroup = event.container.element.nativeElement.getAttribute('data-layer-group') ?? DEFAULT_LAYER_GROUP;
+
+        // add it to new group
+        movedLayer.group = newGroup;
+        this.store.dispatch(
+          DashboardActions.updateLayerGroup({
+            name: movedLayer.group ?? DEFAULT_LAYER_GROUP,
+            visibleLayers: movedLayer.title!
+          })
+        );
+      }
+    }
+    const [fromIndex, toIndex] = [event.previousIndex, event.currentIndex];
+    const direction = fromIndex < toIndex ? 1 : -1;
+    this.moveLayerInOptions(event.currentIndex, event.item.data as MapWidgetLayerOptions, group, direction);
+  }
+
+  moveLayerInOptions(
+    targetIdxInGroup: number,
+    movedLayer: MapWidgetLayerOptions,
+    group: LayerGroup,
+    direction: 1 | -1
+  ) {
+    if (this.optionsCopy.layers) {
+      const groupLayers = this.optionsCopy.layers.filter((layer) => layer.group === group.name);
+      // indexes in optionsCopy
+      const fromIndex = this.optionsCopy.layers.findIndex((layer) => layer.title === movedLayer.title);
+      const toIndex = this.optionsCopy.layers.findIndex((layer) => layer.title === groupLayers[targetIdxInGroup].title);
+
+      let newOrder = toIndex;
+      if (toIndex === 0) {
+        newOrder = (this.optionsCopy.layers[toIndex]!.order ?? toIndex) + 1;
+      } else if (toIndex === this.optionsCopy.layers.length - 1) {
+        newOrder = (this.optionsCopy.layers[toIndex]!.order ?? toIndex) / 2;
+      } else {
+        if (direction > 0) {
+          newOrder =
+            ((this.optionsCopy.layers[toIndex]!.order ?? toIndex) +
+              (this.optionsCopy.layers[toIndex + 1]!.order ?? toIndex - 1)) /
+            2;
+        } else {
+          newOrder =
+            ((this.optionsCopy.layers[toIndex]!.order ?? toIndex) +
+              (this.optionsCopy.layers[toIndex - 1]!.order ?? toIndex - 1)) /
+            2;
+        }
+      }
+      this.optionsCopy.layers.splice(fromIndex, 1);
+      this.optionsCopy.layers.splice(toIndex, 0, { ...movedLayer, order: newOrder });
+    }
+  }
+
+  toggleExpandAll(group: LayerGroup) {
+    this.layerSettingsExpandedState[group.name] = !this.layerSettingsExpandedState[group.name];
+    const layersToExpand =
+      this.optionsCopy.layers?.filter((layer) => layer.group === group.name).map((layer) => layer.title) ?? [];
+
+    Object.keys(this.layerSettingsExpandedState).forEach((layer) => {
+      if (layersToExpand.includes(layer))
+        this.layerSettingsExpandedState[layer] = this.layerSettingsExpandedState[group.name];
+    });
+  }
+
+  toggleLayerExpand(layer: MapWidgetLayerOptions, group: LayerGroup) {
+    this.layerSettingsExpandedState[layer.title!] = !this.layerSettingsExpandedState[layer.title!];
+    if (this.layerSettingsExpandedState[layer.title!]) this.layerSettingsExpandedState[group.name] = true;
+    if (group.visibleLayers.every((layerTitle) => !this.layerSettingsExpandedState[layerTitle])) {
+      this.layerSettingsExpandedState[group.name] = false;
+    }
+  }
+
+  updateOrder($event: Event, layer: MapWidgetLayerOptions) {
+    layer.order = +($event.currentTarget as HTMLInputElement)?.value;
+  }
+
+  protected readonly DEFAULT_LAYER_GROUP = DEFAULT_LAYER_GROUP;
 }

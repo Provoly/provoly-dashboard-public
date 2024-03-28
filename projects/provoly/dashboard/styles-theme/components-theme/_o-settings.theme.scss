@@ -48,6 +48,12 @@
         }
       }
 
+      .m-form-label-field {
+        .a-label {
+          font-weight: 700;
+        }
+      }
+
       &__fields {
         border-bottom-color: themed($theme-map, 'color', 'primary', 100);
 

@@ -24,12 +24,12 @@ const currentManifestId = createSelector(manifests, (manifests) => manifests.cur
 const globalManifest = createSelector(
   manifests,
   // @ts-ignore
-  (manifests) => ({ windows: [], ...manifests?.manifest } ?? ({ windows: [] } as GlobalManifest))
+  (manifests) => ({ windows: [], ...manifests?.manifest }) ?? ({ windows: [] } as GlobalManifest)
 );
 const staticManifest = createSelector(
   manifests,
   // @ts-ignore
-  (manifests) => ({ windows: [], ...manifests?.staticManifest } ?? ({ windows: [] } as GlobalManifest))
+  (manifests) => ({ windows: [], ...manifests?.staticManifest }) ?? ({ windows: [] } as GlobalManifest)
 );
 const loading = createSelector(manifests, (manifests) => !!manifests?.loading);
 const refreshRates = createSelector(globalManifest, (manifests) => manifests.refreshRates ?? {});
@@ -148,6 +148,7 @@ const datasourceFilters = createSelector(feature, (state: DashboardState) =>
 const wmsFeatures = createSelector(feature, (state: DashboardState) => state?.wmsFeatures);
 const displayOptions = createSelector(feature, (state: DashboardState) => state?.display ?? BASE_DISPLAY_OPTIONS);
 const capabilities = createSelector(feature, (state: DashboardState) => state?.capabilities);
+const layerGroups = createSelector(feature, (state: DashboardState) => state?.manifests.manifest.layerGroups ?? []);
 
 export const DashboardSelectors = {
   feature,
@@ -185,5 +186,6 @@ export const DashboardSelectors = {
   datasourceFilters,
   wmsFeatures,
   displayOptions,
-  capabilities
+  capabilities,
+  layerGroups
 };

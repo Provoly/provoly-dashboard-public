@@ -7,6 +7,7 @@ import {
   BaseWidgetModule,
   PryCoreModule,
   PryDashboardModule,
+  PryEditInputModule,
   PryI18nModule,
   PryI18nService,
   PryIconModule,
@@ -22,6 +23,7 @@ import { frTranslations } from './i18n/fr.translations';
 import { GeometryFieldsForPipe } from './pipe/widget-map-geometry-fields-for.pipe';
 import { WidgetMapLegendUrlPipe } from './pipe/widget-map-legend-url.pipe';
 import { PryWidgetMapCssComponent } from './style/css.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 const components = [WidgetMapComponent, GeometryFieldsForPipe, PryWidgetMapCssComponent, WidgetMapLegendUrlPipe];
 
@@ -39,7 +41,9 @@ const components = [WidgetMapComponent, GeometryFieldsForPipe, PryWidgetMapCssCo
     PryToggleModule,
     PryOverlayModule,
     PryI18nModule,
-    PryRangeModule
+    PryRangeModule,
+    PryEditInputModule,
+    DragDropModule
   ],
   exports: [...components]
 })

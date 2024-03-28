@@ -118,9 +118,9 @@ export class DashboardEffects {
           mergeMap((manifest) => {
             return action.type === DashboardActions.loadAndActivateManifest.type
               ? [
-                  DashboardActions.updateManifestAfterFetch({ manifest, manifestId: action.id, selectedIds }),
-                  DashboardActions.followManifestRoute()
-                ]
+                DashboardActions.updateManifestAfterFetch({ manifest, manifestId: action.id, selectedIds }),
+                DashboardActions.followManifestRoute()
+              ]
               : [DashboardActions.updateManifestWithoutActivation({ manifest, manifestId: action.id, selectedIds })];
           })
         )
@@ -239,7 +239,7 @@ export class DashboardEffects {
                 resultSet.datasetId !== '' &&
                 (!resultSets[resultSet.datasetId] ||
                   resultSetsParams[resultSet.datasetId] !==
-                    this.searchService.getItemsSerializedParams(resultSet.datasetId, quickOrder))
+                  this.searchService.getItemsSerializedParams(resultSet.datasetId, quickOrder))
             )
             .map((resultSet) =>
               SearchActions.getDatasourceItems({
@@ -845,6 +845,32 @@ export class DashboardEffects {
         )
       )
     )
+  );
+
+  confirmLayerGroupDeletion$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(DashboardActions.confirmLayerGroupDeletion),
+        tap((action) => {
+          const data: PryDialogConfirmData = {
+            title: '@pry.widget.map.layerSettings.confirmDelete',
+            actions: [
+              {
+                id: 0,
+                label: '@pry.toolbox.manifest.validate',
+                actions: [DashboardActions.deleteLayerGroup({ name: action.name })]
+              },
+              {
+                id: 1,
+                label: '@pry.toolbox.manifest.close',
+                color: 'secondary'
+              }
+            ]
+          };
+          this.pryDialog.open(PryDialogConfirmComponent, { data });
+        })
+      ),
+    { dispatch: false }
   );
 
   constructor(
