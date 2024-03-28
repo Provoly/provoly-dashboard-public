@@ -109,6 +109,6 @@ export class WidgetTemplateComponent extends DataWidgetComponent {
 
   changeCss($event: Event) {
     // @ts-ignore
-    this.optionsCopy.html = $event.currentTarget.value;
+    this.optionsCopy.css = $event.currentTarget.value;
   }
 }
