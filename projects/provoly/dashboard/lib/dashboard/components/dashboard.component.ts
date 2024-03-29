@@ -55,6 +55,7 @@ import { solveCollisions } from './solve-collisions.function';
 import { SubscriptionnerDirective } from './subscriptionner.directive';
 import { WidgetInstanciatorComponent } from './widgets/widget-instanciator/widget-instanciator.component';
 import { SearchSelectors } from '../../core/store/search/search.selectors';
+import { DataSourceSelectors } from '../../core/store/data-source/data-source.selectors';
 
 export const MIME_TYPE_WIDGET_MANIFEST = 'application/widget-manifest';
 export const MIME_TYPE_WIDGET_TYPE = 'application/widget-type-';
@@ -137,7 +138,11 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
   private confirmRemoveRef?: OverlayRef;
   Array: any;
 
-  constructor(private store: Store<any>, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
+  constructor(
+    private store: Store<any>,
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef
+  ) {
     super();
     this.loading$ = this.store.select(DashboardSelectors.loading);
     this.dataFetching$ = this.store.select(SearchSelectors.searchLoading).pipe(delay(10));
@@ -215,9 +220,13 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
     );
 
     this.subscriptions.add(
-      this.windowManifest$.subscribe(() => {
-        this.store.dispatch(DashboardActions.assertResultSets({}));
-      })
+      combineLatest([this.windowManifest$, this.store.select(DataSourceSelectors.getDataSources)]).subscribe(
+        ([manifest, datasets]) => {
+          if (datasets.length > 0) {
+            this.store.dispatch(DashboardActions.assertResultSets({}));
+          }
+        }
+      )
     );
 
     this.store.dispatch(FieldActions.load());
