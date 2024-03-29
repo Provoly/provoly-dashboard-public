@@ -350,8 +350,15 @@ describe('FilterSettingsComponent', () => {
       'EQUALS',
       'NOT_EQUALS',
       'CONTAINS',
+      'I_CONTAINS',
       'START_WITH',
       'END_WITH'
+    ]);
+
+    component.currentFilterComponentType$.next('autocomplete');
+    expect(component.currentOperators$.value.map((operator) => operator.value)).toEqual([
+      'CONTAINS',
+      'I_CONTAINS'
     ]);
   });
 

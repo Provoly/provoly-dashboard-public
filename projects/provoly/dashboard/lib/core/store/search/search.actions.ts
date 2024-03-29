@@ -28,7 +28,7 @@ export const SearchActions = {
     '[Dashboard] (bus) get possible filter values',
     props<{
       filterId: string;
-      attributes: { id: string; technicalName: string; label: string; datasource: string }[];
+      attributes: { id: string; datasource: string }[];
       limit: number;
     }>()
   ),

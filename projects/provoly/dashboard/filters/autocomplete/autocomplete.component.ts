@@ -49,7 +49,9 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
       this.store.dispatch(
         SearchActions.getPossibleFilterValues({
           filterId: this.filter?.id ?? '',
-          attributes: this.filter?.attributes as Omit<Attribute, 'customId'>[],
+          attributes: (this.filter?.attributes as Omit<Attribute, 'customId'>[]).filter(
+            (a) => !!a.datasource && !!a.id
+          ),
           limit: this.filter?.limit ?? 10
         })
       );

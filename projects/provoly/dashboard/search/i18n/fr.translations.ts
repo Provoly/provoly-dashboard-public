@@ -42,7 +42,8 @@ export const frTranslations = {
         removeGroup: 'Supprimer un sous-groupe'
       },
       operator: {
-        contains: 'Contient',
+        contains: 'Contient (sensible à la casse)',
+        containsCaseInsensitive: 'Contient (pas sensible à la casse)',
         startWith: 'Commence par',
         endWith: 'Fini par',
         notEqualsString: 'Différent de',

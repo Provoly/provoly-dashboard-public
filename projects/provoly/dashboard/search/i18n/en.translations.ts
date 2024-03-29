@@ -42,9 +42,10 @@ export const enTranslations = {
         removeGroup: 'Remove nested group'
       },
       operator: {
-        contains: 'Contain',
-        startWith: 'Start with',
-        endWith: 'End with',
+        contains: 'Contains (case sensitive)',
+        containsCaseInsensitive: 'Contains (case insensitive)',
+        startWith: 'Starts with',
+        endWith: 'Ends with',
         notEqualsString: 'Different from',
         notEqualsNumber: 'Different from',
         equalsString: 'Match',

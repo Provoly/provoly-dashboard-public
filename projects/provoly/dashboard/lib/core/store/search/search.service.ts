@@ -121,8 +121,6 @@ export class SearchService {
     attributes:
       | {
           id: string;
-          technicalName: string;
-          label: string;
           datasource: string;
         }[]
       | undefined,

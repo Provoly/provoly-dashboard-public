@@ -66,6 +66,7 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
     { label: '@pry.search.operator.equalsString', value: 'EQUALS' },
     { label: '@pry.search.operator.notEqualsString', value: 'NOT_EQUALS' },
     { label: '@pry.search.operator.contains', value: 'CONTAINS' },
+    { label: '@pry.search.operator.containsCaseInsensitive', value: 'I_CONTAINS' },
     { label: '@pry.search.operator.startWith', value: 'START_WITH' },
     { label: '@pry.search.operator.endWith', value: 'END_WITH' },
     { label: '@pry.search.operator.greaterThanNumber', value: 'GREATER_THAN' },
@@ -241,7 +242,10 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
         this.filter.operator = 'EQUALS';
         break;
       case 'autocomplete':
-        this.filter.operator = 'CONTAINS';
+        this.filter.operator = 'I_CONTAINS';
+        break;
+      case 'text':
+        this.filter.operator = 'I_CONTAINS';
         break;
       default:
         this.filter.operator = this.filter.operator;
@@ -320,9 +324,9 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
         case 'number':
           return ['EQUALS', 'NOT_EQUALS', 'GREATER_THAN', 'LOWER_THAN'].includes(operator.value);
         case 'text':
-          return ['CONTAINS', 'EQUALS', 'NOT_EQUALS', 'START_WITH', 'END_WITH'].includes(operator.value);
+          return ['I_CONTAINS', 'CONTAINS', 'EQUALS', 'NOT_EQUALS', 'START_WITH', 'END_WITH'].includes(operator.value);
         case 'autocomplete':
-          return ['CONTAINS'].includes(operator.value);
+          return ['I_CONTAINS', 'CONTAINS'].includes(operator.value);
         default:
           return operator;
       }

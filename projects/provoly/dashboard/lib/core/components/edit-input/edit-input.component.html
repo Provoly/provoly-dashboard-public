@@ -20,7 +20,7 @@
       type="button"
       class="a-btn a-btn--icon-only -size-xs a-tooltip"
       (click)="toggle()"
-      [attr.data-tooltip]="editMode ? confirmButtonTooltip : (editButtonTooltip | i18n)"
+      [attr.data-tooltip]="(editMode ? confirmButtonTooltip : editButtonTooltip) | i18n"
       data-tooltip-position="left"
     >
       <pry-icon [width]="16" [height]="16" [iconSvg]="editMode ? 'check' : 'edit'"></pry-icon>
