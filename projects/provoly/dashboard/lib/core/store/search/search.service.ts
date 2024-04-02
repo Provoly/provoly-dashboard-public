@@ -23,7 +23,10 @@ export class SearchService {
   filters: { [datasource: string]: FilterContext[] } = {};
   limits: { [p: string]: number } = {};
 
-  constructor(private httpClient: HttpClient, private store: Store<ConfigState | SearchState>) {
+  constructor(
+    private httpClient: HttpClient,
+    private store: Store<ConfigState | SearchState>
+  ) {
     store.select(DashboardSelectors.datasourceFilters).subscribe((filters) => {
       this.filters = filters;
     });
@@ -56,7 +59,10 @@ export class SearchService {
       this.filters[id]
         .filter((filter) => filter.value !== null && filter.value !== undefined)
         .forEach((filter) => {
-          params = params.append('filter', `${filter.attribute},${filter.operator},${filter.value}`);
+          params = params.append(
+            'filter',
+            `${filter.attribute},${filter.operator},${encodeURIComponent(filter.value!.toString())}`
+          );
         });
     }
     if (includeLimit) {
