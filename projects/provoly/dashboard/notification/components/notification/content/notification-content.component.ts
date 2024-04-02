@@ -40,7 +40,7 @@ export class PryNotificationContentComponent implements DoCheck, AfterViewInit {
 
   ngAfterViewInit() {
     if (!this.open) {
-      this.button.nativeElement.focus();
+      this.button?.nativeElement.focus();
     }
   }
 
