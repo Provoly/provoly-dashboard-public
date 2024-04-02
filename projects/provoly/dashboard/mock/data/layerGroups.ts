@@ -3,18 +3,18 @@ import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 export const layerGroups: LayerGroup[] = [
   {
-    name: 'group1',
+    name: 'red',
     singleLayer: false,
     visibleLayers: []
   },
   {
-    name: 'group2',
+    name: 'green',
     singleLayer: false,
     visibleLayers: []
   },
   {
-    name: 'group3',
+    name: 'blue',
     singleLayer: false,
     visibleLayers: []
   }
-]
+];

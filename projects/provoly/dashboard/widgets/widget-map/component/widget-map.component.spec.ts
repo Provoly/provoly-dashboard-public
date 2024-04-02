@@ -181,7 +181,7 @@ describe('WidgetMapComponent', () => {
             },
             {
               selector: DashboardSelectors.layerGroups,
-              value: [] as LayerGroup[]
+              value: [...layerGroups] as LayerGroup[]
             }
           ]
         }),
@@ -429,7 +429,7 @@ describe('WidgetMapComponent', () => {
 
   it('should allow deleting a layer', () => {
     expect(component.optionsCopy.layers?.length).toEqual(4);
-    component.deleteLayer(0, component.optionsCopy.layers![0]);
+    component.deleteLayer(0, component.optionsCopy.layers![0], layerGroups[0]);
     expect(component.optionsCopy.layers?.length).toEqual(3);
   });
 
@@ -709,7 +709,7 @@ describe('WidgetMapComponent', () => {
       ]);
     });
     describe('moving layers by drag and drop', () => {
-      it('should move layer up in layers array and assign correct order if layer is first', () => {
+      it('should move layer to the start of layer array and reassign orders (orders sorted by group order in store)', () => {
         component.optionsCopy.layers = [
           { title: '1', type: 'heatmap', order: 1, group: 'blue' },
           { title: '2', type: 'heatmap', order: 2, group: 'blue' },
@@ -720,38 +720,38 @@ describe('WidgetMapComponent', () => {
         const movedLayer = component.optionsCopy.layers[3];
         const group = { name: 'blue', singleLayer: false, visibleLayers: [] } as LayerGroup;
 
-        component.moveLayerInOptions(0, movedLayer, group, -1);
+        component.moveLayerInOptions(0, movedLayer, group);
 
         expect(component.optionsCopy.layers).toEqual([
-          { title: '4', type: 'heatmap', order: 0.5, group: 'blue' },
-          { title: '1', type: 'heatmap', order: 1, group: 'blue' },
-          { title: '2', type: 'heatmap', order: 2, group: 'blue' },
-          { title: '3', type: 'heatmap', order: 3, group: 'green' }
+          { title: '4', type: 'heatmap', order: 2, group: 'blue' },
+          { title: '1', type: 'heatmap', order: 3, group: 'blue' },
+          { title: '2', type: 'heatmap', order: 4, group: 'blue' },
+          { title: '3', type: 'heatmap', order: 1, group: 'green' }
         ]);
       });
-      it('should move layer down in layers array and assign correct order if layer is last', () => {
+      it('should move layer to the end of layer array and reassign orders (orders sorted by group order in store)', () => {
         component.optionsCopy.layers = [
           { title: '1', type: 'heatmap', order: 1, group: 'blue' },
           { title: '2', type: 'heatmap', order: 2, group: 'red' },
           { title: '3', type: 'heatmap', order: 3, group: 'blue' },
-          { title: '4', type: 'heatmap', order: 7, group: 'red' },
-          { title: '5', type: 'heatmap', order: 10, group: 'blue' }
+          { title: '4', type: 'heatmap', order: 4, group: 'red' },
+          { title: '5', type: 'heatmap', order: 5, group: 'blue' }
         ] as MapWidgetLayerOptions[];
 
         const movedLayer = component.optionsCopy.layers[0];
         const group = { name: 'blue', singleLayer: false, visibleLayers: [] } as LayerGroup;
 
-        component.moveLayerInOptions(2, movedLayer, group, 1);
+        component.moveLayerInOptions(2, movedLayer, group);
 
         expect(component.optionsCopy.layers).toEqual([
-          { title: '2', type: 'heatmap', order: 2, group: 'red' },
+          { title: '2', type: 'heatmap', order: 1, group: 'red' },
           { title: '3', type: 'heatmap', order: 3, group: 'blue' },
-          { title: '4', type: 'heatmap', order: 7, group: 'red' },
-          { title: '5', type: 'heatmap', order: 10, group: 'blue' },
-          { title: '1', type: 'heatmap', order: 11, group: 'blue' }
+          { title: '4', type: 'heatmap', order: 2, group: 'red' },
+          { title: '5', type: 'heatmap', order: 4, group: 'blue' },
+          { title: '1', type: 'heatmap', order: 5, group: 'blue' }
         ]);
       });
-      it('should move layer down in layers array and assign correct order if layer is in the middle', () => {
+      it('should move layer down and reassign orders (orders sorted by group order in store)', () => {
         component.optionsCopy.layers = [
           { title: '1', type: 'heatmap', order: 0, group: 'green' },
           { title: '2', type: 'heatmap', order: 1, group: 'blue' },
@@ -763,37 +763,38 @@ describe('WidgetMapComponent', () => {
         const movedLayer = component.optionsCopy.layers[0];
         const group = { name: 'green', singleLayer: false, visibleLayers: [] } as LayerGroup;
 
-        component.moveLayerInOptions(1, movedLayer, group, 1);
+        component.moveLayerInOptions(1, movedLayer, group);
 
         expect(component.optionsCopy.layers).toEqual([
-          { title: '2', type: 'heatmap', order: 1, group: 'blue' },
-          { title: '3', type: 'heatmap', order: 3, group: 'red' },
-          { title: '4', type: 'heatmap', order: 5, group: 'green' },
-          { title: '1', type: 'heatmap', order: 7.5, group: 'green' },
-          { title: '5', type: 'heatmap', order: 10, group: 'green' }
+          { title: '2', type: 'heatmap', order: 5, group: 'blue' },
+          { title: '3', type: 'heatmap', order: 1, group: 'red' },
+          { title: '4', type: 'heatmap', order: 2, group: 'green' },
+          { title: '1', type: 'heatmap', order: 3, group: 'green' },
+          { title: '5', type: 'heatmap', order: 4, group: 'green' }
         ]);
       });
     });
-    it('should move layer up in layers array and assign correct order if layer is in the middle', () => {
+    it('should move layer up and reassign orders (orders sorted by group order in store)', () => {
       component.optionsCopy.layers = [
-        { title: '1', type: 'heatmap', order: 0, group: 'green' },
-        { title: '2', type: 'heatmap', order: 1, group: 'blue' },
+        { title: '1', type: 'heatmap', order: 1, group: 'red' },
+        { title: '2', type: 'heatmap', order: 2, group: 'green' },
         { title: '3', type: 'heatmap', order: 3, group: 'red' },
-        { title: '4', type: 'heatmap', order: 5, group: 'green' },
-        { title: '5', type: 'heatmap', order: 10, group: 'green' }
+        { title: '4', type: 'heatmap', order: 4, group: 'green' },
+        { title: '5', type: 'heatmap', order: 5, group: 'blue' }
       ] as MapWidgetLayerOptions[];
 
-      const movedLayer = component.optionsCopy.layers[4];
+      const movedLayer = component.optionsCopy.layers[3];
       const group = { name: 'green', singleLayer: false, visibleLayers: [] } as LayerGroup;
 
-      component.moveLayerInOptions(1, movedLayer, group, -1);
+      component.moveLayerBetweenGroups(movedLayer, group.name);
+      component.moveLayerInOptions(0, movedLayer, group);
 
       expect(component.optionsCopy.layers).toEqual([
-        { title: '1', type: 'heatmap', order: 0, group: 'green' },
-        { title: '2', type: 'heatmap', order: 1, group: 'blue' },
-        { title: '3', type: 'heatmap', order: 3, group: 'red' },
-        { title: '5', type: 'heatmap', order: 4, group: 'green' },
-        { title: '4', type: 'heatmap', order: 5, group: 'green' }
+        { title: '1', type: 'heatmap', order: 1, group: 'red' },
+        { title: '4', type: 'heatmap', order: 3, group: 'green' },
+        { title: '2', type: 'heatmap', order: 4, group: 'green' },
+        { title: '3', type: 'heatmap', order: 2, group: 'red' },
+        { title: '5', type: 'heatmap', order: 5, group: 'blue' }
       ]);
     });
   });

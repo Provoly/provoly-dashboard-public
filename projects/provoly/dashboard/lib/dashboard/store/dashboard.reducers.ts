@@ -830,13 +830,13 @@ const internalReducer = createReducer<DashboardState>(
             group.name === action.name
               ? {
                   ...group,
-                  name: action.newName ?? group.name,
-                  singleLayer: action.singleLayer ?? group.singleLayer,
                   visibleLayers: action.visibleLayers
                     ? typeof action.visibleLayers === 'string'
                       ? [...group.visibleLayers, action.visibleLayers]
                       : action.visibleLayers
-                    : group.visibleLayers
+                    : group.visibleLayers,
+                  name: action.newName ?? group.name,
+                  singleLayer: action.singleLayer ?? group.singleLayer
                 }
               : group
           )

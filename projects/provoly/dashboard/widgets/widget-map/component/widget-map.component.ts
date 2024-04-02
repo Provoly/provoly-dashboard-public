@@ -1297,14 +1297,11 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       this.optionsCopy.layers = [];
     }
     const title = this.translateService.instant(`@pry.widget.map.layer`, { index: this.optionsCopy.layers.length + 1 });
-    const order = this.optionsCopy.layers.some((layer) => layer.order)
-      ? Math.max(...this.optionsCopy.layers.map((layer) => layer.order ?? 0)) + 1
-      : this.optionsCopy.layers.length + 1;
+
     this.optionsCopy.layers.push({
       attribute: '',
       group: group.name,
       title,
-      order,
       type: 'marker'
     });
     this.layerSettingsExpandedState[title] = false;
@@ -1312,6 +1309,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.store.dispatch(
       DashboardActions.updateLayerGroup({ name: group.name, visibleLayers: [...group.visibleLayers, title] })
     );
+    this.updateLayerOrder();
   }
 
   changeLayerType($event: any, i: number) {
@@ -1379,8 +1377,14 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     specificLayer.classes = $event;
   }
 
-  deleteLayer(i: number, layer: MapWidgetLayerOptions) {
+  deleteLayer(i: number, layer: MapWidgetLayerOptions, group: LayerGroup) {
     this.optionsCopy?.layers?.splice(i, 1);
+    this.updateLayerGroup(
+      group.name,
+      undefined,
+      undefined,
+      group.visibleLayers.filter((l) => l !== layer.title)
+    );
     this.removeEmptyLayerGroups();
     if (layer.type === 'auto') {
       this.optionsCopy.ignoreAutoLayer = [...(this.optionsCopy.ignoreAutoLayer ?? []), layer.key + '-' + layer.subType];
@@ -1753,47 +1757,43 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   deleteLayerGroup(name: string) {
     this.store.dispatch(DashboardActions.confirmLayerGroupDeletion({ name }));
+    this.optionsCopy.layers = this.optionsCopy.layers?.filter((layer) => layer.group !== name);
   }
 
   drop(event: CdkDragDrop<MapWidgetLayerOptions[]>, group: LayerGroup): void {
-    // if layer is moved between two groups
+    const movedLayer = event.item.data as MapWidgetLayerOptions;
     if (event.previousContainer.id !== event.container.id) {
-      const movedLayer = this.optionsCopy.layers?.find(
-        (layer) => layer.title === (event.item.data as MapWidgetLayerOptions)?.title
+      this.moveLayerBetweenGroups(
+        movedLayer,
+        event.container.element.nativeElement.getAttribute('data-layer-group') ?? DEFAULT_LAYER_GROUP
       );
-      if (movedLayer) {
-        // remove it from old group
-        this.store.dispatch(
-          DashboardActions.updateLayerGroup({
-            name: movedLayer.group ?? DEFAULT_LAYER_GROUP,
-            visibleLayers: group?.visibleLayers.filter((layer) => layer !== movedLayer.title)
-          })
-        );
-
-        const newGroup = event.container.element.nativeElement.getAttribute('data-layer-group') ?? DEFAULT_LAYER_GROUP;
-
-        // add it to new group
-        movedLayer.group = newGroup;
-        this.store.dispatch(
-          DashboardActions.updateLayerGroup({
-            name: movedLayer.group ?? DEFAULT_LAYER_GROUP,
-            visibleLayers: movedLayer.title!
-          })
-        );
-      }
-      this.removeEmptyLayerGroups();
     }
-    const [fromIndex, toIndex] = [event.previousIndex, event.currentIndex];
-    const direction = fromIndex < toIndex ? 1 : -1;
-    this.moveLayerInOptions(event.currentIndex, event.item.data as MapWidgetLayerOptions, group, direction);
+    this.moveLayerInOptions(event.currentIndex, event.item.data as MapWidgetLayerOptions, group);
   }
 
-  moveLayerInOptions(
-    targetIdxInGroup: number,
-    movedLayer: MapWidgetLayerOptions,
-    group: LayerGroup,
-    direction: 1 | -1
-  ) {
+  moveLayerBetweenGroups(movedLayer: MapWidgetLayerOptions, newGroup: string) {
+    // remove it from old group
+    this.store.dispatch(
+      DashboardActions.updateLayerGroup({
+        name: movedLayer.group!,
+        visibleLayers: this.layerGroups
+          ?.find((group) => group.name === movedLayer.group!)
+          ?.visibleLayers.filter((layer) => layer !== movedLayer.title)
+      })
+    );
+
+    // add it to new group
+    movedLayer.group = newGroup;
+    this.store.dispatch(
+      DashboardActions.updateLayerGroup({
+        name: newGroup ?? DEFAULT_LAYER_GROUP,
+        visibleLayers: movedLayer.title!
+      })
+    );
+    this.removeEmptyLayerGroups();
+  }
+
+  moveLayerInOptions(targetIdxInGroup: number, movedLayer: MapWidgetLayerOptions, group: LayerGroup) {
     if (this.optionsCopy.layers) {
       const groupLayers = this.optionsCopy.layers.filter((layer) => layer.group === group.name);
       // indexes in optionsCopy
@@ -1801,25 +1801,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       const toIndex = this.optionsCopy.layers.findIndex((layer) => layer.title === groupLayers[targetIdxInGroup].title);
 
       let newOrder = toIndex;
-      if (toIndex === 0) {
-        newOrder = (this.optionsCopy.layers[toIndex]!.order ?? toIndex) / 2;
-      } else if (toIndex === this.optionsCopy.layers.length - 1) {
-        newOrder = (this.optionsCopy.layers[toIndex]!.order ?? toIndex) + 1;
-      } else {
-        if (direction > 0) {
-          newOrder =
-            ((this.optionsCopy.layers[toIndex]!.order ?? toIndex) +
-              (this.optionsCopy.layers[toIndex + 1]!.order ?? toIndex - 1)) /
-            2;
-        } else {
-          newOrder =
-            ((this.optionsCopy.layers[toIndex]!.order ?? toIndex) +
-              (this.optionsCopy.layers[toIndex - 1]!.order ?? toIndex - 1)) /
-            2;
-        }
-      }
       this.optionsCopy.layers.splice(fromIndex, 1);
       this.optionsCopy.layers.splice(toIndex, 0, { ...movedLayer, order: newOrder });
+      this.updateLayerOrder();
     }
   }
 
@@ -1842,8 +1826,14 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     }
   }
 
-  updateOrder($event: Event, layer: MapWidgetLayerOptions) {
-    layer.order = +($event.currentTarget as HTMLInputElement)?.value;
+  updateLayerOrder() {
+    let order = 1;
+    this.layerGroups?.forEach((group) => {
+      const groupLayers = this.optionsCopy.layers?.filter((layer) => layer.group === group.name);
+      if (groupLayers) {
+        groupLayers.forEach((layer) => (layer.order = order++));
+      }
+    });
   }
 
   isGroupUsedByWidgetLayers(group: LayerGroup) {
