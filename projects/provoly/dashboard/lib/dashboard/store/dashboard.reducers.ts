@@ -809,12 +809,12 @@ const internalReducer = createReducer<DashboardState>(
       manifest: {
         ...state.manifests.manifest,
         layerGroups: [
+          ...(state.manifests.manifest.layerGroups ?? []),
           {
             name: action.defaultTitle + ' ' + ((state.manifests.manifest.layerGroups?.length ?? 0) + 1).toString(),
             singleLayer: false,
             visibleLayers: [] as string[]
-          },
-          ...(state.manifests.manifest.layerGroups ?? [])
+          }
         ]
       }
     }

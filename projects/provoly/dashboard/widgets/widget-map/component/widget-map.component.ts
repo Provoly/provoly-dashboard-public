@@ -221,6 +221,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   previousTooltipSub?: Subscription;
   popupOverlay?: Overlay;
   layerGroups$: Observable<LayerGroup[]>;
+  layerGroups: LayerGroup[] = [];
   layerSettingsExpandedState: { [key: string]: boolean } = {};
 
   constructor(
@@ -632,6 +633,11 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     );
 
     this.layerGroups$ = this.store.select(DashboardSelectors.layerGroups);
+    this.subscriptions.add(
+      this.layerGroups$.subscribe((layerGroups) => {
+        this.layerGroups = layerGroups;
+      })
+    );
     this.store.dispatch(
       DashboardActions.initDefaultLayerGroup({
         layers: this.optionsCopy.layers
@@ -1341,6 +1347,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   emitManifest() {
+    this.removeEmptyLayerGroups();
     this.manifestModified.emit({
       widgetIndex: this.widgetIndex,
       manifest: {
@@ -1374,6 +1381,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   deleteLayer(i: number, layer: MapWidgetLayerOptions) {
     this.optionsCopy?.layers?.splice(i, 1);
+    this.removeEmptyLayerGroups();
     if (layer.type === 'auto') {
       this.optionsCopy.ignoreAutoLayer = [...(this.optionsCopy.ignoreAutoLayer ?? []), layer.key + '-' + layer.subType];
     }
@@ -1709,6 +1717,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         defaultTitle: this.translateService.instant('@pry.widget.map.layerSettings.group')
       })
     );
+
+    const group = this.layerGroups[this.layerGroups.length - 1];
+    this.addLayer(group);
   }
 
   updateLayerGroup(name: string, newName?: string, singleLayer?: boolean, visibleLayers?: string[]) {
@@ -1770,6 +1781,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           })
         );
       }
+      this.removeEmptyLayerGroups();
     }
     const [fromIndex, toIndex] = [event.previousIndex, event.currentIndex];
     const direction = fromIndex < toIndex ? 1 : -1;
@@ -1832,6 +1844,25 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   updateOrder($event: Event, layer: MapWidgetLayerOptions) {
     layer.order = +($event.currentTarget as HTMLInputElement)?.value;
+  }
+
+  isGroupUsedByWidgetLayers(group: LayerGroup) {
+    return this.optionsCopy.layers?.some((layer) => layer.group === group.name);
+  }
+
+  removeEmptyLayerGroups() {
+    this.layerGroups.forEach((group) => {
+      if (
+        !this.optionsCopy.layers?.map((layer) => layer.group).includes(group.name) &&
+        group.name !== DEFAULT_LAYER_GROUP
+      ) {
+        this.store.dispatch(
+          DashboardActions.deleteLayerGroup({
+            name: group.name
+          })
+        );
+      }
+    });
   }
 
   protected readonly DEFAULT_LAYER_GROUP = DEFAULT_LAYER_GROUP;

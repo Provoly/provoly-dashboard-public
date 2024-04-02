@@ -799,11 +799,10 @@ describe('WidgetMapComponent', () => {
   });
   describe('updateLayerGroup', () => {
     it('if the group name is being changed, update it also on the layers', () => {
-      const group = { name: '5', singleLayer: false, visibleLayers: [] } as LayerGroup;
+      const group = { name: 'group3', singleLayer: false, visibleLayers: [] } as LayerGroup;
 
-      component.addLayerGroup();
       component.addLayer(group);
-      component.updateLayerGroup('5', 'newName');
+      component.updateLayerGroup('group3', 'newName');
 
       expect(component.optionsCopy.layers?.find((layer) => layer.group === group.name)).toEqual(undefined);
       expect(component.optionsCopy.layers?.map((layer) => layer.group).filter((group) => group === 'newName')).toEqual([
