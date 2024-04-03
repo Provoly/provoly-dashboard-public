@@ -5,12 +5,12 @@ export const enTranslations = {
       loading: 'Loading'
     },
     about: {
-      front: 'Version Front Library : {{value}} ',
-      ref: 'Version repository : {{value}}',
-      data: 'Version data : {{value}}',
-      replay: 'Version replay : {{value}}',
-      exec: 'Version Execution : {{value}}',
-      transfo: 'Version Transformation : {{value}}',
+      front: 'Front library version',
+      ref: 'Data-red version',
+      data: 'Data-virt version',
+      replay: 'Replay version',
+      exec: 'Execution version',
+      transfo: 'Transformation version',
       noVersion: 'Version not found'
     },
     header: {

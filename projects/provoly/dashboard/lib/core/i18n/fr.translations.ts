@@ -339,7 +339,7 @@ export const frTranslations = {
           unselectItem: "Désélectionner le groupe d'utilisateurs",
           noItemSelected: "Aucun groupe d'utilisateurs sélectionné",
           groups: {
-            ALL: 'Publique',
+            ALL: 'Public',
             AUTHENTICATED: 'Les utilisateurs connectés'
           }
         }
