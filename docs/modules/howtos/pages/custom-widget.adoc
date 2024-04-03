@@ -1,4 +1,4 @@
-=== Ajouter un composant personnalisé
+== Ajouter un composant personnalisé
 
 Pour l’ajout d’un composant personnalisé dans l’application, il y a
 plusieurs étapes à effectuer:

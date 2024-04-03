@@ -1,4 +1,4 @@
-=== Internationalisation `+i18n.service.ts+`
+== Internationalisation `+i18n.service.ts+`
 
 Ce service est responsable de tout ce qui concerne la traduction, par exemple :
 

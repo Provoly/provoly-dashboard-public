@@ -1,0 +1,7 @@
+=== Dataset
+
+Le module dataset permet :
+
+* l’affichage de l’ensemble des jeux de données disponibles,
+* la consultation du détail d'un jeux de données - son contenu et son visualisation sur la carte dans le cas de jeux de données avec des données géographiques,
+* la consultation des versions du jeu de données et les actions liées.

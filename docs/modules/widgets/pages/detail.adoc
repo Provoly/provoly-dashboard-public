@@ -1,6 +1,8 @@
-==== Widget Detail (détail d’un objet)
+== Widget Detail (détail d’un objet)
 
-Permet la consultation en detail d’une donnée. Exemple de manifest :
+Permet la consultation en détail d’une donnée.
+
+Exemple de manifest :
 
 [source,js]
 ----

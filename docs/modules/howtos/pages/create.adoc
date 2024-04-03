@@ -1,4 +1,4 @@
-=== Ajouter un formulaire de création d’objets
+== Ajouter un formulaire de création d’objets
 
 Cela peut se faire simplement en ajoutant le composant
 `+<pry-object-creation>+`. Celui-ci ajoutera un bouton déplaçable

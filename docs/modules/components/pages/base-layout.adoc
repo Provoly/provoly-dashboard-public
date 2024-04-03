@@ -1,4 +1,4 @@
-=== Base layout (pry-base-layout)
+== Base layout (pry-base-layout)
 
 Le composant `+Base layout+` fournit une base pour créer un nouveau
 layout. Ce layout comporte une partie menu retractable et une partie

@@ -1,4 +1,4 @@
-==== Installation
+== Installation
 
 Les widgets s’instancient de manière lazy-loadée grâce à un helper :
 

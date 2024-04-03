@@ -1,6 +1,8 @@
-=== Admin `+admin.service.ts+`
+== Admin `+admin.service.ts+`
 
 Ce service permet de gérer les prédicats (utiles pour les ABAC), les
 metadata, les environnements, les classes, champs, utilisateurs et
-liens, d’un point de vue administrateur. Utilisé uniquement par le
+liens, d’un point de vue administrateur.
+
+Utilisé uniquement par le
 composant admin.

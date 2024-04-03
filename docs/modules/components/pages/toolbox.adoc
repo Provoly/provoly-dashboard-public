@@ -1,4 +1,4 @@
-=== Toolbox (pry-toolbox)
+== Toolbox (pry-toolbox)
 
 Le composant `+Toolbox+` permet d'afficher une barre d'action
 à partir d'un tableau d'actions fourni en entrée.

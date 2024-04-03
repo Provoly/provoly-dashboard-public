@@ -1,0 +1,26 @@
+== Group share (pry-group-share)
+
+Le composant `+Group share+` permet de paramétrer la visibilité des tableaux de bord est des sources de données. Cela se base sur un système de groupes d'utilisateurs, qui sont assignés avec la propriété `groups: string[]`.
+
+Le composant hérite du "`ControlValueAccessor`" qui nous permet d’utiliser les propriétés de formulaires Angular.
+
+[NOTE]
+.Correspondance entre les groupes et la visibilité
+======
+* `groups: []` (pas de groupe assigné) - la ressource est privé
+* `groups: ['ALL']` - la ressource est publique
+* `groups: ['RESTRICTED]` - la ressource est visible pour tous les utilisateurs de la plateforme (mais elle n'est pas publique = pas visible pour les utilisateurs anonymes)
+* `groups: ['group1', 'group2']` - la ressource est visible pour les utilisateurs qui sont dans le groupe `group1` ou `group2`
+======
+
+Les paramètres du composant sont les suivants :
+
+- ngModel et/ou ngModelChange: Permet de donner et de récupérer la valeur sélectionnée
+- disableRadios: Permet de fournir un objet avec les radios à désactiver en format `{ [key in PryVisibilityType]: boolean }`
+
+- allowedGroups: Permet de fournir un tableau des groupes autorisés pour la sélection
+
+
+Le paramètre de sortie du composant est le suivant :
+
+- radioValueChange: Permet de récupérer la valeur du radio selectioné

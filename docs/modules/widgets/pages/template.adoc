@@ -1,8 +1,9 @@
-==== Widget Template (Template Angular)
+== Widget Template (Template Angular)
 
 Le templating utilisé ressemble à celui de Angular mais est très
-simplifié et permet seulement un nombre limité d’actions/pipes. Exemple
-de manifest :
+simplifié et permet seulement un nombre limité d’actions/pipes.
+
+Exemple de manifest :
 
 [source,js]
 ----

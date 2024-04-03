@@ -1,19 +1,25 @@
 === Catalog
 
+[NOTE]
+====
 Modèle de restitution : widget non configuré
 
 Restitution : widget configuré avec des données (JDD(s), recherche(s)s,
 liste(s) d’objets) et paramétrage (x/y, type de carte…)
+====
 
-le module catalog de restitution va presenter une liste des restitutions
-et modèle de restitution.
+Le module catalog de restitutions va presenter une liste des restitutions et modèles de restitution.
 
-Un filtrage par type ou une recherche via un input form et également
+Un filtrage par type ou une recherche via un input form est également
 disponible.
 
 La création d’une restitution ce fait via un bouton `+créer+` qui donne
-accès au formulaire de création. Celui-ci se compose en trois étapes, la
-premiere permet le type de widget, les données que l’on souhaite
-afficher, le titre, la description et une image. la deuxième étape
-présente une pré-visualization du widget configurer et la troisième
-étape va proposer de rendre public ou privée la restitution.
+accès au formulaire de création.
+
+Celui-ci se compose en trois étapes :
+
+* la premiere permet le type de widget, les données que l’on souhaite
+afficher, le titre, la description et une image,
+* la deuxième étape
+présente une pré-visualization du widget configuré,
+* la troisième étape va proposer de rendre public ou privée la restitution.

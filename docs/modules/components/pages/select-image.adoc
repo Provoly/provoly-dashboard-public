@@ -1,4 +1,4 @@
-=== Select image (pry-select-image)
+== Select image (pry-select-image)
 
 Le composant `+Select image+` permet de selectionner une image dans la
 banque d’image de l’application ou d’en ajouter une nouvelle grâce au

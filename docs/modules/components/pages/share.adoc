@@ -1,7 +1,7 @@
-=== Share (pry-share)
+== Share (pry-share)
 
 Le composant `+Share+` permet de paramétrer la visibilité des éléments
-de l’application. Le composant hérite du "`ControlValueAccessor`" qui
+de l’application (les réstitutions et les named queries). Le composant hérite du "`ControlValueAccessor`" qui
 nous permet d’utiliser les propriétés de formulaires Angular. Les
 paramètres du composant sont les suivants :
 

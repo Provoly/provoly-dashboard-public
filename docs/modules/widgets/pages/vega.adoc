@@ -1,8 +1,8 @@
-==== Widget Vega (Graphique avancé)
+== Widget Vega (Graphique avancé)
 
-Permet la restitution des données et de leurs details dans des graphiques, en utilisant une configuration type link:https://vega.github.io/vega/docs/config/[vega].
+Permet la restitution des données et de leurs détails dans des graphiques, en utilisant une configuration type link:https://vega.github.io/vega/docs/config/[vega].
 
-Cela permet de réaliser des graphiques plus précis ou plus complexe si l'utilisateur connaît ses données, voire de réaliser des prétraitements, ...
+Cela permet de réaliser des graphiques plus précis ou plus complexes si l'utilisateur connaît ses données, voire de réaliser des prétraitements, ...
 
 En effet, sinon, l'utilisateur était potentiellement limité par la configuration / paramétrage des widgets charts actuels (qui sont très bien dans une phase exploratoire ou
 pour des graphiques simples).

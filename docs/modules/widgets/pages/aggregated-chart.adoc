@@ -1,4 +1,4 @@
-==== Widget Aggregated Chart (histogrammes, …)
+== Widget Aggregated Chart (histogrammes, …)
 
 Permet la restitution des données suivant plusieurs types de graphique :
 

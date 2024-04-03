@@ -1,6 +1,6 @@
-==== Widget Map (cartographie)
+== Widget Map (cartographie)
 
-===== Généralités
+=== Généralités
 
 Permet l’affichage des données sur une carte selon plusieurs choix :
 
@@ -15,7 +15,7 @@ Le parametrage permet :
 
 L'affichage se base sur les types géographiques (point, line, polygon, ...)
 
-===== Exemple de manifest
+==== Exemple de manifest
 [source,js]
 ----
 {
@@ -69,11 +69,11 @@ L'affichage se base sur les types géographiques (point, line, polygon, ...)
 }
 ----
 
-===== Attributions
+=== Attributions
 
 Il est possible d'ajouter des attributions à une carte, en ajoutant dans les options `"attributions": true`. Si vous souhaitez ajouter une attribution pour une couche, vous pouvez le faire dans les options de la couche: `"attribution": "<layer attribution>"`
 
-===== Transformation pour obtenir un type géographique à partir de champs numériques
+=== Transformation pour obtenir un type géographique à partir de champs numériques
 
 Si vous disposez de champs latitude/longitude séparés, vous pouvez demander au front de gérer la transformation de données automatiquement, pour peu que vous ayez créé le champ géographique cible, en utilisant la fonction suivante:
 
@@ -83,7 +83,7 @@ this.searchService.addTransformation(
   latLonToGeographicFieldTransformation('latitude', 'longitude', 'location-auto')
 );
 ----
-===== Fit
+=== Fit
 
 Cette option permet à la carte de s'adapter aux données lors du chargement ou des changements de sélection. Si vous souhaitez garder un affichage d'un endroit particulier, à un zoom particulier, il faut désactiver cette option.
 Celle-ci est maintenant disponible pour chaque couche, car lors par exemple d'utilisation de servirces externes ou ne prenant pas en compte des filtres, il ne faut pas zoomer sur tout l'ensemble des données.
@@ -92,25 +92,63 @@ Une nouvelle façon de fonctionner a été ajoutée: pour les couches type WMS/G
 sans pour autant disposer des coordonnées des objets représentés dans la couche. Pour limiter les appels, celle-ci est appelée avant le rendu des couches en question (éviter de demander des tuiles
 qui ne seront de toute façon pas exposées après zoom automatique)
 
-===== Comparatif de couches
+=== Comparatif de couches
 
 Une autre option disponible permet de choisir de n'afficher certaines couches que côté droit ou côté gauche d'un curseur, qui est déplaçable.
 Cette représentation est redoutablement efficace pour voir pas exemple l'évolution dans le temps d'une même représentation.
 
-===== Mode mono-couche
-
-Cette option permet de présenter rapidement différentes données en permettant de switcher rapidement entre elles, et de n'en afficher qu'une seule à la fois.
-
-===== Configuration automatique des sources de données
+=== Configuration automatique des sources de données
 
 En phase exploratoire, il n'était pas forcément facile d'utiliser la carte; il fallait ajouter le jeu de données, puis paramétrer des couches en fonction de celles-ci (type et nom des champs à utiliser, ...).
 Afin de faciliter ceci, cette option demande à Provoly d'analyser le jeu de donnéees, afin d'en proposer une représentation si non pertinente, du moins fonctionelle des données,
 qui pourra ensuite être affinée par l'utilisateur s'il en a les connaissances et l'envie.
 
-===== Couche Geoserver
+=== Couche Geoserver
 
 Suite aux problèmes de performance lors de la représentation côté frontend de très nombreux élément, et l'ajout en réponse d'un geoserver côté backend, il nous a fallu proposer un système simple
 permettant de déterminer les cas qui reposaient sur ce système. Cela se passe grâce à l'ajout de metadonnées sur le jeu de données
 lui-même (couple namespace/clé) permettant de traiter les données de manière correcte (pas de double représentation de données, pas de représentation calculée par le frontend, ...).
 L'ensemble de la configuration qui suit se fait donc de manière automatique, seul l'ajout d'un jeu de données avec ces
 metadonnées déclenche l'utilisation du geoserver configuré pour cet environnement pour cette couche.
+
+=== Groupe de couches
+Afin de pouvoir gérer des couches de manière plus simple, il est possible de les regrouper dans un groupe. Les groupes sont stockés dans le manifest du tableau de bord sous la forme suivante:
+[source,js]
+----
+{
+  ...manifest,
+  layerGroup: [
+    // exemple d'un groupe
+    {
+      name: 'Nom du groupe',
+      // singleLayer permet de gérer le mode d'affichage des couches du groupe
+      singleLayer: false,
+
+      // permet de sauvegarder les noms couches visibles
+      // un widget peut avoir plusieurs couches, mais on peut vouloir n'en afficher que les certaines sur l'ouverture du dashboard
+      visibleLayers: ['nom_couche_1', 'nom_couche_2']
+    }
+  ]
+}
+----
+
+Chaque couche peut être assignée à un groupe en ajoutant l'attribut `group` dans les options de la couche:
+[source,js]
+----
+{
+  type: 'marker',
+  classes: [],
+  attribute: 'loc',
+  group: 'Nom du groupe'
+}
+----
+
+Chaque couche sans groupe aura un groupe assigné par défaut sur l'initialization du widget.
+
+La gestion de groupes se fait avec les actions suivantes du store :
+
+- `DashboardActions.initDefaultLayerGroup` : ajoute le groupe par défaut dans le manifest,
+- `DashboardActions.addLayerGroup`,
+- `DashboardActions.updateLayerGroup`,
+- `DashboardActions.deleteLayerGroup`.
+

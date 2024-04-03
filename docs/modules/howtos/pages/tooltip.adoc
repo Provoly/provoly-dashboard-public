@@ -1,4 +1,4 @@
-=== Personnaliser les tooltips des widgets graph et map
+== Personnaliser les tooltips des widgets graph et map
 
 Pour les cas particuliers, il est possible de créer sa propre classe de
 tooltip et de l’utiliser à la place. Il faudra alors que le nouveau

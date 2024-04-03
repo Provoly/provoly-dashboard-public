@@ -1,6 +1,6 @@
-=== Jeux de données / JDD
+== Jeux de données / JDD
 
-==== Général
+=== Général
 
 Une gestion des jeux de données est disponible via
 @provoly/dashboard. Chaque JDD dispose d’un id/couleur/contenu/… Il
@@ -9,12 +9,12 @@ associés aux widgets par différents moyens (drag n drop ou sélection
 combo à partir du header). L’id du JDD sera alors visible dans le
 manifest associé à un widget.
 
-==== Recherche nommées
+=== Recherche nommées
 
 Pour créer des jeux de données, le plus simple est de créer une
 recherche à l’aide du composant de recherche, puis de l’enregistrer.
 
-==== Récupération
+=== Récupération
 
 Les JDD seront fournis à partir des données disponibles dans le store ou
 tentera une requête en utilisant le `+SearchService+`. Celui-ci peut

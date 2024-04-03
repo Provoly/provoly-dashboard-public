@@ -1,4 +1,4 @@
-=== Nq color selector (pry-nq-color-selector)
+== Nq color selector (pry-nq-color-selector)
 
 Le composant `+Nq color selector+` permet d’afficher et de modifier la
 couleur d’une recherche (named query)

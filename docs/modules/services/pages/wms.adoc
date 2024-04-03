@@ -1,0 +1,3 @@
+== WMS `+wms.service.ts+`
+
+Gestion des requêtes aux services WMS pour récupérer les données des couches WMS utilisées par les jeux de données géographiques.

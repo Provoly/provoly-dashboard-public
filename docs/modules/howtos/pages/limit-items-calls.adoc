@@ -1,4 +1,4 @@
-=== Comment faire pour limiter les appels à /items
+== Comment faire pour limiter les appels à /items
 
 Les appels de récupération des items sont potentiellement coûteux. Il est bon de pouvoir les limiter.
 Pour ce faire, on peut ajouter à la configuration d'un widget, l'option `autoLoadDatasource?: 'all' | 'none' | 'not-geo' | 'geo'`.

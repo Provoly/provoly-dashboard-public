@@ -1,7 +1,7 @@
-== Theming : architecture et surcharge du thème css de la librairie
+= Theming : architecture et surcharge du thème css de la librairie
 
 
-=== Architecture du thème de la librairie
+== Architecture du thème de la librairie
 
 Le thème de base, intégré à la librairie, est défini dans ``/projects/provoly/dashboard/styles-theme/``
 
@@ -124,7 +124,7 @@ $theme-map-decoration : (
 
 
 
-=== Surcharge du thème css de la librairie
+== Surcharge du thème css de la librairie
 
 La surcharge du thème consiste à :
 
@@ -290,7 +290,7 @@ $theme-map-colors : (
 );
 ----
 
-=== Accès aux variables de thème au niveau du projet
+== Accès aux variables de thème au niveau du projet
 
 Pour accèder aux variables du thème, dans les fichiers scss du projet, ajouter les imports suivants, en début de fichier :
 
@@ -312,7 +312,7 @@ La fonction `themed()` reçoit toujours `$theme-map` en premier argument
 * `@include typography-level(themed($theme-map, 'typography', 'title-1'));`
 
 
-=== A propos des maps Sass
+== A propos des maps Sass
 
 Dans les maps Sass, les clés s'écrivent entre quotes lorsqu'elles sont de type `string`
 

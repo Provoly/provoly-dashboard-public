@@ -1,4 +1,4 @@
-=== Rôles et accès
+== Rôles et accès
 
 Il est possible de conditionner les boutons etc de l’interface à des
 rôles. De base, Pry utilise une version de ces rôles qui permet

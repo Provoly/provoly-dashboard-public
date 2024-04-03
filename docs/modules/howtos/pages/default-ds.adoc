@@ -1,4 +1,4 @@
-=== Changer le dataset par défaut (pour que les widget nouvellement draggés du menu pointent dessus)
+== Changer le dataset par défaut (pour que les widget nouvellement draggés du menu pointent dessus)
 
 [source,js]
 ----

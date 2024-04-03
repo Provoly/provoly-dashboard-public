@@ -1,4 +1,4 @@
-=== Icon (pry-icon)
+== Icon (pry-icon)
 
 Le composant `+Icon+` permet d’afficher facilement les icones présentes
 dans l’application. Il y a 2 formats d’icones, les icones au format

@@ -1,0 +1,33 @@
+== Tabs (pry-tab, pry-tab-group)
+
+Le composant `+Tab group+` permet d’afficher un groupe d’onglets. Il est composé de plusieurs composants `+Tab+`.
+
+
+=== `+pry-tab-group+`
+Les paramètres d’entrée du composant sont les suivants :
+
+- translationStringBase: La base du string de traduction pour les textes dans le composant
+
+=== `+pry-tab+`
+Les paramètres d’entrée du composant sont les suivants :
+
+- name: Le nom de l'onglet
+- index: L'index de l'onglet
+- templateRef: La référence du template à afficher dans l'onglet
+
+=== Exemple d'utilisation
+
+[source,html]
+----
+  <pry-tab-group translationStringBase="@pry.dataset.">
+    <pry-tab [templateRef]="table" name="data"></pry-tab>
+    <pry-tab [templateRef]="map" name="map"></pry-tab>
+  </pry-tab-group>
+
+  <ng-template #table>
+    <table></table>
+  </ng-template>
+  <ng-template #map>
+    <!-- content -->
+  </ng-template>
+----

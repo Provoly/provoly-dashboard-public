@@ -1,8 +1,10 @@
-=== Utiliser une version de NodeJS compatible
+= Installation
 
-Version 16+
+== Utiliser une version de NodeJS compatible
 
-=== Ajouter le css
+Version 18+
+
+== Ajouter le CSS
 
 Import du CSS de la lib, ajouter dans le style.scss de votre application :
 
@@ -15,7 +17,7 @@ Import du CSS de la lib, ajouter dans le style.scss de votre application :
 Import avec gestion du theming, voir détails ici : xref:howtos:css-theming.adoc[Theming : architecture et surcharge du thème css de la librairie ]
 
 
-=== Ajouter NGRX et @angular/cdk
+== Ajouter NGRX et @angular/cdk
 
 Ajouter les librairies, ainsi que les initialisations (Module.forRoot…),
 dont notamment Overlay.

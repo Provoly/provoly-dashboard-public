@@ -1,4 +1,4 @@
-=== Personnaliser les tooltips du widget chart
+== Personnaliser les tooltips du widget chart
 
 Dans les options du widget, on peut rajouter un attribut tooltip. Il a 2
 valeurs possibles :

@@ -5,11 +5,5 @@ moteur de transformation. En utilisant le drag n drop et la librairie
 litegraph.js, on pourra éditer le graphe de la transformation, régler
 les valeurs des attributs de chaque nœud, etc.
 
-Un check sera fait avec le backend pour obtenir le modèle associé ainsi
-que les erreurs de ce graphe à chaque modification. Afin de rendre
-disponible de nouveaux élements pour les pipelines, il convient
-d’ajouter un module par élément. Ce module appellera
-`+pipelineComponentFactoryService.addType(...)+`, indiquant ainsi le
-panel de propriétés spécifique à ce composant, ainsi qu’une classe de
-nœud (héritant de BaseNode) permettant sa déclaration dans litegraph.js
-(et donc son comportement, ses entrées, …).
+Un check sera fait avec le backend pour obtenir le modèle associé ainsi que les erreurs de ce graphe à chaque modification. Afin de rendre disponible de nouveaux élements pour les pipelines, il convient d’ajouter un module par élément.
+Ce module appellera `+pipelineComponentFactoryService.addType(...)+`, indiquant ainsi le panel de propriétés spécifique à ce composant, ainsi qu’une classe de nœud (héritant de BaseNode) permettant sa déclaration dans litegraph.js (et donc son comportement, ses entrées, …).

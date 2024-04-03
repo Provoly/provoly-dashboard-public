@@ -1,0 +1,22 @@
+== Chips selector (pry-chips-selector)
+
+Le composant +Chips selector+ permet d’afficher une liste des chips selectionnables à partir d'une liste des éléments fournis en entrée.
+
+Les paramètres d’entrée du composant sont les suivants :
+
+* items: Liste des valeurs à selectionner (peut être soit une liste des chaînes de caractères ou des objets)
+* selectedItems (optionnel): Liste des valeurs qui vont être presélectionnées (le type des valeurs doit être le même que pour la liste items)
+* bindValue: Valeur utilisée dans la liste
+* bindLabel: Label utilisé dans la liste
+* translationStringBase: La base des chaînes de caractères des traductions pour les textes dans le composant (sauf les `items`)
+* itemTranslationStringBase: La base du chaîne de caractère de traduction pour les labels des éléments dans la liste `items`
+* showActionButtons: Afficher les boutons d'action (valider et annuler)
+* showSearchbar: Afficher la barre de recherche
+
+Les paramètres de sortie du composant sont les suivants :
+
+* itemsChanged: Permet de récupérer la liste des éléments sélectionnés
+* cancel: Permet d'être notifié quand le bouton 'Annuler' est cliqué
+* validate: Permet d'être notifié quand le bouton 'Valider' est cliqué
+* previousTab, nextTab: Utilisés pour gérer le focus dans le sélecteur de source de données
+

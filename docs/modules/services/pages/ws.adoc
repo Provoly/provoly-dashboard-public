@@ -1,12 +1,10 @@
-=== Websocket `+websocket.service.ts+`
+== Websocket `+websocket.service.ts+`
 
 Ce service propose, à partir du moment où une url de websocket server a
-été fourni en configuration, de se connecter eet de maintenir la
+été fournie en configuration, de se connecter et de maintenir la
 connection correspondante. On disposera alors d’une fonction
 `+sendMessage+` pour en envoyer sur ce média, ou on pourra souscrire à
-`+message$+` pour recevoir les messages du type correspondant. Un buffer
-est prévu pour ne pas perdre de messages dans le cas de modules
-lazy-loadés ou autre.
+`+message$+` pour recevoir les messages du type correspondant. Un buffer est prévu pour ne pas perdre de messages dans le cas de modules lazy-loadés ou autre.
 
 Le type `+notification+` par exemple est utilisé par le module de
 notifications afin de les stocker dans le store correspondant.

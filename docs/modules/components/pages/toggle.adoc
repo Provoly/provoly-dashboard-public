@@ -1,4 +1,4 @@
-=== Toggle (pry-toggle)
+== Toggle (pry-toggle)
 
 Le composant `+Toggle+` permet d’afficher un bouton on/off Le composant
 hérite du `+ControlValueAccessor+` qui nous permet d’utiliser les

@@ -1,4 +1,4 @@
-=== Edit input (pry-edit-input)
+== Edit input (pry-edit-input)
 
 Le composant `+Edit input+` permet d’afficher une valeur et de la rendre
 modifiable au clic sur un bouton Le composant hérite du

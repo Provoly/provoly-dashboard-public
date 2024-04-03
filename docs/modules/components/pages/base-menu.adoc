@@ -1,4 +1,4 @@
-=== Base menu (pry-base-menu)
+== Base menu (pry-base-menu)
 
 Le composant `+Base menu+` permet d’afficher une barre de menu
 verticale. C’est une classe template, c'est-à-dire qu’il faut créer son

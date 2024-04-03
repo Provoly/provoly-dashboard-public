@@ -2,7 +2,9 @@
 
 Une liste de classes particulièrement utiles et réutilisables, incluses dans la bibliothèque + des exemples d'utilisation.
 
+---
 === `.a-tooltip`
+
 Une classe qui permet d'avoir des info-bulles contenantes du texte simple (pas de HTML).
 
 ==== Utilisation
@@ -21,17 +23,21 @@ Si l'info-bulle n'apparaît pas :
 
 ==== Exemples
 Utilisation simple
-```
+
+[source,html]
+----
 <div
   class="a-tooltip"
   [attr.data-tooltip]="'@pry.toolbox.clear' | i18n"
   data-tooltip-position="bottom">
   ...
 </div>
-```
+----
 
 Solution pour une div avec un `overflow: scroll`
-```
+
+[source,sass]
+----
 .navbar {
   overflow-y: scroll;
 
@@ -41,5 +47,10 @@ Solution pour une div avec un `overflow: scroll`
     padding-right: 300px; // max tooltip length
     background-clip: content-box, padding-box;
   }
-```
+
+----
+
+---
+=== .u-display-flex
+Permet de faire des styles basiques flex-box en conjonction avec les autres classes utilitaires (`-align-center`, `-justify-center`, etc.) qui se trouvent dans le _utils.scss
 

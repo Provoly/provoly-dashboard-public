@@ -1,4 +1,4 @@
-=== Appliquer des transformations aux récupérations de données
+== Appliquer des transformations aux récupérations de données
 
 Pour pouvoir modifier automatiquement les données récupérées, il est
 possible de fournir une fonction de transformation à appliquer de cette

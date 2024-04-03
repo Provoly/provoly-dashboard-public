@@ -1,4 +1,4 @@
-=== Upload (pry-upload) [[upload]]
+== Upload (pry-upload) [[upload]]
 
 Le composant `+Upload+` permet d’ajouter une image dans la banque
 d’image de l’application

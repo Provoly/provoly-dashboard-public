@@ -1,4 +1,4 @@
-=== Données `+category.service.ts+` `+relation-types.service.ts+` `+field.service.ts+` `+class.service.ts+` `+raw.service.ts+` `+item.service.ts+`
+== Données `+category.service.ts+` `+relation-types.service.ts+` `+field.service.ts+` `+class.service.ts+` `+raw.service.ts+` `+item.service.ts+`
 
 Récupération de la liste des catégories, des types de relations, des
 champs, des classes du modèle de données actuellement déclarées dans le

@@ -1,4 +1,4 @@
-=== Personnaliser les grilles
+== Personnaliser les grilles
 
 Pour les cas particuliers, il est possible de créer ses propres grilles de dépose de placement automatique des restitutions dans un dashboard.
 Cela se fait en fournissant un manifest de gabarit

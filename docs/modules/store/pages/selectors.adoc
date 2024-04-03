@@ -1,21 +1,21 @@
-=== Sélecteurs
+== Sélecteurs
 
 Dans cette partie, est présenté les sélecteurs importants de chaque
 partie.
 
-==== Admin
+=== Admin
 
 * menus: Contenu du menu d’administration
 * actions: Contenu de la barre d’action du sous-menu courant
 
-==== Config
+=== Config
 
 * refUrl: Url du backend pour récupérer les informations (classes,
 categories, …)
 * dataUrl: Url du backend pour récupérer les données
 * catalog: Liste des restitutions disponibles
 
-==== Dashboard
+=== Dashboard
 
 * resultSets: Jeux de données chargés
 * availableNamedQueries: Jeux de données disponibles
@@ -24,12 +24,12 @@ categories, …)
 statique est une présentation utilisée en dehors d’un dashboard)
 * windowManifest: Présentation de l’onglet courant
 
-==== NamedQuery
+=== NamedQuery
 
 * getAllNamedQuery: Toutes les informations des named queries
 * getNamedQuerySorted: Toutes les informations des named queries triés
 par date de dernière execution
 
-==== Notification
+=== Notification
 
 * list: Liste des notifications

@@ -1,4 +1,4 @@
-=== Toolbox `+toolbox-menu.service.ts+` `+toolbox-manifest.service.ts+` `+widget-factory.service.ts+`
+== Toolbox `+toolbox-menu.service.ts+` `+toolbox-manifest.service.ts+` `+widget-factory.service.ts+`
 
 Permettent de modifier les menus et d’ajouter de nouveaux composants
 (personalisés) dans la toolbox et dans l’application.

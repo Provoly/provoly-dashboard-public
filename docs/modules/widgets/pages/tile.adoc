@@ -1,6 +1,6 @@
-==== Widget Tile (Tuiles)
+== Widget Tile (Tuiles)
 
-Permet la restitution des données et de leurs details dans des tuiles.
+Permet la restitution des données et de leurs détails dans des tuiles.
 Le paramétrage permet de filtrer l’affichage des données.
 
 Exemple de manifest :

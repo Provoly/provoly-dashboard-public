@@ -1,28 +1,24 @@
 === Recherche
 
-Avec ce module, on pourra effectuer des recherches de type multi-class,
-mono-class ou de type texte.
+Avec ce module, on pourra effectuer des recherches de type multi-class, mono-class ou de type texte.
 
-Une liste des recherches enregistrer est disponible en écran d’accueil.
-Chaques recherche enregistrer peuvent être modifié via un menu déroulant
+Une liste des recherches enregistrées est disponible en écran d’accueil.
+Chaque recherche enregistrée peut être modifié via un menu déroulant
 qui donne accès à plusieurs options (épingler, actualiser, afficher dans
 un widget, définir une couleur, effectuer un rafraichissement
 automatique(inactif, 10 30 secondes ou 1 minute), supprimer, renommer et
 éditer).
 
-la recherche de type texte (fulltext) permet une exploration rapide via
-la selection du type de classes et d’un input form ouvrant un large
+La recherche de type texte (fulltext) permet une exploration rapide via
+la sélection du type de classes et d’un input form ouvrant un large
 éventail de widget.
 
-Un bouton `+Recherche par critère+` va nous emmener sur la recherche par
-champs métier ou par classe.
+Un bouton `+Recherche par critère+` va nous emmener sur la recherche par champs métier ou par classe.
 
 La recherche par champs métier permet de sélectionner un ou plusieurs
 critères, définir un opérateur et y ajouter une valeur.
 
-La recherche par classe de sélectionner une classe, d’y inclure des
-filtres avec possibilité d’ajouter des conditions et/ou de sous-groupe
-ainsi qu’un tri.
+La recherche par classe permet de sélectionner une classe, d’y inclure des filtres avec possibilité d’ajouter des conditions et/ou de sous-groupe ainsi qu’un tri.
 
 L’enregistrement ce fait via une modale où sera défini le nom, la
 description et la visibilité de la recherche, accessible par le bouton

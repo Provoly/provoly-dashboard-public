@@ -1,0 +1,40 @@
+== Accordion (pry-accordion, pry-accordion-item)
+
+Le composant `+Accordion+` permet d’afficher une liste d’éléments déroulants. Il est composé de plusieurs `+AccordionItem+` qui correspondent aux éléments (les "onglets") de la liste.
+
+Le `+pry-accordion+` est un composant dummy - il sert strictement à l'affichage.
+
+=== `+pry-accordion-item+`
+Les paramètres d’entrée du composant sont les suivants :
+
+- item: Le titre de l'onglet
+- borderColor: Permet de personnaliser la couleur de la bordure de l'onglet
+- index: Index de l'onglet
+- translationStringBase: La base du string de traduction pour les textes dans le composant
+- length (optionnel): Permet de fournir un nombre à afficher à côté du titre de l'onglet
+- showSearchBar (par défaut='`false`'): Afficher la barre de recherche dans l'onglet ouvert
+- search$: Fournir la valeur recherchée à la barre de recherche
+
+Le paramètre de sortie du composant est le suivant :
+
+- search: Permet de récupérer la valeur de la recherche
+
+=== Exemple d'utilisation
+
+[source,html]
+----
+
+<pry-accordion>
+  @for (item of items; track item.index) {
+    <pry-accordion-item
+      [item]="item"
+      [borderColor]="item.color"
+      [index]="item.index"
+      translationStringBase="@pry.accordion.labels"
+      [length]="item.length"
+    >
+    <div>content of the tab, that will show when the tab is open</div>
+  </pry-accordion-item>
+  }
+</pry-accordion>
+----

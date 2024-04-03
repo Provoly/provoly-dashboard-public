@@ -1,4 +1,4 @@
-==== Widget Table (Tableau de données)
+== Widget Table (Tableau de données)
 
 Permet la restitution des données dans un tableau (merci captain
 obvious) Le paramétrage va permettre d’ajouter des colonnes avec un

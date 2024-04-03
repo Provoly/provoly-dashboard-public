@@ -1,4 +1,4 @@
-=== Date picker (pry-date-picker)
+== Date picker (pry-date-picker)
 
 Le composant `+Date picker+` est un composant permettant de sélectionner
 une date dans un calendrier Le composant hérite du

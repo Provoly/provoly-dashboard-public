@@ -1,4 +1,4 @@
-=== Personnaliser les icones utilisées dans la map/recherche/relations
+== Personnaliser les icones utilisées dans la map/recherche/relations
 
 Le premier exemple montre l’utilisation d’une icone simple. Cette image
 est stockée dans le backend pry, ce qu’on indique en utilisant le

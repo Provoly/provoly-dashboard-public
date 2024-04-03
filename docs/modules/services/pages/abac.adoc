@@ -1,5 +1,7 @@
-=== ABAC `+abac-rules.service.ts+`
+== ABAC `+abac-rules.service.ts+`
 
 Ce service va nous permettre de gérer, avec l’aide du backend pry, le
 système des ABAC: création de règles, initialisation, sauvegarde,
-gestion des conditions, … Utilisé uniquement par le composant admin.
+gestion des conditions, etc.
+
+Utilisé uniquement par le composant admin.

@@ -1,4 +1,4 @@
-=== Select (pry-select)
+== Select (pry-select)
 
 Le composant `+Select+` permet d’afficher une liste déroulante améliorée
 et est personnalisable pour chaque utilisation. Le composant hérite du

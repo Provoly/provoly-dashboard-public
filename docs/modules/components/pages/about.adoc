@@ -1,0 +1,8 @@
+== About (pry-about)
+
+Le composant `+About+` permet d’afficher une icone "i" avec un tooltip avec les versions de tous les services de Provoly dans l'environnement courant.
+
+
+Le paramètre d’entrée du composant est le suivant :
+
+- tooltipPosition: Un string specifiant la position de la tooltip

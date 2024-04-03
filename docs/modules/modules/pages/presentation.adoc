@@ -1,9 +1,12 @@
 === Presentation
 
-Le module presentation permet : - l’affichage de l’ensemble des
-presentations disponible. - la consultation, la modification et partager
-(public ou privé) une presentation.
+Le module presentation permet :
 
-Il y a également la possibilité de créer une presentation via un bouton
-`+créer une presentation+` qui permet d’accéder au formulaire de
+- l’affichage de l’ensemble des
+tableaux de bord disponibles,
+- la consultation, la modification et le partage
+(public, privé ou par groupe) d'un tableau de bord.
+
+Il y a également la possibilité de créer un tableau de bord via un bouton
+`+créer un tableau de bord+` qui permet d’accéder au formulaire de
 création.

@@ -1,6 +1,6 @@
 === Toolbox
 
-Le module `+Toolbox+` affiche une barre d’actions
+Le module `+Toolbox+` affiche une barre d’actions.
 
 Les actions disponibles sont:
 

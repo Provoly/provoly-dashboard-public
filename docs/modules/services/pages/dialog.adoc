@@ -1,4 +1,36 @@
-=== Popup de confirmation `+dialog.service.ts+`
+== Popup de confirmation `+dialog.service.ts+`
 
 Service proposant des dialogs. Utilisable par les applications utilisant
 pry.
+
+=== Exemple d'utilisation
+Un exemple d'effect NgRx qui utilise le PryDialogService pour ouvrir un dialogue de confirmation en utilisant le `PryDialogConfirmComponent`.
+
+[source,js]
+---
+ confirmManifestDeletion$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(DashboardActions.confirmManifestDeletion),
+        tap((action) => {
+          const data: PryDialogConfirmData = {
+            title: '@pry.widget.modalTitle',
+            actions: [
+              {
+                id: 0,
+                label: '@pry.toolbox.manifest.validate',
+                actions: [DashboardActions.deleteManifest({ id: action.id })]
+              },
+              {
+                id: 1,
+                label: '@pry.toolbox.manifest.close',
+                color: 'secondary'
+              }
+            ]
+          };
+          this.pryDialog.open(PryDialogConfirmComponent, { data });
+        })
+      ),
+    { dispatch: false }
+  );
+----

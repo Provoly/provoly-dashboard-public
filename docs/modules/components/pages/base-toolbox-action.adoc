@@ -1,4 +1,4 @@
-=== Base toolbox action (pry-base-toolbox-action)
+== Base toolbox action (pry-base-toolbox-action)
 
 Le composant `+Base toolbox action+` permet d’afficher une action dans
 la barre de menu `+Base toolbox+`

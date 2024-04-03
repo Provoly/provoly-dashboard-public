@@ -1,4 +1,4 @@
-=== Symbol `+symbol.service.ts+`
+== Symbol `+symbol.service.ts+`
 
 Ce service permet de récupérer des images canvas sur lesquelles on peut placer des éléments supplémentaires.
 

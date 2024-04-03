@@ -1,4 +1,4 @@
-=== Ellipsis Directive
+== Ellipsis Directive
 
 La directive `+Ellipsis+` permet d'ajouter un infobulle automatiquement sur un element qui contient un texte tronqué.
 

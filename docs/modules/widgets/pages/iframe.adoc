@@ -1,8 +1,10 @@
-==== Widget Iframe (intégration d’application externe)
+== Widget Iframe (intégration d’application externe)
 
 Permet l’utilisation d’application externe, qui autorise sa connexion,
 via une url. L’application sera disponible dans un contexte de
-navigation imbriqué. Exemple de manifest :
+navigation imbriqué.
+
+Exemple de manifest :
 
 [source,js]
 ----

@@ -7,3 +7,4 @@
 ** xref:recherche.adoc[Recherche]
 ** xref:toolbox.adoc[Toolbox]
 ** xref:mot-transfo.adoc[Moteur de transformation]
+** xref:dataset.adoc[Dataset]

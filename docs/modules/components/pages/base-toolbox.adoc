@@ -1,4 +1,4 @@
-=== Base toolbox (pry-base-toolbox)
+== Base toolbox (pry-base-toolbox)
 
 Le composant `+Base toolbox+` permet d’afficher une barre de menu
 horizontale avec différentes actions.

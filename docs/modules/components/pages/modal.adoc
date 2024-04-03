@@ -1,4 +1,4 @@
-=== Modal (pry-modal)
+== Modal (pry-modal)
 
 Le composant `+Modal+` permet d’afficher une modal avec le contenu
 présent entre les balises

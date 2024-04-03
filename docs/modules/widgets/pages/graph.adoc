@@ -1,10 +1,12 @@
-==== Widget Graph (graphe de relations)
+== Widget Graph (graphe de relations)
 
 Permet de visualiser les relations entre les données. Le paramétrage du
-widget mets à disposition 3 algorithme de disposition different :
--dagreCluster -d3ForceDirected -ellipsoid
+widget mets à disposition 2 algorithmes de disposition different :
 
-Ainsi que l’utilisation d’une propriété de regroupement(id,type, etc… ).
+- simple (ellipsoid)
+- force (d3ForceDirected)
+
+Ainsi que l’utilisation d’une propriété de regroupement(id, type, etc… ).
 
 Exemple de manifest :
 

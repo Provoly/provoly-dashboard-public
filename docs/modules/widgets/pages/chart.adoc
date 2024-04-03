@@ -1,11 +1,21 @@
-==== Widget Chart Legacy (histogrammes, …)
+== Widget Chart Legacy (histogrammes, …)
 
 Permet la restitution des données suivant plusieurs types de graphique :
--Histogramme -Courbe -Point -Aire -Circulaire -Radar -Paquets de cercles
+
+- Histogramme
+- Courbe
+- Point
+- Aire
+- Circulaire
+- Radar
+- Paquets de cercles
+
 Nous utilisons https://vega.github.io/vega-lite/docs/[vega-lite] pour la
 materialisations visuelles des agregats. Les count/distinct n’ont pas de
 restriction et les operations(moyenne, …) nécessite des types nombre
-(decimal, integer, long, …) Le parametrage permet de changer le type de
+(decimal, integer, long, …).
+
+Le parametrage permet de changer le type de
 graphique, l’agrégation et diverses options propres à chaque type de
 graphique.
 

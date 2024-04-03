@@ -1,4 +1,4 @@
-=== Partage de données entre pages `+bus.service.ts+`
+== Partage de données entre pages `+bus.service.ts+`
 
 Sert à partager les données/synchronisations entre pages. Il se base sur
 BraodcastChannel, dans lequel il ouvre 2 channels, data et control.

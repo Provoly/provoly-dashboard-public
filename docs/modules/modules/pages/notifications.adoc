@@ -1,12 +1,9 @@
 === Notification
 
-Le module `+Notification+` affiche un module qui permet de consulter ses
+Le module `+Notification+` permet de consulter ses
 notifications.
 
-Le module est affiché sous la forme d’une cloche qui, au clic, affiche
-les notifications.
+Le module est affiché sous la forme d’une cloche qui, au clic, affiche les notifications.
 
-Par défaut, ce module utilise les notifications qui seraient reçues via
-le websocket service, mais il est tout à fait possible de générer ses
-propres notifications en utilisant l’action
+Par défaut, ce module utilise les notifications qui seraient reçues via le websocket service, mais il est tout à fait possible de générer ses propres notifications en utilisant l’action
 `+NotificationActions.add(...)+`.

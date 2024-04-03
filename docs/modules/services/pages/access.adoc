@@ -1,4 +1,4 @@
-=== Access `+access.service.ts+`
+== Access `+access.service.ts+`
 
 Classe de base pour gérer les droits d’accès aux fonctionnalités. De
 base, tous les droits sont ouverts. A surcharger en héritant pour

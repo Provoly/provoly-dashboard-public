@@ -1,4 +1,4 @@
-=== Message IFrame `+iframe-messaging.service.ts+`
+== Message IFrame `+iframe-messaging.service.ts+`
 
 Ce service est utilisé pour la communication une application contenue
 avec un widget de type iframe.

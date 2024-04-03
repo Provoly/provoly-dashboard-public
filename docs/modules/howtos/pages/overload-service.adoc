@@ -1,4 +1,4 @@
-=== Surcharger un service
+== Surcharger un service
 
 On voudra effectuer cette opération si l’on ne dispose pas d’un backend
 pry (et c’est dommage !). Mais dans ce cas-là, afin de surcharger un

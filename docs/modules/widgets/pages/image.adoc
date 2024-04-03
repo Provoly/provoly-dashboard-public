@@ -1,4 +1,4 @@
-==== Widget Image (insertion d’une image)
+== Widget Image (insertion d’une image)
 
 Exemple de manifest:
 
