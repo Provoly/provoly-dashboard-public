@@ -61,7 +61,7 @@ export class SearchService {
         .forEach((filter) => {
           params = params.append(
             'filter',
-            `${filter.attribute},${filter.operator},${encodeURIComponent(filter.value!.toString())}`
+            `${filter.attribute},${filter.operator},${filter.value!.toString()}`
           );
         });
     }
