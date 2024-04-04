@@ -5,7 +5,9 @@ const feature = createFeatureSelector<fromSearch.SearchState>(fromSearch.searchF
 
 const searchLoading = createSelector(feature, (state) => state.searchLoading);
 const possibleFilterValues = (filterId?: string) =>
-  createSelector(feature, (state) => (filterId ? state.possibleFilterValues[filterId] : []));
+  createSelector(feature, (state) =>
+    filterId && state.possibleFilterValues[filterId] ? state.possibleFilterValues[filterId] : []
+  );
 
 export const SearchSelectors = {
   feature,

@@ -12,6 +12,7 @@ import { ConfigState } from '../config/config.reducer';
 import { ConfigSelectors } from '../config/config.selectors';
 import { DEFAULT_NAMED_QUERY_ID } from './search.constants';
 import { SearchState } from './search.reducer';
+import { FilterParamEncoder } from './filter-param-encoder';
 
 export type ResultsetTransformation = (id: string, result: ResultSet) => ResultSet;
 
@@ -54,15 +55,12 @@ export class SearchService {
   }
 
   getItemsFilter(id: string, cumulative?: HttpParams, includeLimit = true): HttpParams {
-    let params = cumulative ?? new HttpParams();
+    let params = cumulative ?? new HttpParams({ encoder: new FilterParamEncoder() });
     if (this.filters[id]) {
       this.filters[id]
         .filter((filter) => filter.value !== null && filter.value !== undefined)
         .forEach((filter) => {
-          params = params.append(
-            'filter',
-            `${filter.attribute},${filter.operator},${filter.value!.toString()}`
-          );
+          params = params.append('filter', `${filter.attribute},${filter.operator},${filter.value!.toString()}`);
         });
     }
     if (includeLimit) {
@@ -73,7 +71,7 @@ export class SearchService {
   }
 
   getOrder(quickOrder: ResultOrder | undefined, cumulative?: HttpParams): HttpParams {
-    let params = cumulative ?? new HttpParams();
+    let params = cumulative ?? new HttpParams({ encoder: new FilterParamEncoder() });
     if (quickOrder) {
       params = params.append('order', `${quickOrder.attribute},${quickOrder.asc ?? ''}`);
     }

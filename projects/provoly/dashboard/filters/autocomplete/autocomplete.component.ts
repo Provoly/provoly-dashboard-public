@@ -88,7 +88,7 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
   }
 
   resetAutocompleteValues() {
-    if (this.items$.getValue().length !== this.possibleFilterValues.length) {
+    if (this.items$.getValue()?.length !== this.possibleFilterValues?.length) {
       this.items$.next(this.possibleFilterValues);
     }
   }
