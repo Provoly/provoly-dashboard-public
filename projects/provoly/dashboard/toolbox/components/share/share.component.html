@@ -1,4 +1,4 @@
-<ng-container *ngIf="this.presentation?.current?.owner">
+<ng-container *ngIf="presentation?.owner">
   <button type="button" class="a-btn a-btn--secondary" (click)="trigger()">
     <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.share' | i18n }}</ng-container>
   </button>
@@ -10,7 +10,7 @@
     role="dialog"
     aria-modal="true"
     aria-labelledby="dialog change visibility"
-    *ngIf="presentation as selectedPresentation"
+    *ngIf="presentation"
   >
     <div class="o-modal__top">
       <div class="o-modal__top__title">
@@ -24,14 +24,17 @@
       </div>
     </div>
     <pry-group-share
-      [ngModel]="selectedPresentation.current?.groups"
-      (ngModelChange)="accessGroups = $event"
+      [ngModel]="presentation.groups"
+      [disableRadios]="disableShareRadios$ | async"
+      [allowedGroups]="allowedShareGroups$ | async"
+      (ngModelChange)="updateAccessGroups($event)"
+      (radioValueChange)="updateVisibility($event)"
     ></pry-group-share>
     <div class="m-btn-group">
       <button type="button" class="a-btn a-btn--secondary" (click)="toggleModal()">
         {{ '@pry.toolbox.manifest.close' | i18n }}
       </button>
-      <button type="submit" class="a-btn a-btn--primary" #submit (click)="changeVisibility()">
+      <button type="submit" class="a-btn a-btn--primary" #submit (click)="validate()">
         {{ '@pry.toolbox.manifest.check' | i18n }}
       </button>
     </div>

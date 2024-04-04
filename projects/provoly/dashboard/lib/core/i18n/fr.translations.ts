@@ -307,6 +307,7 @@ export const frTranslations = {
       restricted: 'Restreint',
       type: 'Visibilité',
       users: 'Utilisateurs autorisés',
+      noGroups: 'Aucun groupe disponible',
       conflict: {
         title: 'Warning',
         main: 'Attention, les sources de données suivantes ne seront pas visible de toutes les personnes accédant à la présentation : ',

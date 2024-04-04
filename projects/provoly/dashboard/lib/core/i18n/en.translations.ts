@@ -303,6 +303,7 @@ export const enTranslations = {
       restricted: 'Restricted',
       type: 'Visibility',
       users: 'Authorized users',
+      noGroups: 'No group available',
       conflict: {
         title: 'Warning',
         main: 'The following data sources are not accessible to the selected user groups:',
