@@ -2,6 +2,8 @@
 @use '../../styles/abstracts/functions' as *;
 @use '../../styles/abstracts/mixins' as *;
 @use '../../styles-theme/abstracts-theme/variables.theme' as *;
+@use '../../styles/components/o-text-panel' as *;
+
 
 .o-dashboard-details {
   &.a-btn {
@@ -40,30 +42,6 @@
     padding: 0;
   }
 
-  h5 {
-    font-weight: bold;
-    font-size: toRem(14);
-    color: themed($theme-map, 'color', 'grey', 700);
-    padding: 0;
-    margin: 0;
-  }
-
-  span, p {
-    font-size: toRem(14);
-    color: themed($theme-map, 'color', 'primary', 750);
-  }
-
-  div {
-    padding-bottom: 10px;
-  }
-
-  ul {
-    margin: 0;
-  }
-
-  li {
-    color: themed($theme-map, 'color', 'grey', 700);
-    font-size: toRem(14);
-  }
+  @extend %o-text-panel;
 }
 

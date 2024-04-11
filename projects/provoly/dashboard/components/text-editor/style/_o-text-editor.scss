@@ -1,0 +1,102 @@
+@use '../../../styles/abstracts/index' as *;
+@use '../../../styles/components/o-text-panel' as *;
+
+/* Organism - text editor */
+
+.o-text-editor {
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__tabs {
+    display: flex;
+    gap: toRem(5);
+  }
+
+  &__tab {
+    padding: toRem(5) toRem(10);
+
+    &.-active {
+      background-color: white;
+      border: 1px solid #BCCAD8;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      font-weight: bold;
+      z-index: 2;
+      margin-bottom: -1px;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  &__button {
+    padding: toRem(5) toRem(5);
+    overflow: visible;
+    color: #113b6e;
+
+    &:hover {
+      @include changeBgColor(
+        $targetBgColor: #D8E7F7
+      );
+    }
+
+    &:nth-child(5), &:nth-child(8) {
+     margin-right: toRem(15);
+    }
+
+    &:last-child {
+      // indent tooltip
+      &.a-tooltip[data-tooltip][data-tooltip-position=bottom]::after {
+        left: calc(50% - 15px);
+      }
+    }
+  }
+
+  &__content {
+    display: flex;
+    gap: toRem(10);
+    min-height: toRem(200);
+    width: 100%;
+  }
+
+  &__tab-panel {
+    width: 100%;
+  }
+
+  &__textarea {
+    &.-half-width {
+      flex-grow: 0;
+      width: auto;
+    }
+    &.-full-width {
+      flex-grow: 1;
+      width: 100%;
+    }
+
+    &.-remove-corner-radius {
+      border-top-left-radius: 0;
+    }
+  }
+
+  &__preview {
+    flex: 1;
+    background-color: white;
+    padding: toRem(7) toRem(12) toRem(4);
+    border: 1px solid #BCCAD8;
+    border-radius: 4px;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+
+    @extend %o-text-panel;
+  }
+}

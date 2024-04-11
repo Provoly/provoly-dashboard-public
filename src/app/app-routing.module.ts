@@ -13,6 +13,7 @@ import {
 import { DashboardContainerComponent } from './dashboard-container/dashboard-container.component';
 import { SearchContainerComponent } from './search-container/search-container.component';
 import { vegaExampleSpec } from './vega-example-spec.constant';
+import { PryTextEditorComponent } from '@provoly/dashboard/components/text-editor';
 
 const routes: Routes = [
   /* In a real app, do not make routes like these ones */
@@ -353,6 +354,16 @@ const routes: Routes = [
       {
         path: '',
         component: PryDatasetComponent
+      }
+    ]
+  },
+  {
+    path: 'text-editor',
+    canActivate: [PRY_ACCESS_GUARD],
+    children: [
+      {
+        path: '',
+        component: PryTextEditorComponent
       }
     ]
   },

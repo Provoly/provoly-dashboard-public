@@ -1,0 +1,64 @@
+@use '../../styles/abstracts/index' as *;
+@use '../../styles/abstracts/functions' as *;
+@use '../../styles/abstracts/mixins' as *;
+@use '../../styles-theme/abstracts-theme/variables.theme' as *;
+
+%o-text-panel {
+  h1, h2, h3, h4, h5, h6 {
+    padding: 0;
+    margin: 0;
+    color: themed($theme-map, 'color', 'grey', 700);
+  }
+
+  h5 {
+    font-size: toRem(14);
+  }
+
+  span, p {
+    font-size: toRem(14);
+    color: themed($theme-map, 'color', 'primary', 750);
+    white-space: pre-wrap;
+  }
+
+  div {
+    padding-bottom: 10px;
+  }
+
+  ul, ol {
+    margin: 0;
+    line-height: 1rem;
+  }
+
+  li {
+    color: themed($theme-map, 'color', 'grey', 700);
+    font-size: toRem(14);
+  }
+
+  table {
+    border-collapse: collapse;
+    thead {
+      tr {
+        border-bottom-width: toRem(1);
+        border-bottom-style: solid;
+        th {
+          padding-top: toRem(12);
+          padding-bottom: toRem(12);
+          text-align: left;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom-width: toRem(1);
+        border-bottom-style: solid;
+
+        td {
+          padding: toRem(12) toRem(8);
+          text-align: left;
+
+        }
+      }
+    }
+  }
+}

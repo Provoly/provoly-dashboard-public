@@ -43,6 +43,7 @@ import { AppComponent } from './app.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { DashboardContainerComponent } from './dashboard-container/dashboard-container.component';
 import { SearchContainerComponent } from './search-container/search-container.component';
+import { PryTextEditorModule } from '@provoly/dashboard/components/text-editor';
 
 @NgModule({
   declarations: [AppComponent, DashboardContainerComponent, SearchContainerComponent],
@@ -215,7 +216,8 @@ import { SearchContainerComponent } from './search-container/search-container.co
     PryPipelineFilterModule,
     PryPipelineNoopModule,
     PryDatasetModule,
-    PryAboutModule
+    PryAboutModule,
+    PryTextEditorModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

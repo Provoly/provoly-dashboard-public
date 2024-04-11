@@ -320,6 +320,7 @@ export const enTranslations = {
       view: 'View metadata'
     },
     components: {
+      searchData: 'Search',
       chipsSelector: {
         datasource: {
           select: 'Select one or more data source(s):',
@@ -339,8 +340,7 @@ export const enTranslations = {
             AUTHENTICATED: 'Connected users'
           }
         }
-      },
-      searchData: 'Search'
+      }
     },
     errors: {
       default: 'There is an error. Try again or contact your administrator',
