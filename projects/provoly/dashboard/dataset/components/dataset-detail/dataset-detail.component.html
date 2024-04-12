@@ -73,12 +73,12 @@
 </div>
 
 <ng-template #information>
-  @if (activeVersion$ | async; as activeVersion) {
-    <div class="u-display-flex -column o-dataset-detail__information">
-      <div>
-        <span class="a-label">{{ '@pry.dataset.description' | i18n }}</span>
-        <span>{{ dataset.description ?? ('@pry.dataset.version.notProvided' | i18n) }}</span>
-      </div>
+  <div class="u-display-flex -column o-dataset-detail__information">
+    <div>
+      <span class="a-label">{{ '@pry.dataset.description' | i18n }}</span>
+      <span>{{ dataset.description ?? ('@pry.dataset.version.notProvided' | i18n) }}</span>
+    </div>
+    @if (activeVersion$ | async; as activeVersion) {
       <div>
         <span class="a-label">{{ '@pry.dataset.version.productionDate' | i18n }}</span>
         <span>{{
@@ -96,12 +96,12 @@
           [innerHTML]="activeVersion?.additionalInformation ?? ('@pry.dataset.version.notProvided' | i18n) | mdToHtml"
         ></div>
       </div>
-    </div>
-  } @else {
-    <div class="a-p">
-      <p>{{ '@pry.dataset.noActiveVersion' | i18n }}</p>
-    </div>
-  }
+    } @else {
+      <div class="a-p">
+        <p>{{ '@pry.dataset.noActiveVersion' | i18n }}</p>
+      </div>
+    }
+  </div>
 </ng-template>
 
 <ng-template #table>

@@ -12,6 +12,7 @@ import {
 import { map, Observable, take } from 'rxjs';
 import { ImportActions } from '../store/import.actions';
 import { ImportSelectors } from '../store/import.selectors';
+import { catchError } from 'rxjs/operators';
 
 type FileExtension = 'csv' | 'zip';
 
@@ -83,7 +84,7 @@ export class PryImportComponent extends SubscriptionnerDirective implements OnDe
           fileType: this.selectedFileType,
           normalizeGeo: this.normalizeGeoShape,
           datasetVersionInformation: {
-            productionDate: this.productionDate,
+            productionDate: new Date(this.productionDate).toISOString(),
             producer: this.producer,
             additionalInformation: this.additionalInformation.length > 0 ? this.additionalInformation : undefined
           }
@@ -120,9 +121,14 @@ export class PryImportComponent extends SubscriptionnerDirective implements OnDe
       this.subscriptions.add(
         this.dsService
           .getLastActiveDatasetVersion($event.id)
-          .pipe(take(1))
+          .pipe(
+            take(1),
+            catchError(() => [])
+          )
           .subscribe((version) => {
-            this.producer = version.producer || '';
+            if (version && version.producer) {
+              this.producer = version.producer || '';
+            }
           })
       );
     }
