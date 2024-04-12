@@ -39,13 +39,25 @@
         <pry-select
           id="datasets"
           [items]="datasets$ | async"
-          [(ngModel)]="datasetSelected"
+          [(ngModel)]="selectedDataset"
+          (ngModelChange)="getLastActiveVersion($event)"
           [placeholder]="'@pry.import.dataset' | i18n"
-          bindValue="id"
           bindLabel="name"
         ></pry-select>
       </div>
       <pry-checkbox [(ngModel)]="normalizeGeoShape">{{ '@pry.import.normalize' | i18n }}</pry-checkbox>
+      <div class="m-form-label-field">
+        <label class="a-h3">{{ '@pry.dataset.version.productionDate' | i18n }}</label>
+        <input class="a-form-field" type="datetime-local" [max]="maxDate" [(ngModel)]="productionDate" />
+      </div>
+      <div class="m-form-label-field">
+        <label class="a-h3">{{ '@pry.dataset.version.producer' | i18n }}</label>
+        <input class="a-form-field" type="text" maxlength="100" [(ngModel)]="producer" />
+      </div>
+      <div class="m-form-label-field">
+        <label class="a-h3">{{ '@pry.dataset.version.additionalInformation' | i18n }}</label>
+        <pry-text-editor [(ngModel)]="additionalInformation"></pry-text-editor>
+      </div>
       <div class="o-import__container__input__actions">
         <button class="a-btn a-btn--primary" (click)="submit()" [disabled]="isSubmitDisabled()">
           {{ '@pry.import.import' | i18n }}
@@ -58,7 +70,7 @@
           {{
             '@pry.import.consultDataset'
               | i18n
-                : { parameter: datasetSelected ?? '' | translateId : { type: 'datasource', output: 'name' } | async }
+                : { parameter: selectedDataset?.id ?? '' | translateId: { type: 'datasource', output: 'name' } | async }
           }}
         </h1>
       </div>

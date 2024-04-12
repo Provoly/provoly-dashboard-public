@@ -1,7 +1,15 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Dataset, DataSourceActions, DataSourceSelectors, PryDatasetType } from '@provoly/dashboard';
-import { map, Observable } from 'rxjs';
+import {
+  Dataset,
+  DatasetVersion,
+  DataSourceActions,
+  DataSourceSelectors,
+  DataSourceService,
+  PryDatasetType,
+  SubscriptionnerDirective
+} from '@provoly/dashboard';
+import { map, Observable, take } from 'rxjs';
 import { ImportActions } from '../store/import.actions';
 import { ImportSelectors } from '../store/import.selectors';
 
@@ -11,10 +19,10 @@ type FileExtension = 'csv' | 'zip';
   selector: 'pry-import',
   templateUrl: './import.component.html'
 })
-export class PryImportComponent implements OnDestroy {
+export class PryImportComponent extends SubscriptionnerDirective implements OnDestroy {
   datasets$: Observable<Dataset[]>;
   file?: File;
-  datasetSelected?: string;
+  selectedDataset?: Dataset;
   selectedFileType: FileExtension = 'csv';
   loading$: Observable<boolean>;
   normalizeGeoShape = false;
@@ -34,7 +42,16 @@ export class PryImportComponent implements OnDestroy {
     zip: '.zip'
   };
   showMessage: boolean = false;
-  constructor(private store: Store) {
+  productionDate: string = new Date().toISOString().replace(/:\d+\.\d+Z$/, '');
+  producer: string = '';
+  additionalInformation: string = '';
+  maxDate = new Date().toISOString().replace('Z', '');
+
+  constructor(
+    private store: Store,
+    private dsService: DataSourceService
+  ) {
+    super();
     store.dispatch(DataSourceActions.dataset.loadDataset());
     this.datasets$ = store
       .select(DataSourceSelectors.datasets)
@@ -47,16 +64,10 @@ export class PryImportComponent implements OnDestroy {
       );
     this.loading$ = store.select(ImportSelectors.loading);
   }
-  ngOnDestroy() {
-    this.showMessage = false;
-  }
 
-  sortObjectEntries(obj: any) {
-    let arraySorted: any = [];
-    Object.keys(obj)
-      .sort((a: any, b: any) => a - b)
-      .forEach((el) => (arraySorted[el] = obj[el]));
-    return arraySorted;
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    this.showMessage = false;
   }
 
   uploadedChange($event: File) {
@@ -64,13 +75,18 @@ export class PryImportComponent implements OnDestroy {
   }
 
   submit() {
-    if (this.file && this.datasetSelected && this.selectedFileType) {
+    if (this.file && this.selectedDataset && this.selectedFileType) {
       this.store.dispatch(
         ImportActions.upload({
           file: this.file,
-          dataset: this.datasetSelected,
+          dataset: this.selectedDataset.id,
           fileType: this.selectedFileType,
-          normalizeGeo: this.normalizeGeoShape
+          normalizeGeo: this.normalizeGeoShape,
+          datasetVersionInformation: {
+            productionDate: this.productionDate,
+            producer: this.producer,
+            additionalInformation: this.additionalInformation.length > 0 ? this.additionalInformation : undefined
+          }
         })
       );
       this.showMessage = true;
@@ -79,7 +95,11 @@ export class PryImportComponent implements OnDestroy {
   }
 
   isSubmitDisabled() {
-    return this.file === undefined || this.datasetSelected === undefined;
+    return (
+      this.file === undefined ||
+      this.selectedDataset === undefined ||
+      (this.selectedDataset?.type === PryDatasetType.CLOSED && (this.productionDate === '' || this.producer === ''))
+    );
   }
 
   getFileSize(size: number) {
@@ -93,5 +113,18 @@ export class PryImportComponent implements OnDestroy {
 
   onFileTypeChange(fileType: FileExtension) {
     this.selectedFileType = fileType;
+  }
+
+  getLastActiveVersion($event?: Dataset) {
+    if ($event) {
+      this.subscriptions.add(
+        this.dsService
+          .getLastActiveDatasetVersion($event.id)
+          .pipe(take(1))
+          .subscribe((version) => {
+            this.producer = version.producer || '';
+          })
+      );
+    }
   }
 }

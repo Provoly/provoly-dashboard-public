@@ -196,7 +196,7 @@ export class DataSourceService {
       .select(ConfigSelectors.refUrl)
       .pipe(
         switchMap((url) =>
-          this.httpClient.get<DatasetVersion>(encodeURI(`${url}/datasets/{datasetId}/dataset-versions/latest`))
+          this.httpClient.get<DatasetVersion>(encodeURI(`${url}/datasets/${datasetId}/dataset-versions/latest`))
         )
       );
   }

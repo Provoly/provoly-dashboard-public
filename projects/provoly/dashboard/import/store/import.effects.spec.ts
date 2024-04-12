@@ -9,6 +9,7 @@ import { ImportActions } from './import.actions';
 import { ImportEffects } from './import.effects';
 import { ImportState, initialImportState } from './import.reducer';
 import { ImportService } from './import.service';
+import { mockImportData } from '@provoly/dashboard/mock/data/import';
 
 const buildState = (state: Partial<ImportState>) =>
   Object.assign({}, { '@pry/import': JSON.parse(JSON.stringify({ ...initialImportState, ...state })) });
@@ -50,7 +51,6 @@ describe('ImportEffects', () => {
   });
   describe('upload$', () => {
     it('should call upload success', () => {
-      const fakeFile = new File([''], 'fakefilename.csv', { type: 'text/csv' });
       const getSpy = jest.spyOn(importService, 'upload');
       store.setState(
         buildState({
@@ -59,7 +59,7 @@ describe('ImportEffects', () => {
       );
 
       actions$ = hot('--a-', {
-        a: ImportActions.upload({ file: fakeFile, dataset: 'fakedatasetid', fileType: 'csv' })
+        a: ImportActions.upload({ ...mockImportData })
       });
 
       const expected$ = hot('--a-', {
@@ -71,7 +71,6 @@ describe('ImportEffects', () => {
       });
     });
     it('should call upload failure', () => {
-      const fakeFile = new File([''], 'fakefilename.csv', { type: 'text/csv' });
       const errorResponse = new HttpErrorResponse({
         error: { resume: null, itemErrors: [] },
         status: 400,
@@ -85,7 +84,7 @@ describe('ImportEffects', () => {
       );
 
       actions$ = hot('--a-', {
-        a: ImportActions.upload({ file: fakeFile, dataset: 'fakedatasetid', fileType: 'csv' })
+        a: ImportActions.upload({ ...mockImportData })
       });
 
       const expected$ = hot('--a-', {
@@ -97,7 +96,6 @@ describe('ImportEffects', () => {
       });
     });
     it('should call upload success for .shp file type', () => {
-      const fakeFile = new File([''], 'fakefilename.zip', { type: 'application/shp' });
       const getSpy = jest.spyOn(importService, 'upload');
       store.setState(
         buildState({
@@ -106,7 +104,7 @@ describe('ImportEffects', () => {
       );
 
       actions$ = hot('--a-', {
-        a: ImportActions.upload({ file: fakeFile, dataset: 'fakedatasetid', fileType: 'zip' })
+        a: ImportActions.upload({ ...mockImportData })
       });
 
       const expected$ = hot('--a-', {
@@ -119,7 +117,6 @@ describe('ImportEffects', () => {
     });
 
     it('should call upload failure for .shp file type', () => {
-      const fakeFile = new File([''], 'fakefilename.zip', { type: 'application/shp' });
       const errorResponse = new HttpErrorResponse({
         error: { resume: null, itemErrors: [] },
         status: 400,
@@ -133,7 +130,7 @@ describe('ImportEffects', () => {
       );
 
       actions$ = hot('--a-', {
-        a: ImportActions.upload({ file: fakeFile, dataset: 'fakedatasetid', fileType: 'zip' })
+        a: ImportActions.upload({ ...mockImportData })
       });
 
       const expected$ = hot('--a-', {

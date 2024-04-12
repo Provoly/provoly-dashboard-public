@@ -995,6 +995,9 @@ router.on(['DELETE'], '/ref/datasets/id/:datasetId/metadata/id/:metadataId', (re
   dataModule.dataset.deleteMetadata(params['datasetId'], params['metadataId']);
   makeResponseOk(res);
 });
+router.on(['GET'], '/ref/datasets/:datasetId/dataset-versions/latest', (req, res, params) => {
+  makeResponseOk(res, dataModule.datasetVersions.getLatestActiveVersion(params['datasetId']));
+});
 router.on(['OPTIONS', 'DELETE'], '/ref/notification/me/id/:id', (req, res, params) => {
   makeResponseOk(res, {}, 204);
 });

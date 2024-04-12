@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PryCoreModule, PryI18nModule, PryI18nService, PryIconModule, PrySelectModule } from '@provoly/dashboard';
@@ -12,22 +12,25 @@ import { ImportEffects } from './store/import.effects';
 import { importFeatureKey, importReducer } from './store/import.reducer';
 import { PryImportCssComponent } from './style/css.component';
 import {PryCheckboxModule} from "@provoly/dashboard/components/checkbox";
+import { PryTextEditorModule } from '@provoly/dashboard/components/text-editor';
 
 @NgModule({
   providers: [DatePipe],
   declarations: [PryImportComponent, PryImportCssComponent],
-    imports: [
-        PryCoreModule,
-        PrySelectModule,
-        PryI18nModule,
-        CommonModule,
-        PryIconModule,
-        FormsModule,
-        PryImportRoutingModule,
-        StoreModule.forFeature(importFeatureKey, importReducer),
-        EffectsModule.forFeature([ImportEffects]),
-        PryCheckboxModule
-    ],
+  imports: [
+    PryCoreModule,
+    PrySelectModule,
+    PryI18nModule,
+    CommonModule,
+    PryIconModule,
+    FormsModule,
+    PryImportRoutingModule,
+    StoreModule.forFeature(importFeatureKey, importReducer),
+    EffectsModule.forFeature([ImportEffects]),
+    PryCheckboxModule,
+    ReactiveFormsModule,
+    PryTextEditorModule
+  ],
   exports: [PryImportComponent]
 })
 export class PryImportModule {

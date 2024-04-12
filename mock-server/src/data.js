@@ -134,7 +134,7 @@ const updateCustomClassParams = (classId, domain, payload) => {
 const getWidgets = () => {
   return widgetList.map((widget) => ({
     ...widget
-  }));c
+  }));
 };
 
 const saveWidget = (widget) => {
@@ -338,7 +338,11 @@ const updateDatasetVersion = (id, payload) => {
   datasetVersions = datasetVersions.map((datasetVersion) =>
     datasetVersion.id === id ? { ...datasetVersion, ...payload } : datasetVersion
   );
-}
+};
+
+const getLatestActiveVersion = (id) => {
+  return datasetVersions.find((version) => version.state === 'ACTIVE' && version.dataset === id);
+};
 
 const deleteField = (id) => {
   fields = fields.filter((field) => field.id !== id);
@@ -417,7 +421,8 @@ module.exports = {
     getById: getDatasetVersionsByDatasetId,
     activate: activateDatasetVersion,
     deactivate: deactivateDatasetVersion,
-    update: updateDatasetVersion
+    update: updateDatasetVersion,
+    getLatestActiveVersion: getLatestActiveVersion
   },
   transformations: {
     get: getTransformations,

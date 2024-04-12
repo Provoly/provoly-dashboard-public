@@ -7,6 +7,7 @@ import { MockNgModelDirective } from '@provoly/dashboard/mock/directive/mock-ng-
 import { MockI18nPipe } from '../../mock/pipe/mock-i18n.pipe';
 import { PryImportCssComponent } from '../style/css.component';
 import { PryImportComponent } from './import.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('PryImportComponent', () => {
   let component: PryImportComponent;
@@ -15,6 +16,7 @@ describe('PryImportComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       declarations: [
         PryImportComponent,
         MockI18nPipe,

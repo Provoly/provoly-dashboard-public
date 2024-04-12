@@ -1,5 +1,7 @@
 import { ImportActions } from './import.actions';
 import { importReducer, ImportState } from './import.reducer';
+import { DatasetVersion } from '@provoly/dashboard';
+import { mockImportData } from '@provoly/dashboard/mock/data/import';
 
 describe('Import Reducer', () => {
   const initialState: ImportState = {
@@ -18,10 +20,11 @@ describe('Import Reducer', () => {
 
   describe('upload action with csv', () => {
     it('should change the selected id value', () => {
-      const fakeFile = new File([''], 'fakefilename.csv', { type: 'text/csv' });
       const result = importReducer(
         initialState,
-        ImportActions.upload({ file: fakeFile, dataset: 'fakedatasetid', fileType: 'csv' })
+        ImportActions.upload({
+          ...mockImportData
+        })
       );
 
       expect(result).toEqual({ ...initialState, loading: true });
@@ -30,10 +33,11 @@ describe('Import Reducer', () => {
 
   describe('upload action with shapefile', () => {
     it('should change the selected id value', () => {
-      const fakeFile = new File([''], 'fakefilename.zip', { type: 'application/shp' });
       const result = importReducer(
         initialState,
-        ImportActions.upload({ file: fakeFile, dataset: 'fakedatasetid', fileType: 'zip' })
+        ImportActions.upload({
+          ...mockImportData
+        })
       );
       expect(result).toEqual({ ...initialState, loading: true });
     });
