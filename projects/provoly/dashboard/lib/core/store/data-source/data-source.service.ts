@@ -190,4 +190,26 @@ export class DataSourceService {
         )
       );
   }
+
+  getLastActiveDatasetVersion(datasetId: string) {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(
+        switchMap((url) =>
+          this.httpClient.get<DatasetVersion>(encodeURI(`${url}/datasets/{datasetId}/dataset-versions/latest`))
+        )
+      );
+  }
+
+  updateDatasetVersionInfo(version: Partial<DatasetVersion>) {
+    return this.store.select(ConfigSelectors.refUrl).pipe(
+      switchMap((url) =>
+        this.httpClient.put<DatasetVersion>(encodeURI(`${url}/dataset-versions/id/${version.id}`), {
+          additionalInformation: version.additionalInformation,
+          producer: version.producer,
+          productionDate: version.productionDate
+        })
+      )
+    );
+  }
 }

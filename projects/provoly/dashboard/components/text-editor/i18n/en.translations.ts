@@ -5,16 +5,17 @@ export const enTranslations = {
         textAreaLabel: 'Text editor',
         preview: 'Preview',
         write: 'Write',
-        h3: 'Tile',
+        h3: 'Title',
         bold: 'Bold',
         italic: 'Italic',
-        underline: 'UNderline',
+        underline: 'Underline',
         strikeThrough: 'Strikethrough',
         blockquote: 'Quote',
         list: 'List',
         orderedList: 'Ordered list',
         table: 'Table',
-        details: 'Details'
+        details: 'Details',
+        more: 'More'
       }
     }
   }

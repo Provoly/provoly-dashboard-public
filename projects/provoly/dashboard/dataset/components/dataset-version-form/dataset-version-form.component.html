@@ -1,0 +1,17 @@
+<form class="o-dataset-version-form u-display-flex -column" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="m-form-label-field">
+    <label class="a-label">{{ '@pry.dataset.version.productionDate' | i18n }}</label>
+    <input class="a-form-field" type="datetime-local" [max]="maxDate" formControlName="productionDate" />
+  </div>
+  <div class="m-form-label-field">
+    <label class="a-label">{{ '@pry.dataset.version.producer' | i18n }}</label>
+    <input class="a-form-field" type="text" formControlName="producer" />
+  </div>
+  <div class="m-form-label-field">
+    <label class="a-label">{{ '@pry.dataset.version.additionalInformation' | i18n }}</label>
+    <pry-text-editor formControlName="additionalInformation"></pry-text-editor>
+  </div>
+  <button class="a-btn a-btn--primary u-self-end" type="submit" [disabled]="form.invalid">
+    {{ '@pry.toolbox.manifest.validate' | i18n }}
+  </button>
+</form>

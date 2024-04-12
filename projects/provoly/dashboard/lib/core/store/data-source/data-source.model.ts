@@ -43,4 +43,7 @@ export interface DatasetVersion {
   withFile: boolean;
   metadata: any[];
   hasWarnings: boolean;
+  productionDate?: string;
+  producer?: string;
+  additionalInformation?: string;
 }

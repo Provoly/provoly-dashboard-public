@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ContentChildren, Input, QueryList } from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, EventEmitter, Input, Output, QueryList } from '@angular/core';
 import { TabComponent } from './tab.component';
 
 @Component({
@@ -11,6 +11,8 @@ export class TabGroupComponent implements AfterContentInit {
   currentTab!: TabComponent;
   currentTabIndex = 0;
   static instanceId = 0;
+
+  @Output() clickedTabIdx = new EventEmitter<number>();
 
   get instanceId() {
     return TabGroupComponent.instanceId;
@@ -28,5 +30,6 @@ export class TabGroupComponent implements AfterContentInit {
   switch(tab: TabComponent, index: number) {
     this.currentTab = tab;
     this.currentTabIndex = index;
+    this.clickedTabIdx.emit(index);
   }
 }

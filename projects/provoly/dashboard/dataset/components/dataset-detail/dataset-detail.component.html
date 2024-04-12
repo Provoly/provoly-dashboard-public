@@ -6,20 +6,98 @@
   </button>
 </div>
 
-<div class="o-dataset-layout__content">
-  <div class="a-p">
-    <h1 class="a-h1">{{ dataset.name }}</h1>
-    <span class="description">{{ dataset.description }}</span>
-  </div>
+<div class="o-dataset-layout">
+  <div class="o-dataset-layout__content">
+    <div class="a-p">
+      <h2 class="a-h1">{{ dataset.name }}</h2>
+    </div>
 
-  <div class="dataset-detail">
-    <pry-tab-group translationStringBase="@pry.dataset.">
-      <pry-tab [templateRef]="table" name="data"></pry-tab>
-      <pry-tab [templateRef]="map" name="map"></pry-tab>
-      <pry-tab [templateRef]="datasetVersions" name="versionHistory"></pry-tab>
-    </pry-tab-group>
+    <div class="o-dataset-detail">
+      <div class="o-dataset-detail__content">
+        <pry-tab-group translationStringBase="@pry.dataset." (clickedTabIdx)="onTabSwitch($event)">
+          <pry-tab [templateRef]="information" name="information"></pry-tab>
+          <pry-tab [templateRef]="table" name="data"></pry-tab>
+          <pry-tab [templateRef]="map" name="map"></pry-tab>
+          <pry-tab [templateRef]="datasetVersions" name="versionHistory"></pry-tab>
+        </pry-tab-group>
+      </div>
+    </div>
   </div>
+  @if (isPanelOpen) {
+    <div class="o-dataset-layout__panel">
+      <div class="panel__header u-display-flex -justify-space-between">
+        <h3>{{ '@pry.dataset.information' | i18n }}</h3>
+        <button role="button" (click)="togglePanel()">
+          <pry-icon iconSvg="close"></pry-icon>
+        </button>
+      </div>
+      <div class="panel__content u-display-flex -column">
+        @if (!isEditingVersion) {
+          <div>
+            <span class="a-label">{{ '@pry.dataset.version.productionDate' | i18n }}</span>
+            <span>{{
+              (selectedVersion?.productionDate | date: 'dd-MM-yyyy, HH:mm') ??
+                ('@pry.dataset.version.notProvided' | i18n)
+            }}</span>
+          </div>
+          <div>
+            <span class="a-label">{{ '@pry.dataset.version.producer' | i18n }}</span>
+            <span>{{ selectedVersion?.producer ?? ('@pry.dataset.version.notProvided' | i18n) }}</span>
+          </div>
+          <div>
+            <span class="a-label">{{ '@pry.dataset.version.additionalInformation' | i18n }}</span>
+            <div
+              class="version-information"
+              [innerHTML]="
+                selectedVersion?.additionalInformation ?? ('@pry.dataset.version.notProvided' | i18n) | mdToHtml
+              "
+            ></div>
+          </div>
+          <button *pryAccess="{ module: 'admin', page: 'list-dataset', action: 'edit_version' }" role="button" class="a-btn a-btn--primary u-self-end" (click)="editVersion()">
+            {{ '@pry.action.edit' | i18n }}
+          </button>
+        } @else {
+          <pry-dataset-version-form
+            [version]="selectedVersion"
+            (formValidated)="formValidated($event)"
+          ></pry-dataset-version-form>
+        }
+      </div>
+    </div>
+  }
 </div>
+
+<ng-template #information>
+  @if (activeVersion$ | async; as activeVersion) {
+    <div class="u-display-flex -column o-dataset-detail__information">
+      <div>
+        <span class="a-label">{{ '@pry.dataset.description' | i18n }}</span>
+        <span>{{ dataset.description ?? ('@pry.dataset.version.notProvided' | i18n) }}</span>
+      </div>
+      <div>
+        <span class="a-label">{{ '@pry.dataset.version.productionDate' | i18n }}</span>
+        <span>{{
+          (activeVersion?.productionDate | date: 'dd-MM-yyyy, HH:mm') ?? ('@pry.dataset.version.notProvided' | i18n)
+        }}</span>
+      </div>
+      <div>
+        <span class="a-label">{{ '@pry.dataset.version.producer' | i18n }}</span>
+        <span>{{ activeVersion?.producer ?? ('@pry.dataset.version.notProvided' | i18n) }}</span>
+      </div>
+      <div>
+        <span class="a-label">{{ '@pry.dataset.version.additionalInformation' | i18n }}</span>
+        <div
+          class="version-information"
+          [innerHTML]="activeVersion?.additionalInformation ?? ('@pry.dataset.version.notProvided' | i18n) | mdToHtml"
+        ></div>
+      </div>
+    </div>
+  } @else {
+    <div class="a-p">
+      <p>{{ '@pry.dataset.noActiveVersion' | i18n }}</p>
+    </div>
+  }
+</ng-template>
 
 <ng-template #table>
   <div class="dashboard-container">
@@ -32,7 +110,7 @@
   </div>
 </ng-template>
 <ng-template #datasetVersions>
-  <div *ngIf="activeVersion$ | async as activeVersionId" class="table-container">
+  <div *ngIf="activeVersion$ | async as activeVersion" class="dataset-detail__table table-container">
     <table class="a-table">
       <caption>
         {{
@@ -51,30 +129,30 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let version of datasetVersions$ | async">
+        <tr *ngFor="let version of datasetVersions$ | async" (click)="togglePanel(version)">
           <td>
             {{ version.version }}
-            <pry-icon *ngIf="activeVersionId === version.id" iconSvg="check" class="check"></pry-icon>
+            <pry-icon *ngIf="activeVersion.id === version.id" iconSvg="check" class="check"></pry-icon>
           </td>
           <td>
             <div
               class="a-tooltip"
-              [attr.data-tooltip]="version.lastModified | sinceDate : { onlyLocale: true }"
+              [attr.data-tooltip]="version.lastModified | sinceDate: { onlyLocale: true }"
               data-tooltip-position="right"
             >
-              {{ version.lastModified | sinceDate : { onlyLocale: true } }}
+              {{ version.lastModified | sinceDate: { onlyLocale: true } }}
             </div>
           </td>
           <td>
             {{
-              (activeVersionId === version.id
+              (activeVersion.id === version.id
                 ? '@pry.dataset.version.currentlyActive'
                 : '@pry.dataset.version.' + version.state
               ) | i18n
             }}
             <div
               class="m-info-icon a-tooltip -tooltip-width-md"
-              [attr.data-tooltip]="'@pry.dataset.tooltip.' + getVersionTooltipContent(version, activeVersionId) | i18n"
+              [attr.data-tooltip]="'@pry.dataset.tooltip.' + getVersionTooltipContent(version, activeVersion.id) | i18n"
               data-tooltip-position="right"
             >
               <span>i</span>

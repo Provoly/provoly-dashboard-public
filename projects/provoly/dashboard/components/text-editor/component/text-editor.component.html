@@ -1,33 +1,15 @@
 <pry-text-editor-css></pry-text-editor-css>
 <div class="o-text-editor">
   <div class="o-text-editor__header">
-    @if (tabView) {
-      <div class="o-text-editor__tabs">
-        @for (tab of tabs; track tab; let i = $index) {
-          <button
-            type="button"
-            role="tab"
-            class="o-text-editor__tab"
-            [id]="'text-editor-tab-' + i"
-            [class.-active]="tab === activeTab"
-            [attr.aria-selected]="tab === activeTab"
-            [attr.aria-controls]="'text-editor-panel-' + activeTab"
-            (click)="activeTab = tab"
-          >
-            {{ '@pry.component.textEditor.' + tab | i18n }}
-          </button>
-        }
-      </div>
-    }
     <div class="o-text-editor__buttons">
       @for (button of buttons; track button.style) {
         <button
           type="button"
           class="o-text-editor__button a-tooltip"
           (click)="formatText(button.style)"
-          [attr.data-tooltip]="'@pry.components.textEditor.' + button.style | i18n"
+          [attr.data-tooltip]="'@pry.component.textEditor.' + button.style | i18n"
           data-tooltip-position="bottom"
-          [attr.aria-label]="'@pry.components.textEditor.' + button.style | i18n"
+          [attr.aria-label]="'@pry.component.textEditor.' + button.style | i18n"
         >
           <pry-icon [height]="16" [width]="16" [iconSvg]="button.icon"></pry-icon>
         </button>
@@ -47,13 +29,13 @@
             cols="64"
             rows="10"
             [(ngModel)]="value"
-            [attr.aria-label]="'@pry.components.textEditor.textAreaLabel' | i18n"
+            [attr.aria-label]="'@pry.component.textEditor.textAreaLabel' | i18n"
             (keydown.enter)="insertListStyleCharacter()"
             #textarea
           >
           </textarea>
         } @else {
-          <div class="o-text-editor__preview" [innerHTML]="value"></div>
+          <div class="o-text-editor__preview" [innerHTML]="value | mdToHtml"></div>
         }
       </div>
     } @else {
@@ -62,12 +44,31 @@
         cols="64"
         rows="10"
         [(ngModel)]="value"
-        [attr.aria-label]="'@pry.components.textEditor.textAreaLabel' | i18n"
+        (ngModelChange)="onValueChange($event)"
+        [attr.aria-label]="'@pry.component.textEditor.textAreaLabel' | i18n"
         (keydown.enter)="insertListStyleCharacter()"
         #textarea
       >
       </textarea>
-      <div class="o-text-editor__preview" [innerHTML]="value"></div>
+      <div class="o-text-editor__preview" [innerHTML]="value | mdToHtml"></div>
     }
   </div>
+  @if (tabView) {
+    <div class="o-text-editor__tabs">
+      @for (tab of tabs; track tab; let i = $index) {
+        <button
+          type="button"
+          role="tab"
+          class="o-text-editor__tab"
+          [id]="'text-editor-tab-' + i"
+          [class.-active]="tab === activeTab"
+          [attr.aria-selected]="tab === activeTab"
+          [attr.aria-controls]="'text-editor-panel-' + activeTab"
+          (click)="activeTab = tab"
+        >
+          {{ '@pry.component.textEditor.' + tab | i18n }}
+        </button>
+      }
+    </div>
+  }
 </div>

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   PryCoreModule,
   PryDashboardModule,
@@ -17,10 +17,17 @@ import { PryDatasetComponent } from './components/dataset.component';
 import { enTranslations } from './i18n/en.translations';
 import { frTranslations } from './i18n/fr.translations';
 import { PryDatasetCssComponent } from './style/css.component';
+import { PryDatasetVersionFormComponent } from './components/dataset-version-form/dataset-version-form.component';
+import { PryTextEditorModule } from '@provoly/dashboard/components/text-editor';
 
 @NgModule({
-  providers: [],
-  declarations: [PryDatasetComponent, PryDatasetCssComponent, PryDatasetCardComponent, PryDatasetDetailComponent],
+  declarations: [
+    PryDatasetComponent,
+    PryDatasetCssComponent,
+    PryDatasetCardComponent,
+    PryDatasetDetailComponent,
+    PryDatasetVersionFormComponent
+  ],
   imports: [
     CommonModule,
     PryIconModule,
@@ -30,7 +37,9 @@ import { PryDatasetCssComponent } from './style/css.component';
     FormsModule,
     PryDashboardModule,
     PrySinceDateModule,
-    PryModalStatusModule
+    PryModalStatusModule,
+    ReactiveFormsModule,
+    PryTextEditorModule
   ],
   exports: [PryDatasetComponent, PryDatasetCssComponent, PryDatasetCardComponent, PryDatasetDetailComponent]
 })

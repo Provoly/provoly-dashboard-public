@@ -13,7 +13,7 @@ import { ConfigSelectors } from '../config/config.selectors';
 import { SearchActions } from '../search/search.actions';
 import { SearchService } from '../search/search.service';
 import { DataSourceActions } from './data-source.actions';
-import { Dataset, NamedQuery } from './data-source.model';
+import { Dataset, DatasetVersion, NamedQuery } from './data-source.model';
 import { DataSourceSelectors } from './data-source.selectors';
 import { DataSourceService } from './data-source.service';
 
@@ -335,6 +335,17 @@ export class DataSourceEffects {
         this.dataSourceService.getPreviews(action.id).pipe(
           map((previews) => DataSourceActions.dataset.previews.getByIdSuccess({ previews })),
           catchError((error) => [DataSourceActions.dataset.previews.getByIdFailure({ error })])
+        )
+      )
+    )
+  );
+
+  updateDatasetVersionInfo = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DataSourceActions.dataset.updateDatasetVersionInfo),
+      switchMap((action) =>
+        this.dataSourceService.updateDatasetVersionInfo(action.version).pipe(
+          map((previews) => DataSourceActions.dataset.updateDatasetVersionInfoSuccess({ version: action.version }))
         )
       )
     )

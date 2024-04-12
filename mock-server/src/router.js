@@ -985,6 +985,12 @@ router.on(['POST'], '/ref/dataset-versions/id/:datasetVersionId/activate', (req,
     makeResponseOk(res);
   });
 });
+router.on(['OPTIONS', 'PUT'], '/ref/dataset-versions/id/:datasetVersionId', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    dataModule.datasetVersions.update(params['datasetVersionId'], payload);
+    makeResponseOk(res, {}, 204);
+  });
+});
 router.on(['DELETE'], '/ref/datasets/id/:datasetId/metadata/id/:metadataId', (req, res, params) => {
   dataModule.dataset.deleteMetadata(params['datasetId'], params['metadataId']);
   makeResponseOk(res);

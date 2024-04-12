@@ -295,7 +295,10 @@ const generateDatasetVersions = () => {
           state: i > howMany - 4 ? 'ACTIVE' : casual.random_element(['ACTIVE', 'ERROR', 'INDEXING', 'INACTIVE']),
           withFile: false,
           metadata: [],
-          hasWarnings: casual.boolean
+          hasWarnings: casual.boolean,
+          productionDate: casual.date('YYYY-MM-DD'),
+          producer: casual.company_name,
+          additionalInformation: casual.sentence
         });
       }
       return versions;
@@ -330,6 +333,13 @@ const activateDatasetVersion = (id) => {
   datasetVersions.find((datasetVersion) => datasetVersion.id === id).state = 'ACTIVE';
   return datasetVersions;
 };
+
+const updateDatasetVersion = (id, payload) => {
+  datasetVersions = datasetVersions.map((datasetVersion) =>
+    datasetVersion.id === id ? { ...datasetVersion, ...payload } : datasetVersion
+  );
+}
+
 const deleteField = (id) => {
   fields = fields.filter((field) => field.id !== id);
 };
@@ -406,7 +416,8 @@ module.exports = {
     get: getDatasetVersions,
     getById: getDatasetVersionsByDatasetId,
     activate: activateDatasetVersion,
-    deactivate: deactivateDatasetVersion
+    deactivate: deactivateDatasetVersion,
+    update: updateDatasetVersion
   },
   transformations: {
     get: getTransformations,

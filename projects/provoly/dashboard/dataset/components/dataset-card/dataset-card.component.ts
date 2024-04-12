@@ -12,8 +12,10 @@ export class PryDatasetCardComponent implements AfterContentInit  {
   @Output() consult = new EventEmitter<Dataset>();
   datasetVersions$!: Observable<DatasetVersion[]>;
   activeVersion$!: Observable<string | undefined>;
+
   constructor(private store: Store) {}
-  ngAfterContentInit  () {
+
+  ngAfterContentInit() {
     this.datasetVersions$ = this.store
       .select(DataSourceSelectors.matchingDatasetVersions(this.dataset.id))
       .pipe(map((res) => [...res].sort((a, b) => b.version - a.version)));
@@ -24,12 +26,14 @@ export class PryDatasetCardComponent implements AfterContentInit  {
       )
     );
   }
+
   truncateDescription(description: string | undefined, maxLength: number): string {
     if (description && description.length > maxLength) {
       return description.slice(0, maxLength) + '...';
     }
     return <string>description;
   }
+
   goToDetailView() {
     this.consult.emit(this.dataset);
   }

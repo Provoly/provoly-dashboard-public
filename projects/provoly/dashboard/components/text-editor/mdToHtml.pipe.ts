@@ -5,7 +5,7 @@ import { marked } from 'marked';
   name: 'mdToHtml'
 })
 export class MdToHtmlPipe implements PipeTransform {
-  transform(value: string): string | Promise<string> {
-    return marked.parse(value);
+  transform(value?: string): string | Promise<string> {
+    return marked.parse(value ?? '');
   }
 }

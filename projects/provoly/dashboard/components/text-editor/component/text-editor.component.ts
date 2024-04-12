@@ -1,6 +1,8 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { listStyles, MdStyle, TextEditorService } from '../service/text-editor.service';
+import { distinctUntilChanged, Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'pry-text-editor',
@@ -19,6 +21,7 @@ export class PryTextEditorComponent implements ControlValueAccessor {
   onTouched = () => {};
   touched = false;
   disabled = false;
+  valueChanged$ = new Subject<string>();
 
   @Input() tabView = true;
   tabs = ['write', 'preview'];
@@ -38,7 +41,11 @@ export class PryTextEditorComponent implements ControlValueAccessor {
     { style: 'details', icon: 'format_details' }
   ];
 
-  constructor(private service: TextEditorService) {}
+  constructor(private service: TextEditorService) {
+    this.valueChanged$.pipe(debounceTime(500), distinctUntilChanged()).subscribe((value) => {
+      this.onChange(value);
+    });
+  }
 
   writeValue(value: string) {
     this.value = value;
@@ -61,6 +68,10 @@ export class PryTextEditorComponent implements ControlValueAccessor {
 
   setDisabledState(disabled: boolean) {
     this.disabled = disabled;
+  }
+
+  onValueChange($event: string) {
+    this.valueChanged$.next($event);
   }
 
   get textarea(): HTMLTextAreaElement {

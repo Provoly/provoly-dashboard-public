@@ -124,6 +124,14 @@ export const DataSourceActions = {
       getById: createAction('[Dataset/Previews] get by id', props<{ id: string }>()),
       getByIdSuccess: createAction('[Dataset/Previews] get by id Success', props<{ previews: DatasetPreview[] }>()),
       getByIdFailure: createAction('[Dataset/Previews] get by id Failure', props<{ error: any }>())
-    }
+    },
+    updateDatasetVersionInfo: createAction(
+      '[Dataset] Update Dataset version info',
+      props<{ version: Partial<DatasetVersion> }>()
+    ),
+    updateDatasetVersionInfoSuccess: createAction(
+      '[Dataset] Update Dataset version info success',
+      props<{ version: Partial<DatasetVersion> }>()
+    ),
   }
 };

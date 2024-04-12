@@ -14,7 +14,8 @@ export const frTranslations = {
         list: 'Liste',
         orderedList: 'Liste ordonnée',
         table: 'Tableau',
-        details: 'Détails'
+        details: 'Détails',
+        more: 'Voir plus'
       }
     }
   }

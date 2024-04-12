@@ -1,4 +1,6 @@
 @use '../../styles/abstracts/index' as *;
+@use '../../styles-theme/abstracts-theme/variables.theme' as *;
+@use '../../styles/components/o-text-panel' as *;
 
 /* Organism - pry-dataset-detail */
 
@@ -6,19 +8,35 @@ pry-dataset-detail {
   height: 100%;
   width: 100%;
 
-  .dataset-detail {
-    height: 80%;
+  .o-dataset-layout {
     display: flex;
-    flex-direction: column;
-    flex: 1 1;
-    padding: toRem(25);
 
-    pry-tab-group {
+    &__content {
+      overflow: hidden;
       height: 100%;
+      padding-left: 2rem;
+      padding-top: toRem(20);
+      flex: 1;
+    }
 
-      .o-tabs__panel__content {
-        height: 100%;
+    &__panel {
+      width: toRem(330);
+      border-left: solid 1px themed($theme-map, 'color', 'primary', 300);
+      padding: toRem(10);
+      font-size: 0.875rem;
+      color: #263340;
+
+      .a-label {
+        font-weight: 700;
       }
+
+      .version-information {
+        @extend %o-text-panel;
+      }
+    }
+
+    .panel__content {
+      gap: toRem(15);
     }
   }
 
@@ -44,25 +62,43 @@ pry-dataset-detail {
   }
 }
 
-.o-tabs {
-  padding-left: 2rem;
-  padding-right: 2rem;
-  height: 100%;
-}
+.o-dataset-detail {
+  height: 80%;
 
-.o-dataset-layout__content {
-  overflow:hidden;
-  height: 100%;
-  padding-left: 2rem;
-  padding-top: toRem(20);
-}
+  &__information {
+    padding: toRem(10);
+    font-size: 0.875rem;
+    color: #263340;
+    background: white;
+    border-radius: 4px;
+    gap: toRem(15);
 
-tr {
-  height: toRem(30);
-}
+    .a-label {
+      font-weight: 700;
+    }
+  }
 
-td {
-  .a-btn + .a-btn {
-    margin-left: toRem(10);
+  pry-tab-group {
+    height: 100%;
+
+    .o-tabs {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      height: 100%;
+
+      &__panel__content {
+        height: 100%;
+      }
+    }
+  }
+
+  tr {
+    height: toRem(30);
+  }
+
+  td {
+    .a-btn + .a-btn {
+      margin-left: toRem(10);
+    }
   }
 }

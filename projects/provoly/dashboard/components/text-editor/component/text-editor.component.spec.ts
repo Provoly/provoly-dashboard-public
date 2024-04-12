@@ -5,6 +5,7 @@ import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { PryTextEditorComponent } from './text-editor.component';
 import { TextEditorService } from '../service/text-editor.service';
 import { MockPryIconComponent } from '../../../mock/components/mock-pry-icon.component';
+import { PryTextEditorCssComponent } from '@provoly/dashboard/components/text-editor';
 
 const testData = {
   text: 'example text',
@@ -20,7 +21,7 @@ describe('PryTextEditorComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule, FormsModule],
-      declarations: [PryTextEditorComponent, MockI18nPipe, MockPryIconComponent],
+      declarations: [PryTextEditorComponent, PryTextEditorCssComponent, MockI18nPipe, MockPryIconComponent],
       providers: [TextEditorService]
     }).compileComponents();
   });

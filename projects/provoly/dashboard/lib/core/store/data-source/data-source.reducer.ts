@@ -166,5 +166,9 @@ export const dataSourceReducer = createReducer(
     error: action.error,
     previews: [],
     loading: false
+  })),
+  on(DataSourceActions.dataset.updateDatasetVersionInfoSuccess, (state, action) => ({
+    ...state,
+    datasetVersions: state.datasetVersions.map((version) => (version.id === action.version.id ? { ...version, ...action.version } : version))
   }))
 );

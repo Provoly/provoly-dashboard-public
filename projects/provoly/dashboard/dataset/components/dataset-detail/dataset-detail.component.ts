@@ -9,10 +9,12 @@ import {
   DataSourceSelectors,
   ResultSets,
   SearchActions,
+  SubscriptionnerDirective,
   ViewMode,
   WidgetManifest
 } from '@provoly/dashboard';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
 
 let nextCompId = 0;
 
@@ -20,7 +22,7 @@ let nextCompId = 0;
   selector: 'pry-dataset-detail',
   templateUrl: './dataset-detail.component.html'
 })
-export class PryDatasetDetailComponent implements OnInit {
+export class PryDatasetDetailComponent extends SubscriptionnerDirective implements OnInit {
   @Input() dataset!: Dataset;
   @Output() goToCatalog = new EventEmitter();
   widgetManifest = {
@@ -46,14 +48,20 @@ export class PryDatasetDetailComponent implements OnInit {
   protected readonly ViewMode = ViewMode;
   compId: number = 0;
   tab: number = 0;
-  datasetItems$: Observable<ResultSets | null> | undefined;
+  datasetItems$: Observable<ResultSets | null>;
   public datasetVersions$!: Observable<DatasetVersion[]>;
   showModalStatus: boolean = false;
   selectedDatasetVersion?: DatasetVersion;
   selectedMode: ViewMode = ViewMode.CONSULT;
-  activeVersion$!: Observable<string>;
+  activeVersion$!: Observable<DatasetVersion | undefined>;
+  isEditingVersion = false;
+
+  isPanelOpen: boolean = false;
+  selectedVersion?: DatasetVersion;
 
   constructor(private store: Store) {
+    super();
+    this.datasetItems$ = this.store.select(DashboardSelectors.resultSets);
     this.compId = nextCompId++;
   }
 
@@ -67,19 +75,29 @@ export class PryDatasetDetailComponent implements OnInit {
         from: 'PryDatasetDetailComponent.ngOnInit()'
       })
     );
-    this.datasetItems$ = this.store.select(DashboardSelectors.resultSets);
+
     this.datasetVersions$ = this.store
       .select(DataSourceSelectors.matchingDatasetVersions(this.dataset.id))
       .pipe(map((res) => [...res].sort((a, b) => b.version - a.version)));
-    this.widgetManifest['table'].datasource = [this.dataset.id];
-    this.widgetManifest['map'].datasource = [this.dataset.id];
     this.activeVersion$ = this.datasetVersions$.pipe(
-      map(
-        (versions) =>
-          versions.sort((v1, v2) => v2.version - v1.version).find((version) => version.state === 'ACTIVE')?.id ??
-          'no active version found'
+      map((versions) =>
+        versions.sort((v1, v2) => v2.version - v1.version).find((version) => version.state === 'ACTIVE')
       )
     );
+
+    this.subscriptions.add(
+      this.datasetVersions$.subscribe((versions) => {
+        if (this.selectedVersion) {
+          this.selectedVersion = {
+            ...this.selectedVersion,
+            ...versions.find((version) => version.id === this.selectedVersion?.id)
+          };
+        }
+      })
+    );
+
+    this.widgetManifest['table'].datasource = [this.dataset.id];
+    this.widgetManifest['map'].datasource = [this.dataset.id];
   }
 
   goBack() {
@@ -159,5 +177,29 @@ export class PryDatasetDetailComponent implements OnInit {
         versionId: version.id
       })
     );
+  }
+
+  onTabSwitch($event: number) {
+    if ([0, 1, 2].includes($event)) {
+      this.isPanelOpen = false;
+    }
+  }
+
+  togglePanel(selectedVersion?: DatasetVersion) {
+    if (selectedVersion) {
+      this.selectedVersion = selectedVersion;
+      this.isPanelOpen = true;
+      this.isEditingVersion = false;
+    } else {
+      this.isPanelOpen = !this.isPanelOpen;
+    }
+  }
+
+  editVersion() {
+    this.isEditingVersion = true;
+  }
+
+  formValidated($event: Partial<DatasetVersion>) {
+    this.isEditingVersion = false;
   }
 }

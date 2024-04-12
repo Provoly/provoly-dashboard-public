@@ -1,5 +1,7 @@
 @use '../../../styles/abstracts/index' as *;
 @use '../../../styles/components/o-text-panel' as *;
+@use '../../../styles/components/o-draggable-menu' as *;
+@use '../../../styles-theme/components-theme/o-draggable-menu.theme' as *;
 
 /* Organism - text editor */
 
@@ -11,6 +13,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    > .a-tooltip:last-child {
+      // indent tooltip
+      &.a-tooltip[data-tooltip][data-tooltip-position=bottom]::after {
+        left: calc(50% - 15px);
+      }
+    }
   }
 
   &__tabs {
@@ -19,23 +28,26 @@
   }
 
   &__tab {
-    padding: toRem(5) toRem(10);
+    padding: 0 toRem(10);
+    font-size: toRem(10);
+    height: toRem(18);
+    margin-top: -3px;
 
     &.-active {
+      margin-top: -1px;
       background-color: white;
       border: 1px solid #BCCAD8;
-      border-bottom: none;
-      border-radius: 4px 4px 0 0;
+      border-top: none;
+      border-radius: 0 0 4px 4px;
       font-weight: bold;
       z-index: 2;
-      margin-bottom: -1px;
     }
   }
 
   &__buttons {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    margin-left: auto;
   }
 
   &__button {
@@ -48,23 +60,12 @@
         $targetBgColor: #D8E7F7
       );
     }
-
-    &:nth-child(5), &:nth-child(8) {
-     margin-right: toRem(15);
-    }
-
-    &:last-child {
-      // indent tooltip
-      &.a-tooltip[data-tooltip][data-tooltip-position=bottom]::after {
-        left: calc(50% - 15px);
-      }
-    }
   }
 
   &__content {
     display: flex;
     gap: toRem(10);
-    min-height: toRem(200);
+    min-height: toRem(203);
     width: 100%;
   }
 
@@ -83,7 +84,7 @@
     }
 
     &.-remove-corner-radius {
-      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
     }
   }
 
@@ -98,5 +99,22 @@
     overflow-y: auto;
 
     @extend %o-text-panel;
+  }
+}
+
+.o-draggable-menu--text-editor {
+  @extend .o-draggable-menu;
+  display: flex;
+  flex-direction: column;
+
+  .o-draggable-menu__list__item {
+    width: 100%;
+    font-size: toRem(14);
+  }
+
+  .o-text-editor__button {
+    display: flex;
+    align-items: center;
+    gap: toRem(5);
   }
 }
