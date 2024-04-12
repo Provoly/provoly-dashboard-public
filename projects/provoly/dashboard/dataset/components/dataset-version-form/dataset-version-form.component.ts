@@ -49,7 +49,8 @@ export class PryDatasetVersionFormComponent implements OnInit {
         DataSourceActions.dataset.updateDatasetVersionInfo({
           version: {
             ...this.version,
-            ...this.form.value
+            ...this.form.value,
+            productionDate: new Date(this.form.value.productionDate ?? '').toISOString()
           }
         })
       );

@@ -53,7 +53,12 @@
               "
             ></div>
           </div>
-          <button *pryAccess="{ module: 'admin', page: 'list-dataset', action: 'edit_version' }" role="button" class="a-btn a-btn--primary u-self-end" (click)="editVersion()">
+          <button
+            *pryAccess="{ module: 'admin', page: 'list-dataset', action: 'edit_version' }"
+            role="button"
+            class="a-btn a-btn--primary u-self-end"
+            (click)="editVersion()"
+          >
             {{ '@pry.action.edit' | i18n }}
           </button>
         } @else {
@@ -129,7 +134,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let version of datasetVersions$ | async" (click)="togglePanel(version)">
+        <tr
+          *ngFor="let version of datasetVersions$ | async"
+          (click)="togglePanel(version)"
+          [class.-selected]="version.id === selectedVersion?.id"
+        >
           <td>
             {{ version.version }}
             <pry-icon *ngIf="activeVersion.id === version.id" iconSvg="check" class="check"></pry-icon>

@@ -94,6 +94,10 @@ pry-dataset-detail {
 
   tr {
     height: toRem(30);
+
+    &.-selected {
+      background-color: themed($theme-map, 'color', 'primary', 200);
+    }
   }
 
   td {
