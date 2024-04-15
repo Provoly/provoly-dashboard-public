@@ -239,10 +239,8 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
     this.filter.type = $event;
     switch ($event) {
       case 'list':
-        this.filter.operator = 'EQUALS';
-        break;
       case 'autocomplete':
-        this.filter.operator = 'I_CONTAINS';
+        this.filter.operator = 'EQUALS';
         break;
       case 'text':
         this.filter.operator = 'I_CONTAINS';
@@ -320,13 +318,12 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
             ? ['INSIDE', 'OUTSIDE'].includes(operator.value)
             : ['EQUALS', 'NOT_EQUALS', 'GREATER_THAN', 'LOWER_THAN'].includes(operator.value);
         case 'list':
+        case 'autocomplete':
           return ['EQUALS'].includes(operator.value);
         case 'number':
           return ['EQUALS', 'NOT_EQUALS', 'GREATER_THAN', 'LOWER_THAN'].includes(operator.value);
         case 'text':
           return ['I_CONTAINS', 'CONTAINS', 'EQUALS', 'NOT_EQUALS', 'START_WITH', 'END_WITH'].includes(operator.value);
-        case 'autocomplete':
-          return ['I_CONTAINS', 'CONTAINS'].includes(operator.value);
         default:
           return operator;
       }
