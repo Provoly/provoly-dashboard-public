@@ -31,6 +31,10 @@ export const frTranslations = {
         ACTIVE: 'Disponible',
         currentlyActive: 'Actif'
       },
+      form: {
+        obligatory: 'Champ obligatoire',
+        date: 'La date de production ne peut pas être dans le futur'
+      },
       buttonAction: {
         ACTIVE: 'Invalider',
         INACTIVE: 'Valider',

@@ -1,11 +1,36 @@
 <form class="o-dataset-version-form u-display-flex -column" [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="m-form-label-field">
-    <label class="a-label">{{ '@pry.dataset.version.productionDate' | i18n }}</label>
-    <input class="a-form-field" type="datetime-local" [max]="maxDate" formControlName="productionDate" />
+    <label class="a-label" for="productionDate">{{ '@pry.dataset.version.productionDate' | i18n }}</label>
+    <input
+      class="a-form-field"
+      type="datetime-local"
+      [max]="maxDate"
+      formControlName="productionDate"
+      id="productionDate"
+      [attr.aria-invalid]="productionDate?.invalid"
+    />
+    @if (productionDate?.invalid) {
+      <label id="productionDate-error" for="productionDate" class="a-label a-label--help -error">
+        @if (productionDate?.errors?.['required']) {
+          <span>{{ '@pry.dataset.form.obligatory' | i18n }}</span>
+        } @else if (productionDate?.errors?.['dateValidator']) {
+          <span>{{ '@pry.dataset.form.date' | i18n }}</span>
+        }
+      </label>
+    }
   </div>
   <div class="m-form-label-field">
     <label class="a-label">{{ '@pry.dataset.version.producer' | i18n }}</label>
-    <input class="a-form-field" type="text" formControlName="producer" />
+    <input
+      class="a-form-field"
+      type="text"
+      formControlName="producer"
+      id="producer"
+      [attr.aria-invalid]="producer?.invalid"
+    />
+    <label *ngIf="producer?.invalid" id="producer-error" for="producer" class="a-label a-label--help -error">
+      <span *ngIf="producer?.errors?.['required'] ?? false">{{ '@pry.dataset.form.obligatory' | i18n }}</span>
+    </label>
   </div>
   <div class="m-form-label-field">
     <label class="a-label">{{ '@pry.dataset.version.additionalInformation' | i18n }}</label>

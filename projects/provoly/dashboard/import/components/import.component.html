@@ -48,11 +48,26 @@
       <pry-checkbox [(ngModel)]="normalizeGeoShape">{{ '@pry.import.normalize' | i18n }}</pry-checkbox>
       <div class="m-form-label-field">
         <label class="a-h3">{{ '@pry.dataset.version.productionDate' | i18n }}</label>
-        <input class="a-form-field" type="datetime-local" [max]="maxDate" [(ngModel)]="productionDate" />
+        <input
+          class="a-form-field"
+          type="datetime-local"
+          [max]="maxDate"
+          [(ngModel)]="productionDate"
+          id="productionDate"
+        />
+        @if (productionDateIsInTheFuture()) {
+          <label id="productionDate-error-required" for="productionDate" class="a-label a-label--help -error">
+            <span>{{ '@pry.dataset.form.date' | i18n }}</span>
+          </label>
+        } @else if (productionDate === '') {
+          <label id="productionDate-error" for="productionDate" class="a-label a-label--help -error">
+            <span>{{ '@pry.dataset.form.obligatory' | i18n }}</span>
+          </label>
+        }
       </div>
       <div class="m-form-label-field">
         <label class="a-h3">{{ '@pry.dataset.version.producer' | i18n }}</label>
-        <input class="a-form-field" type="text" maxlength="100" [(ngModel)]="producer" />
+        <input class="a-form-field" type="text" maxlength="100" [(ngModel)]="producer" #producerInput />
       </div>
       <div class="m-form-label-field">
         <label class="a-h3">{{ '@pry.dataset.version.additionalInformation' | i18n }}</label>

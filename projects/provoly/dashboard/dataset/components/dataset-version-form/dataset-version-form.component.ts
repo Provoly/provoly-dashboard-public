@@ -1,6 +1,6 @@
-import { DatasetVersion, DataSourceActions } from '@provoly/dashboard';
+import { DatasetVersion, DataSourceActions, DateUtils } from '@provoly/dashboard';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, MinLengthValidator, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
 interface DatasetVersionInfoForm {
@@ -16,7 +16,10 @@ interface DatasetVersionInfoForm {
 export class PryDatasetVersionFormComponent implements OnInit {
   @Input() version?: DatasetVersion;
   form = new FormGroup<DatasetVersionInfoForm>({
-    productionDate: new FormControl('', { validators: [Validators.required], nonNullable: true }),
+    productionDate: new FormControl('', {
+      validators: [Validators.required, DateUtils.onlyPastDateValidator],
+      nonNullable: true
+    }),
     producer: new FormControl('', {
       validators: [Validators.required, Validators.minLength(1), Validators.maxLength(100)],
       nonNullable: true
@@ -41,6 +44,14 @@ export class PryDatasetVersionFormComponent implements OnInit {
         });
       }
     }
+  }
+
+  get productionDate() {
+    return this.form.get('productionDate');
+  }
+
+  get producer() {
+    return this.form.get('producer');
   }
 
   onSubmit() {

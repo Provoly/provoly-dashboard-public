@@ -2,10 +2,10 @@ import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   Dataset,
-  DatasetVersion,
   DataSourceActions,
   DataSourceSelectors,
   DataSourceService,
+  DateUtils,
   PryDatasetType,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
@@ -43,10 +43,10 @@ export class PryImportComponent extends SubscriptionnerDirective implements OnDe
     zip: '.zip'
   };
   showMessage: boolean = false;
-  productionDate: string = new Date().toISOString().replace(/:\d+\.\d+Z$/, '');
+  maxDate = DateUtils.formatDate(new Date());
+  productionDate: string = this.maxDate;
   producer: string = '';
   additionalInformation: string = '';
-  maxDate = new Date().toISOString().replace('Z', '');
 
   constructor(
     private store: Store,
@@ -99,7 +99,8 @@ export class PryImportComponent extends SubscriptionnerDirective implements OnDe
     return (
       this.file === undefined ||
       this.selectedDataset === undefined ||
-      (this.selectedDataset?.type === PryDatasetType.CLOSED && (this.productionDate === '' || this.producer === ''))
+      (this.selectedDataset?.type === PryDatasetType.CLOSED && (this.productionDate === '' || this.producer === '')) ||
+      new Date(this.productionDate) > new Date(this.maxDate)
     );
   }
 
@@ -132,5 +133,9 @@ export class PryImportComponent extends SubscriptionnerDirective implements OnDe
           })
       );
     }
+  }
+
+  productionDateIsInTheFuture() {
+    return DateUtils.isInTheFuture(new Date(this.productionDate));
   }
 }

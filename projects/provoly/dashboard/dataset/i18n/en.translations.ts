@@ -31,6 +31,10 @@ export const enTranslations = {
         ACTIVE: 'Available',
         currentlyActive: 'Active'
       },
+      form: {
+        obligatory: 'Obligatory field',
+        date: 'The date cannot be in the future'
+      },
       buttonAction: {
         ACTIVE: 'Invalidate',
         INACTIVE: 'Validate',
