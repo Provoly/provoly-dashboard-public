@@ -39,7 +39,7 @@ import { mapUtilsData } from '../utils/widget-map.utils.spec';
 
 import { DEFAULT_LAYER_GROUP, WidgetMapComponent } from './widget-map.component';
 import { WidgetMapUtils } from '@provoly/dashboard/widgets/widget-map';
-import { layerGroups } from '../../../mock/data/layerGroups';
+import { mockLayerGroups } from '@provoly/dashboard/mock/data/mockLayerGroups';
 import SpyInstance = jest.SpyInstance;
 
 describe('WidgetMapComponent', () => {
@@ -181,7 +181,7 @@ describe('WidgetMapComponent', () => {
             },
             {
               selector: DashboardSelectors.layerGroups,
-              value: [...layerGroups] as LayerGroup[]
+              value: [...mockLayerGroups] as LayerGroup[]
             }
           ]
         }),
@@ -405,9 +405,9 @@ describe('WidgetMapComponent', () => {
 
   it('should allow adding a layer', () => {
     expect(component.optionsCopy.layers?.length).toEqual(4);
-    component.addLayer(layerGroups[1]);
+    component.addLayer(mockLayerGroups[1]);
     expect(component.optionsCopy.layers?.length).toEqual(5);
-    component.addLayer(layerGroups[0]);
+    component.addLayer(mockLayerGroups[0]);
     expect(component.optionsCopy.layers?.length).toEqual(6);
   });
 
@@ -429,7 +429,7 @@ describe('WidgetMapComponent', () => {
 
   it('should allow deleting a layer', () => {
     expect(component.optionsCopy.layers?.length).toEqual(4);
-    component.deleteLayer(0, component.optionsCopy.layers![0], layerGroups[0]);
+    component.deleteLayer(0, component.optionsCopy.layers![0], mockLayerGroups[0]);
     expect(component.optionsCopy.layers?.length).toEqual(3);
   });
 

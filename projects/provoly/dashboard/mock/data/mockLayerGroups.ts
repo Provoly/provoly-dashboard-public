@@ -1,7 +1,6 @@
-import { LayerGroup, MapWidgetLayerOptions, MapWidgetOptions } from '@provoly/dashboard';
-import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
+import { LayerGroup } from '@provoly/dashboard';
 
-export const layerGroups: LayerGroup[] = [
+export const mockLayerGroups: LayerGroup[] = [
   {
     name: 'red',
     singleLayer: false,

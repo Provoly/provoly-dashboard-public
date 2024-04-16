@@ -9,7 +9,7 @@ import { ImportActions } from './import.actions';
 import { ImportEffects } from './import.effects';
 import { ImportState, initialImportState } from './import.reducer';
 import { ImportService } from './import.service';
-import { mockImportData } from '@provoly/dashboard/mock/data/import';
+import { mockImportData } from '@provoly/dashboard/mock/data/mockImport';
 
 const buildState = (state: Partial<ImportState>) =>
   Object.assign({}, { '@pry/import': JSON.parse(JSON.stringify({ ...initialImportState, ...state })) });

@@ -9,19 +9,7 @@ import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/moc
 import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
 import { mockDataset } from '../dataset.component.spec';
 import { DataSourceActions, SearchActions } from '@provoly/dashboard';
-
-export const mockDatasetVersion = {
-  id: 'test-id',
-  dataset: 'test-ds-id',
-  oClass: 'test-class',
-  lastModified: '2023-01-20',
-  available: true,
-  version: 10,
-  state: 'ERROR',
-  withFile: false,
-  metadata: [],
-  hasWarnings: false
-};
+import { mockClickEvent, mockDatasetVersion } from '../../../mock/data/mockDataset';
 
 describe('PryDatasetDetailComponent', () => {
   let component: PryDatasetDetailComponent;
@@ -76,7 +64,7 @@ describe('PryDatasetDetailComponent', () => {
       const spyMethod = jest.spyOn(component, 'deactivateVersion');
       const spyStoreMethod = jest.spyOn(DataSourceActions.dataset, 'deactivateDatasetVersion');
 
-      component.handleButtonAction({ ...mockDatasetVersion, state: 'ACTIVE' });
+      component.handleButtonAction(mockClickEvent, { ...mockDatasetVersion, state: 'ACTIVE' });
 
       expect(spyMethod).toHaveBeenCalled();
       expect(spyStoreMethod).toHaveBeenCalledWith({
@@ -90,7 +78,7 @@ describe('PryDatasetDetailComponent', () => {
       const spyMethod = jest.spyOn(component, 'activateVersion');
       const spyStoreMethod = jest.spyOn(DataSourceActions.dataset, 'activateDatasetVersion');
 
-      component.handleButtonAction({ ...mockDatasetVersion, state: 'INACTIVE' });
+      component.handleButtonAction(mockClickEvent, { ...mockDatasetVersion, state: 'INACTIVE' });
 
       expect(spyMethod).toHaveBeenCalled();
       expect(spyStoreMethod).toHaveBeenCalledWith({

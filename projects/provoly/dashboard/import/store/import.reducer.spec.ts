@@ -1,7 +1,7 @@
 import { ImportActions } from './import.actions';
 import { importReducer, ImportState } from './import.reducer';
 import { DatasetVersion } from '@provoly/dashboard';
-import { mockImportData } from '@provoly/dashboard/mock/data/import';
+import { mockImportData } from '@provoly/dashboard/mock/data/mockImport';
 
 describe('Import Reducer', () => {
   const initialState: ImportState = {
