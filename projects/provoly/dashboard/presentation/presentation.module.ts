@@ -22,6 +22,7 @@ import { frTranslations } from './i18n/fr.translations';
 import { PryPresentationCssComponent } from './style/css.component';
 import { A11yModule } from '@angular/cdk/a11y';
 import { PryExpandPanelModule } from '@provoly/dashboard/components/metadata-editor';
+import { PryTextEditorModule } from '@provoly/dashboard/components/text-editor';
 
 @NgModule({
   providers: [],
@@ -46,7 +47,8 @@ import { PryExpandPanelModule } from '@provoly/dashboard/components/metadata-edi
     PryCheckboxModule,
     CommonModule,
     A11yModule,
-    PryExpandPanelModule
+    PryExpandPanelModule,
+    PryTextEditorModule
   ],
   exports: [
     PryPresentationComponent,

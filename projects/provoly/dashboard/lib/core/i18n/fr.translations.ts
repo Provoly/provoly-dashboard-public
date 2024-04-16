@@ -96,7 +96,7 @@ export const frTranslations = {
         },
         saved: 'Présentation {{viewId}} sauvegardée'
       },
-      about: 'À propos',
+      about: 'Informations',
       edit: 'Modifier la disposition',
       editOff: 'Visualiser la disposition',
       launch: 'Nouvelle page',

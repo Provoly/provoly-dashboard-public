@@ -24,6 +24,7 @@ export interface ManifestDescription {
   owner: boolean;
   datasource: string[];
   metadata?: MetadataValue[];
+  additionalInformation?: string;
 }
 
 export interface WidgetLayout {
@@ -70,7 +71,6 @@ export interface GlobalManifest {
   windows: DashboardManifest[];
   refreshRates?: { [key: string]: number };
   filters?: Filter[];
-  html?: string;
   layerGroups?: LayerGroup[];
 }
 

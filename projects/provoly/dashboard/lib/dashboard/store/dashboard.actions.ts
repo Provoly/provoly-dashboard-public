@@ -13,7 +13,6 @@ import { Relation } from '../../core/model/relation.interface';
 import { OrderValue } from '../../core/model/result-order.interface';
 import { ResultSet, ResultSets } from '../../core/model/result-set.interface';
 import { GetCapabilitiesResponse } from './wms.service';
-import { LayerGroup, MapWidgetLayerOptions } from '../../core/model/widget-map-manifest.interface';
 
 export type DashboardCellParams = {
   gridWidth: number;
@@ -157,6 +156,7 @@ export const DashboardActions = {
       image?: string;
       metadata?: { metadataDefId: string; value: string }[];
       groups?: string[];
+      additionalInformation?: string;
     }>()
   ),
   solveCollisions: createAction('[Dashboard] solving collisions'),

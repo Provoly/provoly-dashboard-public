@@ -35,6 +35,7 @@ import { ShareComponent } from './components/share/share.component';
 import { DeleteComponent } from './components/delete/delete.component';
 import { DashboardDetailsComponent } from './components/dashboard-details/dashboard-details.component';
 import { EditModeActionComponent } from './components/edit-mode-action/edit-mode-action.component';
+import { PryTextEditorModule } from '@provoly/dashboard/components/text-editor';
 
 const components = [
   ToolboxActionComponent,
@@ -77,7 +78,8 @@ const components = [
     CdkDropList,
     CdkDrag,
     CdkDragHandle,
-    A11yModule
+    A11yModule,
+    PryTextEditorModule
   ],
   exports: [...components]
 })

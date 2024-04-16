@@ -596,6 +596,7 @@ describe('DashboardEffects', () => {
           undefined,
           undefined,
           undefined,
+          undefined,
           undefined
         );
         expect(serviceSpy).toHaveBeenNthCalledWith(
@@ -603,6 +604,7 @@ describe('DashboardEffects', () => {
           'mId',
           { windows: [] },
           'id',
+          undefined,
           undefined,
           undefined,
           undefined,
@@ -651,6 +653,7 @@ describe('DashboardEffects', () => {
           undefined,
           undefined,
           undefined,
+          undefined,
           undefined
         );
         expect(serviceSpy).toHaveBeenNthCalledWith(
@@ -658,6 +661,7 @@ describe('DashboardEffects', () => {
           'name',
           { windows: [{ widgets: [] }] },
           'id',
+          undefined,
           undefined,
           undefined,
           undefined,

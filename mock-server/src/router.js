@@ -794,10 +794,21 @@ router.on('PUT', '/ref/users/me/dashboards/id/:id/default', (req, res, params) =
 });
 router.on('POST', '/ref/users/me/dashboards', (req, res, params) => {
   readPayload(req).then((payload) => {
-    const { id, name, description, creationDate, modificationDate, manifest, image, groups } = payload;
+    const { id, name, description, creationDate, modificationDate, manifest, image, groups, additionalInformation } =
+      payload;
     makeResponseOk(
       res,
-      manifestModule.save(id, name, description, creationDate, modificationDate, manifest, image, groups),
+      manifestModule.save(
+        id,
+        name,
+        description,
+        creationDate,
+        modificationDate,
+        manifest,
+        image,
+        groups,
+        additionalInformation
+      ),
       200
     );
   });

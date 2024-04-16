@@ -8,12 +8,20 @@ import { MdToHtmlPipe } from './mdToHtml.pipe';
 import { enTranslations } from './i18n/en.translations';
 import { frTranslations } from './i18n/fr.translations';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
-import { PryToolboxModule } from '@provoly/dashboard/toolbox';
 
 @NgModule({
   declarations: [PryTextEditorComponent, PryTextEditorCssComponent, MdToHtmlPipe],
   exports: [PryTextEditorComponent, MdToHtmlPipe],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, PryCoreModule, PryIconModule, PryI18nModule, CdkOverlayOrigin, CdkConnectedOverlay, PryToolboxModule]
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PryCoreModule,
+    PryIconModule,
+    PryI18nModule,
+    CdkOverlayOrigin,
+    CdkConnectedOverlay
+  ]
 })
 export class PryTextEditorModule {
   constructor(private pryTranslateService: PryI18nService) {

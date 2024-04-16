@@ -34,7 +34,7 @@
             *ngIf="form.get('name')?.hasError('maxlength')"
             class="a-label a-label--help -error"
           >
-            {{ '@pry.presentation.maxLength' | i18n : { len: '50' } }}
+            {{ '@pry.presentation.maxLength' | i18n: { len: '50' } }}
           </label>
         </div>
         <div class="m-form-label-field -width-full">
@@ -56,7 +56,7 @@
             *ngIf="form.get('description')?.hasError('maxlength')"
             class="a-label a-label--help -error"
           >
-            {{ '@pry.presentation.maxLength' | i18n : { len: '200' } }}
+            {{ '@pry.presentation.maxLength' | i18n: { len: '200' } }}
           </label>
         </div>
         <div class="m-form-label-field -width-full" *ngIf="mode === 'theme'">
@@ -78,6 +78,9 @@
               [mode]="type"
             ></pry-select-image>
           </div>
+        </div>
+        <div class="m-form-label-field -width-full">
+          <pry-text-editor formControlName="additionalInformation"></pry-text-editor>
         </div>
         <div class="m-form-label-field -width-full m-form-label-field--inline">
           <label class="a-label">{{ '@pry.presentation.form.grid' | i18n }}</label>

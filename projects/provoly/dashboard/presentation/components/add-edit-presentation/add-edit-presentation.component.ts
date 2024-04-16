@@ -5,7 +5,8 @@ import { Store } from '@ngrx/store';
 import {
   DashboardActions,
   DashboardGridLayout,
-  DashboardSelectors, DEFAULT_DASHBOARD_ICON_URL,
+  DashboardSelectors,
+  DEFAULT_DASHBOARD_ICON_URL,
   GlobalManifest,
   IMetadata,
   LibraryTypes,
@@ -42,7 +43,10 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
 
   @Input() mode: 'theme' | 'meta' = 'meta';
 
-  constructor(protected store: Store, @Optional() protected router: Router) {
+  constructor(
+    protected store: Store,
+    @Optional() protected router: Router
+  ) {
     super();
     this.store.dispatch(MetadataActions.loadMetadata());
     this.staticManifest$ = this.store.select(DashboardSelectors.staticManifest);
@@ -70,7 +74,8 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
     this.form = new FormGroup({
       name: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
       description: new FormControl(undefined, [Validators.maxLength(200)]),
-      theme: new FormControl('')
+      theme: new FormControl(''),
+      additionalInformation: new FormControl('')
     });
     this.image = this.selectedPresentation$.value?.image ?? DEFAULT_DASHBOARD_ICON_URL;
     this.subscriptions.add(
@@ -107,7 +112,8 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
       name: this.form.value.name ?? '',
       description: this.form.value.description ?? undefined,
       image: this.image ?? DEFAULT_DASHBOARD_ICON_URL,
-      metadata: this.metadata()
+      metadata: this.metadata(),
+      additionalInformation: this.form.value.additionalInformation ?? undefined
     };
 
     this.subscriptions.add(

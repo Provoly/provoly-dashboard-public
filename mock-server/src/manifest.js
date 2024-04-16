@@ -42,7 +42,8 @@ module.exports = {
               casual.integer(0, metadatas.find((metadata) => metadata.name === '_theme').allowedValues.length - 1)
             ]
           }
-        ]
+        ],
+        additionalInformation: manifest.additionalInformation
       };
     });
   },
@@ -59,7 +60,7 @@ module.exports = {
       manifests.findIndex((manifest) => manifest.id === id),
       1
     ),
-  save: (id, name, description, creationDate, modificationDate, manifest, image, groups) => {
+  save: (id, name, description, creationDate, modificationDate, manifest, image, groups, additionalInformation) => {
     let previous = manifests.find((m) => m.id === id);
     if (!previous) {
       manifests.push({});
@@ -76,6 +77,7 @@ module.exports = {
     previous.manifest = manifest;
     previous.image = image;
     previous.groups = groups;
+    previous.additionalInformation = additionalInformation;
 
     return id === 'share-group-warning-when-dataset-groups-missing' ? shareConflict : { missingGroupsByEntity: {} };
   }

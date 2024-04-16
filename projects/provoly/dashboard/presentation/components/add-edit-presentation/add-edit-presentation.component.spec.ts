@@ -19,6 +19,7 @@ import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 import { PryAddEditPresentationComponent } from './add-edit-presentation.component';
 import { MockPryMetadataEditorComponent } from '@provoly/dashboard/mock/components/mock-pry-metadata-editor.component';
+import { MockPryTextEditorComponent } from '@provoly/dashboard/mock/components/mock-pry-text-editor.component';
 
 describe('PryAddEditPresentationComponent', () => {
   let component: PryAddEditPresentationComponent;
@@ -39,7 +40,8 @@ describe('PryAddEditPresentationComponent', () => {
         MockPrySelectImageComponent,
         MockPrySelectGridLayoutComponent,
         MockPryCheckboxComponent,
-        MockPryMetadataEditorComponent
+        MockPryMetadataEditorComponent,
+        MockPryTextEditorComponent
       ],
       providers: [
         provideMockStore({
@@ -104,7 +106,8 @@ describe('PryAddEditPresentationComponent', () => {
         manifest: {
           windows: []
         },
-        metadata: []
+        metadata: [],
+        additionalInformation: ""
       })
     );
   });

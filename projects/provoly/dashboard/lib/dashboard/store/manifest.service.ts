@@ -69,7 +69,8 @@ export class ManifestService {
     description?: string,
     image?: string,
     metadata?: { metadataDefId: string; value: string }[],
-    groups?: string[]
+    groups?: string[],
+    additionalInformation?: string
   ): Observable<ShareConflict> {
     return this.store.select(ConfigSelectors.refUrl).pipe(
       mergeMap((url) => {
@@ -82,7 +83,8 @@ export class ManifestService {
           cover: true,
           metadata,
           datasource: ManifestUtils.getDatasourcesUsedByManifest(manifest).map((ds) => ds.datasetId),
-          groups
+          groups,
+          additionalInformation
         });
       })
     );
