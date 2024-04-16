@@ -328,6 +328,9 @@ const deactivateDatasetVersion = (id) => {
   datasetVersions.find((datasetVersion) => datasetVersion.id === id).state = 'INACTIVE';
   return datasetVersions;
 };
+const deleteDatasetVersion = (id) => {
+  datasetVersions = datasetVersions.filter((datasetVersion) => datasetVersion.id !== id);
+};
 
 const activateDatasetVersion = (id) => {
   datasetVersions.find((datasetVersion) => datasetVersion.id === id).state = 'ACTIVE';
@@ -422,7 +425,8 @@ module.exports = {
     activate: activateDatasetVersion,
     deactivate: deactivateDatasetVersion,
     update: updateDatasetVersion,
-    getLatestActiveVersion: getLatestActiveVersion
+    getLatestActiveVersion: getLatestActiveVersion,
+    delete: deleteDatasetVersion
   },
   transformations: {
     get: getTransformations,

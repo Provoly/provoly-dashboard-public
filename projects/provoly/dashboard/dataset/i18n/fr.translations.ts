@@ -29,7 +29,12 @@ export const frTranslations = {
         INACTIVE: 'Invalide',
         ERROR: 'En erreur',
         ACTIVE: 'Disponible',
-        currentlyActive: 'Actif'
+        currentlyActive: 'Actif',
+        delete: {
+          title: 'Supprimer une version',
+          message:
+            'La suppression de cette version entraînera la suppression des données associées. Confirmez-vous la suppression ?'
+        }
       },
       form: {
         obligatory: 'Champ obligatoire',
@@ -41,7 +46,9 @@ export const frTranslations = {
         ERROR: 'Consulter erreurs',
         WARNING: 'Consulter warnings',
         LOADING: '',
-        INDEXING: ''
+        INDEXING: '',
+        delete: 'Supprimer',
+        cancel: 'Annuler'
       },
       error: {
         ERROR: 'Erreur',

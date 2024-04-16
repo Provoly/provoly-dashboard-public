@@ -212,4 +212,10 @@ export class DataSourceService {
       )
     );
   }
+
+  deleteDatasetVersion(version: DatasetVersion) {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(switchMap((url) => this.httpClient.delete<void>(encodeURI(`${url}/dataset-versions/id/${version.id}`))));
+  }
 }

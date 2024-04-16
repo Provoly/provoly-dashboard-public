@@ -51,10 +51,7 @@ export const DataSourceActions = {
       props<{ path: string; params?: { [p: string]: string } }>()
     ),
     update: createAction('[Dataset] update Dataset', props<{ dataset: Dataset; route?: string }>()),
-    setMissingGroups: createAction(
-      '[Dataset] set missing groups',
-      props<{ missingGroups?: MissingGroupsByEntity }>()
-    ),
+    setMissingGroups: createAction('[Dataset] set missing groups', props<{ missingGroups?: MissingGroupsByEntity }>()),
     updated: createAction(
       '[Dataset] Dataset is updated call to admin',
       props<{ path: string; params?: { [p: string]: string } }>()
@@ -133,5 +130,8 @@ export const DataSourceActions = {
       '[Dataset] Update Dataset version info success',
       props<{ version: Partial<DatasetVersion> }>()
     ),
+    confirmDeleteVersion: createAction('[Dataset] confirm Delete datasetVersion', props<{ version: DatasetVersion }>()),
+    deleteVersion: createAction('[Dataset] Delete datasetVersion', props<{ version: DatasetVersion }>()),
+    deleteVersionFailure: createAction('[Dataset] Delete datasetVersion failure', props<{ err: any }>())
   }
 };

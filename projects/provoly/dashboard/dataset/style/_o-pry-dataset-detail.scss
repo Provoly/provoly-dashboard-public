@@ -65,6 +65,11 @@ pry-dataset-detail {
 .o-dataset-detail {
   height: 80%;
 
+  &__content {
+    height: 100%;
+    margin: 0 2rem;
+  }
+
   &__information {
     padding: toRem(10);
     font-size: 0.875rem;
@@ -79,11 +84,7 @@ pry-dataset-detail {
   }
 
   pry-tab-group {
-    height: 100%;
-
     .o-tabs {
-      padding-left: 2rem;
-      padding-right: 2rem;
       height: 100%;
 
       &__panel__content {

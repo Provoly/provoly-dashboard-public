@@ -13,8 +13,7 @@ import {
   ViewMode,
   WidgetManifest
 } from '@provoly/dashboard';
-import { map, Observable, Subject } from 'rxjs';
-import { withLatestFrom } from 'rxjs/operators';
+import { map, Observable } from 'rxjs';
 
 let nextCompId = 0;
 
@@ -201,5 +200,10 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
 
   formValidated($event: Partial<DatasetVersion>) {
     this.isEditingVersion = false;
+  }
+
+  askDelete(version: DatasetVersion, $event?: Event) {
+    this.store.dispatch(DataSourceActions.dataset.confirmDeleteVersion({ version }));
+    $event?.stopPropagation();
   }
 }

@@ -13,7 +13,7 @@ import { ConfigSelectors } from '../config/config.selectors';
 import { SearchActions } from '../search/search.actions';
 import { SearchService } from '../search/search.service';
 import { DataSourceActions } from './data-source.actions';
-import { Dataset, DatasetVersion, NamedQuery } from './data-source.model';
+import { Dataset, NamedQuery } from './data-source.model';
 import { DataSourceSelectors } from './data-source.selectors';
 import { DataSourceService } from './data-source.service';
 
@@ -344,8 +344,49 @@ export class DataSourceEffects {
     this.actions$.pipe(
       ofType(DataSourceActions.dataset.updateDatasetVersionInfo),
       switchMap((action) =>
-        this.dataSourceService.updateDatasetVersionInfo(action.version).pipe(
-          map((previews) => DataSourceActions.dataset.updateDatasetVersionInfoSuccess({ version: action.version }))
+        this.dataSourceService
+          .updateDatasetVersionInfo(action.version)
+          .pipe(
+            map((previews) => DataSourceActions.dataset.updateDatasetVersionInfoSuccess({ version: action.version }))
+          )
+      )
+    )
+  );
+
+  confirmDeleteDatasetVersion$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(DataSourceActions.dataset.confirmDeleteVersion),
+        tap((action) => {
+          const data: PryDialogConfirmData = {
+            title: '@pry.dataset.version.delete.title',
+            message: '@pry.dataset.version.delete.message',
+            actions: [
+              {
+                id: 0,
+                label: '@pry.dataset.buttonAction.delete',
+                actions: [DataSourceActions.dataset.deleteVersion({ version: action.version })]
+              },
+              {
+                id: 1,
+                label: '@pry.dataset.buttonAction.cancel',
+                color: 'secondary'
+              }
+            ]
+          };
+          this.pryDialog.open(PryDialogConfirmComponent, { data });
+        })
+      ),
+    { dispatch: false }
+  );
+
+  deleteDatasetVersion$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DataSourceActions.dataset.deleteVersion),
+      switchMap((action) =>
+        this.dataSourceService.deleteDatasetVersion(action.version).pipe(
+          mergeMap(() => [DataSourceActions.dataset.listVersionsByDatasetId({ id: action.version.dataset })]),
+          catchError((err) => [DataSourceActions.dataset.deleteVersionFailure({ err })])
         )
       )
     )

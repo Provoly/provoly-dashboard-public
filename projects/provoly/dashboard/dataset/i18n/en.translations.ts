@@ -29,7 +29,11 @@ export const enTranslations = {
         INACTIVE: 'Invalid',
         ERROR: 'Error',
         ACTIVE: 'Available',
-        currentlyActive: 'Active'
+        currentlyActive: 'Active',
+        delete: {
+          title: 'Delete version',
+          message: 'Deleting this version will remove associated data. Are you sure you want to delete it?'
+        }
       },
       form: {
         obligatory: 'Obligatory field',
@@ -41,7 +45,9 @@ export const enTranslations = {
         ERROR: 'Consult errors',
         WARNING: 'Consult warnings',
         LOADING: '',
-        INDEXING: ''
+        INDEXING: '',
+        delete: 'Delete',
+        cancel: 'Cancel'
       },
       error: {
         type: 'Type',

@@ -131,6 +131,8 @@
           <th>{{ '@pry.dataset.date' | i18n }}</th>
           <th>{{ '@pry.dataset.status' | i18n }}</th>
           <th></th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -209,6 +211,19 @@
                   (version.state === 'ERROR' ? '@pry.dataset.buttonAction.ERROR' : '@pry.dataset.buttonAction.WARNING')
                     | i18n
                 }}
+              </button>
+            </ng-container>
+          </td>
+          <td>
+            <ng-container
+              *ngIf="version.state === 'ACTIVE' || version.state === 'ERROR' || version.state === 'INACTIVE'"
+            >
+              <button
+                type="button"
+                class="a-btn a-btn--secondary a-btn--icon-text ng-star-inserted"
+                (click)="askDelete(version, $event)"
+              >
+                {{ '@pry.dataset.buttonAction.delete' | i18n }}
               </button>
             </ng-container>
           </td>
