@@ -125,7 +125,9 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
     this.tab = number;
   }
 
-  handleButtonAction(version: DatasetVersion) {
+  handleButtonAction($event: Event, version: DatasetVersion) {
+    $event.preventDefault();
+    $event.stopPropagation();
     this.selectedDatasetVersion = version;
     switch (version.state) {
       case 'ACTIVE':
@@ -139,7 +141,9 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
     }
   }
 
-  consultErrors(version: DatasetVersion) {
+  consultErrors($event: Event, version: DatasetVersion) {
+    $event.preventDefault();
+    $event.stopPropagation();
     this.selectedDatasetVersion = version;
     this.showModalStatus = true;
   }
@@ -191,6 +195,7 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
       this.isEditingVersion = false;
     } else {
       this.isPanelOpen = !this.isPanelOpen;
+      this.selectedVersion = undefined;
     }
   }
 

@@ -178,7 +178,7 @@
                   <button
                     type="button"
                     class="a-btn a-btn--primary a-btn--icon-text ng-star-inserted"
-                    (click)="handleButtonAction(version)"
+                    (click)="handleButtonAction($event, version)"
                   >
                     {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
                   </button>
@@ -205,7 +205,7 @@
               <button
                 type="button"
                 class="a-btn a-btn--secondary a-btn--icon-text ng-star-inserted"
-                (click)="consultErrors(version)"
+                (click)="consultErrors($event, version)"
               >
                 {{
                   (version.state === 'ERROR' ? '@pry.dataset.buttonAction.ERROR' : '@pry.dataset.buttonAction.WARNING')
