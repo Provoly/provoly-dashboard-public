@@ -45,6 +45,7 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
   valueItems$: Observable<any>;
   value$ = new BehaviorSubject<any>(undefined);
   searchSelected$ = new BehaviorSubject<boolean>(false);
+  inhibate: boolean = false;
 
   @Input() set items(items: any[] | null | undefined) {
     this._items$.next(items ?? []);
@@ -286,10 +287,18 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
     }
   }
 
+  private inhibition() {
+    this.inhibate = true;
+    setTimeout(() => (this.inhibate = false), 100);
+  }
+
   handleClick() {
-    this.focused = true;
-    this.toggle();
-    this.clicked.emit();
+    if (!this.inhibate) {
+      this.focused = true;
+      this.toggle();
+      this.clicked.emit();
+      this.inhibition();
+    }
   }
 
   toggleFocus() {
@@ -334,13 +343,17 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
     return this.elementRef ?? this.selectElement.nativeElement;
   }
 
-  onFocusChange = (origin: FocusOrigin) =>
-    this.a11yService.onFocusChange(
-      origin,
-      this.autocomplete,
-      () => this.toggleFocus(),
-      () => this.focusSelect()
-    );
+  onFocusChange = (origin: FocusOrigin) => {
+    if (!this.inhibate) {
+      this.a11yService.onFocusChange(
+        origin,
+        this.autocomplete,
+        () => this.toggleFocus(),
+        () => this.focusSelect()
+      );
+      this.inhibition();
+    }
+  };
   onKeydownSelect = (event: KeyboardEvent) => this.a11yService.onKeydownSelect(event, this.autocomplete);
   onKeydownAutocompleteInput = (event: KeyboardEvent) =>
     this.a11yService.onKeydownAutocompleteInput(event, this.open, this.search$.getValue(), this.optionsModalRef);
