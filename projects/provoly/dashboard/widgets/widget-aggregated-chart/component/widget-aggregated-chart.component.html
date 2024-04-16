@@ -1,5 +1,9 @@
 <pry-widget-aggregated-chart-css></pry-widget-aggregated-chart-css>
-<div class="o-widget o-widget--chart" *ngIf="optionsCopy$ | async as optionsCopy" [class.-has-header]="displayHeader$ | async">
+<div
+  class="o-widget o-widget--chart"
+  *ngIf="optionsCopy$ | async as optionsCopy"
+  [class.-has-header]="displayHeader$ | async"
+>
   <pry-widget-header
     [datasourceIds]="(datasourceIds$ | async) ?? []"
     *ngIf="displayHeader$ | async"
@@ -21,11 +25,13 @@
       class="o-settings"
     >
       <div class="o-settings__popup__content__fields -condensed">
-        <pry-edit-input
-          label="@pry.widget.chart.title"
-          (ngModelChange)="changeChartTitle($event)"
-          [ngModel]="optionsCopy.graph.title"
-        ></pry-edit-input>
+        <div class="m-form-label-field">
+          <pry-edit-input
+            label="@pry.widget.chart.title"
+            (ngModelChange)="changeChartTitle($event)"
+            [ngModel]="optionsCopy.graph.title"
+          ></pry-edit-input>
+        </div>
 
         <div *ngIf="optionsCopy" class="m-form-label-field">
           <label class="a-label" for="chart_type">{{ '@pry.widget.chart.type' | i18n }}</label>
@@ -62,7 +68,7 @@
             <label class="a-label" for="abscissa">{{ '@pry.widget.chart.abscissa' | i18n }}</label>
             <pry-select
               (ngModelChange)="changeAbscissa($event)"
-              [items]="abscissaAttributes$ | async | prySortData : sortActive : sortDirection"
+              [items]="abscissaAttributes$ | async | prySortData: sortActive : sortDirection"
               [ngModel]="optionsCopy.abscissa.attribute"
               bindLabel="name"
               bindValue="id"
@@ -70,11 +76,13 @@
             ></pry-select>
           </div>
 
-          <pry-edit-input
-            label="@pry.widget.chart.dataLabel"
-            (ngModelChange)="changeAbscissaLabel($event)"
-            [ngModel]="optionsCopy.abscissa.label"
-          ></pry-edit-input>
+          <div class="m-form-label-field">
+            <pry-edit-input
+              label="@pry.widget.chart.dataLabel"
+              (ngModelChange)="changeAbscissaLabel($event)"
+              [ngModel]="optionsCopy.abscissa.label"
+            ></pry-edit-input>
+          </div>
 
           <div
             *ngIf="
@@ -168,7 +176,7 @@
               <label class="a-label" for="ordinate">{{ '@pry.widget.chart.ordinate' | i18n }}</label>
               <pry-select
                 (ngModelChange)="changeOrdinate($event)"
-                [items]="ordinateAttributes$ | async | prySortData : sortActive : sortDirection"
+                [items]="ordinateAttributes$ | async | prySortData: sortActive : sortDirection"
                 [ngModel]="optionsCopy.ordinate.attribute"
                 bindLabel="name"
                 bindValue="id"
@@ -177,11 +185,13 @@
             </div>
           </ng-container>
 
-          <pry-edit-input
-            label="@pry.widget.chart.dataLabel"
-            (ngModelChange)="changeOrdinateLabel($event)"
-            [ngModel]="optionsCopy.ordinate.label"
-          ></pry-edit-input>
+          <div class="m-form-label-field">
+            <pry-edit-input
+              label="@pry.widget.chart.dataLabel"
+              (ngModelChange)="changeOrdinateLabel($event)"
+              [ngModel]="optionsCopy.ordinate.label"
+            ></pry-edit-input>
+          </div>
 
           <div *ngIf="translateToVegaType(copyOrdinateField?.type) === 'quantitative'" class="m-form-label-field">
             <pry-checkbox (ngModelChange)="changeKeep0Ordinate($event)" [ngModel]="optionsCopy.ordinate.keep0"
@@ -206,7 +216,7 @@
                 <pry-select
                   (ngModelChange)="changeGroupBy($event)"
                   [ngModel]="optionsCopy.groupBy.attribute"
-                  [items]="abscissaAttributes$ | async | prySortData : sortActive : sortDirection"
+                  [items]="abscissaAttributes$ | async | prySortData: sortActive : sortDirection"
                   bindLabel="name"
                   bindValue="id"
                   id="chart_seriesAttr"
@@ -229,18 +239,25 @@
           </div>
           <div class="o-settings__popup__content__fields -condensed">
             <div class="m-form-label-field">
-              <pry-checkbox (ngModelChange)="toggleLimitItems()" [ngModel]="!!optionsCopy.graph.limitItems">
+              <pry-checkbox
+                (ngModelChange)="toggleLimitItems($event)"
+                [ngModel]="optionsCopy.graph.limitItems !== undefined && optionsCopy.graph.limitItems !== null"
+              >
                 {{ '@pry.widget.chart.limit' | i18n }}
               </pry-checkbox>
             </div>
-            <ng-container *ngIf="!!optionsCopy.graph.limitItems">
+            <ng-container *ngIf="optionsCopy.graph.limitItems !== undefined && optionsCopy.graph.limitItems !== null">
               <div class="m-form-label-field">
                 <label class="a-label" for="chart_limitItemsValue">{{ '@pry.widget.chart.limitMaxNb' | i18n }}</label>
                 <input
                   type="number"
                   id="chart_limitItemsValue"
                   class="a-form-field"
-                  [(ngModel)]="optionsCopy.graph.limitItems"
+                  [ngModel]="optionsCopy.graph.limitItems"
+                  (ngModelChange)="changeLimitItemsValue($event)"
+                  min="1"
+                  step="1"
+                  [attr.aria-invalid]="optionsCopy.graph.limitItems < 1"
                 />
               </div>
             </ng-container>

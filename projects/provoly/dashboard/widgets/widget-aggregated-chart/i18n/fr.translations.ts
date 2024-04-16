@@ -51,7 +51,7 @@ export const frTranslations = {
         ordinate: 'Ordonnée',
         dataLabel: 'Libellé de la donnée',
         origin: 'Axe contenant 0',
-        limit: 'Limiter les éléments',
+        limit: "Limiter le nombre d'éléments affichés en abscisses",
         limitMaxNb: "Nombre d'élements maximum",
         asc: 'Aux plus grands éléments',
         desc: 'Aux plus petits éléments',

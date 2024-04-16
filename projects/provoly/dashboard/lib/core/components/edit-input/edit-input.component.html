@@ -3,17 +3,18 @@
     {{ label | i18n }}
     <span class="u-visually-hidden">({{ label | i18n }})</span>
   </label>
-  <div class="m-form-label-field__edit-inline" (mouseenter)="showButton = true" (mouseleave)="showButton = false">
-    <p class="m-form-label-field__edit-inline__txtvalue" *ngIf="!editMode">
+  <div class="o-pry-edit__wrapper" (mouseenter)="showButton = true" (mouseleave)="showButton = false">
+    <div class="o-pry-edit__value u-display-flex -align-center" *ngIf="!editMode">
       {{ value }}
-    </p>
+    </div>
     <input
       *ngIf="editMode"
       id="edit-input-{{ id }}"
       type="text"
-      class="a-form-field"
+      class="a-form-field o-pry-edit__input"
       [ngModel]="value"
       (ngModelChange)="writeValue($event)"
+      #input
     />
     <button
       [class.-button-visible]="showButton || editMode"

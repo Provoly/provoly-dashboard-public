@@ -66,7 +66,7 @@ export interface ChartAggregatedWidgetOptions {
     stacked?: boolean;
     legend?: boolean;
     sort?: Sort;
-    limitItems?: number;
+    limitItems?: number | null;
   };
   additionalSpec?: any;
   circleColorScheme?: string;

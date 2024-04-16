@@ -574,6 +574,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       })
     );
     this.trigger$.next();
+    if (this.optionsCopy$.value && this.optionsCopy$.value?.graph.limitItems === undefined) {
+      this.toggleLimitItems(true);
+    }
   }
 
   translateToVegaType(type?: FieldType, name?: string): VegaType {
@@ -1032,13 +1035,27 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     }
   }
 
-  toggleLimitItems() {
+  toggleLimitItems($event: boolean) {
     if (this.optionsCopy$.value) {
+      if ($event !== !!this.optionsCopy$.value.graph.limitItems) {
+        this.optionsCopy$.next({
+          ...this.optionsCopy$.value,
+          graph: {
+            ...this.optionsCopy$.value.graph,
+            limitItems: this.optionsCopy$.value.graph.limitItems ? null : this.DEFAULT_ITEM_LIMIT
+          }
+        });
+      }
+    }
+  }
+
+  changeLimitItemsValue($event: number | null) {
+    if (this.optionsCopy$.value && $event !== null) {
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         graph: {
           ...this.optionsCopy$.value.graph,
-          limitItems: this.DEFAULT_ITEM_LIMIT
+          limitItems: $event > 0 ? $event : 1
         }
       });
     }

@@ -52,7 +52,7 @@ export const enTranslations = {
         ordinate: 'Ordinate',
         dataLabel: 'Data label',
         origin: 'Axis containing 0',
-        limit: 'Limit elements',
+        limit: 'Limit the number of abscissa elements',
         limitMaxNb: 'Maximum number of elements',
         asc: 'Biggest elements',
         desc: 'Smallest elements',

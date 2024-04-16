@@ -376,7 +376,7 @@ export const enTranslations = {
         value: 'Value',
         values: 'Values',
         validate: 'Confirm',
-        limit: 'Autocomplete proposals',
+        limit: 'Number of auto-suggested values',
         dateRange: 'Date range'
       },
       attributes: {

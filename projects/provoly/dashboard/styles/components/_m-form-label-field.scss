@@ -22,17 +22,6 @@
     padding-left: 0;
   }
 
-  &__edit-inline {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: toRem(10);
-
-    &__txtvalue {
-      margin: toRem(10) 0;
-    }
-  }
-
   /* MODIFIERS */
   &.-width-sm {
     width: 288px;

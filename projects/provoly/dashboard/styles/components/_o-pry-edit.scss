@@ -1,14 +1,25 @@
 @use '../abstracts' as *;
+@use './m-form-label-field' as *;
+@use '../../styles-theme/abstracts-theme/variables.theme' as *;
 
 /* Organism - component pry edit */
 
 .o-pry-edit {
-  .m-form-label-field__edit-inline {
-    position: relative;
+  .a-label {
+    font-weight: 700;
+  }
 
-    &__txtvalue {
-      margin-top: 0;
-    }
+  &__wrapper {
+    position: relative;
+  }
+
+  &__value {
+    font-size: toRem(14);
+    padding: 0 toRem(10);
+    border: 1px solid themed($theme-map, 'color', 'primary', 400);
+    background-color: themed($theme-map, 'color', 'primary', 'contrast', 50);
+    border-radius: 4px;
+    min-height: toRem(36);
   }
 
   .a-btn {
@@ -21,17 +32,7 @@
     opacity: 1;
     transition: opacity 0.3s;
     position: absolute;
-    top: 0;
-    right: 10px;
-  }
-
-  &.-edit {
-    .m-form-label-field__edit-inline {
-      margin-top: -2px;
-    }
-
-    .-button-visible {
-      top: 4px;
-    }
+    top: 5px;
+    right: toRem(10);
   }
 }

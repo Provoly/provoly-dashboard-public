@@ -381,7 +381,7 @@ export const frTranslations = {
         value: 'Valeur',
         values: 'Valeurs',
         validate: 'Valider',
-        limit: 'Nombre de suggestions',
+        limit: "Nombre de suggestions proposées à l'utilisateur",
         dateRange: 'Plage de dates'
       },
       attributes: {
