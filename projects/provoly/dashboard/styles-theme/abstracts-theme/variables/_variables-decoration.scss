@@ -33,6 +33,16 @@ $theme-shadow: (
   'modal': 0px 2px 7px rgba(0, 0, 0, 0.09)
 );
 
+$theme-component: (
+  'page-loader': (
+    'bg-1': no-repeat radial-gradient(farthest-side, #40b688 92%, #0000) top,
+    'bg-2': no-repeat radial-gradient(farthest-side, #40b688 92%, #0000) left,
+    'bg-3': no-repeat radial-gradient(farthest-side, #40b688 92%, #0000) right,
+    'bg-4': no-repeat radial-gradient(farthest-side, #40b688 92%, #0000) bottom
+  )
+);
+
+
 ///// DO NOT EDIT FROM HERE /////
 $theme-map-decoration: (
   'decoration': (
@@ -44,6 +54,9 @@ $theme-map-decoration: (
     ),
     'focus-visible': (
       $theme-focus-visible
+    ),
+    'component': (
+      $theme-component
     )
   )
 );
