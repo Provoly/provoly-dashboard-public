@@ -162,7 +162,7 @@
               ) | i18n
             }}
             <div
-              *ngIf="version.state !== 'ERROR'"
+              *ngIf="version.state !== 'DELETING'"
               class="m-info-icon a-tooltip -tooltip-width-md"
               [attr.data-tooltip]="'@pry.dataset.tooltip.' + getVersionTooltipContent(version, activeVersion.id) | i18n"
               data-tooltip-position="right"
