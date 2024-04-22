@@ -1728,7 +1728,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   addLayerGroup() {
     this.store.dispatch(
       DashboardActions.addLayerGroup({
-        defaultTitle: this.translateService.instant('@pry.widget.map.layerSettings.group')
+        name:
+          this.translateService.instant('@pry.widget.map.layerSettings.group') +
+          ' ' +
+          (this.layerGroups.length + 1).toString()
       })
     );
 
@@ -1737,7 +1740,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   updateLayerGroup(name: string, newName?: string, singleLayer?: boolean, visibleLayers?: string[]) {
-    if (singleLayer !== undefined && visibleLayers !== undefined) {
+    if (newName === undefined && singleLayer !== undefined && visibleLayers !== undefined) {
       this.store.dispatch(
         DashboardActions.updateLayerGroup({
           name,
@@ -1747,7 +1750,28 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         })
       );
     } else if (name !== newName) {
-      this.store.dispatch(DashboardActions.updateLayerGroup({ name, newName, singleLayer, visibleLayers }));
+      if (name === DEFAULT_LAYER_GROUP) {
+        const layersToTransfer =
+          this.optionsCopy.layers?.filter((layer) => layer.group === DEFAULT_LAYER_GROUP).map((l) => l.title) ?? [];
+        this.store.dispatch(
+          DashboardActions.addLayerGroup({
+            name: newName,
+            singleLayer,
+            visibleLayers: visibleLayers!.filter((l) => layersToTransfer.includes(l))
+          })
+        );
+        this.store.dispatch(
+          DashboardActions.updateLayerGroup({
+            name: DEFAULT_LAYER_GROUP,
+            newName: undefined,
+            singleLayer: undefined,
+            visibleLayers: visibleLayers!.filter((l) => !layersToTransfer.includes(l))
+          })
+        );
+      } else {
+        this.store.dispatch(DashboardActions.updateLayerGroup({ name, newName, singleLayer, visibleLayers }));
+      }
+      // update groups on layers
       if (newName !== undefined && this.optionsCopy.layers) {
         this.optionsCopy.layers = this.optionsCopy.layers.map((layer) =>
           layer.group === name

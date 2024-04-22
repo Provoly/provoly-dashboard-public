@@ -811,9 +811,9 @@ const internalReducer = createReducer<DashboardState>(
         layerGroups: [
           ...(state.manifests.manifest.layerGroups ?? []),
           {
-            name: action.defaultTitle + ' ' + ((state.manifests.manifest.layerGroups?.length ?? 0) + 1).toString(),
-            singleLayer: false,
-            visibleLayers: [] as string[]
+            name: action.name ?? 'MISSING NAME',
+            singleLayer: action.singleLayer ?? false,
+            visibleLayers: action.visibleLayers ?? ([] as string[])
           }
         ]
       }
