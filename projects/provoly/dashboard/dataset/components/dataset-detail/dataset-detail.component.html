@@ -162,6 +162,7 @@
               ) | i18n
             }}
             <div
+              *ngIf="version.state !== 'ERROR'"
               class="m-info-icon a-tooltip -tooltip-width-md"
               [attr.data-tooltip]="'@pry.dataset.tooltip.' + getVersionTooltipContent(version, activeVersion.id) | i18n"
               data-tooltip-position="right"
@@ -171,7 +172,12 @@
           </td>
           <td>
             <ng-container
-              *ngIf="version.state !== 'LOADING' && version.state !== 'INDEXING' && version.state !== 'ERROR'"
+              *ngIf="
+                version.state !== 'LOADING' &&
+                version.state !== 'INDEXING' &&
+                version.state !== 'ERROR' &&
+                version.state !== 'DELETING'
+              "
             >
               <ng-container *ngIf="dataset.owner && (version.state === 'ACTIVE' || version.state === 'INACTIVE')">
                 <ng-container *pryAccess="{ module: 'dashboard', page: 'list-dataset', action: 'activate' }">

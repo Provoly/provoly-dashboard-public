@@ -29,6 +29,7 @@ export const enTranslations = {
         INACTIVE: 'Invalid',
         ERROR: 'Error',
         ACTIVE: 'Available',
+        DELETING: 'Deleting',
         currentlyActive: 'Active',
         delete: {
           title: 'Delete version',

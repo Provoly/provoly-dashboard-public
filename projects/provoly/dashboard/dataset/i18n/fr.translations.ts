@@ -29,6 +29,7 @@ export const frTranslations = {
         INACTIVE: 'Invalide',
         ERROR: 'En erreur',
         ACTIVE: 'Disponible',
+        DELETING: 'En cours de suppression',
         currentlyActive: 'Actif',
         delete: {
           title: 'Supprimer une version',
