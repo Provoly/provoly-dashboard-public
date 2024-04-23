@@ -679,6 +679,9 @@
       >
         <pry-icon iconSvg="arrow_right"></pry-icon>
       </button>
+      <button class="a-btn a-btn--primary a-btn--icon-only" (click)="tooltipManager.clearTooltip()">
+        <pry-icon iconSvg="close"></pry-icon>
+      </button>
     </div>
     <div class="m-tooltip--popup__container">
       <ng-container #popupContent></ng-container>

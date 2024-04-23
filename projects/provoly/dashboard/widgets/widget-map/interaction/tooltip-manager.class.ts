@@ -113,6 +113,8 @@ export class TooltipManager {
       this.clearTooltip();
     });
 
+    this.addOverlayOnInteraction();
+
     return this;
   }
 
