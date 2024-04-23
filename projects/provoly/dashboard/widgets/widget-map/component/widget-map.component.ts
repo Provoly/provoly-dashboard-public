@@ -1,7 +1,6 @@
 import {
   AfterViewInit,
   Component,
-  ComponentRef,
   ElementRef,
   Inject,
   Injector,
@@ -15,7 +14,6 @@ import { Store } from '@ngrx/store';
 import {
   AggregationResult,
   Attribute,
-  BaseTooltipComponent,
   BaseWidgetMapLayerOptions,
   ChartAggregatedWidgetOptions,
   Class,
@@ -61,7 +59,7 @@ import {
   widgetMapConfig
 } from '@provoly/dashboard';
 import equal from 'fast-deep-equal/es6';
-import { Feature, Map, Overlay, View } from 'ol';
+import { Feature, Map, View } from 'ol';
 import { Coordinate } from 'ol/coordinate';
 import { boundingExtent, createEmpty } from 'ol/extent';
 import { Circle, Geometry, Point } from 'ol/geom';
@@ -89,7 +87,6 @@ import {
   Observable,
   of,
   startWith,
-  Subscription,
   switchMap,
   withLatestFrom
 } from 'rxjs';
@@ -105,6 +102,7 @@ import WebGLTileLayer from 'ol/layer/WebGLTile';
 import { Attribution, defaults } from 'ol/control';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { TooltipManager } from '../interaction/tooltip-manager.class';
 
 export const TOOLTIP_PADDING = 15;
 export const NON_MANDATORY_FIT_LAYER_TYPES = ['wms', 'geoserver'];
@@ -160,8 +158,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }>;
   height$: Observable<number>;
   actions$ = widgetMapConfig.actions$;
-  private wmsFeatures$: Observable<any[]>;
-  classicFeatures$: BehaviorSubject<any> = new BehaviorSubject([]);
   geoServerLayerDescriptions$: Observable<MapGeoServerLayerOptions[]>;
   legendTabOpen = false;
   layersTabOpen = false;
@@ -182,9 +178,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }>({});
   mapStyleUrl$!: Observable<string | null>;
   interactionManager: InteractionManager = new InteractionManager();
+  tooltipManager: TooltipManager = new TooltipManager();
   mapStyleLayer$!: Observable<(VectorTileLayer | TileLayer<any>)[]>;
-  tooltipIndex = 0;
-  tooltipNumber = 0;
   STYLE_FROM_URL = '_url';
   NO_STYLE = 'none';
   wmsCapabilities$: Observable<
@@ -217,9 +212,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   attributions$: Observable<boolean>;
   olZoomElement$ = new BehaviorSubject<HTMLDivElement | null>(null);
   previousLayers: BaseLayer[] = [];
-  previousTooltip?: ComponentRef<BaseTooltipComponent>;
-  previousTooltipSub?: Subscription;
-  popupOverlay?: Overlay;
   layerGroups$: Observable<LayerGroup[]>;
   layerGroups: LayerGroup[] = [];
   layerSettingsExpandedState: { [key: string]: boolean } = {};
@@ -557,7 +549,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     );
 
     this.mapUrl$ = this.store.select(ConfigSelectors.mapUrl);
-    this.wmsFeatures$ = this.store.select(DashboardSelectors.wmsFeatures);
 
     this.bottomLeft$ = this.widgetSize$.pipe(
       map((size) => `translate(10px ,calc(${size.height}px - 100% - 10px))`),
@@ -664,10 +655,27 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     return this.interactionManager.init(this);
   }
 
+  initTooltipManager() {
+    return this.tooltipManager.init(
+      this.tooltipFactoryService,
+      this.injector,
+      this.store,
+      this.subscriptions,
+      this.widgetSize$,
+      this.displayHeader$,
+      this.map,
+      this.popup,
+      this.popupContent,
+      this.interactionManager,
+      this
+    );
+  }
+
   ngAfterViewInit(): void {
     this.map = new Map({ target: this.mapRef.nativeElement, controls: defaults({ attribution: false }) });
     this.interactionManager = this.initInteractionManager();
     this.layerSlider.init(this.map, this.sliderElement.nativeElement);
+    this.tooltipManager = this.initTooltipManager();
     this.mapStyleUrl$ = combineLatest([this.options$, this.mapUrl$]).pipe(
       map(([options, url]) => {
         switch (options.style) {
@@ -1013,69 +1021,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         }
       })
     );
-    this.subscriptions.add(
-      combineLatest([this.wmsFeatures$, this.classicFeatures$])
-        .pipe(debounceTime(50), withLatestFrom(this.widgetSize$, this.displayHeader$))
-        .subscribe(([[wmsFeatures, classicFeatures], size, header]) => {
-          if (this.map) {
-            this.tooltipIndex = 0;
-            if (this.popupOverlay !== null) {
-              this.clearTooltip();
-            }
-            this.popupOverlay = new Overlay({
-              element: this.popup.nativeElement,
-              offset: [9, 9]
-            });
-            this.map.addOverlay(this.popupOverlay);
-            this.popupContent.clear();
-            const componentPromises = [] as Promise<ComponentRef<BaseTooltipComponent> | null>[];
-            wmsFeatures.forEach((value) => {
-              componentPromises.push(this.generateTooltip(value));
-            });
-            classicFeatures.forEach((value: any) => {
-              componentPromises.push(this.generateTooltip(value.values));
-            });
-
-            Promise.all(componentPromises).then((promises) => {
-              const realComponents = promises.filter((component) => !!component);
-              this.tooltipNumber = realComponents.length;
-              if (realComponents.length <= 0) {
-                this.popup.nativeElement.hidden = true;
-                this.popupOverlay?.setPosition([-9999999999, -9999999999]);
-              } else {
-                this.popup.nativeElement.hidden = false;
-                // Do not go outside the map
-                const rect = {
-                  height: 200 + (header ? WIDGET_HEADER_HEIGHT : 0) + TOOLTIP_PADDING,
-                  width: 300 + TOOLTIP_PADDING
-                };
-                let pixel = this.interactionManager.tooltipEvent?.pixel;
-                if (!!pixel && pixel[0] + rect.width > size.width) {
-                  pixel[0] = size.width - rect.width;
-                }
-                if (!!pixel && pixel[1] + rect.height > size.height) {
-                  pixel[1] = size.height - rect.height;
-                }
-                setTimeout(() => {
-                  this.tooltipMove(0);
-                }, 10);
-                this.popupOverlay?.setPosition(this.map.getCoordinateFromPixel(pixel ?? [0, 0]));
-              }
-            });
-          }
-        })
-    );
-
-    window.addEventListener('forceCloseMapTooltip', () => {
-      this.clearTooltip();
-    });
-  }
-
-  clearTooltip() {
-    if (this.popupOverlay) this.map?.removeOverlay(this.popupOverlay);
-    this.popupContent?.clear();
-    this.previousTooltip?.destroy();
-    this.previousTooltipSub?.unsubscribe();
   }
 
   private addEmptyWebGlLayerBelowSlideHeatmaps(layers: BaseLayer[]) {
@@ -1126,28 +1071,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       }),
       distinctUntilChanged((p, v) => equal(p, v))
     );
-  }
-
-  generateTooltip(value: {
-    oClass: string;
-    coordinates: Pixel;
-    values: any;
-  }): Promise<ComponentRef<BaseTooltipComponent> | null> {
-    return new Promise((resolve) => {
-      const component$ = this.tooltipFactoryService.generateTooltip(value.oClass, this.injector, this.popupContent);
-      this.previousTooltipSub?.unsubscribe();
-      this.previousTooltipSub = component$.subscribe((component) => {
-        if (component) {
-          if (this.previousTooltip) {
-            this.previousTooltip.destroy();
-          }
-          component.instance.data.item = value;
-          component.instance.popup = this.popup;
-          resolve(component);
-        }
-        resolve(null);
-      });
-    });
   }
 
   setDefaultLayerTitle(
@@ -1427,7 +1350,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   changeParamTiled($event: boolean, layer: MapWMSLayerLayerOptions | MapGeoServerLayerOptions) {
     layer.paramTiled = $event;
-    this.clearTooltip();
+    this.tooltipManager.clearTooltip();
   }
 
   changeMatrixSet($event: Event, layer: MapWMTSLayerLayerOptions) {
@@ -1534,28 +1457,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.legendTabOpen = false;
   }
 
-  tooltipMove(number: number) {
-    if (this.tooltipCanMove(number)) {
-      this.setStyleAsync(this.tooltipIndex, 'none');
-      this.tooltipIndex = this.tooltipIndex + number;
-      this.setStyleAsync(this.tooltipIndex, 'block');
-    }
-  }
-
-  tooltipCanMove(number: number) {
-    return this.tooltipIndex + number >= 0 && this.tooltipIndex + number < this.tooltipNumber;
-  }
-
-  private setStyleAsync(idx: number, value: string) {
-    setTimeout(() => {
-      const targetContainer = this.popupContent.get(idx);
-      if (targetContainer) {
-        // @ts-ignore
-        targetContainer.rootNodes[0].style.display = value;
-      }
-    }, 100);
-  }
-
   get mapLayers() {
     return (this.map ?? { getLayers: () => ({ getArray: () => [] }) })
       .getLayers()
@@ -1628,8 +1529,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     delete this.map;
     // @ts-ignore
     this.map = null;
-    this.previousTooltipSub?.unsubscribe();
-    this.previousTooltip?.destroy();
+    this.tooltipManager.destroy();
   }
 
   getStyle(_layer: MapWidgetLayerOptions) {

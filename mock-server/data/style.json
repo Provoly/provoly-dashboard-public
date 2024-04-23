@@ -12,7 +12,7 @@
       "url": "https://maps.provoly.net/data/openmaptiles.json"
     }
   },
-  "sprite":"https://maps.provoly.net/styles/test-style/sprite",
+  "sprite":"https://maps.provoly.net/styles/osm-bright/sprite",
   "glyphs":"https://maps.provoly.net/fonts/{fontstack}/{range}.pbf",
   "layers": [
     {

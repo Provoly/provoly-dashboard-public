@@ -23,7 +23,7 @@ export class AdminMenuComponent extends BaseMenuComponent {
     this.subscriptions.add(this.route.data.subscribe((data) => this.limit$?.next(data['limitMenu'])));
   }
 
-  override init() {
+  override init(undefined,undefined,undefined,this.subscriptions,this.widgetSize$,this.displayHeader$) {
     this.menus$ = this.store.select(AdminSelectors.menus);
     this.highlightedMenu$ = this.store.select(AdminSelectors.highlightedMenu);
     this.limit$ = new BehaviorSubject<string | undefined>(undefined);

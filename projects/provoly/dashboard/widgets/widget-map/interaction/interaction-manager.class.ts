@@ -1,24 +1,18 @@
-import { ContextMenuActions, TooltipMode } from '@provoly/dashboard';
-import { Feature, MapBrowserEvent, Overlay } from 'ol';
+import { ContextMenuActions } from '@provoly/dashboard';
 import { ScaleLine } from 'ol/control';
-import { Circle, Point } from 'ol/geom';
 import { toLonLat } from 'ol/proj';
 // This is not a circular dependency
 import type { WidgetMapComponent } from '../component/widget-map.component';
 import { SelectionInteraction } from './selection-interaction.class';
-import { FeatureLike } from 'ol/Feature';
 
 export class InteractionManager {
-  interactionPopupOverlay?: Overlay;
   scaleControl?: ScaleLine;
   selectionInteraction = new SelectionInteraction();
-  public tooltipEvent?: MapBrowserEvent<MouseEvent>;
   private component!: WidgetMapComponent;
 
   init(component: WidgetMapComponent) {
     this.component = component;
     this.addContextMenuInteraction();
-    this.addOverlayOnInteraction();
     this.addScaleControl();
     this.addUpdateZoomAndCenter();
     this.component.map.addInteraction(this.selectionInteraction.init(this.component.store));
@@ -48,43 +42,11 @@ export class InteractionManager {
         );
         e.preventDefault();
       }
-    },
-    popup: (event: MapBrowserEvent<MouseEvent>) => {
-      const values = this.component.map.getFeaturesAtPixel(event.pixel, { hitTolerance: 5 });
-      const valuesToDisplay = [...new Set(values.map((value) => value.get('id')).filter((id) => !!id))]
-        .map((id) => values.find((value) => value.get('id') === id))
-        .map((value) => ({
-          oClass: value?.get('oClass'),
-          coordinates: event.coordinate,
-          values:
-            value instanceof Feature ? value.getKeys().reduce((p, c) => ({ ...p, [c]: value?.get(c) }), {}) : undefined
-        }))
-        .filter((value) => value.oClass);
-      this.component.classicFeatures$.next(valuesToDisplay);
-      const wmsLayers = this.component.getWMSLayers();
-      if (wmsLayers) {
-        this.component.getFeatureFromServer(wmsLayers, event.coordinate);
-      }
-      this.tooltipEvent = event;
     }
   };
 
   private addContextMenuInteraction() {
     this.component.map.getViewport().addEventListener('contextmenu', this.listeners.contextMenu);
-  }
-
-  private addOverlayOnInteraction() {
-    if (!this.interactionPopupOverlay) {
-      this.interactionPopupOverlay = new Overlay({
-        element: this.component.popup.nativeElement,
-        offset: [9, 9]
-      });
-      this.component.map.addOverlay(this.interactionPopupOverlay);
-    }
-    if (this.component.optionsCopy.tooltipMode !== TooltipMode.NONE) {
-      this.component.map.un('singleclick', this.listeners.popup);
-      this.component.map.on('singleclick', this.listeners.popup);
-    }
   }
 
   private addScaleControl() {

@@ -65,7 +65,7 @@
             <div class="m-form-label-field o-layer-settings__group-title">
               <label class="a-label" for="map_layerGroupTitle-{{ groupIdx }}">
                 {{ '@pry.widget.map.layerSettings.layerGroupName' | i18n }}<span class="-obligatory-red">*</span
-              >{{ '@pry.widget.map.layerSettings.optionalColon' | i18n }}
+                >{{ '@pry.widget.map.layerSettings.optionalColon' | i18n }}
               </label>
               <div class="u-display-flex">
                 <pry-edit-input
@@ -95,8 +95,8 @@
                   [name]="group.name"
                 />
                 <label class="a-label" for="multiselection-{{ groupIdx }}">{{
-                    '@pry.widget.map.layerSettings.multipleLayer' | i18n
-                  }}</label>
+                  '@pry.widget.map.layerSettings.multipleLayer' | i18n
+                }}</label>
               </div>
               <div class="m-form-radio-group__item">
                 <input
@@ -108,8 +108,8 @@
                   [name]="group.name"
                 />
                 <label class="a-label" for="monoselection-{{ groupIdx }}">{{
-                    '@pry.widget.map.layerSettings.singleLayer' | i18n
-                  }}</label>
+                  '@pry.widget.map.layerSettings.singleLayer' | i18n
+                }}</label>
               </div>
             </div>
             <div class="m-btn-group">
@@ -196,8 +196,8 @@
                         </div>
                         <div class="m-form-label-field" *ngIf="!['geoserver', 'auto'].includes(layer.type)">
                           <label class="a-label" for="map_layerType">{{
-                              '@pry.widget.map.layerType.title' | i18n
-                            }}</label>
+                            '@pry.widget.map.layerType.title' | i18n
+                          }}</label>
                           <pry-select
                             (ngModelChange)="changeLayerType($event, i)"
                             [items]="layerTypes"
@@ -210,8 +210,8 @@
                         <div class="m-form-label-field" *ngIf="['geoserver', 'wms'].includes(layer.type)">
                           <ng-container *ngIf="getAsWmsType(layer) as wmslayer">
                             <label class="a-label" for="map_layerStyle">{{
-                                '@pry.widget.map.layerStyle' | i18n
-                              }}</label>
+                              '@pry.widget.map.layerStyle' | i18n
+                            }}</label>
                             <pry-select
                               (ngModelChange)="changeLayerStyle($event, layer)"
                               [items]="layerStyleOptions(layer)"
@@ -291,8 +291,8 @@
                         >
                           <div class="m-form-label-field">
                             <label class="a-label" for="map_locationAttribute_both">{{
-                                '@pry.widget.map.locationAttribute.both' | i18n
-                              }}</label>
+                              '@pry.widget.map.locationAttribute.both' | i18n
+                            }}</label>
                             <pry-select
                               (ngModelChange)="changeLocationAttributes($event, layer)"
                               [items]="fields"
@@ -307,8 +307,8 @@
                         <div *ngIf="['heatmap', 'bubble'].indexOf(layer.type) >= 0">
                           <div class="m-form-label-field">
                             <label class="a-label" for="map_intensityAttribute">{{
-                                '@pry.widget.map.intensityAttribute' | i18n
-                              }}</label>
+                              '@pry.widget.map.intensityAttribute' | i18n
+                            }}</label>
                             <pry-select
                               (ngModelChange)="changeIntensityAttributes($event, layer)"
                               [items]="fields"
@@ -347,8 +347,8 @@
 
                       <div class="m-form-label-field" *ngIf="layer.type === 'wms' || layer.type === 'wmts'">
                         <label class="a-label" for="map_wms_paramLayer">{{
-                            '@pry.widget.map.wms.paramLayer' | i18n
-                          }}</label>
+                          '@pry.widget.map.wms.paramLayer' | i18n
+                        }}</label>
                         <input
                           id="map_wms_paramLayer"
                           class="a-form-field"
@@ -360,8 +360,8 @@
 
                       <div class="m-form-label-field" *ngIf="layer.type === 'wmts'">
                         <label class="a-label" for="map_wms_matrixSet">{{
-                            '@pry.widget.map.wms.matrixSet' | i18n
-                          }}</label>
+                          '@pry.widget.map.wms.matrixSet' | i18n
+                        }}</label>
                         <input
                           id="map_wms_matrixSet"
                           class="a-form-field"
@@ -562,7 +562,9 @@
                       [value]="layer.title"
                       (change)="changeVisibility(group, layer)"
                     />
-                    <label class="a-label" for="radio-layer-{{ index }}">{{ layer.title ?? ('@pry.widget.map.missingTitle' | i18n) }}</label>
+                    <label class="a-label" for="radio-layer-{{ index }}">{{
+                      layer.title ?? ('@pry.widget.map.missingTitle' | i18n)
+                    }}</label>
                   </div>
                 </ng-container>
               </ng-container>
@@ -662,11 +664,19 @@
 
   <div #popup class="m-tooltip m-tooltip--popup" [hidden]="true" role="tooltip">
     <div class="m-tooltip--popup__header">
-      <p>{{ this.tooltipIndex + 1 }} / {{ this.tooltipNumber }}</p>
-      <button class="a-btn a-btn--primary a-btn--icon-only" (click)="tooltipMove(-1)" [disabled]="!tooltipCanMove(-1)">
+      <p>{{ tooltipManager.tooltipIndex + 1 }} / {{ tooltipManager.tooltipNumber }}</p>
+      <button
+        class="a-btn a-btn--primary a-btn--icon-only"
+        (click)="tooltipManager.tooltipMove(-1)"
+        [disabled]="!tooltipManager.tooltipCanMove(-1)"
+      >
         <pry-icon iconSvg="arrow_back"></pry-icon>
       </button>
-      <button class="a-btn a-btn--primary a-btn--icon-only" (click)="tooltipMove(1)" [disabled]="!tooltipCanMove(1)">
+      <button
+        class="a-btn a-btn--primary a-btn--icon-only"
+        (click)="tooltipManager.tooltipMove(1)"
+        [disabled]="!tooltipManager.tooltipCanMove(1)"
+      >
         <pry-icon iconSvg="arrow_right"></pry-icon>
       </button>
     </div>
