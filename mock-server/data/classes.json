@@ -695,6 +695,15 @@
     "name": "tronçon_de_route",
     "attributes": [
       {
+        "id": "0708d170-8467-4f9e-a589-48b4af2e4e30",
+        "name": "the_geom",
+        "field": "1c1a0637-d8b7-4962-ab95-166896378396",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "slug": "50dbfe635e_the_geom",
+        "technicalName": "the_geom"
+      },
+      {
         "id": "4c87f8bc-f30e-4875-b03b-9c4fa97d7288",
         "name": "id",
         "field": "79f91495-02e9-4208-8166-149a7a28e613",

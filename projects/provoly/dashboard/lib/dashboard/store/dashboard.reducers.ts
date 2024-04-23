@@ -22,7 +22,6 @@ import {
   DEFAULT_ROWS_NUMBER
 } from './dashboard.contants';
 import { GetCapabilitiesResponse } from './wms.service';
-import { MapWidgetOptions } from '../../core/model/widget-map-manifest.interface';
 
 export const dashboardFeatureKey = '@pry/dashboard';
 
@@ -54,7 +53,7 @@ export interface DashboardState {
     params: DashboardCellParams;
     editionMode: boolean;
   };
-  wmsFeatures: any[];
+  wmsFeatures: { [componentId: string]: any[] };
   display?: DisplayOptions;
   capabilities: { [url: string]: GetCapabilitiesResponse | null };
 }
@@ -107,7 +106,7 @@ export const dashboardInitialState: DashboardState = {
     },
     editionMode: false
   },
-  wmsFeatures: [],
+  wmsFeatures: {},
   capabilities: {}
 };
 
@@ -729,16 +728,25 @@ const internalReducer = createReducer<DashboardState>(
       }
     };
   }),
-  on(DashboardActions.getWmsFeatures, DashboardActions.resetWmsFeatures, (state, action) => ({
-    ...state,
-    wmsFeatures: []
-  })),
-  on(DashboardActions.addWmsFeatures, (state, action) => {
-    const allFeatures = [...state.wmsFeatures, ...action.features];
-    const deDupedIds = [...new Set(allFeatures.map((feat) => feat.id))];
+  on(DashboardActions.getWmsFeatures, DashboardActions.resetWmsFeatures, (state, action) => {
+    const features = { ...state.wmsFeatures };
+    delete features[action.componentId];
     return {
       ...state,
-      wmsFeatures: deDupedIds.map((id) => allFeatures.find((feat) => feat.id === id))
+      wmsFeatures: features
+    };
+  }),
+  on(DashboardActions.addWmsFeatures, (state, action) => {
+    const allComponentFeatures = [...(state.wmsFeatures[action.componentId] ?? []), ...action.features];
+    const deDupedIds = [...new Set(allComponentFeatures.map((feat) => feat.id))];
+    const globalFeatures = {
+      ...state.wmsFeatures,
+      [action.componentId]: deDupedIds.map((id) => allComponentFeatures.find((feat) => feat.id === id))
+    };
+
+    return {
+      ...state,
+      wmsFeatures: globalFeatures
     };
   }),
   on(DashboardActions.fetchStaticManifest, (state, action) => {

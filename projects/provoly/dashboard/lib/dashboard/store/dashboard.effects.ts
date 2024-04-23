@@ -726,7 +726,8 @@ export class DashboardEffects {
                 .filter((prop) => !!prop.value)
             };
             return result;
-          })
+          }),
+          componentId: action.componentId
         });
       })
     )
@@ -764,12 +765,13 @@ export class DashboardEffects {
             properties: Object.keys(feature.properties)
               .map((property) => ({ key: property, value: feature.properties[property] }))
               .filter((prop) => !!prop.value)
-          }))
+          })),
+          componentId: action.componentId
         })
       ),
       catchError((error) => {
         console.error('Error while fetching WFS features', error);
-        return of(DashboardActions.addWmsFeatures({ features: [] }));
+        return of(DashboardActions.addWmsFeatures({ features: [], componentId: 'error' }));
       })
     )
   );

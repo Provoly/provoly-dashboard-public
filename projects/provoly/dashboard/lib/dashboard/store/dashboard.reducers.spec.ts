@@ -902,17 +902,18 @@ describe('Dashboard reducer', () => {
         dashboardReducer(
           {
             ...initialState,
-            wmsFeatures: [{ something: true }]
+            wmsFeatures: { '0': [{ something: true }] }
           },
           DashboardActions.getWmsFeatures({
             url: 'http://',
             oClass: 'a',
+            componentId: '0',
             coordinates: [0, 0]
           })
         )
       ).toEqual({
         ...initialState,
-        wmsFeatures: []
+        wmsFeatures: {}
       });
     });
   });
@@ -923,23 +924,26 @@ describe('Dashboard reducer', () => {
         dashboardReducer(
           {
             ...initialState,
-            wmsFeatures: [{ id: 1, something: true }]
+            wmsFeatures: { '0': [{ id: 1, something: true }] }
           },
           DashboardActions.addWmsFeatures({
             features: [
               { id: 2, alsoSomething: true },
               { id: 3, alsoAnotherSomething: true },
               { id: 3, alsoAnotherSomethingWithSameId: true }
-            ]
+            ],
+            componentId: '0'
           })
         )
       ).toEqual({
         ...initialState,
-        wmsFeatures: [
-          { id: 1, something: true },
-          { id: 2, alsoSomething: true },
-          { id: 3, alsoAnotherSomething: true }
-        ]
+        wmsFeatures: {
+          '0': [
+            { id: 1, something: true },
+            { id: 2, alsoSomething: true },
+            { id: 3, alsoAnotherSomething: true }
+          ]
+        }
       });
     });
   });

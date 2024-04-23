@@ -2,7 +2,9 @@ import { Pixel } from 'ol/pixel';
 import { ComponentRef, ElementRef, Injector, ViewContainerRef } from '@angular/core';
 import {
   BaseTooltipComponent,
+  DashboardActions,
   DashboardSelectors,
+  MapGeoServerLayerOptions,
   Size,
   TooltipFactoryService,
   TooltipMode,
@@ -13,6 +15,7 @@ import { Feature, Map, MapBrowserEvent, Overlay } from 'ol';
 import { Store } from '@ngrx/store';
 import { TOOLTIP_PADDING, WidgetMapComponent } from '../component/widget-map.component';
 import { InteractionManager } from './interaction-manager.class';
+import { Layer } from 'ol/layer';
 
 export class TooltipManager {
   private tooltipFactoryService!: TooltipFactoryService;
@@ -54,7 +57,7 @@ export class TooltipManager {
     this.popupContent = popupContent;
     this.popup = popup;
     this.interactionManager = interactionManager;
-    this.wmsFeatures$ = this.store.select(DashboardSelectors.wmsFeatures);
+    this.wmsFeatures$ = this.store.select(DashboardSelectors.wmsFeatures(this.parent.id));
 
     subscriptions.add(
       combineLatest([this.wmsFeatures$, this.classicFeatures$])
@@ -141,7 +144,7 @@ export class TooltipManager {
       this.classicFeatures$.next(valuesToDisplay);
       const wmsLayers = this.parent.getWMSLayers();
       if (wmsLayers) {
-        this.parent.getFeatureFromServer(wmsLayers, event.coordinate);
+        this.getFeatureFromServer(wmsLayers, event.coordinate);
       }
       this.tooltipEvent = event;
     };
@@ -174,11 +177,15 @@ export class TooltipManager {
     });
   }
 
-  public clearTooltip() {
+  public clearTooltip(empty = false) {
     if (this.popupOverlay) this.map?.removeOverlay(this.popupOverlay);
     this.popupContent?.clear();
     this.previousTooltip?.destroy();
     this.previousTooltipSub?.unsubscribe();
+    if (empty) {
+      this.store.dispatch(DashboardActions.resetWmsFeatures({ componentId: this.parent.id }));
+      this.classicFeatures$.next([]);
+    }
   }
 
   public tooltipMove(number: number) {
@@ -203,7 +210,47 @@ export class TooltipManager {
     return this.tooltipIndex + number >= 0 && this.tooltipIndex + number < this.tooltipNumber;
   }
 
+  getFeatureFromServer(wmsLayers: Layer<any>[], pixel: Pixel) {
+    for (const layer of wmsLayers) {
+      let url = layer
+        .getSource()
+        .getFeatureInfoUrl(pixel, this.map.getView().getResolution(), this.map.getView().getProjection(), {
+          INFO_FORMAT: 'application/json',
+          FEATURE_COUNT: 10,
+          ...layer.getProperties()['getFeatureInfoAdditionalParameters']
+        });
+      if (
+        (
+          this.parent.optionsCopy.layers?.find((l) => {
+            return l.title === layer.getProperties()['title'];
+          }) as MapGeoServerLayerOptions
+        )?.getWfsFeaturesForTooltips
+      ) {
+        this.store.dispatch(
+          DashboardActions.getWfsFeaturesForPointStackTooltips({
+            url,
+            oClass: layer.getProperties()['oClass'] ?? '',
+            coordinates: pixel,
+            componentId: this.parent.id
+          })
+        );
+      } else {
+        if (url && url.indexOf('I=-1') === -1 && url.indexOf('J=-1') === -1) {
+          this.store.dispatch(
+            DashboardActions.getWmsFeatures({
+              url,
+              oClass: layer.getProperties()['oClass'] ?? '',
+              coordinates: pixel,
+              componentId: this.parent.id
+            })
+          );
+        }
+      }
+    }
+  }
+
   destroy() {
+    this.store.dispatch(DashboardActions.resetWmsFeatures({ componentId: this.parent.id }));
     this.previousTooltipSub?.unsubscribe();
     this.previousTooltip?.destroy();
   }

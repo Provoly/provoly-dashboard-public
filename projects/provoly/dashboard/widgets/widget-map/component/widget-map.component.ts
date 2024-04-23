@@ -66,7 +66,6 @@ import { Circle, Geometry, Point } from 'ol/geom';
 import { Heatmap, Layer, Tile } from 'ol/layer';
 import BaseLayer from 'ol/layer/Base';
 import VectorLayer from 'ol/layer/Vector';
-import { Pixel } from 'ol/pixel';
 import { fromLonLat } from 'ol/proj';
 import { register } from 'ol/proj/proj4';
 import { DataTile, ImageWMS, TileWMS } from 'ol/source';
@@ -120,6 +119,8 @@ register(proj4);
   templateUrl: './widget-map.component.html'
 })
 export class WidgetMapComponent extends DataWidgetComponent implements AfterViewInit, OnDestroy {
+  static idCounter = 0;
+  id = `${WidgetMapComponent.idCounter++}`;
   mapUrl$: Observable<string>;
   @ViewChild('mapRef') mapRef!: ElementRef;
   @ViewChild('popup') popup!: ElementRef;
@@ -1402,43 +1403,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     return !!this.getWMSLayers().find((wmsLayer) => wmsLayer.get('title') === layer.title);
   }
 
-  getFeatureFromServer(wmsLayers: Layer<any>[], pixel: Pixel) {
-    for (const layer of wmsLayers) {
-      let url = layer
-        .getSource()
-        .getFeatureInfoUrl(pixel, this.map.getView().getResolution(), this.map.getView().getProjection(), {
-          INFO_FORMAT: 'application/json',
-          FEATURE_COUNT: 10,
-          ...layer.getProperties()['getFeatureInfoAdditionalParameters']
-        });
-      if (
-        (
-          this.optionsCopy.layers?.find((l) => {
-            return l.title === layer.getProperties()['title'];
-          }) as MapGeoServerLayerOptions
-        )?.getWfsFeaturesForTooltips
-      ) {
-        this.store.dispatch(
-          DashboardActions.getWfsFeaturesForPointStackTooltips({
-            url,
-            oClass: layer.getProperties()['oClass'] ?? '',
-            coordinates: pixel
-          })
-        );
-      } else {
-        if (url && url.indexOf('I=-1') === -1 && url.indexOf('J=-1') === -1) {
-          this.store.dispatch(
-            DashboardActions.getWmsFeatures({
-              url,
-              oClass: layer.getProperties()['oClass'] ?? '',
-              coordinates: pixel
-            })
-          );
-        }
-      }
-    }
-  }
-
   changeWmsClass($event: any, layer: MapWMSLayerLayerOptions) {
     layer.oClass = $event;
   }
@@ -1519,7 +1483,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   override ngOnDestroy() {
     super.ngOnDestroy();
-    this.store.dispatch(DashboardActions.resetWmsFeatures());
 
     // Trying to release objects
     this.clearLayers(this.map.getLayers().getArray());

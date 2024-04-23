@@ -13,7 +13,7 @@ let shareConflict = JSON.parse(fs.readFileSync('./data/shareConflict.json', 'utf
 
 module.exports = {
   list: () => {
-    return manifests.map((manifest, idx) => {
+    const list = manifests.map((manifest, idx) => {
       return {
         id: manifest.id,
         name: manifest.name,
@@ -46,6 +46,8 @@ module.exports = {
         additionalInformation: manifest.additionalInformation
       };
     });
+    list.sort((listA, listB) => listA.name.localeCompare(listB.name));
+    return list;
   },
   get: (id) => {
     let manifestById = manifests.find((manifest) => manifest.id === id)?.manifest;

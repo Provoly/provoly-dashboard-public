@@ -430,7 +430,7 @@
     "groups": []
   },
   {
-    "id":"s6406e7e-37cd-41ce-b5fc-36d233e6ae5c",
+    "id": "s6406e7e-37cd-41ce-b5fc-36d233e6ae5c",
     "name": "front-aggregation",
     "manifest": {
       "windows": [
@@ -2017,6 +2017,55 @@
     "name": "sharing warning",
     "manifest": {
       "windows": []
+    }
+  },
+  {
+    "name": "2 maps",
+    "description": "",
+    "manifest": {
+      "windows": [
+        {
+          "widgets": [
+            {
+              "type": "map",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "height": 6,
+                "width": 12
+              },
+              "options": {
+                "automaticLayers": true,
+                "zoom": {
+                  "start": 7.903075340357766,
+                  "min": 3,
+                  "max": 18
+                },
+                "center": [
+                  -1.15259979459924,
+                  44.71823959602611
+                ]
+              },
+              "datasource": "c036bf25-757f-46de-9170-e4540df44c14"
+            },
+            {
+              "type": "map",
+              "layout": {
+                "x": 7,
+                "y": 7,
+                "height": 6,
+                "width": 12
+              },
+              "options": {
+                "automaticLayers": true,
+                "fit": true
+              },
+              "datasource": "06406e7e-37cd-41ce-b5fc-36d233e5ae5c"
+            }
+          ],
+          "route": "/dashboard"
+        }
+      ]
     }
   }
 ]

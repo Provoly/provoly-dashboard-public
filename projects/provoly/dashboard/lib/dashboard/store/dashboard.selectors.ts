@@ -145,7 +145,18 @@ const datasourceFilters = createSelector(feature, (state: DashboardState) =>
       )
     : {}
 );
-const wmsFeatures = createSelector(feature, (state: DashboardState) => state?.wmsFeatures);
+
+const memoizeFeatures = {} as { [key: string]: any };
+const wmsFeatures = (componentId: string) => {
+  if (!memoizeFeatures[componentId]) {
+    memoizeFeatures[componentId] = createSelector(
+      feature,
+      (state: DashboardState) => state.wmsFeatures[componentId] ?? []
+    );
+  }
+  return memoizeFeatures[componentId] as MemoizedSelector<object, any[], (s1: DashboardState) => any[]>;
+};
+
 const displayOptions = createSelector(feature, (state: DashboardState) => state?.display ?? BASE_DISPLAY_OPTIONS);
 const capabilities = createSelector(feature, (state: DashboardState) => state?.capabilities);
 const layerGroups = createSelector(feature, (state: DashboardState) => state?.manifests.manifest.layerGroups ?? []);

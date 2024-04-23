@@ -219,19 +219,19 @@ export const DashboardActions = {
   ),
   clearAllFilterValues: createAction('[Dashboard] (bus) clear all filter values'),
   dispatchFilters: createAction('[Dashboard] (bus) apply filters to presentation datasources'),
-  resetWmsFeatures: createAction('[Widget map] Reset Wms layer features'),
+  resetWmsFeatures: createAction('[Widget map] Reset Wms layer features', props<{ componentId: string }>()),
   getWmsFeatures: createAction(
     '[Widget map] Get Wms layer features',
-    props<{ url: string; oClass: string; coordinates: number[] }>()
+    props<{ url: string; oClass: string; coordinates: number[]; componentId: string }>()
   ),
-  addWmsFeatures: createAction('[Widget map] Set Wms layer features', props<{ features: any }>()),
+  addWmsFeatures: createAction('[Widget map] Set Wms layer features', props<{ features: any; componentId: string }>()),
   getWfsFeatures: createAction(
     '[Widget map] Get wfs Features for point',
     props<{ url: string; oClass: string; coordinates: number[]; style: string }>()
   ),
   getWfsFeaturesForPointStackTooltips: createAction(
     '[Widget map] Get wfs Features for showing stack tooltips',
-    props<{ url: string; oClass: string; coordinates: number[] }>()
+    props<{ url: string; oClass: string; coordinates: number[]; componentId: string }>()
   ),
   updateDisplayOptions: createAction(
     '[Dashboard/Display] (bus) Update displayed dashboard management features',
