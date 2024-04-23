@@ -545,7 +545,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
               this.store.dispatch(
                 DashboardActions.updateLayerGroup({
                   name: DEFAULT_LAYER_GROUP,
-                  visibleLayers: [layer.title ?? 'MISSING TITLE']
+                  visibleLayers: layer.title ?? 'MISSING TITLE'
                 })
               );
             });
