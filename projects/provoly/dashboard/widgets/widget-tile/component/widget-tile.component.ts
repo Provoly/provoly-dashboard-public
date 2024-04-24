@@ -39,7 +39,7 @@ export class WidgetTileComponent extends DataWidgetComponent {
   classes$: Observable<Class[]>;
   optionsCopy: TileWidgetOptions = {};
   WIDGET_HEADER_HEIGHT = WIDGET_HEADER_HEIGHT;
-  propertiesToDisplay$: Observable<{ [p: string]: string[] } | undefined>;
+  propertiesToDisplay$: Observable<{ [p: string]: { label: string; prop: string }[] } | undefined>;
   fields: Field[] = [];
   classes: Class[] = [];
 
@@ -71,10 +71,29 @@ export class WidgetTileComponent extends DataWidgetComponent {
       map(([classes, tileDefs, maxTilesAttributes]) => ({
         ...classes
           .map((clazz) => ({
-            [clazz.id]: [...clazz.attributes.map((attr) => attr.name).filter((_, i) => i < maxTilesAttributes)]
+            [clazz.id]: [
+              ...clazz.attributes
+                .map((attr) => ({
+                  label: attr.name,
+                  prop: attr.technicalName
+                }))
+                .filter((_, i) => i < maxTilesAttributes)
+            ]
           }))
           .reduce((p, c) => ({ ...p, ...c }), {}),
-        ...tileDefs
+        ...classes
+          .filter((clazz) => !!tileDefs[clazz.id])
+          .map((clazz) => ({
+            [clazz.id]: [
+              ...clazz.attributes
+                .filter((attr) => tileDefs[clazz.id].includes(attr.name))
+                .map((attr) => ({
+                  label: attr.name,
+                  prop: attr.technicalName
+                }))
+            ]
+          }))
+          .reduce((p, c) => ({ ...p, ...c }), {})
       }))
     );
     this.subscriptions.add(this.store.select(FieldSelectors.fields).subscribe((fields) => (this.fields = fields)));
