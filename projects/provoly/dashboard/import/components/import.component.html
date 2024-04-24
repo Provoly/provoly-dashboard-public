@@ -19,6 +19,7 @@
         <label class="a-h3" for="upload_input">
           {{ '@pry.import.uploadTitle' + selectedFileType | i18n }}
         </label>
+        <p>{{ '@pry.import.warning' | i18n }}</p>
         <div class="o-file-input">
           <div *ngIf="file" class="o-import__container__input__file">
             <pry-icon iconSvg="download"></pry-icon>

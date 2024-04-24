@@ -8,6 +8,8 @@ export const enTranslations = {
       successTitle: 'Import successful',
       uploadTitlezip: 'Choose a .zip file',
       uploadTitlecsv: 'Choose a .csv file',
+      warning: 'File must be under 2GB, or must be imported via directly via APIs.',
+      tooLarge: 'File is too large ({{current}} > 2GB), please use APIs to import this file.',
       selectFile: 'Select file',
       importedLines: 'imported lines',
       consultDataset: 'The import is in progress, see the {{ parameter }} dataset page to check its condition',

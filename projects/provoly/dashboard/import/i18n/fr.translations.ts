@@ -8,6 +8,9 @@ export const frTranslations = {
       successTitle: 'Import de données réussi',
       uploadTitlezip: 'Choisir un fichier .zip',
       uploadTitlecsv: 'Choisir un fichier .csv',
+      warning:
+        'Attention, le fichier ne doit pas dépasser 2GB pour être intégrer via cet écran. Le cas échéant, votre fichier devra être importé via les API',
+      tooLarge: 'Fichier trop volumineux ({{current}} > 2GB), veuillez utiliser les API pour importer ces données',
       selectFile: 'Sélectionner un fichier',
       importedLines: 'lignes importée(s)',
       consultDataset: "L'import est en cours, consultez la page du jeu de données {{parameter}} pour vérifier son état",

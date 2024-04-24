@@ -7,6 +7,8 @@ import {
   DataSourceService,
   DateUtils,
   PryDatasetType,
+  PryI18nService,
+  PrySnackbarService,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
 import { map, Observable, take } from 'rxjs';
@@ -50,7 +52,9 @@ export class PryImportComponent extends SubscriptionnerDirective implements OnDe
 
   constructor(
     private store: Store,
-    private dsService: DataSourceService
+    private dsService: DataSourceService,
+    private snackbar: PrySnackbarService,
+    private i18nService: PryI18nService
   ) {
     super();
     store.dispatch(DataSourceActions.dataset.loadDataset());
@@ -73,6 +77,13 @@ export class PryImportComponent extends SubscriptionnerDirective implements OnDe
 
   uploadedChange($event: File) {
     this.file = $event;
+    if ($event.size > 1024 * 1024 * 1024 * 2) {
+      this.snackbar.open({
+        type: 'error',
+        message: this.i18nService.instant('@pry.import.tooLarge', { current: this.getFileSize($event.size) })
+      });
+      this.file = undefined;
+    }
   }
 
   submit() {
@@ -105,10 +116,12 @@ export class PryImportComponent extends SubscriptionnerDirective implements OnDe
   }
 
   getFileSize(size: number) {
-    if (size >= 1000 && size < 1000000) {
-      return `${(size / 1000).toFixed(1)} KB`;
-    } else if (size >= 1000000) {
-      return `${(size / 1000000).toFixed(1)} MB`;
+    if (size >= 1024 && size < 1024 * 1024) {
+      return `${(size / 1024).toFixed(1)} KB`;
+    } else if (size >= 1024 * 1024 && size < 1024 * 1024 * 1024) {
+      return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+    } else if (size >= 1024 * 1024 * 1024) {
+      return `${(size / (1024 * 1024 * 1024)).toFixed(1)} GB`;
     }
     return `${size} bytes`;
   }
