@@ -14,7 +14,7 @@ import {
   SubscriptionnerDirective
 } from '@provoly/dashboard';
 import { MetadataActions, MetadataSelectors, MetaEventType } from '@provoly/dashboard/components/metadata-editor';
-import { BehaviorSubject, map, Observable, Subscription, withLatestFrom } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, Subscription, withLatestFrom } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminSelectors } from '../../../store/admin.selectors';
 
@@ -70,50 +70,53 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
 
   ngOnInit(): void {
     this.subscriptions.add(
-      this.selectedDataset$.subscribe((dataset) => {
-        if (dataset) {
-          this.accessGroups = dataset?.groups ?? [];
-          const editPath = this.router.createUrlTree(['.', 'dataset', 'edit', dataset.id], {
-            relativeTo: this.route
-          });
-          if (dataset.owner) {
-            this.store.dispatch(
-              AdminActions.mainActions({
-                actions: [
-                  {
-                    action: AdminActions.routeTo({ path: editPath.toString() }),
-                    label: 'edit',
-                    icon: 'edit',
-                    moduleAccess: 'admin',
-                    pageAccess: 'dataset',
-                    actionAccess: 'write'
-                  },
-                  {
-                    action: DataSourceActions.dataset.confirmDataSourceDeletion({
-                      name: dataset.id,
-                      route: this.router.createUrlTree(['.', 'dataset'], { relativeTo: this.route }).toString(),
-                      addRoute: this.router
-                        .createUrlTree(['.', 'dataset', 'new'], { relativeTo: this.route })
-                        .toString()
-                    }),
-                    label: 'delete',
-                    icon: 'delete',
-                    moduleAccess: 'admin',
-                    pageAccess: 'dataset',
-                    actionAccess: 'write'
-                  }
-                ]
-              })
-            );
-          } else {
-            this.store.dispatch(
-              AdminActions.mainActions({
-                actions: []
-              })
-            );
+      combineLatest([this.selectedDataset$, this.store.select(DataSourceSelectors.datasetVersions)]).subscribe(
+        ([dataset, versions]) => {
+          if (dataset) {
+            this.accessGroups = dataset?.groups ?? [];
+            const editPath = this.router.createUrlTree(['.', 'dataset', 'edit', dataset.id], {
+              relativeTo: this.route
+            });
+            if (dataset.owner) {
+              this.store.dispatch(
+                AdminActions.mainActions({
+                  actions: [
+                    {
+                      action: AdminActions.routeTo({ path: editPath.toString() }),
+                      label: 'edit',
+                      icon: 'edit',
+                      moduleAccess: 'admin',
+                      pageAccess: 'dataset',
+                      actionAccess: 'write'
+                    },
+                    {
+                      action: DataSourceActions.dataset.confirmDataSourceDeletion({
+                        name: dataset.id,
+                        route: this.router.createUrlTree(['.', 'dataset'], { relativeTo: this.route }).toString(),
+                        addRoute: this.router
+                          .createUrlTree(['.', 'dataset', 'new'], { relativeTo: this.route })
+                          .toString()
+                      }),
+                      label: 'delete',
+                      icon: 'delete',
+                      moduleAccess: 'admin',
+                      pageAccess: 'dataset',
+                      actionAccess: 'write',
+                      disabled: versions.filter((v) => v.dataset === dataset.id).length > 0
+                    }
+                  ]
+                })
+              );
+            } else {
+              this.store.dispatch(
+                AdminActions.mainActions({
+                  actions: []
+                })
+              );
+            }
           }
         }
-      })
+      )
     );
   }
 

@@ -209,7 +209,10 @@ export class DataSourceEffects {
   unsetMissingGroupsOnDatasetSelection$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DataSourceActions.dataset.selectDataset),
-      map(() => DataSourceActions.dataset.setMissingGroups({ missingGroups: undefined }))
+      mergeMap((action) => [
+        DataSourceActions.dataset.setMissingGroups({ missingGroups: undefined }),
+        DataSourceActions.dataset.listVersionsByDatasetId({ id: action.dataset.id })
+      ])
     )
   );
 
