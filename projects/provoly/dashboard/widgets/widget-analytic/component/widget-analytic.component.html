@@ -93,7 +93,7 @@
             @for (primary of primaryProperty$ | async; track primary) {
               @for (secondary of secondaryProperty$ | async; track secondary) {
                 <td>
-                  {{ (line.value[primary] ?? {})[secondary] }}
+                  {{ line.value[primary][secondary] }}
                 </td>
               }
             }
@@ -107,7 +107,7 @@
             @for (primary of primaryProperty$ | async; track primary) {
               @for (secondary of secondaryProperty$ | async; track secondary) {
                 <td>
-                  {{ (line.value[primary] ?? {})[secondary] }}
+                  {{ line.value[primary][secondary] }}
                 </td>
               }
             }
