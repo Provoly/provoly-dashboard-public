@@ -233,5 +233,14 @@
     "owner": true,
     "groups": [],
     "metadata": []
+  },
+  {
+    "id": "dataset-dr2",
+    "name": "DR2",
+    "oClass": "classe-dr2",
+    "type": "OPEN",
+    "owner": false,
+    "groups": [],
+    "metadata": []
   }
 ]

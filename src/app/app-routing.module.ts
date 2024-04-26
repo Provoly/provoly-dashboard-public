@@ -202,6 +202,27 @@ const routes: Routes = [
     }
   },
   {
+    path: 'analytic',
+    component: DashboardContainerComponent,
+    data: {
+      manifest: {
+        widgets: [
+          {
+            type: 'analytic',
+            layout: { x: 1, y: 1, height: 12, width: 12 },
+            options: {
+              primaryProp: 'horizon',
+              secondaryProp: 'risque',
+              verticalProp: 'alea',
+              valueProp: 'valeur'
+            },
+            datasource: 'dataset-dr2'
+          }
+        ]
+      } as DashboardManifest
+    }
+  },
+  {
     path: 'template',
     component: DashboardContainerComponent,
     data: {

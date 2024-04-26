@@ -30749,5 +30749,6 @@
     "searchAfter": null
   },
   "dataset-territoires-selectionnables": "territoires.json",
-  "dataset-aggregation-fntp": "fntp-aggregation.json"
+  "dataset-aggregation-fntp": "fntp-aggregation.json",
+  "dataset-dr2": "dr2.json"
 }

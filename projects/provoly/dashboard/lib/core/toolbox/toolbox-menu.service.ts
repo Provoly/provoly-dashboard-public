@@ -66,7 +66,8 @@ export const defaultMenuStructure: WidgetDescriptionMenu[] = [
       { icon: 'graph', label: '@pry.toolbox.graph', type: 'graph' },
       { icon: 'settings_applications', label: '@pry.toolbox.iframe', type: 'iframe' },
       { icon: 'tile', label: '@pry.toolbox.tile', type: 'tile' },
-      { icon: 'code-box', label: '@pry.toolbox.template', type: 'template' }
+      { icon: 'code-box', label: '@pry.toolbox.template', type: 'template' },
+      { icon: 'analytic', label: '@pry.toolbox.analytic', type: 'analytic' }
     ]
   }
 ];
@@ -101,7 +102,7 @@ export class ToolboxMenuService {
                 sub: menu.sub
                   .filter((sub) => reference[this.toolboxManifestService.get(sub.type).type])
                   .map((entry) => ({ ...entry, icon: 'assets/svgs/' + entry.icon + '.svg' })) as CatalogEntry[]
-              } as WidgetDescriptionMenu)
+              }) as WidgetDescriptionMenu
           )
           // User defined widget configurations
           .concat({
@@ -115,7 +116,7 @@ export class ToolboxMenuService {
                 type: widget.id,
                 description: widget.description,
                 isCustom: true,
-                visibility: widget.visibility,
+                visibility: widget.visibility
               }))
             ]
           })

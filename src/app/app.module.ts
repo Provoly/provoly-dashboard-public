@@ -129,6 +129,13 @@ import { PryTextEditorModule } from '@provoly/dashboard/components/text-editor';
           name: 'vega',
           load: () =>
             import('@provoly/dashboard/widgets/widget-vega').then((module) => widgetLoader(module, 'WidgetVegaModule'))
+        },
+        analytic: {
+          name: 'analytic',
+          load: () =>
+            import('@provoly/dashboard/widgets/widget-analytic').then((module) =>
+              widgetLoader(module, 'WidgetAnalyticModule')
+            )
         }
       },
       {

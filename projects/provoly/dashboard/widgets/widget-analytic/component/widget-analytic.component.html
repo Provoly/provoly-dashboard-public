@@ -1,0 +1,129 @@
+<pry-widget-analytic-css></pry-widget-analytic-css>
+<div class="o-widget o-widget__analytic">
+  <pry-widget-header
+    *ngIf="displayHeader$ | async"
+    [widgetIndex]="widgetIndex"
+    [manifest]="manifest"
+    (manifestModified)="manifestModified.emit($event)"
+    #header
+    [headerOptions]="(displayHeader$ | async) ?? {}"
+    [datasourceIds]="(datasourceIds$ | async) ?? []"
+  >
+    <pry-settings
+      (saveTriggered)="emitManifest()"
+      (changeTitle)="changeWidgetTitle($event)"
+      [headerPresent]="displayHeader$ | async"
+      [widgetIndex]="widgetIndex"
+      [header]="header"
+      [open$]="open$"
+      class="o-settings"
+    >
+      <div class="o-settings__fields">
+        <div class="m-form-label-field">
+          <label class="a-label" for="primaryProp">{{ '@pry.widget.analytic.primaryProp' | i18n }}</label>
+          <pry-select
+            (ngModelChange)="change($event, 'primaryProp')"
+            [items]="availableProperties$ | async"
+            [ngModel]="optionsCopy.primaryProp"
+            bindLabel="name"
+            bindValue="name"
+            id="primaryProp"
+          ></pry-select>
+        </div>
+        <div class="m-form-label-field">
+          <label class="a-label" for="secondaryProp">{{ '@pry.widget.analytic.secondaryProp' | i18n }}</label>
+          <pry-select
+            (ngModelChange)="change($event, 'secondaryProp')"
+            [items]="availableProperties$ | async"
+            [ngModel]="optionsCopy.secondaryProp"
+            bindLabel="name"
+            bindValue="name"
+            id="secondaryProp"
+          ></pry-select>
+        </div>
+        <div class="m-form-label-field">
+          <label class="a-label" for="verticalProp">{{ '@pry.widget.analytic.verticalProp' | i18n }}</label>
+          <pry-select
+            (ngModelChange)="change($event, 'verticalProp')"
+            [items]="availableProperties$ | async"
+            [ngModel]="optionsCopy.verticalProp"
+            bindLabel="name"
+            bindValue="name"
+            id="verticalProp"
+          ></pry-select>
+        </div>
+        <div class="m-form-label-field">
+          <label class="a-label" for="valueProp">{{ '@pry.widget.analytic.valueProp' | i18n }}</label>
+          <pry-select
+            (ngModelChange)="change($event, 'valueProp')"
+            [items]="availableProperties$ | async"
+            [ngModel]="optionsCopy.valueProp"
+            bindLabel="name"
+            bindValue="name"
+            id="valueProp"
+          ></pry-select>
+        </div>
+      </div>
+    </pry-settings>
+  </pry-widget-header>
+  <div class="o-widget__analytic__table">
+    <table [style.height.px]="height$ | async">
+      <thead>
+        <tr class="primary-header">
+          <th></th>
+          @for (primary of primaryProperty$ | async; track primary) {
+            <th [colSpan]="(secondaryProperty$ | async)?.length ?? 1">
+              {{ primary }}
+            </th>
+          }
+        </tr>
+        <tr class="secondary-header">
+          <th></th>
+          @for (primary of primaryProperty$ | async; track primary) {
+            @for (secondary of secondaryProperty$ | async; track secondary) {
+              <th>{{ secondary }}</th>
+            }
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (line of lines$ | async; track line.name) {
+          <tr>
+            <th>{{ line.name }}</th>
+            @for (primary of primaryProperty$ | async; track primary) {
+              @for (secondary of secondaryProperty$ | async; track secondary) {
+                <td>
+                  {{ (line.value[primary] ?? {})[secondary] }}
+                </td>
+              }
+            }
+          </tr>
+        }
+      </tbody>
+      <tfoot>
+        @for (line of totals$ | async; track line.name) {
+          <tr class="partial-total">
+            <th>{{ line.name }}</th>
+            @for (primary of primaryProperty$ | async; track primary) {
+              @for (secondary of secondaryProperty$ | async; track secondary) {
+                <td>
+                  {{ (line.value[primary] ?? {})[secondary] }}
+                </td>
+              }
+            }
+          </tr>
+        }
+        @for (line of grandTotals$ | async; track line.name) {
+          <tr class="grand-total">
+            <th>{{ line.name }}</th>
+            @for (primary of primaryProperty$ | async; track primary) {
+              <td [colSpan]="(secondaryProperty$ | async)?.length ?? 1">
+                {{ line.value[primary] }}
+              </td>
+            }
+          </tr>
+        }
+      </tfoot>
+    </table>
+  </div>
+</div>

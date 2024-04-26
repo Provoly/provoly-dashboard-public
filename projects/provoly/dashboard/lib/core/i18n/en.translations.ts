@@ -63,6 +63,7 @@ export const enTranslations = {
     },
     toolbox: {
       defaultSize: 'Restitution size',
+      analytic: 'Analytic table',
       manifest: {
         name: 'Presentation name',
         description: 'Presentation description',

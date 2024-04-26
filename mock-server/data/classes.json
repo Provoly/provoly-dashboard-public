@@ -216,6 +216,60 @@
     ]
   },
   {
+    "id": "classe-dr2",
+    "name": "dr2",
+    "attributes": [
+      {
+        "id": "cccf5738-c0bf-4fd4-96af-8f319e6fd445",
+        "name": "zone",
+        "field": "d31a3850-0ec3-4ce1-b005-8b5fca5029cb",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "technicalName": "zone"
+      },
+      {
+        "id": "cccd8bcd-9580-4575-a4cd-b42f415aee38",
+        "name": "alea",
+        "field": "d31a3850-0ec3-4ce1-b005-8b5fca5029cb",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "technicalName": "alea"
+      },
+      {
+        "id": "cccaaaaa-9580-4575-a4cd-b42f415aee38",
+        "name": "horizon",
+        "field": "d31a3850-0ec3-4ce1-b005-8b5fca5029cb",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "technicalName": "horizon"
+      },
+      {
+        "id": "ccc4cda4-7ff3-4f19-ab69-7c95745888cf",
+        "name": "risque",
+        "field": "d31a3850-0ec3-4ce1-b005-8b5fca5029cb",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "technicalName": "risque"
+      },
+      {
+        "id": "cccccda4-7ff3-4f19-ab69-7c95745888cf",
+        "name": "valeur",
+        "field": "ea1f6255-9e67-41e6-89a2-1c1bd5a0a5ce",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "technicalName": "valeur"
+      },
+      {
+        "id": "cccccda4-7ff3-4f19-ab69-7c95745888cf",
+        "name": "level",
+        "field": "b1633f47-53f6-46ed-b197-0d0a7fb79ece",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false,
+        "technicalName": "level"
+      }
+    ]
+  },
+  {
     "id": "534ff6cd-0a85-4612-82c0-7f83e9ce2caa",
     "name": "lieu",
     "attributes": [

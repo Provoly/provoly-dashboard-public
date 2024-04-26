@@ -1,0 +1,3380 @@
+{
+  "items": {
+    "classe-dr2": [
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-1@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "fffffff-1@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Retrait de gonflement d'argile",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,17",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-2@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Précipitations Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,08",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-3@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Inondation",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,88",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-4@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Submersion",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,33",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-5@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Sécheresse",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,01",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-6@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Chaleur Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "2,98",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-7@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Global par risque",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "5,48",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "2",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-8@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Retrait de gonflement d'argile",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,89",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-9@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Précipitations Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,13",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-10@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Inondation",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,43",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-11@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Submersion",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,72",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-12@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Sécheresse",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,12",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-13@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Chaleur Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,6",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-14@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Global par risque",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "5,85",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "2",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-15@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Retrait de gonflement d'argile",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,24",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-16@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Précipitations Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,23",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-17@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Inondation",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,43",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-18@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Submersion",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,89",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-19@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Sécheresse",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,67",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-20@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Chaleur Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,36",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-21@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Global par risque",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "4,94",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "2",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-22@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Retrait de gonflement d'argile",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,13",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-23@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Précipitations Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,86",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-24@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Inondation",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,7",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-25@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Submersion",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,06",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-26@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Sécheresse",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,01",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-27@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Chaleur Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "2,38",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-28@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Global par risque",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "4,38",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "2",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-29@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Retrait de gonflement d'argile",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,71",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-30@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Précipitations Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,9",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-31@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Inondation",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,14",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-32@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Submersion",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,37",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-33@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Sécheresse",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,09",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-34@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Chaleur Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,28",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-34@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Global par risque",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "4,68",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "2",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-35@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Retrait de gonflement d'argile",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,19",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-36@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Précipitations Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,98",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-37@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Inondation",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,34",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-38@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Submersion",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,71",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-39@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Sécheresse",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,33",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-40@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Chaleur Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,08",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-41@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Global par risque",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "3,95",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "2",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-42@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Retrait de gonflement d'argile",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,06",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-43@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Précipitations Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,43",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-44@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Inondation",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,35",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-45@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Submersion",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,53",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-46@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Sécheresse",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-47@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Chaleur Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,19",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-48@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Global par risque",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Fort et Fort",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "2,19",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "2",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-49@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Retrait de gonflement d'argile",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,35",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-50@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Précipitations Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,45",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-51@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Inondation",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,57",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-52@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Submersion",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,68",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-53@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Sécheresse",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,04",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-54@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Chaleur Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,64",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-56@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Global par risque",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Modéré",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "2,34",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "2",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-57@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Retrait de gonflement d'argile",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,09",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-58@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Précipitations Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,49",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-59@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Inondation",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,17",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-60@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Submersion",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,35",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-61@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Sécheresse",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,66",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-62@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Chaleur Extrême",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "0,54",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "1",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-63@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Global par risque",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "Très Faible et Faible",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "1,98",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "2",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-64@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Global",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2030",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "-",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "16,29",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "3",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-65@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Global",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2050",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "-",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "13,02",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "3",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      },
+      {
+        "oClass": "classe-dr2",
+        "id": "fffffff-66@e4f22ef8-22c3-42d7-abc3-578b5f05b449",
+        "metadata": {
+          "_dataset_version_id": "7fed7d97-376b-4159-beab-29abf2a923e7",
+          "_insertion_date": "2023-09-28T14:46:18.014340745",
+          "dataset_id": "82a56eb4-8b5d-4a79-a917-6a6eda4764d5",
+          "_item_id": "7fed7d97-376b-4159-beab-29abf2a923e7@e4f22ef8-22c3-42d7-abc3-578b5f05b448",
+          "_class": "classe-dr2"
+        },
+        "attributes": {
+          "zone": {
+            "value": "Mérignac",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "alea": {
+            "value": "Global",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "horizon": {
+            "value": "Horizon 2100",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "risque": {
+            "value": "-",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "valeur": {
+            "value": "6,51",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          },
+          "level": {
+            "value": "3",
+            "type": "VALUE",
+            "metadata": {},
+            "visible": true
+          }
+        },
+        "datasetVersionId": "7fed7d97-376b-4159-beab-29abf2a923e7",
+        "itemId": "e4f22ef8-22c3-42d7-abc3-578b5f05b448"
+      }
+    ]
+  },
+  "relations": [],
+  "count": {
+    "classe-dr2": {
+      "count": 132,
+      "accurate": true
+    }
+  },
+  "searchAfter": null
+}

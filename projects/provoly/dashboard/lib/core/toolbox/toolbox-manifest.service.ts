@@ -234,6 +234,17 @@ export class ToolboxManifestService extends SubscriptionnerDirective {
         baseSpec: {}
       },
       datasource: USE_CURRENT_RESULTSET
+    },
+    analytic: {
+      type: 'analytic',
+      layout: {
+        x: 1,
+        y: 1,
+        height: 2,
+        width: 3
+      },
+      options: { primaryProp: '', secondaryProp: '', verticalProp: '', valueProp: '' },
+      datasource: USE_CURRENT_RESULTSET
     }
   });
 

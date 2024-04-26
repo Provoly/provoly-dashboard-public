@@ -1,0 +1,43 @@
+@use '../../../styles/abstracts' as *;
+
+.o-widget__analytic {
+  &__table {
+    width: 100%;
+
+    table {
+      width: 100%;
+
+      th, td {
+        text-align: center;
+
+        &:first-child {
+          text-align: left;
+        }
+      }
+
+      .primary-header {
+        th:not(:first-child) {
+          background-color: #d7e7f7;
+        }
+      }
+
+      .secondary-header {
+        th:not(:first-child) {
+          background-color: #f3f8fc;
+        }
+      }
+
+      .partial-total {
+        th, td {
+          background-color: #F0F0F0;
+        }
+      }
+
+      .grand-total {
+        th, td {
+          background-color: #BDB9DA;
+        }
+      }
+    }
+  }
+}

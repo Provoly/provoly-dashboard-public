@@ -5,6 +5,7 @@ export * from './search-mono-class.model';
 export * from './search-multi-class.model';
 export * from './widget-map-manifest.interface';
 export * from './widget-aggregated-chart-manifest.interface';
+export * from './widget-analytic-manifest.interface';
 export * from './widget-chart-manifest.interface';
 export * from './widget-graph-manifest.interface';
 export * from './widget-table-manifest.interface';

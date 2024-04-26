@@ -63,6 +63,7 @@ export const frTranslations = {
     },
     toolbox: {
       defaultSize: 'Taille de restitution',
+      analytic: 'Tableau analytique',
       manifest: {
         name: 'Nom de la présentation',
         description: 'Description de la présentation',
