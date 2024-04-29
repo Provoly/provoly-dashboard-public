@@ -19,6 +19,10 @@ class MockAccessService implements PryBaseAccess {
     const value = args[1] === 'module';
     return of(value);
   }
+
+  canModifyPresentation(): Observable<boolean> {
+    return of(true);
+  }
 }
 
 describe('PryAccessDirective', () => {
