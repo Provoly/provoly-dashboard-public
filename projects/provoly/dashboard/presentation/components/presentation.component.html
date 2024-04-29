@@ -55,7 +55,7 @@
                   <img alt="" class="is-full-width" [src]="presentation.image | getSecuredImage | async" />
                 </div>
               </div>
-              <ng-container *ngIf="presentation.owner">
+              <ng-container *ngIf="this.canModify$(presentation) | async">
                 <div class="more-button" *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'share' }">
                   <button
                     type="button"
@@ -178,7 +178,7 @@
         <button
           class="a-btn -link-like"
           (click)="edit(selectedPresentation)"
-          [disabled]="!selectedPresentation.owner"
+          [disabled]="!(this.canModify$(selectedPresentation) | async)"
           *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'edit' }"
         >
           {{ '@pry.presentation.edition' | i18n }}
@@ -188,7 +188,7 @@
         <button
           class="a-btn -link-like"
           (click)="editContent(selectedPresentation)"
-          [disabled]="!selectedPresentation.owner"
+          [disabled]="!(this.canModify$(selectedPresentation) | async)"
           *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'edit' }"
         >
           {{ '@pry.presentation.editionContent' | i18n }}
@@ -199,7 +199,7 @@
           (click)="toggleModal(selectedPresentation)"
           class="a-btn -link-like"
           aria-haspopup="dialog"
-          [disabled]="!selectedPresentation.owner"
+          [disabled]="!(this.canModify$(selectedPresentation) | async)"
           *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'share' }"
         >
           {{ '@pry.presentation.share' | i18n }}
@@ -210,7 +210,7 @@
           class="a-btn -link-like"
           #openModal
           (click)="delete(selectedPresentation.id)"
-          [disabled]="!selectedPresentation.owner"
+          [disabled]="!(this.canModify$(selectedPresentation) | async)"
           *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'delete' }"
         >
           {{ '@pry.presentation.delete' | i18n }}

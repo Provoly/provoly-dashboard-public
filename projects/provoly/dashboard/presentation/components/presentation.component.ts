@@ -1,23 +1,35 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Component, ElementRef, Input, NgZone, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  NgZone,
+  Optional,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
+  canManifestBeMadePublic,
   DashboardActions,
   DashboardGridLayout,
   DashboardManifest,
   DashboardSelectors,
   DataSourceSelectors,
+  getCommonDatasourceGroupsForManifest,
   ManifestDescription,
+  PRY_ACCESS_TOKEN,
+  PryBaseAccess,
   PryTitleService,
   PryVisibilityType,
   SubscriptionnerDirective,
-  ViewMode,
-  canManifestBeMadePublic,
-  getCommonDatasourceGroupsForManifest
+  ViewMode
 } from '@provoly/dashboard';
-import { BehaviorSubject, combineLatest, map, Observable, startWith } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, of, startWith } from 'rxjs';
 import { v4 } from 'uuid';
 
 @Component({
@@ -72,7 +84,8 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     protected router: Router,
     protected titleService: PryTitleService,
     protected activatedRoute: ActivatedRoute,
-    protected ngZone: NgZone
+    protected ngZone: NgZone,
+    @Optional() @Inject(PRY_ACCESS_TOKEN) private access: PryBaseAccess
   ) {
     super();
     this.subscriptions.add(
@@ -307,5 +320,9 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
         this.disableShareButton$.next(false);
       }
     }
+  }
+
+  canModify$(presentation: ManifestDescription) {
+    return !this.access ? of(false) : this.access.canModifyPresentation(presentation);
   }
 }
