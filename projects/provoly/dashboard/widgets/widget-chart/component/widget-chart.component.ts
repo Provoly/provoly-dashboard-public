@@ -61,7 +61,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
   schemes?: { id: VegaColorType; translated: string }[];
   MarkType = MarkType;
   MarkSubType = MarkSubType;
-  WIDGET_HEADER_HEIGHT = WIDGET_HEADER_HEIGHT;
+  WIDGET_HEADER_HEIGHT = WIDGET_HEADER_HEIGHT.value;
 
   timeUnits: TimeUnit[] = ['year', 'quarter', 'month', 'week', 'day', 'hours', 'minutes'];
   options$: Observable<ChartWidgetOptions>;

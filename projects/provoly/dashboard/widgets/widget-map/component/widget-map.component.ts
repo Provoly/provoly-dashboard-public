@@ -596,19 +596,19 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     );
 
     this.height$ = combineLatest([this.widgetSize$.pipe(debounceTime(100)), this.displayHeader$]).pipe(
-      map(([size, display]) => (size.height ?? 100) - (display ? WIDGET_HEADER_HEIGHT : 0)),
+      map(([size, display]) => (size.height ?? 100) - (display ? WIDGET_HEADER_HEIGHT.value : 0)),
       delay(10)
     );
 
     this.attributions$ = this.options$.pipe(map((options) => !!options.attributions));
 
     this.legendTop$ = combineLatest([this.displayHeader$, this.attributions$]).pipe(
-      map(([header, attr]) => 5 + (header ? WIDGET_HEADER_HEIGHT : 0) + (attr ? 61 : 0))
+      map(([header, attr]) => 5 + (header ? WIDGET_HEADER_HEIGHT.value : 0) + (attr ? 61 : 0))
     );
 
     this.legendHeight$ = combineLatest([this.widgetSize$.pipe(debounceTime(100)), this.legendTop$]).pipe(
       map(([size, top]) => {
-        return (size.height ?? 100) - WIDGET_HEADER_HEIGHT - top - 56; // 56px is the tooltip height + margin
+        return (size.height ?? 100) - WIDGET_HEADER_HEIGHT.value - top - 56; // 56px is the tooltip height + margin
       }),
       delay(10)
     );
@@ -971,7 +971,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
             zoomElement.style.top = `${
               layersTop +
               ((legend.length ?? 0) > 0 || layers.length > 0 ? 20 : 0) +
-              (!displayHeader ? WIDGET_HEADER_HEIGHT : 0)
+              (!displayHeader ? WIDGET_HEADER_HEIGHT.value : 0)
             }px`;
           }
         })

@@ -57,7 +57,7 @@ export class WidgetVegaComponent extends DataWidgetComponent implements AfterVie
         const vegaSpec = WidgetVegaComponent.placeData(options, JSON.parse(JSON.stringify(options.baseSpec)), data);
 
         vegaSpec.width = vegaSpec.width ?? size.width - 5;
-        vegaSpec.height = vegaSpec.height ?? size.height - 5 - (header ? WIDGET_HEADER_HEIGHT : 0);
+        vegaSpec.height = vegaSpec.height ?? size.height - 5 - (header ? WIDGET_HEADER_HEIGHT.value : 0);
         vegaSpec.autosize = vegaSpec.autosize ?? { type: 'fit', contains: 'padding' };
         vegaSpec.padding = vegaSpec.padding ?? 15;
 

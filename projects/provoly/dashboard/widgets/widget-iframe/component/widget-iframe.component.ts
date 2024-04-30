@@ -33,7 +33,7 @@ export class WidgetIframeComponent extends BaseWidgetComponent {
     );
 
     this.height$ = combineLatest([this.widgetSize$.pipe(debounceTime(100)), this.displayHeader$]).pipe(
-      map(([size, display]) => (size.height ?? 100) - (display ? WIDGET_HEADER_HEIGHT : 0)),
+      map(([size, display]) => (size.height ?? 100) - (display ? WIDGET_HEADER_HEIGHT.value : 0)),
       delay(10)
     );
 

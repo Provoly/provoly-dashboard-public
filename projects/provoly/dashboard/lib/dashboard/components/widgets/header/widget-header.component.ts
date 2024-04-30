@@ -30,7 +30,9 @@ import { WidgetPlacementUtils } from '../widget-placement/widget-placement.utils
 import { WidgetContextMenuDisplayOptions } from '../../../../core/model/display-options.interface';
 import { DEFAULT_COLUMNS_NUMBER, DEFAULT_ROWS_NUMBER } from '../../../store/dashboard.contants';
 
-export const WIDGET_HEADER_HEIGHT = 32;
+export const WIDGET_HEADER_HEIGHT = {
+  value: 32
+};
 
 export type HeaderAction = {
   icon: string;

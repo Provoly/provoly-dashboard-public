@@ -92,7 +92,7 @@ export class TooltipManager {
                 popup.nativeElement.hidden = false;
                 // Do not go outside the map
                 const rect = {
-                  height: 200 + (header ? WIDGET_HEADER_HEIGHT : 0) + TOOLTIP_PADDING,
+                  height: 200 + (header ? WIDGET_HEADER_HEIGHT.value : 0) + TOOLTIP_PADDING,
                   width: 300 + TOOLTIP_PADDING
                 };
                 let pixel = this.tooltipEvent?.pixel;

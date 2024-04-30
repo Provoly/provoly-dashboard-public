@@ -42,7 +42,7 @@ export class WidgetAnalyticComponent extends DataWidgetComponent {
     this.options$ = this.manifest$.pipe(map((manifest) => (manifest.options ?? {}) as AnalyticWidgetOptions));
     this.classes$ = this.store.select(ClassSelectors.classes);
     this.height$ = combineLatest([this.widgetSize$, this.displayHeader$]).pipe(
-      map(([size, header]) => size.height - (header ? WIDGET_HEADER_HEIGHT : 0))
+      map(([size, header]) => size.height - (header ? WIDGET_HEADER_HEIGHT.value : 0))
     );
     this.subscriptions.add(
       this.options$.subscribe((options) => {

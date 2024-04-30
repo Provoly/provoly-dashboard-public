@@ -381,7 +381,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
             title: this.getTitle(options),
             width: 'container',
-            height: (size.height ?? 100) - (display ? WIDGET_HEADER_HEIGHT : 0),
+            height: (size.height ?? 100) - (display ? WIDGET_HEADER_HEIGHT.value : 0),
             padding: 10,
             autosize: { type: 'fit', contains: 'padding' },
             data: { values: JSON.parse(JSON.stringify(values.data)) },

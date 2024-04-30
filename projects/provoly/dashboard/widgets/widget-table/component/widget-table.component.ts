@@ -125,7 +125,7 @@ export class WidgetTableComponent extends DataWidgetComponent {
         const rows = Math.max(
           1,
           Math.floor(
-            (size.height - HEADER_SIZE - PAGINATION_SIZE - (headerPresent ? WIDGET_HEADER_HEIGHT : 0)) / LINE_SIZE
+            (size.height - HEADER_SIZE - PAGINATION_SIZE - (headerPresent ? WIDGET_HEADER_HEIGHT.value : 0)) / LINE_SIZE
           )
         );
         const total = Object.values(rs.count ?? {}).reduce((p, c) => c.count + p, 0);

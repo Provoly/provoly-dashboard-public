@@ -121,7 +121,7 @@ export class WidgetGraphComponent extends DataWidgetComponent implements AfterVi
 
     this.viewSize$ = combineLatest([this.widgetSize$, this.displayHeader$]).pipe(
       delay(10),
-      map(([size, header]) => [size.width, size.height - (header ? WIDGET_HEADER_HEIGHT : 0) - 10] as [number, number]),
+      map(([size, header]) => [size.width, size.height - (header ? WIDGET_HEADER_HEIGHT.value : 0) - 10] as [number, number]),
       tap((size) => {
         if (this.canvas) {
           this.canvas.nativeElement.width = size[0];
