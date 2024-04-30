@@ -96,63 +96,35 @@
               >{{ '@pry.widget.chart.origin' | i18n }}
             </pry-checkbox>
 
-            <pry-checkbox
-              (ngModelChange)="limitElements($event)"
-              [ngModel]="!!optionsCopy.abscissa.limit"
-              [disabled]="optionsCopy.graph.type === GraphType.HISTOGRAM"
-              >{{ '@pry.widget.chart.limit' | i18n }}
-            </pry-checkbox>
+            <ng-container *ngIf="optionsCopy.graph.type === GraphType.HISTOGRAM">
+              <pry-checkbox
+                (ngModelChange)="enableIntervals($event)"
+                [ngModel]="!!optionsCopy.abscissa.interval"
+                [disabled]="optionsCopy.graph.type === GraphType.HISTOGRAM"
+                >{{ '@pry.widget.chart.interval' | i18n }}
+              </pry-checkbox>
 
-            <ng-container *ngIf="!!optionsCopy.abscissa.limit">
-              <ng-container *ngIf="optionsCopy.abscissa.limit.isTimeLimit === false">
-                <pry-range
-                  [ngModel]="optionsCopy.abscissa.limit.at"
-                  (ngModelChange)="changeLimit($event)"
-                  labelTranslate="@pry.widget.chart.limit"
-                  min="1"
-                  max="10"
-                ></pry-range>
-
-                <ng-container *ngIf="optionsCopy.graph.type !== GraphType.HISTOGRAM">
-                  <pry-checkbox
-                    (ngModelChange)="changeLimitOthers($event)"
-                    [ngModel]="optionsCopy.abscissa.limit.others"
-                    >{{ '@pry.widget.chart.others' | i18n }}
-                  </pry-checkbox>
-
-                  <label class="a-label" for="date_limit">{{ '@pry.widget.chart.order' | i18n }}</label>
-                  <pry-select
-                    (ngModelChange)="changeLimitOrder($event)"
-                    [items]="[{ id: 'asc' }, { id: 'desc' }]"
-                    [ngModel]="optionsCopy.abscissa.limit.order"
-                    [i18nPrefix]="'@pry.widget.chart.'"
-                    bindLabel="id"
-                    bindValue="id"
-                    id="other_limit"
-                  ></pry-select>
+              <ng-container *ngIf="!!optionsCopy.abscissa.interval">
+                <ng-container *ngIf="!isTimeInterval(optionsCopy.abscissa.interval); else timeInterval">
+                  <pry-range
+                    [ngModel]="optionsCopy.abscissa.interval"
+                    (ngModelChange)="changeInterval($event)"
+                    labelTranslate="@pry.widget.chart.specifyInterval"
+                    min="1"
+                    max="10"
+                  ></pry-range>
                 </ng-container>
-              </ng-container>
 
-              <ng-container *ngIf="!!optionsCopy.abscissa.limit.isTimeLimit">
-                <label class="a-label" for="date_limit">{{ '@pry.widget.chart.timeInterval' | i18n }}</label>
-                <pry-select
-                  (ngModelChange)="changeTimeLimit($event)"
-                  [items]="[
-                    { id: 'second' },
-                    { id: 'minute' },
-                    { id: 'hour' },
-                    { id: 'day' },
-                    { id: 'week' },
-                    { id: 'month' },
-                    { id: 'quarter' },
-                    { id: 'year' }
-                  ]"
-                  [ngModel]="optionsCopy.abscissa.limit.interval"
-                  i18nPrefix="@pry.widget.chart.time."
-                  bindLabel="id"
-                  bindValue="id"
-                  id="date_limit"
-                ></pry-select>
+                <ng-template #timeInterval>
+                  <label class="a-label" for="time_interval">{{ '@pry.widget.chart.timeInterval' | i18n }}</label>
+                  <pry-select
+                    (ngModelChange)="changeTimeInterval($event)"
+                    [items]="['second', 'minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']"
+                    [ngModel]="optionsCopy.abscissa.interval"
+                    i18nPrefix="@pry.widget.chart.time."
+                    id="time_interval"
+                  ></pry-select>
+                </ng-template>
               </ng-container>
             </ng-container>
           </div>
@@ -241,23 +213,23 @@
             <div class="m-form-label-field">
               <pry-checkbox
                 (ngModelChange)="toggleLimitItems($event)"
-                [ngModel]="optionsCopy.graph.limitItems !== undefined && optionsCopy.graph.limitItems !== null"
+                [ngModel]="optionsCopy.abscissa.limit !== undefined && optionsCopy.abscissa.limit !== null"
               >
                 {{ '@pry.widget.chart.limit' | i18n }}
               </pry-checkbox>
             </div>
-            <ng-container *ngIf="optionsCopy.graph.limitItems !== undefined && optionsCopy.graph.limitItems !== null">
+            <ng-container *ngIf="optionsCopy.abscissa.limit !== undefined && optionsCopy.abscissa.limit !== null">
               <div class="m-form-label-field">
                 <label class="a-label" for="chart_limitItemsValue">{{ '@pry.widget.chart.limitMaxNb' | i18n }}</label>
                 <input
                   type="number"
                   id="chart_limitItemsValue"
                   class="a-form-field"
-                  [ngModel]="optionsCopy.graph.limitItems"
-                  (ngModelChange)="changeLimitItemsValue($event)"
+                  [ngModel]="optionsCopy.abscissa.limit"
+                  (ngModelChange)="changeLimitValue($event)"
                   min="1"
                   step="1"
-                  [attr.aria-invalid]="optionsCopy.graph.limitItems < 1"
+                  [attr.aria-invalid]="optionsCopy.abscissa.limit < 1"
                 />
               </div>
             </ng-container>

@@ -24,17 +24,7 @@ export enum GraphType {
   POINTS = 'point-default'
 }
 
-export interface AtLimit {
-  at: number;
-  others: boolean;
-  order: 'asc' | 'desc';
-  isTimeLimit: false;
-}
-
-export interface TimeLimit {
-  interval: 'second' | 'minute' | 'hour' | 'day' | 'week' | 'quarter' | 'year';
-  isTimeLimit: true;
-}
+export type TimeInterval = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'quarter' | 'year';
 
 export interface Sort {
   value: 'key' | 'value';
@@ -46,7 +36,8 @@ export interface ChartAggregatedWidgetOptions {
     label: string;
     attribute: string;
     keep0: boolean;
-    limit?: AtLimit | TimeLimit;
+    limit?: number | null;
+    interval?: number | TimeInterval;
   };
   ordinate: {
     operation: Operation;
@@ -66,7 +57,6 @@ export interface ChartAggregatedWidgetOptions {
     stacked?: boolean;
     legend?: boolean;
     sort?: Sort;
-    limitItems?: number | null;
   };
   additionalSpec?: any;
   circleColorScheme?: string;

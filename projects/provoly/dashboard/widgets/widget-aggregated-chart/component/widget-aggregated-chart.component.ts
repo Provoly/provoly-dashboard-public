@@ -46,6 +46,8 @@ import { mergeDeep, TopLevelSpec } from 'vega-lite';
 import { initConfig } from 'vega-lite/build/src/config';
 import { PrySchemeService } from '@provoly/dashboard/components/scheme-picker';
 
+export const CHART_INTERVAL_STEP = 3;
+
 @Component({
   selector: 'pry-widget-aggregated-chart',
   templateUrl: './widget-aggregated-chart.component.html'
@@ -574,7 +576,10 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       })
     );
     this.trigger$.next();
-    if (this.optionsCopy$.value && this.optionsCopy$.value?.graph.limitItems === undefined) {
+    if (
+      this.optionsCopy$.value &&
+      (!!this.optionsCopy$.value.abscissa.limit || this.optionsCopy$.value.abscissa.limit === undefined)
+    ) {
       this.toggleLimitItems(true);
     }
   }
@@ -698,7 +703,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
         });
       }
       if ([GraphType.HISTOGRAM].includes($event)) {
-        this.limitElements(true);
+        this.enableIntervals(true);
       }
     }
   }
@@ -749,7 +754,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
 
       this.copyAbscissaField = this.fields.find((field) => attr?.field === field.id);
 
-      this.limitElements(!!this.optionsCopy$.value?.abscissa.limit);
+      this.enableIntervals(!!this.optionsCopy$.value?.abscissa.interval);
     }
   }
 
@@ -808,108 +813,46 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     }
   }
 
-  limitElements($event: any) {
+  enableIntervals($event: any) {
     if (this.optionsCopy$.value) {
       if ($event) {
-        if (
-          this.copyAbscissaField?.type !== FieldType.INSTANT &&
-          this.optionsCopy$.value?.abscissa?.limit &&
-          'at' in this.optionsCopy$.value?.abscissa?.limit
-        ) {
-          this.optionsCopy$.next({
-            ...this.optionsCopy$.value,
-            abscissa: {
-              ...this.optionsCopy$.value?.abscissa,
-              limit: {
-                at: this.optionsCopy$.value?.abscissa?.limit?.at ?? 3,
-                others: false,
-                order: 'asc',
-                isTimeLimit: false
-              }
-            }
-          });
-        } else {
-          this.optionsCopy$.next({
-            ...this.optionsCopy$.value,
-            abscissa: { ...this.optionsCopy$.value?.abscissa, limit: { interval: 'second', isTimeLimit: true } }
-          });
-        }
+        this.optionsCopy$.next({
+          ...this.optionsCopy$.value,
+          abscissa: {
+            ...this.optionsCopy$.value?.abscissa,
+            interval:
+              this.optionsCopy$.value?.abscissa?.interval ??
+              (this.copyAbscissaField?.type !== FieldType.INSTANT ? CHART_INTERVAL_STEP : 'second')
+          }
+        });
       } else {
         this.optionsCopy$.next({
           ...this.optionsCopy$.value,
-          abscissa: { ...this.optionsCopy$.value?.abscissa, limit: undefined }
+          abscissa: { ...this.optionsCopy$.value?.abscissa, interval: undefined }
         });
       }
     }
   }
 
-  changeLimit($event: any) {
-    if (
-      this.optionsCopy$.value &&
-      this.optionsCopy$.value.abscissa.limit &&
-      !this.optionsCopy$.value.abscissa.limit.isTimeLimit
-    ) {
+  changeInterval($event: any) {
+    if (this.optionsCopy$.value) {
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         abscissa: {
           ...this.optionsCopy$.value?.abscissa,
-          limit: {
-            ...this.optionsCopy$.value?.abscissa.limit,
-            at: $event
-          }
+          interval: +$event
         }
       });
     }
   }
 
-  changeLimitOthers($event: any) {
-    if (
-      this.optionsCopy$.value &&
-      this.optionsCopy$.value.abscissa.limit &&
-      !this.optionsCopy$.value.abscissa.limit.isTimeLimit
-    ) {
-      this.optionsCopy$.next({
-        ...this.optionsCopy$.value,
-        abscissa: {
-          ...this.optionsCopy$.value?.abscissa,
-          limit: {
-            ...this.optionsCopy$.value?.abscissa.limit,
-            others: $event
-          }
-        }
-      });
-    }
-  }
-
-  changeLimitOrder($event: any) {
-    if (
-      this.optionsCopy$.value &&
-      this.optionsCopy$.value.abscissa.limit &&
-      !this.optionsCopy$.value.abscissa.limit.isTimeLimit
-    ) {
-      this.optionsCopy$.next({
-        ...this.optionsCopy$.value,
-        abscissa: {
-          ...this.optionsCopy$.value?.abscissa,
-          limit: {
-            ...this.optionsCopy$.value?.abscissa.limit,
-            order: $event ? 'asc' : 'desc'
-          }
-        }
-      });
-    }
-  }
-
-  changeTimeLimit($event: any) {
-    if (this.optionsCopy$.value?.abscissa?.limit?.isTimeLimit) {
+  changeTimeInterval($event: any) {
+    if (this.optionsCopy$.value) {
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         abscissa: {
           ...this.optionsCopy$.value.abscissa,
-          limit: {
-            ...this.optionsCopy$.value.abscissa.limit,
-            interval: $event
-          }
+          interval: $event
         }
       });
     }
@@ -1036,26 +979,31 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   }
 
   toggleLimitItems($event: boolean) {
+    console.log('toggle')
+
     if (this.optionsCopy$.value) {
-      if ($event !== !!this.optionsCopy$.value.graph.limitItems) {
+      if ($event !== !!this.optionsCopy$.value.abscissa.limit || this.optionsCopy$.value.abscissa.limit === undefined) {
+        console.log('event', $event);
+        console.log('limit value', this.optionsCopy$.value.abscissa.limit);
+        console.log('bool limit value', !!this.optionsCopy$.value.abscissa.limit);
         this.optionsCopy$.next({
           ...this.optionsCopy$.value,
-          graph: {
-            ...this.optionsCopy$.value.graph,
-            limitItems: this.optionsCopy$.value.graph.limitItems ? null : this.DEFAULT_ITEM_LIMIT
+          abscissa: {
+            ...this.optionsCopy$.value.abscissa,
+            limit: this.optionsCopy$.value.abscissa.limit ? null : this.DEFAULT_ITEM_LIMIT
           }
         });
       }
     }
   }
 
-  changeLimitItemsValue($event: number | null) {
+  changeLimitValue($event: number | null) {
     if (this.optionsCopy$.value && $event !== null) {
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
-        graph: {
-          ...this.optionsCopy$.value.graph,
-          limitItems: $event > 0 ? $event : 1
+        abscissa: {
+          ...this.optionsCopy$.value.abscissa,
+          limit: $event > 0 ? $event : 1
         }
       });
     }
@@ -1086,8 +1034,8 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   }
 
   getTimeUnit(options: ChartAggregatedWidgetOptions, abscissaType: VegaType) {
-    if (abscissaType === VegaType.TEMPORAL && options.abscissa.limit?.isTimeLimit) {
-      return { timeUnit: options.abscissa.limit.interval };
+    if (abscissaType === VegaType.TEMPORAL && typeof options.abscissa.interval === 'string') {
+      return { timeUnit: options.abscissa.interval };
     } else if (abscissaType === VegaType.TEMPORAL && !!options.graph.sort) {
       return { timeUnit: 'utcyearmonthdate' };
     }
@@ -1106,5 +1054,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
 
   getAbscissaType(abscissaVegaType: VegaType, hasSort: boolean) {
     return hasSort ? VegaType.ORDINAL : abscissaVegaType;
+  }
+
+  isTimeInterval(abscissaInterval: string | number) {
+    return typeof abscissaInterval === 'string';
   }
 }

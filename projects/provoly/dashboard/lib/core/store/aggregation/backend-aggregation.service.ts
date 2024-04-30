@@ -84,14 +84,9 @@ export class PryBackendAggregationService extends PryAggregationService {
         return of({ operation: options.ordinate.operation, values: [] } as AggregationResult);
       }
     }
-    if (options.abscissa && options.abscissa.limit) {
-      if (options.abscissa.limit.isTimeLimit) {
-        params = params.set('dateInterval', options.abscissa.limit.interval);
-      } else {
-        params = params.set('interval', options.abscissa.limit.at);
-        params = params.set('limitOrder', options.abscissa.limit.order);
-        params = params.set('limitOthers', options.abscissa.limit.others);
-      }
+    if (options.abscissa && options.abscissa.interval) {
+      if (typeof options.abscissa.interval === 'string') params = params.set('dateInterval', options.abscissa.interval);
+      if (typeof options.abscissa.interval === 'number') params = params.set('interval', options.abscissa.interval);
     }
     const operation = options.ordinate.operation?.replace(/^none$/, Operation.SUM);
     params = params.set('operation', operation);
@@ -107,8 +102,8 @@ export class PryBackendAggregationService extends PryAggregationService {
     if (options.graph && options.graph.sort) {
       params = params.set('order', `${options.graph.sort.direction},${(options.graph.sort.value ?? '').toUpperCase()}`);
     }
-    if (!!options.graph?.limitItems) {
-      params = params.set('limit', `${options.graph.limitItems}`);
+    if (!!options.abscissa.limit) {
+      params = params.set('limit', `${options.abscissa.limit}`);
     }
     params = this.searchService.getItemsFilter(targetDatasource, params, false);
 

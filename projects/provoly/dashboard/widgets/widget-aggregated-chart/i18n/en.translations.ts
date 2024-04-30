@@ -68,6 +68,7 @@ export const enTranslations = {
         stacked: 'Vertical stacking',
         noData: 'No selected datasource',
         aggNoResult: 'No results to display',
+        interval: 'Specify interval step',
         scheme: {
           accent: '8 colors n°1',
           set2: '8 colors n°2',

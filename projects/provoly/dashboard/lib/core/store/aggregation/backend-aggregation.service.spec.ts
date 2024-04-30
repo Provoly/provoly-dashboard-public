@@ -213,10 +213,7 @@ describe('BackendAggregationService', () => {
           ...chartOptionsWithOperation,
           abscissa: {
             ...chartOptions.abscissa,
-            limit: {
-              interval: 'second',
-              isTimeLimit: true
-            }
+            interval: 'second'
           }
         })
         .subscribe();
@@ -239,18 +236,13 @@ describe('BackendAggregationService', () => {
         ]
       } as AggregationResult);
     });
-    it('should GET aggregation result with params interval, limitOrder, limitOthers', () => {
+    it('should GET aggregation result with interval param', () => {
       service
         .aggregate(['1'], {
           ...chartOptionsWithOperation,
           abscissa: {
             ...chartOptions.abscissa,
-            limit: {
-              at: 1,
-              others: true,
-              order: 'asc',
-              isTimeLimit: false
-            }
+            interval: 1
           }
         })
         .subscribe();
@@ -260,8 +252,6 @@ describe('BackendAggregationService', () => {
       expect(req.request.url).toEqual('data/data-sources/id/1/items/aggregate');
       expect(req.request.method).toEqual('GET');
       expect(req.request.params.get('interval')).toEqual('1');
-      expect(req.request.params.get('limitOrder')).toEqual('asc');
-      expect(req.request.params.get('limitOthers')).toEqual('true');
       expect(req.request.params.get('aggregatedBy')).toEqual('1');
       expect(req.request.params.get('operation')).toEqual('avg');
       expect(req.request.params.get('valueField')).toEqual('2');

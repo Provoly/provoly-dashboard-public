@@ -4,10 +4,8 @@ import { combineLatest, map, Observable } from 'rxjs';
 import { DashboardSelectors } from '../../../../dashboard/store/dashboard.selectors';
 import { Item, ValueType } from '../../../model/item.interface';
 import {
-  AtLimit,
   ChartAggregatedWidgetOptions,
-  Operation,
-  TimeLimit
+  Operation, TimeInterval
 } from '../../../model/widget-aggregated-chart-manifest.interface';
 import { ClassSelectors } from '../../class/class.selectors';
 import { AggregationResult, PryAggregationService } from '../base-aggregation.service';
@@ -57,7 +55,7 @@ export class PryFrontendAggregationService extends PryAggregationService {
         options.ordinate.operation,
         abscissa,
         ordinate,
-        options.abscissa.limit
+        options.abscissa.interval
       );
     } else {
       const groupByAttribute =
@@ -76,7 +74,7 @@ export class PryFrontendAggregationService extends PryAggregationService {
           options.ordinate.operation,
           abscissa,
           ordinate,
-          options.abscissa.limit
+          options.abscissa.interval
         )
       }));
     }
@@ -99,7 +97,7 @@ export class PryFrontendAggregationService extends PryAggregationService {
     operation: Operation,
     abscissa: string,
     ordinate: string,
-    limit?: AtLimit | TimeLimit
+    interval?: number | TimeInterval
   ): { key: ValueType; value: ValueType }[] {
     if (abscissa === '' || ordinate === '') console.warn('abscissa or ordinate attribute not found');
     const groupByAbscissa = this.getItemsGroupedByAttributeValue(items, abscissa);
@@ -112,7 +110,7 @@ export class PryFrontendAggregationService extends PryAggregationService {
       })
     ];
 
-    if (limit) result = AggregationUtils.formatByLimit(result, limit, operation);
+    if (interval) result = AggregationUtils.formatByLimit(result, interval, operation);
     return result;
   }
 }

@@ -1,8 +1,7 @@
 import {
-  AtLimit,
   ChartAggregatedWidgetOptions,
   Operation,
-  TimeLimit
+  TimeInterval
 } from '../../../model/widget-aggregated-chart-manifest.interface';
 import { Class } from '../../class/class.interface';
 import { Item, ValueType } from '../../../model/item.interface';
@@ -84,19 +83,22 @@ export class AggregationUtils {
     return values[pos + 1] !== undefined ? (values[pos] + values[pos + 1]) / 2 : values[pos];
   }
 
-  static formatByLimit(data: { key: ValueType; value: ValueType }[], limit: AtLimit | TimeLimit, operation: Operation) {
-    if (!limit.isTimeLimit) {
-      data
-        .sort((a, b) => (limit.order === 'asc' ? (a.value > b.value ? 1 : -1) : a.value < b.value ? 1 : -1))
-        .splice(limit.at);
-      return data;
-    }
-    return this.formatDataByTimeLimit(data, limit, operation);
+  static formatByLimit(
+    data: { key: ValueType; value: ValueType }[],
+    interval: number | TimeInterval,
+    operation: Operation
+  ) {
+    return typeof interval === 'number' ? data : this.formatDataByTimeLimit(data, interval, operation);
   }
-  static formatDataByTimeLimit(data: { key: ValueType; value: ValueType }[], limit: TimeLimit, operation: Operation) {
+
+  static formatDataByTimeLimit(
+    data: { key: ValueType; value: ValueType }[],
+    interval: TimeInterval,
+    operation: Operation
+  ) {
     let distinctValues: { key: ValueType; values: ValueType[] }[] = [];
     data
-      .map((obj) => ({ ...obj, key: this.getKeyValueForTimeInterval(obj.key, limit.interval) }))
+      .map((obj) => ({ ...obj, key: this.getKeyValueForTimeInterval(obj.key, interval) }))
       .forEach((obj) => {
         const isNotDistinct = distinctValues.find((distinct) => obj.key === distinct.key);
         if (!!isNotDistinct) {
@@ -111,10 +113,7 @@ export class AggregationUtils {
     }));
   }
 
-  static getKeyValueForTimeInterval(
-    key: ValueType,
-    interval: 'second' | 'minute' | 'hour' | 'day' | 'week' | 'quarter' | 'year'
-  ): string {
+  static getKeyValueForTimeInterval(key: ValueType, interval: TimeInterval): string {
     const date = new Date(key as string);
     switch (interval) {
       case 'second':
