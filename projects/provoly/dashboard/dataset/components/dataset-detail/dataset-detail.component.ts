@@ -53,6 +53,7 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
   selectedDatasetVersion?: DatasetVersion;
   selectedMode: ViewMode = ViewMode.CONSULT;
   activeVersion$!: Observable<DatasetVersion | undefined>;
+  activeVersionId$!: Observable<string>;
   isEditingVersion = false;
 
   isPanelOpen: boolean = false;
@@ -83,6 +84,7 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
         versions.sort((v1, v2) => v2.version - v1.version).find((version) => version.state === 'ACTIVE')
       )
     );
+    this.activeVersionId$ = this.activeVersion$.pipe(map((version) => version?.id ?? '-1'));
 
     this.subscriptions.add(
       this.datasetVersions$.subscribe((versions) => {

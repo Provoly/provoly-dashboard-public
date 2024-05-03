@@ -115,7 +115,7 @@
   </div>
 </ng-template>
 <ng-template #datasetVersions>
-  <div *ngIf="activeVersion$ | async as activeVersion" class="dataset-detail__table table-container">
+  <div *ngIf="activeVersionId$ | async as activeVersionId" class="dataset-detail__table table-container">
     <table class="a-table">
       <caption>
         {{
@@ -143,7 +143,7 @@
         >
           <td>
             {{ version.version }}
-            <pry-icon *ngIf="activeVersion.id === version.id" iconSvg="check" class="check"></pry-icon>
+            <pry-icon *ngIf="activeVersionId === version.id" iconSvg="check" class="check"></pry-icon>
           </td>
           <td>
             <div
@@ -156,7 +156,7 @@
           </td>
           <td>
             {{
-              (activeVersion.id === version.id
+              (activeVersionId === version.id
                 ? '@pry.dataset.version.currentlyActive'
                 : '@pry.dataset.version.' + version.state
               ) | i18n
@@ -164,7 +164,7 @@
             <div
               *ngIf="version.state !== 'DELETING'"
               class="m-info-icon a-tooltip -tooltip-width-md"
-              [attr.data-tooltip]="'@pry.dataset.tooltip.' + getVersionTooltipContent(version, activeVersion.id) | i18n"
+              [attr.data-tooltip]="'@pry.dataset.tooltip.' + getVersionTooltipContent(version, activeVersionId) | i18n"
               data-tooltip-position="right"
             >
               <span>i</span>
