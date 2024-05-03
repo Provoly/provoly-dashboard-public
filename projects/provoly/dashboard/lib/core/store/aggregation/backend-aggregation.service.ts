@@ -102,7 +102,7 @@ export class PryBackendAggregationService extends PryAggregationService {
     if (options.graph && options.graph.sort) {
       params = params.set('order', `${options.graph.sort.direction},${(options.graph.sort.value ?? '').toUpperCase()}`);
     }
-    if (!!options.abscissa.limit) {
+    if (options.abscissa && options.abscissa.limit) {
       params = params.set('limit', `${options.abscissa.limit}`);
     }
     params = this.searchService.getItemsFilter(targetDatasource, params, false);

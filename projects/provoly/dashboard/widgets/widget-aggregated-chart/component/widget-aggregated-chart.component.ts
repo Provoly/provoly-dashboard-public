@@ -979,13 +979,8 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   }
 
   toggleLimitItems($event: boolean) {
-    console.log('toggle')
-
     if (this.optionsCopy$.value) {
       if ($event !== !!this.optionsCopy$.value.abscissa.limit || this.optionsCopy$.value.abscissa.limit === undefined) {
-        console.log('event', $event);
-        console.log('limit value', this.optionsCopy$.value.abscissa.limit);
-        console.log('bool limit value', !!this.optionsCopy$.value.abscissa.limit);
         this.optionsCopy$.next({
           ...this.optionsCopy$.value,
           abscissa: {
