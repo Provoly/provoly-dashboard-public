@@ -6,7 +6,7 @@ import { combineLatestWith, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 @Component({
-  selector: 'pry-widget-table',
+  selector: 'pry-widget-template',
   templateUrl: './widget-template.component.html'
 })
 export class WidgetTemplateComponent extends DataWidgetComponent {
@@ -17,7 +17,11 @@ export class WidgetTemplateComponent extends DataWidgetComponent {
   id: number;
   static idGenerator = 0;
 
-  constructor(store: Store<any>, el: ElementRef, private sanitizer: DomSanitizer) {
+  constructor(
+    store: Store<any>,
+    el: ElementRef,
+    private sanitizer: DomSanitizer
+  ) {
     super(store, el);
     this.id = WidgetTemplateComponent.idGenerator++;
     this.options$ = this.manifest$.pipe(map((manifest) => manifest.options as TemplateWidgetOptions));
