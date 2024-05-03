@@ -168,6 +168,7 @@ export const enTranslations = {
       switchEdit: 'Edit',
       switchEditContent: 'Edit composition',
       share: 'Share',
+      shareAccessRights: 'Share access rights',
       delete: 'Delete',
       notInDsAttr: 'Unavailable attribute'
     },
@@ -305,11 +306,22 @@ export const enTranslations = {
       type: 'Visibility',
       users: 'Authorized users',
       noGroups: 'No group available',
+      groups: {
+        ALL: 'Public',
+        AUTHENTICATED: 'Connected users'
+      },
       conflict: {
         title: 'Warning',
         main: 'The following data sources are not accessible to the selected user groups:',
         unavailable: 'inaccessible aux groupes : '
-      }
+      },
+      dashboardAccess: 'Share access to this dashboard to selected user groups',
+      placeholder: 'Chose one or more groups',
+      read: 'Can read',
+      write: 'Can modify',
+      accessDescription: '"Can read" allows read acess "Can modify" allows read and write access',
+      me: 'Me',
+      owner: 'Owner'
     },
     homepage: {
       menu: {
@@ -335,11 +347,7 @@ export const enTranslations = {
           selection: 'Selected user groups:',
           selectItem: 'Select this user group',
           unselectItem: 'Unselect this user group',
-          noItemSelected: 'No user group selected',
-          groups: {
-            ALL: 'Public',
-            AUTHENTICATED: 'Connected users'
-          }
+          noItemSelected: 'No user group selected'
         }
       }
     },

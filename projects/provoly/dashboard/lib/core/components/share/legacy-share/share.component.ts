@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Inpu
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import equal from 'fast-deep-equal/es6';
 import { Observable } from 'rxjs';
-import { PryVisibility, PryVisibilityType } from './share.model';
+import { PryVisibility, PryVisibilityType } from '../share.model';
 
 @Component({
   selector: 'pry-share',

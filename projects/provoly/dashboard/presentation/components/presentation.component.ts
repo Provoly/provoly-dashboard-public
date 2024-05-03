@@ -39,7 +39,6 @@ import { v4 } from 'uuid';
 export class PryPresentationComponent extends SubscriptionnerDirective {
   manifests$: Observable<ManifestDescription[]>;
   selectedPresentation$ = new BehaviorSubject<ManifestDescription | null>(null);
-  presentation?: ManifestDescription;
   staticManifest$?: Observable<DashboardManifest>;
   selectedMode: ViewMode = ViewMode.CATALOG;
   modalOpened = false;
@@ -52,7 +51,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   @ViewChild('crossVisibility') crossVisibility!: ElementRef<HTMLButtonElement>;
   @ViewChild('visibilityModal') visibilityModal!: ElementRef;
   overlayRef?: OverlayRef;
-  accessGroups: string[] = [];
+  accessRightsByGroup: { [key: string]: string[] } = {};
   @Input() editionStartUrl: string = '/';
   @Input() consultStartUrl: string = '/';
   @Input() meAsOwner?: string;
@@ -60,9 +59,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   search$ = new BehaviorSubject('');
   filteredPresentations$: Observable<ManifestDescription[]>;
   listOfManifests$ = new BehaviorSubject<ManifestDescription[] | null>(null);
-  disableShareRadios$: Observable<{ [key in PryVisibilityType]: boolean }>;
   allowedShareGroups$: Observable<string[]>;
-  shareRadioValue$ = new BehaviorSubject<PryVisibilityType | undefined>(undefined);
   disableShareButton$ = new BehaviorSubject<boolean>(false);
 
   @Input() mode: 'theme' | 'meta' = 'meta';
@@ -73,6 +70,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
 
   @Input() hideToolbox = false;
   inputSearch$ = new BehaviorSubject('');
+
   @Input() set search(query: string) {
     this.inputSearch$.next(query);
   }
@@ -128,23 +126,6 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
         })
       )
     );
-    this.disableShareRadios$ = combineLatest([
-      this.selectedPresentation$,
-      this.store.select(DataSourceSelectors.datasets)
-    ]).pipe(
-      map(([presentation, datasets]) => {
-        return {
-          [PryVisibilityType.PRIVATE]: false,
-          [PryVisibilityType.PUBLIC]: presentation ? !canManifestBeMadePublic(presentation, datasets) : true,
-          [PryVisibilityType.RESTRICTED]: presentation
-            ? !(
-                canManifestBeMadePublic(presentation, datasets) ||
-                getCommonDatasourceGroupsForManifest(presentation, datasets).length > 0
-              )
-            : true
-        };
-      })
-    );
     this.allowedShareGroups$ = combineLatest([
       this.selectedPresentation$,
       this.store.select(DataSourceSelectors.datasets)
@@ -182,7 +163,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
       presentation: {
         id: v4(),
         name: '',
-        groups: [] as string[],
+        accessRightsByGroup: {} as { [key: string]: string[] },
         owner: true
       } as ManifestDescription,
       viewMode: ViewMode.CREATION
@@ -272,7 +253,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
           name: presentation.name ?? '',
           description: presentation.description,
           image: presentation.image ?? '',
-          groups: this.accessGroups
+          accessRightsByGroup: this.accessRightsByGroup
         })
       );
     }
@@ -302,24 +283,27 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     });
   }
 
-  updateAccessGroups($event: string[]) {
-    this.accessGroups = $event;
+  updateAccessRights($event: { [key: string]: string[] }) {
+    this.accessRightsByGroup = $event;
     this.updateDisableButtonValue();
   }
 
   updateVisibility($event: PryVisibilityType) {
-    this.shareRadioValue$.next($event);
     this.updateDisableButtonValue();
   }
 
   updateDisableButtonValue() {
-    if (this.shareRadioValue$.getValue() === PryVisibilityType.RESTRICTED && this.accessGroups.length === 0) {
+    if (Object.keys(this.accessRightsByGroup).length === 0) {
       this.disableShareButton$.next(true);
     } else {
       if (this.disableShareButton$.getValue()) {
         this.disableShareButton$.next(false);
       }
     }
+  }
+
+  isPrivate(presentation: ManifestDescription) {
+    return Object.keys(presentation.accessRightsByGroup).length === 0;
   }
 
   canModify$(presentation: ManifestDescription) {

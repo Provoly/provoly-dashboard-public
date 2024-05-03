@@ -1,0 +1,66 @@
+<div class="o-access-rights-share">
+  <label for="share-group-select" class="a-h4">{{ '@pry.share.dashboardAccess' | i18n }}</label>
+  <form class="u-display-flex">
+    <fieldset class="m-grouped-select u-display-flex" name="add-access-rights">
+      <pry-select
+        id="share-group-select"
+        class="o-access-rights-share__group-select"
+        name="share-group-select"
+        [(ngModel)]="selectedGroups"
+        [items]="groups$ | async"
+        bindLabel="label"
+        placeholder="{{ '@pry.share.placeholder' | i18n }}"
+        [multiple]="true"
+        [closeOnSelect]="false"
+      ></pry-select>
+      <pry-select
+        id="share-access-rights-select"
+        class="o-access-rights-share__access-rights-select"
+        name="share-access-rights-select"
+        [(ngModel)]="selectedAccessRight"
+        [items]="accessRights"
+        bindValue="value"
+        bindLabel="label"
+      ></pry-select>
+    </fieldset>
+    <button role="button" class="a-btn a-btn--primary" (click)="addAccess()" [disabled]="isAddingDisabled()">
+      {{ '@pry.action.add' | i18n }}
+    </button>
+  </form>
+  <label for="share-access-rights-select" class="a-label">{{ '@pry.share.accessDescription' | i18n }}</label>
+  <div class="o-access-rights-share__groups">
+    @if (manifestDescription?.owner) {
+      <div class="o-access-rights-share__group u-display-flex -justify-space-between -align-center">
+        <span class="o-access-rights-share__group-name a-h4">{{ '@pry.share.me' | i18n }}</span>
+        <span class="o-access-rights-share__owner">{{ '@pry.share.owner' | i18n }}</span>
+      </div>
+    }
+    @for (group of value | keyvalue; track group.key) {
+      <div class="o-access-rights-share__group u-display-flex -justify-space-between">
+        <label class="o-access-rights-share__group-name a-h4" for="modify-{{ group.key }}-access-rights-select">{{
+          getGroupLabelByName(group.key, i18n)
+        }}</label>
+        <div class="u-display-flex -align-center">
+          <pry-select
+            id="modify-{{ group.key }}-access-rights-select"
+            class="o-access-rights-share__modify-access-rights"
+            name="modify-group-access-rights-select"
+            [(ngModel)]="group.value"
+            (ngModelChange)="modifyGroupAccess(group.key, group.value)"
+            [items]="accessRights"
+            bindValue="value"
+            bindLabel="label"
+          ></pry-select>
+          <button
+            role="button"
+            class="a-btn a-btn--icon-only a-tooltip"
+            [attr.data-tooltip]="'@pry.action.delete' | i18n"
+            (click)="removeGroupAccess(group.key)"
+          >
+            <pry-icon iconSvg="close" [height]="15" [width]="15"></pry-icon>
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

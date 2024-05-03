@@ -37,7 +37,7 @@
             *ngFor="let presentation of filteredPresentations$ | async; let index = index"
           >
             <div class="o-presentation__item__header">
-              <ng-container *ngIf="presentation.groups.length === 0">
+              <ng-container *ngIf="isPrivate(presentation)">
                 <pry-icon
                   iconSvg="private"
                   class="is-private a-tooltip -tooltip-no-wrap"
@@ -127,7 +127,7 @@
   >
     <div class="o-modal__top">
       <div class="o-modal__top__title">
-        <h2 class="a-h2" id="dialog_title">{{ '@pry.toolbox.share' | i18n }}</h2>
+        <h2 class="a-h2" id="dialog_title">{{ '@pry.toolbox.shareAccessRights' | i18n }}</h2>
       </div>
       <div class="o-modal__top__close">
         <button
@@ -141,13 +141,12 @@
         </button>
       </div>
     </div>
-    <pry-group-share
-      [ngModel]="selectedPresentation.groups"
-      [disableRadios]="disableShareRadios$ | async"
+    <pry-access-rights-share
+      [ngModel]="selectedPresentation.accessRightsByGroup"
+      (ngModelChange)="updateAccessRights($event)"
+      [manifestDescription]="selectedPresentation"
       [allowedGroups]="allowedShareGroups$ | async"
-      (ngModelChange)="updateAccessGroups($event)"
-      (radioValueChange)="updateVisibility($event)"
-    ></pry-group-share>
+    ></pry-access-rights-share>
     <div class="m-btn-group">
       <button type="button" class="a-btn a-btn--secondary" (click)="toggleModal()">
         {{ '@pry.toolbox.manifest.close' | i18n }}

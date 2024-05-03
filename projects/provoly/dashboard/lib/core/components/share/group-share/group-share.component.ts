@@ -64,7 +64,10 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
 
   @Output() radioValueChange = new EventEmitter<PryVisibilityType>();
 
-  constructor(private store: Store, private _cd: ChangeDetectorRef) {
+  constructor(
+    private store: Store,
+    private _cd: ChangeDetectorRef
+  ) {
     super();
     this.store.dispatch(ConfigActions.loadAccessGroups());
     this.groups$ = combineLatest([this.store.select(ConfigSelectors.accessGroups), this._allowedGroups$]).pipe(

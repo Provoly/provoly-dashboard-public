@@ -22,7 +22,7 @@ module.exports = {
         creationDate: manifest.creationDate,
         modificationDate: manifest.modificationDate,
         image: manifest.image ?? '/assets/svgs/default-dashboard.svg',
-        groups: manifest.groups ?? [],
+        accessRightsByGroup: manifest.accessRightsByGroup ?? {},
         owner: true,
         cover: true,
         datasource: [

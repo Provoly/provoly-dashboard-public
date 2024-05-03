@@ -170,6 +170,7 @@ export const frTranslations = {
       switchEdit: 'Modifier',
       switchEditContent: 'Modifier la composition',
       share: 'Partager',
+      shareAccessRights: "Droits d'accès",
       delete: 'Supprimer',
       notInDsAttr: 'Attribut indisponible'
     },
@@ -227,6 +228,7 @@ export const frTranslations = {
       }
     },
     action: {
+      add: 'Ajouter',
       close: 'Fermer',
       closePanel: 'Fermer le panneau',
       delete: 'Supprimer',
@@ -308,12 +310,24 @@ export const frTranslations = {
       restricted: 'Restreint',
       type: 'Visibilité',
       users: 'Utilisateurs autorisés',
+      groups: {
+        ALL: 'Public',
+        AUTHENTICATED: 'Les utilisateurs connectés'
+      },
       noGroups: 'Aucun groupe disponible',
       conflict: {
         title: 'Warning',
         main: 'Attention, les sources de données suivantes ne seront pas visible de toutes les personnes accédant à la présentation : ',
         unavailable: 'inaccessible aux groupes : '
-      }
+      },
+      dashboardAccess: "Donner les droits d'accès de ce tableau de bord à certains groupes d’utilisateurs :",
+      placeholder: 'Choisissez le ou les groupes utilisateurs',
+      read: 'Peut voir',
+      write: 'Peut modifier',
+      accessDescription:
+        '"Peut voir" ouvre les droits de consultation et "Peut modifier" permet de consulter et modifier',
+      me: 'Moi',
+      owner: 'Propriétaire'
     },
     homepage: {
       menu: {
@@ -339,11 +353,7 @@ export const frTranslations = {
           selection: "Groupe(s) d'utilisateurs sélectionnés:",
           selectItem: "Sélectionner le groupe d'utilisateurs",
           unselectItem: "Désélectionner le groupe d'utilisateurs",
-          noItemSelected: "Aucun groupe d'utilisateurs sélectionné",
-          groups: {
-            ALL: 'Public',
-            AUTHENTICATED: 'Les utilisateurs connectés'
-          }
+          noItemSelected: "Aucun groupe d'utilisateurs sélectionné"
         }
       }
     },

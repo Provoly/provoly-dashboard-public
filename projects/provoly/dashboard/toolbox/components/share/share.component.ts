@@ -22,11 +22,10 @@ export class ShareComponent extends ToolboxActionComponent {
   presentation?: ManifestDescription;
   modalOpened = false;
   overlayRef?: OverlayRef;
-  accessGroups: string[] = [];
+  accessRightsByGroup: { [key: string]: string[] } = {};
   @ViewChild('modal', { read: TemplateRef }) template!: TemplateRef<any>;
   disableShareRadios$: Observable<{ [key in PryVisibilityType]: boolean }>;
   allowedShareGroups$: Observable<string[]>;
-  shareRadioValue$ = new BehaviorSubject<PryVisibilityType | undefined>(undefined);
   disableShareButton$ = new BehaviorSubject<boolean>(false);
 
   constructor(
@@ -38,7 +37,7 @@ export class ShareComponent extends ToolboxActionComponent {
     this.subscriptions.add(
       this.store.select(DashboardSelectors.presentation).subscribe((prez) => {
         this.presentation = prez.current;
-        this.accessGroups = prez?.current?.groups ?? [];
+        this.accessRightsByGroup = prez?.current?.accessRightsByGroup ?? {};
       })
     );
 
@@ -93,24 +92,18 @@ export class ShareComponent extends ToolboxActionComponent {
         name: this.presentation!.name ?? '',
         description: this.presentation!.description ?? '',
         image: this.presentation!.image ?? '',
-        groups: this.accessGroups
+        accessRightsByGroup: this.accessRightsByGroup
       })
     );
     this.toggleModal();
   }
 
-  updateAccessGroups($event: string[]) {
-    this.accessGroups = $event;
-    this.updateDisableButtonValue();
-  }
-
-  updateVisibility($event: PryVisibilityType) {
-    this.shareRadioValue$.next($event);
-    this.updateDisableButtonValue();
+  updateAccessRights($event: { [key: string]: string[] }) {
+    this.accessRightsByGroup = $event;
   }
 
   updateDisableButtonValue() {
-    if (this.shareRadioValue$.getValue() === PryVisibilityType.RESTRICTED && this.accessGroups.length === 0) {
+    if (Object.keys(this.accessRightsByGroup).length === 0) {
       this.disableShareButton$.next(true);
     } else {
       if (this.disableShareButton$.getValue()) {

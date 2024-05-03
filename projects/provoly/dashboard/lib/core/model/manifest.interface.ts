@@ -20,7 +20,7 @@ export interface ManifestDescription {
   image: string;
   creationDate: string;
   modificationDate: string;
-  groups: string[];
+  accessRightsByGroup: { [key: string]: string[] };
   owner: boolean;
   datasource: string[];
   metadata?: MetadataValue[];

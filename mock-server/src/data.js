@@ -365,7 +365,7 @@ const getGroups = () => [
   {
     id: casual.uuid,
     name: 'custom group',
-    system: true
+    system: false
   }
 ];
 

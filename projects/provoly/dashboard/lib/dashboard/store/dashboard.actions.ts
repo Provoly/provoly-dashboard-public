@@ -156,7 +156,7 @@ export const DashboardActions = {
       description?: string;
       image?: string;
       metadata?: { metadataDefId: string; value: string }[];
-      groups?: string[];
+      accessRightsByGroup?: { [key: string]: string[] };
       additionalInformation?: string;
     }>()
   ),

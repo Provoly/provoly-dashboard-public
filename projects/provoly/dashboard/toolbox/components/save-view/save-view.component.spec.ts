@@ -73,7 +73,7 @@ describe('SaveViewComponent', () => {
         name: 'name',
         description: 'description',
         image: 'http://...',
-        groups: []
+        accessRightsByGroup: {}
       })
     );
   });

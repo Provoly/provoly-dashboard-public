@@ -1,0 +1,73 @@
+@use '../abstracts' as *;
+@use '../../styles-theme/abstracts-theme/variables.theme' as *;
+
+body:has(pry-access-rights-share) {
+  .o-modal-wrapper {
+    padding: toRem(35) toRem(50);
+    min-width: toRem(790);
+
+    .a-h2 {
+      text-align: center;
+    }
+  }
+}
+
+.o-access-rights-share {
+  form {
+    gap: toRem(20);
+  }
+
+  .m-grouped-select {
+    border-radius: toRem(5);
+    border: 1px solid themed($theme-map, 'color', 'primary', 600);
+    flex: 2;
+
+    > :first-child {
+      border-right: 1px solid themed($theme-map, 'color', 'primary', 600);
+    }
+  }
+
+  .a-pry-select {
+    border: none;
+    max-width: toRem(450);
+    align-items: center;
+
+    &__content {
+      flex-wrap: wrap;
+    }
+  }
+
+  &__group-select {
+    flex: 2;
+  }
+
+  &__access-rights-select {
+    white-space: nowrap;
+  }
+
+  .a-label {
+    color: themed($theme-map, 'color', 'primary', 500);
+    font-size: toRem(12);
+    margin: toRem(10) 0 0 toRem(10);
+  }
+
+  &__groups {
+    margin: toRem(30) toRem(150) 0 toRem(15);
+  }
+
+  &__group {
+    .a-pry-select {
+      padding-right: 0;
+    }
+  }
+
+  &__group-name {
+    padding: 0;
+    margin: auto 0;
+  }
+
+  &__owner {
+    font-style: italic;
+    font-size: toRem(12);
+  }
+}

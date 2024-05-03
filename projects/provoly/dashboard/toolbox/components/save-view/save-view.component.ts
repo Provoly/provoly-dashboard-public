@@ -32,7 +32,7 @@ export class SaveViewComponent extends ToolboxActionComponent {
   @ViewChild('templateSaveAs', { read: TemplateRef }) templateSaveAs!: TemplateRef<any>;
   overlayRefDirectSaveType?: OverlayRef;
   @ViewChild('templateDirectSaveType', { read: TemplateRef }) templateDirectSaveType!: TemplateRef<any>;
-  accessGroups: string[] = [];
+  accessRightsByGroup: { [key: string]: string[] } = {};
   type: LibraryTypes = LibraryTypes.ILLUSTRATION;
   saveTypeOpened = false;
   currentManifest?: ManifestDescription;
@@ -43,7 +43,11 @@ export class SaveViewComponent extends ToolboxActionComponent {
   hasInitial: boolean = false;
   ViewMode = ViewMode;
 
-  constructor(store: Store, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
+  constructor(
+    store: Store,
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef
+  ) {
     super(store);
 
     this.subscriptions.add(
@@ -90,14 +94,14 @@ export class SaveViewComponent extends ToolboxActionComponent {
         id: v4(),
         description: this.currentManifest!.description,
         image: this.currentManifest!.image,
-        groups: this.accessGroups,
+        accessRightsByGroup: this.accessRightsByGroup,
         owner: this.currentManifest?.owner,
         metadata: undefined
       };
       if (this.mode == 'directSave') {
         if (this.currentManifest) {
           presentation.id = this.currentManifest.id;
-          presentation.groups = this.currentManifest.groups;
+          presentation.accessRightsByGroup = this.currentManifest.accessRightsByGroup;
         }
       }
       this.store.dispatch(DashboardActions.saveManifest(presentation));
@@ -122,8 +126,8 @@ export class SaveViewComponent extends ToolboxActionComponent {
     this.close();
   }
 
-  changeAccessGroups($event: string[]) {
-    this.currentManifest!.groups = $event;
+  changeAccessRights($event: { [key: string]: string[] }) {
+    this.currentManifest!.accessRightsByGroup = $event;
   }
 
   changeValue($event: string) {

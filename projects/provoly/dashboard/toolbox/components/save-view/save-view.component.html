@@ -20,13 +20,7 @@
       aria-controls="saveModal"
       aria-describedby="infoTooltip_saveAs"
     >
-      <button
-        type="button"
-        #saveAs
-        class="a-btn a-btn--secondary"
-        (click)="toggleSaveAs()"
-        aria-haspopup="dialog"
-      >
+      <button type="button" #saveAs class="a-btn a-btn--secondary" (click)="toggleSaveAs()" aria-haspopup="dialog">
         <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.rename' | i18n }} ({{ nbPages }})</ng-container>
       </button>
     </div>
@@ -124,7 +118,11 @@
       </pry-step>
       <pry-step>
         <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.share' | i18n }}</h4>
-        <pry-group-share [(ngModel)]="accessGroups" (ngModelChange)="changeAccessGroups($event)"></pry-group-share>
+        <pry-access-rights-share
+          [(ngModel)]="accessRightsByGroup"
+          (ngModelChange)="changeAccessRights($event)"
+          [manifestDescription]="currentManifest"
+        ></pry-access-rights-share>
         <div class="m-btn-group">
           <button type="button" class="a-btn a-btn--secondary" (click)="stepper.prev()">
             {{ '@pry.action.back' | i18n }}

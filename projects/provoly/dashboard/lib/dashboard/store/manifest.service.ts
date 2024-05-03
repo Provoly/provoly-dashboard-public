@@ -69,7 +69,7 @@ export class ManifestService {
     description?: string,
     image?: string,
     metadata?: { metadataDefId: string; value: string }[],
-    groups?: string[],
+    accesRightsByGroup?: { [key: string]: string[] },
     additionalInformation?: string
   ): Observable<ShareConflict> {
     return this.store.select(ConfigSelectors.refUrl).pipe(
@@ -83,7 +83,7 @@ export class ManifestService {
           cover: true,
           metadata,
           datasource: ManifestUtils.getDatasourcesUsedByManifest(manifest).map((ds) => ds.datasetId),
-          groups,
+          accesRightsByGroup,
           additionalInformation
         });
       })

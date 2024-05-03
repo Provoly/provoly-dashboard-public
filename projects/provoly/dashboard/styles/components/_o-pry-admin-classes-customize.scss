@@ -73,6 +73,10 @@
   .m-tooltip {
     margin-top: toRem(20);
   }
+
+  pry-select {
+    flex: 1;
+  }
 }
 
 .container {
@@ -103,10 +107,6 @@
   color: rgba(0, 0, 0, 0.87);
   font-size: 14px;
   cursor: move;
-}
-
-pry-select {
-  flex: 1;
 }
 
 .cdk-drag-preview {

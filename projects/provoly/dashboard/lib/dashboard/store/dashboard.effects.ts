@@ -356,7 +356,7 @@ export class DashboardEffects {
             action.description,
             action.image,
             action.metadata,
-            action.groups,
+            action.accessRightsByGroup,
             action.additionalInformation
           )
           .pipe(
