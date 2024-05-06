@@ -57,7 +57,9 @@ export class ShareComponent extends ToolboxActionComponent {
     );
     this.allowedShareGroups$ = this.store.select(DataSourceSelectors.datasets).pipe(
       map((datasets) => {
-        return this.presentation ? getCommonDatasourceGroupsForManifest(this.presentation, datasets) : [];
+        return this.presentation && datasets.length > 0
+          ? getCommonDatasourceGroupsForManifest(this.presentation, datasets)
+          : [];
       })
     );
   }

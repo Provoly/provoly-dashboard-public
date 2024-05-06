@@ -131,7 +131,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
       this.store.select(DataSourceSelectors.datasets)
     ]).pipe(
       map(([presentation, datasets]) => {
-        return presentation ? getCommonDatasourceGroupsForManifest(presentation, datasets) : [];
+        return presentation && datasets.length > 0 ? getCommonDatasourceGroupsForManifest(presentation, datasets) : [];
       })
     );
     this.subscriptions.add(
