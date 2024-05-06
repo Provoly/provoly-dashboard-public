@@ -1099,6 +1099,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                   : undefined;
             }
           }
+        } else {
+          layer.title = geoLayer.paramLayer;
         }
       } else {
         layer.title = this.translateService.instant(`@pry.widget.map.layerType.${layer.type}`, { ...layer });
