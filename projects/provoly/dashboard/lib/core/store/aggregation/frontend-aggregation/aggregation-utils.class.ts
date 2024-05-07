@@ -185,52 +185,58 @@ export class AggregationUtils {
     item: Item,
     attribute: string,
     operator: string | undefined,
-    filterValue: string | number | undefined
+    filterValue: string | number | string[] | number[] | undefined
   ): boolean {
     let value = AggregationUtils.getValueFromAttribute(item, attribute)?.value as string | number;
     let date1: Date, date2: Date;
 
-    switch (operator) {
-      case 'EQUALS':
-        return value === filterValue;
-      case 'NOT_EQUALS':
-        return value !== filterValue;
-      case 'CONTAINS':
-        return (value as string).includes(filterValue as string);
-      case 'START_WITH':
-        return (value as string).startsWith(filterValue as string);
-      case 'END_WITH':
-        return (value as string).endsWith(filterValue as string);
-      case 'GREATER_THAN':
-        if (typeof filterValue === 'number') {
-          return (value as number) > filterValue;
-        } else if (typeof filterValue === 'string') {
-          return new Date(value) > new Date(filterValue);
-        } else {
-          return false;
+    let filterPossibleValues = Array.isArray(filterValue) ? filterValue : ([filterValue] as string[] | number[]);
+
+    return filterPossibleValues
+      .map((possibleFilterValue) => {
+        switch (operator) {
+          case 'EQUALS':
+            return value === filterValue;
+          case 'NOT_EQUALS':
+            return value !== filterValue;
+          case 'CONTAINS':
+            return (value as string).includes(filterValue as string);
+          case 'START_WITH':
+            return (value as string).startsWith(filterValue as string);
+          case 'END_WITH':
+            return (value as string).endsWith(filterValue as string);
+          case 'GREATER_THAN':
+            if (typeof filterValue === 'number') {
+              return (value as number) > filterValue;
+            } else if (typeof filterValue === 'string') {
+              return new Date(value) > new Date(filterValue);
+            } else {
+              return false;
+            }
+          case 'LOWER_THAN':
+            if (typeof filterValue === 'number') {
+              return (value as number) < filterValue;
+            } else if (typeof filterValue === 'string') {
+              return new Date(value) < new Date(filterValue);
+            } else {
+              return false;
+            }
+          case 'INSIDE':
+            [date1, date2] = [
+              new Date((filterValue as string).split(',')[0]),
+              new Date((filterValue as string).split(',')[1])
+            ];
+            return new Date(value) > new Date(date1) && new Date(value) < new Date(date2);
+          case 'OUTSIDE':
+            [date1, date2] = [
+              new Date((filterValue as string).split(',')[0]),
+              new Date((filterValue as string).split(',')[1])
+            ];
+            return new Date(value) < new Date(date1) && new Date(value) > new Date(date2);
+          default:
+            return true;
         }
-      case 'LOWER_THAN':
-        if (typeof filterValue === 'number') {
-          return (value as number) < filterValue;
-        } else if (typeof filterValue === 'string') {
-          return new Date(value) < new Date(filterValue);
-        } else {
-          return false;
-        }
-      case 'INSIDE':
-        [date1, date2] = [
-          new Date((filterValue as string).split(',')[0]),
-          new Date((filterValue as string).split(',')[1])
-        ];
-        return new Date(value) > new Date(date1) && new Date(value) < new Date(date2);
-      case 'OUTSIDE':
-        [date1, date2] = [
-          new Date((filterValue as string).split(',')[0]),
-          new Date((filterValue as string).split(',')[1])
-        ];
-        return new Date(value) < new Date(date1) && new Date(value) > new Date(date2);
-      default:
-        return true;
-    }
+      })
+      .reduce((p, c) => p || c);
   }
 }

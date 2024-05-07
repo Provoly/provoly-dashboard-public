@@ -21,7 +21,7 @@ export class CqlUtils {
 
         return this.getConditionsForValue(attributeName, cond, field, datasourceId);
       })
-      .filter((conds) => conds.length > 0)
+      .filter((conds) => !!conds && conds.length > 0)
       .join(' AND ');
   }
 
