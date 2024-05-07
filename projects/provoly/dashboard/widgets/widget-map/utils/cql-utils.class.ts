@@ -15,20 +15,36 @@ export class CqlUtils {
 
     return filters[datasourceId]
       .map((cond) => {
-        const conditions = [];
-
         const attribute = attributesReference.find((attr) => attr.id === cond.attribute);
         const field = fields.find((f) => f.id === attribute?.field);
         const attributeName = attribute?.technicalName;
 
-        if (attributeName && cond.value && (typeof cond.value !== 'string' || cond.value.length > 0)) {
-          const quoteSafeValue = `${cond.value}`.replace(/'/g, "''");
+        return this.getConditionsForValue(attributeName, cond, field, datasourceId);
+      })
+      .filter((conds) => conds.length > 0)
+      .join(' AND ');
+  }
+
+  static getConditionsForValue(
+    attributeName: string | undefined,
+    cond: FilterContext,
+    field: Field | undefined,
+    datasourceId: string
+  ) {
+    let conditions: string[] = [];
+
+    const values = (Array.isArray(cond.value) ? cond.value : [cond.value]) as string[] | number[];
+
+    if (attributeName) {
+      values.forEach((value) => {
+        if (value && (typeof value !== 'string' || value.length > 0)) {
+          const quoteSafeValue = `${value}`.replace(/'/g, "''");
           switch (cond.operator) {
             case 'EQUALS':
               if (!field || TextFieldTypes.includes(field?.type)) {
                 conditions.push(`${attributeName}='${quoteSafeValue}'`);
               } else {
-                conditions.push(`${attributeName}=${cond.value}`);
+                conditions.push(`${attributeName}=${value}`);
               }
               break;
             case 'CONTAINS':
@@ -41,35 +57,32 @@ export class CqlUtils {
               conditions.push(`${attributeName} LIKE '%${quoteSafeValue}'`);
               break;
             case 'GREATER_THAN':
-              conditions.push(`${attributeName}>${cond.value}`);
+              conditions.push(`${attributeName}>${value}`);
               break;
             case 'LOWER_THAN':
-              conditions.push(`${attributeName}<${cond.value}`);
-              break;
-            case 'INSIDE':
-              const splitI = (cond.value as string)?.split(',');
-              if (splitI && splitI.length > 1) {
-                conditions.push(`${attributeName}<${splitI[0]}`);
-                conditions.push(`${attributeName}>${splitI[1]}`);
-              }
+              conditions.push(`${attributeName}<${value}`);
               break;
             case 'OUTSIDE':
-              const splitO = (cond.value as string)?.split(',');
+              const splitI = (value as string)?.split(',');
+              if (splitI && splitI.length > 1) {
+                conditions.push(`( ${attributeName}<${splitI[0]} AND ${attributeName}>${splitI[1]} )`);
+              }
+              break;
+            case 'INSIDE':
+              const splitO = (value as string)?.split(',');
               if (splitO && splitO.length > 1) {
-                conditions.push(`${attributeName}>${splitO[0]}`);
-                conditions.push(`${attributeName}<${splitO[1]}`);
+                conditions.push(`( ${attributeName}>${splitO[0]} AND ${attributeName}<${splitO[1]} )`);
               }
               break;
           }
-        } else {
-          console.warn(
-            `Cannot add cql filter on datasource ${datasourceId} because ${cond.attribute} attribute not found in classes`
-          );
         }
+      });
+    } else {
+      console.warn(
+        `Cannot add cql filter on datasource ${datasourceId} because ${cond.attribute} attribute not found in classes`
+      );
+    }
 
-        return conditions;
-      })
-      .filter((conds) => conds.length > 0)
-      .join(' AND ');
+    return conditions.length > 1 ? '( ' + conditions.join(' OR ') + ' )' : conditions[0];
   }
 }

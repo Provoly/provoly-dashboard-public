@@ -13,5 +13,5 @@ export interface Filter {
 export interface FilterContext {
   attribute: string;
   operator: string;
-  value: string | undefined | number;
+  value: string | number | string[] | number[] | undefined;
 }

@@ -484,7 +484,8 @@ describe('WidgetMapComponent', () => {
           paramTiled: true,
           type: 'geoserver',
           url: 'http://geoserver.url/geoNamespace/wms?SERVICE=WMS&VERSION=1.3.0',
-          order: 0
+          order: 0,
+          title: 'geoKey'
         }
       ],
       style: 'style1',
@@ -622,11 +623,11 @@ describe('WidgetMapComponent', () => {
 
     expect(results[results.length - 1]).toEqual({
       layers: [
-        { type: 'wms', paramLayer: '2', order: 3 },
-        { type: 'wms', paramLayer: '3', order: 5.5 },
-        { type: 'wms', paramLayer: '4', order: 8 },
-        { type: 'wms', paramLayer: '5', order: 5003.5 },
-        { type: 'wms', background: true, paramLayer: '1', order: 9999 }
+        { type: 'wms', paramLayer: '2', order: 3, title: '2' },
+        { type: 'wms', paramLayer: '3', order: 5.5, title: '3' },
+        { type: 'wms', paramLayer: '4', order: 8, title: '4' },
+        { type: 'wms', paramLayer: '5', order: 5003.5, title: '5' },
+        { type: 'wms', background: true, paramLayer: '1', order: 9999, title: '1' }
       ],
       style: 'style1',
       tooltipMode: 'click'
