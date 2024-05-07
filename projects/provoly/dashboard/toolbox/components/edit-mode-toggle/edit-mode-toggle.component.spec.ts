@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { DashboardActions } from '@provoly/dashboard';
+import { DashboardActions, PRY_ACCESS_TOKEN, PryDefaultAccessService } from '@provoly/dashboard';
 import { MockPryIconComponent } from '../../../mock/components/mock-pry-icon.component';
 import { MockPryToggleComponent } from '../../../mock/components/mock-pry-toggle.component';
 import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
@@ -25,7 +25,7 @@ describe('EditModeToggleComponent', () => {
         MockPryToggleComponent,
         MockI18nPipe
       ],
-      providers: [provideMockStore({ initialState: {} })]
+      providers: [provideMockStore({ initialState: {} }), { provide: PRY_ACCESS_TOKEN, useClass: PryDefaultAccessService }]
     }).compileComponents();
     store = TestBed.inject(Store);
   });

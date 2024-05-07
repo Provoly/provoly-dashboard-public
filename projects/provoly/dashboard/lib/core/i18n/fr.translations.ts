@@ -79,7 +79,8 @@ export const frTranslations = {
         validated: 'Valider',
         check: 'Enregistrer',
         close: 'Annuler',
-        validate: 'Valider'
+        validate: 'Valider',
+        all: 'Tous'
       },
       catalog: {
         title: 'Personnalisés',

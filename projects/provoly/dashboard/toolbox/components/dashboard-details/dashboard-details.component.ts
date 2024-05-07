@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject, Optional } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { map, Observable } from 'rxjs';
-import { DashboardSelectors, ManifestDescription } from '@provoly/dashboard';
+import { PRY_ACCESS_TOKEN, PryBaseAccess } from '@provoly/dashboard';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
@@ -27,11 +26,9 @@ export class DashboardDetailsComponent extends ToolboxActionComponent {
       offsetY: 5
     }
   ];
-  presentation$: Observable<ManifestDescription | undefined>;
 
-  constructor(store: Store) {
-    super(store);
-    this.presentation$ = this.store.select(DashboardSelectors.presentation).pipe(map((pres) => pres?.current));
+  constructor(store: Store, @Optional() @Inject(PRY_ACCESS_TOKEN) access: PryBaseAccess) {
+    super(store, access);
   }
 
   openPanel($event: Event) {

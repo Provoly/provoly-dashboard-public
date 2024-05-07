@@ -42,7 +42,7 @@ export const ACTIONS: ToolboxAction[] = [
     component: SaveViewComponent,
     visible: true,
     access: { module: 'dashboard', page: 'toolbox', action: 'save' },
-    needsOwner: true
+    needsOwner: false
   },
   {
     name: 'save_view_as',
@@ -91,7 +91,7 @@ export const ACTIONS: ToolboxAction[] = [
     component: SwitchToEditContentComponent,
     visible: true,
     access: { module: 'dashboard', page: 'toolbox', action: 'edit_presentation_content' },
-    needsOwner: true
+    needsOwner: false
   },
   {
     name: 'share',
@@ -105,7 +105,7 @@ export const ACTIONS: ToolboxAction[] = [
     component: DeleteComponent,
     visible: true,
     access: { module: 'dashboard', page: 'toolbox', action: 'delete' },
-    needsOwner: true
+    needsOwner: false
   },
   {
     name: 'dashboard_details',

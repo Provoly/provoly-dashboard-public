@@ -6,14 +6,14 @@
     cdkOverlayOrigin
     #trigger="cdkOverlayOrigin"
     id="widget_insert"
-    aria-haspopup
+    aria-haspopup="true"
     aria-controls="IDpanel"
     aria-expanded="false"
   >
-    <ng-container *ngIf="displayLabels"
-      ><span class="u-visually-hidden">{{ '@pry.toolbox.dragIndication' | i18n }}</span
-      >{{ '@pry.toolbox.drag' | i18n }}
-    </ng-container>
+    @if (displayLabels) {
+      <span class="u-visually-hidden">{{ '@pry.toolbox.dragIndication' | i18n }}</span>
+      {{ '@pry.toolbox.drag' | i18n }}
+    }
   </button>
 </div>
 
@@ -28,25 +28,29 @@
 >
   <div class="o-draggable-menu" aria-label="Insérer un widget (par glisser/déposer)" aria-labelledby="widget_insert">
     <ul class="o-draggable-menu__list">
-      <ng-container *ngFor="let menu of menu$ | async">
+      @for (menu of menu$ | async; track menu.label) {
         <li class="o-draggable-menu__list__item">
           <button class="a-btn" aria-haspopup="true" aria-expanded="false">
             <pry-icon [iconSvg]="menu.icon"></pry-icon>
-            <ng-container *ngIf="displayLabels">{{ menu.label | i18n }}</ng-container>
+            @if (displayLabels) {
+              {{ menu.label | i18n }}
+            }
           </button>
 
           <ul class="o-draggable-menu__list__submenu">
-            <ng-container *ngFor="let sub of menu.sub">
+            @for (sub of menu.sub; track sub.label) {
               <li class="o-draggable-menu__list__submenu__item">
                 <button class="a-btn" (dragstart)="dragStart($event, sub.type)" draggable="true">
                   <img [alt]="sub.label" [height]="24" [width]="24" [src]="sub.icon | getSecuredImage | async" />
-                  <ng-container *ngIf="displayLabels">{{ sub.label | i18n }}</ng-container>
+                  @if (displayLabels) {
+                    {{ sub.label | i18n }}
+                  }
                 </button>
               </li>
-            </ng-container>
+            }
           </ul>
         </li>
-      </ng-container>
+      }
     </ul>
   </div>
 </ng-template>

@@ -1,39 +1,19 @@
-import { Component, ViewContainerRef } from '@angular/core';
-import { Store } from '@ngrx/store';
-import {
-  DashboardActions,
-  DashboardSelectors,
-  GlobalManifest,
-  ManifestDescription,
-  ViewMode
-} from '@provoly/dashboard';
+import { Component, Inject, Optional } from '@angular/core';
+import { DashboardActions, PRY_ACCESS_TOKEN, PryBaseAccess } from '@provoly/dashboard';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
-import { Overlay } from '@angular/cdk/overlay';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'pry-delete-pres',
   templateUrl: './delete.component.html'
 })
 export class DeleteComponent extends ToolboxActionComponent {
-  presentation:
-    | {
-        current: ManifestDescription | undefined;
-        viewMode?: ViewMode;
-        initial: GlobalManifest | undefined;
-      }
-    | undefined;
-
-  constructor(store: Store, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
-    super(store);
-    this.subscriptions.add(
-      this.store.select(DashboardSelectors.presentation).subscribe((prez) => {
-        this.presentation = prez;
-      })
-    );
+  constructor(store: Store, @Optional() @Inject(PRY_ACCESS_TOKEN) access: PryBaseAccess) {
+    super(store, access);
   }
 
   trigger() {
-    this.store.dispatch(DashboardActions.confirmManifestDeletion({ id: this.presentation?.current!.id! }));
+    this.store.dispatch(DashboardActions.confirmManifestDeletion({ id: this.currentManifest?.id! }));
     this.close();
   }
 }

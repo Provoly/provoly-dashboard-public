@@ -2,15 +2,17 @@
   <div class="combobox-container" (dragleave)="dragLeave($event)">
     <button type="button" class="a-btn a-btn--action" (click)="toggle()">
       <pry-icon iconSvg="data_usage"></pry-icon>
-      <ng-container *ngIf="label">{{ '@pry.toolbox.resultSet' | i18n }}</ng-container>
+      @if (label) {
+        {{ '@pry.toolbox.resultSet' | i18n }}
+      }
     </button>
 
     <div class="combobox" *ngIf="displayCombo" (mouseleave)="toggle()">
-      <ng-container *ngFor="let rs of namedQueries$ | async">
+      @for (rs of namedQueries$ | async; track rs) {
         <div draggable="true" (dragstart)="dragStart($event, rs)">
-          {{ rs | translateId : { type: 'datasource', output: 'name' } | async }}
+          {{ rs | translateId: { type: 'datasource', output: 'name' } | async }}
         </div>
-      </ng-container>
+      }
     </div>
   </div>
 </div>

@@ -14,7 +14,6 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
-  canManifestBeMadePublic,
   DashboardActions,
   DashboardGridLayout,
   DashboardManifest,
@@ -25,12 +24,12 @@ import {
   PRY_ACCESS_TOKEN,
   PryBaseAccess,
   PryTitleService,
-  PryVisibilityType,
   SubscriptionnerDirective,
   ViewMode
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable, of, startWith } from 'rxjs';
 import { v4 } from 'uuid';
+import equal from 'fast-deep-equal/es6';
 
 @Component({
   selector: 'pry-presentation',
@@ -59,8 +58,8 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   search$ = new BehaviorSubject('');
   filteredPresentations$: Observable<ManifestDescription[]>;
   listOfManifests$ = new BehaviorSubject<ManifestDescription[] | null>(null);
-  allowedShareGroups$: Observable<string[]>;
-  disableShareButton$ = new BehaviorSubject<boolean>(false);
+  allowedShareGroups$: Observable<string[] | null>;
+  disableShareButton$ = new BehaviorSubject<boolean>(true);
 
   @Input() mode: 'theme' | 'meta' = 'meta';
 
@@ -131,7 +130,9 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
       this.store.select(DataSourceSelectors.datasets)
     ]).pipe(
       map(([presentation, datasets]) => {
-        return presentation && datasets.length > 0 ? getCommonDatasourceGroupsForManifest(presentation, datasets) : [];
+        return presentation && presentation.datasource.length > 0
+          ? getCommonDatasourceGroupsForManifest(presentation, datasets)
+          : null;
       })
     );
     this.subscriptions.add(
@@ -283,17 +284,13 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     });
   }
 
-  updateAccessRights($event: { [key: string]: string[] }) {
+  updateAccessRights($event: { [key: string]: string[] }, presentation?: ManifestDescription) {
     this.accessRightsByGroup = $event;
-    this.updateDisableButtonValue();
+    this.updateDisableButtonValue(presentation);
   }
 
-  updateVisibility($event: PryVisibilityType) {
-    this.updateDisableButtonValue();
-  }
-
-  updateDisableButtonValue() {
-    if (Object.keys(this.accessRightsByGroup).length === 0) {
+  updateDisableButtonValue(presentation?: ManifestDescription) {
+    if (equal(this.accessRightsByGroup, presentation?.accessRightsByGroup)) {
       this.disableShareButton$.next(true);
     } else {
       if (this.disableShareButton$.getValue()) {

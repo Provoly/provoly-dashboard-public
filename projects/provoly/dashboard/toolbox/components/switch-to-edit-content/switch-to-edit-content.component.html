@@ -1,5 +1,7 @@
-<ng-container *ngIf="this.presentation?.current?.owner">
+@if (canModify$() | async) {
   <button type="button" class="a-btn a-btn--secondary" (click)="trigger()">
-    <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.switchEditContent' | i18n }}</ng-container>
+    @if (displayLabels) {
+      {{ '@pry.toolbox.switchEditContent' | i18n }}
+    }
   </button>
-</ng-container>
+}

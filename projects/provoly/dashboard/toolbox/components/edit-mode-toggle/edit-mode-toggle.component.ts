@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject, Optional } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { DashboardActions, DashboardSelectors } from '@provoly/dashboard';
+import { DashboardActions, DashboardSelectors, PRY_ACCESS_TOKEN, PryBaseAccess } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
@@ -11,8 +11,8 @@ import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.compone
 export class EditModeToggleComponent extends ToolboxActionComponent {
   modeEdition$: Observable<boolean>;
 
-  constructor(store: Store<any>) {
-    super(store);
+  constructor(store: Store<any>, @Optional() @Inject(PRY_ACCESS_TOKEN) access: PryBaseAccess) {
+    super(store, access);
     this.modeEdition$ = this.store.select(DashboardSelectors.dashboardEditionMode);
   }
 

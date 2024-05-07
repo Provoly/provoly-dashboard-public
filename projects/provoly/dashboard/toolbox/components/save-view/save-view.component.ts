@@ -1,6 +1,15 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Component, ElementRef, Input, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  Optional,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   ConfigActions,
@@ -8,6 +17,8 @@ import {
   DashboardSelectors,
   LibraryTypes,
   ManifestDescription,
+  PRY_ACCESS_TOKEN,
+  PryBaseAccess,
   ViewMode
 } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
@@ -35,9 +46,7 @@ export class SaveViewComponent extends ToolboxActionComponent {
   accessRightsByGroup: { [key: string]: string[] } = {};
   type: LibraryTypes = LibraryTypes.ILLUSTRATION;
   saveTypeOpened = false;
-  currentManifest?: ManifestDescription;
   isCurrentPresentationModified$: Observable<boolean>;
-  isCurrentPresentationOwner$: Observable<boolean>;
   nbPages: number = 0;
   initialNbPages: number = 0;
   hasInitial: boolean = false;
@@ -45,10 +54,11 @@ export class SaveViewComponent extends ToolboxActionComponent {
 
   constructor(
     store: Store,
+    @Optional() @Inject(PRY_ACCESS_TOKEN) access: PryBaseAccess,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef
   ) {
-    super(store);
+    super(store, access);
 
     this.subscriptions.add(
       this.store.select(DashboardSelectors.presentation).subscribe((presentation) => {
@@ -60,7 +70,6 @@ export class SaveViewComponent extends ToolboxActionComponent {
       })
     );
     this.isCurrentPresentationModified$ = this.store.select(DashboardSelectors.isCurrentPresentationModified);
-    this.isCurrentPresentationOwner$ = this.store.select(DashboardSelectors.isCurrentPresentationOwner);
     this.subscriptions.add(
       this.store
         .select(DashboardSelectors.globalManifest)

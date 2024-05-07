@@ -15,6 +15,7 @@ import { ConfigSelectors } from '../../../store/config/config.selectors';
 import { ConfigActions } from '../../../store/config/config.actions';
 import { SubscriptionnerDirective } from '../../../../dashboard/components/subscriptionner.directive';
 import equal from 'fast-deep-equal/es6';
+import { AUTHENTICATED_USERS_GROUP, PUBLIC_GROUP } from '../share.utils';
 
 @Component({
   selector: 'pry-group-share',
@@ -75,7 +76,7 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
         groups
           .filter((group) => group.name !== 'ALL')
           .filter((group) =>
-            allowedGroups?.includes('ALL') || allowedGroups?.includes('AUTHENTICATED') || !allowedGroups
+            allowedGroups?.includes(PUBLIC_GROUP) || allowedGroups?.includes(AUTHENTICATED_USERS_GROUP) || !allowedGroups
               ? true
               : allowedGroups.includes(group.name)
           )

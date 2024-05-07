@@ -1,8 +1,15 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, Inject, OnInit, Optional, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ConfigActions, DashboardActions, DashboardSelectors, WidgetFactoryService } from '@provoly/dashboard';
+import {
+  ConfigActions,
+  DashboardActions,
+  DashboardSelectors,
+  PRY_ACCESS_TOKEN,
+  PryBaseAccess,
+  WidgetFactoryService
+} from '@provoly/dashboard';
 import { combineLatest, map, Observable, take } from 'rxjs';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
@@ -27,9 +34,10 @@ export class AutomateRefreshComponent extends ToolboxActionComponent implements 
     store: Store,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
-    private widgetFactoryService: WidgetFactoryService
+    private widgetFactoryService: WidgetFactoryService,
+    @Inject(PRY_ACCESS_TOKEN) access: PryBaseAccess
   ) {
-    super(store);
+    super(store, access);
     this.datasources$ = this.store
       .select(DashboardSelectors.globalManifest)
       .pipe(

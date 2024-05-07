@@ -55,7 +55,10 @@ export class ToolboxComponent implements OnInit {
     this._dropdownActions$.next(dropdownActions);
   }
 
-  constructor(store: Store, @Optional() @Inject(PRY_ACCESS_TOKEN) private role: PryBaseAccess) {
+  constructor(
+    store: Store,
+    @Optional() @Inject(PRY_ACCESS_TOKEN) private role: PryBaseAccess
+  ) {
     this.presentation$ = store.select(DashboardSelectors.presentation);
     this.isManualMode$ = combineLatest([
       store.select(DashboardSelectors.staticManifest),
@@ -91,7 +94,7 @@ export class ToolboxComponent implements OnInit {
                       ({
                         ...action,
                         visible: actionAvailable && (!this.role || hasRole) && restraintOwner
-                      } as ToolboxAction)
+                      }) as ToolboxAction
                   )
                 )
               : of({

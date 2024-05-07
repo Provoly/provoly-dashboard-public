@@ -1,12 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject, Optional } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  DashboardActions,
-  DashboardSelectors,
-  GlobalManifest,
-  ManifestDescription,
-  ViewMode
-} from '@provoly/dashboard';
+import { DashboardActions, PRY_ACCESS_TOKEN, PryBaseAccess, ViewMode } from '@provoly/dashboard';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
 @Component({
@@ -14,21 +8,8 @@ import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.compone
   templateUrl: './switch-to-edit-content.component.html'
 })
 export class SwitchToEditContentComponent extends ToolboxActionComponent {
-  presentation:
-    | {
-        current: ManifestDescription | undefined;
-        viewMode?: ViewMode;
-        initial: GlobalManifest | undefined;
-      }
-    | undefined;
-
-  constructor(store: Store) {
-    super(store);
-    this.subscriptions.add(
-      this.store.select(DashboardSelectors.presentation).subscribe((prez) => {
-        this.presentation = prez;
-      })
-    );
+  constructor(store: Store, @Optional() @Inject(PRY_ACCESS_TOKEN) access: PryBaseAccess) {
+    super(store, access);
   }
 
   trigger() {

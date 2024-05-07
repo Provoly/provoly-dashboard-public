@@ -1,6 +1,6 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Component, ElementRef, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, Inject, Optional, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   AutomaticGridLayoutDefinition,
@@ -8,6 +8,8 @@ import {
   DashboardActions,
   DashboardGridLayout,
   DashboardSelectors,
+  PRY_ACCESS_TOKEN,
+  PryBaseAccess,
   WidgetPlacementUtils
 } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
@@ -28,8 +30,13 @@ export class SelectGridLayoutComponent extends ToolboxActionComponent {
   modalOpened: boolean = false;
   overlayRef?: OverlayRef;
 
-  constructor(store: Store, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
-    super(store);
+  constructor(
+    store: Store,
+    @Optional() @Inject(PRY_ACCESS_TOKEN) access: PryBaseAccess,
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef
+  ) {
+    super(store, access);
     this.subscriptions.add(
       this.store.select(DashboardSelectors.gridLayout).subscribe((layout) => (this.chosenLayout = layout))
     );

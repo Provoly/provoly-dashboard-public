@@ -79,7 +79,8 @@ export const enTranslations = {
         validated: 'Validate',
         check: 'Save',
         close: 'Cancel',
-        validate: 'Validate'
+        validate: 'Validate',
+        all: 'All'
       },
       catalog: {
         title: 'Custom',

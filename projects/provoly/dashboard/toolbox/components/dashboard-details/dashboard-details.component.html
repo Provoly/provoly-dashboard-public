@@ -1,6 +1,6 @@
 <pry-toolbox-css></pry-toolbox-css>
-@if (presentation$ | async; as presentation) {
-  @if (presentation.additionalInformation) {
+@if (currentManifest) {
+  @if (currentManifest.additionalInformation) {
     <button
       class="a-btn o-dashboard-details"
       cdkOverlayOrigin
@@ -37,7 +37,7 @@
             </button>
           </div>
         </div>
-        <div class="o-modal__content" [innerHTML]="presentation.additionalInformation | mdToHtml"></div>
+        <div class="o-modal__content" [innerHTML]="currentManifest.additionalInformation | mdToHtml"></div>
       </div>
     </ng-template>
   }

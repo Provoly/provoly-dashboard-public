@@ -12,7 +12,7 @@ import {
   FieldSelectors,
   FieldType,
   Filter,
-  FilterFactoryService
+  FilterFactoryService, PRY_ACCESS_TOKEN, PryDefaultAccessService
 } from '@provoly/dashboard';
 import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 import { MockPryToolboxCssComponent } from '@provoly/dashboard/mock/style/mock-pry-toolbox-css';
@@ -206,7 +206,8 @@ describe('FilterSettingsComponent', () => {
             types$: of(['text', 'list']),
             generateTooltip: (type: string, parentInjector: Injector, container: ViewContainerRef) => of(null)
           }
-        }
+        },
+        { provide: PRY_ACCESS_TOKEN, useClass: PryDefaultAccessService }
       ]
     }).compileComponents();
   });

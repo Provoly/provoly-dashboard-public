@@ -9,6 +9,7 @@ import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 import { MockPrySelectGridLayoutCssComponent } from '../../../mock/style/mock-pry-select-grid-layout-css';
 
 import { SelectGridLayoutComponent } from './select-grid-layout.component';
+import { PRY_ACCESS_TOKEN, PryDefaultAccessService } from '@provoly/dashboard';
 
 describe('SelectGridLayoutComponent', () => {
   let component: SelectGridLayoutComponent;
@@ -36,7 +37,8 @@ describe('SelectGridLayoutComponent', () => {
               }
             }
           }
-        }
+        },
+        { provide: PRY_ACCESS_TOKEN, useClass: PryDefaultAccessService }
       ]
     }).compileComponents();
   });

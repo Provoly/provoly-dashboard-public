@@ -1,3 +1,5 @@
 <button type="button" class="a-btn a-btn--secondary" (click)="clear()">
-  <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.clear' | i18n }}</ng-container>
+  @if (displayLabels) {
+    {{ '@pry.toolbox.clear' | i18n }}
+  }
 </button>

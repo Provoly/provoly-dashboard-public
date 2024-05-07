@@ -1,7 +1,7 @@
-<ng-container *ngIf="this.presentation?.current?.owner">
+@if (this.canModify$() | async) {
   <button type="button" class="a-btn a-btn--secondary" (click)="toggleEditionMode()">
-    <ng-container *ngIf="displayLabels"
-      >{{ ((modeEdition$ | async) ? '@pry.toolbox.editOff' : '@pry.toolbox.edit') | i18n }}
-    </ng-container>
+    @if (displayLabels) {
+      {{ ((modeEdition$ | async) ? '@pry.toolbox.editOff' : '@pry.toolbox.edit') | i18n }}
+    }
   </button>
-</ng-container>
+}

@@ -6,10 +6,11 @@ import { ConfigSelectors } from '../../../store/config/config.selectors';
 import { SubscriptionnerDirective } from '../../../../dashboard/components/subscriptionner.directive';
 import { Group } from '../share.model';
 import {
+  AUTHENTICATED_USERS_GROUP,
   getAccessRightsArrayByGroup,
   getAccessRightsStringByGroup,
-  getGroupLabel, getGroupLabelByName,
-  READ_ACCESS,
+  getGroupLabel, getGroupLabelByName, PUBLIC_GROUP,
+  READ_ACCESS, SYSTEM_GROUPS,
   WRITE_ACCESS
 } from '../share.utils';
 import { ManifestDescription } from '../../../model/manifest.interface';
@@ -40,6 +41,7 @@ export class PryAccessRightsShareComponent extends SubscriptionnerDirective impl
   }
 
   groups$: Observable<(Group & { label: string })[]>;
+  AVAILABLE_ACCESS_RIGHTS: { label: string; value: string }[] = [];
   accessRights: { label: string; value: string }[] = [];
 
   selectedGroups?: Group[] = [];
@@ -68,10 +70,11 @@ export class PryAccessRightsShareComponent extends SubscriptionnerDirective impl
           }))
       )
     );
-    this.accessRights = [
+    this.AVAILABLE_ACCESS_RIGHTS = [
       { label: this.i18n.instant('@pry.share.read'), value: READ_ACCESS },
       { label: this.i18n.instant('@pry.share.write'), value: WRITE_ACCESS }
     ];
+    this.accessRights = this.AVAILABLE_ACCESS_RIGHTS
   }
 
   writeValue(value: { [key: string]: string[] } | undefined) {
@@ -134,6 +137,15 @@ export class PryAccessRightsShareComponent extends SubscriptionnerDirective impl
     this.assignedGroups$.next(Object.keys(this.value));
   }
 
-  protected readonly getGroupLabel = getGroupLabel;
+  filterAvailableAccessRights() {
+    if (this.selectedGroups && this.selectedGroups.length > 0 && this.selectedGroups.every((group) => SYSTEM_GROUPS.includes(group.name))) {
+      this.accessRights = this.AVAILABLE_ACCESS_RIGHTS.filter(access => access.value === READ_ACCESS)
+    } else {
+      this.accessRights = this.AVAILABLE_ACCESS_RIGHTS
+    }
+  }
+
   protected readonly getGroupLabelByName = getGroupLabelByName;
+  protected readonly PUBLIC_GROUP = PUBLIC_GROUP;
+  protected readonly AUTHENTICATED_USERS_GROUP = AUTHENTICATED_USERS_GROUP;
 }

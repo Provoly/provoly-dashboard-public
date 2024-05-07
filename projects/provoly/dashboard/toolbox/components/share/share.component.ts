@@ -1,65 +1,49 @@
-import { Component, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, Inject, Optional, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
-  canManifestBeMadePublic,
   DashboardActions,
   DashboardSelectors,
   DataSourceSelectors,
   getCommonDatasourceGroupsForManifest,
-  ManifestDescription,
-  PryVisibilityType
+  PRY_ACCESS_TOKEN,
+  PryBaseAccess
 } from '@provoly/dashboard';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import equal from 'fast-deep-equal/es6';
 
 @Component({
   selector: 'pry-share-pres',
   templateUrl: './share.component.html'
 })
 export class ShareComponent extends ToolboxActionComponent {
-  presentation?: ManifestDescription;
   modalOpened = false;
   overlayRef?: OverlayRef;
   accessRightsByGroup: { [key: string]: string[] } = {};
   @ViewChild('modal', { read: TemplateRef }) template!: TemplateRef<any>;
-  disableShareRadios$: Observable<{ [key in PryVisibilityType]: boolean }>;
-  allowedShareGroups$: Observable<string[]>;
+  allowedShareGroups$: Observable<string[] | null>;
   disableShareButton$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     store: Store,
+    @Optional() @Inject(PRY_ACCESS_TOKEN) access: PryBaseAccess,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef
   ) {
-    super(store);
+    super(store, access);
     this.subscriptions.add(
-      this.store.select(DashboardSelectors.presentation).subscribe((prez) => {
-        this.presentation = prez.current;
-        this.accessRightsByGroup = prez?.current?.accessRightsByGroup ?? {};
+      this.store.select(DashboardSelectors.presentation).subscribe((manifest) => {
+        this.accessRightsByGroup = manifest?.current?.accessRightsByGroup ?? {};
       })
     );
 
-    this.disableShareRadios$ = this.store.select(DataSourceSelectors.datasets).pipe(
-      map((datasets) => {
-        return {
-          [PryVisibilityType.PRIVATE]: false,
-          [PryVisibilityType.PUBLIC]: this.presentation ? !canManifestBeMadePublic(this.presentation, datasets) : true,
-          [PryVisibilityType.RESTRICTED]: this.presentation
-            ? !(
-                canManifestBeMadePublic(this.presentation, datasets) ||
-                getCommonDatasourceGroupsForManifest(this.presentation, datasets).length > 0
-              )
-            : true
-        };
-      })
-    );
     this.allowedShareGroups$ = this.store.select(DataSourceSelectors.datasets).pipe(
       map((datasets) => {
-        return this.presentation && datasets.length > 0
-          ? getCommonDatasourceGroupsForManifest(this.presentation, datasets)
-          : [];
+        return this.currentManifest && this.currentManifest.datasource.length > 0
+          ? getCommonDatasourceGroupsForManifest(this.currentManifest, datasets)
+          : null;
       })
     );
   }
@@ -70,7 +54,7 @@ export class ShareComponent extends ToolboxActionComponent {
 
   toggleModal() {
     this.modalOpened = !this.modalOpened;
-    if (this.modalOpened && this.presentation) {
+    if (this.modalOpened && this.currentManifest) {
       this.overlayRef = this.overlay.create(
         new OverlayConfig({
           hasBackdrop: true,
@@ -90,10 +74,10 @@ export class ShareComponent extends ToolboxActionComponent {
   validate() {
     this.store.dispatch(
       DashboardActions.saveManifest({
-        id: this.presentation!.id ?? '',
-        name: this.presentation!.name ?? '',
-        description: this.presentation!.description ?? '',
-        image: this.presentation!.image ?? '',
+        id: this.currentManifest!.id ?? '',
+        name: this.currentManifest!.name ?? '',
+        description: this.currentManifest!.description ?? '',
+        image: this.currentManifest!.image ?? '',
         accessRightsByGroup: this.accessRightsByGroup
       })
     );
@@ -102,10 +86,11 @@ export class ShareComponent extends ToolboxActionComponent {
 
   updateAccessRights($event: { [key: string]: string[] }) {
     this.accessRightsByGroup = $event;
+    this.updateDisableButtonValue();
   }
 
   updateDisableButtonValue() {
-    if (Object.keys(this.accessRightsByGroup).length === 0) {
+    if (equal(this.accessRightsByGroup, this.currentManifest?.accessRightsByGroup)) {
       this.disableShareButton$.next(true);
     } else {
       if (this.disableShareButton$.getValue()) {

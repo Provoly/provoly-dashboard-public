@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import { ToolboxManifestService, WidgetFactoryService } from '@provoly/dashboard';
+import {
+  PRY_ACCESS_TOKEN,
+  PryDefaultAccessService,
+  ToolboxManifestService,
+  WidgetFactoryService
+} from '@provoly/dashboard';
 import { MockPryIconComponent } from '../../../mock/components/mock-pry-icon.component';
 import { MockCdkConnectedOverlayDirective } from '../../../mock/directive/mock-cdk-connected-overlay.directive';
 import { MockCdkOverlayOriginDirective } from '../../../mock/directive/mock-cdk-overlay-origin.directive';
@@ -31,6 +36,7 @@ describe('DragWidgetsComponent', () => {
           }
         },
         { provide: WidgetFactoryService, useValue: mockWidgetFactoryService },
+        { provide: PRY_ACCESS_TOKEN, useClass: PryDefaultAccessService },
         provideMockStore({})
       ]
     }).compileComponents();

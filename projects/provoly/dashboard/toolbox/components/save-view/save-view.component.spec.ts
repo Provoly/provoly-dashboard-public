@@ -2,7 +2,13 @@ import { Overlay } from '@angular/cdk/overlay';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { ConfigActions, DashboardActions, ManifestDescription } from '@provoly/dashboard';
+import {
+  ConfigActions,
+  DashboardActions,
+  ManifestDescription,
+  PRY_ACCESS_TOKEN,
+  PryDefaultAccessService
+} from '@provoly/dashboard';
 import { MockPryAccessDirective } from '@provoly/dashboard/mock/directive/mock-pry-access.directive';
 import { of } from 'rxjs';
 import * as uuid from 'uuid';
@@ -34,7 +40,8 @@ describe('SaveViewComponent', () => {
           useValue: {
             create: () => mockOverlayRef
           }
-        }
+        },
+        { provide: PRY_ACCESS_TOKEN, useClass: PryDefaultAccessService }
       ]
     }).compileComponents();
 

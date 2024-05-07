@@ -5,6 +5,7 @@ import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 
 import { ShareComponent } from './share.component';
+import { PRY_ACCESS_TOKEN, PryDefaultAccessService } from '@provoly/dashboard';
 
 describe('ClearViewComponent', () => {
   let component: ShareComponent;
@@ -13,7 +14,7 @@ describe('ClearViewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ShareComponent, MockTranslatePipe, MockPryIconComponent, MockI18nPipe],
-      providers: [provideMockStore({})]
+      providers: [provideMockStore({}), { provide: PRY_ACCESS_TOKEN, useClass: PryDefaultAccessService }]
     }).compileComponents();
   });
 

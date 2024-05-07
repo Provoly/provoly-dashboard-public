@@ -1,7 +1,7 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Component, Injector, Input, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, Inject, Injector, Input, Optional, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   Class,
@@ -18,6 +18,8 @@ import {
   GlobalManifest,
   MonoClassSearchPayload,
   NamedQueryTypes,
+  PRY_ACCESS_TOKEN,
+  PryBaseAccess,
   PryI18nService
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
@@ -83,13 +85,14 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
 
   constructor(
     store: Store,
+    @Optional() @Inject(PRY_ACCESS_TOKEN) access: PryBaseAccess,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private filterFactoryService: FilterFactoryService,
     private injector: Injector,
     private i18nService: PryI18nService
   ) {
-    super(store);
+    super(store, access);
     this.manifest$ = store.select(DashboardSelectors.globalManifest);
     this.subscriptions.add(
       this.manifest$.subscribe((manifest) => {

@@ -1,13 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject, Optional } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  DashboardActions,
-  DashboardSelectors,
-  GlobalManifest,
-  ManifestDescription,
-  ViewMode
-} from '@provoly/dashboard';
-import { Observable } from 'rxjs';
+import { DashboardActions, DashboardSelectors, PRY_ACCESS_TOKEN, PryBaseAccess } from '@provoly/dashboard';
+import { Observable, of } from 'rxjs';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
 @Component({
@@ -16,22 +10,10 @@ import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.compone
 })
 export class EditModeActionComponent extends ToolboxActionComponent {
   modeEdition$: Observable<boolean>;
-  presentation:
-    | {
-        current: ManifestDescription | undefined;
-        viewMode?: ViewMode;
-        initial: GlobalManifest | undefined;
-      }
-    | undefined;
 
-  constructor(store: Store<any>) {
-    super(store);
+  constructor(store: Store<any>, @Optional() @Inject(PRY_ACCESS_TOKEN) access: PryBaseAccess) {
+    super(store, access);
     this.modeEdition$ = this.store.select(DashboardSelectors.dashboardEditionMode);
-    this.subscriptions.add(
-      this.store.select(DashboardSelectors.presentation).subscribe((prez) => {
-        this.presentation = prez;
-      })
-    );
   }
 
   toggleEditionMode() {

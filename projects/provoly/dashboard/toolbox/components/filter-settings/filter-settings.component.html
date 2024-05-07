@@ -10,17 +10,19 @@
     (click)="toggleSettings()"
     aria-haspopup="dialog"
   >
-    <ng-container *ngIf="label">{{ '@pry.filters.label' | i18n }}</ng-container>
+    @if (label) {
+      {{ '@pry.filters.label' | i18n }}
+    }
   </button>
 </div>
 
 <ng-template #settings>
   <div class="o-filters">
     <div class="o-filters__header">
-      <ng-container *ngIf="currentStep === FilterSteps.LIST">
+      @if (currentStep === FilterSteps.LIST) {
         <h2>{{ '@pry.filters.label' | i18n }}</h2>
-      </ng-container>
-      <ng-container *ngIf="currentStep === FilterSteps.CREATION || currentStep === FilterSteps.EDITION">
+      }
+      @if (currentStep === FilterSteps.CREATION || currentStep === FilterSteps.EDITION) {
         <div class="u-display-flex -row -align-center">
           <button (click)="goBack()" type="button" class="back-button">
             <pry-icon iconSvg="chevron_right"></pry-icon>
@@ -32,48 +34,52 @@
             }}
           </h2>
         </div>
-      </ng-container>
+      }
       <button (click)="toggleSettings()" type="button">
         <pry-icon iconSvg="close"></pry-icon>
       </button>
     </div>
-    <ng-container *ngIf="currentStep === FilterSteps.LIST">
+    @if (currentStep === FilterSteps.LIST) {
       <div class="o-filters__content">
-        <div *ngIf="(attributes$ | async)?.length === 0; else attributesExists" class="a-table-wrapper"></div>
-        <ng-template #attributesExists>
-          <table *ngIf="filters.length > 0; else noFilters" class="a-table">
-            <tbody cdkDropList [cdkDropListData]="filters" (cdkDropListDropped)="drop($event)">
-              <tr *ngFor="let filter of filters" class="o-filters__filter" cdkDrag>
-                <td>
-                  <span>{{ filter.name }}</span>
-                </td>
-                <td>
-                  <span>{{ getFilterAttributes(filter, 3) }}</span>
-                </td>
-                <td>
-                  <button type="button" class="a-btn a-btn--primary" (click)="deleteFilter(filter.id)">
-                    {{ '@pry.action.delete' | i18n }}
-                  </button>
-                </td>
-                <td>
-                  <button type="button" class="a-btn a-btn--primary" (click)="goToEdition(filter)">
-                    {{ '@pry.filters.list.modify' | i18n }}
-                  </button>
-                </td>
-                <td cdkDragHandle>
-                  <pry-icon iconSvg="drag_indicator"></pry-icon>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <ng-template #noFilters>
+        @if ((attributes$ | async)?.length === 0) {
+          <div class="a-table-wrapper"></div>
+        } @else {
+          @if (filters.length > 0) {
+            <table class="a-table">
+              <tbody cdkDropList [cdkDropListData]="filters" (cdkDropListDropped)="drop($event)">
+                @for (filter of filters; track filter.id) {
+                  <tr class="o-filters__filter" cdkDrag>
+                    <td>
+                      <span>{{ filter.name }}</span>
+                    </td>
+                    <td>
+                      <span>{{ getFilterAttributes(filter, 3) }}</span>
+                    </td>
+                    <td>
+                      <button type="button" class="a-btn a-btn--primary" (click)="deleteFilter(filter.id)">
+                        {{ '@pry.action.delete' | i18n }}
+                      </button>
+                    </td>
+                    <td>
+                      <button type="button" class="a-btn a-btn--primary" (click)="goToEdition(filter)">
+                        {{ '@pry.filters.list.modify' | i18n }}
+                      </button>
+                    </td>
+                    <td cdkDragHandle>
+                      <pry-icon iconSvg="drag_indicator"></pry-icon>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          } @else {
             <span class="o-filters__no-filters">{{ '@pry.filters.noFilters' | i18n }}</span>
-          </ng-template>
+          }
           <button (click)="goToCreation()" class="a-btn a-btn--primary">{{ '@pry.filters.list.add' | i18n }}</button>
-        </ng-template>
+        }
       </div>
-    </ng-container>
-    <ng-container *ngIf="currentStep === FilterSteps.CREATION || currentStep === FilterSteps.EDITION">
+    }
+    @if (currentStep === FilterSteps.CREATION || currentStep === FilterSteps.EDITION) {
       <div class="o-filters__content">
         <div class="m-form-label-field">
           <label for="filterName" class="a-label">{{ '@pry.filters.creation.name' | i18n }}</label>
@@ -92,28 +98,34 @@
           >
           </pry-select>
         </div>
-        <div *ngIf="(currentFilterComponentType$ | async) === 'date'" class="m-form-label-field u-display-flex -row">
-          <label for="date-range" class="a-label">{{ '@pry.filters.creation.dateRange' | i18n }}</label>
-          <pry-checkbox
-            id="date-range"
-            [(ngModel)]="filter.hasDateRange"
-            (ngModelChange)="this.currentOperators$.next(getOperators())"
-          />
-        </div>
-        <div *ngIf="(currentFilterComponentType$ | async) === 'list'" class="m-form-label-field">
-          <label for="possibleValues" class="a-label">{{ '@pry.filters.creation.values' | i18n }}</label>
-          <input
-            id="possibleValues"
-            class="a-form-field"
-            type="text"
-            [(ngModel)]="filter.possibleValues"
-            placeholder="valeur1, valeur2, valeur3"
-          />
-        </div>
-        <div *ngIf="(currentFilterComponentType$ | async) === 'autocomplete'" class="m-form-label-field">
-          <label for="limit" class="a-label">{{ '@pry.filters.creation.limit' | i18n }}</label>
-          <input id="limit" class="a-form-field" type="number" min="0" max="50" [(ngModel)]="filter.limit" />
-        </div>
+        @if ((currentFilterComponentType$ | async) === 'date') {
+          <div class="m-form-label-field u-display-flex -row">
+            <label for="date-range" class="a-label">{{ '@pry.filters.creation.dateRange' | i18n }}</label>
+            <pry-checkbox
+              id="date-range"
+              [(ngModel)]="filter.hasDateRange"
+              (ngModelChange)="this.currentOperators$.next(getOperators())"
+            />
+          </div>
+        }
+        @if ((currentFilterComponentType$ | async) === 'list') {
+          <div class="m-form-label-field">
+            <label for="possibleValues" class="a-label">{{ '@pry.filters.creation.values' | i18n }}</label>
+            <input
+              id="possibleValues"
+              class="a-form-field"
+              type="text"
+              [(ngModel)]="filter.possibleValues"
+              placeholder="valeur1, valeur2, valeur3"
+            />
+          </div>
+        }
+        @if ((currentFilterComponentType$ | async) === 'autocomplete') {
+          <div class="m-form-label-field">
+            <label for="limit" class="a-label">{{ '@pry.filters.creation.limit' | i18n }}</label>
+            <input id="limit" class="a-form-field" type="number" min="0" max="50" [(ngModel)]="filter.limit" />
+          </div>
+        }
         <div class="m-form-label-field">
           <label for="attributes" class="a-label">{{ '@pry.filters.creation.attributes' | i18n }}</label>
           <pry-select
@@ -156,6 +168,6 @@
           {{ '@pry.toolbox.manifest.validate' | i18n }}
         </button>
       </div>
-    </ng-container>
+    }
   </div>
 </ng-template>

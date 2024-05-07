@@ -7,9 +7,10 @@
         class="o-access-rights-share__group-select"
         name="share-group-select"
         [(ngModel)]="selectedGroups"
+        (ngModelChange)="filterAvailableAccessRights()"
         [items]="groups$ | async"
         bindLabel="label"
-        placeholder="{{ '@pry.share.placeholder' | i18n }}"
+        placeholder="{{ ((groups$ | async)?.length === 0 ? '@pry.share.noGroups' : '@pry.share.placeholder') | i18n }}"
         [multiple]="true"
         [closeOnSelect]="false"
       ></pry-select>
@@ -36,21 +37,25 @@
       </div>
     }
     @for (group of value | keyvalue; track group.key) {
-      <div class="o-access-rights-share__group u-display-flex -justify-space-between">
+      <div class="o-access-rights-share__group u-display-flex -justify-space-between -align-center">
         <label class="o-access-rights-share__group-name a-h4" for="modify-{{ group.key }}-access-rights-select">{{
           getGroupLabelByName(group.key, i18n)
         }}</label>
         <div class="u-display-flex -align-center">
-          <pry-select
-            id="modify-{{ group.key }}-access-rights-select"
-            class="o-access-rights-share__modify-access-rights"
-            name="modify-group-access-rights-select"
-            [(ngModel)]="group.value"
-            (ngModelChange)="modifyGroupAccess(group.key, group.value)"
-            [items]="accessRights"
-            bindValue="value"
-            bindLabel="label"
-          ></pry-select>
+          @if (group.key === PUBLIC_GROUP || group.key === AUTHENTICATED_USERS_GROUP) {
+            <span class="o-access-rights-share__access-rights">{{ '@pry.share.read' | i18n }}</span>
+          } @else {
+            <pry-select
+              id="modify-{{ group.key }}-access-rights-select"
+              class="o-access-rights-share__modify-access-rights"
+              name="modify-group-access-rights-select"
+              [(ngModel)]="group.value"
+              (ngModelChange)="modifyGroupAccess(group.key, group.value)"
+              [items]="accessRights"
+              bindValue="value"
+              bindLabel="label"
+            ></pry-select>
+          }
           <button
             role="button"
             class="a-btn a-btn--icon-only a-tooltip"

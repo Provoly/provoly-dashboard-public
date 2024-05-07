@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Observable, of } from 'rxjs';
 import { PryAccessDirective } from './access.directive';
-import { PRY_ACCESS_TOKEN, PryBaseAccess, PryDefaultAccessService } from './access.service';
+import { PRY_ACCESS_TOKEN, PryDefaultAccessService } from './access.service';
+import { MockAccessService } from '@provoly/dashboard/mock/service/mock-access.service';
 
 @Component({
   template: ` <div *pryAccess="{ module: 'module' }">
@@ -12,17 +12,6 @@ import { PRY_ACCESS_TOKEN, PryBaseAccess, PryDefaultAccessService } from './acce
 })
 class MockComponent {
   change = false;
-}
-
-class MockAccessService implements PryBaseAccess {
-  hasRole(...args: any[]): Observable<boolean> {
-    const value = args[1] === 'module';
-    return of(value);
-  }
-
-  canModifyPresentation(): Observable<boolean> {
-    return of(true);
-  }
 }
 
 describe('PryAccessDirective', () => {

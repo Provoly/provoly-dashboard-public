@@ -1,16 +1,17 @@
 <ng-container *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'save' }">
   <ng-container *ngIf="mode === 'directSave'">
     <div [attr.aria-expanded]="saveTypeOpened" aria-controls="directiveSave" aria-describedby="infoTooltip_directSave">
-      <button
-        type="button"
-        #directiveSave
-        class="a-btn a-btn--primary"
-        (click)="directSave()"
-        [disabled]="!(isCurrentPresentationModified$ | async)"
-        [hidden]="!(isCurrentPresentationOwner$ | async)"
-      >
-        <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.save' | i18n }} ({{ nbPages }})</ng-container>
-      </button>
+      @if (canModify$() | async) {
+        <button
+          type="button"
+          #directiveSave
+          class="a-btn a-btn--primary"
+          (click)="directSave()"
+          [disabled]="!(isCurrentPresentationModified$ | async)"
+        >
+          <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.save' | i18n }} ({{ nbPages }})</ng-container>
+        </button>
+      }
     </div>
   </ng-container>
   <ng-container *ngIf="mode === 'saveAs'">

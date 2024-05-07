@@ -1,7 +1,14 @@
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { Component } from '@angular/core';
+import { Component, Inject, Optional } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ConfigActions, ToolboxManifestService, ToolboxMenuService, WidgetDescriptionMenu } from '@provoly/dashboard';
+import {
+  ConfigActions,
+  PRY_ACCESS_TOKEN,
+  PryBaseAccess,
+  ToolboxManifestService,
+  ToolboxMenuService,
+  WidgetDescriptionMenu
+} from '@provoly/dashboard';
 import { Observable } from 'rxjs';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
@@ -22,10 +29,11 @@ export class DragWidgetsComponent extends ToolboxActionComponent {
 
   constructor(
     store: Store,
+    @Optional() @Inject(PRY_ACCESS_TOKEN) access: PryBaseAccess,
     private toolboxManifestService: ToolboxManifestService,
     public toolboxMenuService: ToolboxMenuService
   ) {
-    super(store);
+    super(store, access);
     this.store.dispatch(ConfigActions.loadWidgets());
     this.menu$ = this.toolboxMenuService.menuStructure$;
   }

@@ -125,7 +125,6 @@ const isCurrentPresentationModified = createSelector(
   globalManifest,
   (state, global) => !equal(global, state.initial)
 );
-const isCurrentPresentationOwner = createSelector(presentation, (state) => !!state.current && state.current.owner);
 
 const filters = createSelector(feature, (state: DashboardState) => state?.manifests.manifest.filters ?? []);
 const datasourceFilters = createSelector(feature, (state: DashboardState) =>
@@ -193,7 +192,6 @@ export const DashboardSelectors = {
   presentation,
   filters,
   isCurrentPresentationModified,
-  isCurrentPresentationOwner,
   datasourceFilters,
   wmsFeatures,
   displayOptions,

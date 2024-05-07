@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { DashboardActions } from '@provoly/dashboard';
+import { DashboardActions, PRY_ACCESS_TOKEN, PryDefaultAccessService } from '@provoly/dashboard';
 import { MockPryIconComponent } from '../../../mock/components/mock-pry-icon.component';
 import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
@@ -15,7 +15,7 @@ describe('LaunchTabComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [LaunchTabComponent, MockTranslatePipe, MockPryIconComponent, MockI18nPipe],
-      providers: [provideMockStore()]
+      providers: [provideMockStore(), { provide: PRY_ACCESS_TOKEN, useClass: PryDefaultAccessService }]
     }).compileComponents();
   });
 
