@@ -13,15 +13,6 @@
       .is-private {
         color: themed($theme-map, 'color', 'primary', 500);
       }
-
-      &__action {
-        border-top: 1px themed($theme-map, 'color', 'primary', 300) solid;
-
-        .a-btn--secondary {
-          font-size: toRem(14);
-          line-height: toRem(18);
-        }
-      }
     }
   }
 

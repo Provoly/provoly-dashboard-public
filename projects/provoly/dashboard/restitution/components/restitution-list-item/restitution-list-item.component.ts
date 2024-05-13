@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   CatalogEntry,
@@ -20,13 +20,15 @@ import { map, Observable } from 'rxjs';
 export class PryRestitutionListItemComponent extends SubscriptionnerDirective {
   @Input() widget!: CatalogEntry;
   @Input() translate: boolean = true;
-  @Output() selectRestitution = new EventEmitter<Widget>();
   catalog: Widget[] | undefined;
   automaticGridMode$: Observable<boolean>;
   automaticGridMode: boolean = false;
   PryVisibilityType = PryVisibilityType;
 
-  constructor(private store: Store, private toolboxManifestService: ToolboxManifestService) {
+  constructor(
+    private store: Store,
+    private toolboxManifestService: ToolboxManifestService
+  ) {
     super();
     this.store.select(ConfigSelectors.catalog).subscribe((catalog: Widget[]) => (this.catalog = catalog));
     this.automaticGridMode$ = this.store
@@ -38,16 +40,6 @@ export class PryRestitutionListItemComponent extends SubscriptionnerDirective {
   dragStart($event: DragEvent, type: string) {
     if (!this.automaticGridMode) {
       this.toolboxManifestService.dataTransfer($event, type);
-    }
-  }
-
-  emitSelectedRestitution(catalogEntry: CatalogEntry) {
-    if (catalogEntry.isCustom) {
-      this.catalog?.forEach((widget: Widget) => {
-        if (widget.id === catalogEntry.type) {
-          this.selectRestitution.emit(widget);
-        }
-      });
     }
   }
 

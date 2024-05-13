@@ -19,25 +19,23 @@ import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 })
 export class PryRestitutionListComponent extends SubscriptionnerDirective {
   @Input() showTabs = true;
-  @Input()
-  get customModels(): string[] {
+  private _customModels = ['detail', 'iframe'];
+  @Input() get customModels(): string[] {
     return this._customModels;
   }
   set customModels(models: string[]) {
     this._customModels = ['detail', 'iframe', ...models];
   }
-  private _customModels = ['detail', 'iframe'];
+
   search$ = new BehaviorSubject('');
   type$ = new BehaviorSubject<undefined | string>(undefined);
+
   filteredWidgets$: Observable<CatalogEntry[]>;
   nonCustomWidgets$: Observable<CatalogEntry[]>;
   customWidgets$: Observable<CatalogEntry[]>;
+
   types$: Observable<{ icon: string; label: string; type: string }[]>;
-  selectedRestitution: Widget | null = null;
-  mode = ViewMode;
-  selectedMode: ViewMode = ViewMode.CATALOG;
   categories = ['model', 'noModel'];
-  PryVisibilityType = PryVisibilityType;
 
   constructor(
     private toolboxMenuService: ToolboxMenuService,
@@ -74,17 +72,7 @@ export class PryRestitutionListComponent extends SubscriptionnerDirective {
     );
   }
 
-  selectMode(newMode: ViewMode) {
-    this.selectedMode = newMode;
-  }
-
-  selectRestitution($event: Widget) {
-    this.selectedRestitution = $event;
-    this.selectMode(ViewMode.CONSULT);
-  }
-
-  closeRestitution() {
-    this.selectedRestitution = null;
-    this.selectMode(this.mode.CATALOG);
+  selectType(type: string) {
+    this.type$.next(type);
   }
 }

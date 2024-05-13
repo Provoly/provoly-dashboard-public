@@ -45,34 +45,4 @@ describe('PryRestitutionListComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should set selectedRestitution to the emitted widget', () => {
-    let widget = { id: 'restitution-type', name: 'Custom Widget', type: 'restitution-type' } as unknown as Widget;
-    component.selectRestitution(widget);
-    expect(component.selectedRestitution).toEqual(widget);
-    expect(component.selectedMode).toEqual(component.mode.CONSULT);
-  });
-  it('should set selectedRestitution to null', () => {
-    let widget = { id: 'restitution-type', name: 'Custom Widget', type: 'restitution-type' } as unknown as Widget;
-    component.selectRestitution(widget);
-    component.closeRestitution();
-    expect(component.selectedRestitution).toBeNull();
-    expect(component.selectedMode).toEqual(component.mode.CATALOG);
-  });
-
-  it('should update selectedMode when selectMode is called', () => {
-    expect(component.selectedMode).toBe(ViewMode.CATALOG);
-    component.selectMode(ViewMode.CONSULT);
-    expect(component.selectedMode).toBe(ViewMode.CONSULT);
-  });
-
-  it('should  closeRestitution is called', () => {
-    component.selectedRestitution = {} as Widget;
-    component.selectedMode = ViewMode.CONSULT;
-
-    component.closeRestitution();
-
-    expect(component.selectedRestitution).toBeNull();
-    expect(component.selectedMode).toEqual(ViewMode.CATALOG);
-  });
 });

@@ -1,62 +1,63 @@
 <pry-restitution-css></pry-restitution-css>
 <div class="o-catalog">
-  <ng-template [ngIf]="selectedMode === mode.CATALOG">
-    <h2 class="a-h2">{{ '@pry.restitution.catalog' | i18n }}</h2>
-    <div class="o-catalog__filters">
-      <div class="o-catalog__filters__by-name">
-        <label id="catalog-search-label" for="catalog-search" class="a-label u-visually-hidden">
-          <span>{{ '@pry.toolbox.catalog.filter.name' | i18n }}</span>
-        </label>
-        <pry-icon class="search-icon" iconSvg="search" [width]="17" [height]="17"></pry-icon>
-        <input
-          id="catalog-search"
-          type="text"
-          class="a-form-field"
-          [placeholder]="'@pry.action.search' | i18n"
-          [ngModel]="search$ | async"
-          (ngModelChange)="this.search$.next($event)"
-        />
-      </div>
-      <label class="a-label">{{ '@pry.action.filterByType' | i18n }}</label>
-      <div class="o-catalog__filters__by-type">
-        <ul class="o-catalog__filters__by-type__list">
-          <li *ngFor="let typeOpt of types$ | async">
+  <h2 class="a-h2">{{ '@pry.restitution.catalog' | i18n }}</h2>
+  <div class="o-catalog__filters">
+    <div class="o-catalog__filters__by-name">
+      <label id="catalog-search-label" for="catalog-search" class="a-label u-visually-hidden">
+        <span>{{ '@pry.toolbox.catalog.filter.name' | i18n }}</span>
+      </label>
+      <pry-icon class="search-icon" iconSvg="search" [width]="17" [height]="17"></pry-icon>
+      <input
+        id="catalog-search"
+        type="text"
+        class="a-form-field"
+        [placeholder]="'@pry.action.search' | i18n"
+        [ngModel]="search$ | async"
+        (ngModelChange)="this.search$.next($event)"
+      />
+    </div>
+    <label class="a-label">{{ '@pry.action.filterByType' | i18n }}</label>
+    <div class="o-catalog__filters__by-type">
+      <ul class="o-catalog__filters__by-type__list">
+        @for (typeOpt of types$ | async; track typeOpt.label) {
+          <li>
             <input
               type="radio"
               class="a-form-field u-sr-only"
               name="catalog-filter"
               id="catalog-button-{{ typeOpt.type }}"
               [checked]="typeOpt.type === (type$ | async)"
-              (change)="type$.next(typeOpt.type)"
+              (change)="selectType(typeOpt.type)"
             />
             <label
               class="a-label"
               id="catalog-button-label-{{ typeOpt.type }}"
               for="catalog-button-{{ typeOpt.type }}"
-              [title]="typeOpt.label | i18n : { warn: false }"
+              [title]="typeOpt.label | i18n: { warn: false }"
             >
-              <span class="u-sr-only">{{ typeOpt.label | i18n : { warn: false } }} </span>
+              <span class="u-sr-only">{{ typeOpt.label | i18n: { warn: false } }} </span>
               <pry-icon [width]="18" [height]="18" [iconSvg]="typeOpt.icon"></pry-icon>
             </label>
           </li>
-        </ul>
-        <button
-          type="button"
-          class="a-btn a-btn--icon-text -link-like"
-          (click)="type$.next(undefined)"
-          [disabled]="!type$.getValue()"
-          [class.u-visually-hidden]="!type$.getValue()"
-        >
-          <pry-icon [width]="15" [height]="15" iconSvg="delete"></pry-icon>
-          {{ '@pry.toolbox.catalog.filter.delete' | i18n }}
-        </button>
-      </div>
+        }
+      </ul>
+      <button
+        type="button"
+        class="a-btn a-btn--icon-text -link-like"
+        (click)="type$.next(undefined)"
+        [disabled]="!type$.getValue()"
+        [class.u-visually-hidden]="!type$.getValue()"
+      >
+        <pry-icon [width]="15" [height]="15" iconSvg="delete"></pry-icon>
+        {{ '@pry.toolbox.catalog.filter.delete' | i18n }}
+      </button>
     </div>
-    <ng-container *ngIf="showTabs; else list">
-      <div class="o-accordion" role="tablist" aria-multiselectable="false">
-        <pry-accordion>
+  </div>
+  @if (showTabs) {
+    <div class="o-accordion" role="tablist" aria-multiselectable="false">
+      <pry-accordion>
+        @for (category of categories; track category; let index = $index) {
           <pry-accordion-item
-            *ngFor="let category of categories; let index = index"
             [item]="category"
             [index]="index"
             translationStringBase="@pry.restitution.catalogTabs."
@@ -65,59 +66,25 @@
             "
           >
             <ul class="o-catalog__list" role="list" aria-live="polite">
-              <ng-container *ngIf="category === 'model'">
-                <pry-catalog-item
-                  *ngFor="let widget of nonCustomWidgets$ | async"
-                  [widget]="widget"
-                  (selectRestitution)="selectRestitution($event)"
-                ></pry-catalog-item>
-              </ng-container>
-              <ng-container *ngIf="category === 'noModel'">
-                <pry-catalog-item
-                  *ngFor="let widget of customWidgets$ | async"
-                  [translate]="false"
-                  [widget]="widget"
-                  (selectRestitution)="selectRestitution($event)"
-                ></pry-catalog-item>
-              </ng-container>
+              @if (category === 'model') {
+                @for (widget of nonCustomWidgets$ | async; track widget.label) {
+                  <pry-catalog-item [widget]="widget"></pry-catalog-item>
+                }
+              } @else if (category === 'noModel') {
+                @for (widget of customWidgets$ | async; track widget.label) {
+                  <pry-catalog-item [widget]="widget" [translate]="false"></pry-catalog-item>
+                }
+              }
             </ul>
           </pry-accordion-item>
-        </pry-accordion>
-      </div>
-    </ng-container>
-
-    <ng-template #list>
-      <ul class="o-catalog__list" role="list" aria-live="polite">
-        <pry-catalog-item
-          *ngFor="let widget of filteredWidgets$ | async"
-          [widget]="widget"
-          (selectRestitution)="selectRestitution($event)"
-        ></pry-catalog-item>
-      </ul>
-    </ng-template>
-  </ng-template>
-
-  <ng-template [ngIf]="selectedMode === mode.CONSULT">
-    <div class="o-catalog__create">
-      <button class="a-btn a-btn--secondary" (click)="closeRestitution()">
-        {{ '@pry.restitution.cancel' | i18n }}
-      </button>
+        }
+      </pry-accordion>
     </div>
-
-    <pry-restitution
-      [selectedRestitution]="selectedRestitution"
-      [edit]="false"
-      (restitutionCreated)="closeRestitution()"
-    ></pry-restitution>
-  </ng-template>
-
-  <ng-template [ngIf]="selectedMode === mode.CREATION">
-    <div class="o-catalog__create">
-      <button class="a-btn a-btn--secondary" (click)="selectMode(mode.CATALOG)">
-        {{ '@pry.restitution.cancel' | i18n }}
-      </button>
-    </div>
-
-    <pry-restitution (restitutionCreated)="closeRestitution()"></pry-restitution>
-  </ng-template>
+  } @else {
+    <ul class="o-catalog__list" role="list" aria-live="polite">
+      @for (widget of filteredWidgets$ | async; track widget.label) {
+        <pry-catalog-item [widget]="widget"></pry-catalog-item>
+      }
+    </ul>
+  }
 </div>
