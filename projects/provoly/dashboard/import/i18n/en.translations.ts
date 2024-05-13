@@ -12,7 +12,8 @@ export const enTranslations = {
       tooLarge: 'File is too large ({{current}} > 2GB), please use APIs to import this file.',
       selectFile: 'Select file',
       importedLines: 'imported lines',
-      consultDataset: 'The import is in progress, see the {{ parameter }} dataset page to check its condition',
+      consultDataset1: 'The import is in progress, see the ',
+      consultDataset2: ' dataset page to check its condition',
       errors: 'errors',
       error: 'Error on import: {{msg}}',
       errorCode: {

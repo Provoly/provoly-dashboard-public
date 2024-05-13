@@ -1,34 +1,34 @@
 <pry-import-css></pry-import-css>
 <div class="o-import">
   <h1 class="a-h1">{{ '@pry.import.title' | i18n }}</h1>
-  <div class="o-import__container">
-    <div class="o-import__container__input">
+  <div class="u-display-flex">
+    <form class="o-import__form" [formGroup]="form" (ngSubmit)="submit()">
       <div class="m-form-label-field">
-        <div class="m-form-label-field">
-          <label class="a-h3" for="datasets">{{ '@pry.import.fileType' | i18n }}</label>
-          <pry-select
-            id="fileType"
-            [items]="fileTypes"
-            [ngModel]="fileTypes[0].value"
-            [disabled]="false"
-            (ngModelChange)="onFileTypeChange($event)"
-            bindValue="value"
-            bindLabel="label"
-          ></pry-select>
-        </div>
+        <label class="a-h3" for="datasets">{{ '@pry.import.fileType' | i18n }}</label>
+        <pry-select
+          formControlName="fileType"
+          id="fileType"
+          [items]="Object.values(fileTypes)"
+          bindValue="value"
+          bindLabel="label"
+        ></pry-select>
+      </div>
+      <div class="m-form-label-field">
         <label class="a-h3" for="upload_input">
-          {{ '@pry.import.uploadTitle' + selectedFileType | i18n }}
+          {{ '@pry.import.uploadTitle' + fileType.value | i18n }}
         </label>
         <p>{{ '@pry.import.warning' | i18n }}</p>
         <div class="o-file-input">
-          <div *ngIf="file" class="o-import__container__input__file">
-            <pry-icon iconSvg="download"></pry-icon>
-            <h3>{{ file.name }}</h3>
-            <span>{{ getFileSize(file.size) }}</span>
-          </div>
+          @if (file.value?.size) {
+            <div class="o-import__file">
+              <pry-icon iconSvg="download"></pry-icon>
+              <h3>{{ file.value?.name }}</h3>
+              <span>{{ getFileSize(file.value?.size ?? 0) }}</span>
+            </div>
+          }
           <pry-upload
             id="upload_input"
-            [accept]="fileExtension[selectedFileType]"
+            [accept]="fileTypes[fileType.value].extension"
             mode="files"
             (uploadedFile)="uploadedChange($event)"
             labelTranslate="@pry.import.selectFile"
@@ -38,58 +38,64 @@
       <div class="m-form-label-field">
         <label class="a-h3" for="datasets">{{ '@pry.import.datasetImport' | i18n }}</label>
         <pry-select
+          formControlName="dataset"
           id="datasets"
           [items]="datasets$ | async"
-          [(ngModel)]="selectedDataset"
-          (ngModelChange)="getLastActiveVersion($event)"
           [placeholder]="'@pry.import.dataset' | i18n"
           bindLabel="name"
+          [autocomplete]="true"
         ></pry-select>
       </div>
-      <pry-checkbox [(ngModel)]="normalizeGeoShape">{{ '@pry.import.normalize' | i18n }}</pry-checkbox>
+      <div class="m-form-label-field">
+        <pry-checkbox formControlName="normalizeGeo">{{ '@pry.import.normalize' | i18n }}</pry-checkbox>
+      </div>
       <div class="m-form-label-field">
         <label class="a-h3">{{ '@pry.dataset.version.productionDate' | i18n }}</label>
         <input
+          formControlName="productionDate"
+          id="productionDate"
           class="a-form-field"
           type="datetime-local"
           [max]="maxDate"
-          [(ngModel)]="productionDate"
-          id="productionDate"
+          [attr.aria-invalid]="productionDate.invalid"
         />
-        @if (productionDateIsInTheFuture()) {
-          <label id="productionDate-error-required" for="productionDate" class="a-label a-label--help -error">
-            <span>{{ '@pry.dataset.form.date' | i18n }}</span>
-          </label>
-        } @else if (productionDate === '') {
+        @if (productionDate.invalid) {
           <label id="productionDate-error" for="productionDate" class="a-label a-label--help -error">
-            <span>{{ '@pry.dataset.form.obligatory' | i18n }}</span>
+            @if (productionDate.errors?.['required']) {
+              <span>{{ '@pry.dataset.form.obligatory' | i18n }}</span>
+            } @else if (productionDate.errors?.['dateValidator']) {
+              <span>{{ '@pry.dataset.form.date' | i18n }}</span>
+            }
           </label>
         }
       </div>
       <div class="m-form-label-field">
         <label class="a-h3">{{ '@pry.dataset.version.producer' | i18n }}</label>
-        <input class="a-form-field" type="text" maxlength="100" [(ngModel)]="producer" #producerInput />
+        <input formControlName="producer" id="producer" class="a-form-field" type="text" maxlength="100" />
+        @if (producer.touched && producer.invalid) {
+          <label id="producer-error" for="producer" class="a-label a-label--help -error">
+            @if (producer.errors?.['required']) {
+              <span>{{ '@pry.dataset.form.obligatory' | i18n }}</span>
+            }
+          </label>
+        }
       </div>
       <div class="m-form-label-field">
         <label class="a-h3">{{ '@pry.dataset.version.additionalInformation' | i18n }}</label>
-        <pry-text-editor [(ngModel)]="additionalInformation"></pry-text-editor>
+        <pry-text-editor formControlName="additionalInformation"></pry-text-editor>
       </div>
-      <div class="o-import__container__input__actions">
-        <button class="a-btn a-btn--primary" (click)="submit()" [disabled]="isSubmitDisabled()">
+      <div class="o-import__actions u-display-flex -justify-center">
+        <button class="a-btn a-btn--primary" [disabled]="form.invalid">
           {{ '@pry.import.import' | i18n }}
         </button>
       </div>
+    </form>
+    <div class="o-import__message" [class.u-visually-hidden]="!showMessage" #message>
+      <span>
+        {{ '@pry.import.consultDataset1' | i18n }}
+        <strong>{{ dataset.value?.id ?? '' | translateId: { type: 'datasource', output: 'name' } | async }}</strong>
+        {{ '@pry.import.consultDataset2' | i18n }}
+      </span>
     </div>
-    <ng-container *ngIf="showMessage">
-      <div class="o-import__result">
-        <h1>
-          {{
-            '@pry.import.consultDataset'
-              | i18n
-                : { parameter: selectedDataset?.id ?? '' | translateId: { type: 'datasource', output: 'name' } | async }
-          }}
-        </h1>
-      </div>
-    </ng-container>
   </div>
 </div>

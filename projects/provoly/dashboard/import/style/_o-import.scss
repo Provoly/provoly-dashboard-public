@@ -8,44 +8,31 @@
   height: 100%;
   padding: toRem(15) toRem(25);
 
-  &__container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: minmax(400px, 600px);
-    grid-column-gap: toRem(75);
-    padding-top: toRem(15);
-
-    &__input {
-      padding-top: toRem(15);
-
-      .o-file-input {
-        min-height: toRem(75);
-      }
-
-      &__file {
-        text-align: center;
-      }
-
-      &__actions {
-        display: flex;
-        justify-content: space-around;
-        margin-top: toRem(50);
-
-        .a-btn {
-          padding: toRem(5) toRem(60);
-        }
-      }
-    }
+  .u-display-flex {
+    gap: toRem(75);
   }
 
-  &__result {
+  &__form {
+    max-width: 50%;
+  }
+
+  .o-file-input {
+    min-height: toRem(75);
+  }
+
+  &__file {
+    text-align: center;
+  }
+
+  &__actions {
+    margin-top: toRem(50)
+  }
+
+  &__message {
     padding: toRem(15);
     background-color: #ecedf4;
     border-radius: toRem(10);
     overflow-y: auto;
-
-    &__error {
-      padding: toRem(5) 0;
-    }
+    height: fit-content;
   }
 }
