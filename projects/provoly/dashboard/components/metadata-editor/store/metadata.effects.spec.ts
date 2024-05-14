@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { DataSourceService, IMetadata, VARIABLE_TYPE } from '@provoly/dashboard';
+import { IMetadata, VARIABLE_TYPE } from '@provoly/dashboard';
 import { MetadataService } from '@provoly/dashboard/components/metadata-editor';
 import { metadataUser } from '@provoly/dashboard/mock/data/mockItemAdmin';
 import { hot } from 'jest-marbles';
@@ -28,7 +28,6 @@ describe('MetadataEffects', () => {
   let actions$: Observable<any>;
   let effects: MetadataEffects;
   let metadataService: MetadataService;
-  let datasourceService: DataSourceService;
   const initialState = initialMetadataState;
   let store: MockStore<any>;
   let router: Router;
@@ -51,20 +50,12 @@ describe('MetadataEffects', () => {
             getUserMetadata: () => of(metadata),
             getMetadataUser: () => of(metadataUser)
           }
-        },
-        {
-          provide: DataSourceService,
-          useValue: {
-            addDatasetMetadata: () => of(undefined),
-            deleteDatasetMetadata: () => of(undefined)
-          }
         }
       ]
     });
 
     effects = TestBed.inject(MetadataEffects);
     metadataService = TestBed.inject<MetadataService>(MetadataService);
-    datasourceService = TestBed.inject<DataSourceService>(DataSourceService);
     store = TestBed.inject(MockStore);
     router = TestBed.inject(Router);
   });
@@ -155,96 +146,6 @@ describe('MetadataEffects', () => {
       });
       expect(effects.createMetadata$).toBeObservable(expected$);
       expect(effects.createMetadata$).toSatisfyOnFlush(() => {
-        expect(getSpy).toHaveBeenCalled();
-      });
-    });
-  });
-
-  describe('addDatasetMetadata$', () => {
-    it('should call addDatasetMetadataSuccess on successful PUT', () => {
-      const getSpy = jest.spyOn(datasourceService, 'addDatasetMetadata');
-      store.setState(
-        buildState({
-          ...initialState
-        })
-      );
-
-      actions$ = hot('a', {
-        a: MetadataActions.addDatasetMetadata({ datasetId: 'id', metadataId: 'id2', value: 'meta-value' })
-      });
-
-      const expected$ = hot('a', {
-        a: MetadataActions.addDatasetMetadataSuccess({ datasetId: 'id' })
-      });
-      expect(effects.addDatasetMetadata$).toBeObservable(expected$);
-      expect(effects.addDatasetMetadata$).toSatisfyOnFlush(() => {
-        expect(getSpy).toHaveBeenCalled();
-      });
-    });
-    it('should call addDatasetMetadataFailure on failed PUT', () => {
-      const getSpy = jest
-        .spyOn(datasourceService, 'addDatasetMetadata')
-        .mockReturnValue(throwError(() => new Error('error')));
-      store.setState(
-        buildState({
-          ...initialState
-        })
-      );
-
-      actions$ = hot('--a-', {
-        a: MetadataActions.addDatasetMetadata({ datasetId: 'id', metadataId: 'id2', value: 'meta-value' })
-      });
-
-      const expected$ = hot('--a-', {
-        a: MetadataActions.addDatasetMetadataFailure({ error: new Error('error') })
-      });
-      expect(effects.addDatasetMetadata$).toBeObservable(expected$);
-      expect(effects.addDatasetMetadata$).toSatisfyOnFlush(() => {
-        expect(getSpy).toHaveBeenCalled();
-      });
-    });
-  });
-
-  describe('deleteDatasetMetadata$', () => {
-    it('should call deleteDatasetMetadataSuccess on successful DELETE', () => {
-      const getSpy = jest.spyOn(datasourceService, 'deleteDatasetMetadata');
-      store.setState(
-        buildState({
-          ...initialState
-        })
-      );
-
-      actions$ = hot('a', {
-        a: MetadataActions.deleteDatasetMetadata({ datasetId: 'id', metadataId: 'id2' })
-      });
-
-      const expected$ = hot('a', {
-        a: MetadataActions.deleteDatasetMetadataSuccess({ datasetId: 'id' })
-      });
-      expect(effects.deleteDatasetMetadata$).toBeObservable(expected$);
-      expect(effects.deleteDatasetMetadata$).toSatisfyOnFlush(() => {
-        expect(getSpy).toHaveBeenCalled();
-      });
-    });
-    it('should call deleteDatasetMetadataSuccessFailure on failed DELETE', () => {
-      const getSpy = jest
-        .spyOn(datasourceService, 'deleteDatasetMetadata')
-        .mockReturnValue(throwError(() => new Error('error')));
-      store.setState(
-        buildState({
-          ...initialState
-        })
-      );
-
-      actions$ = hot('--a-', {
-        a: MetadataActions.deleteDatasetMetadata({ datasetId: 'id', metadataId: 'id2' })
-      });
-
-      const expected$ = hot('--a-', {
-        a: MetadataActions.deleteDatasetMetadataFailure({ error: new Error('error') })
-      });
-      expect(effects.deleteDatasetMetadata$).toBeObservable(expected$);
-      expect(effects.deleteDatasetMetadata$).toSatisfyOnFlush(() => {
         expect(getSpy).toHaveBeenCalled();
       });
     });

@@ -37,10 +37,6 @@ const getDataSourcesSorted = createSelector(
   (nqs, dsd) =>
     [...nqs, ...dsd].sort((nq1, nq2) => nq1.name.toLowerCase().localeCompare(nq2.name.toLowerCase())) as DataSource[]
 );
-const selectedDatasetId = createSelector(selectFeature, (state) => state?.selectedDataset?.id);
-const selectedDataset = createSelector(selectFeature, (state) => state?.selectedDataset);
-const selectedDatasetMetadata = createSelector(selectFeature, (state) => state?.selectedDataset?.metadata ?? []);
-const selectedDatasetMissingGroups = createSelector(selectFeature, (state) => state?.missingGroups);
 const datasetVersions = createSelector(selectFeature, (state) => state?.datasetVersions ?? []);
 const memoizeDatasetVersions = {} as any;
 const matchingDatasetVersions = (datasetId: string) => {
@@ -69,11 +65,7 @@ export const DataSourceSelectors = {
   isLoading,
   getDataSources,
   getDataSourcesSorted,
-  selectedDataset,
-  selectedDatasetMetadata,
-  selectedDatasetMissingGroups,
   datasetVersions,
-  selectedDatasetId,
   matchingDatasetVersions,
   datasetPreviews
 };

@@ -5,7 +5,6 @@ import {
   Associations,
   DashboardSelectors,
   Dataset,
-  DataSourceActions,
   DataSourceSelectors,
   MetadataValue,
   MissingGroupsByEntity,
@@ -17,6 +16,8 @@ import { MetadataActions, MetadataSelectors, MetaEventType } from '@provoly/dash
 import { BehaviorSubject, combineLatest, map, Observable, Subscription, withLatestFrom } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminSelectors } from '../../../store/admin.selectors';
+import { AdminDatasetActions } from '../store/admin-dataset.actions';
+import { AdminDatasetSelectors } from '../store/admin-dataset.selectors';
 
 interface MissingGroups {
   [key: string]: { groups: string[]; entityName: string };
@@ -48,11 +49,11 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
   ) {
     super();
     this.store.dispatch(MetadataActions.loadMetadata());
-    this.selectedDataset$ = this.store.select(DataSourceSelectors.selectedDataset);
-    this.datasetMetadata$ = this.store.select(DataSourceSelectors.selectedDatasetMetadata);
+    this.selectedDataset$ = this.store.select(AdminDatasetSelectors.selectedDataset);
+    this.datasetMetadata$ = this.store.select(AdminDatasetSelectors.selectedDatasetMetadata);
     this.associations$ = this.store.select(AdminSelectors.selectedAssociation);
     this.editable$ = this.store.select(MetadataSelectors.editable);
-    this.selectedDatasetMissingGroups$ = this.store.select(DataSourceSelectors.selectedDatasetMissingGroups);
+    this.selectedDatasetMissingGroups$ = this.store.select(AdminDatasetSelectors.selectedDatasetMissingGroups);
     this.missingGroups$ = this.selectedDatasetMissingGroups$.pipe(
       withLatestFrom(this.store.select(DashboardSelectors.manifestsList)),
       map(([conflict, manifests]) => {
@@ -90,7 +91,7 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
                       actionAccess: 'write'
                     },
                     {
-                      action: DataSourceActions.dataset.confirmDataSourceDeletion({
+                      action: AdminDatasetActions.confirmDatasetDeletion({
                         name: dataset.id,
                         route: this.router.createUrlTree(['.', 'dataset'], { relativeTo: this.route }).toString(),
                         addRoute: this.router
@@ -122,7 +123,7 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
 
   closePanel() {
     const path = this.router.createUrlTree(['.', 'dataset', 'new'], { relativeTo: this.route });
-    this.store.dispatch(DataSourceActions.dataset.unselectDataset());
+    this.store.dispatch(AdminDatasetActions.unselectDataset());
     this.store.dispatch(AdminActions.togglePanel({ panelOpen: false }));
     this.store.dispatch(
       AdminActions.mainActions({
@@ -157,9 +158,7 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
   }
 
   share(dataset: Dataset) {
-    this.store.dispatch(
-      DataSourceActions.dataset.update({ dataset: { ...dataset, groups: this.accessGroups }, route: '' })
-    );
+    this.store.dispatch(AdminDatasetActions.update({ dataset: { ...dataset, groups: this.accessGroups }, route: '' }));
   }
 
   getGroupLabel(groupName: string) {
@@ -171,7 +170,7 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
   changeGroup($event: string[]) {
     this.accessGroups = $event;
     this.updateDisableButtonValue();
-    this.store.dispatch(DataSourceActions.dataset.setMissingGroups({ missingGroups: undefined }));
+    this.store.dispatch(AdminDatasetActions.setMissingGroups({ missingGroups: undefined }));
   }
 
   updateVisibility($event: PryVisibilityType) {

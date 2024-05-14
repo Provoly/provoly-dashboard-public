@@ -12,6 +12,8 @@ import {
 import { Observable } from 'rxjs';
 import { AdminActions } from '../../store/admin.actions';
 import { IConfigHeader } from '../admin-metadata/shared/list-metadata/pry-list-metadata.component';
+import { AdminDatasetActions } from './store/admin-dataset.actions';
+import { AdminDatasetSelectors } from './store/admin-dataset.selectors';
 
 @Component({
   selector: 'pry-admin-dataset',
@@ -47,14 +49,14 @@ export class AdminDatasetComponent {
       { headerType: 'label', label: this.translateService.instant('@pry.admin.dataset.type') }
     ];
     this.datasetList$ = this.store.select(DataSourceSelectors.datasets);
-    this.selectedDataset$ = this.store.select(DataSourceSelectors.selectedDatasetId);
-    this.store.dispatch(DataSourceActions.dataset.unselectDataset());
+    this.selectedDataset$ = this.store.select(AdminDatasetSelectors.selectedDatasetId);
+    this.store.dispatch(AdminDatasetActions.unselectDataset());
     const path = this.router.createUrlTree(['.', 'new'], { relativeTo: this.route });
     this.store.dispatch(
       AdminActions.mainActions({
         actions: [
           {
-            action: DataSourceActions.dataset.openNewDataset({ route: path.toString() }),
+            action: AdminDatasetActions.openNewDataset({ route: path.toString() }),
             label: 'add',
             icon: 'add_column',
             moduleAccess: 'admin',
@@ -68,7 +70,7 @@ export class AdminDatasetComponent {
 
   cancelEdition(): void {
     this.toggleEditionDataset();
-    this.store.dispatch(DataSourceActions.dataset.unselectDataset());
+    this.store.dispatch(AdminDatasetActions.unselectDataset());
   }
 
   toggleEditionDataset(): void {
@@ -90,7 +92,7 @@ export class AdminDatasetComponent {
 
   selectDataset(dataset: Dataset) {
     this.store.dispatch(AdminActions.fetchDatasetAssociations({ id: dataset.id }));
-    this.store.dispatch(DataSourceActions.dataset.selectDataset({ dataset }));
+    this.store.dispatch(AdminDatasetActions.selectDataset({ dataset }));
     this.store.dispatch(AdminActions.selectComponentType({ componentType: 'AdminSelectDatasetComponent' }));
   }
 }

@@ -15,6 +15,7 @@ import {
 import { Observable, Subscription } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { AdminActions } from '../../../../store/admin.actions';
+import { AdminDatasetActions } from '../../store/admin-dataset.actions';
 
 @Component({
   selector: 'pry-admin-form-dataset',
@@ -47,10 +48,10 @@ export class AdminFormDatasetComponent implements OnInit, OnDestroy {
     this.classes = this.store.select(ClassSelectors.classes);
     this.form = this.formBuilder.group({
       id: [uuidv4()],
-      name: ['', [Validators.required,Validators.maxLength(100)]],
+      name: ['', [Validators.required, Validators.maxLength(100)]],
       oClass: ['', [Validators.required]],
       type: ['', [Validators.required]],
-      description:['',[Validators.maxLength(500)]]
+      description: ['', [Validators.maxLength(500)]]
     });
   }
 
@@ -104,7 +105,7 @@ export class AdminFormDatasetComponent implements OnInit, OnDestroy {
       this.isSubmitted = false;
       if (this.dataset$) {
         const path = this.router.createUrlTree(['../..'], { relativeTo: this.route });
-        this.store.dispatch(DataSourceActions.dataset.update({ dataset: this.form.value, route: path.toString() }));
+        this.store.dispatch(AdminDatasetActions.update({ dataset: this.form.value, route: path.toString() }));
         return;
       }
       const path = this.router.createUrlTree(['..'], { relativeTo: this.route });
@@ -112,7 +113,7 @@ export class AdminFormDatasetComponent implements OnInit, OnDestroy {
         (dataset) => this.form.get('name')?.value.toLowerCase() === dataset.name.toLowerCase()
       );
       if (!this.isSameName) {
-        this.store.dispatch(DataSourceActions.dataset.create({ dataset: this.form.value, route: path.toString() }));
+        this.store.dispatch(AdminDatasetActions.create({ dataset: this.form.value, route: path.toString() }));
       }
     }
   }

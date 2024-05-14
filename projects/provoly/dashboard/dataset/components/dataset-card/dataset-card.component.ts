@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
   selector: 'pry-dataset-card',
   templateUrl: './dataset-card.component.html'
 })
-export class PryDatasetCardComponent implements AfterContentInit  {
+export class PryDatasetCardComponent implements AfterContentInit {
   @Input() dataset!: Dataset;
   @Output() consult = new EventEmitter<Dataset>();
   datasetVersions$!: Observable<DatasetVersion[]>;

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { DataSourceActions, DataSourceService } from '@provoly/dashboard';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { MetadataActions } from './metadata.action';
 import { MetadataService } from './metadata.service';
@@ -48,56 +47,6 @@ export class MetadataEffects {
       ofType(MetadataActions.createMetadataSuccess),
       map((action) => {
         return MetadataActions.loadMetadata();
-      })
-    )
-  );
-
-  addDatasetMetadata$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(MetadataActions.addDatasetMetadata),
-      mergeMap((action) =>
-        this.dataSourceService.addDatasetMetadata(action.datasetId, action.metadataId, action.value).pipe(
-          map(() => MetadataActions.addDatasetMetadataSuccess({ datasetId: action.datasetId })),
-          catchError((error) => [MetadataActions.addDatasetMetadataFailure({ error })])
-        )
-      )
-    )
-  );
-
-  addDatasetMetadataSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(MetadataActions.addDatasetMetadataSuccess),
-      mergeMap((action) => {
-        return [
-          DataSourceActions.dataset.getDatasetById({ id: action.datasetId }),
-          MetadataActions.isEditable({ editable: false }),
-          DataSourceActions.dataset.loadDataset()
-        ];
-      })
-    )
-  );
-
-  deleteDatasetMetadata$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(MetadataActions.deleteDatasetMetadata),
-      mergeMap((action) =>
-        this.dataSourceService.deleteDatasetMetadata(action.datasetId, action.metadataId).pipe(
-          map(() => MetadataActions.deleteDatasetMetadataSuccess({ datasetId: action.datasetId })),
-          catchError((error) => [MetadataActions.deleteDatasetMetadataFailure({ error })])
-        )
-      )
-    )
-  );
-
-  deleteDatasetMetadataSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(MetadataActions.deleteDatasetMetadataSuccess),
-      mergeMap((action) => {
-        return [
-          DataSourceActions.dataset.getDatasetById({ id: action.datasetId }),
-          MetadataActions.isEditable({ editable: false }),
-          DataSourceActions.dataset.loadDataset()
-        ];
       })
     )
   );
@@ -186,7 +135,6 @@ export class MetadataEffects {
 
   constructor(
     private actions$: Actions,
-    private service: MetadataService,
-    private dataSourceService: DataSourceService
+    private service: MetadataService
   ) {}
 }

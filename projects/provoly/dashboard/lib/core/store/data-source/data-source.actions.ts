@@ -38,35 +38,10 @@ export const DataSourceActions = {
     stopRename: createAction('[NamedQuery] stop rename')
   },
   dataset: {
-    confirmDataSourceDeletion: createAction(
-      '[Datase] confirm deletion datasource',
-      props<{ name: string; route: string; addRoute: string }>()
-    ),
     loadDataset: createAction('[Dataset] load datasets'),
     loadedDataset: createAction('[Dataset] loaded datasets', props<{ datasets: Dataset[] }>()),
     failure: createAction('[Dataset] failure effect Dataset', props<{ error: any }>()),
-    create: createAction('[Dataset] create Dataset', props<{ dataset: Dataset; route: string }>()),
-    created: createAction(
-      '[Dataset] Datadef is created call to admin',
-      props<{ path: string; params?: { [p: string]: string } }>()
-    ),
-    update: createAction('[Dataset] update Dataset', props<{ dataset: Dataset; route?: string }>()),
-    setMissingGroups: createAction('[Dataset] set missing groups', props<{ missingGroups?: MissingGroupsByEntity }>()),
-    updated: createAction(
-      '[Dataset] Dataset is updated call to admin',
-      props<{ path: string; params?: { [p: string]: string } }>()
-    ),
-    delete: createAction('[Dataset] delete Dataset', props<{ name: string; route: string; addRoute: string }>()),
-    deleted: createAction('[Dataset] Dataset is deleted call to admin', props<{ addRoute: string }>()),
 
-    unselectDataset: createAction('[Dataset] unselect Dataset'),
-
-    selectDataset: createAction('[Dataset] open Dataset details', props<{ dataset: Dataset }>()),
-
-    getDatasetById: createAction('[Dataset] Get Dataset by ID', props<{ id: string }>()),
-    getDatasetByIdSuccess: createAction('[Dataset] Get Dataset by Id Success', props<{ data: Dataset }>()),
-    getDatasetByIdFailure: createAction('[Dataset] Get Dataset by Id Failure', props<{ error: any }>()),
-    openNewDataset: createAction('[Dataset] open new Dataset', props<{ route: string }>()),
     listVersions: createAction('[Dataset] Get Dataset versions'),
     listVersionsSuccess: createAction(
       '[Dataset] Get Dataset versions Success',

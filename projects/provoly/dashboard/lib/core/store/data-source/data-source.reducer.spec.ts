@@ -1,53 +1,9 @@
-import { Dataset, DatasetVersion, DataSourceActions, PryDatasetType } from '@provoly/dashboard';
+import { DataSourceActions } from '@provoly/dashboard';
 import { dataSourceReducer, DataSourceState, initialDataSourceState } from './data-source.reducer';
+import { mockDatasets, mockDatasetVersions } from '@provoly/dashboard/mock/data/mockDataset';
 
 describe('Dataset Reducer', () => {
   const initialState: DataSourceState = Object.assign({}, initialDataSourceState);
-  const datasets: Dataset[] = [
-    {
-      sourceType: 'dataset',
-      id: 'AAAA-BBBB-CCCC',
-      name: 'fake name 1',
-      oClass: '123456789',
-      type: PryDatasetType.OPEN,
-      metadata: []
-    },
-    {
-      sourceType: 'dataset',
-      id: 'CCCC-BBBB-AAAA',
-      name: 'fake name 2',
-      oClass: '987654321',
-      type: PryDatasetType.CLOSED,
-      metadata: []
-    }
-  ];
-
-  const datasetVersions: DatasetVersion[] = [
-    {
-      id: 'AAAA-BBBB-CCCC',
-      oClass: '123456789',
-      metadata: [],
-      dataset: 'dataset-id',
-      lastModified: '2022-10-05T14:48:00.000Z',
-      available: true,
-      version: 1,
-      state: 'OK',
-      withFile: false,
-      hasWarnings: false
-    },
-    {
-      id: 'CCCC-BBBB-AAAA',
-      oClass: '123456789',
-      metadata: [],
-      dataset: 'dataset-id',
-      lastModified: '2022-10-20T14:48:00.000Z',
-      available: true,
-      version: 2,
-      state: 'OK',
-      withFile: false,
-      hasWarnings: false
-    }
-  ];
 
   describe('an unknown action', () => {
     it('should return the previous state', () => {
@@ -80,11 +36,11 @@ describe('Dataset Reducer', () => {
           {
             ...initialState
           },
-          DataSourceActions.dataset.loadedDataset({ datasets: datasets })
+          DataSourceActions.dataset.loadedDataset({ datasets: mockDatasets })
         )
       ).toEqual({
         ...initialState,
-        datasets: datasets,
+        datasets: mockDatasets,
         isLoading: false
       });
     });
@@ -104,62 +60,6 @@ describe('Dataset Reducer', () => {
       });
     });
   });
-  describe('Select dataset', () => {
-    it('should select dataset', () => {
-      expect(
-        dataSourceReducer(
-          {
-            ...initialState
-          },
-          DataSourceActions.dataset.selectDataset({
-            dataset: {
-              sourceType: 'dataset',
-              id: 'CCCC-BBBB-AAAA',
-              name: 'fake name 2',
-              oClass: '987654321',
-              type: PryDatasetType.CLOSED,
-              metadata: []
-            }
-          })
-        )
-      ).toEqual({
-        ...initialState,
-        selectedDataset: {
-          sourceType: 'dataset',
-          id: 'CCCC-BBBB-AAAA',
-          name: 'fake name 2',
-          oClass: '987654321',
-          type: PryDatasetType.CLOSED,
-          metadata: []
-        }
-      });
-    });
-  });
-  describe('Select unselect dataset', () => {
-    it('should unselect dataset', () => {
-      DataSourceActions.dataset.selectDataset({
-        dataset: {
-          id: 'CCCC-BBBB-AAAA',
-          name: 'fake name 2',
-          oClass: '987654321',
-          type: PryDatasetType.CLOSED,
-          metadata: [],
-          sourceType: 'dataset'
-        }
-      });
-      expect(
-        dataSourceReducer(
-          {
-            ...initialState
-          },
-          DataSourceActions.dataset.unselectDataset()
-        )
-      ).toEqual({
-        ...initialState,
-        selectedDataset: null
-      });
-    });
-  });
 
   describe('dataset versions', () => {
     it('should filter old versions and update version list with new ones', () => {
@@ -167,13 +67,13 @@ describe('Dataset Reducer', () => {
         dataSourceReducer(
           {
             ...initialState,
-            datasetVersions: [{ ...datasetVersions[0], available: false }]
+            datasetVersions: [{ ...mockDatasetVersions[0], available: false }]
           },
-          DataSourceActions.dataset.updateVersionList({ id: 'dataset-id', versions: datasetVersions })
+          DataSourceActions.dataset.updateVersionList({ id: 'dataset-id', versions: mockDatasetVersions })
         )
       ).toEqual({
         ...initialState,
-        datasetVersions: datasetVersions,
+        datasetVersions: mockDatasetVersions,
         isLoading: false
       });
     });

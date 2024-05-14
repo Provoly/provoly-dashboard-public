@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Dataset, DataSourceActions, DataSourceSelectors, DataSourceState } from '@provoly/dashboard';
+import { Dataset } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
+import { AdminDatasetActions } from '../store/admin-dataset.actions';
+import { AdminDatasetSelectors } from '../store/admin-dataset.selectors';
+import { AdminDatasetState } from '../store/admin-dataset.reducer';
 
 @Component({
   selector: 'pry-admin-edit-dataset',
@@ -12,15 +15,15 @@ export class AdminEditDatasetComponent implements OnInit {
   datasetSelected$: Observable<Dataset | null>;
 
   constructor(
-    private store: Store<DataSourceState>,
+    private store: Store<AdminDatasetState>,
     private route: ActivatedRoute
   ) {
-    this.datasetSelected$ = this.store.select(DataSourceSelectors.selectedDataset);
+    this.datasetSelected$ = this.store.select(AdminDatasetSelectors.selectedDataset);
   }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.store.dispatch(DataSourceActions.dataset.getDatasetById({ id: params['uuid'] }));
+      this.store.dispatch(AdminDatasetActions.getDatasetById({ id: params['uuid'] }));
     });
   }
 }

@@ -3,14 +3,12 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map, mergeMap, Observable, of, switchMap } from 'rxjs';
 import { PryI18nService } from '../../i18n/i18n.service';
-import { MetadataValue } from '../../model/admin-api.model';
 import { DatasetPreview } from '../../model/dataset.interface';
 import { ConfigState } from '../config/config.reducer';
 import { ConfigSelectors } from '../config/config.selectors';
 import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from '../search/search.constants';
 import { Dataset, DatasetVersion, NamedQuery } from './data-source.model';
 import { DataSourceState } from './data-source.reducer';
-import { ShareConflict } from '../../components/share/share.model';
 
 export interface ResponseRequest {
   data: {
@@ -95,56 +93,6 @@ export class DataSourceService {
       mergeMap((url) => this.httpClient.get<Dataset[]>(encodeURI(`${url}/datasets`))),
       map((dsds) => dsds.map((dsd) => ({ ...dsd, sourceType: 'dataset' })))
     );
-  }
-
-  addDataset(dataset: Dataset): Observable<void> {
-    return this.store
-      .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.post<void>(encodeURI(`${url}/datasets`), dataset)));
-  }
-
-  updateDataset(dataset: Dataset): Observable<undefined | ShareConflict> {
-    return this.store
-      .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.put<undefined | ShareConflict>(encodeURI(`${url}/datasets`), dataset)));
-  }
-
-  deleteDataset(id: string) {
-    return this.store
-      .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.delete<void>(`${url}/datasets/id/${id}`)));
-  }
-
-  getDatasetById(id: string) {
-    return this.store
-      .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.get<Dataset>(`${url}/datasets/id/${id}`)));
-  }
-
-  getDatasetMetadata(id: string): Observable<MetadataValue[]> {
-    return this.store
-      .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.get<MetadataValue[]>(`${url}/datasets/id/${id}/metadata`)));
-  }
-
-  addDatasetMetadata(datasetId: string, metadataId: string, value: any): Observable<void> {
-    return this.store.select(ConfigSelectors.refUrl).pipe(
-      mergeMap((url) =>
-        this.httpClient.put<void>(encodeURI(`${url}/datasets/id/${datasetId}/metadata/id/${metadataId}`), {
-          value: value
-        })
-      )
-    );
-  }
-
-  deleteDatasetMetadata(datasetId: string, metadataId: string): Observable<void> {
-    return this.store
-      .select(ConfigSelectors.refUrl)
-      .pipe(
-        mergeMap((url) =>
-          this.httpClient.delete<void>(encodeURI(`${url}/datasets/id/${datasetId}/metadata/id/${metadataId}`))
-        )
-      );
   }
 
   getDatasetVersions() {

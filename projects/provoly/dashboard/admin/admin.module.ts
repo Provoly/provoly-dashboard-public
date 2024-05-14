@@ -120,6 +120,8 @@ import { AdminEffects } from './store/admin.effects';
 import { adminFeatureKey, adminReducer } from './store/admin.reducer';
 import { PrySinceDateModule } from '@provoly/dashboard/components/sinceDate';
 import { PryDatasetModule } from '@provoly/dashboard/dataset';
+import { datasetFeatureKey, datasetReducer } from './components/admin-dataset/store/admin-dataset.reducer';
+import { AdminDatasetEffects } from './components/admin-dataset/store/admin-dataset.effects';
 
 @NgModule({
   providers: [DatePipe],
@@ -212,6 +214,7 @@ import { PryDatasetModule } from '@provoly/dashboard/dataset';
     StoreModule.forFeature(fieldsFeatureKey, fieldReducer),
     StoreModule.forFeature(adminUserFeatureKey, adminUserReducer),
     StoreModule.forFeature(linksFeatureKey, linkReducer),
+    StoreModule.forFeature(datasetFeatureKey, datasetReducer),
     EffectsModule.forFeature([AdminEffects]),
     EffectsModule.forFeature([PredicatesEffects]),
     EffectsModule.forFeature([EnvironmentEffects]),
@@ -222,6 +225,7 @@ import { PryDatasetModule } from '@provoly/dashboard/dataset';
     EffectsModule.forFeature([AdminUserEffects]),
     EffectsModule.forFeature([LinksEffects]),
     EffectsModule.forFeature([AdminMetadataRulesEffects]),
+    EffectsModule.forFeature([AdminDatasetEffects]),
     PryIconModule,
     FormsModule,
     ReactiveFormsModule,

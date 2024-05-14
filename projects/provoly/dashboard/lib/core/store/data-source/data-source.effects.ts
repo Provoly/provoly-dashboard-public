@@ -13,7 +13,7 @@ import { ConfigSelectors } from '../config/config.selectors';
 import { SearchActions } from '../search/search.actions';
 import { SearchService } from '../search/search.service';
 import { DataSourceActions } from './data-source.actions';
-import { Dataset, NamedQuery } from './data-source.model';
+import { NamedQuery } from './data-source.model';
 import { DataSourceSelectors } from './data-source.selectors';
 import { DataSourceService } from './data-source.service';
 
@@ -188,62 +188,6 @@ export class DataSourceEffects {
     )
   );
 
-  createDataset$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(DataSourceActions.dataset.create),
-      switchMap((props: { dataset: Dataset; route: string }) =>
-        this.dataSourceService
-          .addDataset(props.dataset)
-          .pipe(
-            mergeMap(() => [
-              DataSourceActions.dataset.loadDataset(),
-              DataSourceActions.dataset.unselectDataset(),
-              DataSourceActions.dataset.created({ path: props.route })
-            ])
-          )
-      ),
-      catchError((error: any) => [DataSourceActions.dataset.failure({ error })])
-    )
-  );
-
-  unsetMissingGroupsOnDatasetSelection$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(DataSourceActions.dataset.selectDataset),
-      mergeMap((action) => [
-        DataSourceActions.dataset.setMissingGroups({ missingGroups: undefined }),
-        DataSourceActions.dataset.listVersionsByDatasetId({ id: action.dataset.id })
-      ])
-    )
-  );
-
-  deleteDataset$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(DataSourceActions.dataset.delete),
-      switchMap((action) =>
-        this.dataSourceService.deleteDataset(action.name).pipe(
-          mergeMap(() => [
-            DataSourceActions.dataset.loadDataset(),
-            DataSourceActions.dataset.unselectDataset(),
-            DataSourceActions.dataset.deleted({ addRoute: action.addRoute })
-          ]),
-          catchError((error) => [DataSourceActions.dataset.failure({ error })])
-        )
-      )
-    )
-  );
-
-  getDatasetById$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(DataSourceActions.dataset.getDatasetById),
-      mergeMap((action) =>
-        this.dataSourceService.getDatasetById(action.id).pipe(
-          map((data) => DataSourceActions.dataset.getDatasetByIdSuccess({ data })),
-          catchError((error) => [DataSourceActions.dataset.getDatasetByIdFailure({ error })])
-        )
-      )
-    )
-  );
-
   listVersions$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DataSourceActions.dataset.listVersions),
@@ -266,35 +210,6 @@ export class DataSourceEffects {
         )
       )
     )
-  );
-
-  confirmDatasourceDeletion$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(DataSourceActions.dataset.confirmDataSourceDeletion),
-        tap((action) => {
-          const data: PryDialogConfirmData = {
-            title: '@pry.admin.infoModalTitle',
-            message: '@pry.admin.dataset.delete',
-            actions: [
-              {
-                id: 0,
-                label: '@pry.admin.delete',
-                actions: [
-                  DataSourceActions.dataset.delete({
-                    name: action.name,
-                    route: action.route,
-                    addRoute: action.addRoute
-                  })
-                ]
-              },
-              { id: 0, label: '@pry.admin.cancel' }
-            ]
-          };
-          this.pryDialog.open(PryDialogConfirmComponent, { data });
-        })
-      ),
-    { dispatch: false }
   );
 
   deactivateDatasetVersion$ = createEffect(() =>

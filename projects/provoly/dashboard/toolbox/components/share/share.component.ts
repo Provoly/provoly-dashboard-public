@@ -11,7 +11,7 @@ import {
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import equal from 'fast-deep-equal/es6';
 
 @Component({

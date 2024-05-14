@@ -1,3 +1,51 @@
+import { Dataset, DatasetVersion, PryDatasetType } from '@provoly/dashboard';
+
+export const mockDatasets: Dataset[] = [
+  {
+    sourceType: 'dataset',
+    id: 'AAAA-BBBB-CCCC',
+    name: 'fake name 1',
+    oClass: '123456789',
+    type: PryDatasetType.OPEN,
+    metadata: []
+  },
+  {
+    sourceType: 'dataset',
+    id: 'CCCC-BBBB-AAAA',
+    name: 'fake name 2',
+    oClass: '987654321',
+    type: PryDatasetType.CLOSED,
+    metadata: []
+  }
+];
+
+export const mockDatasetVersions: DatasetVersion[] = [
+  {
+    id: 'AAAA-BBBB-CCCC',
+    oClass: '123456789',
+    metadata: [],
+    dataset: 'dataset-id',
+    lastModified: '2022-10-05T14:48:00.000Z',
+    available: true,
+    version: 1,
+    state: 'OK',
+    withFile: false,
+    hasWarnings: false
+  },
+  {
+    id: 'CCCC-BBBB-AAAA',
+    oClass: '123456789',
+    metadata: [],
+    dataset: 'dataset-id',
+    lastModified: '2022-10-20T14:48:00.000Z',
+    available: true,
+    version: 2,
+    state: 'OK',
+    withFile: false,
+    hasWarnings: false
+  }
+];
+
 export const mockDatasetVersion = {
   id: 'test-id',
   dataset: 'test-ds-id',
