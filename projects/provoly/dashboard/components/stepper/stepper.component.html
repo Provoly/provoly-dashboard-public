@@ -18,7 +18,7 @@
       <div class="m-stepper-line" *ngIf="i !== steps.length - 1">
         <div
           class="m-stepper-line__percent"
-          [class.-complete]="step.status === 'completed'"
+          [class.-complete]="step.status === 'completed' && i < activeIndex"
           [class.-active]="step.status === 'in progress'"
         ></div>
       </div>

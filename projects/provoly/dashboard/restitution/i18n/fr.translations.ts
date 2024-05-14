@@ -15,6 +15,7 @@ export const frTranslations = {
       create: 'Créer une restitution',
       edit: 'Modifier la restitution',
       cancel: 'Annuler',
+      goBack: 'Retour',
       configure: 'Configurer',
       visualize: 'Visualiser',
       access: 'Vous souhaitez donner accès / inviter des utilisateurs ?',

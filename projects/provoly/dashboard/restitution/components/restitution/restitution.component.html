@@ -3,7 +3,7 @@
   <h3 class="a-h2 o-restitution__title">
     {{ (consultMode ? '@pry.restitution.consult' : edit ? '@pry.restitution.edit' : '@pry.restitution.create') | i18n }}
   </h3>
-  <pry-stepper #stepper [isConsultMode]="consultMode" (lastStepCompleted)="lastStepCompleted()">
+  <pry-stepper #stepper [isConsultMode]="consultMode" (lastStepCompleted)="lastStepCompleted()" (activeIndexChange)="activeStepIndex = $event">
     <pry-step>
       <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.configure' | i18n }}</h4>
       <div class="m-form-label-field">
@@ -122,10 +122,10 @@
 <ng-template #buttons let-submit="submit">
   <div class="m-btn-group -space-evenly actions">
     <button (click)="prev(stepper)" type="button" class="a-btn a-btn--secondary">
-      {{ '@pry.restitution.close' | i18n }}
+      {{ (consultMode ? '@pry.restitution.goBack' : '@pry.restitution.close') | i18n }}
     </button>
     <button (click)="goNext(stepper, submit)" type="button" class="a-btn a-btn--primary">
-      {{ (consultMode ? '@pry.restitution.share' : '@pry.restitution.next') | i18n }}
+      {{ (activeStepIndex === 3 ? '@pry.restitution.share' : '@pry.restitution.next') | i18n }}
     </button>
   </div>
 </ng-template>

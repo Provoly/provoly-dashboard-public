@@ -30,6 +30,7 @@ export class PryStepperComponent implements AfterContentInit, AfterViewInit {
   @ViewChildren('vc', { read: ViewContainerRef }) stepViewRef: Array<ViewContainerRef>;
   @Input() isConsultMode: boolean = false;
   @Output() lastStepCompleted: EventEmitter<void> = new EventEmitter<void>();
+  @Output() activeIndexChange: EventEmitter<number> = new EventEmitter<number>();
 
   get stepperSteps(): PryStepComponent[] {
     return this.steps.toArray();
@@ -60,8 +61,10 @@ export class PryStepperComponent implements AfterContentInit, AfterViewInit {
   }
 
   updateActiveStep(index: number) {
+    this.activeIndex = index;
     this.steps.forEach((step) => (step.isActive = false));
     this.stepperSteps[index].setActiveState(this.stepperSteps[index]);
+    this.activeIndexChange.emit(index);
   }
 
   completeLastStep() {
@@ -89,9 +92,8 @@ export class PryStepperComponent implements AfterContentInit, AfterViewInit {
     }
 
     if (this.activeIndex < this.steps.length - 1) {
-      this.activeIndex++;
+      this.updateActiveStep(this.activeIndex + 1);
       this.switchStatusNext(this.activeIndex);
-      this.updateActiveStep(this.activeIndex);
     }
   }
 
@@ -101,9 +103,8 @@ export class PryStepperComponent implements AfterContentInit, AfterViewInit {
       return;
     }
     if (this.activeIndex > 0) {
-      this.activeIndex--;
+      this.updateActiveStep(this.activeIndex - 1);
       this.switchStatusPrev(this.activeIndex);
-      this.updateActiveStep(this.activeIndex);
     }
   }
 
@@ -113,7 +114,7 @@ export class PryStepperComponent implements AfterContentInit, AfterViewInit {
       this.stepperSteps[index].status === Status.IN_PROGRESS
     ) {
       this.stepperSteps[this.activeIndex].status = Status.COMPLETED;
-      this.activeIndex = index;
+      this.updateActiveStep(index);
       this.updateActiveStep(this.activeIndex);
       this.stepperSteps[index].status = Status.IN_PROGRESS;
     }

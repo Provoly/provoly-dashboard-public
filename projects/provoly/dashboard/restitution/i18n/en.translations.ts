@@ -12,6 +12,7 @@ export const enTranslations = {
       view: 'View',
       create: 'Create restitution',
       cancel: 'Cancel',
+      goBack: 'Go back',
       configure: 'Configure',
       visualize: 'Visualize',
       access: 'Do you want to give access / invite users?',

@@ -65,6 +65,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
   image: string = DEFAULT_RESTITUTION_ICON_URL;
   widgetTypes: { icon: string; label: string; type: string; manifest: WidgetManifest }[] = [];
   usedDatasources$: Observable<DataSource[]>;
+  activeStepIndex = 0;
 
   constructor(
     private toolboxManifestService: ToolboxManifestService,
