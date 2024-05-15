@@ -1,0 +1,39 @@
+<div class="o-modal" role="dialog" aria-modal="true" aria-labelledby="dialog share access rights">
+  <div class="o-modal__top">
+    <div class="o-modal__top__title">
+      <h2 class="a-h2" id="dialog_title">{{ '@pry.toolbox.shareAccessRights' | i18n }}</h2>
+    </div>
+    <div class="o-modal__top__close">
+      <button
+        class="a-btn a-btn--icon-only"
+        (click)="toggleModal()"
+        #crossVisibility
+        (keydown.shift.tab)="focusValidation()"
+      >
+        <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+        <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+      </button>
+    </div>
+  </div>
+  <pry-access-rights-share
+    [(ngModel)]="accessRightsByGroup"
+    (ngModelChange)="updateAccessRights($event)"
+    [manifestDescription]="manifest"
+    [allowedGroups]="allowedShareGroups$ | async"
+  ></pry-access-rights-share>
+  <div class="u-display-flex m-btn-group -justify-center">
+    <button type="button" class="a-btn a-btn--secondary" (click)="toggleModal()">
+      {{ '@pry.toolbox.manifest.close' | i18n }}
+    </button>
+    <button
+      type="submit"
+      class="a-btn a-btn--primary"
+      #submit
+      (keydown.tab)="focusCrossElement()"
+      (click)="validate()"
+      [disabled]="this.disableShareButton$ | async"
+    >
+      {{ '@pry.toolbox.manifest.validate' | i18n }}
+    </button>
+  </div>
+</div>

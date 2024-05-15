@@ -9,8 +9,11 @@ import {
   AUTHENTICATED_USERS_GROUP,
   getAccessRightsArrayByGroup,
   getAccessRightsStringByGroup,
-  getGroupLabel, getGroupLabelByName, PUBLIC_GROUP,
-  READ_ACCESS, SYSTEM_GROUPS,
+  getGroupLabel,
+  getGroupLabelByName,
+  PUBLIC_GROUP,
+  READ_ACCESS,
+  SYSTEM_GROUPS,
   WRITE_ACCESS
 } from '../share.utils';
 import { ManifestDescription } from '../../../model/manifest.interface';
@@ -74,7 +77,7 @@ export class PryAccessRightsShareComponent extends SubscriptionnerDirective impl
       { label: this.i18n.instant('@pry.share.read'), value: READ_ACCESS },
       { label: this.i18n.instant('@pry.share.write'), value: WRITE_ACCESS }
     ];
-    this.accessRights = this.AVAILABLE_ACCESS_RIGHTS
+    this.accessRights = this.AVAILABLE_ACCESS_RIGHTS;
   }
 
   writeValue(value: { [key: string]: string[] } | undefined) {
@@ -138,10 +141,14 @@ export class PryAccessRightsShareComponent extends SubscriptionnerDirective impl
   }
 
   filterAvailableAccessRights() {
-    if (this.selectedGroups && this.selectedGroups.length > 0 && this.selectedGroups.every((group) => SYSTEM_GROUPS.includes(group.name))) {
-      this.accessRights = this.AVAILABLE_ACCESS_RIGHTS.filter(access => access.value === READ_ACCESS)
+    if (
+      this.selectedGroups &&
+      this.selectedGroups.length > 0 &&
+      this.selectedGroups.every((group) => SYSTEM_GROUPS.includes(group.name))
+    ) {
+      this.accessRights = this.AVAILABLE_ACCESS_RIGHTS.filter((access) => access.value === READ_ACCESS);
     } else {
-      this.accessRights = this.AVAILABLE_ACCESS_RIGHTS
+      this.accessRights = this.AVAILABLE_ACCESS_RIGHTS;
     }
   }
 

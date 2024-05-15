@@ -14,7 +14,7 @@
 
 /* Organism - modal */
 .o-modal-wrapper {
-  position: absolute;
+  position: absolute !important; // important needed, otherwise default position for angular overlays (GlobalPositionStrategy) is "static"
   top: 50%;
   left: 50%;
   width: 100%;

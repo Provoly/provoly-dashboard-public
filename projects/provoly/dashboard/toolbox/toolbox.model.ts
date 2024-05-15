@@ -98,7 +98,7 @@ export const ACTIONS: ToolboxAction[] = [
     component: ShareComponent,
     visible: true,
     access: { module: 'dashboard', page: 'toolbox', action: 'share' },
-    needsOwner: true
+    needsOwner: false
   },
   {
     name: 'delete',

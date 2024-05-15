@@ -87,11 +87,4 @@ describe('PryPresentationComponent', () => {
     component.delete(presentation.id);
     expect(spy).toHaveBeenCalledWith(DashboardActions.confirmManifestDeletion({ id: presentation.id }));
   });
-  it('should toggle modal', () => {
-    expect(component.modalOpened).toBe(false);
-    component.toggleModal(presentation);
-    expect(component.modalOpened).toBe(true);
-    component.toggleModal(presentation);
-    expect(component.modalOpened).toBe(false);
-  });
 });

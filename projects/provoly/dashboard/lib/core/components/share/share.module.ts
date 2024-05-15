@@ -9,10 +9,26 @@ import { PryCoreModule } from '../../core.module';
 import { PryDashboardModule } from '../../../dashboard/dashboard.module';
 import { PryAccessRightsShareComponent } from './access-rights-share/access-rights-share.component';
 import { PryIconModule } from '../icon/icon.module';
+import { PryAccessRightsShareModalComponent } from './access-rights-share-modal/access-rights-share-modal.component';
+
+const COMPONENTS = [
+  PryShareComponent,
+  PryGroupShareComponent,
+  PryAccessRightsShareComponent,
+  PryAccessRightsShareModalComponent
+];
 
 @NgModule({
-  imports: [CommonModule, FormsModule, PrySelectModule, PryI18nModule, PryCoreModule, PryDashboardModule, PryIconModule],
-  declarations: [PryShareComponent, PryGroupShareComponent, PryAccessRightsShareComponent],
-  exports: [PryShareComponent, PryGroupShareComponent, PryAccessRightsShareComponent]
+  imports: [
+    CommonModule,
+    FormsModule,
+    PrySelectModule,
+    PryI18nModule,
+    PryCoreModule,
+    PryDashboardModule,
+    PryIconModule
+  ],
+  declarations: [...COMPONENTS],
+  exports: [...COMPONENTS]
 })
 export class PryShareModule {}

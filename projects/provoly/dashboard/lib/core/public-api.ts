@@ -93,6 +93,7 @@ export * from './components/range/range.module';
 export * from './components/share/legacy-share/share.component';
 export * from './components/share/group-share/group-share.component';
 export * from './components/share/access-rights-share/access-rights-share.component';
+export * from './components/share/access-rights-share-modal/access-rights-share-modal.component';
 export * from './components/share/share.model';
 export * from './components/share/share.utils';
 export * from './components/share/share.module';

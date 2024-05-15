@@ -1,7 +1,7 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { DashboardActions, DashboardSelectors, PRY_ACCESS_TOKEN, PryBaseAccess } from '@provoly/dashboard';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
 @Component({

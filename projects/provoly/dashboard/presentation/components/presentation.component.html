@@ -115,55 +115,6 @@
     ></pry-add-edit-presentation>
   </ng-container>
 </div>
-
-<ng-template #modal>
-  <div
-    class="o-modal"
-    #visibilityModal
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="dialog change visibility"
-    *ngIf="selectedPresentation$ | async as selectedPresentation"
-  >
-    <div class="o-modal__top">
-      <div class="o-modal__top__title">
-        <h2 class="a-h2" id="dialog_title">{{ '@pry.toolbox.shareAccessRights' | i18n }}</h2>
-      </div>
-      <div class="o-modal__top__close">
-        <button
-          class="a-btn a-btn--icon-only"
-          #crossVisibility
-          (keydown.shift.tab)="focusValidation()"
-          (click)="toggleModal()"
-        >
-          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
-          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
-        </button>
-      </div>
-    </div>
-    <pry-access-rights-share
-      [ngModel]="selectedPresentation.accessRightsByGroup"
-      (ngModelChange)="updateAccessRights($event, selectedPresentation)"
-      [manifestDescription]="selectedPresentation"
-      [allowedGroups]="allowedShareGroups$ | async"
-    ></pry-access-rights-share>
-    <div class="m-btn-group">
-      <button type="button" class="a-btn a-btn--secondary" (click)="toggleModal()">
-        {{ '@pry.toolbox.manifest.close' | i18n }}
-      </button>
-      <button
-        type="submit"
-        class="a-btn a-btn--primary"
-        #submit
-        (keydown.tab)="focusCrossElement()"
-        (click)="changeVisibility(selectedPresentation)"
-        [disabled]="disableShareButton$ | async"
-      >
-        {{ '@pry.toolbox.manifest.check' | i18n }}
-      </button>
-    </div>
-  </div>
-</ng-template>
 <ng-template #modalActions>
   <div class="m-context-menu">
     <ul

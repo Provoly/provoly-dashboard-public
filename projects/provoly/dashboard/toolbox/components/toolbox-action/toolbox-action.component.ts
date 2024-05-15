@@ -7,7 +7,7 @@ import {
   PryBaseAccess,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
-import { of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'pry-toolbox-action',
@@ -16,6 +16,7 @@ import { of } from 'rxjs';
 export class ToolboxActionComponent extends SubscriptionnerDirective {
   @Input() displayLabels = true;
   @Output() closeOptions = new EventEmitter<void>();
+  currentManifest$: Observable<ManifestDescription | undefined>;
   currentManifest: ManifestDescription | undefined;
 
   constructor(
@@ -23,9 +24,12 @@ export class ToolboxActionComponent extends SubscriptionnerDirective {
     @Optional() @Inject(PRY_ACCESS_TOKEN) protected access: PryBaseAccess
   ) {
     super();
+    this.currentManifest$ = this.store
+      .select(DashboardSelectors.presentation)
+      .pipe(map((manifest) => manifest?.current));
     this.subscriptions.add(
-      this.store.select(DashboardSelectors.presentation).subscribe((manifest) => {
-        this.currentManifest = manifest?.current;
+      this.currentManifest$.subscribe((manifest) => {
+        this.currentManifest = manifest;
       })
     );
   }

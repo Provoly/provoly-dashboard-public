@@ -18,18 +18,17 @@ import {
   DashboardGridLayout,
   DashboardManifest,
   DashboardSelectors,
-  DataSourceSelectors,
-  getCommonDatasourceGroupsForManifest,
   ManifestDescription,
   PRY_ACCESS_TOKEN,
+  PryAccessRightsShareModalComponent,
   PryBaseAccess,
+  PryDialogService,
   PryTitleService,
   SubscriptionnerDirective,
   ViewMode
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable, of, startWith } from 'rxjs';
 import { v4 } from 'uuid';
-import equal from 'fast-deep-equal/es6';
 
 @Component({
   selector: 'pry-presentation',
@@ -42,13 +41,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   selectedMode: ViewMode = ViewMode.CATALOG;
   modalOpened = false;
   @ViewChild('modalActions', { read: TemplateRef }) templateModalActions!: TemplateRef<any>;
-  @ViewChild('modal', { read: TemplateRef }) template!: TemplateRef<any>;
   @ViewChild('openModal') openModal!: ElementRef<HTMLButtonElement>;
-  @ViewChild('confirm') confirm!: ElementRef<HTMLButtonElement>;
-  @ViewChild('submit') submit!: ElementRef<HTMLButtonElement>;
-  @ViewChild('cross') cross!: ElementRef<HTMLButtonElement>;
-  @ViewChild('crossVisibility') crossVisibility!: ElementRef<HTMLButtonElement>;
-  @ViewChild('visibilityModal') visibilityModal!: ElementRef;
   overlayRef?: OverlayRef;
   accessRightsByGroup: { [key: string]: string[] } = {};
   @Input() editionStartUrl: string = '/';
@@ -58,8 +51,6 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   search$ = new BehaviorSubject('');
   filteredPresentations$: Observable<ManifestDescription[]>;
   listOfManifests$ = new BehaviorSubject<ManifestDescription[] | null>(null);
-  allowedShareGroups$: Observable<string[] | null>;
-  disableShareButton$ = new BehaviorSubject<boolean>(true);
 
   @Input() mode: 'theme' | 'meta' = 'meta';
 
@@ -82,7 +73,8 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     protected titleService: PryTitleService,
     protected activatedRoute: ActivatedRoute,
     protected ngZone: NgZone,
-    @Optional() @Inject(PRY_ACCESS_TOKEN) private access: PryBaseAccess
+    @Optional() @Inject(PRY_ACCESS_TOKEN) private access: PryBaseAccess,
+    private dialog: PryDialogService
   ) {
     super();
     this.subscriptions.add(
@@ -124,16 +116,6 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
             : true;
         })
       )
-    );
-    this.allowedShareGroups$ = combineLatest([
-      this.selectedPresentation$,
-      this.store.select(DataSourceSelectors.datasets)
-    ]).pipe(
-      map(([presentation, datasets]) => {
-        return presentation && presentation.datasource.length > 0
-          ? getCommonDatasourceGroupsForManifest(presentation, datasets)
-          : null;
-      })
     );
     this.subscriptions.add(
       this.store.select(DashboardSelectors.presentation).subscribe((presentation) => {
@@ -219,60 +201,17 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   }
 
   toggleModal(presentation?: ManifestDescription | null) {
-    this.modalOpened = !this.modalOpened;
-    if (this.modalOpened && presentation) {
-      this.toggleModalActions();
+    if (presentation) {
       this.selectedPresentation$.next(presentation);
       this.store.dispatch(DashboardActions.selectPresentation({ presentation, viewMode: ViewMode.CATALOG }));
-      /* we need to load manifest in order to be able to save it later */
-      this.store.dispatch(DashboardActions.loadManifest({ id: presentation.id }));
-      this.overlayRef = this.overlay.create(
-        new OverlayConfig({
-          hasBackdrop: true,
-          panelClass: ['o-modal-wrapper'],
-          backdropClass: 'backdrop'
-        })
-      );
-      this.overlayRef.backdropClick().subscribe(() => this.toggleModal(presentation));
-      this.overlayRef.attach(new TemplatePortal(this.template, this.viewContainerRef));
-      setTimeout(() => {
-        const focus = this.visibilityModal.nativeElement.children[0].children[1].firstElementChild as HTMLButtonElement;
-        focus.focus();
-      }, 10);
-    } else {
-      this.overlayRef?.dispose();
-      this.selectedPresentation$.next(null);
-      this.overlayRef = undefined;
+      this.toggleModalActions();
+      this.dialog.open(PryAccessRightsShareModalComponent, {
+        hasBackdrop: true,
+        panelClass: ['o-modal-wrapper'],
+        backdropClass: 'backdrop',
+        data: { manifest: presentation }
+      });
     }
-  }
-
-  changeVisibility(presentation?: ManifestDescription) {
-    if (presentation) {
-      this.store.dispatch(
-        DashboardActions.saveManifest({
-          id: presentation.id ?? '',
-          name: presentation.name ?? '',
-          description: presentation.description,
-          image: presentation.image ?? '',
-          accessRightsByGroup: this.accessRightsByGroup
-        })
-      );
-    }
-    this.toggleModal(presentation);
-  }
-
-  focusCrossElement() {
-    if (this.crossVisibility) {
-      this.crossVisibility?.nativeElement.focus();
-    }
-    this.cross?.nativeElement.focus();
-  }
-
-  focusValidation() {
-    if (this.confirm) {
-      this.confirm.nativeElement.focus();
-    }
-    this.submit.nativeElement.focus();
   }
 
   editContent(selectedPresentation: ManifestDescription) {
@@ -282,21 +221,6 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     this.ngZone.run(() => {
       this.router?.navigateByUrl(this.consultStartUrl);
     });
-  }
-
-  updateAccessRights($event: { [key: string]: string[] }, presentation?: ManifestDescription) {
-    this.accessRightsByGroup = $event;
-    this.updateDisableButtonValue(presentation);
-  }
-
-  updateDisableButtonValue(presentation?: ManifestDescription) {
-    if (equal(this.accessRightsByGroup, presentation?.accessRightsByGroup)) {
-      this.disableShareButton$.next(true);
-    } else {
-      if (this.disableShareButton$.getValue()) {
-        this.disableShareButton$.next(false);
-      }
-    }
   }
 
   isPrivate(presentation: ManifestDescription) {
