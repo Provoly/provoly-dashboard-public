@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, forwardRef, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, Inject, Input, Optional } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { ConfigActions } from '../../../store/config/config.actions';
@@ -18,7 +18,8 @@ import {
 } from '../share.utils';
 import { ManifestDescription } from '../../../model/manifest.interface';
 import { PryI18nService } from '../../../i18n/i18n.service';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, of } from 'rxjs';
+import { PRY_ACCESS_TOKEN, PryBaseAccess } from '../../../access/access.service';
 
 @Component({
   selector: 'pry-access-rights-share',
@@ -54,7 +55,8 @@ export class PryAccessRightsShareComponent extends SubscriptionnerDirective impl
 
   constructor(
     private store: Store,
-    protected i18n: PryI18nService
+    protected i18n: PryI18nService,
+    @Optional() @Inject(PRY_ACCESS_TOKEN) private access: PryBaseAccess
   ) {
     super();
     this.store.dispatch(ConfigActions.loadAccessGroups());
@@ -150,6 +152,10 @@ export class PryAccessRightsShareComponent extends SubscriptionnerDirective impl
     } else {
       this.accessRights = this.AVAILABLE_ACCESS_RIGHTS;
     }
+  }
+
+  userBelongsToGroup(group: string): Observable<boolean> {
+    return this.access ? this.access.hasGroup(group) : of(false);
   }
 
   protected readonly getGroupLabelByName = getGroupLabelByName;

@@ -10,4 +10,8 @@ export class MockAccessService implements PryBaseAccess {
   canModifyPresentation(): Observable<boolean> {
     return of(true);
   }
+
+  hasGroup(): Observable<boolean> {
+    return of(true);
+  }
 }

@@ -312,7 +312,7 @@ export const frTranslations = {
       type: 'Visibilité',
       users: 'Utilisateurs autorisés',
       groups: {
-        ALL: 'Public',
+        ALL: 'Tout le monde',
         AUTHENTICATED: 'Les utilisateurs connectés'
       },
       noGroups: 'Aucun groupe disponible',

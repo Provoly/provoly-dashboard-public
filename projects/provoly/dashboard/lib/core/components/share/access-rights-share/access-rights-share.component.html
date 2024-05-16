@@ -38,9 +38,14 @@
     }
     @for (group of value | keyvalue; track group.key) {
       <div class="o-access-rights-share__group u-display-flex -justify-space-between -align-center">
-        <label class="o-access-rights-share__group-name a-h4" for="modify-{{ group.key }}-access-rights-select">{{
-          getGroupLabelByName(group.key, i18n)
-        }}</label>
+        <label class="o-access-rights-share__group-name a-h4" for="modify-{{ group.key }}-access-rights-select">
+          {{ getGroupLabelByName(group.key, i18n) }}
+          {{
+            (userBelongsToGroup(group.key) | async) && group.key !== PUBLIC_GROUP
+              ? ' (' + ('@pry.share.me' | i18n) + ')'
+              : ''
+          }}
+        </label>
         <div class="u-display-flex -align-center">
           @if (group.key === PUBLIC_GROUP || group.key === AUTHENTICATED_USERS_GROUP) {
             <span class="o-access-rights-share__access-rights">{{ '@pry.share.read' | i18n }}</span>
