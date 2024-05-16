@@ -1,6 +1,9 @@
 name: Sonar
 
 on:
+  push:
+    branches:
+      - 'main'
   workflow_dispatch:
   schedule:
     - cron: '30 0 * * *'
@@ -8,17 +11,25 @@ on:
 jobs:
   sonar:
     runs-on: provoly-runner
-    container: "${{ vars.REGISTRY_URL }}/docker-mirror/sonarsource/sonar-scanner-cli"
+    container: "${{ vars.REGISTRY_URL }}/docker-mirror/library/node:18-bullseye"
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Export sonar URL
-        run: export SONAR_HOST_URL=$SONAR_URL
+      - name: Setup SonarQube
+        uses: warchant/setup-sonar-scanner@v7
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18.18.2'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Manage Dependencies
+        run: npm ci
       - name: Running Tests & coverage
         run: npm run test:lib:coverage:ci
       - name: Analysis
-        run: sonar-scanner -Dsonar.login=$SONAR_ADMIN_TOKEN
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_URL: ${{ secrets.SONAR_URL }}
+        run: sonar-scanner -Dsonar.token=${{ env.SONAR_TOKEN }} -Dsonar.host.url=${{ env.SONAR_URL }} -Dsonar.projectKey=provoly-dashboard
       - name: Upload coverage
         uses: actions/upload-artifact@v4
         with:
