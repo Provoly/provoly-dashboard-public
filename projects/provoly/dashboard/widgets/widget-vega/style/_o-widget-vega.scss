@@ -4,3 +4,12 @@ textarea.a-form-field.a-text-area {
   overflow: unset;
   height: toRem(500);
 }
+
+.o-widget--chart {
+  div.vega-embed {
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+}
