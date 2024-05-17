@@ -1,4 +1,4 @@
-@if (canModify$() | async) {
+@if (canModify$ | async) {
   <button type="button" class="a-btn a-btn--secondary" (click)="trigger()">
     @if (displayLabels) {
       {{ '@pry.toolbox.delete' | i18n }}

@@ -7,7 +7,7 @@ import {
   PryBaseAccess,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
-import { map, Observable, of } from 'rxjs';
+import { map, Observable, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'pry-toolbox-action',
@@ -18,6 +18,7 @@ export class ToolboxActionComponent extends SubscriptionnerDirective {
   @Output() closeOptions = new EventEmitter<void>();
   currentManifest$: Observable<ManifestDescription | undefined>;
   currentManifest: ManifestDescription | undefined;
+  canModify$: Observable<boolean>;
 
   constructor(
     protected store: Store,
@@ -27,6 +28,11 @@ export class ToolboxActionComponent extends SubscriptionnerDirective {
     this.currentManifest$ = this.store
       .select(DashboardSelectors.presentation)
       .pipe(map((manifest) => manifest?.current));
+    this.canModify$ = this.currentManifest$.pipe(
+      switchMap((manifest) => {
+        return manifest ? this.access?.canModifyPresentation(manifest) : of(false);
+      })
+    );
     this.subscriptions.add(
       this.currentManifest$.subscribe((manifest) => {
         this.currentManifest = manifest;
@@ -36,9 +42,5 @@ export class ToolboxActionComponent extends SubscriptionnerDirective {
 
   close(): void {
     this.closeOptions.emit();
-  }
-
-  canModify$() {
-    return this.access && this.currentManifest ? this.access.canModifyPresentation(this.currentManifest) : of(false);
   }
 }

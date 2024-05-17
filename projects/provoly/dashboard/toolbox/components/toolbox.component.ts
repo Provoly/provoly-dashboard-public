@@ -31,6 +31,7 @@ export class ToolboxComponent implements OnInit {
     }
   ];
   isManualMode$: Observable<boolean>;
+  canModify$: Observable<boolean>;
   allActions$!: Observable<ToolboxAction[]>;
   mainActions$!: Observable<ToolboxAction[]>;
   dropdownActions$!: Observable<ToolboxAction[]>;
@@ -57,7 +58,7 @@ export class ToolboxComponent implements OnInit {
 
   constructor(
     store: Store,
-    @Optional() @Inject(PRY_ACCESS_TOKEN) private role: PryBaseAccess
+    @Optional() @Inject(PRY_ACCESS_TOKEN) private access: PryBaseAccess
   ) {
     this.presentation$ = store.select(DashboardSelectors.presentation);
     this.isManualMode$ = combineLatest([
@@ -73,33 +74,38 @@ export class ToolboxComponent implements OnInit {
     );
     this.actionsAvailable$ = store.select(DashboardSelectors.displayOptions);
     this.showEditToggle$ = this.actionsAvailable$.pipe(map((actions) => !!actions?.edit_toggle));
+    this.canModify$ = this.presentation$.pipe(
+      switchMap((presentation) => {
+        return presentation?.current ? this.access?.canModifyPresentation(presentation.current) : of(false);
+      })
+    );
   }
 
   ngOnInit() {
     this.allActions$ = combineLatest([
       this.actions$,
       this.actionsAvailable$,
-      this.presentation$.pipe(map((pres) => pres?.current?.owner ?? false))
+      this.canModify$
     ]).pipe(
-      switchMap(([actions, displayOptions, isOwner]) =>
+      switchMap(([actions, displayOptions, _canModify]) =>
         combineLatest(
           actions.map((action) => {
             // @ts-ignore
             const actionAvailable = action.visible && displayOptions.toolbox[action.name];
-            const restraintOwner = !action.needsOwner || isOwner;
-            return this.role
-              ? this.role.hasRole(null, action.access.module, action.access.page, action.access.action).pipe(
+            const canModify = !action.needsOwner || _canModify;
+            return this.access
+              ? this.access.hasRole(null, action.access.module, action.access.page, action.access.action).pipe(
                   map(
                     (hasRole) =>
                       ({
                         ...action,
-                        visible: actionAvailable && (!this.role || hasRole) && restraintOwner
+                        visible: actionAvailable && (!this.access || hasRole) && canModify
                       }) as ToolboxAction
                   )
                 )
               : of({
                   ...action,
-                  visible: actionAvailable && restraintOwner
+                  visible: actionAvailable && canModify
                 } as ToolboxAction);
           })
         )

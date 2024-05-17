@@ -1,7 +1,7 @@
 <ul class="m-actions-list" #input>
   @for (action of mainActions$ | async; track action.name) {
     @if (action.visible) {
-      <li class="m-actions-list__item -{{action.name}}" *pryAccess="action.access">
+      <li class="m-actions-list__item -{{ action.name }}" *pryAccess="action.access">
         <pry-toolbox-action-instanciator
           [action]="action"
           [displayLabels]="displayLabels"
@@ -10,50 +10,52 @@
     }
   }
   @if (showDropdownButton$ | async) {
-    <li class="m-actions-list__item">
-      <button
-        type="button"
-        class="a-btn a-btn--primary"
-        cdkOverlayOrigin
-        #trigger="cdkOverlayOrigin"
-        id="options"
-        aria-controls="IDpanel"
-        aria-expanded="false"
-        (click)="openDropdown($event)"
-      >
-        @if (displayLabels) {
+    @if (((dropdownActions$ | async)?.length ?? 0) > 0) {
+      <li class="m-actions-list__item">
+        <button
+          type="button"
+          class="a-btn a-btn--primary"
+          cdkOverlayOrigin
+          id="options"
+          aria-controls="IDpanel"
+          aria-expanded="false"
+          (click)="openDropdown($event)"
+          #trigger="cdkOverlayOrigin"
+        >
           <span class="u-visually-hidden">{{ '@pry.toolbox.options' | i18n }}</span>
-          <span>{{ '@pry.toolbox.options' | i18n }}</span>
           <pry-icon [width]="10" [height]="13" iconSvg="chevron_bottom"></pry-icon>
-        }
-      </button>
-    </li>
-    <ng-template
-      cdkConnectedOverlay
-      [cdkConnectedOverlayOrigin]="trigger"
-      [cdkConnectedOverlayOpen]="isDropdownOpen"
-      [cdkConnectedOverlayHasBackdrop]="true"
-      cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
-      [cdkConnectedOverlayPositions]="dropdownPosition"
-      [cdkConnectedOverlayOffsetY]="5"
-      (backdropClick)="isDropdownOpen = false"
-    >
-      <div class="o-draggable-menu -dropdown" aria-labelledby="">
-        <ul class="o-draggable-menu__list">
-          @for (action of dropdownActions$ | async; track action.name) {
-            @if (action.visible) {
-              <li class="o-draggable-menu__list__item" [style.order]="getOrder(action.name)">
-                <pry-toolbox-action-instanciator
-                  [action]="action"
-                  [displayLabels]="displayLabels"
-                  (closeOptions)="closeDropdown($event)"
-                ></pry-toolbox-action-instanciator>
-              </li>
-            }
+          @if (displayLabels) {
+            <span>{{ '@pry.toolbox.options' | i18n }}</span>
           }
-        </ul>
-      </div>
-    </ng-template>
+        </button>
+      </li>
+      <ng-template
+        cdkConnectedOverlay
+        [cdkConnectedOverlayOrigin]="trigger"
+        [cdkConnectedOverlayOpen]="isDropdownOpen"
+        [cdkConnectedOverlayHasBackdrop]="true"
+        cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+        [cdkConnectedOverlayPositions]="dropdownPosition"
+        [cdkConnectedOverlayOffsetY]="5"
+        (backdropClick)="isDropdownOpen = false"
+      >
+        <div class="o-draggable-menu -dropdown" aria-labelledby="">
+          <ul class="o-draggable-menu__list">
+            @for (action of dropdownActions$ | async; track action.name) {
+              @if (action.visible) {
+                <li class="o-draggable-menu__list__item" [style.order]="getOrder(action.name)">
+                  <pry-toolbox-action-instanciator
+                    [action]="action"
+                    [displayLabels]="displayLabels"
+                    (closeOptions)="closeDropdown($event)"
+                  ></pry-toolbox-action-instanciator>
+                </li>
+              }
+            }
+          </ul>
+        </div>
+      </ng-template>
+    }
   }
 
   @if (showEditToggle$ | async) {

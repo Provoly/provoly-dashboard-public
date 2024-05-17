@@ -91,21 +91,21 @@ export const ACTIONS: ToolboxAction[] = [
     component: SwitchToEditContentComponent,
     visible: true,
     access: { module: 'dashboard', page: 'toolbox', action: 'edit_presentation_content' },
-    needsOwner: false
+    needsOwner: true
   },
   {
     name: 'share',
     component: ShareComponent,
     visible: true,
     access: { module: 'dashboard', page: 'toolbox', action: 'share' },
-    needsOwner: false
+    needsOwner: true
   },
   {
     name: 'delete',
     component: DeleteComponent,
     visible: true,
     access: { module: 'dashboard', page: 'toolbox', action: 'delete' },
-    needsOwner: false
+    needsOwner: true
   },
   {
     name: 'dashboard_details',

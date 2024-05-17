@@ -1,4 +1,4 @@
-@if (this.canModify$() | async) {
+@if (this.canModify$ | async) {
   <button type="button" class="a-btn a-btn--secondary" (click)="toggleEditionMode()">
     @if (displayLabels) {
       {{ ((modeEdition$ | async) ? '@pry.toolbox.editOff' : '@pry.toolbox.edit') | i18n }}
