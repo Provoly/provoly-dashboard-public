@@ -18,7 +18,7 @@
   <pry-tab-group translationStringBase="@pry.admin.">
     <pry-tab [templateRef]="datasetMetadata" name="metadata.title"></pry-tab>
     <pry-tab [templateRef]="datasetAssociations" name="classes.associations"></pry-tab>
-    <pry-tab *ngIf="dataset.owner" [templateRef]="shareDataset" name="share"></pry-tab>
+    <pry-tab *ngIf="canModify$(dataset) | async" [templateRef]="shareDataset" name="share"></pry-tab>
   </pry-tab-group>
 
   <ng-template #datasetMetadata>
@@ -41,21 +41,31 @@
 
   <ng-template #shareDataset>
     <div class="o-pry-admin-dataset-select__share">
-      <pry-group-share [ngModel]="dataset.groups" (ngModelChange)="changeGroup($event)" (radioValueChange)="updateVisibility($event)"></pry-group-share>
-      <button type="submit" class="a-btn a-btn--primary u-self-end" #submit (click)="share(dataset)" [disabled]="disableShareButton$ | async">
+      <pry-group-share
+        [ngModel]="dataset.groups"
+        (ngModelChange)="changeGroup($event)"
+        (radioValueChange)="updateVisibility($event)"
+      ></pry-group-share>
+      <button
+        type="submit"
+        class="a-btn a-btn--primary u-self-end"
+        #submit
+        (click)="share(dataset)"
+        [disabled]="disableShareButton$ | async"
+      >
         {{ '@pry.admin.validate' | i18n }}
       </button>
-      @if(selectedDatasetMissingGroups$ | async) {
+      @if (selectedDatasetMissingGroups$ | async) {
         <h4 class="a-h4">{{ '@pry.admin.dataset.success' | i18n }}</h4>
       }
-      @if(missingGroups$ | async; as missingGroups) {
+      @if (missingGroups$ | async; as missingGroups) {
         <div class="u-display-flex -column">
           <span>{{ '@pry.admin.dataset.conflict' | i18n }}</span>
-          @for(missing of missingGroups | keyvalue; track missing.key) {
+          @for (missing of missingGroups | keyvalue; track missing.key) {
             <div>
               {{ '@pry.admin.dataset.entities.dashboard' | i18n }} <strong>{{ missing.value.entityName }}</strong>
               <div class="u-display-flex">
-                @for(group of missing.value.groups; track group) {
+                @for (group of missing.value.groups; track group) {
                   <span class="a-chip">{{ getGroupLabel(group) }}</span>
                 }
               </div>

@@ -14,4 +14,8 @@ export class MockAccessService implements PryBaseAccess {
   hasGroup(): Observable<boolean> {
     return of(true);
   }
+
+  canModifyDataset(): Observable<boolean> {
+    return of(true);
+  }
 }

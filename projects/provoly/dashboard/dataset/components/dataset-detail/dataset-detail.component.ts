@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Optional, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   DashboardActions,
@@ -7,13 +7,15 @@ import {
   DatasetVersion,
   DataSourceActions,
   DataSourceSelectors,
+  PRY_ACCESS_TOKEN,
+  PryBaseAccess,
   ResultSets,
   SearchActions,
   SubscriptionnerDirective,
   ViewMode,
   WidgetManifest
 } from '@provoly/dashboard';
-import { map, Observable } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 
 let nextCompId = 0;
 
@@ -59,7 +61,10 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
   isPanelOpen: boolean = false;
   selectedVersion?: DatasetVersion;
 
-  constructor(private store: Store) {
+  constructor(
+    private store: Store,
+    @Optional() @Inject(PRY_ACCESS_TOKEN) protected access: PryBaseAccess
+  ) {
     super();
     this.datasetItems$ = this.store.select(DashboardSelectors.resultSets);
     this.compId = nextCompId++;
@@ -212,5 +217,9 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
   askDelete(version: DatasetVersion, $event?: Event) {
     this.store.dispatch(DataSourceActions.dataset.confirmDeleteVersion({ version }));
     $event?.stopPropagation();
+  }
+
+  canModify$() {
+    return this.access ? this.access.canModifyDataset(this.dataset) : of(false);
   }
 }

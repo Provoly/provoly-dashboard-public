@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
@@ -8,12 +8,15 @@ import {
   DataSourceSelectors,
   MetadataValue,
   MissingGroupsByEntity,
+  PRY_ACCESS_TOKEN,
+  PryBaseAccess,
   PryI18nService,
   PryVisibilityType,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
 import { MetadataActions, MetadataSelectors, MetaEventType } from '@provoly/dashboard/components/metadata-editor';
-import { BehaviorSubject, combineLatest, map, Observable, Subscription, withLatestFrom } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, of, Subscription, withLatestFrom } from 'rxjs';
+import { concatLatestFrom } from '@ngrx/operators';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminSelectors } from '../../../store/admin.selectors';
 import { AdminDatasetActions } from '../store/admin-dataset.actions';
@@ -45,7 +48,8 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
     private store: Store<any>,
     private router: Router,
     private route: ActivatedRoute,
-    private i18n: PryI18nService
+    private i18n: PryI18nService,
+    @Optional() @Inject(PRY_ACCESS_TOKEN) protected access: PryBaseAccess
   ) {
     super();
     this.store.dispatch(MetadataActions.loadMetadata());
@@ -71,14 +75,15 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
 
   ngOnInit(): void {
     this.subscriptions.add(
-      combineLatest([this.selectedDataset$, this.store.select(DataSourceSelectors.datasetVersions)]).subscribe(
-        ([dataset, versions]) => {
+      combineLatest([this.selectedDataset$, this.store.select(DataSourceSelectors.datasetVersions)])
+        .pipe(concatLatestFrom(([dataset, versions]) => (dataset ? this.canModify$(dataset) : of(false))))
+        .subscribe(([[dataset, versions], canModify]) => {
           if (dataset) {
-            this.accessGroups = dataset?.groups ?? [];
+            this.accessGroups = dataset.groups ?? [];
             const editPath = this.router.createUrlTree(['.', 'dataset', 'edit', dataset.id], {
               relativeTo: this.route
             });
-            if (dataset.owner) {
+            if (canModify) {
               this.store.dispatch(
                 AdminActions.mainActions({
                   actions: [
@@ -116,8 +121,7 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
               );
             }
           }
-        }
-      )
+        })
     );
   }
 
@@ -186,5 +190,9 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
         this.disableShareButton$.next(false);
       }
     }
+  }
+
+  canModify$(dataset: Dataset) {
+    return this.access ? this.access.canModifyDataset(dataset) : of(false);
   }
 }

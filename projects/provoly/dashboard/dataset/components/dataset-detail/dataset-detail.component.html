@@ -179,7 +179,7 @@
                 version.state !== 'DELETING'
               "
             >
-              <ng-container *ngIf="dataset.owner && (version.state === 'ACTIVE' || version.state === 'INACTIVE')">
+              <ng-container *ngIf="canModify$() && (version.state === 'ACTIVE' || version.state === 'INACTIVE')">
                 <ng-container *pryAccess="{ module: 'dashboard', page: 'list-dataset', action: 'activate' }">
                   <button
                     type="button"

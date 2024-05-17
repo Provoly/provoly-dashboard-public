@@ -36,7 +36,8 @@ export class PryDatasetComponent extends SubscriptionnerDirective {
     this.filteredDatasets$ = combineLatest([this.datasets$, this.search$]).pipe(
       map(([datasets, search]) =>
         datasets
-          .filter((dataset) => search.length === 0 || dataset.name.toLowerCase().includes(search.toLowerCase())) .sort((a, b) => a.name.localeCompare(b.name))
+          .filter((dataset) => search.length === 0 || dataset.name.toLowerCase().includes(search.toLowerCase()))
+          .sort((a, b) => a.name.localeCompare(b.name))
       )
     );
     this.store.dispatch(DataSourceActions.dataset.listVersions());
