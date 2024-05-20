@@ -4,7 +4,7 @@ import * as fromRelationTypes from './relation-types.reducer';
 const feature = createFeatureSelector<fromRelationTypes.RelationTypeState>(fromRelationTypes.relationTypesFeatureKey);
 
 const relationsTypes = createSelector(feature, (state) => {
-  const arrayForSort = [...state?.relationsTypes];
+  const arrayForSort = state?.relationsTypes ? [...state.relationsTypes] : [];
   return arrayForSort.sort((a, b) => a.name.localeCompare(b.name));
 });
 const selectedRelationType = createSelector(feature, (state) => state?.selectedRelationType);

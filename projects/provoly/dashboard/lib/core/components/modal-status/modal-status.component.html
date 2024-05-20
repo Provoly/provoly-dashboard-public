@@ -17,7 +17,7 @@
         </button>
       </div>
     </div>
-    <table class="a-table">
+    <table class="a-table" [attr.aria-describedby]="'@pry.a11y.modalStatusTableDescr' | i18n">
       <thead>
         <tr>
           <th>{{ '@pry.dataset.error.type' | i18n }}</th>

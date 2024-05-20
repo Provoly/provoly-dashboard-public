@@ -2,6 +2,7 @@
   <label for="share-group-select" class="a-h4">{{ '@pry.share.dashboardAccess' | i18n }}</label>
   <form class="u-display-flex">
     <fieldset class="m-grouped-select u-display-flex" name="add-access-rights">
+      <legend class="u-visually-hidden">{{ '@pry.share.shareAccessRights' | i18n }}</legend>
       <pry-select
         id="share-group-select"
         class="o-access-rights-share__group-select"
@@ -24,7 +25,7 @@
         bindLabel="label"
       ></pry-select>
     </fieldset>
-    <button role="button" class="a-btn a-btn--primary" (click)="addAccess()" [disabled]="isAddingDisabled()">
+    <button type="button" class="a-btn a-btn--primary" (click)="addAccess()" [disabled]="isAddingDisabled()">
       {{ '@pry.action.add' | i18n }}
     </button>
   </form>
@@ -62,10 +63,11 @@
             ></pry-select>
           }
           <button
-            role="button"
+            type="button"
             class="a-btn a-btn--icon-only a-tooltip"
             [attr.data-tooltip]="'@pry.action.delete' | i18n"
             (click)="removeGroupAccess(group.key)"
+            (keydown.enter)="removeGroupAccess(group.key)"
           >
             <pry-icon iconSvg="close" [height]="15" [width]="15"></pry-icon>
           </button>

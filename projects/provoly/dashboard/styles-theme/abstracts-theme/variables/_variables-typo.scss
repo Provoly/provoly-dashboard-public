@@ -1,12 +1,12 @@
 // Theme typography variables (elements font-family, font-size, line-height, font-weight, font-style)
 
-// font-family (optionnal) - default set in font map ($default-font-family)
-// font-variation-settings (optionnal)
+// font-family (optional) - default set in font map ($default-font-family)
+// font-variation-settings (optional)
 // font-size (required) (px are automatically converted to rem) (use 'em' unit to force 'em')
 // line-height (required) (px are automatically converted to rem) (use 'em' unit to force 'em')
-// font-weight (recommanded) - default set in font map ($default-font-weight)
-// letter-spacing (optionnal) == 'normal' when ommited - (use 'em' unit to force 'em')
-// font-style (optionnal) - default 'normal'
+// font-weight (recommended) - default set in font map ($default-font-weight)
+// letter-spacing (optional) == 'normal' when omitted - (use 'em' unit to force 'em')
+// font-style (optional) - default 'normal'
 
 $typography-default-font-family: Ubuntu;
 

@@ -40,10 +40,10 @@ const addDefaultRuleIfNotPresent = (defs: IconDefinitions) => {
 const iconDefinitions = createSelector(
   feature,
   (config) =>
-    (({
+    ({
       default: [{ iconUrl: DEFAULT_ICON_URL, iconSize: [25, 25] }],
       ...addDefaultRuleIfNotPresent(config.iconDefinitions)
-    } ?? {}) as IconDefinitions)
+    }) as IconDefinitions
 );
 
 const tooltipDefinitions = createSelector(feature, (config) => config.tooltipDefinitions);
@@ -66,7 +66,7 @@ const selectVersions = createSelector(feature, (state) => state.versions);
 const accessGroups = createSelector(feature, (state) => state.accessGroups);
 const limits = createSelector(
   feature,
-  (state) => ({ default: DEFAULT_SEARCH_LIMIT_NUMBER, ...(state.limits ?? {}) } as { [key: string]: number })
+  (state) => ({ default: DEFAULT_SEARCH_LIMIT_NUMBER, ...(state.limits ?? {}) }) as { [key: string]: number }
 );
 
 export const ConfigSelectors = {

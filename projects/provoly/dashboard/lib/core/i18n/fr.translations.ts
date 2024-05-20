@@ -415,6 +415,9 @@ export const frTranslations = {
     grid: {
       rows: 'Lignes',
       columns: 'Colonnes'
+    },
+    a11y: {
+      modalStatusTableDescr: 'Les warnings et les erreurs de la version de dataset'
     }
   }
 };

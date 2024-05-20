@@ -33,7 +33,7 @@
   </pry-widget-header>
   <ng-container *ngIf="src$ | async as src">
     <div [style.height.px]="height$ | async">
-      <iframe [src]="src" #iframe></iframe>
+      <iframe [src]="src" title="Provoly iframe" #iframe></iframe>
     </div>
   </ng-container>
 </div>

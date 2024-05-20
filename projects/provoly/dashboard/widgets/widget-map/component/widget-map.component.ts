@@ -583,16 +583,17 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                 };
               };
               Object.values(rs.items).forEach((items) => {
-                items.forEach((item) =>
-                  Promise.all([
-                    this.symbolService.getSymbolAsIconStyle(item),
-                    this.symbolService.getSymbolAsIconStyle(item, true)
-                  ]).then(([style, bStyle]) => {
-                    result[item.id] = { classic: style, bordered: bStyle };
-                    if (Object.keys(result).length >= total) {
-                      resolve(result);
-                    }
-                  })
+                items.forEach(
+                  (item): Promise<void> =>
+                    Promise.all([
+                      this.symbolService.getSymbolAsIconStyle(item),
+                      this.symbolService.getSymbolAsIconStyle(item, true)
+                    ]).then(([style, bStyle]) => {
+                      result[item.id] = { classic: style, bordered: bStyle };
+                      if (Object.keys(result).length >= total) {
+                        resolve(result);
+                      }
+                    })
                 );
               });
             })
@@ -1190,9 +1191,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     layer: MapWidgetHeatMapLayerOptions | MapWidgetBubbleLayerOptions
   ) {
     return (
-      (classObj || { attributes: [] }).attributes.find(
-        (attr) => attr.technicalName === layer?.intensityAttribute ?? ''
-      ) ?? (undefined as unknown as Attribute)
+      (classObj || { attributes: [] }).attributes.find((attr) => attr.technicalName === layer?.intensityAttribute) ??
+      (undefined as unknown as Attribute)
     );
   }
 
@@ -1200,7 +1200,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     type layers = MapWidgetHeatMapLayerOptions | MapWidgetMarkerLayerOptions | MapWidgetBubbleLayerOptions;
     const specificLayer = layer as layers;
     return (
-      classObj.attributes.find((attr) => attr.technicalName === (specificLayer?.attribute ?? []) ?? '') ??
+      classObj.attributes.find((attr) => attr.technicalName === specificLayer?.attribute) ??
       (undefined as unknown as Attribute)
     );
   }
@@ -1486,7 +1486,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   get layerVisibleIdx() {
-    return this.mapLayers.map((layer, idx) => (layer.getVisible() ? idx : 0)).reduce((a, b) => a + b) || -1;
+    return this.mapLayers.map((layer, idx) => (layer.getVisible() ? idx : 0)).reduce((a, b) => a + b, 0) || -1;
   }
 
   override ngOnDestroy() {

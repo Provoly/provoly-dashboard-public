@@ -249,7 +249,6 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
         this.filter.operator = 'I_CONTAINS';
         break;
       default:
-        this.filter.operator = this.filter.operator;
         break;
     }
     if (this.filter.type !== '' && this.container) {

@@ -72,7 +72,7 @@ const resultSetsParams = createSelector(
 );
 const namedQueriesNames = createSelector(resultSets, (state: ResultSets) => Object.keys(state) ?? <string[]>[]);
 const availableNamedQueries = createSelector(results, (results) => {
-  return [...new Set([...results.availableDatasourceNames, ...Object.keys(results.resultSets)])] ?? <string[]>[];
+  return [...new Set([...results.availableDatasourceNames, ...Object.keys(results.resultSets)])];
 });
 const defaultDatasourceNames = createSelector(results, (results) => results.defaultDatasource ?? 'current');
 const selectedItemIds = createSelector(results, (results) => results.selectedItems ?? ([] as string[]));

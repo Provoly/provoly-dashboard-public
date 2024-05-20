@@ -227,7 +227,7 @@ export class SymbolService {
   cache: { [url: string]: Promise<HTMLImageElement> } = {};
 
   downloadImage(url: string): Promise<HTMLImageElement> {
-    if (!!this.cache[url]) return this.cache[url];
+    if (url in this.cache) return this.cache[url];
 
     this.cache[url] = new Promise((resolve) => {
       const image = new Image();
@@ -255,12 +255,12 @@ export class SymbolService {
     if (!rule) {
       return true;
     }
-    if (!!item.attributes[rule.attributeName]) {
+    if (rule.attributeName in item.attributes) {
       if (item.attributes[rule.attributeName].type === 'MULTI') {
         // multi valued
         return (item.attributes[rule.attributeName] as AttributeMultipleValue).values
           .map((attrValue) => compareOperationFunctions[rule.operation](attrValue.value, rule.value))
-          .reduce((p, c) => c || p);
+          .reduce((p, c) => c || p, false);
       } else {
         // single valued
         return compareOperationFunctions[rule.operation](

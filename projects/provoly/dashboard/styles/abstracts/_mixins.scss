@@ -84,7 +84,7 @@
       #{themed($theme-map, 'font', 'font-family-alternative')};
   }
   @if not(empty($font-variation)) {
-    font-variation: $font-variation;
+    font-variation-settings: $font-variation;
   }
   @if not(empty($font-size)) {
     @include setPropertySize($font-size, 'font-size');

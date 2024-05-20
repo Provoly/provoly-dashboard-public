@@ -4,12 +4,9 @@ import {
   CatalogEntry,
   ConfigActions,
   PryI18nService,
-  PryVisibilityType,
   SubscriptionnerDirective,
   ToolboxManifestService,
   ToolboxMenuService,
-  ViewMode,
-  Widget
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 

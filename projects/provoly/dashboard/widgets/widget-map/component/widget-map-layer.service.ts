@@ -207,7 +207,7 @@ export class WidgetMapLayerService {
             );
             return !!location;
           })
-          .forEach(async (item) => {
+          .forEach(async (item): Promise<void> => {
             const itemFeature = WidgetMapUtils.getFeatureFromItem(
               map.getView().getProjection(),
               item,
@@ -569,7 +569,7 @@ export class WidgetMapLayerService {
           )
         }))
         .filter(({ location }) => !!location)
-        .forEach(async (subItem) => {
+        .forEach(async (subItem): Promise<void> => {
           const itemFeature = new Feature({
             ...subItem.item,
             type,

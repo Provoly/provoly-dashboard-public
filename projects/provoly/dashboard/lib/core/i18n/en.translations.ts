@@ -409,5 +409,8 @@ export const enTranslations = {
   grid: {
     rows: 'Rows',
     columns: 'Columns'
+  },
+  a11y: {
+    modalStatusTableDescr: 'Dataset version warnings and errors'
   }
 };
