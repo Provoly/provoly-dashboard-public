@@ -85,9 +85,16 @@
 }
 
 .m-layer-switcher {
+  max-height: toRem(510);
+
   &__group-title {
     font-weight: 700;
     margin-bottom: toRem(5);
+  }
+
+  &__content {
+    max-height: toRem(420);
+    overflow-y: auto;
   }
 
   &__title {

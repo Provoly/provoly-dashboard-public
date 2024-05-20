@@ -515,63 +515,67 @@
     </button>
     <div class="m-map-layer-action__container m-map-layer-action__container--layers" [class.-hidden]="!layersTabOpen">
       <h4 class="a-h4">{{ '@pry.widget.map.layerSettings.selectLayers' | i18n }}</h4>
-      <ng-container *ngFor="let group of layerGroups$ | async">
-        <ng-container *ngIf="isGroupUsedByWidgetLayers(group)">
-          <div class="m-map-layer-action__title m-layer-switcher__group-title">
-            <h5 class="a-h5">
-              {{ group.name === DEFAULT_LAYER_GROUP ? ('@pry.widget.map.noGroup' | i18n) : group.name }}
-            </h5>
-          </div>
-          <ng-container *ngIf="!group.singleLayer; else singleLayer">
-            <ng-container *ngFor="let layer of optionsCopy.layers; let index = index">
-              <ng-container *ngIf="layer.group === group.name">
-                <div class="m-map-layer-action__title m-layer-switcher__title" [class.-hidden]="!layersTabOpen">
-                  <pry-checkbox
-                    [ngModel]="isLayerVisible(layer, group)"
-                    (change)="changeVisibility(group, layer)"
-                    id="checkbox-layer-{{ index }}"
-                  ></pry-checkbox>
-                  <label class="a-label" for="checkbox-layer-{{ index }}">
-                    {{ layer.title ?? ('@pry.widget.map.missingTitle' | i18n) }}
-                  </label>
-                </div>
-              </ng-container>
-            </ng-container>
-          </ng-container>
-          <ng-template #singleLayer>
-            <div class="m-layer-switcher--radios">
-              <div class="m-map-layer-action__title m-layer-switcher__title" [class.-hidden]="!layersTabOpen">
-                <input
-                  type="radio"
-                  [name]="group.name"
-                  id="radio-no-layer"
-                  [ngModel]="group.visibleLayers.length"
-                  [value]="0"
-                  (change)="changeVisibility(group)"
-                />
-                <label class="a-label" for="radio-no-layer">{{ '@pry.widget.map.layerSettings.noLayer' | i18n }}</label>
-              </div>
+      <div class="m-layer-switcher__content">
+        <ng-container *ngFor="let group of layerGroups$ | async">
+          <ng-container *ngIf="isGroupUsedByWidgetLayers(group)">
+            <div class="m-map-layer-action__title m-layer-switcher__group-title">
+              <h5 class="a-h5">
+                {{ group.name === DEFAULT_LAYER_GROUP ? ('@pry.widget.map.noGroup' | i18n) : group.name }}
+              </h5>
+            </div>
+            <ng-container *ngIf="!group.singleLayer; else singleLayer">
               <ng-container *ngFor="let layer of optionsCopy.layers; let index = index">
                 <ng-container *ngIf="layer.group === group.name">
                   <div class="m-map-layer-action__title m-layer-switcher__title" [class.-hidden]="!layersTabOpen">
-                    <input
-                      type="radio"
-                      [name]="group.name"
-                      [id]="'radio-layer-' + index"
-                      [ngModel]="group.visibleLayers[0]"
-                      [value]="layer.title"
+                    <pry-checkbox
+                      [ngModel]="isLayerVisible(layer, group)"
                       (change)="changeVisibility(group, layer)"
-                    />
-                    <label class="a-label" for="radio-layer-{{ index }}">{{
-                      layer.title ?? ('@pry.widget.map.missingTitle' | i18n)
-                    }}</label>
+                      id="checkbox-layer-{{ index }}"
+                    ></pry-checkbox>
+                    <label class="a-label" for="checkbox-layer-{{ index }}">
+                      {{ layer.title ?? ('@pry.widget.map.missingTitle' | i18n) }}
+                    </label>
                   </div>
                 </ng-container>
               </ng-container>
-            </div>
-          </ng-template>
+            </ng-container>
+            <ng-template #singleLayer>
+              <div class="m-layer-switcher--radios">
+                <div class="m-map-layer-action__title m-layer-switcher__title" [class.-hidden]="!layersTabOpen">
+                  <input
+                    type="radio"
+                    [name]="group.name"
+                    id="radio-no-layer"
+                    [ngModel]="group.visibleLayers.length"
+                    [value]="0"
+                    (change)="changeVisibility(group)"
+                  />
+                  <label class="a-label" for="radio-no-layer">{{
+                    '@pry.widget.map.layerSettings.noLayer' | i18n
+                  }}</label>
+                </div>
+                <ng-container *ngFor="let layer of optionsCopy.layers; let index = index">
+                  <ng-container *ngIf="layer.group === group.name">
+                    <div class="m-map-layer-action__title m-layer-switcher__title" [class.-hidden]="!layersTabOpen">
+                      <input
+                        type="radio"
+                        [name]="group.name"
+                        [id]="'radio-layer-' + index"
+                        [ngModel]="group.visibleLayers[0]"
+                        [value]="layer.title"
+                        (change)="changeVisibility(group, layer)"
+                      />
+                      <label class="a-label" for="radio-layer-{{ index }}">{{
+                        layer.title ?? ('@pry.widget.map.missingTitle' | i18n)
+                      }}</label>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </ng-template>
+          </ng-container>
         </ng-container>
-      </ng-container>
+      </div>
     </div>
   </div>
 
