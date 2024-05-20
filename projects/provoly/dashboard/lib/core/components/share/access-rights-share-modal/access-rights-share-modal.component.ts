@@ -8,6 +8,7 @@ import { getCommonDatasourceGroupsForManifest } from '../share.utils';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import equal from 'fast-deep-equal/es6';
+import { DataSourceActions } from '../../../store/data-source/data-source.actions';
 
 @Component({
   selector: 'pry-access-rights-share-modal',
@@ -33,6 +34,7 @@ export class PryAccessRightsShareModalComponent {
       manifest: ManifestDescription;
     }
   ) {
+    this.store.dispatch(DataSourceActions.dataset.loadDataset());
     this.manifest = this.data.manifest;
     this.accessRightsByGroup = { ...this.manifest.accessRightsByGroup };
 
