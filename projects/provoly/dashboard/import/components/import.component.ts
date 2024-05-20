@@ -95,11 +95,18 @@ export class PryImportComponent extends SubscriptionnerDirective implements OnDe
     this.loading$ = store.select(ImportSelectors.loading);
 
     this.subscriptions.add(
-      this.form.get('dataset')?.valueChanges
-        .pipe(withLatestFrom(this.store.select(DataSourceSelectors.datasetVersions)))
+      this.form
+        .get('dataset')
+        ?.valueChanges.pipe(withLatestFrom(this.store.select(DataSourceSelectors.datasetVersions)))
         .subscribe(([dataset, versions]) => {
           this.clearMessage();
-          if (dataset && versions.some((version) => version.dataset === dataset.id && version.state === 'ACTIVE')) {
+          if (
+            dataset &&
+            versions.some(
+              (version) =>
+                version.dataset === dataset.id && (version.state === 'ACTIVE' || version.state === 'INDEXING')
+            )
+          ) {
             this.getLastActiveVersion(dataset);
           } else {
             this.form.patchValue({ producer: '', productionDate: DateUtils.formatDate(new Date()) });
