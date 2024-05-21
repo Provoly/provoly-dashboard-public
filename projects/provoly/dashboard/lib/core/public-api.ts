@@ -23,6 +23,7 @@ export * from './store/search/search.constants';
 export * from './store/search/search.selectors';
 export * from './store/search/search.service';
 export * from './store/search/search.reducer';
+export * from './store/search/filter-param-encoder';
 export * from './store/search/lat-lon-to-geographic-field-transformation.function';
 export * from './store/category/category.actions';
 export * from './store/category/category.interface';

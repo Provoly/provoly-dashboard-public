@@ -61,7 +61,10 @@ export class WidgetVegaComponent extends DataWidgetComponent implements AfterVie
         vegaSpec.autosize = vegaSpec.autosize ?? { type: 'fit', contains: 'padding' };
         vegaSpec.padding = vegaSpec.padding ?? 15;
 
-        console.log(JSON.stringify(vegaSpec, undefined, 4));
+        // @ts-ignore
+        if (window.widgetVegaLogging === true) {
+          console.log(JSON.stringify(vegaSpec, undefined, 4));
+        }
 
         return vegaSpec;
       })

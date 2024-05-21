@@ -744,21 +744,6 @@ router.on(['OPTIONS'], '/ref/users/me/namedquery/:id', (req, res, params) => {
   makeResponseOk(res);
 });
 
-router.on(['OPTIONS', 'GET'], '/data/items/named/:rs', (req, res, params) => {
-  const number = fieldGeneratorModule.generateNumberOfItems();
-  const tableOfClasses = [...new Array(number)].map(
-    () => dataModule.class.ids[Math.round(Math.random() * 100) % dataModule.class.ids.length]
-  );
-  const isPresent = dataModule.namedQueries.find((name) => name.id === params.rs);
-  if (isPresent) {
-    isPresent.lastExecutionDate = new Date().getTime();
-  }
-  makeResponseOk(
-    res,
-    dataModule.itemsAsResultSet(fieldGeneratorModule.generateItems(tableOfClasses, readQuery(req).excludeGeo))
-  );
-});
-
 router.on(['OPTIONS', 'GET'], '/data/items/:id', (req, res, params) => {
   const randomClass = dataModule.class.ids[Math.round(Math.random() * 100) % dataModule.class.ids.length];
   const item = fieldGeneratorModule.generateItems([randomClass], readQuery(req).excludeGeo);
