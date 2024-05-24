@@ -59,7 +59,7 @@ const classes = [
       { id: 'loc', name: 'loc', technicalName: 'loc', field: 'loc-xxxx' },
       { id: 'lat', name: 'lat', technicalName: 'lat', field: 'lat-xxxx' },
       { id: 'lng', name: 'lng', technicalName: 'lng', field: 'lng-xxxx' },
-      { id: 'zone', name: 'zone', technicalName: 'zone',  field: 'zone' },
+      { id: 'zone', name: 'zone', technicalName: 'zone', field: 'zone' },
       { id: 'intensity', name: 'intensity', technicalName: 'intensity', field: 'intensity-xxxx' }
     ]
   }

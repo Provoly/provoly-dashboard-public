@@ -39,6 +39,7 @@
             bindLabel="name"
             bindValue="name"
             id="secondaryProp"
+            [clearable]="true"
           ></pry-select>
         </div>
         <div class="m-form-label-field">
@@ -63,6 +64,72 @@
             id="valueProp"
           ></pry-select>
         </div>
+        <div class="m-form-label-field">
+          <pry-checkbox (ngModelChange)="toggleColorConfig($event)" [ngModel]="!!optionsCopy.colorConfig">
+            {{ '@pry.widget.analytic.colorConfig' | i18n }}
+          </pry-checkbox>
+          @if (optionsCopy.colorConfig) {
+            <div class="m-form-label-field">
+              <label class="a-label" for="colorProp">{{ '@pry.widget.analytic.colorProp' | i18n }}</label>
+              <pry-select
+                (ngModelChange)="changeColorConfig($event, 'prop')"
+                [items]="availableProperties$ | async"
+                [ngModel]="optionsCopy.colorConfig.prop"
+                bindLabel="name"
+                bindValue="name"
+                id="colorProp"
+              ></pry-select>
+            </div>
+            <div class="m-form-label-field">
+              <label class="a-label" for="colorProp">{{ '@pry.widget.analytic.colors' | i18n }}</label>
+              <div
+                class="o-widget__analytic__color-picker-container u-display-flex -align-center"
+                cdkDropList
+                (cdkDropListDropped)="drop($event)"
+                cdkDropListOrientation="horizontal"
+              >
+                @for (color of optionsCopy.colorConfig.colors; track color; let i = $index) {
+                  <div class="o-widget__analytic__color-picker" cdkDrag>
+                    <pry-color-picker
+                      [ngModel]="color"
+                      (ngModelChange)="modifyColorScheme($event, i)"
+                    ></pry-color-picker>
+                    <button (click)="removeColor(i)" class="o-widget__analytic__color-picker-remove">
+                      <pry-icon iconSvg="close" [height]="15" [width]="15"></pry-icon>
+                    </button>
+                    <div *cdkDragPreview>
+                      <pry-color-picker [ngModel]="color"></pry-color-picker>
+                    </div>
+                  </div>
+                }
+                <button
+                  type="button"
+                  class="a-btn a-btn--icon-only o-widget__analytic__color-picker-add"
+                  (click)="modifyColorScheme()"
+                >
+                  <pry-icon iconSvg="add" [height]="20" [width]="20"></pry-icon>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+        <div class="m-form-label-field">
+          <pry-checkbox (ngModelChange)="toggleFormat($event)" [ngModel]="!!optionsCopy.format">
+            {{ '@pry.widget.analytic.format' | i18n }}
+          </pry-checkbox>
+          @if (optionsCopy.format) {
+            <div class="m-form-label-field">
+              <label class="a-label" for="format">{{ '@pry.widget.analytic.suffix' | i18n }}</label>
+              <input
+                type="text"
+                class="a-form-field"
+                id="format"
+                [ngModel]="optionsCopy.format.suffix"
+                (ngModelChange)="changeFormat($event)"
+              />
+            </div>
+          }
+        </div>
       </div>
     </pry-settings>
   </pry-widget-header>
@@ -77,23 +144,40 @@
             </th>
           }
         </tr>
-        <tr class="secondary-header">
-          <th></th>
-          @for (primary of primaryProperty$ | async; track primary) {
-            @for (secondary of secondaryProperty$ | async; track secondary) {
-              <th>{{ secondary }}</th>
+        @if (optionsCopy.secondaryProp) {
+          <tr class="secondary-header">
+            <th></th>
+            @for (primary of primaryProperty$ | async; track primary) {
+              @for (secondary of secondaryProperty$ | async; track secondary) {
+                <th>{{ secondary }}</th>
+              }
             }
-          }
-        </tr>
+          </tr>
+        }
       </thead>
       <tbody>
         @for (line of lines$ | async; track line.name) {
           <tr>
             <th>{{ line.name }}</th>
             @for (primary of primaryProperty$ | async; track primary) {
-              @for (secondary of secondaryProperty$ | async; track secondary) {
-                <td>
-                  {{ line.value[primary][secondary] }}
+              @if (optionsCopy.secondaryProp) {
+                @for (secondary of secondaryProperty$ | async; track secondary) {
+                  <td
+                    [ngStyle]="
+                      optionsCopy.colorConfig ? { 'background-color': (colorMap$ | async)?.[line.name]?.[primary] } : {}
+                    "
+                  >
+                    {{ line.value[primary][secondary]
+                    }}{{ optionsCopy.format?.suffix ? ' ' + optionsCopy.format?.suffix : '' }}
+                  </td>
+                }
+              } @else {
+                <td
+                  [ngStyle]="
+                    optionsCopy.colorConfig ? { 'background-color': (colorMap$ | async)?.[line.name]?.[primary] } : {}
+                  "
+                >
+                  {{ line.value[primary] }}{{ optionsCopy.format?.suffix ? ' ' + optionsCopy.format?.suffix : '' }}
                 </td>
               }
             }

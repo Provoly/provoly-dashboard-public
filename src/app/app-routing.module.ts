@@ -223,6 +223,33 @@ const routes: Routes = [
     }
   },
   {
+    path: 'analytic-color',
+    component: DashboardContainerComponent,
+    data: {
+      manifest: {
+        widgets: [
+          {
+            type: 'analytic',
+            layout: { x: 1, y: 1, height: 12, width: 12 },
+            options: {
+              primaryProp: 'horizon',
+              verticalProp: 'alea',
+              valueProp: 'encours',
+              colorConfig: {
+                prop: 'score_global',
+                colors: ['#C9F3E9', '#FFF4ED', '#FFB0A5', '#FF7866', '#FF4127']
+              },
+              format: {
+                suffix: '€'
+              }
+            },
+            datasource: 'dataset-dr2-with-color'
+          }
+        ]
+      } as DashboardManifest
+    }
+  },
+  {
     path: 'template',
     component: DashboardContainerComponent,
     data: {

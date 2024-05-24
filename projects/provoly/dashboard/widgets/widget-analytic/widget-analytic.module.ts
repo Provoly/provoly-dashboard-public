@@ -14,11 +14,12 @@ import {
   PryToggleModule
 } from '@provoly/dashboard';
 import { PryCheckboxModule } from '@provoly/dashboard/components/checkbox';
-import { WidgetMapModule } from '@provoly/dashboard/widgets/widget-map';
 import { WidgetAnalyticComponent } from './component/widget-analytic.component';
 import { enTranslations } from './i18n/en.translations';
 import { frTranslations } from './i18n/fr.translations';
 import { PryWidgetAnalyticCssComponent } from './style/css.component';
+import { PryColorPickerModule } from '@provoly/dashboard/components/color-picker';
+import { CdkDrag, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [WidgetAnalyticComponent, PryWidgetAnalyticCssComponent],
@@ -32,9 +33,10 @@ import { PryWidgetAnalyticCssComponent } from './style/css.component';
     PryIconModule,
     PryCheckboxModule,
     PryToggleModule,
-    WidgetMapModule,
     PryI18nModule,
-    AsyncPipe
+    AsyncPipe,
+    PryColorPickerModule,
+    DragDropModule
   ],
   exports: [WidgetAnalyticComponent]
 })

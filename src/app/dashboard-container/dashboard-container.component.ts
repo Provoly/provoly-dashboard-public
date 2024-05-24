@@ -1,15 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {
-  DashboardActions,
-  DashboardComponent,
-  DashboardSelectors,
-  Filter,
-  GlobalManifest,
-  SubscriptionnerDirective
-} from '@provoly/dashboard';
-import { BehaviorSubject, combineLatest, Observable, take } from 'rxjs';
+import { DashboardActions, DashboardSelectors, Filter, SubscriptionnerDirective } from '@provoly/dashboard';
+import { combineLatest, take } from 'rxjs';
 import { debounceTime, delay } from 'rxjs/operators';
 
 @Component({
@@ -17,13 +10,14 @@ import { debounceTime, delay } from 'rxjs/operators';
   templateUrl: './dashboard-container.component.html',
   styleUrls: ['./dashboard-container.component.scss']
 })
-export class DashboardContainerComponent extends SubscriptionnerDirective {
-  globalManifest$: Observable<GlobalManifest>;
-  @ViewChild('dashboard') dashboard!: DashboardComponent;
+export class DashboardContainerComponent extends SubscriptionnerDirective implements OnDestroy {
   DEBUG_EXPORT = false;
-  constructor(private route: ActivatedRoute, private store: Store<any>) {
+
+  constructor(
+    private route: ActivatedRoute,
+    private store: Store<any>
+  ) {
     super();
-    this.globalManifest$ = this.store.select(DashboardSelectors.globalManifest);
     this.subscriptions.add(
       combineLatest([
         this.store.select(DashboardSelectors.windowManifest),
@@ -48,4 +42,12 @@ export class DashboardContainerComponent extends SubscriptionnerDirective {
     );
   }
 
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    this.store.dispatch(
+      DashboardActions.updateDashboardManifest({
+        manifest: { widgets: [] }
+      })
+    );
+  }
 }

@@ -40,4 +40,52 @@
       }
     }
   }
+
+  &__color-picker-container {
+    margin-top: toRem(10);
+    gap: toRem(15);
+    flex-wrap: wrap;
+  }
+
+  &__color-picker {
+    position: relative;
+  }
+
+  &__color-picker-remove {
+    position: absolute;
+    right: -20px;
+    top: -10px;
+    z-index: 2;
+    color: #263340;
+    padding: 0;
+  }
+
+  &__color-picker-add {
+    padding: toRem(12);
+    border: 1px solid #263340;
+    border-radius: 50%;
+    width: 20px;
+  }
 }
+
+.cdk-drop-list-dragging .cdk-drag {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drop-list-dragging .o-widget__analytic__color-picker:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 50%;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+  0 8px 10px 1px rgba(0, 0, 0, 0.14),
+  0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+

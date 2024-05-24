@@ -242,5 +242,14 @@
     "owner": false,
     "groups": [],
     "metadata": []
+  },
+  {
+    "id": "dataset-dr2-with-color",
+    "name": "DR2-COLOR",
+    "oClass": "classe-dr2-with-color",
+    "type": "OPEN",
+    "owner": false,
+    "groups": [],
+    "metadata": []
   }
 ]
