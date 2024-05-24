@@ -143,8 +143,9 @@ export const enTranslations = {
       },
       tile: 'Tiles',
       template: 'HTML Template',
-      now: 'Today',
+      today: 'Today at {{hour}}:{{min}}',
       since_day: '{{day}} day{{plural}} ago',
+      from_day: 'In {{day}} day{{plural}}',
       layout: {
         '0': 'Free layout',
         '0_detailled': 'Free mode display, rendering size and positioning fully customizable by the user.',

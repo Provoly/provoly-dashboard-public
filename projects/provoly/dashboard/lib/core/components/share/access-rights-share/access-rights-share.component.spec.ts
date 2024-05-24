@@ -7,6 +7,8 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { hot } from 'jest-marbles';
 import { PryAccessRightsShareComponent } from './access-rights-share.component';
 import { MockPrySelectComponent } from '@provoly/dashboard/mock/components/mock-pry-select.component';
+import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pry-icon.component';
+import { PryI18nService } from '@provoly/dashboard';
 
 const groups = [
   {
@@ -35,10 +37,18 @@ describe('PryAccessRightsShareComponent', () => {
   let component: PryAccessRightsShareComponent;
   let fixture: ComponentFixture<PryAccessRightsShareComponent>;
 
+  beforeAll(() => {
+    PryI18nService.warn = false;
+  });
+
+  afterAll(() => {
+    PryI18nService.warn = true;
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule, FormsModule],
-      declarations: [PryAccessRightsShareComponent, MockI18nPipe, MockPrySelectComponent],
+      declarations: [PryAccessRightsShareComponent, MockI18nPipe, MockPrySelectComponent, MockPryIconComponent],
       providers: [
         provideMockStore({
           selectors: [

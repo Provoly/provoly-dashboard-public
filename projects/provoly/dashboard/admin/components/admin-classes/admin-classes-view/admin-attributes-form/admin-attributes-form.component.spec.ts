@@ -86,7 +86,7 @@ describe('AdminAttributesFormComponent', () => {
   });
 
   afterAll(() => {
-    PryI18nService.warn = false;
+    PryI18nService.warn = true;
   });
 
   beforeEach(() => {

@@ -143,8 +143,9 @@ export const frTranslations = {
       },
       tile: 'Tuiles',
       template: 'Template HTML',
-      now: "Aujourd'hui",
+      today: "Aujourd'hui à {{hour}}:{{min}}",
       since_day: 'Il y a {{day}} jour{{plural}}',
+      from_day: 'Dans {{day}} jour{{plural}}',
       layout: {
         '0': 'Composition libre',
         '0_detailled':
