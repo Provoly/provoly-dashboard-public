@@ -1,6 +1,6 @@
 @if (templateData$ | async; as data) {
   <div class="m-form-radio-group">
-    <div *ngFor="let type of visibilityTypes" class="m-form-radio-group__item">
+    <div *ngFor="let type of shareModes" class="m-form-radio-group__item">
       <input
         type="radio"
         name="visibility"
@@ -15,7 +15,7 @@
       </label>
     </div>
   </div>
-  @if (radioValue === PryVisibilityType.RESTRICTED) {
+  @if (radioValue === PryShareMode.GROUPS) {
     @if (data.groups.length > 0) {
       <pry-chips-selector
         bindLabel="name"

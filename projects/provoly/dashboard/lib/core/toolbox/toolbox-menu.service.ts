@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { WidgetFactoryService } from '../../dashboard/components/widgets/widget-instanciator/widget-factory.service';
 import { DashboardActions } from '../../dashboard/store/dashboard.actions';
-import { PryVisibility } from '../components/share/share.model';
 import { Widget } from '../model/widget.interface';
 import { ConfigActions } from '../store/config/config.actions';
 import { ConfigSelectors } from '../store/config/config.selectors';
@@ -26,7 +25,7 @@ export type CatalogEntry = WidgetDescriptionBase & {
   type: string;
   description?: string;
   isCustom?: boolean;
-  visibility?: PryVisibility;
+  groups?: string[];
   cover?: boolean;
 };
 
@@ -116,7 +115,7 @@ export class ToolboxMenuService {
                 type: widget.id,
                 description: widget.description,
                 isCustom: true,
-                visibility: widget.visibility
+                groups: widget.groups
               }))
             ]
           })
@@ -193,10 +192,6 @@ export class ToolboxMenuService {
     }
   }
 
-  setMenuStructure(structure: WidgetDescriptionMenu[]) {
-    this._menuStructure$.next(structure);
-  }
-
   addToCatalog(widget: Widget, index: number) {
     if (this.isValidForCatalog(widget.name)) {
       const manifest = JSON.parse(widget.content);
@@ -204,7 +199,7 @@ export class ToolboxMenuService {
       this.store.dispatch(ConfigActions.saveWidget({ widget }));
       this.toolboxManifestService.set(widget.id, manifest);
     } else {
-      console.error(`Trying to add existing type "${name}"`);
+      console.error(`Trying to add existing type "${widget.name}"`);
     }
   }
 

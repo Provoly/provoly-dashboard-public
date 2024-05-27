@@ -8,7 +8,7 @@ import {
   Output
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Group, PryVisibilityType } from '../share.model';
+import { Group } from '../share.model';
 import { BehaviorSubject, map, Observable, combineLatest } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ConfigSelectors } from '../../../store/config/config.selectors';
@@ -16,6 +16,12 @@ import { ConfigActions } from '../../../store/config/config.actions';
 import { SubscriptionnerDirective } from '../../../../dashboard/components/subscriptionner.directive';
 import equal from 'fast-deep-equal/es6';
 import { AUTHENTICATED_USERS_GROUP, PUBLIC_GROUP } from '../share.utils';
+
+export enum PryShareMode {
+  PRIVATE = 'PRIVATE',
+  PUBLIC = 'PUBLIC',
+  GROUPS = 'GROUPS'
+}
 
 @Component({
   selector: 'pry-group-share',
@@ -36,25 +42,25 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
   // for tracking input
   assignedGroupNames$ = new BehaviorSubject<string[]>([]);
 
-  radioValue = PryVisibilityType.PRIVATE;
+  radioValue = PryShareMode.PRIVATE;
   assignedGroups$: Observable<Group[]>;
   groups$: Observable<Group[]>;
-  PryVisibilityType = PryVisibilityType;
-  visibilityTypes: { label: string; value: PryVisibilityType }[] = [];
+  PryShareMode = PryShareMode;
+  shareModes: { label: string; value: PryShareMode }[] = [];
   templateData$: Observable<{
     groups: Group[];
     assignedGroups: Group[];
-    disableRadios: { [key in PryVisibilityType]: boolean };
+    disableRadios: { [key in PryShareMode]: boolean };
   }>;
 
-  _disableRadios$: BehaviorSubject<{ [key in PryVisibilityType]: boolean }> = new BehaviorSubject<{
-    [key in PryVisibilityType]: boolean;
+  _disableRadios$: BehaviorSubject<{ [key in PryShareMode]: boolean }> = new BehaviorSubject<{
+    [key in PryShareMode]: boolean;
   }>({
-    [PryVisibilityType.PRIVATE]: false,
-    [PryVisibilityType.RESTRICTED]: false,
-    [PryVisibilityType.PUBLIC]: false
+    [PryShareMode.PRIVATE]: false,
+    [PryShareMode.PUBLIC]: false,
+    [PryShareMode.GROUPS]: false
   });
-  @Input() set disableRadios(value: { [key in PryVisibilityType]: boolean } | null) {
+  @Input() set disableRadios(value: { [key in PryShareMode]: boolean } | null) {
     if (value) this._disableRadios$.next(value);
   }
 
@@ -63,7 +69,7 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
     if (value) this._allowedGroups$.next(value);
   }
 
-  @Output() radioValueChange = new EventEmitter<PryVisibilityType>();
+  @Output() radioValueChange = new EventEmitter<PryShareMode>();
 
   constructor(
     private store: Store,
@@ -74,9 +80,11 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
     this.groups$ = combineLatest([this.store.select(ConfigSelectors.accessGroups), this._allowedGroups$]).pipe(
       map(([groups, allowedGroups]) =>
         groups
-          .filter((group) => group.name !== 'ALL')
+          .filter((group) => group.name !== PUBLIC_GROUP)
           .filter((group) =>
-            allowedGroups?.includes(PUBLIC_GROUP) || allowedGroups?.includes(AUTHENTICATED_USERS_GROUP) || !allowedGroups
+            allowedGroups?.includes(PUBLIC_GROUP) ||
+            allowedGroups?.includes(AUTHENTICATED_USERS_GROUP) ||
+            !allowedGroups
               ? true
               : allowedGroups.includes(group.name)
           )
@@ -90,9 +98,9 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
           }) ?? []
       )
     );
-    this.visibilityTypes = Object.keys(PryVisibilityType).map((label) => ({
+    this.shareModes = Object.keys(PryShareMode).map((label) => ({
       label: label.toLowerCase(),
-      value: PryVisibilityType[<keyof typeof PryVisibilityType>label]
+      value: PryShareMode[<keyof typeof PryShareMode>label]
     }));
     this.templateData$ = combineLatest([this.groups$, this.assignedGroups$, this._disableRadios$]).pipe(
       map(([groups, assignedGroups, disableRadios]) => ({ groups, assignedGroups, disableRadios }))
@@ -120,27 +128,27 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
 
   updateRadioValue(groups: string[]) {
     if (groups.length === 0) {
-      this.radioValue = PryVisibilityType.PRIVATE;
-    } else if (groups.length === 1 && groups.find((group) => group === 'ALL')) {
-      this.radioValue = PryVisibilityType.PUBLIC;
+      this.radioValue = PryShareMode.PRIVATE;
+    } else if (groups.length === 1 && groups.find((group) => group === PUBLIC_GROUP)) {
+      this.radioValue = PryShareMode.PUBLIC;
     } else {
-      this.radioValue = PryVisibilityType.RESTRICTED;
+      this.radioValue = PryShareMode.GROUPS;
     }
   }
 
-  changeGroupsBasedOnRadioValue(type: PryVisibilityType): void {
+  changeGroupsBasedOnRadioValue(type: PryShareMode): void {
     if (this.radioValue !== type) {
       this.radioValue = type;
       this.radioValueChange.emit(type);
 
       switch (type) {
-        case PryVisibilityType.PRIVATE:
+        case PryShareMode.PRIVATE:
           this.changeGroups([]);
           break;
-        case PryVisibilityType.RESTRICTED:
+        case PryShareMode.GROUPS:
           this.changeGroups(this.assignedGroupNames$.getValue() ?? []);
           break;
-        case PryVisibilityType.PUBLIC:
+        case PryShareMode.PUBLIC:
           this.changeGroups(['ALL']);
           break;
       }

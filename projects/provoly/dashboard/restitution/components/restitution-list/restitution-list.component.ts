@@ -6,7 +6,7 @@ import {
   PryI18nService,
   SubscriptionnerDirective,
   ToolboxManifestService,
-  ToolboxMenuService,
+  ToolboxMenuService
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 

@@ -1,9 +1,8 @@
-import { PryGroupShareComponent } from './group-share.component';
+import { PryGroupShareComponent, PryShareMode } from './group-share.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ConfigSelectors } from '../../../store/config/config.selectors';
-import { PryVisibilityType } from '../../share/share.model';
 import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
 import { MockPryChipsSelectorComponent } from '@provoly/dashboard/mock/components/mock-pry-chips-selector.component';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -65,7 +64,7 @@ describe('PryGroupShareComponent', () => {
       fixture.detectChanges();
 
       expect(component.assignedGroupNames$.getValue()).toEqual(groupNames);
-      expect(component.radioValue).toEqual(PryVisibilityType.RESTRICTED);
+      expect(component.radioValue).toEqual(PryShareMode.GROUPS);
     });
   });
 
@@ -83,21 +82,21 @@ describe('PryGroupShareComponent', () => {
     describe('on initalization', () => {
       it('should have radioValue set to PRIVATE by default', () => {
         fixture.detectChanges();
-        expect(component.radioValue).toEqual(PryVisibilityType.PRIVATE);
+        expect(component.radioValue).toEqual(PryShareMode.PRIVATE);
       });
 
       it('should have radioValue set to PUBLIC if input value is ["ALL"]', () => {
         component.writeValue(['ALL']);
         fixture.detectChanges();
 
-        expect(component.radioValue).toEqual(PryVisibilityType.PUBLIC);
+        expect(component.radioValue).toEqual(PryShareMode.PUBLIC);
       });
 
       it('should have the radioValue set to RESTRICTED in any other case', () => {
         component.writeValue(['my-group']);
         fixture.detectChanges();
 
-        expect(component.radioValue).toEqual(PryVisibilityType.RESTRICTED);
+        expect(component.radioValue).toEqual(PryShareMode.GROUPS);
       });
     });
 
@@ -106,8 +105,8 @@ describe('PryGroupShareComponent', () => {
         const spy = jest.spyOn(component, 'changeGroups');
         fixture.detectChanges();
 
-        component.changeGroupsBasedOnRadioValue(PryVisibilityType.PUBLIC);
-        component.changeGroupsBasedOnRadioValue(PryVisibilityType.PRIVATE);
+        component.changeGroupsBasedOnRadioValue(PryShareMode.PUBLIC);
+        component.changeGroupsBasedOnRadioValue(PryShareMode.PRIVATE);
 
         expect(spy).toHaveBeenCalledWith([]);
       });
@@ -116,7 +115,7 @@ describe('PryGroupShareComponent', () => {
         const spy = jest.spyOn(component, 'changeGroups');
         fixture.detectChanges();
 
-        component.changeGroupsBasedOnRadioValue(PryVisibilityType.PUBLIC);
+        component.changeGroupsBasedOnRadioValue(PryShareMode.PUBLIC);
 
         expect(spy).toHaveBeenCalledWith(['ALL']);
       });
@@ -128,11 +127,11 @@ describe('PryGroupShareComponent', () => {
         // this observable serves to track the input value of the component, not to track the groups assigned within the component
         expect(component.assignedGroups$).toBeObservable(hot('a', { a: [] }));
 
-        component.changeGroupsBasedOnRadioValue(PryVisibilityType.RESTRICTED);
+        component.changeGroupsBasedOnRadioValue(PryShareMode.GROUPS);
         expect(spy).toHaveBeenCalledWith([]);
 
-        component.changeGroupsBasedOnRadioValue(PryVisibilityType.PUBLIC);
-        component.changeGroupsBasedOnRadioValue(PryVisibilityType.RESTRICTED);
+        component.changeGroupsBasedOnRadioValue(PryShareMode.PUBLIC);
+        component.changeGroupsBasedOnRadioValue(PryShareMode.GROUPS);
         expect(spy).toHaveBeenCalledWith([]);
 
         expect(component.assignedGroupNames$.getValue()).toEqual([]);

@@ -1,4 +1,3 @@
-import { PryVisibility } from '../../components/share/share.model';
 import { MetadataValue } from '../../model/admin-api.model';
 import { PryDatasetType } from '../../model/dataset.interface';
 import { MonoClassSearchPayload } from '../../model/search-mono-class.model';
@@ -19,8 +18,17 @@ export interface NamedQuery extends DescriptionQuery {
 export interface DescriptionQuery {
   name: string;
   description?: string;
-  visibility?: PryVisibility;
+  visibility?: {
+    type: PryVisibilityType;
+    users?: any[];
+  };
   metadata?: MetadataValue[];
+}
+
+export enum PryVisibilityType {
+  PRIVATE = 'PRIVATE',
+  PUBLIC = 'PUBLIC',
+  RESTRICTED = 'RESTRICTED'
 }
 
 export interface Dataset extends DescriptionQuery {

@@ -1,16 +1,28 @@
 * Composants réutilisables
-** xref:base-layout.adoc[Base layout]
-** xref:base-menu.adoc[Base menu]
-** xref:base-toolbox.adoc[Base toolbox]
-** xref:base-toolbox-action.adoc[Base toolbox action]
+** xref:about.adoc[About]
+** xref:accordion.adoc[Accordion]
+** xref:chips-selector.adoc[Chips selector]
+** xref:color-selector.adoc[Sélecteur de couleur]
 ** xref:date-picker.adoc[Date picker]
 ** xref:edit-input.adoc[Edit input]
+** xref:ellipsis-directive.adoc[Ellipsis directive]
 ** xref:icon.adoc[Icon]
 ** xref:modal.adoc[Modal]
-** xref:color-selector.adoc[Sélecteur de couleur]
 ** xref:select.adoc[Liste déroulante]
 ** xref:select-image.adoc[Sélecteur d'image]
-** xref:share.adoc[Partage]
+** xref:tabs.adoc[Tabs]
 ** xref:toggle.adoc[Toggle]
 ** xref:upload.adoc[Upload]
+
+** Layout
+*** xref:base-layout.adoc[Base layout]
+*** xref:base-menu.adoc[Base menu]
+*** xref:base-toolbox.adoc[Base toolbox]
+*** xref:base-toolbox-action.adoc[Base toolbox action]
+*** xref:toolbox.adoc[Toolbox]
+
+** Partage
+*** xref:share.adoc[Partage] (restitutions)
+*** xref:group-share.adoc[Partage par groupe] (datasets)
+*** xref:group-share-access-rights.adoc[Partage des droits d'accès par groupe] (tableaux de bord)
 

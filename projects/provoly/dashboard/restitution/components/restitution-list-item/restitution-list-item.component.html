@@ -30,7 +30,7 @@
   <ng-template #translate>
     <p class="o-catalog__list__item__libelle">{{ widget.label | i18n : { warn: false } }}</p>
   </ng-template>
-  <ng-container *ngIf="widget.visibility?.type === PryVisibilityType.PRIVATE">
+  <ng-container *ngIf="widget.groups?.length === 0">
     <pry-icon
       iconSvg="private"
       class="is-private a-tooltip"

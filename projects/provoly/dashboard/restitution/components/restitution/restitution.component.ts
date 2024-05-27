@@ -14,8 +14,6 @@ import {
   FieldActions,
   getDisplayOptions,
   LibraryTypes,
-  PryVisibility,
-  PryVisibilityType,
   SearchActions,
   SubscriptionnerDirective,
   ToolboxManifestService,
@@ -48,12 +46,8 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
     image: DEFAULT_RESTITUTION_ICON_URL,
     description: ''
   };
-  visibility: PryVisibility = {
-    type: PryVisibilityType.PRIVATE,
-    users: []
-  };
+  groups: string[] = [];
   openSettings$: Subject<void> = new Subject<void>();
-  users$: Observable<any[]> | null = null;
   consultMode: boolean = false;
   @Input() selectedRestitution: Widget | null = null;
   @Input() edit: boolean = true;
@@ -139,8 +133,8 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
           })
         );
       }
-      if (this.selectedRestitution.visibility) {
-        this.visibility = this.selectedRestitution.visibility;
+      if (this.selectedRestitution.groups) {
+        this.groups = this.selectedRestitution.groups;
       }
       this.form.selectedDataSources.forEach((dataSource: string) => {
         this.store.dispatch(
@@ -236,7 +230,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
             name: this.form.title,
             description: this.form.description,
             image: this.form.image ?? '',
-            visibility: this.visibility,
+            groups: this.groups,
             datasource: this.form.selectedDataSources ?? [],
             modificationDate: ''
           }

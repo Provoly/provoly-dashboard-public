@@ -6,7 +6,6 @@ import {
   DashboardActions,
   DashboardGridLayout,
   DashboardSelectors,
-  PryVisibilityType,
   SubscriptionnerDirective,
   ToolboxManifestService,
   Widget
@@ -23,7 +22,6 @@ export class PryRestitutionListItemComponent extends SubscriptionnerDirective {
   catalog: Widget[] | undefined;
   automaticGridMode$: Observable<boolean>;
   automaticGridMode: boolean = false;
-  PryVisibilityType = PryVisibilityType;
 
   constructor(
     private store: Store,

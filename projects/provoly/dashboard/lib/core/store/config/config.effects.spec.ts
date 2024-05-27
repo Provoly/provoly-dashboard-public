@@ -8,7 +8,6 @@ import {
   ConfigSelectors,
   MarkSubType,
   MarkType,
-  PryVisibilityType,
   VegaColorType,
   Widget
 } from '@provoly/dashboard';
@@ -52,9 +51,9 @@ const widget: Widget = {
   content:
     '{"type":"tile","layout":{"x":1,"y":1,"width":1,"height":1},"options":{},"namedQuery":["39061554-298f-4f56-8cd2-51ccec998307"]}',
   image: 'internal:weather.png',
-  visibility: { type: PryVisibilityType.PRIVATE, users: [] },
   datasource: [],
-  modificationDate: ''
+  modificationDate: '',
+  groups: []
 };
 
 const chartOption: ChartOption = {

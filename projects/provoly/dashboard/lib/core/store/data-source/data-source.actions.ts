@@ -1,9 +1,8 @@
 import { createAction, props } from '@ngrx/store';
-import { MissingGroupsByEntity, PryVisibility } from '../../components/share/share.model';
 import { DatasetPreview } from '../../model/dataset.interface';
 import { MonoClassSearchPayload } from '../../model/search-mono-class.model';
 import { FullTextSearchPayload, MultiClassSearchPayload } from '../../model/search-multi-class.model';
-import { Dataset, DatasetVersion, NamedQuery } from './data-source.model';
+import { Dataset, DatasetVersion, NamedQuery, PryVisibilityType } from './data-source.model';
 
 export const DataSourceActions = {
   load: createAction('[Datasource] load'),
@@ -17,7 +16,7 @@ export const DataSourceActions = {
         name: string;
         id?: string;
         description?: string;
-        visibility?: PryVisibility;
+        visibility?: { type: PryVisibilityType; users?: any[] };
         payload: MonoClassSearchPayload | MultiClassSearchPayload | FullTextSearchPayload;
         color?: string;
         favorite: boolean;

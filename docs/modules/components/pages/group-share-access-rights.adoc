@@ -1,0 +1,27 @@
+== Access rights share+ (access-rights-share)
+
+Le composant `+Access rights share+` permet de paramétrer le niveau de droits (lecture/écriture) lorsqu'on partage les tableaux de bord.
+
+Le niveau de droits est specifié par un groupe d'utilisateurs en format suivant dans le `ManifestDescription` :
+
+[source,js]
+----
+interface ManifestDescription {
+  id: string;
+  ...
+  accessRightsByGroup: {
+    group1: ['READ'],
+    group2: ['READ', 'WRITE'],
+    ...
+  }
+}
+----
+
+Le composant hérite du "`ControlValueAccessor`" qui nous permet d’utiliser les propriétés de formulaires Angular.
+
+Les paramètres du composant sont les suivants :
+
+- ngModel et/ou ngModelChange: Permet de donner et de récupérer la valeur sélectionnée
+- manifestDescription: le manifest dont on veut modifier les droits
+
+- allowedGroups: Permet de fournir un tableau des groupes autorisés pour la sélection

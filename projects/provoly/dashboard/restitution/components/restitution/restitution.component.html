@@ -3,7 +3,12 @@
   <h3 class="a-h2 o-restitution__title">
     {{ (consultMode ? '@pry.restitution.consult' : edit ? '@pry.restitution.edit' : '@pry.restitution.create') | i18n }}
   </h3>
-  <pry-stepper #stepper [isConsultMode]="consultMode" (lastStepCompleted)="lastStepCompleted()" (activeIndexChange)="activeStepIndex = $event">
+  <pry-stepper
+    #stepper
+    [isConsultMode]="consultMode"
+    (lastStepCompleted)="lastStepCompleted()"
+    (activeIndexChange)="activeStepIndex = $event"
+  >
     <pry-step>
       <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.configure' | i18n }}</h4>
       <div class="m-form-label-field">
@@ -107,13 +112,7 @@
           {{ '@pry.restitution.private' | i18n }}
         </li>
       </ul>
-      <pry-share
-        [(ngModel)]="visibility"
-        [users$]="users$"
-        labelProperty="name"
-        valueProperty="id"
-        [disabled]="consultMode"
-      ></pry-share>
+      <pry-share [(ngModel)]="groups" labelProperty="name" valueProperty="id" [disabled]="consultMode"></pry-share>
       <ng-container [ngTemplateOutlet]="buttons"></ng-container>
     </pry-step>
   </pry-stepper>

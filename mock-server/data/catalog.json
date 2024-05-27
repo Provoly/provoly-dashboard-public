@@ -6,10 +6,9 @@
     "image": "internal:weather.png",
     "description": "description",
     "owner": true,
-    "visibility": {
-      "type": "PUBLIC",
-      "users": []
-    },
+    "groups": [
+      "ALL"
+    ],
     "modificationDate": "2022-03-15T09:07:39.689962Z",
     "creationDate": "2022-05-28T09:07:39.689962Z"
   },
@@ -21,10 +20,7 @@
     "description": "description",
     "cover": true,
     "owner": false,
-    "visibility": {
-      "type": "PRIVATE",
-      "users": []
-    },
+    "groups": [],
     "modificationDate": "2022-10-06T09:07:39.689962Z",
     "creationDate": "2022-05-06T09:07:39.689962Z"
   },
@@ -35,10 +31,7 @@
     "image": "internal:weather.png",
     "description": "description",
     "owner": true,
-    "visibility": {
-      "type": "PRIVATE",
-      "users": []
-    },
+    "groups": [],
     "modificationDate": "2022-12-06T09:07:39.689962Z",
     "creationDate": "2022-05-13T09:07:39.689962Z"
   },
@@ -51,9 +44,6 @@
     "datasource": [],
     "modificationDate": "",
     "owner": true,
-    "visibility": {
-      "type": "PUBLIC",
-      "users": []
-    }
+    "groups": ["ALL"]
   }
 ]

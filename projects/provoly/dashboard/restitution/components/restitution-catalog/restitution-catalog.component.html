@@ -37,7 +37,7 @@
         <ul class="o-presentation">
           <li class="o-presentation__item" *ngFor="let restitution of filteredRestitution$ | async; let index = index">
             <div class="o-presentation__item__header">
-              <ng-container *ngIf="restitution.visibility?.type === PryVisibilityType.PRIVATE">
+              <ng-container *ngIf="restitution.groups?.length === 0">
                 <pry-icon
                   iconSvg="private"
                   class="is-private a-tooltip -tooltip-no-wrap"
@@ -52,11 +52,7 @@
                 [attr.data-tooltip]="'@pry.restitution.consultRestitution' | i18n"
               >
                 <div class="o-presentation__item__image">
-                  <img
-                    alt=""
-                    class="is-full-width"
-                    [src]="restitution.image | getSecuredImage : [600, 600] | async"
-                  />
+                  <img alt="" class="is-full-width" [src]="restitution.image | getSecuredImage: [600, 600] | async" />
                 </div>
               </div>
               <ng-container *ngIf="restitution.owner">

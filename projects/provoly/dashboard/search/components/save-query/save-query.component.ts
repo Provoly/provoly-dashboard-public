@@ -10,7 +10,6 @@ import {
   NamedQueryTypes,
   PRY_DIALOG_DATA,
   PryDialogRef,
-  PryVisibility,
   PryVisibilityType
 } from '@provoly/dashboard';
 import { Observable, take } from 'rxjs';
@@ -33,7 +32,7 @@ export class PrySaveQueryComponent implements OnInit {
   id?: string;
   name: string = '';
   description: string = '';
-  visibility: PryVisibility = {
+  visibility = {
     type: PryVisibilityType.PRIVATE,
     users: []
   };

@@ -142,7 +142,7 @@ const saveWidget = (widget) => {
   if (previous === -1) {
     widgetList.push(widget);
   } else {
-    widgetList[previous] = widget;
+    widgetList[previous] = { ...widget, owner: widgetList[previous].owner };
   }
 };
 

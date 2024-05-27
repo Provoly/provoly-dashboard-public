@@ -1,11 +1,4 @@
-import {
-  Aggregation,
-  ChartOptionDefault,
-  MarkSubType,
-  MarkType,
-  PryVisibilityType,
-  VegaColorType
-} from '@provoly/dashboard';
+import { Aggregation, ChartOptionDefault, MarkSubType, MarkType, VegaColorType } from '@provoly/dashboard';
 import { ConfigActions } from './config.actions';
 import { configReducer, initialConfigState } from './config.reducer';
 
@@ -261,7 +254,7 @@ describe('Config Reducer', () => {
               content:
                 '{"type":"tile","layout":{"x":1,"y":1,"width":1,"height":1},"options":{},"namedQuery":["39061554-298f-4f56-8cd2-51ccec998307"]}',
               image: 'internal:weather.png',
-              visibility: { type: PryVisibilityType.PRIVATE, users: [] },
+              groups: [],
               datasource: [],
               modificationDate: ''
             }
@@ -277,7 +270,7 @@ describe('Config Reducer', () => {
             content:
               '{"type":"tile","layout":{"x":1,"y":1,"width":1,"height":1},"options":{},"namedQuery":["39061554-298f-4f56-8cd2-51ccec998307"]}',
             image: 'internal:weather.png',
-            visibility: { type: PryVisibilityType.PRIVATE, users: [] },
+            groups: [],
             datasource: [],
             modificationDate: ''
           }
@@ -300,7 +293,7 @@ describe('Config Reducer', () => {
                 content:
                   '{"type":"tile","layout":{"x":1,"y":1,"width":1,"height":1},"options":{},"namedQuery":["39061554-298f-4f56-8cd2-51ccec998307"]}',
                 image: 'internal:weather.png',
-                visibility: { type: PryVisibilityType.PRIVATE, users: [] },
+                groups: [],
                 datasource: [],
                 modificationDate: ''
               }
@@ -317,7 +310,7 @@ describe('Config Reducer', () => {
             content:
               '{"type":"tile","layout":{"x":1,"y":1,"width":1,"height":1},"options":{},"namedQuery":["39061554-298f-4f56-8cd2-51ccec998307"]}',
             image: 'internal:weather.png',
-            visibility: { type: PryVisibilityType.PRIVATE, users: [] },
+            groups: [],
             datasource: [],
             modificationDate: ''
           }

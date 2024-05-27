@@ -1,7 +1,7 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ConfigActions, ConfigSelectors, PryVisibilityType, ViewMode, Widget } from '@provoly/dashboard';
+import { ConfigActions, ConfigSelectors, ViewMode, Widget } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { TemplatePortal } from '@angular/cdk/portal';
 
@@ -17,11 +17,14 @@ export class PryRestitutionCatalogComponent {
   selectedMode: ViewMode = ViewMode.CATALOG;
   selectedRestitution: Widget | null = null;
   restitution?: Widget;
-  PryVisibilityType = PryVisibilityType;
   overlayRef?: OverlayRef;
   @ViewChild('modalActions', { read: TemplateRef }) templateActions!: TemplateRef<any>;
 
-  constructor(private store: Store, protected overlay: Overlay, protected viewContainerRef: ViewContainerRef) {
+  constructor(
+    private store: Store,
+    protected overlay: Overlay,
+    protected viewContainerRef: ViewContainerRef
+  ) {
     this.store.dispatch(ConfigActions.loadWidgets());
     this.store.dispatch(ConfigActions.getMapStyles());
 

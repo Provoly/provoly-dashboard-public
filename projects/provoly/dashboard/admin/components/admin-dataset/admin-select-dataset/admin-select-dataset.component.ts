@@ -11,7 +11,7 @@ import {
   PRY_ACCESS_TOKEN,
   PryBaseAccess,
   PryI18nService,
-  PryVisibilityType,
+  PryShareMode,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
 import { MetadataActions, MetadataSelectors, MetaEventType } from '@provoly/dashboard/components/metadata-editor';
@@ -41,7 +41,7 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
   accessGroups: string[] = [];
   selectedDatasetMissingGroups$: Observable<MissingGroupsByEntity | undefined>;
   missingGroups$: Observable<MissingGroups | undefined>;
-  shareRadioValue$ = new BehaviorSubject<PryVisibilityType | undefined>(undefined);
+  shareRadioValue$ = new BehaviorSubject<PryShareMode | undefined>(undefined);
   disableShareButton$ = new BehaviorSubject<boolean>(false);
 
   constructor(
@@ -177,13 +177,13 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
     this.store.dispatch(AdminDatasetActions.setMissingGroups({ missingGroups: undefined }));
   }
 
-  updateVisibility($event: PryVisibilityType) {
+  updateGroups($event: PryShareMode) {
     this.shareRadioValue$.next($event);
     this.updateDisableButtonValue();
   }
 
   updateDisableButtonValue() {
-    if (this.shareRadioValue$.getValue() === PryVisibilityType.RESTRICTED && this.accessGroups.length === 0) {
+    if (this.shareRadioValue$.getValue() === PryShareMode.GROUPS && this.accessGroups.length === 0) {
       this.disableShareButton$.next(true);
     } else {
       if (this.disableShareButton$.getValue()) {

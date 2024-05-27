@@ -2,8 +2,6 @@
 
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { PryVisibility } from '@provoly/dashboard';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'pry-group-share',
