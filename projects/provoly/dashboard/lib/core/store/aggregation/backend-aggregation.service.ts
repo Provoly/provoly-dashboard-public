@@ -107,7 +107,7 @@ export class PryBackendAggregationService extends PryAggregationService {
     }
     params = this.searchService.getItemsFilter(targetDatasource, params, false);
 
-    const key = `${this.dataUrl}_${params.toString()}`;
+    const key = `${this.dataUrl}_${targetDatasource}_${params.toString()}`;
     if (!this.cache[key] || this.cache[key].time + 1000 < new Date().getTime()) {
       this.cache[key] = {
         response: this.httpClient
