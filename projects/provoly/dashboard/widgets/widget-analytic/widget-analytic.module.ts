@@ -19,7 +19,8 @@ import { enTranslations } from './i18n/en.translations';
 import { frTranslations } from './i18n/fr.translations';
 import { PryWidgetAnalyticCssComponent } from './style/css.component';
 import { PryColorPickerModule } from '@provoly/dashboard/components/color-picker';
-import { CdkDrag, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { PryDataFormatModule } from '@provoly/dashboard/components/data-format';
 
 @NgModule({
   declarations: [WidgetAnalyticComponent, PryWidgetAnalyticCssComponent],
@@ -36,7 +37,8 @@ import { CdkDrag, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
     PryI18nModule,
     AsyncPipe,
     PryColorPickerModule,
-    DragDropModule
+    DragDropModule,
+    PryDataFormatModule
   ],
   exports: [WidgetAnalyticComponent]
 })

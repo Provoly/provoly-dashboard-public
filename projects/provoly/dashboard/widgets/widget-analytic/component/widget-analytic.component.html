@@ -167,8 +167,7 @@
                       optionsCopy.colorConfig ? { 'background-color': (colorMap$ | async)?.[line.name]?.[primary] } : {}
                     "
                   >
-                    {{ line.value[primary][secondary]
-                    }}{{ optionsCopy.format?.suffix ? ' ' + optionsCopy.format?.suffix : '' }}
+                    {{ line.value[primary][secondary] | dataFormat: true : optionsCopy.format?.suffix
                   </td>
                 }
               } @else {
@@ -177,7 +176,7 @@
                     optionsCopy.colorConfig ? { 'background-color': (colorMap$ | async)?.[line.name]?.[primary] } : {}
                   "
                 >
-                  {{ line.value[primary] }}{{ optionsCopy.format?.suffix ? ' ' + optionsCopy.format?.suffix : '' }}
+                  {{ line.value[primary] | dataFormat: true : optionsCopy.format?.suffix }}
                 </td>
               }
             }
