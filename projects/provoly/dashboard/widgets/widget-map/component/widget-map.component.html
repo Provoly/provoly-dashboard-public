@@ -597,11 +597,15 @@
     <div class="m-map-layer-action__container" [class.-hidden]="!legendTabOpen">
       <h4 class="a-h4">{{ '@pry.widget.map.legendsTitle' | i18n }}</h4>
       <ng-container *ngFor="let geoLayer of legendLayers$ | async; let index = index">
-        <div class="m-map-layer-action__title m-layer-legend__title" (click)="toggleLegend(index)">
+        <div
+          *ngIf="isLayerVisible(geoLayer)"
+          class="m-map-layer-action__title m-layer-legend__title"
+          (click)="toggleLegend(index)"
+        >
           <pry-icon
             *ngIf="isLayerRendered(geoLayer) && !!geoLayer.title"
             class="m-layer-legend__dropdown-icon"
-            [iconSvg]="legendTab === index ? 'chevron_top' : 'chevron_bottom'"
+            [iconSvg]="legendTabClosed[index] ? 'chevron_top' : 'chevron_bottom'"
             [width]="12"
             [height]="12"
           ></pry-icon>
@@ -617,7 +621,7 @@
         </div>
         <div
           class="m-map-layer-action__image"
-          [class.-hidden]="!legendTabOpen || legendTab !== index || !isLayerRendered(geoLayer)"
+          [class.-hidden]="!legendTabOpen || legendTabClosed[index] || !isLayerRendered(geoLayer)"
           [style.max-height.px]="legendHeight$ | async"
         >
           <ng-container *ngIf="geoLayer | legendUrl: { capabilities: (wmsCapabilities$ | async) } as url">

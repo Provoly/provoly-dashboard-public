@@ -162,7 +162,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   geoServerLayerDescriptions$: Observable<MapGeoServerLayerOptions[]>;
   legendTabOpen = false;
   layersTabOpen = false;
-  legendTab = 0;
+  legendTabClosed: boolean[] = [];
   legendLayers$!: Observable<(MapGeoServerLayerOptions | MapWMSLayerLayerOptions)[]>;
   legendTop$: Observable<number>;
   layersTop$!: Observable<number>;
@@ -1416,7 +1416,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   toggleLegend(index: number) {
-    this.legendTab = this.legendTab === index ? -1 : index;
+    this.legendTabClosed[index] = !this.legendTabClosed[index];
   }
 
   toggleLegendWindow() {
@@ -1471,11 +1471,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.map.updateSize();
   }
 
-  isLayerVisible(layer: MapWidgetLayerOptions, group: LayerGroup) {
-    if (group.visibleLayers) {
+  isLayerVisible(layer: MapWidgetLayerOptions, group?: LayerGroup) {
+    if (group?.visibleLayers) {
       return group.visibleLayers.includes(layer.title ?? '');
+    } else {
+      return this.layerGroups.some((group) => group.visibleLayers.includes(layer.title ?? ''))
     }
-    return false;
   }
 
   changeAutoLayer($event: any) {
