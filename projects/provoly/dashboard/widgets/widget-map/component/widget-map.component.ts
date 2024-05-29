@@ -167,6 +167,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   legendTop$: Observable<number>;
   layersTop$!: Observable<number>;
   legendHeight$: Observable<number>;
+  layersHeight$!: Observable<number>;
   imageNotProvided: boolean[] = [];
   basicActions$: Observable<('click' | 'lasso' | 'rectangle' | 'zoom' | 'move' | 'export' | 'upload')[]>;
   zoomAndCenter$ = new BehaviorSubject<{
@@ -970,6 +971,13 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.layersTop$ = combineLatest([this.legendTop$, this.legendLayers$]).pipe(
       map(([legendTop, layers]) => legendTop + ((layers.length ?? 0) > 0 ? 50 : 0))
     );
+
+    this.layersHeight$ = combineLatest([this.widgetSize$.pipe(debounceTime(100)), this.layersTop$]).pipe(
+      map(([size, top]) => {
+        return (size.height ?? 100) - WIDGET_HEADER_HEIGHT.value - top - 50; // 50px acts as bottom margin
+      })
+    );
+
     this.subscriptions.add(
       combineLatest([this.layersTop$, this.legendLayers$, this.olZoomElement$, this.displayHeader$])
         .pipe(withLatestFrom(this.layers$))
@@ -1444,6 +1452,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     return this.mapLayers.filter((layer) => layer.get('slide') === 'left');
   }
 
+  hideAllLayersInGroup(group: LayerGroup) {
+
+  }
+
   changeVisibility(group: LayerGroup, _layer?: MapWidgetLayerOptions) {
     const olLayer = this.mapLayers.find((layer) => layer.getProperties()['title'] === _layer?.title);
     if (group.singleLayer) {
@@ -1455,11 +1467,12 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           layer.setVisible(false);
         }
       });
-      olLayer?.setVisible(true);
-
-      _layer
-        ? this.store.dispatch(DashboardActions.updateLayerGroup({ name: group.name, visibleLayers: [_layer.title!] }))
-        : this.store.dispatch(DashboardActions.updateLayerGroup({ name: group.name, visibleLayers: [] }));
+      if (_layer) {
+        olLayer?.setVisible(true);
+        this.store.dispatch(DashboardActions.updateLayerGroup({ name: group.name, visibleLayers: [_layer.title!]}));
+      } else {
+        this.store.dispatch(DashboardActions.updateLayerGroup({ name: group.name, visibleLayers: [] }))
+      }
     } else {
       olLayer?.setVisible(!olLayer?.getVisible());
 

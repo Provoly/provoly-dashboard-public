@@ -498,35 +498,70 @@
     </button>
   </div>
 
-  <div
-    class="ol-control m-layer-switcher m-map-layer-action"
-    *ngIf="((layers$ | async)?.length ?? 0) > 0"
-    [style.top.px]="layersTop$ | async"
-  >
-    <button
-      class="m-map-layer-action__toggle"
-      [class.a-tooltip]="!this.layersTabOpen"
-      [class.-tooltip-no-wrap]="!this.layersTabOpen"
-      (click)="toggleLayersWindow()"
-      [attr.data-tooltip]="'@pry.widget.map.selectLayers' | i18n"
-      data-tooltip-position="left"
+  @if ((layers$ | async)?.length) {
+    <div class="ol-control m-map-action" [style.top.px]="layersTop$ | async">
+      <button
+        class="m-map-action__button"
+        [class.a-tooltip]="!this.layersTabOpen"
+        [class.-tooltip-no-wrap]="!this.layersTabOpen"
+        (click)="toggleLayersWindow()"
+        [attr.data-tooltip]="'@pry.widget.map.selectLayers' | i18n"
+        data-tooltip-position="left"
+      >
+        <pry-icon iconSvg="layers" [width]="18" [height]="18"></pry-icon>
+      </button>
+    </div>
+    <div
+      class="m-map-pop-in -max-width-220"
+      [class.-hidden]="!layersTabOpen"
+      [style.top.px]="layersTop$ | async"
     >
-      <pry-icon iconSvg="layers" [width]="18" [height]="18"></pry-icon>
-    </button>
-    <div class="m-map-layer-action__container m-map-layer-action__container--layers" [class.-hidden]="!layersTabOpen">
       <h4 class="a-h4">{{ '@pry.widget.map.layerSettings.selectLayers' | i18n }}</h4>
-      <div class="m-layer-switcher__content">
-        <ng-container *ngFor="let group of layerGroups$ | async">
-          <ng-container *ngIf="isGroupUsedByWidgetLayers(group)">
-            <div class="m-map-layer-action__title m-layer-switcher__group-title">
+      <div class="m-map-pop-in__content" [style.max-height.px]="layersHeight$ | async">
+        @for (group of layerGroups$ | async; track group; let groupIdx = $index) {
+          @if (isGroupUsedByWidgetLayers(group)) {
+            <div class="m-map-pop-in__title m-map-pop-in__group-title">
               <h5 class="a-h5">
                 {{ group.name === DEFAULT_LAYER_GROUP ? ('@pry.widget.map.noGroup' | i18n) : group.name }}
               </h5>
             </div>
-            <ng-container *ngIf="!group.singleLayer; else singleLayer">
-              <ng-container *ngFor="let layer of optionsCopy.layers; let index = index">
-                <ng-container *ngIf="layer.group === group.name">
-                  <div class="m-map-layer-action__title m-layer-switcher__title" [class.-hidden]="!layersTabOpen">
+            @if (group.singleLayer) {
+              <div class="m-map-pop-in__radios">
+                <div class="m-map-pop-in__title" [class.-hidden]="!layersTabOpen">
+                  <input
+                    type="radio"
+                    [name]="group.name"
+                    id="radio-layer-group-{{ groupIdx }}"
+                    [ngModel]="group.visibleLayers.length"
+                    [value]="0"
+                    (change)="changeVisibility(group)"
+                  />
+                  <label class="a-label" for="radio-layer-group-{{ groupIdx }}">{{
+                    '@pry.widget.map.layerSettings.noLayer' | i18n
+                  }}</label>
+                </div>
+                @for (layer of optionsCopy.layers; track layer; let index = $index) {
+                  @if (layer.group === group.name) {
+                    <div class="m-map-pop-in__title" [class.-hidden]="!layersTabOpen">
+                      <input
+                        type="radio"
+                        [name]="group.name"
+                        id="radio-{{ group.name }}-layer-{{ index }}"
+                        [ngModel]="group.visibleLayers[0]"
+                        [value]="layer.title"
+                        (change)="changeVisibility(group, layer)"
+                      />
+                      <label class="a-label" for="radio-{{ group.name }}-layer-{{ index }}">{{
+                        layer.title ?? ('@pry.widget.map.missingTitle' | i18n)
+                      }}</label>
+                    </div>
+                  }
+                }
+              </div>
+            } @else {
+              @for (layer of optionsCopy.layers; track layer; let index = $index) {
+                @if (layer.group === group.name) {
+                  <div class="m-map-pop-in__title" [class.-hidden]="!layersTabOpen">
                     <pry-checkbox
                       [ngModel]="isLayerVisible(layer, group)"
                       (change)="changeVisibility(group, layer)"
@@ -536,76 +571,35 @@
                       {{ layer.title ?? ('@pry.widget.map.missingTitle' | i18n) }}
                     </label>
                   </div>
-                </ng-container>
-              </ng-container>
-            </ng-container>
-            <ng-template #singleLayer>
-              <div class="m-layer-switcher--radios">
-                <div class="m-map-layer-action__title m-layer-switcher__title" [class.-hidden]="!layersTabOpen">
-                  <input
-                    type="radio"
-                    [name]="group.name"
-                    id="radio-no-layer"
-                    [ngModel]="group.visibleLayers.length"
-                    [value]="0"
-                    (change)="changeVisibility(group)"
-                  />
-                  <label class="a-label" for="radio-no-layer">{{
-                    '@pry.widget.map.layerSettings.noLayer' | i18n
-                  }}</label>
-                </div>
-                <ng-container *ngFor="let layer of optionsCopy.layers; let index = index">
-                  <ng-container *ngIf="layer.group === group.name">
-                    <div class="m-map-layer-action__title m-layer-switcher__title" [class.-hidden]="!layersTabOpen">
-                      <input
-                        type="radio"
-                        [name]="group.name"
-                        [id]="'radio-layer-' + index"
-                        [ngModel]="group.visibleLayers[0]"
-                        [value]="layer.title"
-                        (change)="changeVisibility(group, layer)"
-                      />
-                      <label class="a-label" for="radio-layer-{{ index }}">{{
-                        layer.title ?? ('@pry.widget.map.missingTitle' | i18n)
-                      }}</label>
-                    </div>
-                  </ng-container>
-                </ng-container>
-              </div>
-            </ng-template>
-          </ng-container>
-        </ng-container>
+                }
+              }
+            }
+          }
+        }
       </div>
     </div>
-  </div>
-
-  <div
-    class="ol-control m-map-layer-action m-layer-legend"
-    *ngIf="((legendLayers$ | async)?.length ?? 0) > 0"
-    [style.top.px]="legendTop$ | async"
-  >
-    <button
-      class="m-map-layer-action__toggle"
-      [class.a-tooltip]="!this.legendTabOpen"
-      [class.-tooltip-no-wrap]="!this.legendTabOpen"
-      (click)="toggleLegendWindow()"
-      [attr.data-tooltip]="'@pry.widget.map.legends' | i18n"
-      data-tooltip-position="left"
-    >
-      <pry-icon iconSvg="legend" [width]="18" [height]="15"></pry-icon>
-    </button>
-    <div class="m-map-layer-action__container" [class.-hidden]="!legendTabOpen">
+  }
+  @if ((legendLayers$ | async)?.length) {
+    <div class="ol-control m-map-action" [style.top.px]="legendTop$ | async">
+      <button
+        [class.a-tooltip]="!this.legendTabOpen"
+        [class.-tooltip-no-wrap]="!this.legendTabOpen"
+        class="m-map-action__button"
+        (click)="toggleLegendWindow()"
+        [attr.data-tooltip]="'@pry.widget.map.legends' | i18n"
+        data-tooltip-position="left"
+      >
+        <pry-icon iconSvg="legend" [width]="18" [height]="15"></pry-icon>
+      </button>
+    </div>
+    <div class="m-map-pop-in" [class.-hidden]="!legendTabOpen" [style.top.px]="legendTop$ | async">
       <h4 class="a-h4">{{ '@pry.widget.map.legendsTitle' | i18n }}</h4>
       <ng-container *ngFor="let geoLayer of legendLayers$ | async; let index = index">
-        <div
-          *ngIf="isLayerVisible(geoLayer)"
-          class="m-map-layer-action__title m-layer-legend__title"
-          (click)="toggleLegend(index)"
-        >
+        <div *ngIf="isLayerVisible(geoLayer)" class="m-map-pop-in__title" (click)="toggleLegend(index)">
           <pry-icon
             *ngIf="isLayerRendered(geoLayer) && !!geoLayer.title"
-            class="m-layer-legend__dropdown-icon"
-            [iconSvg]="legendTabClosed[index] ? 'chevron_top' : 'chevron_bottom'"
+            class="m-map-pop-in__dropdown-icon"
+            [iconSvg]="legendTabClosed[index] ? 'chevron_bottom' : 'chevron_top'"
             [width]="12"
             [height]="12"
           ></pry-icon>
@@ -620,7 +614,7 @@
           ></pry-icon>
         </div>
         <div
-          class="m-map-layer-action__image"
+          class="m-map-pop-in__image"
           [class.-hidden]="!legendTabOpen || legendTabClosed[index] || !isLayerRendered(geoLayer)"
           [style.max-height.px]="legendHeight$ | async"
         >
@@ -632,26 +626,30 @@
             />
           </ng-container>
           <ng-container *ngIf="!(geoLayer | legendUrl: { capabilities: (wmsCapabilities$ | async) })">
-            <p class="m-map-layer-action__error">{{ '@pry.widget.map.legendNotProvided' | i18n }}</p>
+            <p class="m-map-pop-in__error">{{ '@pry.widget.map.legendNotProvided' | i18n }}</p>
           </ng-container>
         </div>
       </ng-container>
     </div>
-  </div>
+  }
 
-  <div class="m-map-slide-legend -left" *ngIf="leftSlideLayers.length > 0" [style.top.px]="legendTop$ | async">
-    <span class="m-map-slide-legend__title">{{ '@pry.widget.map.slideTitle' | i18n }}:</span>
-    <div *ngFor="let layer of leftSlideLayers">
-      {{ layer.get('title') }}
+  @if (leftSlideLayers.length > 0) {
+    <div class="m-map-slide-legend -left" [style.top.px]="legendTop$ | async">
+      <span class="m-map-slide-legend__title">{{ '@pry.widget.map.slideTitle' | i18n }}:</span>
+      @for (layer of leftSlideLayers; track layer) {
+        <div>{{ layer.get('title') }}</div>
+      }
     </div>
-  </div>
+  }
 
-  <div class="m-map-slide-legend -right" *ngIf="rightSlideLayers.length > 0" [style.top.px]="legendTop$ | async">
-    <span class="m-map-slide-legend__title">{{ '@pry.widget.map.slideTitle' | i18n }}:</span>
-    <div *ngFor="let layer of rightSlideLayers">
-      {{ layer.get('title') }}
+  @if (rightSlideLayers.length > 0) {
+    <div class="m-map-slide-legend -left" [style.top.px]="legendTop$ | async">
+      <span class="m-map-slide-legend__title">{{ '@pry.widget.map.slideTitle' | i18n }}:</span>
+      @for (layer of rightSlideLayers; track layer) {
+        <div>{{ layer.get('title') }}</div>
+      }
     </div>
-  </div>
+  }
 
   <div [style.height.px]="height$ | async" class="o-map-wrapper">
     <div class="o-map">

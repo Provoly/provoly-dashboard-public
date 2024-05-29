@@ -1,34 +1,43 @@
 @use '../../../styles/abstracts' as *;
+@use '../../../styles-theme/abstracts-theme/variables.theme' as *;
 
-.m-map-layer-action {
-  display: flex;
-  gap: toRem(6);
+.m-map-action {
   z-index: 2;
   right: toRem(8);
+  color: themed($theme-map, 'color', 'primary', 750);
+  background-color: transparent;
+  border: none;
 
-  button {
+  &__button, button {
     border-radius: 8px;
-  }
 
-  &.ol-control {
-    border: none;
-    background-color: transparent;
+    &:hover {
+      outline: none;
+    }
   }
+}
 
-  .-hidden {
+// map pop-ins are opened when clicking on map-action buttons
+.m-map-pop-in {
+  z-index: 2;
+  display: block;
+  position: absolute;
+  right: toRem(58);
+  //max-width: toRem(220); // only for layer popin
+  background-color: themed($theme-map, 'color', 'primary', 'contrast', 50);
+  padding: toRem(8) toRem(10);
+  border-radius: toRem(8);
+
+  &.-hidden, .-hidden {
     display: none;
-  }
-
-  &__toggle {
-    order: 2;
-    width: toRem(30);
-    height: toRem(30);
   }
 
   &__title {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
+    word-break: break-word;
+    gap: toRem(5);
 
     &:hover {
       cursor: pointer;
@@ -36,30 +45,10 @@
     }
   }
 
-  &__container {
-    border-radius: toRem(8);
-    padding: toRem(8) toRem(10);
+  // legend popin classes
 
-    &--layers {
-      max-width: toRem(220);
-    }
-
-    .a-h4 {
-      font-size: 16px;
-    }
-
-    .a-h5 {
-      font-size: 14px;
-      margin: 0;
-    }
-
-    button.m-map-layer-action__toggle {
-      border-radius: 50%;
-
-      &:hover {
-        outline: none;
-      }
-    }
+  &__dropdown-icon {
+    margin-top: toRem(2);
   }
 
   &__image {
@@ -71,21 +60,17 @@
     font-style: italic;
     color: #c74646;
   }
-}
 
-.m-layer-legend {
-  &__title {
-    align-items: flex-start;
-    gap: toRem(5);
+  .a-h4 {
+    font-size: 16px;
   }
 
-  &__dropdown-icon {
-    margin-top: toRem(2);
+  .a-h5 {
+    font-size: 14px;
+    margin: 0;
   }
-}
 
-.m-layer-switcher {
-  max-height: toRem(510);
+  // layer switcher popin classes
 
   &__group-title {
     font-weight: 700;
@@ -93,23 +78,23 @@
   }
 
   &__content {
-    max-height: toRem(420);
     overflow-y: auto;
   }
 
-  &__title {
-    align-items: flex-start;
-    word-break: break-word;
-  }
-
-  &--radios {
+  &__radios {
     display: flex;
     flex-direction: column;
     gap: toRem(5);
 
     input {
+      accent-color: themed($theme-map, 'color', 'primary', 600);
       margin-top: toRem(3);
     }
+  }
+
+  // modifiers
+  &.-max-width-220 {
+    max-width: toRem(220);
   }
 }
 
