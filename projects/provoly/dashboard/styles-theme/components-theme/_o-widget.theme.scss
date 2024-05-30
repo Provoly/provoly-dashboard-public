@@ -41,7 +41,6 @@
 
   .m-btn-group.-selection-choice, .m-btn-group.-map-selection-choice {
     border-color: themed($theme-map, 'color', 'primary', 400);
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
 
     .a-btn {
       color: themed($theme-map, 'color', 'primary', 600);
@@ -52,6 +51,10 @@
         background-color: themed($theme-map, 'color', 'primary', 'contrast', 50);
       }
     }
+  }
+
+  .m-btn-group.-map-selection-choice.-map-export, .m-btn-group.-map-selection-choice.-closed {
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
   }
 
   .node-label {

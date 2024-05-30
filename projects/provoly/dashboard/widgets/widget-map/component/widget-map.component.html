@@ -499,7 +499,7 @@
   </div>
 
   @if ((layers$ | async)?.length) {
-    <div class="ol-control m-map-action" [style.top.px]="layersTop$ | async">
+    <div class="ol-control m-map-action m-map-action--layers" [style.top.px]="layersTop$ | async">
       <button
         class="m-map-action__button"
         [class.a-tooltip]="!this.layersTabOpen"
@@ -580,7 +580,7 @@
     </div>
   }
   @if ((legendLayers$ | async)?.length) {
-    <div class="ol-control m-map-action" [style.top.px]="legendTop$ | async">
+    <div class="ol-control m-map-action m-map-action--legend" [style.top.px]="legendTop$ | async">
       <button
         [class.a-tooltip]="!this.legendTabOpen"
         [class.-tooltip-no-wrap]="!this.legendTabOpen"
