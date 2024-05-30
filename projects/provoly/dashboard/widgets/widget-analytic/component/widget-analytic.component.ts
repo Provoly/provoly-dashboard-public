@@ -28,7 +28,7 @@ export class WidgetAnalyticComponent extends DataWidgetComponent {
   verticalProperty$: Observable<string[]>;
   totalProperty$: Observable<string[]>;
   grandTotalProperty$: Observable<string[]>;
-  lines$: Observable<{ name: string; value: { [key: string]: { [key: string]: any } | string } }[]>;
+  lines$: Observable<{ name: string; value: { [key: string]: { [key: string]: any } | any } }[]>;
   totals$: Observable<{ name: string; value: { [key: string]: { [key: string]: any } } }[]>;
   grandTotals$: Observable<{ name: any; value: { [p: string]: any } }[]>;
   colorMap$: Observable<{ [vertical: string]: { [primary: string]: string | undefined } }>;

@@ -14,6 +14,7 @@ import { MockPryCheckboxComponent } from '@provoly/dashboard/mock/components/moc
 import { PryWidgetAnalyticCssComponent } from '@provoly/dashboard/widgets/widget-analytic/style/css.component';
 import { MockPrySettingsComponent } from '@provoly/dashboard/mock/components/mock-pry-settings.component';
 import { hot } from 'jest-marbles';
+import { MockDataFormatPipe } from '@provoly/dashboard/mock/pipe/mock-data-format.pipe';
 
 describe('WidgetAnalyticComponent', () => {
   let component: WidgetAnalyticComponent;
@@ -34,7 +35,8 @@ describe('WidgetAnalyticComponent', () => {
         MockPrySettingsComponent,
         MockPryWidgetHeaderComponent,
         MockI18nPipe,
-        MockNgModelDirective
+        MockNgModelDirective,
+        MockDataFormatPipe
       ],
       providers: [
         provideMockStore({

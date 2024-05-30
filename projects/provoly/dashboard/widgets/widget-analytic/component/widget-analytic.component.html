@@ -167,7 +167,7 @@
                       optionsCopy.colorConfig ? { 'background-color': (colorMap$ | async)?.[line.name]?.[primary] } : {}
                     "
                   >
-                    {{ line.value[primary][secondary] | dataFormat: true : optionsCopy.format?.suffix
+                    {{ line.value[primary][secondary] | dataFormat: true : optionsCopy.format?.suffix }}
                   </td>
                 }
               } @else {

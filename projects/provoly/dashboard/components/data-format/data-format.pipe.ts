@@ -22,7 +22,7 @@ const toLocaleString = (value?: string | number) => {
     case 'number':
       return new Intl.NumberFormat().format(value);
     case 'string':
-      return parseInt(value, 10) || parseFloat(value) ? new Intl.NumberFormat().format(Number(value)) : value;
+      return value;
     default:
       return value;
   }
