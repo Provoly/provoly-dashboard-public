@@ -2,7 +2,7 @@ import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Injectable, ViewContainerRef } from '@angular/core';
 import equal from 'fast-deep-equal/es6';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, switchMap, windowTime } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { PryI18nService } from '../../i18n/i18n.service';
 import { PrySnackMessage } from './snack.interface';
@@ -24,7 +24,10 @@ export class PrySnackbarService {
 
   private messageEvents$ = new Subject<PrySnackMessage>();
 
-  constructor(private overlay: Overlay, private translate: PryI18nService) {
+  constructor(
+    private overlay: Overlay,
+    private translate: PryI18nService
+  ) {
     // Allows to access snackbar from javascript, for example to manage Vega errors
     document.addEventListener(
       PRY_CUSTOMEVENT_TYPE,
@@ -38,7 +41,10 @@ export class PrySnackbarService {
     );
 
     this.messageEvents$
-      .pipe(distinctUntilChanged((p, v) => equal(p, v)))
+      .pipe(
+        windowTime(1000),
+        switchMap((source) => source.pipe(distinctUntilChanged((p, v) => equal(p, v))))
+      )
       .subscribe((message) => this.notMitigatedOpen(message));
   }
 
