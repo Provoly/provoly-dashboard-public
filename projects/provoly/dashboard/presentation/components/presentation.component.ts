@@ -47,6 +47,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   @Input() editionStartUrl: string = '/';
   @Input() consultStartUrl: string = '/';
   @Input() meAsOwner?: string;
+  @Input() themePrefix: string | null = null;
   ViewMode = ViewMode;
   search$ = new BehaviorSubject('');
   filteredPresentations$: Observable<ManifestDescription[]>;

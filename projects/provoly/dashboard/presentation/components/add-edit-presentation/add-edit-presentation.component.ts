@@ -27,6 +27,7 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
   staticManifest$: Observable<GlobalManifest>;
   selectedPresentation$ = new BehaviorSubject<ManifestDescription | null>(null);
   @Input() edition: boolean = false;
+  @Input() themePrefix: string | null = null;
   @Input() editionStartUrl: string = '/';
   form!: FormGroup;
   image: string = DEFAULT_DASHBOARD_ICON_URL;
