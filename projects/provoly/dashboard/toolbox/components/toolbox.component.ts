@@ -82,11 +82,7 @@ export class ToolboxComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.allActions$ = combineLatest([
-      this.actions$,
-      this.actionsAvailable$,
-      this.canModify$
-    ]).pipe(
+    this.allActions$ = combineLatest([this.actions$, this.actionsAvailable$, this.canModify$]).pipe(
       switchMap(([actions, displayOptions, _canModify]) =>
         combineLatest(
           actions.map((action) => {
