@@ -97,10 +97,7 @@ export class PrySchemePickerComponent implements ControlValueAccessor, AfterView
 
   addColorToScheme() {
     this.writeValue(
-      this.schemeService
-        .getSchemeColors(this.scheme$.getValue())
-        .concat('#' + this.schemeService.randomColor())
-        .join(',')
+      [this.schemeService.getSchemeColors(this.scheme$.getValue()), this.schemeService.randomColor()].join(',')
     );
   }
 

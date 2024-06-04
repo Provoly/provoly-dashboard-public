@@ -198,8 +198,8 @@ export class PryColorPickerComponent implements ControlValueAccessor, AfterViewI
     $event.stopPropagation();
   }
 
-  inputColor($event: any) {
-    const possibleColor = !!$event ? ($event.indexOf('#') === -1 ? '#' + $event : $event) : '#40B688';
+  inputColor($event?: any) {
+    const possibleColor = $event !== undefined ? ($event.indexOf('#') === -1 ? '#' + $event : $event) : '#40B688';
     if (/^#[0-9A-F]{6}$/i.test(possibleColor)) {
       this.writeValue(possibleColor);
       const rgba = this.strToRGBA(this.color!);
