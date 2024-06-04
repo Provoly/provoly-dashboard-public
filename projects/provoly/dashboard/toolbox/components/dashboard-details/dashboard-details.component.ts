@@ -2,7 +2,7 @@ import { Component, Inject, Optional } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { PRY_ACCESS_TOKEN, PryBaseAccess } from '@provoly/dashboard';
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
+import { ToolboxActionComponent } from '../../shared/toolbox-action/toolbox-action.component';
 
 @Component({
   selector: 'pry-dashboard-details',

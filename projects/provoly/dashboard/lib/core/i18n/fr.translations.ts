@@ -99,8 +99,10 @@ export const frTranslations = {
         saved: 'Présentation {{viewId}} sauvegardée'
       },
       about: 'Informations',
+      apply: 'Appliquer',
       edit: 'Modifier la disposition',
       editOff: 'Visualiser la disposition',
+      editPresentation: 'Modifier les informations',
       launch: 'Nouvelle page',
       launchIndication: 'Ouvrir cette page dans un',
       chooseGrid: 'Changer la grille',
@@ -170,7 +172,7 @@ export const frTranslations = {
           "Affichage de 4 restitutions maximum sur l’écran découpé en quatre zones , l'ajout de restitution se fait dans les zones vides. Le placement est guidé par le système."
       },
       switchEdit: 'Modifier',
-      switchEditContent: 'Modifier la composition',
+      switchEditContent: 'Modifier la construction',
       share: 'Partager',
       shareAccessRights: "Droits d'accès",
       delete: 'Supprimer',

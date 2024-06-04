@@ -36,32 +36,31 @@ import { v4 } from 'uuid';
 })
 export class PryPresentationComponent extends SubscriptionnerDirective {
   manifests$: Observable<ManifestDescription[]>;
-  selectedPresentation$ = new BehaviorSubject<ManifestDescription | null>(null);
+  selectedPresentation$ = new BehaviorSubject<ManifestDescription | undefined>(undefined);
   staticManifest$?: Observable<DashboardManifest>;
   selectedMode: ViewMode = ViewMode.CATALOG;
-  modalOpened = false;
   @ViewChild('modalActions', { read: TemplateRef }) templateModalActions!: TemplateRef<any>;
   @ViewChild('openModal') openModal!: ElementRef<HTMLButtonElement>;
   overlayRef?: OverlayRef;
   accessRightsByGroup: { [key: string]: string[] } = {};
+
+  ViewMode = ViewMode;
+  search$ = new BehaviorSubject('');
+  filteredPresentations$: Observable<ManifestDescription[]>;
+
   @Input() editionStartUrl: string = '/';
   @Input() consultStartUrl: string = '/';
   @Input() meAsOwner?: string;
   @Input() themePrefix: string | null = null;
-  ViewMode = ViewMode;
-  search$ = new BehaviorSubject('');
-  filteredPresentations$: Observable<ManifestDescription[]>;
-  listOfManifests$ = new BehaviorSubject<ManifestDescription[] | null>(null);
-
   @Input() mode: 'theme' | 'meta' = 'meta';
+  @Input() hideToolbox = false;
 
+  listOfManifests$ = new BehaviorSubject<ManifestDescription[] | null>(null);
   @Input() set listOfManifests(manifests: ManifestDescription[] | null) {
     this.listOfManifests$.next(Array.isArray(manifests) ? manifests : null);
   }
 
-  @Input() hideToolbox = false;
   inputSearch$ = new BehaviorSubject('');
-
   @Input() set search(query: string) {
     this.inputSearch$.next(query);
   }
@@ -121,14 +120,14 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     this.subscriptions.add(
       this.store.select(DashboardSelectors.presentation).subscribe((presentation) => {
         this.selectedMode = presentation?.viewMode ?? this.ViewMode.CATALOG;
-        this.selectedPresentation$.next(presentation.current ?? null);
+        this.selectedPresentation$.next(presentation.current);
       })
     );
     this.titleService.changeTitle('@pry.presentation.title');
   }
 
   closeRestitution() {
-    this.selectedPresentation$.next(null);
+    this.selectedPresentation$.next(undefined);
     this.selectedMode = ViewMode.CATALOG;
     this.store.dispatch(DashboardActions.selectPresentation({ presentation: undefined, viewMode: ViewMode.CATALOG }));
   }
@@ -197,7 +196,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
     } else {
       this.overlayRef?.dispose();
       this.overlayRef = undefined;
-      this.selectedPresentation$.next(null);
+      this.selectedPresentation$.next(undefined);
     }
   }
 

@@ -72,6 +72,9 @@
   &.-no-gap {
     gap: 0;
   }
+  &.-gap-10 {
+    gap: toRem(10);
+  }
 }
 
 .u-self-center {

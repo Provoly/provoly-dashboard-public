@@ -1,0 +1,46 @@
+@if (canModify$ | async) {
+  <button type="button" class="a-btn a-btn--secondary" (click)="openModal()">
+    @if (displayLabels) {
+      {{ '@pry.toolbox.editPresentation' | i18n }}
+    }
+  </button>
+}
+
+<ng-template #template>
+  <div
+    class="o-modal"
+    (click)="$event.stopPropagation()"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dialog_title"
+    id="grid-layout"
+    (keydown.escape)="closeModal()"
+    cdkTrapFocus
+    [cdkTrapFocusAutoCapture]="true"
+  >
+    <div class="o-modal__top">
+      <div class="o-modal__top__title">
+        <h2 class="a-h2" id="dialog_title">{{ '@pry.toolbox.editPresentation' | i18n }}</h2>
+      </div>
+      <div class="o-modal__top__close">
+        <button class="a-btn a-btn--icon-only" (click)="closeModal()">
+          <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </button>
+      </div>
+    </div>
+    <pry-presentation-form
+      [selectedPresentation]="(currentManifest$ | async) ?? undefined"
+      (formValue)="formValue = $event"
+      (isFormValid)="isFormValid = $event"
+    ></pry-presentation-form>
+    <div class="m-btn-group -space-evenly">
+      <button (click)="closeModal()" class="a-btn a-btn--secondary">
+        {{ '@pry.toolbox.manifest.close' | i18n }}
+      </button>
+      <button (click)="save()" [disabled]="!isFormValid" class="a-btn a-btn--primary">
+        {{ '@pry.toolbox.manifest.validated' | i18n }}
+      </button>
+    </div>
+  </div>
+</ng-template>

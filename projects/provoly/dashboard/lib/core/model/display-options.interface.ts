@@ -24,6 +24,7 @@ export interface ToolboxDisplayOptions {
   share: boolean;
   delete: boolean;
   dashboard_details: boolean;
+  edit_presentation: boolean;
 }
 
 export interface WidgetContextMenuDisplayOptions {
@@ -54,7 +55,8 @@ export const BASE_DISPLAY_OPTIONS = {
     edit_presentation_content: false,
     share: false,
     delete: false,
-    dashboard_details: false
+    dashboard_details: false,
+    edit_presentation: false
   },
   edit_toggle: false,
   widgetContextMenu: {
@@ -81,7 +83,8 @@ export function getDisplayOptions(mode?: ViewMode): DisplayOptions {
           edit_presentation_content: true,
           share: true,
           delete: true,
-          dashboard_details: true
+          dashboard_details: true,
+          edit_presentation: true
         },
         widgetContextMenu: false
       };
@@ -113,7 +116,8 @@ export function getDisplayOptions(mode?: ViewMode): DisplayOptions {
           edit_presentation_content: false,
           share: true,
           delete: false,
-          dashboard_details: true
+          dashboard_details: true,
+          edit_presentation: true
         },
         edit_toggle: true,
         widgetContextMenu: true

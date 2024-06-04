@@ -157,6 +157,7 @@
 
     .a-btn {
       @include outlineOnFocus($border-radius: 4px);
+      height: toRem(40);
     }
   }
 

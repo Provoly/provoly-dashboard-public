@@ -20,6 +20,7 @@ import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 import { PryAddEditPresentationComponent } from './add-edit-presentation.component';
 import { MockPryMetadataEditorComponent } from '@provoly/dashboard/mock/components/mock-pry-metadata-editor.component';
 import { MockPryTextEditorComponent } from '@provoly/dashboard/mock/components/mock-pry-text-editor.component';
+import { MockPryPresentationFormComponent } from '../../../mock/components/mock-pry-presentation-form.component';
 
 describe('PryAddEditPresentationComponent', () => {
   let component: PryAddEditPresentationComponent;
@@ -41,7 +42,8 @@ describe('PryAddEditPresentationComponent', () => {
         MockPrySelectGridLayoutComponent,
         MockPryCheckboxComponent,
         MockPryMetadataEditorComponent,
-        MockPryTextEditorComponent
+        MockPryTextEditorComponent,
+        MockPryPresentationFormComponent
       ],
       providers: [
         provideMockStore({
@@ -82,6 +84,12 @@ describe('PryAddEditPresentationComponent', () => {
       creationDate: '2022-01-01',
       modificationDate: '2022-01-01'
     } as ManifestDescription;
+    component.formValue = {
+      name: 'test',
+      description: 'test',
+      additionalInformation: 'test',
+      image: DEFAULT_DASHBOARD_ICON_URL
+    };
     fixture.detectChanges();
   });
 
@@ -99,15 +107,13 @@ describe('PryAddEditPresentationComponent', () => {
     component.save();
     expect(spy).toHaveBeenCalledWith(
       DashboardActions.saveManifest({
-        name: '',
         id: '1',
-        description: undefined,
-        image: DEFAULT_DASHBOARD_ICON_URL,
+        name: 'test',
+        ...component.formValue,
         manifest: {
           windows: []
         },
-        metadata: [],
-        additionalInformation: ""
+        metadata: []
       })
     );
   });

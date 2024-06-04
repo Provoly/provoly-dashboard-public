@@ -15,7 +15,6 @@ import {
   ConfigActions,
   DashboardActions,
   DashboardSelectors,
-  LibraryTypes,
   ManifestDescription,
   PRY_ACCESS_TOKEN,
   PryBaseAccess,
@@ -23,7 +22,8 @@ import {
 } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
 import { v4 } from 'uuid';
-import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
+import { ToolboxActionComponent } from '../../shared/toolbox-action/toolbox-action.component';
+import { PresentationFormValue } from '../../shared/presentation-form/presentation-form.component';
 
 @Component({
   selector: 'pry-save-view',
@@ -44,13 +44,14 @@ export class SaveViewComponent extends ToolboxActionComponent {
   overlayRefDirectSaveType?: OverlayRef;
   @ViewChild('templateDirectSaveType', { read: TemplateRef }) templateDirectSaveType!: TemplateRef<any>;
   accessRightsByGroup: { [key: string]: string[] } = {};
-  type: LibraryTypes = LibraryTypes.ILLUSTRATION;
   saveTypeOpened = false;
   isCurrentPresentationModified$: Observable<boolean>;
   nbPages: number = 0;
   initialNbPages: number = 0;
   hasInitial: boolean = false;
   ViewMode = ViewMode;
+  formValue?: Partial<PresentationFormValue>;
+  isFormValid: boolean = false;
 
   constructor(
     store: Store,
@@ -139,14 +140,6 @@ export class SaveViewComponent extends ToolboxActionComponent {
     this.currentManifest!.accessRightsByGroup = $event;
   }
 
-  changeValue($event: string) {
-    this.currentManifest!.name = $event;
-  }
-
-  changeDescr($event: string) {
-    this.currentManifest!.description = $event;
-  }
-
   openSaveAs() {
     this.overlayRefSaveAs = this.overlay.create(
       new OverlayConfig({
@@ -159,12 +152,6 @@ export class SaveViewComponent extends ToolboxActionComponent {
     this.store.dispatch(ConfigActions.addingOverlay({ id: this.constructor.name }));
     this.overlayRefSaveAs.backdropClick().subscribe((_) => this.toggleSaveAs());
     this.overlayRefSaveAs.attach(new TemplatePortal(this.templateSaveAs, this.viewContainerRef));
-  }
-
-  isValid() {
-    return (
-      this.currentManifest?.name && 0 < this.currentManifest?.name.length && this.currentManifest?.name.length <= 50
-    );
   }
 
   toggleDirectSaveType() {

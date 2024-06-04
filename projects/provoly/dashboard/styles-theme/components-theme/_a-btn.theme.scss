@@ -68,6 +68,22 @@
     }
   }
 
+  &--ghost,
+  &.a-btn--secondary.-circle {
+    gap: toRem(8);
+
+    &:hover {
+      @include changeBgColor(
+        $targetBgColor: themed($theme-map, 'color', 'primary', 300)
+      );
+    }
+
+    &.-disabled,
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+
   &--icon-only {
     @include outlineOnFocus($border-radius: 5px);
   }

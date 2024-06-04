@@ -68,7 +68,7 @@ describe('PryPresentationComponent', () => {
     } as ManifestDescription);
     component.selectedMode = ViewMode.CONSULT;
     component.closeRestitution();
-    expect(component.selectedPresentation$.value).toBeNull();
+    expect(component.selectedPresentation$.value).toBeUndefined();
     expect(component.selectedMode).toEqual(ViewMode.CATALOG);
   });
   it('should fetch is called', () => {

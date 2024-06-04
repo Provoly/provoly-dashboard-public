@@ -14,7 +14,7 @@ import {
 } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
+import { ToolboxActionComponent } from '../../shared/toolbox-action/toolbox-action.component';
 
 @Component({
   selector: 'pry-select-grid-layout',

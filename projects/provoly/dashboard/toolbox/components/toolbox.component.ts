@@ -4,15 +4,14 @@ import {
   DashboardGridLayout,
   DashboardSelectors,
   DisplayOptions,
-  GlobalManifest,
   ManifestDescription,
   PRY_ACCESS_TOKEN,
-  PryBaseAccess,
-  ViewMode
+  PryBaseAccess
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { ACTIONS, ToolboxAction } from '../toolbox.model';
 import { ConnectedPosition } from '@angular/cdk/overlay';
+import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'pry-toolbox',
@@ -39,14 +38,7 @@ export class ToolboxComponent implements OnInit {
   isDropdownOpen = false;
   actionsAvailable$: Observable<DisplayOptions | undefined>;
   showEditToggle$: Observable<boolean>;
-  private presentation$: Observable<
-    | {
-        current: ManifestDescription | undefined;
-        viewMode?: ViewMode;
-        initial: GlobalManifest | undefined;
-      }
-    | undefined
-  >;
+  private currentManifest$: Observable<ManifestDescription | undefined>;
 
   @Input() set actions(actions: ToolboxAction[]) {
     this.actions$.next(actions);
@@ -60,7 +52,9 @@ export class ToolboxComponent implements OnInit {
     store: Store,
     @Optional() @Inject(PRY_ACCESS_TOKEN) private access: PryBaseAccess
   ) {
-    this.presentation$ = store.select(DashboardSelectors.presentation);
+    this.currentManifest$ = store
+      .select(DashboardSelectors.presentation)
+      .pipe(map((presentation) => presentation?.current));
     this.isManualMode$ = combineLatest([
       store.select(DashboardSelectors.staticManifest),
       store.select(DashboardSelectors.gridLayout)
@@ -74,20 +68,23 @@ export class ToolboxComponent implements OnInit {
     );
     this.actionsAvailable$ = store.select(DashboardSelectors.displayOptions);
     this.showEditToggle$ = this.actionsAvailable$.pipe(map((actions) => !!actions?.edit_toggle));
-    this.canModify$ = this.presentation$.pipe(
-      switchMap((presentation) => {
-        return presentation?.current ? this.access?.canModifyPresentation(presentation.current) : of(false);
+    this.canModify$ = this.currentManifest$.pipe(
+      switchMap((manifest) => {
+        return manifest ? this.access?.canModifyPresentation(manifest) : of(false);
       })
     );
   }
 
   ngOnInit() {
     this.allActions$ = combineLatest([this.actions$, this.actionsAvailable$, this.canModify$]).pipe(
-      switchMap(([actions, displayOptions, _canModify]) =>
+      withLatestFrom(this.currentManifest$),
+      switchMap(([[actions, displayOptions, _canModify], currentManifest]) =>
         combineLatest(
           actions.map((action) => {
             // @ts-ignore
-            const actionAvailable = action.visible && displayOptions.toolbox[action.name];
+            const actionAvailable =
+              this.isActionVisible(action, currentManifest) &&
+              displayOptions?.toolbox[action.name as keyof typeof displayOptions.toolbox];
             const canModify = !action.needsOwner || _canModify;
             return this.access
               ? this.access.hasRole(null, action.access.module, action.access.page, action.access.action).pipe(
@@ -135,5 +132,9 @@ export class ToolboxComponent implements OnInit {
 
   getOrder(actionName: string) {
     return this._dropdownActions$.getValue().find((action) => actionName === action.name)?.order;
+  }
+
+  isActionVisible(action: ToolboxAction, manifest: ManifestDescription | undefined): boolean {
+    return manifest && action.name === 'dashboard_details' ? !!manifest.additionalInformation : action.visible;
   }
 }

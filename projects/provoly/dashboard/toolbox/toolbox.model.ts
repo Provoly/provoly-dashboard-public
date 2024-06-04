@@ -7,12 +7,13 @@ import { LaunchTabComponent } from './components/launch-tab/launch-tab.component
 import { RefreshDatasetsComponent } from './components/refresh-datasets/refresh-datasets.component';
 import { SaveViewComponent } from './components/save-view/save-view.component';
 import { SelectGridLayoutComponent } from './components/select-grid-layout/select-grid-layout.component';
-import { ToolboxActionComponent } from './components/toolbox-action/toolbox-action.component';
+import { ToolboxActionComponent } from './shared/toolbox-action/toolbox-action.component';
 import { SwitchToEditContentComponent } from './components/switch-to-edit-content/switch-to-edit-content.component';
 import { ShareComponent } from './components/share/share.component';
 import { DeleteComponent } from './components/delete/delete.component';
 import { DashboardDetailsComponent } from './components/dashboard-details/dashboard-details.component';
 import { EditModeActionComponent } from './components/edit-mode-action/edit-mode-action.component';
+import { EditPresentationComponent } from './components/edit-presentation/edit-presentation.component';
 
 export interface ToolboxAction {
   name: string;
@@ -23,6 +24,13 @@ export interface ToolboxAction {
 }
 
 export const ACTIONS: ToolboxAction[] = [
+  {
+    name: 'dashboard_details',
+    component: DashboardDetailsComponent,
+    visible: true,
+    access: { module: 'dashboard', page: 'toolbox', action: 'details' },
+    needsOwner: false
+  },
   {
     name: 'edit_action',
     component: EditModeActionComponent,
@@ -108,10 +116,10 @@ export const ACTIONS: ToolboxAction[] = [
     needsOwner: true
   },
   {
-    name: 'dashboard_details',
-    component: DashboardDetailsComponent,
+    name: 'edit_presentation',
+    component: EditPresentationComponent,
     visible: true,
-    access: { module: 'dashboard', page: 'toolbox', action: 'delete' },
-    needsOwner: false
+    access: { module: 'dashboard', page: 'toolbox', action: 'edit_details' },
+    needsOwner: true
   }
 ];

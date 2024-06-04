@@ -1,55 +1,50 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Optional, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, Optional, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   DashboardActions,
   DashboardGridLayout,
   DashboardSelectors,
-  DEFAULT_DASHBOARD_ICON_URL,
   GlobalManifest,
   IMetadata,
-  LibraryTypes,
-  ManifestDescription,
+  ManifestDescription, MetadataValue,
   SubscriptionnerDirective,
   ViewMode,
   WidgetPlacementUtils
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, Observable, take } from 'rxjs';
-import { MetadataActions, MetadataSelectors, MetaEventType } from '@provoly/dashboard/components/metadata-editor';
+import { MetadataSelectors, MetaEventType } from '@provoly/dashboard/components/metadata-editor';
 import { v4 as uuidv4 } from 'uuid';
+import { PresentationFormValue } from '@provoly/dashboard/toolbox';
 
 @Component({
   selector: 'pry-add-edit-presentation',
   templateUrl: './add-edit-presentation.component.html'
 })
-export class PryAddEditPresentationComponent extends SubscriptionnerDirective implements OnInit, AfterViewInit {
+export class PryAddEditPresentationComponent extends SubscriptionnerDirective {
   staticManifest$: Observable<GlobalManifest>;
-  selectedPresentation$ = new BehaviorSubject<ManifestDescription | null>(null);
+  selectedPresentation$ = new BehaviorSubject<ManifestDescription | undefined>(undefined);
+  chosenLayout: string = DashboardGridLayout.FULL;
+  metadataDefs: IMetadata[] | undefined;
+  metadataThemeId: string = '';
+  formValue?: Partial<PresentationFormValue>;
+  isFormValid = false;
+
+  @Input() set selectedPresentation(presentation: ManifestDescription | undefined) {
+    this.selectedPresentation$.next(presentation);
+  }
   @Input() edition: boolean = false;
   @Input() themePrefix: string | null = null;
   @Input() editionStartUrl: string = '/';
-  form!: FormGroup;
-  image: string = DEFAULT_DASHBOARD_ICON_URL;
-  @Output() goBack = new EventEmitter<void>();
-  type: LibraryTypes = LibraryTypes.ILLUSTRATION;
-  chosenLayout: string = DashboardGridLayout.FULL;
-  possibleThemes: string[] = [];
-  metadataDefs: IMetadata[] | undefined;
-  metadataThemeId: string = '';
-
-  @Input() set selectedPresentation(presentation: ManifestDescription | null) {
-    this.selectedPresentation$.next(presentation);
-  }
-
   @Input() mode: 'theme' | 'meta' = 'meta';
+
+  @Output() goBack = new EventEmitter<void>();
 
   constructor(
     protected store: Store,
     @Optional() protected router: Router
   ) {
     super();
-    this.store.dispatch(MetadataActions.loadMetadata());
     this.staticManifest$ = this.store.select(DashboardSelectors.staticManifest);
     combineLatest([this.staticManifest$, this.store.select(DashboardSelectors.gridLayout)]).subscribe(
       ([staticManifest, gridLayout]) => {
@@ -65,32 +60,9 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
         const metadataTheme = metadata?.find((meta) => meta.name === '_theme');
         if (metadataTheme) {
           this.metadataThemeId = metadataTheme?.id ?? '';
-          this.possibleThemes = metadataTheme?.allowedValues ?? [];
         }
       })
     );
-  }
-
-  ngOnInit(): void {
-    this.form = new FormGroup({
-      name: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
-      description: new FormControl(undefined, [Validators.maxLength(200)]),
-      theme: new FormControl(''),
-      additionalInformation: new FormControl('')
-    });
-    this.image = this.selectedPresentation$.value?.image ?? DEFAULT_DASHBOARD_ICON_URL;
-    this.subscriptions.add(
-      this.selectedPresentation$.subscribe((presentation) => {
-        const theme = presentation?.metadata?.find((metadata) => metadata.metadataDef.name === '_theme')?.value;
-        if (!!theme) this.form.patchValue({ theme });
-      })
-    );
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      if (this.selectedPresentation$.value) this.form.patchValue(this.selectedPresentation$.value);
-    });
   }
 
   save() {
@@ -110,11 +82,8 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
     const presentation = {
       ...this.selectedPresentation$.value!,
       id: this.selectedPresentation$.value?.id || uuidv4(),
-      name: this.form.value.name ?? '',
-      description: this.form.value.description ?? undefined,
-      image: this.image ?? DEFAULT_DASHBOARD_ICON_URL,
-      metadata: this.metadata(),
-      additionalInformation: this.form.value.additionalInformation ?? undefined
+      ...this.formValue,
+      metadata: this.metadata()
     };
 
     this.subscriptions.add(
@@ -122,7 +91,7 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
         this.store.dispatch(
           DashboardActions.saveManifest({
             ...presentation,
-            metadata: presentation.metadata?.map((metadata) => ({
+            metadata: presentation.metadata?.map((metadata: MetadataValue) => ({
               metadataDefId: metadata.metadataDef.id,
               value: metadata.value
             })),
@@ -135,15 +104,13 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
   }
 
   configureDashboard(selectedPresentation: ManifestDescription) {
-    if (this.form.valid) {
+    if (this.isFormValid) {
       this.dispatchSave();
     }
 
     const presentation = {
       ...this.selectedPresentation$.value!,
-      name: this.form.value.name ?? '',
-      description: this.form.value.description,
-      image: this.image ?? DEFAULT_DASHBOARD_ICON_URL,
+      ...this.formValue,
       metadata: this.metadata()
     };
 
@@ -211,14 +178,14 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective im
     this.goBack.emit();
   }
 
-  metadata() {
+  metadata(): MetadataValue[] {
     return this.mode === 'theme'
-      ? !this.form.value.theme || this.form.value.theme === ''
+      ? !this.formValue?.theme || this.formValue?.theme === ''
         ? []
         : [
             {
               metadataDef: this.metadataDefs!.find((metadata) => metadata.id === this.metadataThemeId)!,
-              value: this.form.value.theme ?? ''
+              value: this.formValue.theme ?? ''
             }
           ]
       : this.selectedPresentation$.value?.metadata ?? [];

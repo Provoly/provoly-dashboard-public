@@ -3,8 +3,9 @@ export * from './toolbox.model';
 export * from './style/css.component';
 export * from './components/toolbox.component';
 
-export * from './components/toolbox-action/toolbox-action.component';
-export * from './components/toolbox-action-instanciator/toolbox-action-instanciator.component';
+export * from './shared/toolbox-action/toolbox-action.component';
+export * from './shared/toolbox-action-instanciator/toolbox-action-instanciator.component';
+export * from './shared/presentation-form/presentation-form.component';
 
 export * from './components/automate-refresh/automate-refresh.component';
 export * from './components/clear-view/clear-view.component';
@@ -21,3 +22,4 @@ export * from './components/select-grid-layout/select-grid-layout.component';
 export * from './components/share/share.component';
 export * from './components/switch-to-edit-content/switch-to-edit-content.component';
 export * from './components/edit-mode-action/edit-mode-action.component';
+export * from './components/edit-presentation/edit-presentation.component';

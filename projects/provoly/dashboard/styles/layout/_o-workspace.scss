@@ -18,36 +18,19 @@
     height: 100%;
     padding: toRem(20);
   }
+
   &__toolbox {
     grid-area: tools;
     display: flex;
     align-items: center;
-    padding: toRem(20);
+    justify-content: flex-end;
+    padding-right: toRem(10);
+    border-bottom: toRem(1) solid #D8E7F7;
   }
 
   &__dashboard {
     grid-area: dash;
     overflow: hidden;
     height: 100%;
-  }
-
-  #{$this}__toolbox {
-    border-bottom-width: toRem(1);
-    border-bottom-style: solid;
-
-    .m-actions-list {
-      gap: toRem(15);
-
-      &__item {
-        &.is-screen-size-select {
-          width: 157px;
-          padding-left: toRem(15);
-        }
-      }
-
-      .a-toggle {
-        width: toRem(230);
-      }
-    }
   }
 }

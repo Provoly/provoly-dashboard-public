@@ -6,7 +6,7 @@ import {
   PryBaseAccess,
   PryDialogService
 } from '@provoly/dashboard';
-import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
+import { ToolboxActionComponent } from '../../shared/toolbox-action/toolbox-action.component';
 
 @Component({
   selector: 'pry-share-pres',

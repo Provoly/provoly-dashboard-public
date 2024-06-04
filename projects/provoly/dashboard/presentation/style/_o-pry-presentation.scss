@@ -5,9 +5,7 @@
 
 .o-manifest-layout {
   &__toolbox {
-    div:first-child {
-      margin-left: auto;
-    }
+    justify-content: space-between;
 
     &.-u-hidden {
       display: none;

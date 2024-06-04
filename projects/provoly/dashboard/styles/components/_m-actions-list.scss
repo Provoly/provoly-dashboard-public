@@ -6,7 +6,11 @@
   @extend %list-unstyled;
   display: flex;
   align-items: center;
-  gap: toRem(15);
+  gap: toRem(30);
+
+  &__item:has(pry-toolbox-action:empty) {
+    display: none;
+  }
 
   /* MODFIFIERS */
   &.-vertical {

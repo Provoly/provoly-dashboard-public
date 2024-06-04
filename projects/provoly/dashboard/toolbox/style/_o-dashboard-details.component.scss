@@ -4,19 +4,6 @@
 @use '../../styles-theme/abstracts-theme/variables.theme' as *;
 @use '../../styles/components/o-text-panel' as *;
 
-
-.o-dashboard-details {
-  &.a-btn {
-    gap: toRem(8);
-
-    &:hover {
-      @include changeBgColor(
-        $targetBgColor: themed($theme-map, 'color', 'primary', 300)
-      );
-    }
-  }
-}
-
 #dashboard-details-panel {
   background-color: themed($theme-map, 'color', 'primary', 50);
   box-shadow: themed($theme-map, 'decoration', 'shadow', 'modal');

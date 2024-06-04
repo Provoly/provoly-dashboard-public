@@ -98,7 +98,7 @@
   </ng-container>
   <ng-container *ngSwitchCase="ViewMode.CREATION">
     <pry-add-edit-presentation
-      [selectedPresentation]="selectedPresentation$ | async"
+      [selectedPresentation]="(selectedPresentation$ | async) ?? undefined"
       (goBack)="closeRestitution()"
       [editionStartUrl]="editionStartUrl"
       [edition]="false"
@@ -108,7 +108,7 @@
   </ng-container>
   <ng-container *ngSwitchCase="ViewMode.EDITION">
     <pry-add-edit-presentation
-      [selectedPresentation]="selectedPresentation$ | async"
+      [selectedPresentation]="(selectedPresentation$ | async) ?? undefined"
       (goBack)="closeRestitution()"
       [editionStartUrl]="editionStartUrl"
       [edition]="true"

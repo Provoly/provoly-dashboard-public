@@ -3,13 +3,9 @@
 /* Molecule - presentation title */
 
 .m-presentation-title {
-  display: flex;
-  gap: toRem(10);
-
   &__text {
-    display: flex;
+    font-size: toRem(24);
     padding-top: 0;
     padding-bottom: 0;
   }
 }
-

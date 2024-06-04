@@ -202,7 +202,8 @@ describe('DashboardEffects', () => {
               edit_presentation_content: false,
               share: false,
               delete: false,
-              dashboard_details: false
+              dashboard_details: false,
+              edit_presentation: false
             },
             useFilters: false,
             edit_toggle: false,

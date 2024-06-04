@@ -99,8 +99,10 @@ export const enTranslations = {
         }
       },
       about: 'Information',
+      apply: 'Apply',
       edit: 'Modify layout',
       editOff: 'Visualize layout',
+      editPresentation: 'Modify presentation information',
       launch: 'New tab',
       launchIndication: 'Open this page in a',
       chooseGrid: 'Change grid layout',
@@ -168,7 +170,7 @@ export const enTranslations = {
           'Display of 4 renders maximum, on a split screen in 4 zones, the render addtion is made in an empty zone, the placement is system guided.'
       },
       switchEdit: 'Edit',
-      switchEditContent: 'Edit composition',
+      switchEditContent: 'Edit construction',
       share: 'Share',
       shareAccessRights: 'Share access rights',
       delete: 'Delete',

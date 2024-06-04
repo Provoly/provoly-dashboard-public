@@ -13,7 +13,6 @@ import {
 } from '@provoly/dashboard';
 import { PryCheckboxModule } from '@provoly/dashboard/components/checkbox';
 import { PrySinceDateModule } from '@provoly/dashboard/components/sinceDate';
-import { PryToolboxModule } from '@provoly/dashboard/toolbox';
 import { PryAddEditPresentationComponent } from './components/add-edit-presentation/add-edit-presentation.component';
 import { PryTitlePresentationComponent } from './components/title-presentation/title-presentation.component';
 import { PryPresentationComponent } from './components/presentation.component';
@@ -23,15 +22,18 @@ import { PryPresentationCssComponent } from './style/css.component';
 import { A11yModule } from '@angular/cdk/a11y';
 import { PryExpandPanelModule } from '@provoly/dashboard/components/metadata-editor';
 import { PryTextEditorModule } from '@provoly/dashboard/components/text-editor';
+import { PryToolboxModule } from '@provoly/dashboard/toolbox';
+
+const COMPONENTS = [
+  PryPresentationComponent,
+  PryAddEditPresentationComponent,
+  PryTitlePresentationComponent,
+  PryPresentationCssComponent
+];
 
 @NgModule({
   providers: [],
-  declarations: [
-    PryPresentationComponent,
-    PryAddEditPresentationComponent,
-    PryTitlePresentationComponent,
-    PryPresentationCssComponent
-  ],
+  declarations: [...COMPONENTS],
   imports: [
     PryIconModule,
     PryCoreModule,
@@ -50,12 +52,7 @@ import { PryTextEditorModule } from '@provoly/dashboard/components/text-editor';
     PryExpandPanelModule,
     PryTextEditorModule
   ],
-  exports: [
-    PryPresentationComponent,
-    PryAddEditPresentationComponent,
-    PryTitlePresentationComponent,
-    PryPresentationCssComponent
-  ]
+  exports: [...COMPONENTS]
 })
 export class PryPresentationModule {
   constructor(private pryTranslateService: PryI18nService) {

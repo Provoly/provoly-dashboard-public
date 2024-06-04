@@ -1,0 +1,66 @@
+<form [formGroup]="form" class="o-presentation-form">
+  <div class="m-form-label-field -width-full">
+    <label class="a-label" for="presentation_name">{{ '@pry.presentation.form.name' | i18n }}</label>
+    <input
+      type="text"
+      id="presentation_name"
+      formControlName="name"
+      placeholder="{{ '@pry.presentation.form.name' | i18n }}"
+      class="a-form-field"
+      maxlength="50"
+      required
+    />
+    @if (name.touched && name.errors?.['required']) {
+      <label for="presentation_name" class="a-label a-label--help -error">
+        {{ '@pry.presentation.required' | i18n }}
+      </label>
+    }
+    @if (name.touched && name.errors?.['maxlength']) {
+      <label for="presentation_name" class="a-label a-label--help -error">
+        {{ '@pry.presentation.maxLength' | i18n: { len: '50' } }}
+      </label>
+    }
+  </div>
+  <div class="m-form-label-field -width-full">
+    <label class="a-label" for="presentation_description">{{ '@pry.presentation.form.description' | i18n }}</label>
+    <textarea
+      formControlName="description"
+      id="presentation_description"
+      name="description"
+      cols="30"
+      rows="5"
+      maxlength="200"
+      placeholder="{{ '@pry.presentation.form.description' | i18n }}"
+      class="a-form-field"
+    ></textarea>
+    @if (description.touched && description.errors?.['maxlength']) {
+      <label for="presentation_description" class="a-label a-label--help -error">
+        {{ '@pry.presentation.maxLength' | i18n: { len: '200' } }}
+      </label>
+    }
+  </div>
+  <div class="m-form-label-field -width-full" *ngIf="mode === 'theme'">
+    <label class="a-label" for="presentation_theme">{{ '@pry.presentation.form.theme' | i18n }}</label>
+    <pry-select
+      id="presentation_theme"
+      [items]="possibleThemes"
+      formControlName="theme"
+      [clearable]="true"
+      [i18nPrefix]="themePrefix"
+    ></pry-select>
+  </div>
+  <div class="m-form-label-field -width-full">
+    <label class="a-label" for="presentation_image">{{ '@pry.presentation.form.image' | i18n }}</label>
+    <div class="o-file-input">
+      <pry-select-image
+        id="presentation_image"
+        (changed)="image = $event"
+        [iconUrl]="image"
+        [mode]="type"
+      ></pry-select-image>
+    </div>
+  </div>
+  <div class="m-form-label-field -width-full">
+    <pry-text-editor formControlName="additionalInformation"></pry-text-editor>
+  </div>
+</form>

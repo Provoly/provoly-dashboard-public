@@ -51,71 +51,31 @@
     <pry-stepper #stepper>
       <pry-step>
         <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.presentation.add.info' | i18n }}</h4>
-        <form>
-          <div class="m-form-label-field">
-            <label class="a-label" id="label-name" for="input-name">{{ '@pry.toolbox.manifest.name' | i18n }}</label>
-            <input
-              type="text"
-              id="input-name"
-              name="input-name"
-              class="a-form-field"
-              placeholder="{{ '@pry.toolbox.manifest.name' | i18n }}"
-              [ngModel]="currentManifest!.name"
-              (ngModelChange)="changeValue($event)"
-              aria-labelledby="label-name"
-              maxlength="50"
-              #input
-            />
-          </div>
-          <div class="m-form-label-field">
-            <label class="a-label" id="label-descr" for="input-descr">{{
-              '@pry.toolbox.manifest.description' | i18n
-            }}</label>
-            <input
-              type="text"
-              id="input-descr"
-              name="input-descr"
-              class="a-form-field"
-              placeholder="{{ '@pry.toolbox.manifest.description' | i18n }}"
-              [ngModel]="currentManifest!.description"
-              (ngModelChange)="changeDescr($event)"
-              aria-labelledby="label-name"
-              maxlength="200"
-            />
-          </div>
-          <div class="m-form-label-field">
-            <label class="a-label" for="presentation_image">{{ '@pry.presentation.form.image' | i18n }}</label>
-            <div class="o-file-input">
-              <pry-select-image
-                id="presentation_image"
-                (changed)="currentManifest!.image = $event"
-                [iconUrl]="currentManifest!.image"
-                [mode]="type"
-              ></pry-select-image>
-            </div>
-          </div>
-
-          <div class="m-btn-group">
-            <button
-              type="button"
-              class="a-btn a-btn--secondary"
-              #cancel
-              (click)="toggleSaveAs()"
-              (keydown.tab)="disableNextStep()"
-            >
-              {{ '@pry.toolbox.manifest.close' | i18n }}
-            </button>
-            <button
-              type="submit"
-              class="a-btn a-btn--primary"
-              (click)="stepper.next()"
-              [disabled]="!isValid()"
-              (keydown.tab)="focusCrossElement()"
-            >
-              {{ '@pry.action.next' | i18n }}
-            </button>
-          </div>
-        </form>
+        <pry-presentation-form
+          [selectedPresentation]="currentManifest"
+          (formValue)="formValue = $event"
+          (isFormValid)="isFormValid = $event"
+        ></pry-presentation-form>
+        <div class="m-btn-group">
+          <button
+            type="button"
+            class="a-btn a-btn--secondary"
+            #cancel
+            (click)="toggleSaveAs()"
+            (keydown.tab)="disableNextStep()"
+          >
+            {{ '@pry.toolbox.manifest.close' | i18n }}
+          </button>
+          <button
+            type="submit"
+            class="a-btn a-btn--primary"
+            (click)="stepper.next()"
+            [disabled]="!isFormValid"
+            (keydown.tab)="focusCrossElement()"
+          >
+            {{ '@pry.action.next' | i18n }}
+          </button>
+        </div>
       </pry-step>
       <pry-step>
         <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.share' | i18n }}</h4>

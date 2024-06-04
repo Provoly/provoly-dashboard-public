@@ -2,7 +2,7 @@ import { Component, Inject, Optional } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { DashboardActions, DashboardSelectors, PRY_ACCESS_TOKEN, PryBaseAccess } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
-import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
+import { ToolboxActionComponent } from '../../shared/toolbox-action/toolbox-action.component';
 
 @Component({
   selector: 'pry-edit-mode-toggle',

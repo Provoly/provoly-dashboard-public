@@ -10,7 +10,7 @@ import {
   WidgetFactoryService
 } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
-import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
+import { ToolboxActionComponent } from '../../shared/toolbox-action/toolbox-action.component';
 
 @Component({
   selector: 'pry-refresh-datasets',

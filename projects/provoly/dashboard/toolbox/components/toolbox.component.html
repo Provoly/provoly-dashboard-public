@@ -1,20 +1,21 @@
 <ul class="m-actions-list" #input>
-  @for (action of mainActions$ | async; track action.name) {
-    @if (action.visible) {
-      <li class="m-actions-list__item -{{ action.name }}" *pryAccess="action.access">
-        <pry-toolbox-action-instanciator
-          [action]="action"
+  @if (showEditToggle$ | async) {
+    @if (isManualMode$ | async) {
+      <li class="m-actions-list__item">
+        <pry-edit-mode-toggle
+          *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'edit_dashboard' }"
           [displayLabels]="displayLabels"
-        ></pry-toolbox-action-instanciator>
+        ></pry-edit-mode-toggle>
       </li>
     }
   }
+
   @if (showDropdownButton$ | async) {
     @if (((dropdownActions$ | async)?.length ?? 0) > 0) {
       <li class="m-actions-list__item">
         <button
           type="button"
-          class="a-btn a-btn--primary"
+          class="a-btn a-btn--ghost -pad-5"
           cdkOverlayOrigin
           id="options"
           aria-controls="IDpanel"
@@ -22,11 +23,8 @@
           (click)="openDropdown($event)"
           #trigger="cdkOverlayOrigin"
         >
-          <span class="u-visually-hidden">{{ '@pry.toolbox.options' | i18n }}</span>
+          <span [class.u-visually-hidden]="!displayLabels">{{ '@pry.toolbox.options' | i18n }}</span>
           <pry-icon [width]="10" [height]="13" iconSvg="chevron_bottom"></pry-icon>
-          @if (displayLabels) {
-            <span>{{ '@pry.toolbox.options' | i18n }}</span>
-          }
         </button>
       </li>
       <ng-template
@@ -58,13 +56,13 @@
     }
   }
 
-  @if (showEditToggle$ | async) {
-    @if (isManualMode$ | async) {
-      <li class="m-actions-list__item">
-        <pry-edit-mode-toggle
-          *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'edit_dashboard' }"
+  @for (action of mainActions$ | async; track action.name) {
+    @if (action.visible) {
+      <li class="m-actions-list__item -{{ action.name }}" *pryAccess="action.access">
+        <pry-toolbox-action-instanciator
+          [action]="action"
           [displayLabels]="displayLabels"
-        ></pry-edit-mode-toggle>
+        ></pry-toolbox-action-instanciator>
       </li>
     }
   }

@@ -25,7 +25,7 @@ import {
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
 import { v4 } from 'uuid';
-import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
+import { ToolboxActionComponent } from '../../shared/toolbox-action/toolbox-action.component';
 
 export enum FilterSteps {
   LIST = 'list',

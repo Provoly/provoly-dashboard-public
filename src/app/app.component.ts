@@ -34,7 +34,8 @@ export class AppComponent {
     { name: 'edit_presentation_content', order: 7 },
     { name: 'share', order: 8 },
     { name: 'delete', order: 9 },
-    { name: 'edit_action', order: 10 }
+    { name: 'edit_action', order: 10 },
+    { name: 'edit_presentation', order: 11 }
   ];
 
   constructor(

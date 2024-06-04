@@ -24,10 +24,6 @@ pry-add-edit-presentation {
 }
 
 .o-manifest-layout__toolbox {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
   gap: toRem(15);
 }
 
@@ -35,17 +31,24 @@ pry-add-edit-presentation {
   display: flex;
   padding-bottom: toRem(5);
   gap: 3rem;
+
+  > :first-child {
+    flex: 2 auto;
+  }
+
+  > :only-child {
+    max-width: toRem(700);
+  }
 }
 
 .o-presentation__metadata-editor {
-  flex: 1 50%;
+  flex-basis: 50%;
 }
 
 .o-presentation-form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 1 50%;
 
   .a-presentation-form-input {
     padding: 0.25rem 0.75rem;
@@ -77,8 +80,4 @@ pry-add-edit-presentation {
       height: toRem(100);
     }
   }
-}
-
-.a-presentation-title {
-  padding: 10px;
 }

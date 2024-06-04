@@ -2,7 +2,7 @@ import { CdkDrag, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   PryCoreModule,
   PryDashboardModule,
@@ -25,8 +25,6 @@ import { SaveViewComponent } from './components/save-view/save-view.component';
 import { SelectGridLayoutComponent } from './components/select-grid-layout/select-grid-layout.component';
 import { ToolboxComponent } from './components/toolbox.component';
 import { PrySelectGridLayoutCssComponent } from './style/css.component';
-import { ToolboxActionInstanciatorComponent } from './components/toolbox-action-instanciator/toolbox-action-instanciator.component';
-import { ToolboxActionComponent } from './components/toolbox-action/toolbox-action.component';
 import { RefreshDatasetsComponent } from './components/refresh-datasets/refresh-datasets.component';
 import { AutomateRefreshComponent } from './components/automate-refresh/automate-refresh.component';
 import { A11yModule } from '@angular/cdk/a11y';
@@ -36,6 +34,10 @@ import { DeleteComponent } from './components/delete/delete.component';
 import { DashboardDetailsComponent } from './components/dashboard-details/dashboard-details.component';
 import { EditModeActionComponent } from './components/edit-mode-action/edit-mode-action.component';
 import { PryTextEditorModule } from '@provoly/dashboard/components/text-editor';
+import { EditPresentationComponent } from './components/edit-presentation/edit-presentation.component';
+import { PresentationFormComponent } from './shared/presentation-form/presentation-form.component';
+import { ToolboxActionInstanciatorComponent } from './shared/toolbox-action-instanciator/toolbox-action-instanciator.component';
+import { ToolboxActionComponent } from './shared/toolbox-action/toolbox-action.component';
 
 const components = [
   ToolboxActionComponent,
@@ -56,7 +58,9 @@ const components = [
   ShareComponent,
   DeleteComponent,
   DashboardDetailsComponent,
-  EditModeActionComponent
+  EditModeActionComponent,
+  EditPresentationComponent,
+  PresentationFormComponent
 ];
 
 @NgModule({
@@ -79,7 +83,8 @@ const components = [
     CdkDrag,
     CdkDragHandle,
     A11yModule,
-    PryTextEditorModule
+    PryTextEditorModule,
+    ReactiveFormsModule
   ],
   exports: [...components]
 })

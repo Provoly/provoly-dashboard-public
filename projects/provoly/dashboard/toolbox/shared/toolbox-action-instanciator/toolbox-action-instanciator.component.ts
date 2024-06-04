@@ -12,7 +12,7 @@ import {
 import { Store } from '@ngrx/store';
 import { SubscriptionnerDirective } from '@provoly/dashboard';
 import { ToolboxAction } from '../../toolbox.model';
-import { SaveViewComponent } from '../save-view/save-view.component';
+import { SaveViewComponent } from '../../components/save-view/save-view.component';
 import { ToolboxActionComponent } from '../toolbox-action/toolbox-action.component';
 
 @Component({
