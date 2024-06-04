@@ -194,7 +194,7 @@ export class WidgetAnalyticComponent extends DataWidgetComponent {
                 )
               : true
           )
-          .map((item) => (item.attributes[property] as AttributeSimpleValue).value + '')
+          .map((item) => (item.attributes[property] as AttributeSimpleValue)?.value + '')
       )
       .flat()
       .flat();
