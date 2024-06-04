@@ -616,7 +616,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
     this.legendHeight$ = combineLatest([this.widgetSize$.pipe(debounceTime(100)), this.legendTop$]).pipe(
       map(([size, top]) => {
-        return (size.height ?? 100) - WIDGET_HEADER_HEIGHT.value - top - 56; // 56px is the tooltip height + margin
+        return (size.height ?? 100) - WIDGET_HEADER_HEIGHT.value - top - 56; // 56px is the popin title height + margin
       }),
       delay(10)
     );

@@ -594,42 +594,48 @@
     </div>
     <div class="m-map-pop-in" [class.-hidden]="!legendTabOpen" [style.top.px]="legendTop$ | async">
       <h4 class="a-h4">{{ '@pry.widget.map.legendsTitle' | i18n }}</h4>
-      <ng-container *ngFor="let geoLayer of legendLayers$ | async; let index = index">
-        <div *ngIf="isLayerVisible(geoLayer)" class="m-map-pop-in__title" (click)="toggleLegend(index)">
-          <pry-icon
-            *ngIf="isLayerRendered(geoLayer) && !!geoLayer.title"
-            class="m-map-pop-in__dropdown-icon"
-            [iconSvg]="legendTabClosed[index] ? 'chevron_bottom' : 'chevron_top'"
-            [width]="12"
-            [height]="12"
-          ></pry-icon>
-          <h5 class="a-h5">{{ geoLayer.title }}</h5>
-          <pry-icon
-            *ngIf="!isLayerRendered(geoLayer)"
-            class="a-tooltip"
-            [attr.data-tooltip]="'@pry.widget.map.layerLoadError' | i18n"
-            [iconSvg]="'close'"
-            [width]="22"
-            [height]="22"
-          ></pry-icon>
-        </div>
-        <div
-          class="m-map-pop-in__image"
-          [class.-hidden]="!legendTabOpen || legendTabClosed[index] || !isLayerRendered(geoLayer)"
-          [style.max-height.px]="legendHeight$ | async"
-        >
-          <ng-container *ngIf="geoLayer | legendUrl: { capabilities: (wmsCapabilities$ | async) } as url">
-            <img
-              [src]="url | getSecuredImage | async"
-              [alt]="'@pry.widget.map.legend' | i18n: { layer: geoLayer.title }"
-              (error)="imageNotProvided[index] = true"
-            />
-          </ng-container>
-          <ng-container *ngIf="!(geoLayer | legendUrl: { capabilities: (wmsCapabilities$ | async) })">
-            <p class="m-map-pop-in__error">{{ '@pry.widget.map.legendNotProvided' | i18n }}</p>
-          </ng-container>
-        </div>
-      </ng-container>
+      <div class="m-map-pop-in__content" [style.max-height.px]="layersHeight$ | async">
+        @for (geoLayer of (legendLayers$ | async); track geoLayer; let index = $index) {
+          @if (isLayerVisible(geoLayer)) {
+            <div class="m-map-pop-in__title" (click)="toggleLegend(index)">
+              @if (isLayerRendered(geoLayer) && !!geoLayer.title) {
+                <pry-icon
+                  class="m-map-pop-in__dropdown-icon"
+                  [iconSvg]="legendTabClosed[index] ? 'chevron_bottom' : 'chevron_top'"
+                  [width]="12"
+                  [height]="12"
+                ></pry-icon>
+              }
+              <h5 class="a-h5">{{ geoLayer.title }}</h5>
+              @if (!isLayerRendered(geoLayer)) {
+                <pry-icon
+                  class="a-tooltip"
+                  [attr.data-tooltip]="'@pry.widget.map.layerLoadError' | i18n"
+                  [iconSvg]="'close'"
+                  [width]="22"
+                  [height]="22"
+                ></pry-icon>
+              }
+            </div>
+          }
+          <div
+            class="m-map-pop-in__image"
+            [class.-hidden]="!legendTabOpen || legendTabClosed[index] || !isLayerRendered(geoLayer)"
+            [style.max-height.px]="legendHeight$ | async"
+          >
+            @if ((geoLayer | legendUrl: { capabilities: (wmsCapabilities$ | async) }); as url) {
+              <img
+                [src]="url | getSecuredImage | async"
+                [alt]="'@pry.widget.map.legend' | i18n: { layer: geoLayer.title }"
+                (error)="imageNotProvided[index] = true"
+              />
+            }
+            @if (!(geoLayer | legendUrl: { capabilities: (wmsCapabilities$ | async) })) {
+              <p class="m-map-pop-in__error">{{ '@pry.widget.map.legendNotProvided' | i18n }}</p>
+            }
+          </div>
+        }
+      </div>
     </div>
   }
 
