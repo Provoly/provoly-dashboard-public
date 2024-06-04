@@ -828,6 +828,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
               resultLayer.set('type', layer.type);
               resultLayer.set('slide', layer.slide);
               resultLayer.set('order', layer.order);
+              resultLayer.set('group', layer.group ?? DEFAULT_LAYER_GROUP);
               const maxLayerOrder = Math.max(...array.map((l) => l.order ?? 0));
               resultLayer.setZIndex(maxLayerOrder + 1 - (layer.order ?? idx));
               if (layer.type === 'relation') {
@@ -1416,7 +1417,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   isLayerRendered(layer: any) {
-    return !!this.getWMSLayers().find((wmsLayer) => wmsLayer.get('title') === layer.title);
+    return !!this.getWMSLayers().find(
+      (wmsLayer) => wmsLayer.get('title') === layer.title && wmsLayer.get('group') === layer.group
+    );
   }
 
   changeWmsClass($event: any, layer: MapWMSLayerLayerOptions) {
@@ -1452,26 +1455,26 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     return this.mapLayers.filter((layer) => layer.get('slide') === 'left');
   }
 
-  hideAllLayersInGroup(group: LayerGroup) {
-
-  }
-
   changeVisibility(group: LayerGroup, _layer?: MapWidgetLayerOptions) {
-    const olLayer = this.mapLayers.find((layer) => layer.getProperties()['title'] === _layer?.title);
+    const olLayer = this.mapLayers.find(
+      (layer) => layer.getProperties()['title'] === _layer?.title && layer.getProperties()['group'] === group.name
+    );
     if (group.singleLayer) {
       const groupLayers =
         this.optionsCopy.layers?.filter((l) => l.group === group.name).map((layer) => layer.title) ?? [];
 
-      this.mapLayers.forEach((layer) => {
-        if (groupLayers.includes(layer.getProperties()['title'])) {
-          layer.setVisible(false);
-        }
-      });
+      this.mapLayers
+        .filter((layer) => layer.getProperties()['group'] === group.name)
+        .forEach((layer) => {
+          if (groupLayers.includes(layer.getProperties()['title'])) {
+            layer.setVisible(false);
+          }
+        });
       if (_layer) {
         olLayer?.setVisible(true);
-        this.store.dispatch(DashboardActions.updateLayerGroup({ name: group.name, visibleLayers: [_layer.title!]}));
+        this.store.dispatch(DashboardActions.updateLayerGroup({ name: group.name, visibleLayers: [_layer.title!] }));
       } else {
-        this.store.dispatch(DashboardActions.updateLayerGroup({ name: group.name, visibleLayers: [] }))
+        this.store.dispatch(DashboardActions.updateLayerGroup({ name: group.name, visibleLayers: [] }));
       }
     } else {
       olLayer?.setVisible(!olLayer?.getVisible());
@@ -1488,7 +1491,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     if (group?.visibleLayers) {
       return group.visibleLayers.includes(layer.title ?? '');
     } else {
-      return this.layerGroups.some((group) => group.visibleLayers.includes(layer.title ?? ''))
+      return this.layerGroups.find((g) => g.name === layer.group)?.visibleLayers.includes(layer.title ?? '');
     }
   }
 
@@ -1656,7 +1659,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       } else {
         this.store.dispatch(DashboardActions.updateLayerGroup({ name, newName, singleLayer, visibleLayers }));
       }
-      // update groups on layers
+      // update groups on options layers
       if (newName !== undefined && this.optionsCopy.layers) {
         this.optionsCopy.layers = this.optionsCopy.layers.map((layer) =>
           layer.group === name
@@ -1667,11 +1670,13 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
             : layer
         );
       }
+      // update groups on ol layers
+      if (newName !== undefined) {
+        this.mapLayers.map((layer) => {
+          if (layer.getProperties()['group'] === name) layer.set('group', newName);
+        });
+      }
     }
-  }
-
-  updateLayerGroupTitle($event: Event, name: string) {
-    this.updateLayerGroup(name, ($event.currentTarget as HTMLInputElement)?.value);
   }
 
   deleteLayerGroup(name: string) {
