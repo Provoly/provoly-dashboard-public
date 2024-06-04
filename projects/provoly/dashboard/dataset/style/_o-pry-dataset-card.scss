@@ -74,8 +74,12 @@
   }
 
   .dataset-name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    width: toRem(270);
+
+    &.a-tooltip[data-tooltip]:after {
+      top: calc(100% - 15px);
+      max-width: toRem(300);
+      word-break: break-word;
+    }
   }
 }

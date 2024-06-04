@@ -5,9 +5,11 @@
       alt=""
       [height]="25"
       [width]="25"
-      [src]="dataset.id | translateId : { type: 'datasource', output: 'icon' } | async"
+      [src]="dataset.id | translateId: { type: 'datasource', output: 'icon' } | async"
     />
-    <div class="a-h4 dataset-name">{{ dataset.name }}</div>
+    <div class="a-h4 dataset-name" ellipsis textElementSelector=".a-h4">
+      <h4 class="a-h4">{{ dataset.name }}</h4>
+    </div>
   </div>
   <div class="o-pry-dataset-card__txt">
     <div class="a-p">
