@@ -69,6 +69,11 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
     super();
     this.datasetItems$ = this.store.select(DashboardSelectors.resultSets);
     this.compId = nextCompId++;
+    this.subscriptions.add(
+      this.store.select(DashboardSelectors.dashboardEditionMode).subscribe((editionMode) => {
+        if (editionMode) this.store.dispatch(DashboardActions.toggleEditionMode({}));
+      })
+    );
   }
 
   ngOnInit() {
