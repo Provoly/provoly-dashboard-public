@@ -125,6 +125,7 @@ const isCurrentPresentationModified = createSelector(
   globalManifest,
   (state, global) => !equal(global, state.initial)
 );
+const currentManifest = createSelector(feature, (state: DashboardState) => state?.presentation.current);
 
 const filters = createSelector(feature, (state: DashboardState) => state?.manifests.manifest.filters ?? []);
 const datasourceFilters = createSelector(feature, (state: DashboardState) =>
@@ -190,6 +191,7 @@ export const DashboardSelectors = {
   loading,
   quickOrder,
   presentation,
+  currentManifest,
   filters,
   isCurrentPresentationModified,
   datasourceFilters,

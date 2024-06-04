@@ -25,9 +25,7 @@ export class ToolboxActionComponent extends SubscriptionnerDirective {
     @Optional() @Inject(PRY_ACCESS_TOKEN) protected access: PryBaseAccess
   ) {
     super();
-    this.currentManifest$ = this.store
-      .select(DashboardSelectors.presentation)
-      .pipe(map((manifest) => manifest?.current));
+    this.currentManifest$ = this.store.select(DashboardSelectors.currentManifest);
     this.canModify$ = this.currentManifest$.pipe(
       switchMap((manifest) => {
         return manifest ? this.access?.canModifyPresentation(manifest) : of(false);

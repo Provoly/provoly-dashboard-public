@@ -6,9 +6,10 @@ import { DashboardActions } from '../../../../dashboard/store/dashboard.actions'
 import { DataSourceSelectors } from '../../../store/data-source/data-source.selectors';
 import { getCommonDatasourceGroupsForManifest } from '../share.utils';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, combineLatest } from 'rxjs';
 import equal from 'fast-deep-equal/es6';
 import { DataSourceActions } from '../../../store/data-source/data-source.actions';
+import { DashboardSelectors } from '../../../../dashboard/store/dashboard.selectors';
 
 @Component({
   selector: 'pry-access-rights-share-modal',
@@ -38,10 +39,13 @@ export class PryAccessRightsShareModalComponent {
     this.manifest = this.data.manifest;
     this.accessRightsByGroup = { ...this.manifest.accessRightsByGroup };
 
-    this.allowedShareGroups$ = this.store.select(DataSourceSelectors.datasets).pipe(
-      map((datasets) => {
-        return this.manifest.datasource.length > 0
-          ? getCommonDatasourceGroupsForManifest(this.manifest, datasets)
+    this.allowedShareGroups$ = combineLatest([
+      this.store.select(DataSourceSelectors.datasets),
+      this.store.select(DashboardSelectors.currentManifest)
+    ]).pipe(
+      map(([datasets, current]) => {
+        return current && current.datasource.length > 0
+          ? getCommonDatasourceGroupsForManifest(current, datasets)
           : null;
       })
     );

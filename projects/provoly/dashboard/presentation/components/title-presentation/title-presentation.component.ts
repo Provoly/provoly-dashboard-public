@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { DashboardSelectors, ManifestDescription } from '@provoly/dashboard';
 
 @Component({
@@ -11,8 +11,6 @@ export class PryTitlePresentationComponent {
   currentPresentation$: Observable<ManifestDescription | undefined>;
 
   constructor(private store: Store) {
-    this.currentPresentation$ = this.store
-      .select(DashboardSelectors.presentation)
-      .pipe(map((presentation) => presentation.current));
+    this.currentPresentation$ = this.store.select(DashboardSelectors.currentManifest);
   }
 }
