@@ -179,7 +179,9 @@
                 version.state !== 'DELETING'
               "
             >
-              <ng-container *ngIf="canModify$() && (version.state === 'ACTIVE' || version.state === 'INACTIVE')">
+              <ng-container
+                *ngIf="(canModify$ | async) && (version.state === 'ACTIVE' || version.state === 'INACTIVE')"
+              >
                 <ng-container *pryAccess="{ module: 'dashboard', page: 'list-dataset', action: 'activate' }">
                   <button
                     type="button"
@@ -222,7 +224,10 @@
           </td>
           <td>
             <ng-container
-              *ngIf="version.state === 'ACTIVE' || version.state === 'ERROR' || version.state === 'INACTIVE'"
+              *ngIf="
+                (canModify$ | async) &&
+                (version.state === 'ACTIVE' || version.state === 'ERROR' || version.state === 'INACTIVE')
+              "
             >
               <button
                 type="button"

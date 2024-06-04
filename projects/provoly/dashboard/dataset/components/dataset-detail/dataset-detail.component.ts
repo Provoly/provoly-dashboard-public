@@ -57,6 +57,7 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
   activeVersion$!: Observable<DatasetVersion | undefined>;
   activeVersionId$!: Observable<string>;
   isEditingVersion = false;
+  canModify$!: Observable<boolean>;
 
   isPanelOpen: boolean = false;
   selectedVersion?: DatasetVersion;
@@ -71,6 +72,7 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
   }
 
   ngOnInit() {
+    this.canModify$ = this.access?.canModifyDataset(this.dataset) ?? of(false);
     this.store.dispatch(DataSourceActions.dataset.listVersionsByDatasetId({ id: this.dataset.id }));
     this.store.dispatch(DashboardActions.removeFilters());
     this.store.dispatch(
@@ -217,9 +219,5 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
   askDelete(version: DatasetVersion, $event?: Event) {
     this.store.dispatch(DataSourceActions.dataset.confirmDeleteVersion({ version }));
     $event?.stopPropagation();
-  }
-
-  canModify$() {
-    return this.access ? this.access.canModifyDataset(this.dataset) : of(false);
   }
 }
