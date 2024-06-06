@@ -12,6 +12,7 @@
     <div class="o-presentation-form-wrapper">
       <div class="u-display-flex -column">
         <pry-presentation-form
+          mode="theme"
           [selectedPresentation]="(selectedPresentation$ | async) ?? undefined"
           (formValue)="formValue = $event"
           (isFormValid)="isFormValid = $event"

@@ -31,11 +31,20 @@ export const canManifestBeMadePublic = (manifest: ManifestDescription, datasets:
   });
 };
 
-export const getCommonDatasourceGroupsForManifest = (manifest: ManifestDescription, datasets: Dataset[]): string[] => {
+export const getCommonDatasourceGroupsForManifest = (
+  manifest: ManifestDescription,
+  datasets: Dataset[],
+  allGroups: Group[]
+): string[] => {
   let result = [];
   const allDsGroups = manifest.datasource.map((dsId) => datasets.find((d) => d.id === dsId)?.groups ?? []);
-  if (allDsGroups.every((dsGroups) => dsGroups.includes(AUTHENTICATED_USERS_GROUP))) {
-    result = [...new Set(allDsGroups.flat())];
+
+  if (allDsGroups.every((dsGroups) => dsGroups.includes(PUBLIC_GROUP))) {
+    result = allGroups.map((group) => group.name);
+  } else if (
+    allDsGroups.every((dsGroups) => dsGroups.includes(PUBLIC_GROUP) || dsGroups.includes(AUTHENTICATED_USERS_GROUP))
+  ) {
+    result = allGroups.filter((group) => group.name !== PUBLIC_GROUP).map((group) => group.name);
   } else {
     const allDsGroupsFiltered = allDsGroups.filter(
       (dsGroups) => !dsGroups.includes(AUTHENTICATED_USERS_GROUP) && !dsGroups.includes(PUBLIC_GROUP)

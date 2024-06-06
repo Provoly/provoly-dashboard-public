@@ -10,6 +10,8 @@ import { BehaviorSubject, map, Observable, combineLatest } from 'rxjs';
 import equal from 'fast-deep-equal/es6';
 import { DataSourceActions } from '../../../store/data-source/data-source.actions';
 import { DashboardSelectors } from '../../../../dashboard/store/dashboard.selectors';
+import { ConfigActions } from '../../../store/config/config.actions';
+import { ConfigSelectors } from '../../../store/config/config.selectors';
 
 @Component({
   selector: 'pry-access-rights-share-modal',
@@ -36,16 +38,18 @@ export class PryAccessRightsShareModalComponent {
     }
   ) {
     this.store.dispatch(DataSourceActions.dataset.loadDataset());
+    this.store.dispatch(ConfigActions.loadAccessGroups());
     this.manifest = this.data.manifest;
     this.accessRightsByGroup = { ...this.manifest.accessRightsByGroup };
 
     this.allowedShareGroups$ = combineLatest([
       this.store.select(DataSourceSelectors.datasets),
-      this.store.select(DashboardSelectors.currentManifest)
+      this.store.select(DashboardSelectors.currentManifest),
+      this.store.select(ConfigSelectors.accessGroups)
     ]).pipe(
-      map(([datasets, current]) => {
+      map(([datasets, current, groups]) => {
         return current && current.datasource.length > 0
-          ? getCommonDatasourceGroupsForManifest(current, datasets)
+          ? getCommonDatasourceGroupsForManifest(current, datasets, groups)
           : null;
       })
     );
@@ -69,11 +73,9 @@ export class PryAccessRightsShareModalComponent {
   validate() {
     this.store.dispatch(
       DashboardActions.saveManifest({
-        id: this.manifest.id ?? '',
-        name: this.manifest.name ?? '',
-        description: this.manifest.description ?? '',
-        image: this.manifest.image ?? '',
-        accessRightsByGroup: this.accessRightsByGroup
+        ...this.manifest,
+        accessRightsByGroup: this.accessRightsByGroup,
+        metadata: undefined
       })
     );
     this.toggleModal();

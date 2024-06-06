@@ -59,7 +59,6 @@ export class PryAccessRightsShareComponent extends SubscriptionnerDirective impl
     @Optional() @Inject(PRY_ACCESS_TOKEN) private access: PryBaseAccess
   ) {
     super();
-    this.store.dispatch(ConfigActions.loadAccessGroups());
     this.groups$ = combineLatest([
       this.store.select(ConfigSelectors.accessGroups),
       this._allowedGroups$,

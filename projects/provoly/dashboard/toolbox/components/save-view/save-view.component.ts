@@ -113,6 +113,11 @@ export class SaveViewComponent extends ToolboxActionComponent {
           presentation.id = this.currentManifest.id;
           presentation.accessRightsByGroup = this.currentManifest.accessRightsByGroup;
         }
+      } else {
+        presentation = {
+          ...presentation,
+          ...this.formValue
+        };
       }
       this.store.dispatch(DashboardActions.saveManifest(presentation));
       this.store.dispatch(
