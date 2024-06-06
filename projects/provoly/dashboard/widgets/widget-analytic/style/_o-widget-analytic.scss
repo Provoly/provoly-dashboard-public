@@ -1,6 +1,8 @@
 @use '../../../styles/abstracts' as *;
 
 .o-widget__analytic {
+  font-size: toRem(12);
+
   &__table {
     width: 100%;
 
