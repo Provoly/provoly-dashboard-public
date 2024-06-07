@@ -49,6 +49,7 @@ const matchingDatasetVersions = (datasetId: string) => {
   return memoizeDatasetVersions[datasetId] as MemoizedSelector<any, DatasetVersion[]>;
 };
 const datasetPreviews = createSelector(selectFeature, (state) => state?.previews ?? []);
+const categories = createSelector(selectFeature, (state) => state.categories);
 
 export const DataSourceSelectors = {
   selectFeature,
@@ -67,5 +68,6 @@ export const DataSourceSelectors = {
   getDataSourcesSorted,
   datasetVersions,
   matchingDatasetVersions,
-  datasetPreviews
+  datasetPreviews,
+  categories
 };

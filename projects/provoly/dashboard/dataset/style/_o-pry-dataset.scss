@@ -1,18 +1,17 @@
 @use '../../styles/abstracts/index' as *;
+@use '../../styles-theme/abstracts-theme/variables.theme' as *;
 
 /* Organism - pry-dataset */
-.dataset-layout{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.o-dataset-layout {
+  padding: toRem(10) toRem(20) toRem(50) toRem(20);
 
   &__content {
     width: 100%;
-    padding: toRem(10) toRem(20) toRem(50) toRem(20);
     height: 100%;
     overflow: auto;
   }
 }
+
 .o-pry-dataset {
   @extend %list-unstyled;
   display: grid;
@@ -22,19 +21,53 @@
   row-gap: 2rem;
   padding-bottom: toRem(150);
 
-  &__search {
-    position: relative;
+  &__toolbox {
+    width: 100%;
 
-    .a-icon {
-      position: absolute;
-      right: 0.6875rem;
-      bottom: 0.5625rem;
-      opacity: 0.5;
-      pointer-events: none;
+    .a-label {
+      font-size: toRem(16);
+      font-weight: 700;
+    }
+
+    .a-form-field {
+      padding-left: toRem(60);
+    }
+
+    .a-pry-select {
+      padding: toRem(7.5) toRem(10);
+    }
+
+    .a-form-field, .a-pry-select {
+      border-color: themed($theme-map, 'color', 'primary', 600);
+      font-size: toRem(12);
+      border-radius: toRem(5);
+      height: toRem(40);
+
+      &__placeholder, &::placeholder {
+        color: themed($theme-map, 'color', 'primary', 500);
+        font-style: italic;
+      }
     }
   }
 
-  &__item{
+  &__search {
+    flex-basis: 50%;
+    position: relative;
+
+    .search-icon {
+      position: absolute;
+      left: toRem(20);
+      bottom: toRem(10);
+      pointer-events: none;
+      color: themed($theme-map, 'color', 'primary', 600);
+    }
+  }
+
+  &__categories {
+    flex-basis: 50%;
+  }
+
+  &__item {
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -46,4 +79,3 @@
   overflow: hidden;
   height: 100%;
 }
-

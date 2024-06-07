@@ -1,6 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AdminDatasetActions } from '../../admin-dataset/store/admin-dataset.actions';
-import { Category, CategoryActions, CategorySelectors } from '@provoly/dashboard';
+import {
+  Category,
+  CategoryActions,
+  CategorySelectors,
+  DataSourceActions,
+  DataSourceSelectors
+} from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { AdminDatasetSelectors } from '../../admin-dataset/store/admin-dataset.selectors';
 import { Store } from '@ngrx/store';
@@ -31,8 +37,8 @@ export class AddCategoryModalComponent implements OnInit {
       add: (category: Category) => this.store.dispatch(AdminClassActions.saveCategory({ category }))
     },
     dataset: {
-      load: () => this.store.dispatch(AdminDatasetActions.getCategories()),
-      select: () => this.store.select(AdminDatasetSelectors.categories),
+      load: () => this.store.dispatch(DataSourceActions.dataset.getCategories()),
+      select: () => this.store.select(DataSourceSelectors.categories),
       add: (category: Category) => this.store.dispatch(AdminDatasetActions.addCategory({ category }))
     }
   };

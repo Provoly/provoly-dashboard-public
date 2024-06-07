@@ -101,6 +101,14 @@
         <p>{{ '@pry.dataset.noActiveVersion' | i18n }}</p>
       </div>
     }
+    <div>
+      <span class="a-label">{{ '@pry.dataset.tags' | i18n }}</span>
+      <div class="u-display-flex -wrap">
+        @for (category of dataset.categories; track category.id) {
+          <span class="a-chip -md"> {{ category.name }}</span>
+        }
+      </div>
+    </div>
   </div>
 </ng-template>
 

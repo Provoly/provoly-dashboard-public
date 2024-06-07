@@ -201,24 +201,12 @@ export class AdminDatasetEffects {
     )
   );
 
-  getCategories$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AdminDatasetActions.getCategories),
-      mergeMap((action) =>
-        this.datasetService.getCategories().pipe(
-          map((categories) => AdminDatasetActions.getCategoriesSuccess({ categories })),
-          catchError((error) => [AdminDatasetActions.failure({ error })])
-        )
-      )
-    )
-  );
-
   addCategory$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AdminDatasetActions.addCategory),
       mergeMap((action) =>
         this.datasetService.addCategory(action.category).pipe(
-          map(() => AdminDatasetActions.getCategories()),
+          map(() => DataSourceActions.dataset.getCategories()),
           catchError((error) => [AdminDatasetActions.failure({ error })])
         )
       )

@@ -18,7 +18,6 @@ import {
 import { Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { AdminDatasetActions } from '../store/admin-dataset.actions';
-import { AdminDatasetSelectors } from '../store/admin-dataset.selectors';
 import { AdminActions } from '../../../store/admin.actions';
 import { AddCategoryModalComponent } from '../../shared/add-category-modal/add-category-modal.component';
 
@@ -50,10 +49,10 @@ export class AdminFormDatasetComponent extends SubscriptionnerDirective implemen
     super();
     this.store.dispatch(ClassActions.load());
     this.store.dispatch(DataSourceActions.dataset.loadDataset());
-    this.store.dispatch(AdminDatasetActions.getCategories());
+    this.store.dispatch(DataSourceActions.dataset.getCategories());
     this.datasetList$ = this.store.select(DataSourceSelectors.datasets);
     this.classes$ = this.store.select(ClassSelectors.classes);
-    this.categories$ = this.store.select(AdminDatasetSelectors.categories);
+    this.categories$ = this.store.select(DataSourceSelectors.categories);
 
     this.form = this.formBuilder.group({
       id: [uuidv4()],

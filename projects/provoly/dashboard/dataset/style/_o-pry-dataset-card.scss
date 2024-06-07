@@ -10,8 +10,8 @@
   margin: 0 auto;
   border-collapse: collapse;
   font-size: toRem(14);
-  min-width: toRem(330);
-  height: toRem(150);
+  min-width: toRem(310);
+  height: toRem(180);
 
   &:hover {
     cursor: pointer;
@@ -31,7 +31,11 @@
     max-width: toRem(330);
   }
 
-  &__description-container {
+  &__date {
+    font-size: toRem(11);
+  }
+
+  &__description {
     position: relative;
     width: 100%;
 
@@ -40,20 +44,24 @@
     }
   }
 
-  &__txt {
+  &__content {
     flex-grow: 1;
-    padding: toRem(10) toRem(15);
+    padding: 0 toRem(15);
+    font-size: toRem(13);
+    margin-bottom: toRem(10);
+
     .a-h3 {
       font-size: toRem(14);
     }
 
-    .a-p {
-      font-size: toRem(13);
-
-      &.-date {
-        margin-bottom: 0;
-      }
+    &.-date {
+      margin-bottom: 0;
     }
+  }
+
+  &__categories {
+    max-height: toRem(20);
+    overflow: hidden;
   }
 
   &__footer {

@@ -19,7 +19,5 @@ export const AdminDatasetActions = {
   getDatasetByIdFailure: createAction('[Dataset] Get Dataset by Id Failure', props<{ error: any }>()),
   openNewDataset: createAction('[Dataset] Open New Dataset', props<{ route: string }>()),
   setMissingGroups: createAction('[Dataset] Set Missing Groups', props<{ missingGroups?: MissingGroupsByEntity }>()),
-  getCategories: createAction('[Dataset] Get Categories'),
-  getCategoriesSuccess: createAction('[Dataset] Get Categories Success', props<{ categories: Category[] }>()),
   addCategory: createAction('[Dataset] Add Category', props<{ category: Category }>())
 };

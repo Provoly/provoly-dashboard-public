@@ -3,7 +3,10 @@ export const frTranslations = {
     dataset: {
       consult: 'Consulter',
       title: 'Catalogue de données',
-      search: 'Rechercher',
+      search: 'Rechercher une donnée :',
+      searchPlaceholder: 'Saisir votre recherche',
+      filter: 'Filtrer par catégories :',
+      filterPlaceholder: 'Saisir les catégories',
       name: 'Nom',
       description: 'Description',
       noDescription: 'Pas de description',

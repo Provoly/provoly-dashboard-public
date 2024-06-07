@@ -1,30 +1,41 @@
 <pry-dataset-css></pry-dataset-css>
-<div class="o-dataset-layout" [ngSwitch]="selectedMode">
+<div class="o-dataset-layout u-display-flex -column -align-center" [ngSwitch]="selectedMode">
   <ng-container *ngSwitchCase="ViewMode.CATALOG">
-    <div class="o-manifest-layout__toolbox o-manifest-layout__toolbox--only-search">
-      <div class="o-manifest-layout__toolbox__search o-pry-dataset__search">
-        <label id="catalog-search-label" for="catalog-search" class="u-visually-hidden">
-          <span>{{ '@pry.toolbox.catalog.filter.name' | i18n }}</span>
-        </label>
+    <h1 class="a-h1 u-self-start">{{ '@pry.dataset.title' | i18n }}</h1>
+    <div class="o-pry-dataset__toolbox u-display-flex">
+      <div class="o-pry-dataset__search m-form-label-field">
+        <label class="a-label" id="catalog-search-label" for="catalog-search">{{ '@pry.dataset.search' | i18n }}</label>
         <input
           id="catalog-search"
           type="text"
           class="a-form-field"
-          [placeholder]="'@pry.dataset.search' | i18n"
+          [placeholder]="'@pry.dataset.searchPlaceholder' | i18n"
           [ngModel]="search$ | async"
           (ngModelChange)="this.search$.next($event)"
         />
-        <pry-icon class="search-icon" iconSvg="search" [width]="17" [height]="17"></pry-icon>
+        <pry-icon class="search-icon" iconSvg="search" [width]="20" [height]="20"></pry-icon>
+      </div>
+      <div class="o-pry-dataset__categories m-form-label-field">
+        <label class="a-label" id="tags-label" for="catalog-category-search">{{ '@pry.dataset.filter' | i18n }}</label>
+        <pry-select
+          id="catalog-category-search"
+          [ngModel]="selectedCategories"
+          (ngModelChange)="this.selectedCategories$.next($event)"
+          [items]="categories$ | async"
+          bindLabel="name"
+          aria-labelledby="tags-label"
+          [multiple]="true"
+          [closeOnSelect]="false"
+          [placeholder]="'@pry.dataset.filterPlaceholder' | i18n"
+        ></pry-select>
       </div>
     </div>
-    <div class="dataset-layout__content">
-      <h1 class="a-h1">{{ '@pry.dataset.title' | i18n }}</h1>
+    <div class="o-dataset-layout__content">
       <div class="o-pry-dataset">
         <pry-dataset-card
           *ngFor="let dataset of filteredDatasets$ | async; let index = index"
           [dataset]="dataset"
           (consult)="consult($event)"
-          [style.z-index]="((filteredDatasets$ | async) ?? []).length - index"
         ></pry-dataset-card>
       </div>
     </div>

@@ -69,12 +69,6 @@ export class AdminDatasetService {
       );
   }
 
-  getCategories(): Observable<Category[]> {
-    return this.store
-      .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.get<Category[]>(encodeURI(`${url}/datasets/categories`))));
-  }
-
   addCategory(category: Category): Observable<void> {
     return this.store
       .select(ConfigSelectors.refUrl)

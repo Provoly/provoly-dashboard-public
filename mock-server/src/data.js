@@ -170,6 +170,7 @@ const getDatasetStatus = () => {
 const getDatasetsWithMetadata = () => {
   return datasets.map((dataset) => ({
     ...dataset,
+    categories: [...new Set([categories[casual.integer(0, 3)], categories[casual.integer(0, 3)]])],
     metadata: (dataset.metadata || []).map((meta) => {
       const metadataRef = metadatas.find((metaRef) => metaRef.name === meta.metadataDef.name);
       return {

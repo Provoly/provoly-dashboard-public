@@ -3,6 +3,7 @@ import { DatasetPreview } from '../../model/dataset.interface';
 import { MonoClassSearchPayload } from '../../model/search-mono-class.model';
 import { FullTextSearchPayload, MultiClassSearchPayload } from '../../model/search-multi-class.model';
 import { Dataset, DatasetVersion, NamedQuery, PryVisibilityType } from './data-source.model';
+import { Category } from '../category/category.interface';
 
 export const DataSourceActions = {
   load: createAction('[Datasource] load'),
@@ -106,6 +107,8 @@ export const DataSourceActions = {
     ),
     confirmDeleteVersion: createAction('[Dataset] confirm Delete datasetVersion', props<{ version: DatasetVersion }>()),
     deleteVersion: createAction('[Dataset] Delete datasetVersion', props<{ version: DatasetVersion }>()),
-    deleteVersionFailure: createAction('[Dataset] Delete datasetVersion failure', props<{ err: any }>())
+    deleteVersionFailure: createAction('[Dataset] Delete datasetVersion failure', props<{ err: any }>()),
+    getCategories: createAction('[Dataset] Get Categories'),
+    getCategoriesSuccess: createAction('[Dataset] Get Categories Success', props<{ categories: Category[] }>()),
   }
 };

@@ -65,6 +65,10 @@
     justify-content: center;
   }
 
+  &.-justify-end {
+    justify-content: flex-end;
+  }
+
   &.-justify-space-between {
     justify-content: space-between;
   }
@@ -75,6 +79,10 @@
 
   &.-row {
     flex-direction: row;
+  }
+
+  &.-wrap {
+    flex-wrap: wrap;
   }
 
   &.-no-gap {
@@ -89,6 +97,11 @@
     gap: toRem(20);
   }
 }
+
+.u-self-start {
+  align-self: start;
+}
+
 
 .u-self-center {
   align-self: center;

@@ -9,7 +9,6 @@ const selectedDatasetId = createSelector(selectFeature, (state) => state?.select
 const selectedDataset = createSelector(selectFeature, (state) => state?.selectedDataset);
 const selectedDatasetMetadata = createSelector(selectFeature, (state) => state?.selectedDataset?.metadata ?? []);
 const selectedDatasetMissingGroups = createSelector(selectFeature, (state) => state?.missingGroups);
-const categories = createSelector(selectFeature, (state) => state.categories);
 
 export const AdminDatasetSelectors = {
   selectFeature,
@@ -18,6 +17,5 @@ export const AdminDatasetSelectors = {
   selectedDataset,
   selectedDatasetMetadata,
   selectedDatasetMissingGroups,
-  selectedDatasetId,
-  categories
+  selectedDatasetId
 };

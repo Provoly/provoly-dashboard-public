@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
+  Category,
   ClassActions,
   ConfigActions,
   DashboardActions,
@@ -11,7 +12,7 @@ import {
   SubscriptionnerDirective,
   ViewMode
 } from '@provoly/dashboard';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'pry-dataset',
@@ -24,6 +25,9 @@ export class PryDatasetComponent extends SubscriptionnerDirective {
   ViewMode = ViewMode;
   search$ = new BehaviorSubject('');
   filteredDatasets$: Observable<Dataset[]>;
+  categories$: Observable<Category[]>;
+  selectedCategories = [];
+  selectedCategories$ = new Subject<Category[]>();
 
   constructor(protected store: Store<any>) {
     super();
@@ -31,12 +35,21 @@ export class PryDatasetComponent extends SubscriptionnerDirective {
     this.store.dispatch(ClassActions.load());
     this.store.dispatch(FieldActions.load());
     this.store.dispatch(ConfigActions.loadCustomization());
+
     this.datasets$ = this.store.select(DataSourceSelectors.datasets);
     this.store.dispatch(DashboardActions.fetchManifestsList());
-    this.filteredDatasets$ = combineLatest([this.datasets$, this.search$]).pipe(
-      map(([datasets, search]) =>
+
+    this.store.dispatch(DataSourceActions.dataset.getCategories());
+    this.categories$ = this.store.select(DataSourceSelectors.categories);
+
+    this.filteredDatasets$ = combineLatest([this.datasets$, this.search$, this.selectedCategories$]).pipe(
+      map(([datasets, search, selectedCategories]) =>
         datasets
-          .filter((dataset) => search.length === 0 || dataset.name.toLowerCase().includes(search.toLowerCase()))
+          .filter(
+            (dataset) =>
+              (search.length === 0 || dataset.name.toLowerCase().includes(search.toLowerCase())) &&
+              (selectedCategories.length === 0 || this.doesDatasetMatchCategoryFilter(dataset, selectedCategories))
+          )
           .sort((a, b) => a.name.localeCompare(b.name))
       )
     );
@@ -47,5 +60,14 @@ export class PryDatasetComponent extends SubscriptionnerDirective {
     this.selectedDataset = dataset;
     this.selectedMode = ViewMode.CONSULT;
     this.search$.next('');
+  }
+
+  doesDatasetMatchCategoryFilter(dataset: Dataset, selectedCategories: Category[]): boolean {
+    return dataset.categories
+      ? selectedCategories.reduce(
+          (acc, selectedCat) => acc && dataset.categories!.map((cat) => cat.id).includes(selectedCat.id),
+          true
+        )
+      : false;
   }
 }

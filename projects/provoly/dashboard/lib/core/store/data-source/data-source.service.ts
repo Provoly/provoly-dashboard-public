@@ -9,6 +9,7 @@ import { ConfigSelectors } from '../config/config.selectors';
 import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from '../search/search.constants';
 import { Dataset, DatasetVersion, NamedQuery } from './data-source.model';
 import { DataSourceState } from './data-source.reducer';
+import { Category } from '../category/category.interface';
 
 export interface ResponseRequest {
   data: {
@@ -165,5 +166,11 @@ export class DataSourceService {
     return this.store
       .select(ConfigSelectors.refUrl)
       .pipe(switchMap((url) => this.httpClient.delete<void>(encodeURI(`${url}/dataset-versions/id/${version.id}`))));
+  }
+
+  getCategories(): Observable<Category[]> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(mergeMap((url) => this.httpClient.get<Category[]>(encodeURI(`${url}/datasets/categories`))));
   }
 }

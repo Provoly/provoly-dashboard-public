@@ -309,4 +309,15 @@ export class DataSourceEffects {
       )
     )
   );
+
+  getCategories$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DataSourceActions.dataset.getCategories),
+      mergeMap((action) =>
+        this.dataSourceService
+          .getCategories()
+          .pipe(map((categories) => DataSourceActions.dataset.getCategoriesSuccess({ categories })))
+      )
+    )
+  );
 }

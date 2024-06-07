@@ -7,17 +7,9 @@ import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pr
 import { MockNgModelDirective } from '@provoly/dashboard/mock/directive/mock-ng-model.directive';
 import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/mock-pry-tab-group.component';
 import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
-import { Dataset, PryDatasetType, ViewMode } from '@provoly/dashboard';
-
-export const mockDataset = {
-  name: 'test-ds',
-  sourceType: 'dataset',
-  id: 'test-ds-id',
-  oClass: 'test-class',
-  type: PryDatasetType.OPEN,
-  metadata: [],
-  slug: 'test-ds-id-slug'
-} as Dataset;
+import { ViewMode } from '@provoly/dashboard';
+import { mockDatasets } from '@provoly/dashboard/mock/data/mockDataset';
+import { MockPrySelectComponent } from '@provoly/dashboard/mock/components/mock-pry-select.component';
 
 describe('PryDatasetComponent', () => {
   let component: PryDatasetComponent;
@@ -35,7 +27,8 @@ describe('PryDatasetComponent', () => {
         MockPryIconComponent,
         MockNgModelDirective,
         MockPryTabGroupComponent,
-        MockPryTabComponent
+        MockPryTabComponent,
+        MockPrySelectComponent
       ],
       providers: [provideMockStore({}), { provide: Overlay }]
     }).compileComponents();
@@ -54,8 +47,8 @@ describe('PryDatasetComponent', () => {
   });
 
   it('should select dataset and change to consult mode when dataset clicked', () => {
-    component.consult(mockDataset);
-    expect(component.selectedDataset).toEqual(mockDataset);
+    component.consult(mockDatasets[0]);
+    expect(component.selectedDataset).toEqual(mockDatasets[0]);
     expect(component.selectedMode).toEqual(ViewMode.CONSULT);
   });
 });

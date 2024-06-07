@@ -7,9 +7,8 @@ import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pr
 import { MockNgModelDirective } from '@provoly/dashboard/mock/directive/mock-ng-model.directive';
 import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/mock-pry-tab-group.component';
 import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
-import { mockDataset } from '../dataset.component.spec';
 import { DataSourceActions, SearchActions } from '@provoly/dashboard';
-import { mockClickEvent, mockDatasetVersion } from '../../../mock/data/mockDataset';
+import { mockClickEvent, mockDatasets, mockDatasetVersion } from '../../../mock/data/mockDataset';
 
 describe('PryDatasetDetailComponent', () => {
   let component: PryDatasetDetailComponent;
@@ -36,7 +35,7 @@ describe('PryDatasetDetailComponent', () => {
     component = fixture.componentInstance;
     store = TestBed.inject(MockStore);
     overlay = TestBed.inject(Overlay);
-    component.dataset = mockDataset;
+    component.dataset = mockDatasets[0];
     fixture.detectChanges();
   });
 
@@ -51,7 +50,7 @@ describe('PryDatasetDetailComponent', () => {
     component.refresh();
 
     expect(spyDsItems).toHaveBeenCalledWith({
-      id: mockDataset.id,
+      id: mockDatasets[0].id,
       excludeGeo: false,
       from: 'PryDatasetDetailComponent.refresh()'
     });
@@ -68,7 +67,7 @@ describe('PryDatasetDetailComponent', () => {
 
       expect(spyMethod).toHaveBeenCalled();
       expect(spyStoreMethod).toHaveBeenCalledWith({
-        datasetId: 'test-ds-id',
+        datasetId: 'AAAA-BBBB-CCCC',
         versionId: mockDatasetVersion.id
       });
     });
@@ -82,7 +81,7 @@ describe('PryDatasetDetailComponent', () => {
 
       expect(spyMethod).toHaveBeenCalled();
       expect(spyStoreMethod).toHaveBeenCalledWith({
-        datasetId: 'test-ds-id',
+        datasetId: 'AAAA-BBBB-CCCC',
         versionId: mockDatasetVersion.id
       });
     });

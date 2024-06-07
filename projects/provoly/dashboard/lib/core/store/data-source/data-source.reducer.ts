@@ -2,7 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { DatasetPreview } from '../../model/dataset.interface';
 import { DataSourceActions } from './data-source.actions';
 import { Dataset, DatasetVersion, NamedQuery } from './data-source.model';
-import { MissingGroupsByEntity } from '../../components/share/share.model';
+import { Category } from '../category/category.interface';
 
 export const dataSourceFeatureKey = '@pry/datasources';
 
@@ -17,6 +17,7 @@ export interface DataSourceState {
   datasetVersions: DatasetVersion[];
   selectedDatasetVersion: DatasetVersion | null;
   previews: DatasetPreview[];
+  categories: Category[];
 }
 
 export const initialDataSourceState: DataSourceState = {
@@ -26,7 +27,8 @@ export const initialDataSourceState: DataSourceState = {
   datasets: [],
   datasetVersions: [],
   selectedDatasetVersion: null,
-  previews: []
+  previews: [],
+  categories: []
 };
 
 export const dataSourceReducer = createReducer(
@@ -143,5 +145,9 @@ export const dataSourceReducer = createReducer(
     datasetVersions: state.datasetVersions.map((version) =>
       version.id === action.version.id ? { ...version, ...action.version } : version
     )
+  })),
+  on(DataSourceActions.dataset.getCategoriesSuccess, (state, { categories }) => ({
+    ...state,
+    categories
   }))
 );

@@ -8,7 +8,7 @@ import {
   PryI18nService,
   PryIconModule,
   PryModalStatusModule,
-  PryOverlayModule
+  PryOverlayModule, PrySelectModule
 } from '@provoly/dashboard';
 import { PrySinceDateModule } from '@provoly/dashboard/components/sinceDate';
 import { PryDatasetCardComponent } from './components/dataset-card/dataset-card.component';
@@ -39,7 +39,8 @@ import { PryTextEditorModule } from '@provoly/dashboard/components/text-editor';
     PrySinceDateModule,
     PryModalStatusModule,
     ReactiveFormsModule,
-    PryTextEditorModule
+    PryTextEditorModule,
+    PrySelectModule
   ],
   exports: [PryDatasetComponent, PryDatasetCssComponent, PryDatasetCardComponent, PryDatasetDetailComponent]
 })

@@ -1,4 +1,5 @@
 import { Dataset, DatasetVersion, PryDatasetType } from '@provoly/dashboard';
+import { mockCategories } from '@provoly/dashboard/mock/data/mockCategories';
 
 export const mockDatasets: Dataset[] = [
   {
@@ -8,7 +9,8 @@ export const mockDatasets: Dataset[] = [
     oClass: '123456789',
     type: PryDatasetType.OPEN,
     metadata: [],
-    slug: 'AAAA-BBBB-CCCC-slug'
+    slug: 'AAAA-BBBB-CCCC-slug',
+    categories: [...mockCategories]
   },
   {
     sourceType: 'dataset',
@@ -17,7 +19,8 @@ export const mockDatasets: Dataset[] = [
     oClass: '987654321',
     type: PryDatasetType.CLOSED,
     metadata: [],
-    slug: 'CCCC-BBBB-AAAA-slug'
+    slug: 'CCCC-BBBB-AAAA-slug',
+    categories: []
   }
 ];
 
