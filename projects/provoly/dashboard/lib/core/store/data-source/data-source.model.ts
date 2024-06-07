@@ -38,6 +38,7 @@ export interface Dataset extends DescriptionQuery {
   type: PryDatasetType;
   owner?: boolean;
   groups?: string[];
+  slug: string;
 }
 
 export interface DatasetVersion {
