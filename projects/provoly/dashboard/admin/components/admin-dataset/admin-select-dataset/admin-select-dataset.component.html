@@ -11,15 +11,53 @@
     </button>
 
     <h3 class="a-h3">
-      {{ '@pry.admin.dataset.details' | i18n }}
+      {{ '@pry.admin.dataset.datasetDetails' | i18n }}
     </h3>
   </div>
 
   <pry-tab-group translationStringBase="@pry.admin.">
+    <pry-tab [templateRef]="datasetDetails" name="dataset.details"></pry-tab>
     <pry-tab [templateRef]="datasetMetadata" name="metadata.title"></pry-tab>
     <pry-tab [templateRef]="datasetAssociations" name="classes.associations"></pry-tab>
     <pry-tab *ngIf="canModify$(dataset) | async" [templateRef]="shareDataset" name="share"></pry-tab>
   </pry-tab-group>
+
+  <ng-template #datasetDetails>
+    <div class="u-display-flex -column -gap-20">
+      <div>
+        <h4 class="a-h4">{{ '@pry.dataset.name' | i18n }}</h4>
+        <span>{{ dataset.name }}</span>
+      </div>
+      <div>
+        <h4 class="a-h4">{{ '@pry.dataset.description' | i18n }}</h4>
+        @if (dataset.description) {
+          <span>{{ dataset.description }}</span>
+        } @else {
+          <span class="-italic">{{ '@pry.dataset.noDescription' | i18n }}</span>
+        }
+      </div>
+      <div>
+        <h4 class="a-h4">{{ '@pry.admin.customize.name' | i18n }}</h4>
+        <span>{{ dataset.oClass | translateId: { type: 'class', output: 'name' } | async }}</span>
+      </div>
+      <div>
+        <h4 class="a-h4">{{ '@pry.admin.dataset.type' | i18n }}</h4>
+        <span>{{ '@pry.admin.dataset.' + dataset.type | i18n }}</span>
+      </div>
+      <div>
+        <h4 class="a-h4">{{ '@pry.dataset.tags' | i18n }}</h4>
+        @if (dataset.categories && dataset.categories.length > 0) {
+          <div class="u-display-flex">
+            @for (category of dataset.categories; track category.id) {
+              <span class="a-chip -md">{{ category.name }}</span>
+            }
+          </div>
+        } @else {
+          <span class="-italic">{{ '@pry.dataset.noTags' | i18n }}</span>
+        }
+      </div>
+    </div>
+  </ng-template>
 
   <ng-template #datasetMetadata>
     <pry-metadata-editor

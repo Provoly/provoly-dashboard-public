@@ -1,6 +1,4 @@
-import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
-import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -10,29 +8,21 @@ import {
   CategoryActions,
   CategorySelectors,
   Class,
-  ConfigActions,
   DEFAULT_CATEGORY_UUID,
   Field,
   FIELD_OPTIONS,
   FieldActions,
   FieldSelectors,
+  PryDialogService,
   PryI18nService,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
-import {
-  BehaviorSubject,
-  combineLatest,
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  Observable,
-  startWith,
-  switchMap
-} from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, Observable, startWith, switchMap } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import { noWhitespaceValidator } from '../../../../components/admin.component';
 import { AdminActions } from '../../../../store/admin.actions';
 import { AdminClassActions } from '../../store/admin-class.actions';
+import { AddCategoryModalComponent } from '../../../shared/add-category-modal/add-category-modal.component';
 
 @Component({
   selector: 'pry-admin-attributes-form',
@@ -52,35 +42,24 @@ export class AdminAttributesFormComponent extends SubscriptionnerDirective imple
   selectedFieldTypeDescription$?: Observable<string | undefined>;
   fieldTypeDescription = FIELD_OPTIONS;
   categories$: Observable<Category[]>;
-  isShowedCategory = false;
-  catToAdd = {} as Category;
 
   @Input() selectedClass?: Class;
   @Input() interClass?: Class;
   @Input() selectedAttribute?: Attribute;
-
-  private overlayRef?: OverlayRef;
-  @ViewChild('template', { read: TemplateRef }) template!: TemplateRef<any>;
-  private filterCategories$ = new BehaviorSubject<string | undefined>(undefined);
 
   constructor(
     private store: Store<any>,
     private router: Router,
     private route: ActivatedRoute,
     private formBuilder: UntypedFormBuilder,
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
-    private i18nService: PryI18nService
+    private i18nService: PryI18nService,
+    private dialog: PryDialogService
   ) {
     super();
     this.store.dispatch(FieldActions.load());
     this.fields$ = this.store.select(FieldSelectors.fields);
     this.store.dispatch(CategoryActions.load());
-    this.categories$ = combineLatest([this.store.select(CategorySelectors.categories), this.filterCategories$]).pipe(
-      map(([categories, filter]) =>
-        categories.filter((cat) => !filter || cat.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()))
-      )
-    );
+    this.categories$ = this.store.select(CategorySelectors.categories);
 
     this.attrForm = this.formBuilder.group({
       id: [uuid()],
@@ -210,42 +189,16 @@ export class AdminAttributesFormComponent extends SubscriptionnerDirective imple
     }
   }
 
-  showCategory() {
-    this.isShowedCategory = true;
-    this.overlayRef = this.overlay.create(
-      new OverlayConfig({
-        hasBackdrop: true,
-        panelClass: ['o-modal-wrapper'],
-        backdropClass: 'backdrop'
+  openModal() {
+    const ref = this.dialog.open(AddCategoryModalComponent);
+    ref.component!.entityType = 'attribute';
+    this.subscriptions.add(
+      ref.component!.category.subscribe((category) => {
+        this.attrForm.patchValue({
+          categories: category.id
+        });
       })
     );
-    this.store.dispatch(ConfigActions.addingOverlay({ id: this.constructor.name }));
-    this.overlayRef.backdropClick().subscribe((_) => this.closeCategory());
-    this.overlayRef.attach(new TemplatePortal(this.template, this.viewContainerRef));
-  }
-
-  closeCategory() {
-    this.isShowedCategory = false;
-    this.catToAdd = {} as Category;
-    this.overlayRef?.dispose();
-    this.categories$ = this.store.select(CategorySelectors.categories);
-    this.store.dispatch(ConfigActions.closeOverlay({ id: this.constructor.name }));
-  }
-
-  search(event: any) {
-    this.filterCategories$.next(event.target.value);
-  }
-
-  addCategory() {
-    this.catToAdd.id = uuid();
-    this.store.dispatch(AdminClassActions.saveCategory({ category: this.catToAdd }));
-    this.setCategory(this.catToAdd);
-  }
-
-  setCategory(cat: Category) {
-    this.attrForm.patchValue({
-      category: cat.id
-    });
-    this.closeCategory();
+    this.subscriptions.add(ref.component!.closeModal.subscribe(() => ref.close()));
   }
 }

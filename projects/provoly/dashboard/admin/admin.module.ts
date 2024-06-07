@@ -51,7 +51,6 @@ import { AdminDatasetComponent } from './components/admin-dataset/admin-dataset.
 import { AdminEditDatasetComponent } from './components/admin-dataset/admin-edit-dataset/admin-edit-dataset.component';
 import { AdminNewDatasetComponent } from './components/admin-dataset/admin-new-dataset/admin-new-dataset.component';
 import { AdminSelectDatasetComponent } from './components/admin-dataset/admin-select-dataset/admin-select-dataset.component';
-import { AdminFormDatasetComponent } from './components/admin-dataset/shared/admin-form-dataset/admin-form-dataset.component';
 import { AdminEnvironmentFormComponent } from './components/admin-environment/admin-environment-form/admin-environment-form.component';
 import { AdminEnvironmentNewComponent } from './components/admin-environment/admin-environment-new/admin-environment-new.component';
 import { AdminEnvironmentSelectComponent } from './components/admin-environment/admin-environment-select/admin-environment-select.component';
@@ -122,6 +121,8 @@ import { PrySinceDateModule } from '@provoly/dashboard/components/sinceDate';
 import { PryDatasetModule } from '@provoly/dashboard/dataset';
 import { datasetFeatureKey, datasetReducer } from './components/admin-dataset/store/admin-dataset.reducer';
 import { AdminDatasetEffects } from './components/admin-dataset/store/admin-dataset.effects';
+import { AddCategoryModalComponent } from './components/shared/add-category-modal/add-category-modal.component';
+import { AdminFormDatasetComponent } from './components/admin-dataset/admin-form-dataset/admin-form-dataset.component';
 
 @NgModule({
   providers: [DatePipe],
@@ -198,7 +199,8 @@ import { AdminDatasetEffects } from './components/admin-dataset/store/admin-data
     AdminClassesCustomizeComponent,
     AdminClassesCustomizeTooltipComponent,
     AdminClassesCustomizeSymbolComponent,
-    PryAssociationComponent
+    PryAssociationComponent,
+    AddCategoryModalComponent
   ],
   imports: [
     CommonModule,

@@ -969,6 +969,18 @@ router.on(['OPTIONS', 'PUT'], '/ref/datasets/id/:datasetId/metadata/id/:metadata
     makeResponseOk(res);
   });
 });
+router.on(['GET'], '/ref/datasets/categories', (req, res, params) => {
+  makeResponseOk(res, dataModule.categories);
+});
+router.on(['OPTIONS', 'PUT'], '/ref/datasets/categories', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    if (payload) {
+      JSON.stringify(dataModule.categories.push(payload));
+      fs.writeFileSync('./data/categories.json', JSON.stringify(dataModule.categories, null, 2));
+    }
+    makeResponseOk(res);
+  });
+});
 router.on(['POST'], '/ref/dataset-versions/id/:datasetVersionId/deactivate', (req, res, params) => {
   readPayload(req).then((payload) => {
     dataModule.datasetVersions.deactivate(params['datasetVersionId']);

@@ -1,5 +1,5 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -7,7 +7,6 @@ import {
   Category,
   CategorySelectors,
   ClassSelectors,
-  ConfigActions,
   FieldSelectors,
   PRY_ACCESS_GUARD,
   PryDefaultAccessGuard,
@@ -17,7 +16,7 @@ import { of } from 'rxjs';
 import { MockPryCheckboxComponent } from '../../../../../mock/components/mock-pry-checkbox.component';
 import { MockPryIconComponent } from '../../../../../mock/components/mock-pry-icon.component';
 import { MockPrySelectComponent } from '../../../../../mock/components/mock-pry-select.component';
-import { attribute, category, classes, field } from '../../../../../mock/data/mockItemAdmin';
+import { attribute, classes, field } from '../../../../../mock/data/mockItemAdmin';
 import { MockPryAccessDirective } from '../../../../../mock/directive/mock-pry-access.directive';
 import { MockI18nPipe } from '../../../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../../../mock/pipe/mock-translate.pipe';
@@ -149,37 +148,5 @@ describe('AdminAttributesFormComponent', () => {
 
     component.addAttribute();
     expect(component.attrForm.valid).toEqual(false);
-  });
-
-  it('should create new category and set to attrForm', fakeAsync(() => {
-    const spyStore = jest.spyOn(store, 'dispatch');
-    component.catToAdd.name = 'default';
-    component.addCategory();
-    expect(spyStore.mock.calls).toEqual([
-      [AdminClassActions.saveCategory({ category: category })],
-      [ConfigActions.closeOverlay({ id: 'AdminAttributesFormComponent' })]
-    ]);
-    expect(component.attrForm.value.category).toEqual(category.id);
-    expect(component.catToAdd).toEqual({} as Category);
-  }));
-
-  it('should search category ', (done) => {
-    component.search({ target: { value: 'to' } });
-    component.categories$.subscribe((cat) => {
-      expect(cat).toEqual([category2]);
-      done();
-    });
-  });
-
-  it('should close category', () => {
-    component.isShowedCategory = true;
-    component.closeCategory();
-    expect(component.isShowedCategory).toEqual(false);
-  });
-
-  it('should set category', () => {
-    let category1 = { name: 'default', id: '1' } as Category;
-    component.setCategory(category1);
-    expect(component.attrForm.value.category).toEqual('1');
   });
 });

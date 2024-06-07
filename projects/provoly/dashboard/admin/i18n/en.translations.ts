@@ -154,7 +154,8 @@ export const enTranslations = {
         conflict: 'Careful, the following dashboards are shared to groups which can no longer access this datasource:',
         entities: {
           dashboard: 'Dashboard'
-        }
+        },
+        addTag: 'Add a new tag'
       },
       'abac-rules': {
         delete: 'Delete',
@@ -248,16 +249,9 @@ export const enTranslations = {
           info: 'Attribute information',
           description: 'Description',
           field: 'Field',
+          dfield: 'Field',
           category: 'Category',
           multiValued: 'Multi valued'
-        },
-        category: {
-          select: 'Select category',
-          searchOrCreate: 'Search for existing category OR create a new one',
-          name: 'Category',
-          selectIt: 'Select category',
-          create: 'Create category',
-          add: 'does not exist. <br>You can create it here. <br>It will be automatically selected and added to categories list.'
         }
       },
       fields: {
@@ -369,6 +363,27 @@ export const enTranslations = {
         options: {
           POSTGIS: 'PostGIS',
           ELASTIC: 'ElasticSearch'
+        }
+      },
+      shared: {
+        noCategories: 'No categories available',
+        categoryModal: {
+          dataset: {
+            select: 'Select tag',
+            searchOrCreate: 'Search for existing tag OR create a new one',
+            name: 'Tag',
+            selectIt: 'Select tag',
+            create: 'Create tag',
+            add: 'does not exist. <br>You can create it here. <br>It will be automatically selected and added to the tag list.'
+          },
+          attribute: {
+            select: 'Select category',
+            searchOrCreate: 'Search for existing category OR create a new one',
+            name: 'Category',
+            selectIt: 'Select category',
+            create: 'Create category',
+            add: 'does not exist. <br>You can create it here. <br>It will be automatically selected and added to the category list.'
+          }
         }
       }
     },

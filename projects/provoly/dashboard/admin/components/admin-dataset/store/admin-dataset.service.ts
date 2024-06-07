@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ConfigSelectors, Dataset, MetadataValue, ShareConflict } from '@provoly/dashboard';
+import { Category, ConfigSelectors, Dataset, MetadataValue, ShareConflict } from '@provoly/dashboard';
 import { HttpClient } from '@angular/common/http';
 import { mergeMap, Observable } from 'rxjs';
 import { AdminDatasetState } from './admin-dataset.reducer';
@@ -21,9 +21,14 @@ export class AdminDatasetService {
   }
 
   updateDataset(dataset: Dataset): Observable<undefined | ShareConflict> {
-    return this.store
-      .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.put<undefined | ShareConflict>(encodeURI(`${url}/datasets`), dataset)));
+    return this.store.select(ConfigSelectors.refUrl).pipe(
+      mergeMap((url) =>
+        this.httpClient.put<undefined | ShareConflict>(encodeURI(`${url}/datasets`), {
+          ...dataset,
+          categories: dataset.categories?.map((category) => category.id)
+        })
+      )
+    );
   }
 
   deleteDataset(id: string) {
@@ -62,5 +67,17 @@ export class AdminDatasetService {
           this.httpClient.delete<void>(encodeURI(`${url}/datasets/id/${datasetId}/metadata/id/${metadataId}`))
         )
       );
+  }
+
+  getCategories(): Observable<Category[]> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(mergeMap((url) => this.httpClient.get<Category[]>(encodeURI(`${url}/datasets/categories`))));
+  }
+
+  addCategory(category: Category): Observable<void> {
+    return this.store
+      .select(ConfigSelectors.refUrl)
+      .pipe(mergeMap((url) => this.httpClient.put<void>(encodeURI(`${url}/datasets/categories`), { ...category })));
   }
 }

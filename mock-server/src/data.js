@@ -167,10 +167,10 @@ const getDatasetStatus = () => {
   return datasetState;
 };
 
-const getDataSetWithMetadata = () => {
+const getDatasetsWithMetadata = () => {
   return datasets.map((dataset) => ({
     ...dataset,
-    metadata: dataset.metadata.map((meta) => {
+    metadata: (dataset.metadata || []).map((meta) => {
       const metadataRef = metadatas.find((metaRef) => metaRef.name === meta.metadataDef.name);
       return {
         ...meta,
@@ -181,7 +181,7 @@ const getDataSetWithMetadata = () => {
 };
 
 const getDatasets = () => {
-  return getDataSetWithMetadata();
+  return getDatasetsWithMetadata();
 };
 
 const saveDatasets = (dataset) => {
@@ -189,16 +189,24 @@ const saveDatasets = (dataset) => {
 };
 
 const updateDataset = (newDataset) => {
-  datasets = getDataSetWithMetadata().map((dataset) => (dataset.id === newDataset.id ? newDataset : dataset));
+  datasets = getDatasetsWithMetadata().map((dataset) =>
+    dataset.id === newDataset.id
+      ? {
+          ...newDataset,
+          owner: true,
+          categories: newDataset.categories?.map((catId) => categories.find((c) => c.id === catId))
+        }
+      : dataset
+  );
   return [{ missingGroupsByEntity: {} }, shareConflict][casual.integer(0, 1)];
 };
 
 const deleteDataset = (id) => {
-  datasets = getDataSetWithMetadata().filter((dataset) => dataset.id !== id);
+  datasets = getDatasetsWithMetadata().filter((dataset) => dataset.id !== id);
 };
 
 const getById = (id) => {
-  const dataset = getDataSetWithMetadata().filter((dataset) => dataset.id === id);
+  const dataset = getDatasetsWithMetadata().filter((dataset) => dataset.id === id);
   if (dataset[0]) {
     return dataset[0];
   }
@@ -249,7 +257,7 @@ const deactivateTransformation = (id) => {
   );
 };
 const getDatasetMetadata = (id) => {
-  return getDataSetWithMetadata().find((dataset) => dataset.id === id).metadata || [];
+  return getDatasetsWithMetadata().find((dataset) => dataset.id === id).metadata || [];
 };
 const addDatasetMetadata = (datasetId, metadataId, payload) => {
   if (payload) {
@@ -281,7 +289,7 @@ const putFields = (field) => {
 };
 
 const generateDatasetVersions = () => {
-  return getDataSetWithMetadata()
+  return getDatasetsWithMetadata()
     .map((dataset) => {
       const versions = [];
       const howMany = casual.integer((from = 5), (to = 10));

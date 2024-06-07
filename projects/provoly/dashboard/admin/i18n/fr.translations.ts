@@ -137,7 +137,8 @@ export const frTranslations = {
         delete:
           "L'ensemble des versions et des données associées seront supprimées. Les restitutions et présentations utilisant ce jeu de données n'afficheront plus les données correspondantes. Confirmez-vous la suppression ?",
         title: 'Jeux de données',
-        details: 'Détails du jeu de données',
+        details: 'Détails',
+        datasetDetails: 'Détails du jeu de données',
         id: 'Identifiant',
         name: 'Nom',
         oClass: 'Modèle métier',
@@ -157,7 +158,8 @@ export const frTranslations = {
           "Attention, les tableaux de bord suivants sont partagés à des groupes qui n'auront plus accès aux données :",
         entities: {
           dashboard: 'Tableaux de bord'
-        }
+        },
+        addTag: 'Ajouter un noueau tag'
       },
       'abac-rules': {
         delete: 'Supprimer',
@@ -254,14 +256,6 @@ export const frTranslations = {
           field: 'Type',
           category: 'Catégorie',
           multiValued: 'Multi valué'
-        },
-        category: {
-          select: 'Sélectionner une catégorie',
-          searchOrCreate: 'Rechercher une catégorie existante OU en créer une nouvelle',
-          name: 'Catégorie',
-          selectIt: 'Sélectionner la catégorie',
-          create: 'Créer la catégorie',
-          add: "n'existe pas encore. <br>Il est possible \n de la créer ici. <br>Elle sera automatiquement sélectionnée et ajoutée à la liste des catégories."
         }
       },
       fields: {
@@ -375,6 +369,27 @@ export const frTranslations = {
         options: {
           POSTGIS: 'PostGIS',
           ELASTIC: 'ElasticSearch'
+        }
+      },
+      shared: {
+        categoryModal: {
+          noCategories: "Aucune catégorie n'a été créée pour le moment",
+          dataset: {
+            select: 'Sélectionner un tag',
+            searchOrCreate: 'Rechercher un tag existant OU en créer un nouveau',
+            name: 'Tag',
+            selectIt: 'Sélectionner le tag',
+            create: 'Créer le tag',
+            add: "n'existe pas encore. <br>Il est possible \n de le créer ici. <br>Il sera automatiquement sélectionné et ajouté à la liste des tags."
+          },
+          attribute: {
+            select: 'Sélectionner une catégorie',
+            searchOrCreate: 'Rechercher une catégorie existante OU en créer une nouvelle',
+            name: 'Catégorie',
+            selectIt: 'Sélectionner la catégorie',
+            create: 'Créer la catégorie',
+            add: "n'existe pas encore. <br>Il est possible \n de la créer ici. <br>Elle sera automatiquement sélectionnée et ajoutée à la liste des catégories."
+          }
         }
       }
     },

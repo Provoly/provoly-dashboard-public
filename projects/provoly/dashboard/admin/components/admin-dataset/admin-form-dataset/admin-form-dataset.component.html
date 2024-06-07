@@ -1,0 +1,111 @@
+<form class="o-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="m-form-label-field -width-sm">
+    <label class="a-label" id="name-label" for="name">
+      {{ '@pry.admin.dataset.name' | i18n }} <span class="-error">*</span>
+      <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+    </label>
+    <input
+      id="name"
+      type="text"
+      class="a-form-field"
+      formControlName="name"
+      (ngModelChange)="changeValueName($event)"
+      [attr.aria-labelledby]="isSubmitted && form.get('name')?.invalid ? 'name-label name-error' : 'name-label'"
+      [attr.aria-invalid]="isSubmitted && form.get('name')?.invalid"
+      required
+    />
+    @if (
+      (isSubmitted && form.get('name')?.invalid) ||
+      (form.get('name')?.touched && form.get('name')?.hasError('required'))
+    ) {
+      <label class="a-label a-label--help -error" id="name-error" for="name">{{ '@pry.admin.required' | i18n }}</label>
+    }
+  </div>
+
+  <div class="m-form-label-field -width-sm">
+    <label class="a-label" id="description-label" for="description"
+      >{{ '@pry.admin.fields.description' | i18n }}
+    </label>
+    <textarea
+      class="-resizable-both"
+      formControlName="description"
+      name="description"
+      id="description"
+      maxlength="500"
+    ></textarea>
+    @if (form.get('description')?.hasError('maxlength')) {
+      <label for="description" class="a-label a-label--help -error">
+        {{ '@pry.presentation.maxLength' | i18n: { len: '500' } }}
+      </label>
+    }
+  </div>
+
+  <div class="m-form-label-field -width-sm">
+    <label class="a-label" id="item-label" for="class"
+      >{{ '@pry.admin.dataset.oClass' | i18n }}
+      @if (!dataset$) {
+        <span>*</span>
+      }
+    </label>
+    <pry-select
+      id="class"
+      formControlName="oClass"
+      [items]="classes$ | async"
+      bindValue="id"
+      bindLabel="name"
+      [isForm]="true"
+      aria-labelledby="item-label"
+    ></pry-select>
+    @if (form.get('oClass')?.touched && form.get('oClass')?.hasError('required')) {
+      <label for="description" class="a-label a-label--help -error">
+        {{ '@pry.presentation.maxLength' | i18n: { len: '500' } }}
+      </label>
+    }
+  </div>
+
+  <div class="m-form-label-field -width-sm">
+    <label class="a-label" id="user-label" for="type"
+      >{{ '@pry.admin.dataset.type' | i18n }}
+      @if (!dataset$) {
+        <span>*</span>
+      }
+    </label>
+    <pry-select
+      id="type"
+      formControlName="type"
+      [items]="datasetTypes"
+      bindValue="value"
+      bindLabel="label"
+      [isForm]="true"
+      aria-labelledby="user-label"
+    ></pry-select>
+  </div>
+
+  <div class="u-display-flex -gap-20">
+    <div class="m-form-label-field -width-sm">
+      <label class="a-label" id="tags-label" for="tags">{{ '@pry.dataset.tags' | i18n }}</label>
+      <pry-select
+        id="tags"
+        formControlName="categories"
+        [items]="categories$ | async"
+        bindLabel="name"
+        [isForm]="true"
+        aria-labelledby="tags-label"
+        [multiple]="true"
+        [closeOnSelect]="false"
+      ></pry-select>
+    </div>
+    <button class="a-btn a-btn--primary u-self-center" type="button" (click)="openModal()">
+      {{ '@pry.admin.dataset.addTag' | i18n }}
+    </button>
+  </div>
+
+  <div class="m-btn-group -width-sm">
+    <button type="button" class="a-btn a-btn--secondary" (click)="goBack()">
+      {{ '@pry.admin.cancel' | i18n }}
+    </button>
+    <button class="a-btn a-btn--primary" type="submit" [disabled]="form.invalid">
+      {{ (dataset$ ? '@pry.admin.edit' : '@pry.admin.create') | i18n }}
+    </button>
+  </div>
+</form>

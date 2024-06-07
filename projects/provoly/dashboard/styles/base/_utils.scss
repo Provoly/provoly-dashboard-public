@@ -36,6 +36,10 @@
   }
 }
 
+.u-txt-left {
+  text-align: left;
+}
+
 .u-txt-center {
   text-align: center;
 }
@@ -49,8 +53,12 @@
     align-items: center;
   }
 
-  &.-align-start{
+  &.-align-start {
     align-items: flex-start;
+  }
+
+  &.-justify-start {
+    justify-content: flex-start;
   }
 
   &.-justify-center {
@@ -72,8 +80,13 @@
   &.-no-gap {
     gap: 0;
   }
+
   &.-gap-10 {
     gap: toRem(10);
+  }
+
+  &.-gap-20 {
+    gap: toRem(20);
   }
 }
 

@@ -2,6 +2,7 @@ import { MetadataValue } from '../../model/admin-api.model';
 import { PryDatasetType } from '../../model/dataset.interface';
 import { MonoClassSearchPayload } from '../../model/search-mono-class.model';
 import { FullTextSearchPayload, MultiClassSearchPayload } from '../../model/search-multi-class.model';
+import { Category } from '../category/category.interface';
 
 export type DataSource = NamedQuery | Dataset;
 
@@ -39,6 +40,7 @@ export interface Dataset extends DescriptionQuery {
   owner?: boolean;
   groups?: string[];
   slug: string;
+  categories?: Category[];
 }
 
 export interface DatasetVersion {

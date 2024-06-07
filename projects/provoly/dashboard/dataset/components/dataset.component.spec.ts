@@ -15,7 +15,8 @@ export const mockDataset = {
   id: 'test-ds-id',
   oClass: 'test-class',
   type: PryDatasetType.OPEN,
-  metadata: []
+  metadata: [],
+  slug: 'test-ds-id-slug'
 } as Dataset;
 
 describe('PryDatasetComponent', () => {

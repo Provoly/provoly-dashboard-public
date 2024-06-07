@@ -101,19 +101,13 @@
 
     &.is-open {
       overflow: hidden;
-      width: toRem(320);
+      width: 30rem;
       -webkit-transition: width ease-in-out 0.6s;
       transition: width ease-in-out 0.6s;
 
       .o-base-layout__panel__content {
         display: block;
-      }
-
-      &.-model {
         width: 30rem;
-        .o-base-layout__panel__content {
-          width: 30rem;
-        }
       }
     }
   }

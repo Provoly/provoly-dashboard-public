@@ -7,7 +7,8 @@ export const mockDatasets: Dataset[] = [
     name: 'fake name 1',
     oClass: '123456789',
     type: PryDatasetType.OPEN,
-    metadata: []
+    metadata: [],
+    slug: 'AAAA-BBBB-CCCC-slug'
   },
   {
     sourceType: 'dataset',
@@ -15,7 +16,8 @@ export const mockDatasets: Dataset[] = [
     name: 'fake name 2',
     oClass: '987654321',
     type: PryDatasetType.CLOSED,
-    metadata: []
+    metadata: [],
+    slug: 'CCCC-BBBB-AAAA-slug'
   }
 ];
 

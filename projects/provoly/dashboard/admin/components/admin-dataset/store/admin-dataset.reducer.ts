@@ -1,4 +1,4 @@
-import { Dataset, MissingGroupsByEntity } from '@provoly/dashboard';
+import { Category, Dataset, MissingGroupsByEntity } from '@provoly/dashboard';
 import { createReducer, on } from '@ngrx/store';
 import { AdminDatasetActions } from './admin-dataset.actions';
 
@@ -9,11 +9,13 @@ export interface AdminDatasetState {
   error?: Error;
   selectedDataset: Dataset | null;
   missingGroups?: MissingGroupsByEntity;
+  categories: Category[];
 }
 
 export const initialDatasetState: AdminDatasetState = {
   isLoading: false,
-  selectedDataset: null
+  selectedDataset: null,
+  categories: []
 };
 
 export const datasetReducer = createReducer(
@@ -43,5 +45,9 @@ export const datasetReducer = createReducer(
   on(AdminDatasetActions.selectDataset, (state, action) => ({
     ...state,
     selectedDataset: action.dataset
+  })),
+  on(AdminDatasetActions.getCategoriesSuccess, (state, { categories }) => ({
+    ...state,
+    categories
   }))
 );

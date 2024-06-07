@@ -5,11 +5,11 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { PryI18nService, PrySelectModule } from '@provoly/dashboard';
-import { MockI18nPipe } from '../../../../../mock/pipe/mock-i18n.pipe';
-import { MockTranslatePipe } from '../../../../../mock/pipe/mock-translate.pipe';
-import { AdminService } from '../../../../store/admin.service';
 
 import { AdminFormDatasetComponent } from './admin-form-dataset.component';
+import { AdminService } from '../../../store/admin.service';
+import { MockTranslatePipe } from '@provoly/dashboard/mock/pipe/mock-translate.pipe';
+import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
 
 describe('AdminFormDatasetComponent', () => {
   PryI18nService.warn = false;

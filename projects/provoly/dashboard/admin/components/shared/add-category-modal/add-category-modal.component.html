@@ -1,0 +1,62 @@
+<div class="o-modal o-modal--selector">
+  <div class="o-modal__top">
+    <div class="o-modal__top__title">
+      <h2 class="a-h2" id="dialog_title">
+        {{ '@pry.admin.shared.categoryModal.' + entityType + '.select' | i18n }}
+      </h2>
+    </div>
+    <div class="o-modal__top__close">
+      <button class="a-btn a-btn--icon-only" (click)="closeModal.emit()">
+        <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
+        <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+      </button>
+    </div>
+  </div>
+  <form (ngSubmit)="addCategory()">
+    <div class="m-form-label-field selector">
+      <label class="a-label" for="name-search">{{
+        '@pry.admin.shared.categoryModal.' + entityType + '.searchOrCreate' | i18n
+      }}</label>
+      <input
+        type="text"
+        class="a-form-field"
+        (input)="search($event)"
+        [(ngModel)]="catToAdd.name"
+        name="name"
+        id="name-search"
+      />
+    </div>
+    <div>
+      <h3>
+        {{ '@pry.admin.shared.categoryModal.' + entityType + '.name' | i18n }}
+      </h3>
+      <div class="u-display-flex -column">
+        @for (category of filteredCategories$ | async; track category.id) {
+          <button
+            type="button"
+            class="a-btn a-btn--ghost -no-padding u-display-flex -justify-start -width-full"
+            (click)="selectCategory(category)"
+          >
+            <span class="u-visually-hidden">{{
+              '@pry.admin.shared.categoryModal.' + entityType + '.selectIt' | i18n
+            }}</span>
+            {{ category.name }}
+          </button>
+        }
+      </div>
+    </div>
+    @if ((categories$ | async)?.length === 0) {
+      <span>{{ '@pry.admin.shared.categoryModal.noCategories' | i18n }}</span>
+    } @else if ((filteredCategories$ | async)?.length === 0) {
+      <div class="u-display-flex -column">
+        <p class="a-p">
+          <strong>{{ catToAdd.name }} </strong>
+          <span [innerHTML]="'@pry.admin.shared.categoryModal.' + entityType + '.add' | i18n"></span>
+        </p>
+        <button type="submit" class="a-btn a-btn--primary u-self-center">
+          {{ '@pry.admin.shared.categoryModal.' + entityType + '.create' | i18n }}
+        </button>
+      </div>
+    }
+  </form>
+</div>
