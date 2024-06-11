@@ -1,4 +1,5 @@
 @use '../abstracts' as *;
+@use '../../styles-theme/abstracts-theme/variables.theme' as *;
 
 .a-chip {
   display: flex;
@@ -8,13 +9,56 @@
   font-size: toRem(10);
   padding: toRem(2) toRem(7);
 
+  color: themed($theme-map, 'color', 'primary', 'contrast', 50);
+  background-color: themed($theme-map, 'color', 'primary', 600);
+
+  &:hover {
+    @include changeBgColor(
+      $targetBgColor: themed($theme-map, 'color', 'primary', 300),
+      $targetTextColor: themed($theme-map, 'color', 'primary', 600)
+    );
+  }
+
+  &--light {
+    background-color: themed($theme-map, 'color', 'primary', 50);
+    color: themed($theme-map, 'color', 'primary', 600);
+    border: solid 1px themed($theme-map, 'color', 'primary', 300);
+
+    &:hover {
+      @include changeBgColor(
+        $targetBgColor: themed($theme-map, 'color', 'primary', 300)
+      );
+    }
+  }
+
+  &--ghost {
+    background-color: transparent;
+    color: themed($theme-map, 'color', 'primary', 750);
+
+    &:hover {
+      @include changeBgColor(
+        $targetBgColor: themed($theme-map, 'color', 'primary', 300)
+      );
+    }
+  }
+
   &.-md {
     height: toRem(20);
     font-size: toRem(12);
     padding: toRem(3) toRem(10);
   }
 
+  &.-lg {
+    height: toRem(30);
+    font-size: toRem(16);
+    gap: toRem(5);
+  }
+
   &.-no-wrap {
     white-space: nowrap;
+  }
+
+  &.-not-found {
+    opacity: 0.4;
   }
 }

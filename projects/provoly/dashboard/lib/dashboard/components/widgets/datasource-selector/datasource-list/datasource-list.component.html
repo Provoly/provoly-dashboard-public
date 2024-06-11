@@ -1,0 +1,50 @@
+<div class="o-datasource-list__header u-display-flex">
+  <div class="o-datasource-list__search m-form-label-field">
+    <label class="a-label" id="catalog-search-label" for="catalog-search">{{ '@pry.dataset.search' | i18n }}</label>
+    <input
+      id="catalog-search"
+      type="text"
+      class="a-form-field"
+      [placeholder]="'@pry.dataset.searchPlaceholder' | i18n"
+      [ngModel]="search$ | async"
+      (ngModelChange)="this.search$.next($event)"
+    />
+    <pry-icon class="search-icon" iconSvg="search" [width]="20" [height]="20"></pry-icon>
+  </div>
+  <div class="o-datasource-list__categories m-form-label-field">
+    <label class="a-label" id="tags-label" for="catalog-category-search">{{ '@pry.dataset.filter' | i18n }}</label>
+    <pry-select
+      id="catalog-category-search"
+      [ngModel]="selectedCategories"
+      (ngModelChange)="this.selectedCategories$.next($event)"
+      [items]="categories$ | async"
+      bindLabel="name"
+      aria-labelledby="tags-label"
+      [multiple]="true"
+      [closeOnSelect]="false"
+      [placeholder]="'@pry.dataset.filterPlaceholder' | i18n"
+    ></pry-select>
+  </div>
+</div>
+<div class="o-datasource-list__content">
+  @if ((_mode$ | async) === 'list') {
+    @for (datasource of filteredDatasources$ | async; track datasource.id) {
+      <pry-datasource-card
+        [datasource]="datasource"
+        [isSelectable]="false"
+        [showFooter]="true"
+        (clicked)="onDatasourceClick($event)"
+      ></pry-datasource-card>
+    }
+  } @else if ((_mode$ | async) === 'selector') {
+    @for (datasource of filteredDatasources$ | async; track datasource.id) {
+      <pry-datasource-card
+        [datasource]="datasource"
+        [isSelectable]="true"
+        [showFooter]="false"
+        (clicked)="onDatasourceClick($event)"
+        [isSelected]="datasource.isSelected ?? false"
+      ></pry-datasource-card>
+    }
+  }
+</div>

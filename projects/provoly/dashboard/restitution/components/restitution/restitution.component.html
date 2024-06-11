@@ -76,12 +76,10 @@
     <pry-step>
       <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.dataSource' | i18n }}</h4>
       <pry-datasource-selector
-        bindLabel="name"
-        bindValue="id"
-        translationStringBase="@pry.components.chipsSelector.datasource."
+        [manifest]="customManifest"
         (itemsChanged)="datasourcesChanged($event)"
-        [usedItems]="(usedDatasources$ | async) ?? []"
-        [showActionButtons]="false"
+        [showButtons]="false"
+        [showTitle]="false"
       ></pry-datasource-selector>
       <ng-container [ngTemplateOutlet]="buttons" [ngTemplateOutletContext]="{ submit: true }"></ng-container>
     </pry-step>

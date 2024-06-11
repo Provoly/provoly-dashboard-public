@@ -345,13 +345,6 @@ export const frTranslations = {
     components: {
       searchData: 'Recherchez une donnée',
       chipsSelector: {
-        datasource: {
-          select: 'Sélectionner une ou plusieurs source(s) de données :',
-          selection: 'Source(s) de données sélectionnées:',
-          selectItem: 'Sélectionner la source de données',
-          unselectItem: 'Désélectionner la source de données',
-          noItemSelected: 'Aucune source de données sélectionnée'
-        },
         share: {
           select: "Sélectionner un ou plusieurs groupe(s) d'utilisateurs :",
           selection: "Groupe(s) d'utilisateurs sélectionnés:",
@@ -359,7 +352,14 @@ export const frTranslations = {
           unselectItem: "Désélectionner le groupe d'utilisateurs",
           noItemSelected: "Aucun groupe d'utilisateurs sélectionné"
         }
-      }
+      },
+      datasourceSelector: {
+        select: 'Choisir les données',
+        selection: 'Source(s) de données sélectionnées:',
+        selectItem: 'Sélectionner la source de données',
+        unselectItem: 'Désélectionner la source de données',
+        noItemSelected: 'Aucune source de données sélectionnée'
+      },
     },
     errors: {
       default:

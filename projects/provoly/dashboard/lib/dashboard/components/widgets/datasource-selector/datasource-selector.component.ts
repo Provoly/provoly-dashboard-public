@@ -1,74 +1,65 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
-import { UNKNOWN_DATASOURCE } from '../../../../core/components/translate-id/translate-id.pipe';
-import { NamedQuery } from '../../../../core/store/data-source/data-source.model';
-import { DataSourceSelectors } from '../../../../core/store/data-source/data-source.selectors';
-import { ChipsSelectorComponent } from '../../../../core/components/chips-selector/chips-selector.component';
+import { DataSource } from '../../../../core/store/data-source/data-source.model';
 import { WidgetManifest } from '../../../../core/model/manifest.interface';
 import { SubscriptionnerDirective } from '../../subscriptionner.directive';
-import { PryI18nService } from '../../../../core/i18n/i18n.service';
+import { DatasourceUtils } from '../../../../core/store/data-source/datasource-utils';
+import { DataSourceSelectors } from '../../../../core/store/data-source/data-source.selectors';
 
 @Component({
   selector: 'pry-datasource-selector',
-  templateUrl: '../../../../core/components/chips-selector/chips-selector.component.html'
+  templateUrl: 'datasource-selector.component.html'
 })
-export class DatasourceSelectorComponent extends ChipsSelectorComponent implements SubscriptionnerDirective {
-  _usedItems$ = new BehaviorSubject([] as any[]);
-  usedDatasources$: Observable<NamedQuery[]>;
+export class DatasourceSelectorComponent extends SubscriptionnerDirective {
+  datasources$: Observable<DataSource[]>;
+  manifest$ = new BehaviorSubject<WidgetManifest | null>(null);
+  selectedDatasources$: Observable<DataSource[]>;
 
-  @Input() override set usedItems(items: any[]) {
-    this._usedItems$.next(items);
-  }
+  selectedIds$ = new BehaviorSubject<string[]>([]);
 
+  @Input() showButtons = true;
+  @Input() showTitle = true;
   @Input() set manifest(manifest: WidgetManifest | null) {
     this.manifest$.next(manifest);
+    this.selectedIds$.next(DatasourceUtils.getDatasourceArray(manifest?.datasource));
   }
 
-  manifest$ = new BehaviorSubject<WidgetManifest | null>(null);
+  @Output() previousTab = new EventEmitter();
+  @Output() nextTab = new EventEmitter();
+  @Output() cancel = new EventEmitter();
+  @Output() validated = new EventEmitter();
+  @Output() itemsChanged = new EventEmitter<string[]>();
 
-  constructor(private store: Store, cdr: ChangeDetectorRef, i18n: PryI18nService) {
-    super(cdr, i18n);
-    this.subscriptions.add(
-      combineLatest([this.manifest$, this.store.select(DataSourceSelectors.getDataSourcesSorted)])
-        .pipe(
-          map(([manifest, allNamedQueries]) => {
-            let dss = [...allNamedQueries];
-            if (!!manifest) {
-              const manifestNamedQueries = Array.isArray(manifest.datasource)
-                ? manifest.datasource
-                : [manifest.datasource];
-              manifestNamedQueries.forEach((manifestNamedQuery) => {
-                const alreadyPresent = !!allNamedQueries.find((nq) => nq.id === manifestNamedQuery);
-                if (!alreadyPresent) {
-                  dss.push(UNKNOWN_DATASOURCE(manifestNamedQuery ?? ''));
-                }
-              });
-            }
-            return dss;
-          })
-        )
-        .subscribe((datasources) => {
-          this.items$.next(datasources);
-        })
-    );
+  constructor(private store: Store) {
+    super();
 
-    this.usedDatasources$ = combineLatest([
-      this._usedItems$,
-      this.store.select(DataSourceSelectors.getDataSources)
+    this.datasources$ = combineLatest([
+      this.store.select(DataSourceSelectors.getDataSourcesSorted),
+      this.selectedIds$
     ]).pipe(
-      map(
-        ([usedDatasources, datasources]) =>
-          usedDatasources
-            .map((usedDatasource) => datasources.find((ds) => ds.id === usedDatasource.id) ?? usedDatasource)
-            .map((nq) => (typeof nq !== 'string' ? nq : UNKNOWN_DATASOURCE(nq))) as NamedQuery[]
-      )
+      map(([datasources, selectedIds]) => DatasourceUtils.getAllDatasourcesWithUnknowns(datasources, selectedIds))
     );
 
-    this.subscriptions.add(
-      this.usedDatasources$.subscribe((usedDatasources) => {
-        this.usedItems$.next(usedDatasources);
-      })
+    this.selectedDatasources$ = combineLatest([this.datasources$, this.selectedIds$]).pipe(
+      map(([datasources, selected]) => datasources.filter((ds) => selected.includes(ds.id)))
     );
+  }
+
+  isGeo(item: DataSource) {
+    return DatasourceUtils.isGeo(item);
+  }
+
+  toggleSelection(id: string) {
+    this.selectedIds$.next(
+      this.selectedIds$.value.includes(id)
+        ? this.selectedIds$.value.filter((i) => i !== id)
+        : [...this.selectedIds$.value, id]
+    );
+  }
+
+  updateDatasourceList(ids: string[]) {
+    this.selectedIds$.next(ids);
+    this.itemsChanged.emit(ids);
   }
 }

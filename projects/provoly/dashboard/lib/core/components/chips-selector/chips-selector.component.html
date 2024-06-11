@@ -1,59 +1,49 @@
 <div class="o-chips-selector" role="dialog" aria-modal="true" aria-labelledby="dialog_namedqueries">
-  <div *ngIf="showSearchbar" class="o-widget__search">
-    <input
-      id="catalog-search"
-      (keydown.shift.tab)="previousTab.emit()"
-      type="text"
-      class="a-form-field"
-      [placeholder]="'@pry.components.searchData' | i18n"
-      [ngModel]="search$ | async"
-      (ngModelChange)="search($event)"
-    />
-    <pry-icon iconSvg="search" [width]="17" [height]="17"></pry-icon>
-  </div>
-  <div class="o-chips-selector__items">
-    <div *ngIf="((usedItems$ | async) ?? []).length > 0; else noItems" class="o-chips-selector__used-items">
-      <h4 class="a-h4">{{ translationStringBase + 'selection' | i18n }}</h4>
-      <ul class="o-chips-selector__list">
-        <li *ngFor="let item of usedItems$ | async" class="o-chips-selector__item">
-          <button class="a-chip -md o-chips-selector__chip" (click)="toggleItemSelection(item)" type="button">
-            <p>
-              {{ getItemLabel(item) }}
-            </p>
-            <pry-icon *ngIf="isGeo(item)" iconSvg="globe" [width]="22" [height]="22"></pry-icon>
-            <pry-icon [iconSvg]="'close'" [width]="17" [height]="17"></pry-icon>
-          </button>
-        </li>
-      </ul>
+  @if (showSearchbar) {
+    <div class="o-widget__search">
+      <input
+        id="catalog-search"
+        type="text"
+        class="a-form-field"
+        [placeholder]="'@pry.components.searchData' | i18n"
+        [ngModel]="search$ | async"
+        (ngModelChange)="search($event)"
+      />
+      <pry-icon iconSvg="search" [width]="17" [height]="17"></pry-icon>
     </div>
-    <ng-template #noItems>
+  }
+
+  <div class="o-chips-selector__items">
+    @if (((usedItems$ | async) ?? []).length > 0) {
+      <div class="o-chips-selector__used-items">
+        <h4 class="a-h4">{{ translationStringBase + 'selection' | i18n }}</h4>
+        <ul class="o-chips-selector__list">
+          @for (item of usedItems$ | async; track item) {
+            <li class="o-chips-selector__item">
+              <button class="a-chip -md o-chips-selector__chip" (click)="toggleItemSelection(item)" type="button">
+                <p>{{ getItemLabel(item) }}</p>
+                <pry-icon [iconSvg]="'close'" [width]="17" [height]="17"></pry-icon>
+              </button>
+            </li>
+          }
+        </ul>
+      </div>
+    } @else {
       <span class="-no-items">{{ translationStringBase + 'noItemSelected' | i18n }}</span>
-    </ng-template>
+    }
+
     <div class="o-chips-selector__unused-items">
       <h4 class="a-h4">{{ translationStringBase + 'select' | i18n }}</h4>
       <ul class="o-chips-selector__list">
-        <li *ngFor="let item of unusedItems$ | async" class="o-chips-selector__item">
-          <button class="a-chip a-chip--light -md o-chips-selector__chip" (click)="toggleItemSelection(item)">
-            <span class="u-visually-hidden">{{ translationStringBase + 'selectItem' | i18n }}</span>
-            <p class="a-p">{{ getItemLabel(item) }}</p>
-            <pry-icon *ngIf="isGeo(item)" iconSvg="globe" [width]="22" [height]="22"></pry-icon>
-          </button>
-        </li>
+        @for (item of unusedItems$ | async; track item) {
+          <li class="o-chips-selector__item">
+            <button class="a-chip a-chip--light -md o-chips-selector__chip" (click)="toggleItemSelection(item)">
+              <span class="u-visually-hidden">{{ translationStringBase + 'selectItem' | i18n }}</span>
+              <p class="a-p">{{ getItemLabel(item) }}</p>
+            </button>
+          </li>
+        }
       </ul>
     </div>
-  </div>
-  <div *ngIf="showActionButtons" class="m-btn-group o-chips-selector__footer">
-    <button type="button" (click)="cancel.emit()" class="a-btn a-btn--secondary">
-      {{ '@pry.toolbox.manifest.close' | i18n }}
-    </button>
-    <button
-      type="button"
-      (click)="validated.emit()"
-      #validate
-      (keydown.tab)="nextTab.emit()"
-      class="a-btn a-btn--primary"
-    >
-      {{ '@pry.toolbox.manifest.validated' | i18n }}
-    </button>
   </div>
 </div>

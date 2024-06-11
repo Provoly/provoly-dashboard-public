@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { PryI18nService } from '@provoly/dashboard';
+import { PryI18nService } from '../../i18n/i18n.service';
 
 @Pipe({
   name: 'sinceDate'
 })
-export class PrySinceDatePipe implements PipeTransform {
+export class SinceDatePipe implements PipeTransform {
   private _now?: Date;
 
   constructor(private translateService: PryI18nService) {}

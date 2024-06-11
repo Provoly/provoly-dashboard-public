@@ -126,7 +126,7 @@
   // Resultset displayed in popup/panel
   &__choose-resultset, .active-step {
     @extend %overlay-panel-fixed-right;
-    width: toRem(560);
+    width: toRem(1100);
     padding: 0 0 toRem(10) 0;
     top: toRem(12);
     height: calc(100% - 24px);

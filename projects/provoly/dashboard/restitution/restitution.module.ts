@@ -9,11 +9,11 @@ import {
   PryIconModule,
   PryOverlayModule,
   PrySelectModule,
-  PryShareModule
+  PryShareModule,
+  PrySinceDateModule
 } from '@provoly/dashboard';
 import { PryCardModule } from '@provoly/dashboard/components/card';
 import { PryCheckboxModule } from '@provoly/dashboard/components/checkbox';
-import { PrySinceDateModule } from '@provoly/dashboard/components/sinceDate';
 import { PryStepperModule } from '@provoly/dashboard/components/stepper';
 import { PrySearchModule } from '@provoly/dashboard/search';
 import { PryRestitutionCatalogComponent } from './components/restitution-catalog/restitution-catalog.component';

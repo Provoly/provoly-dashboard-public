@@ -1,0 +1,192 @@
+@use '../../styles/abstracts/index' as *;
+@use '../../styles-theme/abstracts-theme/variables.theme' as *;
+
+/* Organism - datasource-selector */
+
+.o-datasource-selector {
+  overflow: hidden;
+  height: 100%;
+
+  pry-datasource-list {
+    overflow: hidden;
+  }
+
+  &__chips {
+    max-height: toRem(80);
+    margin-bottom: toRem(40);
+    overflow: scroll;
+  }
+}
+
+.o-datasource-list {
+  &__header {
+    width: 100%;
+
+    .a-label {
+      font-size: toRem(16);
+      font-weight: 700;
+    }
+
+    input.a-form-field {
+      padding-left: toRem(60);
+    }
+
+    div.a-pry-select {
+      padding: toRem(7.5) toRem(10);
+    }
+
+    input.a-form-field, div.a-pry-select  {
+      border-color: themed($theme-map, 'color', 'primary', 600);
+      font-size: toRem(12);
+      border-radius: toRem(5);
+      height: toRem(40);
+    }
+
+    input.a-form-field::placeholder, span.a-pry-select__placeholder {
+      color: themed($theme-map, 'color', 'primary', 500);
+      font-style: italic;
+    }
+  }
+
+  &__search {
+    flex-basis: 50%;
+    position: relative;
+
+    .search-icon {
+      position: absolute;
+      left: toRem(20);
+      bottom: toRem(10);
+      pointer-events: none;
+      color: themed($theme-map, 'color', 'primary', 600);
+    }
+  }
+
+  &__categories {
+    flex-basis: 50%;
+  }
+
+  &__content {
+    @extend %list-unstyled;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(toRem(330), 0fr));
+    grid-gap: toRem(10);
+    column-gap: 1.5rem;
+    row-gap: 2rem;
+    padding-bottom: toRem(20);
+
+    overflow: auto;
+    height: calc(100% - 100px);
+  }
+}
+
+.o-datasource-card {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  font-size: toRem(14);
+  min-width: toRem(310);
+  height: toRem(180);
+
+  background-color: themed($theme-map, 'color', 'primary', 50);
+  filter: drop-shadow(0px 4px 4px rgba(17, 59, 110, 0.12));
+
+  &:hover {
+    background-color: themed($theme-map, 'color', 'primary', 300);
+    cursor: pointer;
+
+    .o-pry-datasource-card__footer {
+      border-top: 1px themed($theme-map, 'color', 'primary', 400) solid;
+
+      pry-icon {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+
+  &.-no-footer {
+    height: toRem(150);
+  }
+
+  &__title {
+    width: toRem(270);
+
+    &.a-tooltip[data-tooltip]:after {
+      top: calc(100% - 15px);
+      max-width: toRem(300);
+      word-break: break-word;
+    }
+  }
+
+  &.-is-selectable .o-datasource-card__title {
+    width: toRem(240);
+  }
+
+  .a-h4 {
+    color: themed($theme-map, 'color', 'primary', 600);
+  }
+
+  &__header {
+    display: flex;
+    gap: toRem(15);
+    padding: toRem(10);
+    max-width: toRem(330);
+  }
+
+  &__checkbox {
+    margin-left: auto;
+  }
+
+  &__date {
+    font-size: toRem(11);
+  }
+
+  &__description {
+    position: relative;
+    width: 100%;
+
+    &.a-tooltip[data-tooltip]:after {
+      width: 100%;
+    }
+  }
+
+  &__content {
+    flex-grow: 1;
+    padding: 0 toRem(15);
+    font-size: toRem(13);
+    margin-bottom: toRem(10);
+
+    .a-h3 {
+      font-size: toRem(14);
+    }
+
+    &.-date {
+      margin-bottom: 0;
+    }
+  }
+
+  &__categories {
+    max-height: toRem(20);
+    overflow: hidden;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-top: 1px themed($theme-map, 'color', 'primary', 300) solid;
+    border-bottom: 1px themed($theme-map, 'color', 'primary', 300) solid;
+
+    .a-btn {
+      margin-left: toRem(20); // needed for centering the footer text
+    }
+
+    pry-icon {
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 100ms linear , opacity 100ms linear;
+      margin-left: toRem(3);
+    }
+  }
+}

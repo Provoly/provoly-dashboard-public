@@ -445,10 +445,9 @@ export class PryWidgetHeaderComponent extends SubscriptionnerDirective implement
     }
   }
 
-  datasourcesChanged($event: DataSource[]) {
-    const ids = $event.map((ds) => ds.id);
-    if (JSON.stringify(this.selectedDataSourceIds$.getValue()) !== JSON.stringify(ids)) {
-      this.selectedDataSourceIds$.next(ids);
+  datasourcesChanged($event: string[]) {
+    if (JSON.stringify(this.selectedDataSourceIds$.getValue()) !== JSON.stringify($event)) {
+      this.selectedDataSourceIds$.next($event);
     }
   }
 

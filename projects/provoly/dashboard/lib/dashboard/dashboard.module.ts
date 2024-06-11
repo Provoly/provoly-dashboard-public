@@ -51,6 +51,9 @@ import { DefaultTooltipComponent } from './tooltip/components/default/default.to
 import { TOOLTIP_DEFINITION, TooltipDefinition } from './tooltip/tooltip-factory.service';
 import { PryFilterGroupCssComponent } from './filter/style/css.component';
 import { AutomaticGridLayoutDefinition } from '../core/model/automatic-grid-layout-definition.interface';
+import { PryDatasourceCardComponent } from './components/widgets/datasource-selector/datasource-card/datasource-card.component';
+import { PryDatasourceListComponent } from './components/widgets/datasource-selector/datasource-list/datasource-list.component';
+import { PrySinceDateModule } from '../core/pipes/since-date/since-date.module';
 
 const components = [
   DashboardComponent,
@@ -71,7 +74,9 @@ const components = [
   BaseFilterComponent,
   FilterInstanciatorComponent,
   FilterGroupComponent,
-  DatasourceSelectorComponent
+  DatasourceSelectorComponent,
+  PryDatasourceCardComponent,
+  PryDatasourceListComponent
 ];
 
 @NgModule({
@@ -89,7 +94,8 @@ const components = [
     StoreModule.forFeature(dashboardFeatureKey, dashboardReducer),
     EffectsModule.forFeature([ActionBusEffects, DashboardEffects]),
     PryDatePickerModule,
-    PryI18nModule
+    PryI18nModule,
+    PrySinceDateModule
   ],
   exports: [...components],
   providers: []

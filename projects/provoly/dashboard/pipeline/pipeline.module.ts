@@ -8,11 +8,10 @@ import {
   PryCoreModule,
   PryI18nModule,
   PryI18nService,
-  PryIconModule,
+  PryIconModule, PrySinceDateModule,
   PrySortModule,
   PryToggleModule
 } from '@provoly/dashboard';
-import { PrySinceDateModule } from '@provoly/dashboard/components/sinceDate';
 import { PryPipelineDetailsComponent } from './components/pipeline-details/pipeline-details.component';
 import { PryPipelineEditorComponent } from './components/pipeline-editor/pipeline-editor.component';
 import { PryPipelineListComponent } from './components/pipeline-list/pipeline-list.component';
@@ -41,10 +40,10 @@ const components = [
     PrySortModule,
     FormsModule,
     PryToggleModule,
-    PrySinceDateModule,
     ReactiveFormsModule,
     OverlayModule,
-    A11yModule
+    A11yModule,
+    PrySinceDateModule
   ],
   declarations: [...components],
   exports: [...components]

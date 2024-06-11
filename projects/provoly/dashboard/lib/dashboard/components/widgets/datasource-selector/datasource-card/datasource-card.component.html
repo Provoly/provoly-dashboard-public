@@ -1,0 +1,58 @@
+<div
+  class="o-datasource-card"
+  [class.-no-footer]="!showFooter"
+  [class.-is-selectable]="isSelectable"
+  (click)="onClick()"
+>
+  <div class="o-datasource-card__header">
+    <img
+      alt=""
+      [height]="25"
+      [width]="25"
+      [src]="datasource.id | translateId: { type: 'datasource', output: 'icon' } | async"
+    />
+    <div class="o-datasource-card__title" ellipsis textElementSelector=".a-h4">
+      <h4 class="a-h4">{{ datasource.name }}</h4>
+    </div>
+    @if (isSelectable) {
+      <pry-checkbox
+        (click)="$event.preventDefault()"
+        class="o-datasource-card__checkbox"
+        [ngModel]="isSelected"
+      ></pry-checkbox>
+    }
+  </div>
+  <div class="o-datasource-card__content u-display-flex -column -gap-10">
+    @if (datasource.description) {
+      <div class="o-datasource-card__description" ellipsis textElementSelector=".description">
+        <div class="description">{{ truncateDescription(datasource.description, 100) }}</div>
+      </div>
+    } @else {
+      <div class="o-datasource-card__description -italic">{{ '@pry.dataset.noDescription' | i18n }}</div>
+    }
+
+    <span class="o-datasource-card__date">
+      @if (activeVersion$ | async) {
+        {{ '@pry.dataset.since_day' | i18n }} {{ (activeVersion$ | async)! | sinceDate }}
+      } @else {
+        <span class="-italic">{{ '@pry.dataset.noActiveVersion' | i18n }}</span>
+      }
+    </span>
+    @if (datasource.sourceType === 'dataset' && datasource.categories && datasource.categories.length > 0) {
+      <div class="o-datasource-card__categories u-display-flex -wrap">
+        @for (category of datasource.categories; track category.id) {
+          <span class="a-chip -md">{{ category.name }}</span>
+        }
+      </div>
+    }
+  </div>
+
+  @if (showFooter) {
+    <div class="o-datasource-card__footer">
+      <button class="a-btn">
+        {{ '@pry.dataset.consult' | i18n }}
+        <pry-icon [width]="20" [height]="20" iconSvg="arrow_right"></pry-icon>
+      </button>
+    </div>
+  }
+</div>

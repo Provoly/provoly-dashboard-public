@@ -1,51 +1,17 @@
 <pry-dataset-css></pry-dataset-css>
-<div class="o-dataset-layout u-display-flex -column -align-center" [ngSwitch]="selectedMode">
-  <ng-container *ngSwitchCase="ViewMode.CATALOG">
-    <h1 class="a-h1 u-self-start">{{ '@pry.dataset.title' | i18n }}</h1>
-    <div class="o-pry-dataset__toolbox u-display-flex">
-      <div class="o-pry-dataset__search m-form-label-field">
-        <label class="a-label" id="catalog-search-label" for="catalog-search">{{ '@pry.dataset.search' | i18n }}</label>
-        <input
-          id="catalog-search"
-          type="text"
-          class="a-form-field"
-          [placeholder]="'@pry.dataset.searchPlaceholder' | i18n"
-          [ngModel]="search$ | async"
-          (ngModelChange)="this.search$.next($event)"
-        />
-        <pry-icon class="search-icon" iconSvg="search" [width]="20" [height]="20"></pry-icon>
-      </div>
-      <div class="o-pry-dataset__categories m-form-label-field">
-        <label class="a-label" id="tags-label" for="catalog-category-search">{{ '@pry.dataset.filter' | i18n }}</label>
-        <pry-select
-          id="catalog-category-search"
-          [ngModel]="selectedCategories"
-          (ngModelChange)="this.selectedCategories$.next($event)"
-          [items]="categories$ | async"
-          bindLabel="name"
-          aria-labelledby="tags-label"
-          [multiple]="true"
-          [closeOnSelect]="false"
-          [placeholder]="'@pry.dataset.filterPlaceholder' | i18n"
-        ></pry-select>
-      </div>
-    </div>
-    <div class="o-dataset-layout__content">
-      <div class="o-pry-dataset">
-        <pry-dataset-card
-          *ngFor="let dataset of filteredDatasets$ | async; let index = index"
-          [dataset]="dataset"
-          (consult)="consult($event)"
-        ></pry-dataset-card>
-      </div>
-    </div>
-  </ng-container>
-  <ng-container *ngSwitchCase="ViewMode.CONSULT">
-    <ng-template [ngIf]="selectedDataset">
-      <pry-dataset-detail
-        [dataset]="selectedDataset"
-        (goToCatalog)="selectedMode = ViewMode.CATALOG"
-      ></pry-dataset-detail>
-    </ng-template>
-  </ng-container>
+<div class="o-dataset-layout u-display-flex -column">
+  @switch (selectedMode) {
+    @case (ViewMode.CATALOG) {
+      <h1 class="a-h1 u-self-start">{{ '@pry.dataset.title' | i18n }}</h1>
+      <pry-datasource-list (consultedDataset)="consult($event)"></pry-datasource-list>
+    }
+    @case (ViewMode.CONSULT) {
+      @if (selectedDataset) {
+        <pry-dataset-detail
+          [dataset]="selectedDataset"
+          (goToCatalog)="selectedMode = ViewMode.CATALOG"
+        ></pry-dataset-detail>
+      }
+    }
+  }
 </div>

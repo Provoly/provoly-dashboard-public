@@ -7,22 +7,14 @@ import { Class } from '../../store/class/class.interface';
 import { ClassSelectors } from '../../store/class/class.selectors';
 import { ConfigSelectors } from '../../store/config/config.selectors';
 import { IconDefinitions } from '../../store/config/icon-definitions.interface';
-import { DataSource, NamedQuery } from '../../store/data-source/data-source.model';
+import { DataSource } from '../../store/data-source/data-source.model';
 import { DataSourceSelectors } from '../../store/data-source/data-source.selectors';
 import { NamedQueryTypes } from '../../store/data-source/named-query-types.model';
 import { Field } from '../../store/field/field.interface';
 import { FieldSelectors } from '../../store/field/field.selectors';
 import { DEFAULT_NAMED_QUERY_ID } from '../../store/search/search.constants';
 import { SymbolService } from '../../symbol/symbol.service';
-
-export const UNKNOWN_DATASOURCE = (id: string) =>
-  ({
-    id: id,
-    color: '#FFFFFF',
-    name: id,
-    request: { fullSearch: { value: '???' }, type: NamedQueryTypes.FULL_TEXT },
-    sourceType: 'namedQuery'
-  } as NamedQuery);
+import { UNKNOWN_DATASOURCE } from '../../store/data-source/datasource-utils';
 
 @Pipe({
   name: 'translateId'

@@ -1,4 +1,11 @@
-import { Dataset, DatasetVersion, PryDatasetType } from '@provoly/dashboard';
+import {
+  Condition,
+  Dataset,
+  DatasetVersion, FullTextSearchPayload,
+  MonoClassSearchPayload,
+  MultiClassSearchPayload, NamedQueryTypes,
+  PryDatasetType
+} from '@provoly/dashboard';
 import { mockCategories } from '@provoly/dashboard/mock/data/mockCategories';
 
 export const mockDatasets: Dataset[] = [
@@ -63,6 +70,33 @@ export const mockDatasetVersion = {
   metadata: [],
   hasWarnings: false
 };
+
+export const mockNamedQueries = [
+  {
+    name: 'test query 1',
+    sourceType: 'namedQuery',
+    id: 'nq-id-1',
+    request: {
+      fullSearch: {
+        value: 'test'
+      }
+    }
+  },
+  {
+    name: 'test query 2',
+    sourceType: 'namedQuery',
+    id: 'nq-id-2',
+    request: {
+      type: NamedQueryTypes.MONO_CLASS,
+      oClass: 'class-id',
+      condition: { type: 'condition', attribute: 'attr', value: 'value' },
+      sort: {
+        attribute: 'attr',
+        direction: 'asc'
+      }
+    }
+  }
+]
 
 export const mockClickEvent = {
   preventDefault: () => {},

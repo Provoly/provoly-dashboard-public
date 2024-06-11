@@ -1,5 +1,5 @@
 import { PryI18nService } from '@provoly/dashboard';
-import { PrySinceDatePipe } from './sinceDate.pipe';
+import { SinceDatePipe } from './since-date.pipe';
 
 const DAYS_IN_MS = 24 * 3600 * 1000;
 
@@ -67,14 +67,14 @@ describe('SinceDatePipe', () => {
 
   testCases.forEach((test) => {
     it(`${test.label}`, () => {
-      const pipe = new PrySinceDatePipe(mockI18nService);
+      const pipe = new SinceDatePipe(mockI18nService);
       expect(pipe.useNow(test.now).transform(test.date)).toBe(test.string);
     });
   });
 
   it(`should display date localized (not as "since") when onlyLocale option is passed`, () => {
     const date = new Date();
-    const pipe = new PrySinceDatePipe(mockI18nService);
+    const pipe = new SinceDatePipe(mockI18nService);
     expect(pipe.transform(date.toString(), { onlyLocale: true })).toBe(date.toLocaleString());
   });
 });

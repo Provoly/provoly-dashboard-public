@@ -9,10 +9,9 @@ import {
   PryIconModule,
   PryOverlayModule,
   PrySelectModule,
-  PryShareModule
+  PryShareModule, PrySinceDateModule
 } from '@provoly/dashboard';
 import { PryCheckboxModule } from '@provoly/dashboard/components/checkbox';
-import { PrySinceDateModule } from '@provoly/dashboard/components/sinceDate';
 import { PryAddEditPresentationComponent } from './components/add-edit-presentation/add-edit-presentation.component';
 import { PryTitlePresentationComponent } from './components/title-presentation/title-presentation.component';
 import { PryPresentationComponent } from './components/presentation.component';
@@ -40,7 +39,6 @@ const COMPONENTS = [
     PryDashboardModule,
     ReactiveFormsModule,
     PrySelectModule,
-    PrySinceDateModule,
     PryShareModule,
     FormsModule,
     PryOverlayModule,
@@ -50,7 +48,8 @@ const COMPONENTS = [
     CommonModule,
     A11yModule,
     PryExpandPanelModule,
-    PryTextEditorModule
+    PryTextEditorModule,
+    PrySinceDateModule
   ],
   exports: [...COMPONENTS]
 })

@@ -2,7 +2,6 @@ import { Component, ElementRef, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import equal from 'fast-deep-equal/es6';
 import { BehaviorSubject, combineLatest, distinctUntilChanged, filter, map, Observable, Subject } from 'rxjs';
-import { UNKNOWN_DATASOURCE } from '../../../core/components/translate-id/translate-id.pipe';
 import { Item } from '../../../core/model/item.interface';
 import { ResultSet } from '../../../core/model/result-set.interface';
 import { DataSource } from '../../../core/store/data-source/data-source.model';
@@ -10,6 +9,7 @@ import { DataSourceSelectors } from '../../../core/store/data-source/data-source
 import { ResultsetUtils } from '../../resultset-utils';
 import { DashboardSelectors } from '../../store/dashboard.selectors';
 import { BaseWidgetComponent } from './base-widget.component';
+import { UNKNOWN_DATASOURCE } from '../../../core/store/data-source/datasource-utils';
 
 @Component({ selector: 'pry-data-widget', template: '' })
 export class DataWidgetComponent extends BaseWidgetComponent {

@@ -169,8 +169,8 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
     this.prev(stepper);
   }
 
-  datasourcesChanged($event: DataSource[]) {
-    this.form.selectedDataSources = ($event ?? []).map((ds) => ds.id);
+  datasourcesChanged($event: string[]) {
+    this.form.selectedDataSources = $event;
   }
 
   submit(stepper: PryStepperComponent) {

@@ -1,81 +1,12 @@
 @use '../../styles/abstracts/index' as *;
-@use '../../styles-theme/abstracts-theme/variables.theme' as *;
 
 /* Organism - pry-dataset */
 .o-dataset-layout {
-  padding: toRem(10) toRem(20) toRem(50) toRem(20);
-
-  &__content {
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-  }
-}
-
-.o-pry-dataset {
-  @extend %list-unstyled;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(toRem(330), 0fr));
-  grid-gap: toRem(10);
-  column-gap: 1.5rem;
-  row-gap: 2rem;
-  padding-bottom: toRem(150);
-
-  &__toolbox {
-    width: 100%;
-
-    .a-label {
-      font-size: toRem(16);
-      font-weight: 700;
-    }
-
-    .a-form-field {
-      padding-left: toRem(60);
-    }
-
-    .a-pry-select {
-      padding: toRem(7.5) toRem(10);
-    }
-
-    .a-form-field, .a-pry-select {
-      border-color: themed($theme-map, 'color', 'primary', 600);
-      font-size: toRem(12);
-      border-radius: toRem(5);
-      height: toRem(40);
-
-      &__placeholder, &::placeholder {
-        color: themed($theme-map, 'color', 'primary', 500);
-        font-style: italic;
-      }
-    }
-  }
-
-  &__search {
-    flex-basis: 50%;
-    position: relative;
-
-    .search-icon {
-      position: absolute;
-      left: toRem(20);
-      bottom: toRem(10);
-      pointer-events: none;
-      color: themed($theme-map, 'color', 'primary', 600);
-    }
-  }
-
-  &__categories {
-    flex-basis: 50%;
-  }
-
-  &__item {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-
-.o-dataset-layout {
-  position: relative;
   overflow: hidden;
   height: 100%;
+  padding: toRem(10) toRem(20) toRem(50) toRem(20);
+
+  pry-datasource-list {
+    height: 100%;
+  }
 }

@@ -117,7 +117,6 @@ import { enTranslations } from './i18n/en.translations';
 import { frTranslations } from './i18n/fr.translations';
 import { AdminEffects } from './store/admin.effects';
 import { adminFeatureKey, adminReducer } from './store/admin.reducer';
-import { PrySinceDateModule } from '@provoly/dashboard/components/sinceDate';
 import { PryDatasetModule } from '@provoly/dashboard/dataset';
 import { datasetFeatureKey, datasetReducer } from './components/admin-dataset/store/admin-dataset.reducer';
 import { AdminDatasetEffects } from './components/admin-dataset/store/admin-dataset.effects';
@@ -242,7 +241,6 @@ import { AdminFormDatasetComponent } from './components/admin-dataset/admin-form
     DragDropModule,
     PryI18nModule,
     PryExpandPanelModule,
-    PrySinceDateModule,
     PryDatasetModule,
     PryShareModule
   ]

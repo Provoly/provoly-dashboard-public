@@ -339,13 +339,6 @@ export const enTranslations = {
     components: {
       searchData: 'Search',
       chipsSelector: {
-        datasource: {
-          select: 'Select one or more data source(s):',
-          selection: 'Selected data source(s):',
-          selectItem: 'Select this data source',
-          unselectItem: 'Unselect this data source',
-          noItemSelected: 'No data source selected'
-        },
         share: {
           select: 'Select one or more user group:',
           selection: 'Selected user groups:',
@@ -353,6 +346,13 @@ export const enTranslations = {
           unselectItem: 'Unselect this user group',
           noItemSelected: 'No user group selected'
         }
+      },
+      datasourceSelector: {
+        select: 'Select one or more data source(s):',
+        selection: 'Selected data source(s):',
+        selectItem: 'Select this data source',
+        unselectItem: 'Unselect this data source',
+        noItemSelected: 'No data source selected'
       }
     },
     errors: {

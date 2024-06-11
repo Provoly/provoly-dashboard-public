@@ -8,10 +8,9 @@ import {
   PryI18nService,
   PryIconModule,
   PryModalStatusModule,
-  PryOverlayModule, PrySelectModule
+  PryOverlayModule,
+  PrySelectModule, PrySinceDateModule
 } from '@provoly/dashboard';
-import { PrySinceDateModule } from '@provoly/dashboard/components/sinceDate';
-import { PryDatasetCardComponent } from './components/dataset-card/dataset-card.component';
 import { PryDatasetDetailComponent } from './components/dataset-detail/dataset-detail.component';
 import { PryDatasetComponent } from './components/dataset.component';
 import { enTranslations } from './i18n/en.translations';
@@ -24,7 +23,6 @@ import { PryTextEditorModule } from '@provoly/dashboard/components/text-editor';
   declarations: [
     PryDatasetComponent,
     PryDatasetCssComponent,
-    PryDatasetCardComponent,
     PryDatasetDetailComponent,
     PryDatasetVersionFormComponent
   ],
@@ -36,13 +34,13 @@ import { PryTextEditorModule } from '@provoly/dashboard/components/text-editor';
     PryI18nModule,
     FormsModule,
     PryDashboardModule,
-    PrySinceDateModule,
     PryModalStatusModule,
     ReactiveFormsModule,
     PryTextEditorModule,
-    PrySelectModule
+    PrySelectModule,
+    PrySinceDateModule
   ],
-  exports: [PryDatasetComponent, PryDatasetCssComponent, PryDatasetCardComponent, PryDatasetDetailComponent]
+  exports: [PryDatasetComponent, PryDatasetCssComponent, PryDatasetDetailComponent]
 })
 export class PryDatasetModule {
   constructor(private pryTranslateService: PryI18nService) {

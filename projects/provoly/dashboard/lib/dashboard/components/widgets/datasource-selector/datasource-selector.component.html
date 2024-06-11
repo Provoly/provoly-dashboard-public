@@ -1,0 +1,49 @@
+<div class="o-datasource-selector u-display-flex -column">
+  @if (showTitle) {
+    <h2 class="u-self-center">{{ '@pry.components.datasourceSelector.select' | i18n }}</h2>
+  }
+  <div>
+    <h3>
+      {{ '@pry.components.datasourceSelector.selection' | i18n }} ({{ ((selectedDatasources$ | async) ?? []).length }})
+    </h3>
+    <div class="o-datasource-selector__chips u-display-flex -wrap -gap-10">
+      @if ((selectedDatasources$ | async)?.length === 0) {
+        <span class="a-label -italic">{{ '@pry.components.datasourceSelector.noItemSelected' | i18n }}</span>
+      } @else {
+        @for (datasource of selectedDatasources$ | async; track datasource.id) {
+          <button
+            class="a-chip a-chip--ghost -lg a-tooltip"
+            [attr.data-tooltip]="'@pry.components.datasourceSelector.unselectItem' | i18n"
+            type="button"
+            (click)="toggleSelection(datasource.id)"
+          >
+            <pry-icon iconSvg="close" [width]="15" [height]="15"></pry-icon>
+            {{ datasource.name }}
+            <pry-icon *ngIf="isGeo(datasource)" iconSvg="globe" [width]="18" [height]="18"></pry-icon>
+          </button>
+        }
+      }
+    </div>
+  </div>
+  <pry-datasource-list
+    mode="selector"
+    [selectedDatasources]="(selectedIds$ | async) ?? []"
+    (datasourceSelected)="updateDatasourceList($event)"
+  ></pry-datasource-list>
+  @if (showButtons) {
+    <div class="m-btn-group o-datasource-selector__footer">
+      <button type="button" (click)="cancel.emit()" class="a-btn a-btn--secondary">
+        {{ '@pry.toolbox.manifest.close' | i18n }}
+      </button>
+      <button
+        type="button"
+        (click)="validated.emit()"
+        #validate
+        (keydown.tab)="nextTab.emit()"
+        class="a-btn a-btn--primary"
+      >
+        {{ '@pry.toolbox.manifest.validated' | i18n }}
+      </button>
+    </div>
+  }
+</div>

@@ -1,7 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
-import { Dataset, NamedQuery } from '../../store/data-source/data-source.model';
-import { DatasourceUtils } from '../../store/data-source/datasource-utils';
 import { SubscriptionnerDirective } from '../../../dashboard/components/subscriptionner.directive';
 import { PryI18nService } from '../../i18n/i18n.service';
 
@@ -25,10 +23,6 @@ export class ChipsSelectorComponent extends SubscriptionnerDirective {
     this.usedItems$.next(items);
   }
 
-  @Output() cancel = new EventEmitter();
-  @Output() validated = new EventEmitter();
-  @Output() previousTab = new EventEmitter();
-  @Output() nextTab = new EventEmitter();
   @Output() itemsChanged = new EventEmitter<any[]>();
 
   items$ = new BehaviorSubject<any[] | null>(null);
@@ -37,7 +31,10 @@ export class ChipsSelectorComponent extends SubscriptionnerDirective {
   search$ = new BehaviorSubject('');
   idToLabel: { [id: string]: string | undefined } = {};
 
-  constructor(private cdr: ChangeDetectorRef, private i18n: PryI18nService) {
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private i18n: PryI18nService
+  ) {
     super();
 
     this.unusedItems$ = combineLatest([this.items$, this.usedItems$, this.search$]).pipe(
@@ -66,14 +63,6 @@ export class ChipsSelectorComponent extends SubscriptionnerDirective {
       this.usedItems$.next(this.usedItems$.getValue().filter((usedItem) => !this.areItemsEqual(usedItem, item)));
     }
     this.cdr.detectChanges();
-  }
-
-  isGeo(item: any) {
-    return typeof item === 'object'
-      ? 'metadata' in item
-        ? DatasourceUtils.isGeo(item as NamedQuery | Dataset)
-        : false
-      : false;
   }
 
   search($event: any) {

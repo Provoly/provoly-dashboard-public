@@ -12,14 +12,11 @@ import { BaseLayoutComponent } from './components/base-layout/base-layout.compon
 import { BaseMenuComponent } from './components/base-menu/base-menu.component';
 import { BaseToolboxActionComponent } from './components/base-toolbox-action/base-toolbox-action.component';
 import { BaseToolboxComponent } from './components/base-toolbox/base-toolbox.component';
-import { GetSecuredImagePipe } from './components/get-secured-image/get-secured-image.pipe';
 import { PryIconModule } from './components/icon/icon.module';
 import { PryModalStatusModule } from './components/modal-status/modal-status.module';
 import { PryNqColorSelectorComponent } from './components/nq-color-selector/nq-color-selector.component';
 import { PryOverlayModule } from './components/overlay/overlay.module';
 import { PrySelectImageComponent } from './components/select-image/select-image.component';
-import { TranslateIdPipe } from './components/translate-id/translate-id.pipe';
-import { TranslateItemToSymbolPipe } from './components/translate-item-to-symbol/translate-item-to-symbol.pipe';
 import { PryUploadComponent } from './components/upload/upload.component';
 import { PryI18nModule } from './i18n/i18n.module';
 import { PryI18nService } from './i18n/i18n.service';
@@ -50,7 +47,9 @@ import { TabGroupComponent } from './components/tabs/tab-group.component';
 import { TabComponent } from './components/tabs/tab.component';
 import { PRY_GEOAUTH_TOKEN, PryDefaultGeoAuthService } from './auth/geoAuth.service';
 import { EllipsisDirective } from './components/ellipsis.directive';
-import { ChipsSelectorComponent } from './components/chips-selector/chips-selector.component';
+import { TranslateIdPipe } from './pipes/translate-id/translate-id.pipe';
+import { TranslateItemToSymbolPipe } from './pipes/translate-item-to-symbol/translate-item-to-symbol.pipe';
+import { GetSecuredImagePipe } from './pipes/get-secured-image/get-secured-image.pipe';
 
 const SELECTORS = [
   TranslateIdPipe,
@@ -59,7 +58,6 @@ const SELECTORS = [
   BaseLayoutComponent,
   BaseMenuComponent,
   BaseToolboxComponent,
-  ChipsSelectorComponent,
   PryNqColorSelectorComponent,
   PryAccessDirective,
   PryUploadComponent,
