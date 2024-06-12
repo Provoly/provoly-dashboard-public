@@ -13,13 +13,13 @@ export const WRITE_ACCESS = 'WRITE';
 // GROUP UTIL METHODS
 
 export const getGroupLabel = (group: Group, i18n: PryI18nService): string => {
-  return group.system ? i18n.instant('@pry.share.groups.' + group.name) : group.name;
+  return group.system ? i18n.instant('@pry.share.groupLabels.' + group.name) : group.name;
 };
 
 export const getGroupLabelByName = (groupName: string, i18n: PryI18nService): string => {
-  return i18n.instant('@pry.share.groups.' + groupName).startsWith('@')
+  return i18n.instant('@pry.share.groupLabels.' + groupName).startsWith('@')
     ? groupName
-    : i18n.instant('@pry.share.groups.' + groupName);
+    : i18n.instant('@pry.share.groupLabels.' + groupName);
 };
 
 // DASHBOARD GROUP RIGHTS METHODS

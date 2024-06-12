@@ -306,11 +306,11 @@ export const enTranslations = {
     share: {
       private: 'Private',
       public: 'Public',
-      restricted: 'Restricted',
+      groups: 'Restricted',
       type: 'Visibility',
       users: 'Authorized users',
       noGroups: 'No group available',
-      groups: {
+      groupLabels: {
         ALL: 'Public',
         AUTHENTICATED: 'Connected users'
       },

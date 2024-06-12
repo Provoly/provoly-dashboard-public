@@ -311,10 +311,10 @@ export const frTranslations = {
     share: {
       private: 'Privé',
       public: 'Public',
-      restricted: 'Restreint',
+      groups: 'Restreint',
       type: 'Visibilité',
       users: 'Utilisateurs autorisés',
-      groups: {
+      groupLabels: {
         ALL: 'Tout le monde',
         AUTHENTICATED: 'Les utilisateurs connectés'
       },
@@ -359,7 +359,7 @@ export const frTranslations = {
         selectItem: 'Sélectionner la source de données',
         unselectItem: 'Désélectionner la source de données',
         noItemSelected: 'Aucune source de données sélectionnée'
-      },
+      }
     },
     errors: {
       default:

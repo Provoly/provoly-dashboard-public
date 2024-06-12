@@ -15,7 +15,7 @@ const groups = [
     id: '1',
     system: true,
     name: 'ALL',
-    label: '@pry.share.groups.ALL'
+    label: '@pry.share.groupLabels.ALL'
   },
   {
     id: '4',
@@ -27,7 +27,7 @@ const groups = [
     id: '11',
     system: true,
     name: 'CUSTOM-GROUP-2',
-    label: '@pry.share.groups.CUSTOM-GROUP-2'
+    label: '@pry.share.groupLabels.CUSTOM-GROUP-2'
   }
 ];
 
