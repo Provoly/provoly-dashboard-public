@@ -629,7 +629,10 @@ export class DashboardEffects {
           // si non trouvé : nouvelle page, première position suggérée
           const firstProposedLayout = WidgetPlacementUtils.placementOptions(newWidgetManifest, currentWindowLayout)[0];
 
-          manifestGlobal.windows.push({ widgets: [firstProposedLayout], grid: { layout: currentWindowLayout } });
+          manifestGlobal.windows.push({
+            widgets: [firstProposedLayout ?? { x: 1, y: 1, height: 1, width: 1 }],
+            grid: { layout: currentWindowLayout }
+          });
         }
 
         if (action.alert === undefined || action.alert === true) {
@@ -651,6 +654,99 @@ export class DashboardEffects {
         }
 
         return DashboardActions.updateManifest({ manifest: manifestGlobal, selectedIds });
+      })
+    )
+  );
+
+  moveWidget$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DashboardActions.moveWidget),
+      withLatestFrom(
+        this.store.select(DashboardSelectors.gridLayout),
+        this.store.select(DashboardSelectors.globalManifest),
+        this.store.select(DashboardSelectors.rank),
+        this.store.select(DashboardSelectors.dashboardCellParams),
+        this.store.select(DashboardSelectors.selectedItemIds)
+      ),
+      map(([action, layout, _globalManifest, rank, params, selectedIds]) => {
+        const manifestGlobal = JSON.parse(JSON.stringify(_globalManifest)) as GlobalManifest;
+
+        const newWindows = [...manifestGlobal.windows];
+
+        // Creating new current window manifest, without moved widget
+        const myNewWindow = {
+          ...newWindows[rank],
+          widgets: [...newWindows[rank].widgets]
+        };
+        const widget = myNewWindow.widgets.splice(action.widgetIndex, 1)[0];
+        newWindows[rank] = myNewWindow;
+
+        // Creating either a new window manifest or update the target one
+        const targetRank = action.targetIndex;
+        if (targetRank !== -1) {
+          if (!newWindows[targetRank]) {
+            newWindows[targetRank] = {
+              ...newWindows[rank],
+              widgets: [widget]
+            };
+          } else {
+            let found: { actualRank: number; widget: WidgetManifest } | null = null;
+            // Try to find a spot in windows (starting by current rank, then in others)
+            const sequence = WidgetPlacementUtils.swapArrayElements(
+              new Array(manifestGlobal.windows.length).fill(0).map((_, idx, array) => idx),
+              0,
+              rank
+            );
+            // Trying all placement options in target window
+            const windowLayout = manifestGlobal.windows[targetRank].grid?.layout ?? DashboardGridLayout.MANUAL;
+            if (windowLayout !== DashboardGridLayout.MANUAL) {
+              const options = WidgetPlacementUtils.placementOptions(widget, windowLayout);
+              if (!found) {
+                for (const option of options) {
+                  if (!found) {
+                    // Are we disjoint from all other widgets ?
+                    const isDisjointFromAll = (manifestGlobal.windows[targetRank].widgets ?? [])
+                      .map((widget) => WidgetPlacementUtils.areDisjoint(widget, option))
+                      .reduce((p, c) => p && c, true);
+                    if (isDisjointFromAll) {
+                      // Found a disjoint placement !
+                      found = { actualRank: targetRank, widget: option } as {
+                        actualRank: number;
+                        widget: WidgetManifest;
+                      };
+                    }
+                  }
+                }
+              }
+            } else {
+              // In manual mode, we should resolveCollisions but for now it's not (cause we only have inverted collisions right now)
+              found = { actualRank: targetRank, widget } as {
+                actualRank: number;
+                widget: WidgetManifest;
+              };
+            }
+
+            if (!!found) {
+              const placeWeFound = found as { actualRank: number; widget: WidgetManifest };
+              newWindows[placeWeFound.actualRank].widgets.push(placeWeFound.widget);
+            } else {
+              const currentWindowLayout = manifestGlobal.windows[rank].grid?.layout ?? DashboardGridLayout.FULL;
+
+              // si non trouvé : nouvelle page, première position suggérée
+              const firstProposedLayout = WidgetPlacementUtils.placementOptions(widget, currentWindowLayout)[0];
+
+              newWindows.push({ widgets: [firstProposedLayout ?? widget], grid: { layout: currentWindowLayout } });
+            }
+          }
+        } else {
+          // create new window to welcome this widget
+          newWindows.push({
+            ...newWindows[rank],
+            widgets: [widget]
+          });
+        }
+
+        return DashboardActions.updateManifest({ manifest: { ...manifestGlobal, windows: newWindows }, selectedIds });
       })
     )
   );

@@ -223,51 +223,6 @@ const internalReducer = createReducer<DashboardState>(
       }
     }
   })),
-  on(DashboardActions.moveWidget, (state, action) => {
-    const myRank = state.manifests.tenants.indexOf(state.manifests.sender);
-    const newWindows = [...state.manifests.manifest.windows];
-
-    // Creating new current window manifest, without moved widget
-    const myNewWindow = {
-      ...newWindows[myRank],
-      widgets: [...newWindows[myRank].widgets]
-    };
-    const widget = myNewWindow.widgets.splice(action.widgetIndex, 1)[0];
-    newWindows[myRank] = myNewWindow;
-
-    // Creating either a new window manifest or update the target one
-    const targetRank = action.targetIndex;
-    if (targetRank !== -1) {
-      if (!newWindows[targetRank]) {
-        newWindows[targetRank] = {
-          ...newWindows[myRank],
-          widgets: [widget]
-        };
-      } else {
-        newWindows[targetRank] = {
-          ...newWindows[targetRank],
-          widgets: [...(newWindows[targetRank].widgets ?? []), widget]
-        };
-      }
-    } else {
-      // create new window to welcome this widget
-      newWindows.push({
-        ...newWindows[myRank],
-        widgets: [widget]
-      });
-    }
-
-    return {
-      ...state,
-      manifests: {
-        ...state.manifests,
-        manifest: {
-          ...state.manifests.manifest,
-          windows: newWindows
-        }
-      }
-    };
-  }),
   on(DashboardActions.maximizeWidget, (state, action) => {
     const myRank = state.manifests.tenants.indexOf(state.manifests.sender);
     const newWindows = JSON.parse(JSON.stringify(state.manifests.manifest.windows));
