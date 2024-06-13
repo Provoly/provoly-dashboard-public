@@ -289,7 +289,8 @@ export class DashboardEffects {
         DashboardActions.explore,
         DashboardActions.detail,
         DashboardActions.restoreInitialManifest,
-        DashboardActions.createTab
+        DashboardActions.createTab,
+        DashboardActions.moveWidget
       ),
       withLatestFrom(this.store.select(DashboardSelectors.rank)),
       filter(([action, rank]) => rank === 0),
