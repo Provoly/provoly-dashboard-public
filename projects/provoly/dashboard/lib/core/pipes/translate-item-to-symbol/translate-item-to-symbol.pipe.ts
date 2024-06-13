@@ -11,11 +11,8 @@ export class TranslateItemToSymbolPipe implements PipeTransform {
 
   transform(value: Item, ...args: unknown[]): Observable<string> {
     return from(
-      new Promise<string>(
-        (resolve) =>
-          this.symbolService
-            .getSymbol(value)
-            .then((canvas) => resolve(canvas.toDataURL('image/png'))) as Promise<string>
+      new Promise<string>((resolve) =>
+        this.symbolService.getSymbol(value).then((canvas) => resolve(canvas.toDataURL('image/png')))
       )
     );
   }

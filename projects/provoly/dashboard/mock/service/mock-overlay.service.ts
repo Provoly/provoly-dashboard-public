@@ -11,10 +11,19 @@ class MockOverlayPosition {
   global(): any {
     return this.globalPosition;
   }
+
+  flexibleConnectedTo = () => this;
+  withPush = () => this;
+  withPositions = () => this;
+}
+
+class MockScrollStrategyOptions {
+  reposition = () => this;
 }
 
 export class MockOverlay {
   overlayPosition = new MockOverlayPosition();
+  scrollStrategies = new MockScrollStrategyOptions();
 
   create(...args: any[]): any {
     return {
@@ -28,3 +37,9 @@ export class MockOverlay {
     return this.overlayPosition;
   }
 }
+
+export const mockOverlayRef = {
+  backdropClick: () => of({}),
+  attach: () => undefined,
+  dispose: () => undefined
+};

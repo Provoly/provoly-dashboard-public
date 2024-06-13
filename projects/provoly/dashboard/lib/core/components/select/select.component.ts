@@ -281,7 +281,7 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
         } else {
           this.overlayRef?.dispose();
           this.overlayRef = undefined;
-          this.focusSelect();
+          this.returnFocus();
         }
       }
     }
@@ -305,8 +305,12 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
     this.focused = !this.focused;
   }
 
-  focusSelect() {
-    return this.autocomplete ? this.input?.nativeElement.focus() : this.selectElement?.nativeElement.focus();
+  returnFocus() {
+    return this.autocomplete ? this.focusInput() : this.selectElement?.nativeElement.focus();
+  }
+
+  focusInput() {
+    this.input?.nativeElement.focus();
   }
 
   private getOverlayConfig(): OverlayConfig {
@@ -349,7 +353,7 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
         origin,
         this.autocomplete,
         () => this.toggleFocus(),
-        () => this.focusSelect()
+        () => this.focusInput()
       );
       this.inhibition();
     }

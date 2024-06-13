@@ -584,17 +584,16 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                 };
               };
               Object.values(rs.items).forEach((items) => {
-                items.forEach(
-                  (item): Promise<void> =>
-                    Promise.all([
-                      this.symbolService.getSymbolAsIconStyle(item),
-                      this.symbolService.getSymbolAsIconStyle(item, true)
-                    ]).then(([style, bStyle]) => {
-                      result[item.id] = { classic: style, bordered: bStyle };
-                      if (Object.keys(result).length >= total) {
-                        resolve(result);
-                      }
-                    })
+                items.forEach((item) =>
+                  Promise.all([
+                    this.symbolService.getSymbolAsIconStyle(item),
+                    this.symbolService.getSymbolAsIconStyle(item, true)
+                  ]).then(([style, bStyle]) => {
+                    result[item.id] = { classic: style, bordered: bStyle };
+                    if (Object.keys(result).length >= total) {
+                      resolve(result);
+                    }
+                  })
                 );
               });
             })
@@ -1672,7 +1671,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       }
       // update groups on ol layers
       if (newName !== undefined) {
-        this.mapLayers.map((layer) => {
+        this.mapLayers.forEach((layer) => {
           if (layer.getProperties()['group'] === name) layer.set('group', newName);
         });
       }

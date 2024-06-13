@@ -7,7 +7,7 @@ export class SelectA11yService {
     this.toggle = toggleCallback;
   }
 
-  onFocusChange(origin: FocusOrigin, autocomplete: boolean, toggleFocus: () => void, focusSelect: () => void) {
+  onFocusChange(origin: FocusOrigin, autocomplete: boolean, toggleFocus: () => void, focusInput: () => void) {
     toggleFocus();
     switch (origin) {
       case 'mouse':
@@ -17,7 +17,7 @@ export class SelectA11yService {
         break;
       case 'keyboard':
         if (autocomplete) {
-          focusSelect();
+          focusInput();
         }
         break;
     }
@@ -82,11 +82,12 @@ export class SelectA11yService {
           (optionDivRef.nextElementSibling as HTMLDivElement).focus();
         }
         if (last && autocomplete) {
-          // with autocomplete=true, focus is not trapped, so prevent tabbing out of list
+          // with autocomplete=true, focus is not trapped, so prevent navigating out of list
           event.preventDefault();
         }
         break;
       case 'Tab':
+        // with autocomplete=true, focus is not trapped, so prevent tabbing out of list
         if (last && autocomplete) {
           event.preventDefault();
         }
