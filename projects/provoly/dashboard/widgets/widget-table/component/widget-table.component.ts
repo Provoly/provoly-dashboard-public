@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
+  ALIGNMENT_OPTIONS,
   baseItemProperties,
   Class,
   ClassActions,
@@ -11,7 +12,7 @@ import {
   ContextMenuSelectors,
   DashboardActions,
   DashboardSelectors,
-  DataWidgetComponent,
+  DataWidgetComponent, DEFAULT_TABLE_WIDGET_STYLE,
   Field,
   FieldSelectors,
   FieldType,
@@ -19,7 +20,7 @@ import {
   ItemUtils,
   OrderValue,
   ResultOrder,
-  TableWidgetOptions,
+  TableWidgetOptions, TableWidgetStyle,
   WIDGET_HEADER_HEIGHT
 } from '@provoly/dashboard';
 import equal from 'fast-deep-equal/es6';
@@ -63,7 +64,11 @@ export class WidgetTableComponent extends DataWidgetComponent {
   pagination$: Observable<Pagination>;
   isOpen = false;
 
-  constructor(store: Store<any>, el: ElementRef, private cdr: ChangeDetectorRef) {
+  constructor(
+    store: Store<any>,
+    el: ElementRef,
+    private cdr: ChangeDetectorRef
+  ) {
     super(store, el);
 
     this.classes$ = this.store.select(ClassSelectors.classes);
@@ -73,7 +78,7 @@ export class WidgetTableComponent extends DataWidgetComponent {
         ([resultSet, classes, fields]) =>
           [
             ...ItemUtils.getFieldsForClasses(Object.keys(resultSet.items), classes, fields),
-            ...baseItemProperties.map((p) => ({ name: p, id: p } as Field))
+            ...baseItemProperties.map((p) => ({ name: p, id: p }) as Field)
           ] as Field[]
       ),
       map((fields) => fields.filter((field) => field.type !== FieldType.RAW))
@@ -97,6 +102,7 @@ export class WidgetTableComponent extends DataWidgetComponent {
             attributeId: attributes.find((attr) => attr.technicalName === property.technicalName)?.id
           })) as ColumnDefinition[];
         }
+        options.style = options.style ?? DEFAULT_TABLE_WIDGET_STYLE.value;
         return options;
       })
     );
@@ -315,6 +321,20 @@ export class WidgetTableComponent extends DataWidgetComponent {
       });
   }
 
+  updateStyle($event: string | boolean, prop: keyof TableWidgetStyle) {
+    if (this.optionsCopy && this.optionsCopy.style) {
+      switch (prop) {
+        case 'headerTextAlign':
+        case 'cellTextAlign':
+          this.optionsCopy.style[prop] = $event as string;
+          break;
+        case 'showVerticalSeparator':
+          this.optionsCopy.style[prop] = $event as boolean;
+          break;
+      }
+    }
+  }
+
   private nextOrder(column: ColumnDefinition, actualOrder: ResultOrder | undefined): OrderValue {
     if (!actualOrder || actualOrder.attribute !== column.attributeId) {
       return 'asc';
@@ -329,4 +349,6 @@ export class WidgetTableComponent extends DataWidgetComponent {
   goToPage(number: number) {
     this.actualPage$.next(number);
   }
+
+  protected readonly ALIGNMENT_OPTIONS = ALIGNMENT_OPTIONS;
 }

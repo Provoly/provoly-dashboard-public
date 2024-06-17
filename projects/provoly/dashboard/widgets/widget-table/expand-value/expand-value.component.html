@@ -1,4 +1,4 @@
-<div class="a-expandable-value" [class.-right]="(firstValue | formatNumber).isNumber">
+<div class="a-expandable-value">
   <span class="a-expandable-value__initial">{{ (firstValue | formatNumber).text }}{{ isArray ? ' (*)' : '' }}</span>
   <div class="a-expandable-value__expanded" *ngIf="isArray">
     <div *ngFor="let value of rest">

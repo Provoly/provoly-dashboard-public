@@ -1,7 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { ClassSelectors, DashboardSelectors, FieldSelectors, TableWidgetOptions } from '@provoly/dashboard';
+import {
+  ClassSelectors,
+  DashboardSelectors,
+  DEFAULT_TABLE_WIDGET_STYLE,
+  FieldSelectors,
+  TableWidgetOptions
+} from '@provoly/dashboard';
 import { MockPryWidgetTableCssComponent } from '@provoly/dashboard/mock/style/mock-pry-widget-table-css';
 import { hot } from 'jest-marbles';
 import { of } from 'rxjs';
@@ -118,7 +124,7 @@ describe('WidgetTableComponent', () => {
       widgetIndex: 0,
       manifest: {
         layout: { height: 1, width: 1, x: 1, y: 1 },
-        options: { columns: [] },
+        options: { columns: [], style: DEFAULT_TABLE_WIDGET_STYLE.value },
         type: 'placeholder'
       }
     });

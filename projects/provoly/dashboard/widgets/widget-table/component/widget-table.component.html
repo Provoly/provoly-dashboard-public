@@ -1,212 +1,251 @@
 <pry-widget-table-css></pry-widget-table-css>
 <div class="o-widget o-widget--table">
-  <pry-widget-header
-    [datasourceIds]="(datasourceIds$ | async) ?? []"
-    *ngIf="displayHeader$ | async"
-    [widgetIndex]="widgetIndex"
-    [manifest]="manifest"
-    (manifestModified)="manifestModified.emit($event)"
-    #header
-    [headerOptions]="(displayHeader$ | async) ?? {}"
-    (click)="refresh()"
-  >
-    <pry-settings
-      (click)="refresh()"
-      (saveTriggered)="emitManifest()"
-      (changeTitle)="changeWidgetTitle($event)"
-      [headerPresent]="displayHeader$ | async"
+  @if (displayHeader$ | async) {
+    <pry-widget-header
+      [datasourceIds]="(datasourceIds$ | async) ?? []"
       [widgetIndex]="widgetIndex"
-      [header]="header"
-      [open$]="open$"
-      (triggerClick)="this.refresh()"
-      class="o-settings"
+      [manifest]="manifest"
+      (manifestModified)="manifestModified.emit($event)"
+      #header
+      [headerOptions]="(displayHeader$ | async) ?? {}"
+      (click)="refresh()"
     >
-      <div class="o-settings__popup__content__actions">
-        <button type="button" class="a-btn a-btn--icon-text -link-like" (click)="addColumn()">
-          <pry-icon iconSvg="post_add"></pry-icon>
-          {{ '@pry.widget.table.addColumn' | i18n }}
-        </button>
-      </div>
-
-      <div
-        *ngFor="let columnDef of optionsCopy?.columns ?? []; let i = index"
-        class="o-settings__popup__content__fields"
+      <pry-settings
         (click)="refresh()"
+        (saveTriggered)="emitManifest()"
+        (changeTitle)="changeWidgetTitle($event)"
+        [headerPresent]="displayHeader$ | async"
+        [widgetIndex]="widgetIndex"
+        [header]="header"
+        [open$]="open$"
+        (triggerClick)="this.refresh()"
+        class="o-settings"
       >
-        <div class="o-settings__popup__content__fields__head">
-          <div class="m-btn-group">
-            <button type="button" class="a-btn a-btn--icon-only" (click)="invertLayers(i, i - 1)" *ngIf="i > 0">
-              <pry-icon iconSvg="fleche_haut"></pry-icon>
-              <span class="u-visually-hidden">{{ '@pry.action.moveUp' | i18n }}</span>
-            </button>
-            <button
-              type="button"
-              class="a-btn a-btn--icon-only"
-              (click)="invertLayers(i, i + 1)"
-              *ngIf="i < (optionsCopy?.columns?.length ?? 0) - 1"
-            >
-              <pry-icon iconSvg="fleche_bas"></pry-icon>
-              <span class="u-visually-hidden">{{ '@pry.action.moveDown' | i18n }}</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="o-settings__popup__content__fields__content">
+        @if (optionsCopy && optionsCopy.style) {
           <div class="m-form-label-field">
-            <label class="a-label" for="table_property">{{ '@pry.widget.table.property' | i18n }}</label>
+            <label class="a-label" for="table_style_headerTextAlign">Align header text :</label>
             <pry-select
-              (click)="refresh()"
-              (ngModelChange)="changePropertyName($event, columnDef)"
-              [items]="properties$ | async"
-              [ngModel]="columnDef.property"
-              bindLabel="label"
-              bindValue="property"
-              id="table_property"
+              [items]="ALIGNMENT_OPTIONS"
+              [ngModel]="optionsCopy.style.headerTextAlign"
+              (ngModelChange)="updateStyle($event, 'headerTextAlign')"
+              id="table_style_headerTextAlign"
             ></pry-select>
           </div>
-
           <div class="m-form-label-field">
-            <label class="a-label" for="table_label">{{ '@pry.widget.table.label' | i18n }}</label>
-            <input
-              id="table_label"
-              class="a-form-field"
-              type="text"
-              (input)="changeLabel($event, columnDef)"
-              [value]="columnDef.label"
-            />
+            <label class="a-label" for="table_style_cellTextAlign">Align cell text :</label>
+            <pry-select
+              [items]="ALIGNMENT_OPTIONS"
+              [ngModel]="optionsCopy.style.cellTextAlign"
+              (ngModelChange)="updateStyle($event, 'cellTextAlign')"
+              id="table_style_cellTextAlign"
+            ></pry-select>
           </div>
+          <div class="m-form-label-field">
+            <label class="a-label" for="table_style_verticalSeparator">Vertical separator :</label>
+            <pry-checkbox
+              [ngModel]="optionsCopy.style.showVerticalSeparator"
+              (ngModelChange)="updateStyle($event, 'showVerticalSeparator')"
+              id="table_style_verticalSeparator"
+            ></pry-checkbox>
+          </div>
+        }
+
+        <div class="o-settings__popup__content__actions">
+          <button type="button" class="a-btn a-btn--icon-text -link-like" (click)="addColumn()">
+            <pry-icon iconSvg="post_add"></pry-icon>
+            {{ '@pry.widget.table.addColumn' | i18n }}
+          </button>
         </div>
-        <button
-          (click)="deleteColumn(i)"
-          aria-label="delete"
-          type="button"
-          class="a-btn a-btn--icon-text -link-like"
-          data-func="delete"
-        >
-          <pry-icon iconSvg="delete" [width]="19" [height]="19"></pry-icon>
-          <span>{{ '@pry.widget.table.deleteColumn' | i18n }}</span>
-        </button>
-      </div>
-    </pry-settings>
-  </pry-widget-header>
+
+        @for (columnDef of optionsCopy?.columns ?? []; track columnDef.attributeId; let i = $index) {
+          <div class="o-settings__popup__content__fields" (click)="refresh()">
+            <div class="o-settings__popup__content__fields__head">
+              <div class="m-btn-group">
+                @if (i > 0) {
+                  <button type="button" class="a-btn a-btn--icon-only" (click)="invertLayers(i, i - 1)">
+                    <pry-icon iconSvg="fleche_haut"></pry-icon>
+                    <span class="u-visually-hidden">{{ '@pry.action.moveUp' | i18n }}</span>
+                  </button>
+                }
+                @if (i < (optionsCopy?.columns?.length ?? 0) - 1) {
+                  <button type="button" class="a-btn a-btn--icon-only" (click)="invertLayers(i, i + 1)">
+                    <pry-icon iconSvg="fleche_bas"></pry-icon>
+                    <span class="u-visually-hidden">{{ '@pry.action.moveDown' | i18n }}</span>
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div class="o-settings__popup__content__fields__content">
+              <div class="m-form-label-field">
+                <label class="a-label" for="table_property">{{ '@pry.widget.table.property' | i18n }}</label>
+                <pry-select
+                  (click)="refresh()"
+                  (ngModelChange)="changePropertyName($event, columnDef)"
+                  [items]="properties$ | async"
+                  [ngModel]="columnDef.property"
+                  bindLabel="label"
+                  bindValue="property"
+                  id="table_property"
+                ></pry-select>
+              </div>
+
+              <div class="m-form-label-field">
+                <label class="a-label" for="table_label">{{ '@pry.widget.table.label' | i18n }}</label>
+                <input
+                  id="table_label"
+                  class="a-form-field"
+                  type="text"
+                  (input)="changeLabel($event, columnDef)"
+                  [value]="columnDef.label"
+                />
+              </div>
+            </div>
+            <button
+              (click)="deleteColumn(i)"
+              aria-label="delete"
+              type="button"
+              class="a-btn a-btn--icon-text -link-like"
+              data-func="delete"
+            >
+              <pry-icon iconSvg="delete" [width]="19" [height]="19"></pry-icon>
+              <span>{{ '@pry.widget.table.deleteColumn' | i18n }}</span>
+            </button>
+          </div>
+        }
+      </pry-settings>
+    </pry-widget-header>
+  }
 
   <div class="a-table-wrapper">
-    <ng-container *ngIf="pagination$ | async as pagination">
-      <ng-container *ngIf="pagination?.items ?? [] as allObjects">
-        <div
-          class="no-result"
-          *ngIf="pagination.noFillersItems === 0"
-          [style.height.%]="pagination.totalPages > 0 ? 80 : 100"
-        >
-          <img
-            class="no-result__search"
-            src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
-            alt="{{ '@pry.widget.table.empty' | i18n }}"
-            aria-hidden="true"
-          />
-          <span class="no-result__text">{{ '@pry.widget.table.empty' | i18n }}</span>
-        </div>
-
-        <ng-container *ngIf="pagination.noFillersItems > 0">
-          <ng-container *ngIf="(selectedIds$ | async) ?? [] as selectedIds">
-            <ng-container *ngIf="(columns$ | async) ?? [] as columns">
-              <table class="a-table" [attr.aria-label]="'@pry.widget.table.description' | i18n">
+    @if (pagination$ | async; as pagination) {
+      @if (pagination?.items ?? []; as allObjects) {
+        @if (pagination.noFillersItems === 0) {
+          <div class="no-result" [style.height.%]="pagination.totalPages > 0 ? 80 : 100">
+            <img
+              class="no-result__search"
+              src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
+              alt="{{ '@pry.widget.table.empty' | i18n }}"
+              aria-hidden="true"
+            />
+            <span class="no-result__text">{{ '@pry.widget.table.empty' | i18n }}</span>
+          </div>
+        } @else if (pagination.noFillersItems > 0) {
+          @if ((selectedIds$ | async) ?? []; as selectedIds) {
+            @if ((columns$ | async) ?? []; as columns) {
+              <table
+                class="a-table"
+                [class.-show-vertical-separator]="optionsCopy?.style?.showVerticalSeparator"
+                [attr.aria-label]="'@pry.widget.table.description' | i18n"
+              >
                 <thead>
                   <tr>
-                    <th *ngIf="allObjects?.length ?? 0 > 0">
-                      <pry-checkbox [ngModel]="areAllSelected" (ngModelChange)="selectAll($event)"></pry-checkbox>
-                    </th>
-                    <th *ngFor="let column of columns; let i = index" resizable (click)="setOrder(column)">
-                      <span>{{ column.label }}</span>
-                      <ng-container *ngIf="quickOrder$ | async as quickOrder">
-                        <ng-container *ngIf="quickOrder.attribute === column.attributeId">
-                          <pry-icon
-                            [iconSvg]="quickOrder.asc ? 'chevron_top' : 'chevron_bottom'"
-                            [height]="12"
-                            [width]="12"
-                          ></pry-icon>
-                        </ng-container>
-                      </ng-container>
-                    </th>
+                    @if (allObjects?.length ?? 0 > 0) {
+                      <th>
+                        <pry-checkbox [ngModel]="areAllSelected" (ngModelChange)="selectAll($event)"></pry-checkbox>
+                      </th>
+                    }
+                    @for (column of columns; track column.attributeId; let i = $index) {
+                      <th
+                        resizable
+                        (click)="setOrder(column)"
+                        [ngClass]="'u-txt-' + optionsCopy?.style?.headerTextAlign"
+                      >
+                        <span>{{ column.label }}</span>
+                        @if (quickOrder$ | async; as quickOrder) {
+                          @if (quickOrder.attribute === column.attributeId) {
+                            <pry-icon
+                              [iconSvg]="quickOrder.asc ? 'chevron_top' : 'chevron_bottom'"
+                              [height]="12"
+                              [width]="12"
+                            ></pry-icon>
+                          }
+                        }
+                      </th>
+                    }
                   </tr>
                 </thead>
                 <tbody>
-                  <tr
-                    *ngFor="let item of allObjects"
-                    [class.is-selected]="selectedIds.includes(item.id)"
-                    [class.context-menu-selected]="contextMenuClickedId === item.id && (isContextMenuOpened$ | async)"
-                    (contextmenu)="contextMenu($event, item)"
-                    detachRow
-                    (selectedValue)="selection($event, item)"
-                    [class.filler]="item.metadata!['__widget-table-filler']"
-                  >
-                    <td class="checkbox-wrapper">
-                      <pry-checkbox [ngModel]="selectedIds.includes(item.id)"></pry-checkbox>
-                    </td>
-                    <td *ngFor="let column of columns" class="u-ellipsis">
-                      <ng-container *ngIf="column.property === 'metadata'">
-                        <pry-metadata [item]="item"></pry-metadata>
-                      </ng-container>
-                      <ng-container *ngIf="column.property === 'oClass'">
-                        <p class="content-img">
-                          <img
-                            [height]="25"
-                            [width]="25"
-                            [src]="item | translateItemToSymbol | async"
-                            [alt]="item.oClass | translateId : { type: 'class', output: 'name' } | async"
-                          />
-                        </p>
-                      </ng-container>
-                      <ng-container *ngIf="!['metadata', 'oClass'].includes(column.property)">
-                        <pry-expand-value [value]="item | getValue : column.property | async"></pry-expand-value>
-                      </ng-container>
-                    </td>
-                  </tr>
+                  @for (item of allObjects; track item.id) {
+                    <tr
+                      [class.is-selected]="selectedIds.includes(item.id)"
+                      [class.context-menu-selected]="contextMenuClickedId === item.id && (isContextMenuOpened$ | async)"
+                      (contextmenu)="contextMenu($event, item)"
+                      detachRow
+                      (selectedValue)="selection($event, item)"
+                      [class.filler]="item.metadata!['__widget-table-filler']"
+                    >
+                      <td class="checkbox-wrapper">
+                        <pry-checkbox [ngModel]="selectedIds.includes(item.id)"></pry-checkbox>
+                      </td>
+                      @for (column of columns; track column.attributeId) {
+                        <td class="u-ellipsis" [ngClass]="'u-txt-' + optionsCopy?.style?.cellTextAlign">
+                          @if (column.property === 'metadata') {
+                            <pry-metadata [item]="item"></pry-metadata>
+                          }
+                          @if (column.property === 'oClass') {
+                            <p class="content-img">
+                              <img
+                                [height]="25"
+                                [width]="25"
+                                [src]="item | translateItemToSymbol | async"
+                                [alt]="item.oClass | translateId: { type: 'class', output: 'name' } | async"
+                              />
+                            </p>
+                          }
+                          @if (!['metadata', 'oClass'].includes(column.property)) {
+                            <pry-expand-value [value]="item | getValue: column.property | async"></pry-expand-value>
+                          }
+                        </td>
+                      }
+                    </tr>
+                  }
                 </tbody>
               </table>
-            </ng-container>
-          </ng-container>
-        </ng-container>
-
-        <div class="a-table-pagination" *ngIf="pagination.totalPages > 0">
-          <div class="a-table-pagination__spacing">
-            <div>
-              <button (click)="goToPage(0)" [disabled]="pagination.page <= 0">
-                <pry-icon iconSvg="skip-left-fill"></pry-icon>
-              </button>
-            </div>
-            <div>
-              <button (click)="goToPage(pagination.page - 1)" [disabled]="pagination.page <= 0">
-                <pry-icon iconSvg="arrow-left-s-fill"></pry-icon>
-              </button>
-            </div>
-            <div class="a-table-pagination__spacing__label">
-              <p>{{ pagination.page + 1 }} / {{ pagination.loadedPages }}</p>
-            </div>
-            <div>
-              <button
-                (click)="goToPage(pagination.page + 1)"
-                [disabled]="pagination.page + 1 >= pagination.loadedPages"
-              >
-                <pry-icon iconSvg="arrow-right-s-fill"></pry-icon>
-              </button>
-            </div>
-            <div>
-              <button
-                (click)="goToPage(pagination.loadedPages - 1)"
-                [disabled]="pagination.page + 1 >= pagination.loadedPages"
-              >
-                <pry-icon iconSvg="skip-right-fill"></pry-icon>
-              </button>
-            </div>
-            <div class="a-table-pagination__spacing__label">
-              ({{
-                '@pry.widget.table.remaining' | i18n : { remaining: pagination.totalPages - pagination.loadedPages }
-              }})
+            }
+          }
+        }
+        @if (pagination.totalPages > 0) {
+          <div class="a-table-pagination">
+            <div class="a-table-pagination__spacing">
+              <div>
+                <button (click)="goToPage(0)" [disabled]="pagination.page <= 0">
+                  <pry-icon iconSvg="skip-left-fill"></pry-icon>
+                </button>
+              </div>
+              <div>
+                <button (click)="goToPage(pagination.page - 1)" [disabled]="pagination.page <= 0">
+                  <pry-icon iconSvg="arrow-left-s-fill"></pry-icon>
+                </button>
+              </div>
+              <div class="a-table-pagination__spacing__label">
+                <p>{{ pagination.page + 1 }} / {{ pagination.loadedPages }}</p>
+              </div>
+              <div>
+                <button
+                  (click)="goToPage(pagination.page + 1)"
+                  [disabled]="pagination.page + 1 >= pagination.loadedPages"
+                >
+                  <pry-icon iconSvg="arrow-right-s-fill"></pry-icon>
+                </button>
+              </div>
+              <div>
+                <button
+                  (click)="goToPage(pagination.loadedPages - 1)"
+                  [disabled]="pagination.page + 1 >= pagination.loadedPages"
+                >
+                  <pry-icon iconSvg="skip-right-fill"></pry-icon>
+                </button>
+              </div>
+              <div class="a-table-pagination__spacing__label">
+                ({{
+                  '@pry.widget.table.remaining' | i18n: { remaining: pagination.totalPages - pagination.loadedPages }
+                }})
+              </div>
             </div>
           </div>
-        </div>
-      </ng-container>
-    </ng-container>
+        }
+      }
+    }
   </div>
 </div>

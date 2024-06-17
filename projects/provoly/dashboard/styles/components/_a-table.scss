@@ -38,12 +38,14 @@
       th {
         height: toRem(60);
         font-weight: 700;
-        text-align: left;
         cursor: pointer;
 
         .content {
           display: flex;
           flex-direction: row;
+          & > span {
+            width: 100%;
+          }
         }
       }
     }
@@ -99,7 +101,6 @@
     th {
       padding-top: toRem(12);
       padding-bottom: toRem(12);
-      text-align: left;
     }
   }
 
@@ -116,7 +117,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: fixed;
+    position: absolute;
 
     &__spacing {
       display: flex;
@@ -127,6 +128,12 @@
         margin-top: toRem(5);
         height: toRem(35);
       }
+    }
+  }
+
+  &.-show-vertical-separator {
+    td + td {
+      border-left: 1px solid;
     }
   }
 }

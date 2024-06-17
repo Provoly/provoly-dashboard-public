@@ -11,10 +11,6 @@
     z-index: 0;
   }
 
-  &.-right {
-    text-align: right;
-  }
-
   &__expanded {
     display: block;
     position: absolute;
@@ -27,7 +23,6 @@
     opacity: 0;
     border-radius: toRem(4);
     box-shadow: 1px 1px 5px 1px rgb(0, 0, 0, 0.2);
-    text-align: center;
     pointer-events: none;
     transition: opacity 70ms linear;
 

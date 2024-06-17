@@ -46,4 +46,10 @@
       }
     }
   }
+
+  &.-show-vertical-separator {
+    td + td {
+      border-left-color: themed($theme-map, 'color', 'primary', 300);
+    }
+  }
 }
