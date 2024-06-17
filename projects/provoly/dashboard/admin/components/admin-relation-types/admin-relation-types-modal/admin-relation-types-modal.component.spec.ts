@@ -10,11 +10,11 @@ import {
   RelationTypesActions,
   RelationTypesSelectors
 } from '@provoly/dashboard';
-import { of } from 'rxjs';
 import { relationTypes } from '../../../../mock/data/mockItemAdmin';
 import { MockTranslatePipe } from '../../../../mock/pipe/mock-translate.pipe';
 import { routes } from '../../../admin-routing.module';
 import { AdminRelationTypesModalComponent } from './admin-relation-types-modal.component';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 jest.mock('uuid', () => ({ v4: () => 'linkId' }));
 
@@ -22,13 +22,6 @@ describe('AdminLinkModalComponent', () => {
   let component: AdminRelationTypesModalComponent;
   let fixture: ComponentFixture<AdminRelationTypesModalComponent>;
   let store: MockStore<AdminRelationTypesModalComponent>;
-  let overlay: Overlay;
-
-  let mockOverlayRef = {
-    backdropClick: () => of({}),
-    attach: () => undefined,
-    dispose: () => undefined
-  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -43,12 +36,7 @@ describe('AdminLinkModalComponent', () => {
             }
           ]
         }),
-        {
-          provide: Overlay,
-          useValue: {
-            create: () => mockOverlayRef
-          }
-        }
+        { provide: Overlay, useValue: MockOverlay }
       ],
       imports: [FormsModule, ReactiveFormsModule, RouterTestingModule.withRoutes(routes)]
     }).compileComponents();
@@ -57,7 +45,6 @@ describe('AdminLinkModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AdminRelationTypesModalComponent);
     store = TestBed.inject(MockStore);
-    overlay = TestBed.inject(Overlay);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

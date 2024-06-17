@@ -2,7 +2,7 @@ import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { PRY_ACCESS_GUARD, PryDefaultAccessGuard, PryI18nService, PrySelectModule } from '@provoly/dashboard';
+import { PRY_ACCESS_GUARD, PryDefaultAccessGuard, PrySelectModule } from '@provoly/dashboard';
 import { links } from '../../../../mock/data/mockItemAdmin';
 import { MockI18nPipe } from '../../../../mock/pipe/mock-i18n.pipe';
 import { MockSortPipe } from '../../../../mock/pipe/mock-sort.pipe';
@@ -13,7 +13,6 @@ import { LinksSelectors } from '../store/links.selectors';
 import { AdminLinksNewComponent } from './admin-links-new.component';
 
 describe('AdminLinksNewComponent', () => {
-  PryI18nService.warn = false;
   let component: AdminLinksNewComponent;
   let fixture: ComponentFixture<AdminLinksNewComponent>;
   let store: MockStore<AdminLinksNewComponent>;

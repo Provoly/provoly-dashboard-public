@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ClassSelectors, FIELD_UUID, PRY_ACCESS_GUARD, PryDefaultAccessGuard } from '@provoly/dashboard';
-import { of } from 'rxjs';
 import { classes } from '../../../../mock/data/mockItemAdmin';
 import { MockPryAccessDirective } from '../../../../mock/directive/mock-pry-access.directive';
 import { MockGetSecuredImagePipe } from '../../../../mock/pipe/mock-get-secured-image.pipe';
@@ -16,6 +15,7 @@ import { AdminClassActions } from '../store/admin-class.actions';
 
 import { AdminClassesFormComponent } from './admin-classes-form.component';
 import { MockPrySelectComponent } from '@provoly/dashboard/mock/components/mock-pry-select.component';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 jest.mock('uuid', () => ({ v4: () => 'adfd01fb-309b-4e1c-9117-44d003f5d7fc' }));
 
@@ -31,13 +31,6 @@ describe('AdminClassesFormComponent', () => {
   let component: AdminClassesFormComponent;
   let fixture: ComponentFixture<AdminClassesFormComponent>;
   let store: MockStore<any>;
-  let overlay: Overlay;
-
-  let mockOverlayRef = {
-    backdropClick: () => of({}),
-    attach: () => undefined,
-    dispose: () => undefined
-  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -60,12 +53,7 @@ describe('AdminClassesFormComponent', () => {
             }
           ]
         }),
-        {
-          provide: Overlay,
-          useValue: {
-            create: () => mockOverlayRef
-          }
-        }
+        { provide: Overlay, useValue: MockOverlay }
       ],
       imports: [FormsModule, ReactiveFormsModule, RouterTestingModule.withRoutes(routes)]
     }).compileComponents();
@@ -75,7 +63,6 @@ describe('AdminClassesFormComponent', () => {
     fixture = TestBed.createComponent(AdminClassesFormComponent);
     component = fixture.componentInstance;
     store = TestBed.inject(MockStore);
-    overlay = TestBed.inject(Overlay);
     fixture.detectChanges();
   });
 

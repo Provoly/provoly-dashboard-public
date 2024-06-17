@@ -15,12 +15,13 @@ import { MockTranslatePipe } from '@provoly/dashboard/mock/pipe/mock-translate.p
 import { MockPryRestitutionListCssComponent } from '@provoly/dashboard/mock/style/mock-pry-restitution-css';
 import { PryRestitutionComponent } from '@provoly/dashboard/restitution';
 import { of } from 'rxjs';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 describe('PryRestitution', () => {
   let component: PryRestitutionComponent;
   let fixture: ComponentFixture<PryRestitutionComponent>;
   let store: MockStore;
-  let overlay: Overlay;
   let service: ToolboxMenuService;
   let mockToolboxMenuService = {
     menuStructure$: of([
@@ -55,13 +56,12 @@ describe('PryRestitution', () => {
         provideMockStore({}),
         MockTranslatePipe,
         MockI18nPipe,
-        { provide: PryI18nService },
+        { provide: PryI18nService, useClass: MockPryI18nService },
         { provide: ToolboxMenuService, useValue: mockToolboxMenuService },
-        { provide: Overlay }
+        { provide: Overlay, useValue: MockOverlay }
       ]
     }).compileComponents();
     service = TestBed.inject(ToolboxMenuService);
-    overlay = TestBed.inject(Overlay);
     store = TestBed.inject(MockStore);
   });
 

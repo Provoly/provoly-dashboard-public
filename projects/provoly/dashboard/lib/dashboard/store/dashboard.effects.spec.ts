@@ -26,6 +26,7 @@ import { dashboardInitialState, DashboardState } from './dashboard.reducers';
 import { DashboardSelectors } from './dashboard.selectors';
 import { ManifestService } from './manifest.service';
 import { PryTitleService } from './title.service';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 const buildState = (state: Partial<DashboardState>) =>
   Object.assign({}, { '@pry/dashboard': JSON.parse(JSON.stringify({ ...dashboardInitialState, ...state })) });
@@ -108,12 +109,7 @@ describe('DashboardEffects', () => {
             changeTitle: () => undefined
           }
         },
-        {
-          provide: PryI18nService,
-          useValue: {
-            instant: () => ''
-          }
-        },
+        { provide: PryI18nService, useClass: MockPryI18nService },
         {
           provide: Router,
           useValue: {

@@ -6,6 +6,7 @@ import { MockI18nPipe } from '../../../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../../../mock/pipe/mock-translate.pipe';
 
 import { PryObjectEditionComponent } from './object-edition.component';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 describe('ObjectCreationComponent', () => {
   let component: PryObjectEditionComponent;
@@ -14,7 +15,7 @@ describe('ObjectCreationComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PryObjectEditionComponent, MockTranslatePipe, MockPryIconComponent, MockI18nPipe],
-      providers: [provideMockStore(), { provide: Overlay, useValue: {} }]
+      providers: [provideMockStore(), { provide: Overlay, useValue: MockOverlay }]
     }).compileComponents();
   });
 

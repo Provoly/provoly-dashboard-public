@@ -9,6 +9,7 @@ import {
   PryI18nService
 } from '@provoly/dashboard';
 import { DataSourceService } from './data-source.service';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 describe('NamedQueryService', () => {
   let service: DataSourceService;
@@ -26,7 +27,7 @@ describe('NamedQueryService', () => {
             }
           ]
         }),
-        { provide: PryI18nService, useValue: { instant: (key: string) => key } }
+        { provide: PryI18nService, useClass: MockPryI18nService }
       ]
     });
     service = TestBed.inject(DataSourceService);

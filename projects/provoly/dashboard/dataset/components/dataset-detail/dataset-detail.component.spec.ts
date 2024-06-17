@@ -9,12 +9,12 @@ import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/moc
 import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
 import { DataSourceActions, SearchActions } from '@provoly/dashboard';
 import { mockClickEvent, mockDatasets, mockDatasetVersion } from '../../../mock/data/mockDataset';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 describe('PryDatasetDetailComponent', () => {
   let component: PryDatasetDetailComponent;
   let fixture: ComponentFixture<PryDatasetDetailComponent>;
   let store: MockStore;
-  let overlay: Overlay;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -26,7 +26,7 @@ describe('PryDatasetDetailComponent', () => {
         MockPryTabGroupComponent,
         MockPryTabComponent
       ],
-      providers: [provideMockStore({}), { provide: Overlay }]
+      providers: [provideMockStore({}), { provide: Overlay, useValue: MockOverlay }]
     }).compileComponents();
   });
 
@@ -34,7 +34,6 @@ describe('PryDatasetDetailComponent', () => {
     fixture = TestBed.createComponent(PryDatasetDetailComponent);
     component = fixture.componentInstance;
     store = TestBed.inject(MockStore);
-    overlay = TestBed.inject(Overlay);
     component.dataset = mockDatasets[0];
     fixture.detectChanges();
   });

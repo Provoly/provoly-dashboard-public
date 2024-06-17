@@ -22,6 +22,7 @@ import { MockPrySettingsComponent } from '../../../mock/components/mock-pry-sett
 import { MockPryWidgetHeaderComponent } from '../../../mock/components/mock-pry-widget-header.component';
 import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 describe('WidgetAggregatedChartComponent', () => {
   let component: WidgetAggregatedChartComponent;
@@ -41,7 +42,7 @@ describe('WidgetAggregatedChartComponent', () => {
         MockI18nPipe
       ],
       providers: [
-        { provide: PryI18nService, useValue: { instant: (key: string) => key } },
+        { provide: PryI18nService, useClass: MockPryI18nService },
         {
           provide: PryAggregationService,
           useValue: {

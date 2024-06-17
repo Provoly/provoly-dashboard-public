@@ -6,6 +6,7 @@ import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
 import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pry-icon.component';
 import { hot } from 'jest-marbles';
 import { PryI18nService } from '../../i18n/i18n.service';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 const stringItems = ['item1', 'item2', 'item3'];
 
@@ -23,7 +24,7 @@ describe('ChipsSelectorComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule, FormsModule],
       declarations: [ChipsSelectorComponent, MockPryIconComponent, MockI18nPipe],
-      providers: [{ provide: PryI18nService, useValue: { instant: (key: string) => key } }]
+      providers: [{ provide: PryI18nService, useClass: MockPryI18nService }]
     }).compileComponents();
   });
 

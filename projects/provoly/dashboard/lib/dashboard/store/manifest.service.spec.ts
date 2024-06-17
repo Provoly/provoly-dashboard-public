@@ -4,6 +4,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { PrySnackbarService } from '../../core/components/snackbar/snackbar.service';
 import { PryI18nService } from '../../core/i18n/i18n.service';
 import { ManifestService } from './manifest.service';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 describe('ManifestService', () => {
   let service: ManifestService;
@@ -14,7 +15,7 @@ describe('ManifestService', () => {
       providers: [
         provideMockStore({}),
         { provide: PrySnackbarService, useValue: {} },
-        { provide: PryI18nService, useValue: {} }
+        { provide: PryI18nService, useClass: MockPryI18nService }
       ]
     });
     service = TestBed.inject(ManifestService);

@@ -12,6 +12,7 @@ import { MockPryCheckboxComponent } from '../../mock/components/mock-pry-checkbo
 import { MockPryTextEditorComponent } from '../../mock/components/mock-pry-text-editor.component';
 import { MockTranslateIdPipe } from '../../mock/pipe/mock-translate-id.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 describe('PryImportComponent', () => {
   let component: PryImportComponent;
@@ -32,7 +33,7 @@ describe('PryImportComponent', () => {
         MockPryTextEditorComponent,
         MockTranslateIdPipe
       ],
-      providers: [provideMockStore({}), { provide: PryI18nService }]
+      providers: [provideMockStore({}), { provide: PryI18nService, useClass: MockPryI18nService }]
     }).compileComponents();
     store = TestBed.inject(MockStore);
   });

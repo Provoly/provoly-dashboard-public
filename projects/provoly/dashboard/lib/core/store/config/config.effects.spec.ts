@@ -25,6 +25,7 @@ import {
   TOOLTIPS_DOMAIN
 } from './config.service';
 import { OpenMapTilesService } from './open-map-tiles.service';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 let mapStyles: { identifier: string; label: string }[] = [
   { identifier: '1', label: 'terrain-map' },
@@ -69,7 +70,6 @@ describe('ConfigEffects', () => {
   let configService: ConfigService;
   let openMapTilesService: OpenMapTilesService;
   let store: MockStore<any>;
-  let translateService: PryI18nService;
   let snackbarService: PrySnackbarService;
 
   beforeEach(() => {
@@ -94,12 +94,7 @@ describe('ConfigEffects', () => {
             deleteRestitution: () => of('')
           }
         },
-        {
-          provide: PryI18nService,
-          useValue: {
-            instant: () => ''
-          }
-        },
+        { provide: PryI18nService, useClass: MockPryI18nService },
         {
           provide: PrySnackbarService,
           useValue: {
@@ -112,7 +107,6 @@ describe('ConfigEffects', () => {
     effects = TestBed.inject(ConfigEffects);
     configService = TestBed.inject<ConfigService>(ConfigService);
     openMapTilesService = TestBed.inject<OpenMapTilesService>(OpenMapTilesService);
-    translateService = TestBed.inject<PryI18nService>(PryI18nService);
     snackbarService = TestBed.inject<PrySnackbarService>(PrySnackbarService);
     store = TestBed.inject(MockStore);
     store.overrideSelector(ConfigSelectors.chartOption, chartOption);

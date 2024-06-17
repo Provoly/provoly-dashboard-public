@@ -41,6 +41,8 @@ import { DEFAULT_LAYER_GROUP, WidgetMapComponent } from './widget-map.component'
 import { WidgetMapUtils } from '@provoly/dashboard/widgets/widget-map';
 import { mockLayerGroups } from '@provoly/dashboard/mock/data/mockLayerGroups';
 import SpyInstance = jest.SpyInstance;
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 describe('WidgetMapComponent', () => {
   let component: WidgetMapComponent;
@@ -188,10 +190,7 @@ describe('WidgetMapComponent', () => {
         { provide: TranslateIdPipe, useValue: { transform: () => undefined } },
         { provide: WmsService, useValue: { getCapabilities: () => of(null) } },
         { provide: PrySnackbarService, useValue: { open: jest.fn() } },
-        {
-          provide: Overlay,
-          useValue: { create: jest.fn(() => ({ attach: jest.fn(() => ({ instance: {} })) })) }
-        },
+        { provide: Overlay, useValue: MockOverlay },
         {
           provide: SymbolService,
           useValue: {}

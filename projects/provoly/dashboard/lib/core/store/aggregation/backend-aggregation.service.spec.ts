@@ -17,6 +17,7 @@ import {
   SearchService,
   ValueType
 } from '@provoly/dashboard';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 const chartOptions = {
   abscissa: {
@@ -57,12 +58,7 @@ describe('BackendAggregationService', () => {
             getItemsFilter: (id: string, params: HttpParams) => params.append('mock', 'true')
           }
         },
-        {
-          provide: PryI18nService,
-          useValue: {
-            instant: () => 'translated'
-          }
-        },
+        { provide: PryI18nService, useClass: MockPryI18nService },
         provideMockStore({
           selectors: [
             {

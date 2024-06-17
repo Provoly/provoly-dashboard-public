@@ -12,7 +12,6 @@ import {
   PryDefaultAccessGuard,
   PryI18nService
 } from '@provoly/dashboard';
-import { of } from 'rxjs';
 import { MockPryCheckboxComponent } from '../../../../../mock/components/mock-pry-checkbox.component';
 import { MockPryIconComponent } from '../../../../../mock/components/mock-pry-icon.component';
 import { MockPrySelectComponent } from '../../../../../mock/components/mock-pry-select.component';
@@ -23,6 +22,8 @@ import { MockTranslatePipe } from '../../../../../mock/pipe/mock-translate.pipe'
 import { routes } from '../../../../admin-routing.module';
 import { AdminClassActions } from '../../store/admin-class.actions';
 import { AdminAttributesFormComponent } from './admin-attributes-form.component';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 jest.mock('uuid', () => ({ v4: () => 'categoryId' }));
 
@@ -33,12 +34,6 @@ describe('AdminAttributesFormComponent', () => {
   let component: AdminAttributesFormComponent;
   let fixture: ComponentFixture<AdminAttributesFormComponent>;
   let store: MockStore<AdminAttributesFormComponent>;
-
-  let mockOverlayRef = {
-    backdropClick: () => of({}),
-    attach: () => undefined,
-    dispose: () => undefined
-  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -53,6 +48,7 @@ describe('AdminAttributesFormComponent', () => {
       ],
       providers: [
         { provide: PRY_ACCESS_GUARD, useClass: PryDefaultAccessGuard },
+        { provide: PryI18nService, useClass: MockPryI18nService },
         provideMockStore({
           selectors: [
             {
@@ -69,23 +65,10 @@ describe('AdminAttributesFormComponent', () => {
             }
           ]
         }),
-        {
-          provide: Overlay,
-          useValue: {
-            create: () => mockOverlayRef
-          }
-        }
+        { provide: Overlay, useValue: MockOverlay }
       ],
       imports: [FormsModule, ReactiveFormsModule, RouterTestingModule.withRoutes(routes)]
     }).compileComponents();
-  });
-
-  beforeAll(() => {
-    PryI18nService.warn = false;
-  });
-
-  afterAll(() => {
-    PryI18nService.warn = true;
   });
 
   beforeEach(() => {

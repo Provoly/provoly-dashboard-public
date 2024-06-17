@@ -10,6 +10,7 @@ import { DashboardSelectors } from '../store/dashboard.selectors';
 
 import { DashboardComponent } from './dashboard.component';
 import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pry-icon.component';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 const exampleManifest = {
   widgets: [
@@ -67,10 +68,7 @@ describe('DashboardComponent', () => {
             }
           ]
         }),
-        {
-          provide: Overlay,
-          useValue: {}
-        },
+        { provide: Overlay, useValue: MockOverlay },
         {
           provide: ViewContainerRef,
           useValue: {}

@@ -8,9 +8,10 @@ import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '@provoly/dashboard/mock/pipe/mock-translate.pipe';
 import { MockPryRestitutionListCssComponent } from '@provoly/dashboard/mock/style/mock-pry-restitution-css';
 import { WidgetImageComponent } from '@provoly/dashboard/widgets/widget-image';
-import { PryRestitutionListComponent } from '../..';
-import { MockPryAccordionComponent } from '@provoly/dashboard/mock/mock-pry-accordion.component';
 import { MockPryAccordionItemComponent } from '@provoly/dashboard/mock/components/mock-pry-accordion-item.component';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
+import { PryRestitutionListComponent } from './restitution-list.component';
+import { MockPryAccordionComponent } from '@provoly/dashboard/mock/components/mock-pry-accordion.component';
 
 describe('PryRestitutionListComponent', () => {
   let component: PryRestitutionListComponent;
@@ -30,7 +31,7 @@ describe('PryRestitutionListComponent', () => {
       ],
       providers: [
         provideMockStore({}),
-        { provide: PryI18nService },
+        { provide: PryI18nService, useClass: MockPryI18nService },
         { provide: ToolboxMenuService, useValue: mockWidgetFactoryService }
       ],
       imports: [CommonModule, FormsModule]

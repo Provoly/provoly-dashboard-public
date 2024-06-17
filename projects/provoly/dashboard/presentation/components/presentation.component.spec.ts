@@ -12,12 +12,12 @@ import { PryPresentationComponent } from '@provoly/dashboard/presentation';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { MockPryGroupShareComponent } from '@provoly/dashboard/mock/components/mock-pry-group-share.component';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 describe('PryPresentationComponent', () => {
   let component: PryPresentationComponent;
   let fixture: ComponentFixture<PryPresentationComponent>;
   let store: MockStore;
-  let overlay: Overlay;
 
   const presentation = {
     id: '1',
@@ -37,7 +37,7 @@ describe('PryPresentationComponent', () => {
       ],
       providers: [
         provideMockStore({}),
-        { provide: Overlay },
+        { provide: Overlay, useValue: MockOverlay },
         { provide: PryTitleService, useValue: { changeTitle: () => {} } },
         {
           provide: ActivatedRoute,
@@ -50,7 +50,6 @@ describe('PryPresentationComponent', () => {
       ]
     }).compileComponents();
     store = TestBed.inject(MockStore);
-    overlay = TestBed.inject(Overlay);
   });
   beforeEach(() => {
     fixture = TestBed.createComponent(PryPresentationComponent);

@@ -12,6 +12,7 @@ import { RelationTypesActions } from './relation-types.actions';
 import { RelationTypesEffects } from './relation-types.effects';
 import { initialRelationTypeState, RelationTypeState } from './relation-types.reducer';
 import { RelationTypesService } from './relation-types.service';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 const buildState = (state: Partial<RelationTypeState>) =>
   Object.assign({}, { '@pry/admin': JSON.parse(JSON.stringify({ ...initialRelationTypeState, ...state })) });
@@ -24,13 +25,6 @@ describe('LinksEffects', () => {
   const initialState = initialRelationTypeState;
   let store: MockStore<any>;
   let router: Router;
-  let overlay: Overlay;
-
-  let mockOverlayRef = {
-    backdropClick: () => of({}),
-    attach: () => undefined,
-    dispose: () => undefined
-  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -53,10 +47,7 @@ describe('LinksEffects', () => {
             deleteRelationType: () => of('')
           }
         },
-        {
-          provide: Overlay,
-          useValue: { mockOverlayRef }
-        }
+        { provide: Overlay, useValue: MockOverlay }
       ]
     });
 
@@ -64,7 +55,6 @@ describe('LinksEffects', () => {
     relationService = TestBed.inject<RelationTypesService>(RelationTypesService);
     pryDialog = TestBed.inject<PryDialogService>(PryDialogService);
     store = TestBed.inject(MockStore);
-    overlay = TestBed.inject(Overlay);
     router = TestBed.inject(Router);
   });
 

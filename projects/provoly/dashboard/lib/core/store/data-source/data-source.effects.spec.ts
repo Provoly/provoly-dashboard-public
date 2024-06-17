@@ -14,6 +14,7 @@ import { NamedQuery } from './data-source.model';
 import { DataSourceState, initialDataSourceState } from './data-source.reducer';
 import { DataSourceService } from './data-source.service';
 import { NamedQueryTypes } from './named-query-types.model';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 const buildState = (state: Partial<DataSourceState>) =>
   Object.assign({}, { '@pry/datasources': JSON.parse(JSON.stringify({ ...initialDataSourceState, ...state })) });
@@ -73,7 +74,7 @@ describe('DataSourceEffects', () => {
         DataSourceEffects,
         provideMockActions(() => actions$),
         provideMockStore({ initialState: buildState({}) }),
-        { provide: PryI18nService, useValue: { instant: (key: string) => key } },
+        { provide: PryI18nService, useClass: MockPryI18nService },
         {
           provide: DataSourceService,
           useValue: {

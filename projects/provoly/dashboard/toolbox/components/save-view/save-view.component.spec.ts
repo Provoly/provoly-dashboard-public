@@ -17,36 +17,24 @@ import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 
 import { SaveViewComponent } from './save-view.component';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 describe('SaveViewComponent', () => {
   let component: SaveViewComponent;
   let fixture: ComponentFixture<SaveViewComponent>;
   let store: Store;
-  let overlay: Overlay;
-
-  let mockOverlayRef = {
-    backdropClick: () => of({}),
-    attach: () => undefined,
-    dispose: () => undefined
-  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SaveViewComponent, MockPryIconComponent, MockTranslatePipe, MockI18nPipe, MockPryAccessDirective],
       providers: [
         provideMockStore({}),
-        {
-          provide: Overlay,
-          useValue: {
-            create: () => mockOverlayRef
-          }
-        },
+        { provide: Overlay, useValue: MockOverlay },
         { provide: PRY_ACCESS_TOKEN, useClass: PryDefaultAccessService }
       ]
     }).compileComponents();
 
     store = TestBed.inject(Store);
-    overlay = TestBed.inject(Overlay);
   });
 
   beforeEach(() => {

@@ -1,22 +1,16 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import { of } from 'rxjs';
 import { MockPryIconComponent } from '../../../../../mock/components/mock-pry-icon.component';
 import { MockI18nPipe } from '../../../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../../../mock/pipe/mock-translate.pipe';
 import { DashboardSelectors } from '../../../store/dashboard.selectors';
 import { SettingsComponent } from './settings.component';
+import { MockOverlay, mockOverlayRef } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
-  let overlay: Overlay;
   let fixture: ComponentFixture<SettingsComponent>;
-  let mockOverlayRef = {
-    backdropClick: () => of({}),
-    attach: () => undefined,
-    dispose: () => undefined
-  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -41,12 +35,7 @@ describe('SettingsComponent', () => {
             }
           ]
         }),
-        {
-          provide: Overlay,
-          useValue: {
-            create: () => mockOverlayRef
-          }
-        }
+        { provide: Overlay, useClass: MockOverlay }
       ]
     }).compileComponents();
   });

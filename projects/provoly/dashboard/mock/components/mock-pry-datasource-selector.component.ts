@@ -10,5 +10,7 @@ import { DataSource, WidgetManifest } from '@provoly/dashboard';
 export class MockPryDatasourceSelectorComponent {
   @Input() manifest: WidgetManifest | null = null;
   @Input() datasourceIds: string[] = [];
+  @Input() showButtons = false;
+  @Input() showTitle = false;
   @Output() datasourcesChanged = new EventEmitter<DataSource[]>();
 }

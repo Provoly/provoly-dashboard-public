@@ -4,12 +4,13 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { AppComponent } from './app.component';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule],
-      providers: [provideMockStore(), { provide: Overlay, useValue: {} }],
+      providers: [provideMockStore(), { provide: Overlay, useValue: MockOverlay }],
       declarations: [AppComponent]
     }).compileComponents();
   });

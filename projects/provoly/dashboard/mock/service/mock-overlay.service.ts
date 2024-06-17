@@ -1,4 +1,4 @@
-import { of, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 class MockOverlayGlobalPosition {
   centerHorizontally = () => this;
@@ -21,25 +21,24 @@ class MockScrollStrategyOptions {
   reposition = () => this;
 }
 
+export const mockOverlayRef = {
+  backdropClick: () => new Subject<any>(),
+  attach: () => ({
+    instance: {},
+    destroy: () => undefined
+  }),
+  dispose: () => undefined
+};
+
 export class MockOverlay {
   overlayPosition = new MockOverlayPosition();
   scrollStrategies = new MockScrollStrategyOptions();
 
   create(...args: any[]): any {
-    return {
-      backdropClick: () => new Subject().asObservable(),
-      attach: () => undefined,
-      dispose: () => undefined
-    };
+    return { ...mockOverlayRef };
   }
 
   position(): any {
     return this.overlayPosition;
   }
 }
-
-export const mockOverlayRef = {
-  backdropClick: () => of({}),
-  attach: () => undefined,
-  dispose: () => undefined
-};

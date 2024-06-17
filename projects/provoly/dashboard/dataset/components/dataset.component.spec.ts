@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { Overlay } from '@angular/cdk/overlay';
 import { PryDatasetComponent, PryDatasetCssComponent, PryDatasetDetailComponent } from '@provoly/dashboard/dataset';
 import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
 import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pry-icon.component';
@@ -10,12 +9,13 @@ import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry
 import { ViewMode } from '@provoly/dashboard';
 import { mockDatasets } from '@provoly/dashboard/mock/data/mockDataset';
 import { MockPrySelectComponent } from '@provoly/dashboard/mock/components/mock-pry-select.component';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
+import { Overlay } from 'ol';
 
 describe('PryDatasetComponent', () => {
   let component: PryDatasetComponent;
   let fixture: ComponentFixture<PryDatasetComponent>;
   let store: MockStore;
-  let overlay: Overlay;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -30,7 +30,7 @@ describe('PryDatasetComponent', () => {
         MockPryTabComponent,
         MockPrySelectComponent
       ],
-      providers: [provideMockStore({}), { provide: Overlay }]
+      providers: [provideMockStore({}), { provide: Overlay, useValue: MockOverlay }]
     }).compileComponents();
   });
 
@@ -38,7 +38,6 @@ describe('PryDatasetComponent', () => {
     fixture = TestBed.createComponent(PryDatasetComponent);
     component = fixture.componentInstance;
     store = TestBed.inject(MockStore);
-    overlay = TestBed.inject(Overlay);
     fixture.detectChanges();
   });
 

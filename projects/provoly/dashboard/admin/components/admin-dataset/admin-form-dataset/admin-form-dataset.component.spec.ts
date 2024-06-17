@@ -10,6 +10,7 @@ import { AdminFormDatasetComponent } from './admin-form-dataset.component';
 import { AdminService } from '../../../store/admin.service';
 import { MockTranslatePipe } from '@provoly/dashboard/mock/pipe/mock-translate.pipe';
 import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 describe('AdminFormDatasetComponent', () => {
   PryI18nService.warn = false;
@@ -18,15 +19,13 @@ describe('AdminFormDatasetComponent', () => {
   let router;
   let adminService: AdminService;
   let store: MockStore<any>;
-  let i18n: PryI18nService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AdminFormDatasetComponent, MockTranslatePipe, MockI18nPipe],
-      providers: [provideMockStore({})],
+      providers: [provideMockStore({}), { provide: PryI18nService, useClass: MockPryI18nService }],
       imports: [RouterTestingModule, FormsModule, ReactiveFormsModule, PrySelectModule, HttpClientTestingModule]
     }).compileComponents();
-    i18n = TestBed.inject(PryI18nService);
   });
 
   beforeEach(() => {

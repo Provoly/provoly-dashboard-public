@@ -8,23 +8,18 @@ import { MockPryAccessDirective } from '../../../../../mock/directive/mock-pry-a
 import { MockI18nPipe } from '../../../../../mock/pipe/mock-i18n.pipe';
 
 import { PryWidgetHeaderComponent } from './widget-header.component';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 describe('PryWidgetHeaderComponent', () => {
   let component: PryWidgetHeaderComponent;
   let fixture: ComponentFixture<PryWidgetHeaderComponent>;
-
-  let mockOverlayRef = {
-    backdropClick: () => of({}),
-    attach: () => undefined,
-    dispose: () => undefined
-  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PryWidgetHeaderComponent, MockPryIconComponent, MockPryAccessDirective, MockI18nPipe],
       providers: [
         provideMockStore({}),
-        { provide: Overlay, useValue: mockOverlayRef },
+        { provide: Overlay, useValue: MockOverlay },
         { provide: ToolboxMenuService, useValue: {} }
       ],
       imports: []

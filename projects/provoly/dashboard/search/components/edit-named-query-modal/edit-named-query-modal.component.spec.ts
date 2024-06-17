@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import { EditNamedQueryModalComponent } from './edit-named-query-modal.component';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 describe('EditNamedQueryModalComponent', () => {
   let component: EditNamedQueryModalComponent;
@@ -11,7 +12,7 @@ describe('EditNamedQueryModalComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [EditNamedQueryModalComponent],
-      providers: [provideMockStore(), { provide: Overlay, useValue: {} }]
+      providers: [provideMockStore(), { provide: Overlay, useValue: MockOverlay }]
     }).compileComponents();
   });
 

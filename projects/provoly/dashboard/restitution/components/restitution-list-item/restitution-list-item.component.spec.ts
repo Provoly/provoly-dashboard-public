@@ -11,6 +11,7 @@ import { WidgetImageComponent } from '@provoly/dashboard/widgets/widget-image';
 import { PryRestitutionListComponent } from '../..';
 import { PryRestitutionListItemComponent } from './restitution-list-item.component';
 import { MockGetSecuredImagePipe } from '@provoly/dashboard/mock/pipe/mock-get-secured-image.pipe';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 const catalogEntry = {
   icon: '',
@@ -40,7 +41,7 @@ describe('PryRestitutionListItemComponent', () => {
       ],
       providers: [
         provideMockStore({}),
-        { provide: PryI18nService },
+        { provide: PryI18nService, useClass: MockPryI18nService },
         { provide: ToolboxMenuService, useValue: mockWidgetFactoryService }
       ],
       imports: [CommonModule, FormsModule]

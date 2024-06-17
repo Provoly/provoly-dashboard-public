@@ -9,6 +9,7 @@ import { PrySnackbarService } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
 import { NotificationEffects } from './notification.effects';
 import { initialNotificationState } from './notification.reducer';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 describe('NotificationEffects', () => {
   let actions$: Observable<any>;
@@ -25,10 +26,7 @@ describe('NotificationEffects', () => {
         NotificationEffects,
         provideMockActions(() => actions$),
         provideMockStore(),
-        {
-          provide: Overlay,
-          useValue: {}
-        }
+        { provide: Overlay, useValue: MockOverlay }
       ]
     });
 

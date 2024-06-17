@@ -8,6 +8,7 @@ import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 import { routes } from '../../admin-routing.module';
 import { AdminDatasetComponent } from './admin-dataset.component';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 describe('AdminDatasetComponent', () => {
   let component: AdminDatasetComponent;
@@ -25,7 +26,7 @@ describe('AdminDatasetComponent', () => {
       providers: [
         { provide: PRY_ACCESS_GUARD, useClass: PryDefaultAccessGuard },
         provideMockStore({}),
-        { provide: PryI18nService, useValue: { instant: (key: string) => key } }
+        { provide: PryI18nService, useClass: MockPryI18nService }
       ],
       imports: [RouterTestingModule.withRoutes(routes)]
     }).compileComponents();

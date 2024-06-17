@@ -1,34 +1,20 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { CUSTOM_ELEMENTS_SCHEMA, ViewContainerRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
 import { PryI18nService } from '../../i18n/i18n.service';
 
 import { PrySnackbarService } from './snackbar.service';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
+import { MockOverlay, mockOverlayRef } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 describe('SnackbarService', () => {
   let service: PrySnackbarService;
-  let mockOverlayRef = {
-    backdropClick: () => of({}),
-    attach: () => ({ instance: { actionClicked: of(undefined) }, destroy: () => undefined }),
-    dispose: () => undefined
-  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        {
-          provide: Overlay,
-          useValue: {
-            create: () => mockOverlayRef
-          }
-        },
-        {
-          provide: PryI18nService,
-          useValue: {
-            instant: (a: string) => `<translated>${a}`
-          }
-        }
+        { provide: Overlay, useClass: MockOverlay },
+        { provide: PryI18nService, useClass: MockPryI18nService }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });

@@ -5,6 +5,7 @@ import { MockPryIconComponent } from '../../../../mock/components/mock-pry-icon.
 import { MockI18nPipe } from '../../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../../mock/pipe/mock-translate.pipe';
 import { PryNqColorSelectorComponent } from './nq-color-selector.component';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 describe('NqColorSelectorComponent', () => {
   let component: PryNqColorSelectorComponent;
@@ -13,7 +14,7 @@ describe('NqColorSelectorComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PryNqColorSelectorComponent, MockTranslatePipe, MockPryIconComponent, MockI18nPipe],
-      providers: [provideMockStore(), { provide: Overlay, useValue: {} }]
+      providers: [provideMockStore(), { provide: Overlay, useValue: MockOverlay }]
     }).compileComponents();
   });
 

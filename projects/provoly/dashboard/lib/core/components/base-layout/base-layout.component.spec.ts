@@ -4,6 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import { BaseLayoutComponent } from './base-layout.component';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 describe('AdminComponent', () => {
   let component: BaseLayoutComponent;
@@ -14,7 +15,7 @@ describe('AdminComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [BaseLayoutComponent],
-      providers: [provideMockStore({}), { provide: Overlay, useValue: {} }]
+      providers: [provideMockStore({}), { provide: Overlay, useValue: MockOverlay }]
     }).compileComponents();
   });
 

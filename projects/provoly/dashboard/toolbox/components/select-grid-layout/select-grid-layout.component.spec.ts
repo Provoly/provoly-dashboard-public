@@ -10,6 +10,7 @@ import { MockPrySelectGridLayoutCssComponent } from '../../../mock/style/mock-pr
 
 import { SelectGridLayoutComponent } from './select-grid-layout.component';
 import { PRY_ACCESS_TOKEN, PryDefaultAccessService } from '@provoly/dashboard';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 describe('SelectGridLayoutComponent', () => {
   let component: SelectGridLayoutComponent;
@@ -29,15 +30,7 @@ describe('SelectGridLayoutComponent', () => {
       ],
       providers: [
         provideMockStore({}),
-        {
-          provide: Overlay,
-          useValue: {
-            create: () => {
-              {
-              }
-            }
-          }
-        },
+        { provide: Overlay, useValue: MockOverlay },
         { provide: PRY_ACCESS_TOKEN, useClass: PryDefaultAccessService }
       ]
     }).compileComponents();

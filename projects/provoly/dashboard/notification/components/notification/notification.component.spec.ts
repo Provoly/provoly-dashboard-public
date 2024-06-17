@@ -6,6 +6,7 @@ import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
 import { MockPryNotificationCssComponent } from '@provoly/dashboard/mock/style/mock-pry-notification-css';
 
 import { PryNotificationComponent } from './notification.component';
+import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 describe('NotificationComponent', () => {
   let component: PryNotificationComponent;
@@ -15,7 +16,7 @@ describe('NotificationComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [PryNotificationComponent, MockI18nPipe, MockPryNotificationCssComponent],
-      providers: [provideMockStore({}), { provide: Overlay, useValue: {} }]
+      providers: [provideMockStore({}), { provide: Overlay, useValue: MockOverlay }]
     }).compileComponents();
   });
 

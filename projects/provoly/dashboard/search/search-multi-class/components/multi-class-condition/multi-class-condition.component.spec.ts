@@ -51,10 +51,7 @@ describe('MultiClassConditionComponent', () => {
             }
           ]
         }),
-        {
-          provide: Overlay,
-          useClass: MockOverlay
-        }
+        { provide: Overlay, useClass: MockOverlay }
       ]
     }).compileComponents();
   });

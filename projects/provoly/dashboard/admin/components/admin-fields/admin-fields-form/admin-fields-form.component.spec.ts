@@ -9,9 +9,9 @@ import { MockTranslatePipe } from '../../../../mock/pipe/mock-translate.pipe';
 import { routes } from '../../../admin-routing.module';
 import { FieldsActions } from '../store/fields.actions';
 import { AdminFieldsFormComponent } from './admin-fields-form.component';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 describe('AdminFieldsFormComponent', () => {
-  PryI18nService.warn = false;
   let component: AdminFieldsFormComponent;
   let fixture: ComponentFixture<AdminFieldsFormComponent>;
   let store: MockStore<any>;
@@ -19,7 +19,11 @@ describe('AdminFieldsFormComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AdminFieldsFormComponent, MockTranslatePipe, MockI18nPipe],
-      providers: [{ provide: PRY_ACCESS_GUARD, useClass: PryDefaultAccessGuard }, provideMockStore({})],
+      providers: [
+        { provide: PryI18nService, useClass: MockPryI18nService },
+        { provide: PRY_ACCESS_GUARD, useClass: PryDefaultAccessGuard },
+        provideMockStore({})
+      ],
       imports: [PrySelectModule, FormsModule, ReactiveFormsModule, RouterTestingModule.withRoutes(routes)]
     }).compileComponents();
   });

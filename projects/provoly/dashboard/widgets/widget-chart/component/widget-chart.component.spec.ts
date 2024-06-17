@@ -25,6 +25,7 @@ import { mockVariablesWidgetCharts } from '../../../mock/data/mockVariablesWidge
 import { MockI18nPipe } from '../../../mock/pipe/mock-i18n.pipe';
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 import { WidgetChartComponent } from './widget-chart.component';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 describe('WidgetChartComponent', () => {
   let component: WidgetChartComponent;
@@ -46,7 +47,7 @@ describe('WidgetChartComponent', () => {
         MockI18nPipe
       ],
       providers: [
-        { provide: PryI18nService, useValue: { instant: (key: string) => key } },
+        { provide: PryI18nService, useClass: MockPryI18nService },
         provideMockStore({
           selectors: [
             {
@@ -74,9 +75,18 @@ describe('WidgetChartComponent', () => {
             {
               selector: ClassSelectors.classes,
               value: [
-                { id: 'a', attributes: [{ id: '1', field: 'f1', name: 'field-name-1', technicalName: 'field-name-1' }] },
-                { id: 'b', attributes: [{ id: '2', field: 'f2', name: 'field-name-2', technicalName: 'field-name-2' }] },
-                { id: 'c', attributes: [{ id: '3', field: 'f3', name: 'field-name-3', technicalName: 'field-name-3' }] },
+                {
+                  id: 'a',
+                  attributes: [{ id: '1', field: 'f1', name: 'field-name-1', technicalName: 'field-name-1' }]
+                },
+                {
+                  id: 'b',
+                  attributes: [{ id: '2', field: 'f2', name: 'field-name-2', technicalName: 'field-name-2' }]
+                },
+                {
+                  id: 'c',
+                  attributes: [{ id: '3', field: 'f3', name: 'field-name-3', technicalName: 'field-name-3' }]
+                },
                 { id: 'd', attributes: [{ id: '4', field: 'f4', name: 'field-name-4', technicalName: 'field-name-4' }] }
               ]
             },

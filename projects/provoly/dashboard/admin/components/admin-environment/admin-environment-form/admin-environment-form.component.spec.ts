@@ -12,9 +12,9 @@ import { routes } from '../../../admin-routing.module';
 import { EnvironmentActions } from '../store/environment.actions';
 import { EnvironmentSelectors } from '../store/environment.selectors';
 import { AdminEnvironmentFormComponent } from './admin-environment-form.component';
+import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 describe('AdminEnvironmentFormComponent', () => {
-  PryI18nService.warn = false;
   let component: AdminEnvironmentFormComponent;
   let fixture: ComponentFixture<AdminEnvironmentFormComponent>;
   let store: MockStore<any>;
@@ -27,6 +27,7 @@ describe('AdminEnvironmentFormComponent', () => {
       providers: [
         DatePipe,
         { provide: PRY_ACCESS_GUARD, useClass: PryDefaultAccessGuard },
+        { provide: PryI18nService, useClass: MockPryI18nService },
         provideMockStore({
           selectors: [
             {

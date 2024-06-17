@@ -1,4 +1,4 @@
-import { Overlay } from '@angular/cdk/overlay';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { Injector, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -12,9 +12,11 @@ import {
   FieldSelectors,
   FieldType,
   Filter,
-  FilterFactoryService, PRY_ACCESS_TOKEN, PryDefaultAccessService
+  FilterFactoryService,
+  PRY_ACCESS_TOKEN,
+  PryDefaultAccessService
 } from '@provoly/dashboard';
-import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
+import { MockOverlay, mockOverlayRef } from '@provoly/dashboard/mock/service/mock-overlay.service';
 import { MockPryToolboxCssComponent } from '@provoly/dashboard/mock/style/mock-pry-toolbox-css';
 import { mapUtilsData } from '@provoly/dashboard/widgets/widget-map/utils/widget-map.utils.spec';
 import { hot } from 'jest-marbles';
@@ -88,12 +90,6 @@ describe('FilterSettingsComponent', () => {
   let component: PryFilterSettingsComponent;
   let fixture: ComponentFixture<PryFilterSettingsComponent>;
   let filterSteps = FilterSteps;
-
-  let mockOverlayRef = {
-    backdropClick: () => of({}),
-    attach: () => undefined,
-    dispose: () => undefined
-  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -196,10 +192,7 @@ describe('FilterSettingsComponent', () => {
             }
           ]
         }),
-        {
-          provide: Overlay,
-          useClass: MockOverlay
-        },
+        { provide: Overlay, useClass: MockOverlay },
         {
           provide: FilterFactoryService,
           useValue: {
@@ -357,9 +350,7 @@ describe('FilterSettingsComponent', () => {
     ]);
 
     component.currentFilterComponentType$.next('autocomplete');
-    expect(component.currentOperators$.value.map((operator) => operator.value)).toEqual([
-      'EQUALS'
-    ]);
+    expect(component.currentOperators$.value.map((operator) => operator.value)).toEqual(['EQUALS']);
   });
 
   describe('overlay', () => {
