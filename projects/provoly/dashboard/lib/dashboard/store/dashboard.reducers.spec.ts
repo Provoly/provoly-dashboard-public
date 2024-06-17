@@ -3,6 +3,7 @@ import { ManifestDescription } from '../../core/model/manifest.interface';
 import { EXPLORE_NAMED_QUERY_ID } from '../../core/store/search/search.constants';
 import { DashboardActions, DashboardCellParams } from './dashboard.actions';
 import { dashboardInitialState, dashboardReducer } from './dashboard.reducers';
+import { ManifestUtils } from '@provoly/dashboard';
 
 describe('Dashboard reducer', () => {
   const initialState = Object.assign({}, dashboardInitialState);
@@ -77,9 +78,10 @@ describe('Dashboard reducer', () => {
         )
       ).toEqual({
         ...initialState,
+        display: undefined,
         manifests: {
           ...initialState.manifests,
-          manifest,
+          manifest: ManifestUtils.cleanupManifest(manifest),
           tenants: ['me', 'another']
         }
       });
@@ -117,7 +119,7 @@ describe('Dashboard reducer', () => {
         manifests: {
           ...initialState.manifests,
           tenants: ['me', 'known'],
-          manifest
+          manifest: ManifestUtils.cleanupManifest(manifest)
         }
       });
     });
@@ -301,54 +303,7 @@ describe('Dashboard reducer', () => {
   });
 
   describe('moveWidget', () => {
-    it('should move widget from window to another into store', () => {
-      const layout = { x: 1, y: 2, height: 30, width: 50 };
-      const manifest = { type: 'B', layout };
-      expect(
-        dashboardReducer(
-          {
-            ...initialState,
-            manifests: {
-              ...initialState.manifests,
-              sender: 'me',
-              tenants: ['a', 'me', 'b', 'c'],
-              manifest: {
-                windows: [
-                  { route: 'a', widgets: [] },
-                  { route: 'b', widgets: [{ type: 'A', layout }, manifest, { type: 'C', layout }] },
-                  { route: 'c', widgets: [] },
-                  { route: 'd', widgets: [] }
-                ]
-              }
-            }
-          },
-          DashboardActions.moveWidget({ widgetIndex: 1, targetIndex: 3 })
-        )
-      ).toEqual({
-        ...initialState,
-        manifests: {
-          ...initialState.manifests,
-          sender: 'me',
-          tenants: ['a', 'me', 'b', 'c'],
-          manifest: {
-            windows: [
-              { route: 'a', widgets: [] },
-              {
-                route: 'b',
-                widgets: [
-                  { type: 'A', layout },
-                  { type: 'C', layout }
-                ]
-              },
-              { route: 'c', widgets: [] },
-              { route: 'd', widgets: [manifest] }
-            ]
-          }
-        }
-      });
-    });
-
-    it('should move widget from window to a new one into store', () => {
+    it('should not move widget from window to a new one into store (using effect)', () => {
       const layout = { x: 1, y: 2, height: 30, width: 50 };
       const manifest = { type: 'B', layout };
       expect(
@@ -380,62 +335,7 @@ describe('Dashboard reducer', () => {
           manifest: {
             windows: [
               { route: 'a', widgets: [] },
-              {
-                route: 'b',
-                widgets: [
-                  { type: 'A', layout },
-                  { type: 'C', layout }
-                ]
-              },
-              { route: 'c', widgets: [] },
-              { route: 'd', widgets: [] },
-              { route: 'b', widgets: [manifest] }
-            ]
-          }
-        }
-      });
-    });
-
-    it('should move widget from window to even a non existing window into store', () => {
-      const layout = { x: 1, y: 2, height: 30, width: 50 };
-      const manifest = { type: 'B', layout };
-      expect(
-        dashboardReducer(
-          {
-            ...initialState,
-            manifests: {
-              ...initialState.manifests,
-              sender: 'me',
-              tenants: ['a', 'me', 'b', 'c'],
-              manifest: {
-                windows: [
-                  // @ts-ignore
-                  undefined,
-                  { route: 'b', widgets: [{ type: 'A', layout }, manifest, { type: 'C', layout }] },
-                  { route: 'c', widgets: [] },
-                  { route: 'd', widgets: [] }
-                ]
-              }
-            }
-          },
-          DashboardActions.moveWidget({ widgetIndex: 1, targetIndex: 0 })
-        )
-      ).toEqual({
-        ...initialState,
-        manifests: {
-          ...initialState.manifests,
-          sender: 'me',
-          tenants: ['a', 'me', 'b', 'c'],
-          manifest: {
-            windows: [
-              { route: 'b', widgets: [manifest] },
-              {
-                route: 'b',
-                widgets: [
-                  { type: 'A', layout },
-                  { type: 'C', layout }
-                ]
-              },
+              { route: 'b', widgets: [{ type: 'A', layout }, manifest, { type: 'C', layout }] },
               { route: 'c', widgets: [] },
               { route: 'd', widgets: [] }
             ]

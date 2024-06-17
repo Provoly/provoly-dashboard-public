@@ -579,9 +579,10 @@ describe('DashboardEffects', () => {
         a: DashboardActions.saveManifest({ name: 'mId', id: 'id' })
       });
 
-      const expected$ = hot('--(ab)-', {
+      const expected$ = hot('--(abc)-', {
         a: DashboardActions.fetchManifestsList(),
-        b: DashboardActions.setInitialPresentation({ initial: { windows: [] } })
+        b: DashboardActions.setInitialPresentation({ initial: { windows: [] } }),
+        c: DashboardActions.updateManifest({ manifest: { windows: [] }, selectedIds: [] })
       });
       expect(effects.saveManifest$).toBeObservable(expected$);
       expect(effects.saveManifest$).toSatisfyOnFlush(() => {
@@ -636,9 +637,10 @@ describe('DashboardEffects', () => {
         a: DashboardActions.saveManifest({ name: 'name', id: 'id', manifest: { windows: [{ widgets: [] }] } })
       });
 
-      const expected$ = hot('--(ab)-', {
+      const expected$ = hot('--(abc)-', {
         a: DashboardActions.fetchManifestsList(),
-        b: DashboardActions.setInitialPresentation({ initial: { windows: [{ widgets: [] }] } })
+        b: DashboardActions.setInitialPresentation({ initial: { windows: [{ widgets: [] }] } }),
+        c: DashboardActions.updateManifest({ manifest: { windows: [{ widgets: [] }] }, selectedIds: [] })
       });
       expect(effects.saveManifest$).toBeObservable(expected$);
       expect(effects.saveManifest$).toSatisfyOnFlush(() => {
