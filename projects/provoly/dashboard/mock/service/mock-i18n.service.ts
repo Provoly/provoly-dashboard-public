@@ -6,6 +6,6 @@ export class MockPryI18nService {
   addCoreTranslations = () => {};
   addLangObject = () => {};
   instantObject = () => ({});
-  instant = () => 'mock i18n translation';
+  instant = (value: any) => value;
   get = () => of('');
 }
