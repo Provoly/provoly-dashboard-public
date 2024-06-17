@@ -101,7 +101,7 @@ const namedQueriesUses = createSelector(globalManifest, (manifest) =>
   manifest.windows
     .map((window, idx) => ({ windowIndex: idx, widgets: window.widgets }))
     .map(({ windowIndex, widgets }) =>
-      widgets.map((widget) =>
+      (widgets ?? []).map((widget) =>
         (Array.isArray(widget.datasource) ? widget.datasource : [widget.datasource])
           .filter((rsName) => rsName !== undefined)
           .map((rsName) => ({

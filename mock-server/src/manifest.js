@@ -28,7 +28,7 @@ module.exports = {
         datasource: [
           ...new Set(
             manifest.manifest.windows
-              .map((window) => window.widgets.map((widget) => widget.datasource))
+              .map((window) => (window.widgets ?? []).map((widget) => widget.datasource))
               .flat(3)
               .filter((dataset) => !!dataset)
           )

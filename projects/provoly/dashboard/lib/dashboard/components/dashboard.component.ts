@@ -196,7 +196,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
       distinctUntilChanged((p, c) => equal(p, c))
     );
     this.nonFillerWidgets$ = this.windowManifest$.pipe(
-      map((wManifest) => wManifest.widgets.filter((w) => w.type !== 'filler').length)
+      map((wManifest) => (wManifest.widgets ?? []).filter((w) => w.type !== 'filler').length)
     );
 
     this.subscriptions.add(

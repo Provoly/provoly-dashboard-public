@@ -5,7 +5,7 @@ import {
   ManifestDescription,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
-import { AfterViewInit, Component, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { MetadataActions, MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
 import { Store } from '@ngrx/store';
@@ -46,8 +46,10 @@ export class PresentationFormComponent extends SubscriptionnerDirective implemen
 
   @Input() mode: 'theme' | 'meta' = 'meta';
   @Input() themePrefix: string | null = null;
+  @ViewChild('input') input!: ElementRef;
 
   selectedPresentation$ = new BehaviorSubject<ManifestDescription | undefined>(undefined);
+
   @Input() set selectedPresentation(presentation: ManifestDescription | undefined) {
     this.selectedPresentation$.next(presentation);
   }
@@ -81,6 +83,9 @@ export class PresentationFormComponent extends SubscriptionnerDirective implemen
         if (!!theme) this.form.patchValue({ theme });
       })
     );
+    setTimeout(() => {
+      this.input?.nativeElement.focus();
+    }, 10);
   }
 
   ngAfterViewInit() {

@@ -16,6 +16,7 @@
           [selectedPresentation]="(selectedPresentation$ | async) ?? undefined"
           (formValue)="formValue = $event"
           (isFormValid)="isFormValid = $event"
+          [mode]="mode"
           [themePrefix]="themePrefix"
         ></pry-presentation-form>
         <div class="m-form-label-field -width-full m-form-label-field--inline">

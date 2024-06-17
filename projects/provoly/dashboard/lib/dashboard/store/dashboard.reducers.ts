@@ -22,6 +22,7 @@ import {
   DEFAULT_ROWS_NUMBER
 } from './dashboard.contants';
 import { GetCapabilitiesResponse } from './wms.service';
+import { ManifestUtils } from './manifest-utils.class';
 
 export const dashboardFeatureKey = '@pry/dashboard';
 
@@ -144,7 +145,7 @@ const internalReducer = createReducer<DashboardState>(
         manifests: {
           ...state.manifests,
           tenants: action.tenants ?? state.manifests.tenants,
-          manifest: action.manifest,
+          manifest: ManifestUtils.cleanupManifest(action.manifest),
           currentId: action.manifestId ?? state.manifests.currentId
         },
         // @ts-ignore

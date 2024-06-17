@@ -104,7 +104,7 @@ export class WidgetFactoryService {
     const aggregates: string[] = [];
 
     manifest.windows.forEach((windowManifest) => {
-      windowManifest.widgets.forEach((widgetManifest) => {
+      (windowManifest.widgets ?? []).forEach((widgetManifest) => {
         this.datasourcesToAutoLoad(widgetManifest).forEach((res: { datasetId: string; excludeGeo: boolean }) => {
           if (res.datasetId) {
             datasources.push(res);

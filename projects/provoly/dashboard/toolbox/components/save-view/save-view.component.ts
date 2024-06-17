@@ -31,7 +31,6 @@ import { PresentationFormValue } from '../../shared/presentation-form/presentati
 })
 export class SaveViewComponent extends ToolboxActionComponent {
   @Input() mode: 'saveAs' | 'directSave' = 'saveAs';
-  @ViewChild('input') input!: ElementRef;
   @ViewChild('saveAs') saveAs!: ElementRef<HTMLButtonElement>;
   @ViewChild('directiveSave') directiveSave!: ElementRef<HTMLButtonElement>;
   @ViewChild('firstFocusdirective') firstFocusdirective!: ElementRef<HTMLButtonElement>;
@@ -83,9 +82,6 @@ export class SaveViewComponent extends ToolboxActionComponent {
     if (this.saveAsOpened) {
       this.store.dispatch(DashboardActions.requestAllRoutes());
       this.openSaveAs();
-      setTimeout(() => {
-        this.input.nativeElement.focus();
-      }, 10);
     } else {
       this.overlayRefSaveAs?.dispose();
       this.overlayRefSaveAs = undefined;

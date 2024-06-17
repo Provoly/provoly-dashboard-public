@@ -405,9 +405,11 @@ export class DashboardEffects {
             })
           )
       ),
-      mergeMap((manifest) => [
+      withLatestFrom(this.store.select(DashboardSelectors.selectedItemIds)),
+      mergeMap(([manifest, selectedIds]) => [
         DashboardActions.fetchManifestsList(),
-        DashboardActions.setInitialPresentation({ initial: manifest })
+        DashboardActions.setInitialPresentation({ initial: manifest }),
+        DashboardActions.updateManifest({ manifest, selectedIds })
       ])
     )
   );
