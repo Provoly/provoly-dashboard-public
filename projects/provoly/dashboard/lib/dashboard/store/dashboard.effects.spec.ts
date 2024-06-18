@@ -4,6 +4,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import {
   ConfigSelectors,
+  DashboardGridLayout,
   DataSourceSelectors,
   SearchService,
   WidgetFactoryService,
@@ -914,6 +915,142 @@ describe('DashboardEffects', () => {
       expect(effects.proximitySearch$).toSatisfyOnFlush(() => {
         expect(serviceSpy).toHaveBeenNthCalledWith(1, 'aaa');
       });
+    });
+  });
+
+  describe('moveWidget$', () => {
+    const layout = { x: 1, y: 2, height: 30, width: 50 };
+    const manifest = { type: 'B', layout };
+
+    beforeEach(() => {
+      DashboardSelectors.gridLayout.setResult(DashboardGridLayout.HALF_VERTICAL);
+      DashboardSelectors.rank.setResult(1);
+      DashboardSelectors.dashboardCellParams.setResult({
+        rows: 12,
+        columns: 12,
+        gridWidth: 120,
+        gridHeight: 120,
+        gridGap: 0,
+        cellHeight: 10,
+        cellWidth: 10,
+        offsetTop: 0,
+        offsetLeft: 0,
+        mobileMode: false
+      });
+      DashboardSelectors.selectedItemIds.setResult([]);
+    });
+
+    it('should move widget from window to another into store', () => {
+      DashboardSelectors.globalManifest.setResult({
+        windows: [
+          { route: 'a', widgets: [] },
+          { route: 'b', widgets: [{ type: 'A', layout }, manifest, { type: 'C', layout }] },
+          { route: 'c', widgets: [] },
+          { route: 'd', widgets: [] }
+        ]
+      });
+
+      actions$ = hot('--a-', {
+        a: DashboardActions.moveWidget({ widgetIndex: 1, targetIndex: 3 })
+      });
+
+      const expected$ = hot('--a-', {
+        a: DashboardActions.updateManifest({
+          manifest: {
+            windows: [
+              { route: 'a', widgets: [] },
+              {
+                route: 'b',
+                widgets: [
+                  { type: 'A', layout },
+                  { type: 'C', layout }
+                ]
+              },
+              { route: 'c', widgets: [] },
+              { route: 'd', widgets: [manifest] }
+            ]
+          },
+          selectedIds: []
+        })
+      });
+
+      expect(effects.moveWidget$).toBeObservable(expected$);
+    });
+
+    it('should move widget from window to a new one into store', () => {
+      DashboardSelectors.globalManifest.setResult({
+        windows: [
+          { route: 'a', widgets: [] },
+          { route: 'b', widgets: [{ type: 'A', layout }, manifest, { type: 'C', layout }] },
+          { route: 'c', widgets: [] },
+          { route: 'd', widgets: [] }
+        ]
+      });
+
+      actions$ = hot('--a-', {
+        a: DashboardActions.moveWidget({ widgetIndex: 1, targetIndex: -1 })
+      });
+
+      const expected$ = hot('--a-', {
+        a: DashboardActions.updateManifest({
+          manifest: {
+            windows: [
+              { route: 'a', widgets: [] },
+              {
+                route: 'b',
+                widgets: [
+                  { type: 'A', layout },
+                  { type: 'C', layout }
+                ]
+              },
+              { route: 'c', widgets: [] },
+              { route: 'd', widgets: [] },
+              { route: 'b', widgets: [manifest] }
+            ]
+          },
+          selectedIds: []
+        })
+      });
+
+      expect(effects.moveWidget$).toBeObservable(expected$);
+    });
+
+    it('should move widget from window to even a non existing window into store', () => {
+      DashboardSelectors.globalManifest.setResult({
+        windows: [
+          // @ts-ignore
+          undefined,
+          { route: 'b', widgets: [{ type: 'A', layout }, manifest, { type: 'C', layout }] },
+          { route: 'c', widgets: [] },
+          { route: 'd', widgets: [] }
+        ]
+      });
+
+      actions$ = hot('--a-', {
+        a: DashboardActions.moveWidget({ widgetIndex: 1, targetIndex: 0 })
+      });
+
+      const expected$ = hot('--a-', {
+        a: DashboardActions.updateManifest({
+          manifest: {
+            windows: [
+              { route: 'b', widgets: [manifest] },
+              {
+                route: 'b',
+                widgets: [
+                  { type: 'A', layout },
+                  { type: 'C', layout }
+                ]
+              },
+              { route: 'c', widgets: [] },
+              { route: 'd', widgets: [] }
+            ]
+          },
+          selectedIds: []
+        })
+      });
+
+      expect(effects.moveWidget$).toBeObservable(expected$);
     });
   });
 });

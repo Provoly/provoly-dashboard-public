@@ -678,7 +678,7 @@ export class DashboardEffects {
         // Creating new current window manifest, without moved widget
         const myNewWindow = {
           ...newWindows[rank],
-          widgets: [...newWindows[rank].widgets]
+          widgets: [...(newWindows[rank] ?? { widgets: [] }).widgets]
         };
         const widget = myNewWindow.widgets.splice(action.widgetIndex, 1)[0];
         newWindows[rank] = myNewWindow;
@@ -700,7 +700,7 @@ export class DashboardEffects {
               rank
             );
             // Trying all placement options in target window
-            const windowLayout = manifestGlobal.windows[targetRank].grid?.layout ?? DashboardGridLayout.MANUAL;
+            const windowLayout = (manifestGlobal.windows[targetRank] ?? {}).grid?.layout ?? DashboardGridLayout.MANUAL;
             if (windowLayout !== DashboardGridLayout.MANUAL) {
               const options = WidgetPlacementUtils.placementOptions(widget, windowLayout);
               if (!found) {
@@ -732,7 +732,7 @@ export class DashboardEffects {
               const placeWeFound = found as { actualRank: number; widget: WidgetManifest };
               newWindows[placeWeFound.actualRank].widgets.push(placeWeFound.widget);
             } else {
-              const currentWindowLayout = manifestGlobal.windows[rank].grid?.layout ?? DashboardGridLayout.FULL;
+              const currentWindowLayout = (manifestGlobal.windows[rank] ?? {}).grid?.layout ?? DashboardGridLayout.FULL;
 
               // si non trouvé : nouvelle page, première position suggérée
               const firstProposedLayout = WidgetPlacementUtils.placementOptions(widget, currentWindowLayout)[0];
