@@ -649,7 +649,7 @@
   }
 
   @if (rightSlideLayers.length > 0) {
-    <div class="m-map-slide-legend -left" [style.top.px]="legendTop$ | async">
+    <div class="m-map-slide-legend -right" [style.top.px]="legendTop$ | async">
       <span class="m-map-slide-legend__title">{{ '@pry.widget.map.slideTitle' | i18n }}:</span>
       @for (layer of rightSlideLayers; track layer) {
         <div>{{ layer.get('title') }}</div>

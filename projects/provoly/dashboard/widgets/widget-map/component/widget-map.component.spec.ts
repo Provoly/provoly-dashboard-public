@@ -484,7 +484,8 @@ describe('WidgetMapComponent', () => {
           type: 'geoserver',
           url: 'http://geoserver.url/geoNamespace/wms?SERVICE=WMS&VERSION=1.3.0',
           order: 0,
-          title: 'geoKey'
+          title: 'geoKey',
+          group: DEFAULT_LAYER_GROUP
         }
       ],
       style: 'style1',
@@ -522,7 +523,8 @@ describe('WidgetMapComponent', () => {
           subType: 'Point',
           title: 'resultset - loc',
           type: 'auto',
-          order: 0
+          order: 0,
+          group: DEFAULT_LAYER_GROUP
         },
         {
           attribute: 'zone',
@@ -532,7 +534,8 @@ describe('WidgetMapComponent', () => {
           subType: 'MultiPolygon',
           title: 'resultset - zone',
           type: 'auto',
-          order: 1
+          order: 1,
+          group: DEFAULT_LAYER_GROUP
         }
       ],
       style: 'style1',
@@ -571,7 +574,8 @@ describe('WidgetMapComponent', () => {
           subType: 'Point',
           title: 'resultset - loc',
           type: 'auto',
-          order: 0
+          order: 0,
+          group: 'DEFAULT'
         },
         {
           attribute: 'zone',
@@ -581,12 +585,13 @@ describe('WidgetMapComponent', () => {
           subType: 'MultiPolygon',
           title: 'resultset - zone',
           type: 'auto',
-          order: 4999.5
+          order: 4999.5,
+          group: 'DEFAULT'
         },
         {
           type: 'wms',
           background: true,
-          order: WidgetMapUtils.BACKGROUND_ORDER
+          order: WidgetMapUtils.BACKGROUND_ORDER,
         }
       ],
       style: 'style1',

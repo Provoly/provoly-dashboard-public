@@ -344,7 +344,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
               namespace: metadatas[GeoMetadata.NAMESPACE],
               paramLayer: metadatas[GeoMetadata.KEY],
               name: ds.name,
-              datasourceId: ds.id
+              datasourceId: ds.id,
+              group: DEFAULT_LAYER_GROUP
             };
           })
           .map((layer) => layer as MapGeoServerLayerOptions);
@@ -381,7 +382,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                     key: ds.id,
                     subType: geo.field!.type,
                     classes: [ds.oClass],
-                    attribute: geo.attr.technicalName
+                    attribute: geo.attr.technicalName,
+                    group: DEFAULT_LAYER_GROUP
                   }) as MapAutoLayerOptions
               );
             })
@@ -1486,11 +1488,11 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.map.updateSize();
   }
 
-  isLayerVisible(layer: MapWidgetLayerOptions, group?: LayerGroup) {
-    if (group?.visibleLayers) {
+  isLayerVisible(layer: MapWidgetLayerOptions, group?: LayerGroup): boolean {
+    if (group && group.visibleLayers) {
       return group.visibleLayers.includes(layer.title ?? '');
     } else {
-      return this.layerGroups.find((g) => g.name === layer.group)?.visibleLayers.includes(layer.title ?? '');
+      return !!this.layerGroups.find((g) => g.name === layer.group)?.visibleLayers.includes(layer.title ?? '');
     }
   }
 
