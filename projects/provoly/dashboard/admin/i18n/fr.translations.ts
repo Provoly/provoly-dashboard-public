@@ -159,7 +159,7 @@ export const frTranslations = {
         entities: {
           dashboard: 'Tableaux de bord'
         },
-        addTag: 'Ajouter un noueau tag'
+        addTag: 'Ajouter un nouveau tag'
       },
       'abac-rules': {
         delete: 'Supprimer',

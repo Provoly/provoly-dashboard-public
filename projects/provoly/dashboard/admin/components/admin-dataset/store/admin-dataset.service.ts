@@ -15,9 +15,14 @@ export class AdminDatasetService {
   ) {}
 
   addDataset(dataset: Dataset): Observable<void> {
-    return this.store
-      .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.post<void>(encodeURI(`${url}/datasets`), dataset)));
+    return this.store.select(ConfigSelectors.refUrl).pipe(
+      mergeMap((url) =>
+        this.httpClient.post<void>(encodeURI(`${url}/datasets`), {
+          ...dataset,
+          categories: dataset.categories?.map((category) => category.id)
+        })
+      )
+    );
   }
 
   updateDataset(dataset: Dataset): Observable<undefined | ShareConflict> {
