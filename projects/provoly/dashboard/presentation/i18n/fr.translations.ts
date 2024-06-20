@@ -38,7 +38,8 @@ export const frTranslations = {
       delete: 'Supprimer',
       backToCatalog: 'Revenir au catalogue',
       search: 'Rechercher',
-      title: 'Catalogue de tableaux de bord'
+      title: 'Catalogue de tableaux de bord',
+      more: 'Options'
     }
   }
 };

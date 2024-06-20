@@ -38,7 +38,8 @@ export const enTranslations = {
       delete: 'Delete',
       backToCatalog: 'Back to catalog',
       search: 'Search',
-      title: 'Presentation catalog'
+      title: 'Presentation catalog',
+      more: 'Options'
     }
   }
 };

@@ -24,7 +24,7 @@
           #trigger="cdkOverlayOrigin"
         >
           <span [class.u-visually-hidden]="!displayLabels">{{ '@pry.toolbox.options' | i18n }}</span>
-          <pry-icon [width]="10" [height]="13" iconSvg="chevron_bottom"></pry-icon>
+          <pry-icon [width]="10" [height]="13" [iconSvg]="isDropdownOpen ? 'chevron_top' : 'chevron_bottom'"></pry-icon>
         </button>
       </li>
       <ng-template
