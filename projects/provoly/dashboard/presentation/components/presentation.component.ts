@@ -16,7 +16,6 @@ import { Store } from '@ngrx/store';
 import {
   DashboardActions,
   DashboardGridLayout,
-  DashboardManifest,
   DashboardSelectors,
   ManifestDescription,
   PRY_ACCESS_TOKEN,
@@ -36,17 +35,16 @@ import { v4 } from 'uuid';
 })
 export class PryPresentationComponent extends SubscriptionnerDirective {
   manifests$: Observable<ManifestDescription[]>;
+  search$ = new BehaviorSubject('');
+  filteredPresentations$: Observable<ManifestDescription[]>;
+
   selectedPresentation$ = new BehaviorSubject<ManifestDescription | undefined>(undefined);
-  staticManifest$?: Observable<DashboardManifest>;
   selectedMode: ViewMode = ViewMode.CATALOG;
+  ViewMode = ViewMode;
+
   @ViewChild('modalActions', { read: TemplateRef }) templateModalActions!: TemplateRef<any>;
   @ViewChild('openModal') openModal!: ElementRef<HTMLButtonElement>;
   overlayRef?: OverlayRef;
-  accessRightsByGroup: { [key: string]: string[] } = {};
-
-  ViewMode = ViewMode;
-  search$ = new BehaviorSubject('');
-  filteredPresentations$: Observable<ManifestDescription[]>;
 
   @Input() editionStartUrl: string = '/';
   @Input() consultStartUrl: string = '/';
@@ -98,9 +96,6 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
       this.listOfManifests$
     ]).pipe(map(([dynamics, statics]) => statics ?? dynamics));
 
-    this.staticManifest$ = this.store
-      .select(DashboardSelectors.staticManifest)
-      .pipe(map((staticM) => staticM.windows[0]));
     this.filteredPresentations$ = combineLatest([
       this.manifests$,
       this.search$,

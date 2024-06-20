@@ -7,7 +7,8 @@ import {
   DashboardSelectors,
   GlobalManifest,
   IMetadata,
-  ManifestDescription, MetadataValue,
+  ManifestDescription,
+  MetadataValue,
   SubscriptionnerDirective,
   ViewMode,
   WidgetPlacementUtils
@@ -23,6 +24,7 @@ import { PresentationFormValue } from '@provoly/dashboard/toolbox';
 })
 export class PryAddEditPresentationComponent extends SubscriptionnerDirective {
   staticManifest$: Observable<GlobalManifest>;
+  staticManifest?: GlobalManifest;
   selectedPresentation$ = new BehaviorSubject<ManifestDescription | undefined>(undefined);
   chosenLayout: string = DashboardGridLayout.FULL;
   metadataDefs: IMetadata[] | undefined;
@@ -46,13 +48,16 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective {
   ) {
     super();
     this.staticManifest$ = this.store.select(DashboardSelectors.staticManifest);
-    combineLatest([this.staticManifest$, this.store.select(DashboardSelectors.gridLayout)]).subscribe(
-      ([staticManifest, gridLayout]) => {
-        this.chosenLayout =
-          this.edition && staticManifest.windows[0]?.grid?.layout !== undefined
-            ? staticManifest.windows[0]?.grid?.layout
-            : gridLayout;
-      }
+    this.subscriptions.add(this.staticManifest$.subscribe(manifest => this.staticManifest = manifest));
+    this.subscriptions.add(
+      combineLatest([this.staticManifest$, this.store.select(DashboardSelectors.gridLayout)]).subscribe(
+        ([staticManifest, gridLayout]) => {
+          this.chosenLayout =
+            this.edition && staticManifest.windows[0]?.grid?.layout !== undefined
+              ? staticManifest.windows[0]?.grid?.layout
+              : gridLayout;
+        }
+      )
     );
     this.subscriptions.add(
       this.store.select(MetadataSelectors.metadata).subscribe((metadata) => {
@@ -65,19 +70,6 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective {
     );
   }
 
-  save() {
-    if (!this.edition) {
-      this.store.dispatch(DashboardActions.updateStaticManifest({ staticManifest: { windows: [] } }));
-    }
-    const presentation = this.dispatchSave();
-    this.store.dispatch(
-      DashboardActions.selectPresentation({
-        presentation,
-        viewMode: ViewMode.EDITION
-      })
-    );
-  }
-
   dispatchSave(): ManifestDescription {
     const presentation = {
       ...this.selectedPresentation$.value!,
@@ -86,21 +78,27 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective {
       metadata: this.metadata()
     };
 
-    this.subscriptions.add(
-      this.staticManifest$.pipe(take(1)).subscribe((staticManifest) => {
-        this.store.dispatch(
-          DashboardActions.saveManifest({
-            ...presentation,
-            metadata: presentation.metadata?.map((metadata: MetadataValue) => ({
-              metadataDefId: metadata.metadataDef.id,
-              value: metadata.value
-            })),
-            manifest: staticManifest
-          })
-        );
+    this.store.dispatch(
+      DashboardActions.saveManifest({
+        ...presentation,
+        metadata: presentation.metadata?.map((metadata: MetadataValue) => ({
+          metadataDefId: metadata.metadataDef.id,
+          value: metadata.value
+        })),
+        manifest: this.edition ? this.staticManifest : this.getNewManifest()
       })
     );
     return presentation;
+  }
+
+  save() {
+    const presentation = this.dispatchSave();
+    this.store.dispatch(
+      DashboardActions.selectPresentation({
+        presentation,
+        viewMode: ViewMode.EDITION
+      })
+    );
   }
 
   configureDashboard(selectedPresentation: ManifestDescription) {
@@ -115,29 +113,6 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective {
     };
 
     if (!this.edition) {
-      this.store.dispatch(
-        DashboardActions.updateManifest({
-          manifest: {
-            windows: [
-              {
-                widgets: [],
-                grid: {
-                  layout: this.chosenLayout,
-                  columns: WidgetPlacementUtils.getLayout(this.chosenLayout)?.columns,
-                  rows: WidgetPlacementUtils.getLayout(this.chosenLayout)?.rows
-                }
-              }
-            ]
-          },
-          selectedIds: [],
-          manifestId: selectedPresentation.id
-        })
-      );
-      this.store.dispatch(
-        DashboardActions.setInitialPresentation({
-          initial: { windows: [{ widgets: [], grid: { layout: this.chosenLayout as DashboardGridLayout } }] }
-        })
-      );
       this.store.dispatch(
         DashboardActions.selectPresentation({
           presentation,
@@ -189,5 +164,20 @@ export class PryAddEditPresentationComponent extends SubscriptionnerDirective {
             }
           ]
       : this.selectedPresentation$.value?.metadata ?? [];
+  }
+
+  getNewManifest(): GlobalManifest {
+    return {
+      windows: [
+        {
+          widgets: [],
+          grid: {
+            layout: this.chosenLayout,
+            columns: WidgetPlacementUtils.getLayout(this.chosenLayout)?.columns,
+            rows: WidgetPlacementUtils.getLayout(this.chosenLayout)?.rows
+          }
+        }
+      ]
+    };
   }
 }
