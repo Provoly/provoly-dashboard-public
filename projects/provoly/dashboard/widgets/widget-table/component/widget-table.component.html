@@ -23,25 +23,35 @@
       >
         @if (optionsCopy && optionsCopy.style) {
           <div class="m-form-label-field">
-            <label class="a-label" for="table_style_headerTextAlign">Align header text :</label>
+            <label class="a-label" for="table_style_headerTextAlign">{{
+              '@pry.widget.table.headerTextAlign' | i18n
+            }}</label>
             <pry-select
               [items]="ALIGNMENT_OPTIONS"
               [ngModel]="optionsCopy.style.headerTextAlign"
               (ngModelChange)="updateStyle($event, 'headerTextAlign')"
               id="table_style_headerTextAlign"
+              i18nPrefix="@pry.widget.table.align."
             ></pry-select>
           </div>
           <div class="m-form-label-field">
-            <label class="a-label" for="table_style_cellTextAlign">Align cell text :</label>
+            <label class="a-label" for="table_style_cellTextAlign">{{
+              '@pry.widget.table.cellTextAlign' | i18n
+            }}</label>
             <pry-select
               [items]="ALIGNMENT_OPTIONS"
               [ngModel]="optionsCopy.style.cellTextAlign"
               (ngModelChange)="updateStyle($event, 'cellTextAlign')"
               id="table_style_cellTextAlign"
+              i18nPrefix="@pry.widget.table.align."
             ></pry-select>
           </div>
-          <div class="m-form-label-field">
-            <label class="a-label" for="table_style_verticalSeparator">Vertical separator :</label>
+          <div
+            class="m-form-label-field u-display-flex -row -justify-space-between o-widget--table__vertical-separator"
+          >
+            <label class="a-label" for="table_style_verticalSeparator">{{
+              '@pry.widget.table.verticalSeparator' | i18n
+            }}</label>
             <pry-checkbox
               [ngModel]="optionsCopy.style.showVerticalSeparator"
               (ngModelChange)="updateStyle($event, 'showVerticalSeparator')"

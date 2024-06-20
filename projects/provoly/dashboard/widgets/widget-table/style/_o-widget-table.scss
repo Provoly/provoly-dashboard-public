@@ -76,4 +76,8 @@
       height: auto;
     }
   }
+
+  &__vertical-separator {
+    margin-top: toRem(10);
+  }
 }
