@@ -1,10 +1,31 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "baseBranches": ["main"],
+  "rebaseWhen": "behind-base-branch",
   "extends": [
-    "config:base",
+    "config:recommended",
+    "schedule:weekly",
+    ":maintainLockFilesWeekly",
     ":semanticCommitTypeAll(chore)"
   ],
   "addLabels": [
     "dependencies"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": ["^@angular", "@schematics", "@ngrx"],
+      "groupName": "angular packages",
+      "enabled": true
+    },
+    {
+      "matchPackageNames": ["^jest", "@types/jest"],
+      "groupName": "jest packages",
+      "enabled": true
+    },
+    {
+      "paths": ["mock-server/package.json"],
+      "groupName": "mock server packages",
+      "branchPrefix": "mock-server"
+    }
   ]
 }
