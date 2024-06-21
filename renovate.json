@@ -13,19 +13,19 @@
   ],
   "packageRules": [
     {
-      "matchPackageNames": ["^@angular", "@schematics", "@ngrx"],
+      "matchPackagePatterns": ["^@angular", "@schematics", "@ngrx"],
       "groupName": "angular packages",
       "enabled": true
     },
     {
-      "matchPackageNames": ["^jest", "@types/jest"],
+      "matchPackagePatterns": ["^jest", "@types/jest"],
       "groupName": "jest packages",
       "enabled": true
     },
     {
       "paths": ["mock-server/package.json"],
       "groupName": "mock server packages",
-      "branchPrefix": "mock-server"
+      "branchPrefix": "renovate/mock-server/"
     }
   ]
 }
