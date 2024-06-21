@@ -29,10 +29,10 @@ export const frTranslations = {
         UNRECOGNIZED:
           "Le fichier fourni contient une colonne «\u00A0{{name}}\u00A0», qui n'est pas présente dans le jeu de données choisi",
         FILE_MANDATORY: 'Aucun fichier fourni',
-        NB_ATTRIBUTES:
-          "Le nombre des colonnes dans le fichier fourni ne correspond pas au nombre d'attributs dans le jeu de données choisi",
-        CAST: "La valeur «\u00A0{{name}}\u00A0», n'a pas pu être convertie en type «\u00A0{{type}}\u00A0»,",
-        ELASTIC_SEARCH: 'Elastic Search stack trace error: {{elasticError}}'
+        NO_ATTRIBUTES: "Aucun attribut correspondant n'a été trouvé dans le fichier fourni",
+        FORMAT:
+          "«\u00A0{{name}}\u00A0»: «\u00A0{{receivedValue}}\u00A0»  n'a pas pu être convertie en type «\u00A0{{type}}\u00A0»",
+        STORAGE: 'Storage stack trace error: {{elasticError}}'
       },
       normalize: 'Normaliser les formes géographiques'
     }

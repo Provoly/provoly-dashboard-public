@@ -26,10 +26,9 @@ export const enTranslations = {
       code: {
         UNRECOGNIZED: 'Provided file contains a column "{{name}}", which is not present in the chosen dataset',
         FILE_MANDATORY: 'No file was provided',
-        NB_ATTRIBUTES:
-          'The number of columns in the file does not match the number of attributes in the chosen dataset',
-        CAST: 'Value {{name}} could not be casted to type "{{type}}"',
-        ELASTIC_SEARCH: 'Elastic Search error: {{elasticError}}'
+        NO_ATTRIBUTES: 'No corresponding attribute found in uploaded file',
+        FORMAT: '"{{name}}": "{{receivedValue}}" could not be converted to type "{{type}}"',
+        STORAGE: 'Storage stack trace error: {{elasticError}}'
       },
       normalize: 'Standardize geographic shapes'
     }
