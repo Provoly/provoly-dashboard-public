@@ -55,7 +55,7 @@
                   <img alt="" class="is-full-width" [src]="restitution.image | getSecuredImage: [600, 600] | async" />
                 </div>
               </div>
-              <ng-container *ngIf="restitution.owner">
+              @if (canModify$ | async) {
                 <div class="more-button">
                   <button
                     type="button"
@@ -68,7 +68,7 @@
                     <pry-icon [height]="25" [width]="25" iconSvg="more_horiz"></pry-icon>
                   </button>
                 </div>
-              </ng-container>
+              }
             </div>
             <div
               class="o-presentation__item__txt"
@@ -114,7 +114,7 @@
           <button
             class="a-btn -link-like"
             (click)="editRestitution(selectedRestitution)"
-            [disabled]="!selectedRestitution.owner"
+            [disabled]="!(canModify$ | async)"
             *pryAccess="{ module: 'dashboard', page: 'restitution', action: 'edit' }"
           >
             {{ '@pry.restitution.update' | i18n }}
@@ -125,7 +125,7 @@
             class="a-btn -link-like"
             #openModal
             (click)="deleteRestitution(selectedRestitution.id)"
-            [disabled]="!selectedRestitution.owner"
+            [disabled]="!(canModify$ | async)"
             *pryAccess="{ module: 'dashboard', page: 'restitution', action: 'delete' }"
           >
             {{ '@pry.restitution.delete' | i18n }}

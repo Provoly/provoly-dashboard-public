@@ -18,4 +18,8 @@ export class MockAccessService implements PryBaseAccess {
   canModifyDataset(): Observable<boolean> {
     return of(true);
   }
+
+  canModifyWidget(): Observable<boolean> {
+    return of(true);
+  }
 }

@@ -2,12 +2,14 @@ import { Injectable, InjectionToken } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ManifestDescription } from '../model/manifest.interface';
 import { Dataset } from '../store/data-source/data-source.model';
+import { Widget } from '../model/widget.interface';
 
 export abstract class PryBaseAccess {
   abstract hasRole(...args: any[]): Observable<boolean>;
   abstract canModifyPresentation(presentation: ManifestDescription): Observable<boolean>;
   abstract hasGroup(group: string): Observable<boolean>;
   abstract canModifyDataset(dataset: Dataset): Observable<boolean>;
+  abstract canModifyWidget(widget: Widget): Observable<boolean>;
 }
 
 export const PRY_ACCESS_TOKEN = new InjectionToken<PryBaseAccess>('PRY_ACCESS_TOKEN');
@@ -32,5 +34,9 @@ export class PryDefaultAccessService extends PryBaseAccess {
 
   override canModifyDataset(dataset: Dataset): Observable<boolean> {
     return of(dataset.owner ?? false);
+  }
+
+  override canModifyWidget(widget: Widget): Observable<boolean> {
+    return of(widget.owner ?? false);
   }
 }

@@ -1,8 +1,8 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
-import { Component, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, Inject, Optional, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ConfigActions, ConfigSelectors, ViewMode, Widget } from '@provoly/dashboard';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { ConfigActions, ConfigSelectors, PRY_ACCESS_TOKEN, PryBaseAccess, ViewMode, Widget } from '@provoly/dashboard';
+import { BehaviorSubject, combineLatest, map, Observable, of } from 'rxjs';
 import { TemplatePortal } from '@angular/cdk/portal';
 
 @Component({
@@ -19,11 +19,13 @@ export class PryRestitutionCatalogComponent {
   restitution?: Widget;
   overlayRef?: OverlayRef;
   @ViewChild('modalActions', { read: TemplateRef }) templateActions!: TemplateRef<any>;
+  canModify$: Observable<boolean>;
 
   constructor(
     private store: Store,
     protected overlay: Overlay,
-    protected viewContainerRef: ViewContainerRef
+    protected viewContainerRef: ViewContainerRef,
+    @Optional() @Inject(PRY_ACCESS_TOKEN) private access: PryBaseAccess
   ) {
     this.store.dispatch(ConfigActions.loadWidgets());
     this.store.dispatch(ConfigActions.getMapStyles());
@@ -44,6 +46,9 @@ export class PryRestitutionCatalogComponent {
         )
       )
     );
+
+    this.canModify$ =
+      this.access && this.selectedRestitution ? this.access.canModifyWidget(this.selectedRestitution) : of(false);
   }
 
   selectMode(newMode: ViewMode) {
