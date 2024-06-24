@@ -3,6 +3,7 @@ import {
   DEFAULT_DASHBOARD_ICON_URL,
   LibraryTypes,
   ManifestDescription,
+  PryI18nService,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
 import { AfterViewInit, Component, ElementRef, Input, OnInit, Output, ViewChild } from '@angular/core';
@@ -57,13 +58,21 @@ export class PresentationFormComponent extends SubscriptionnerDirective implemen
   @Output() formValue = new BehaviorSubject<Partial<PresentationFormValue> | undefined>(undefined);
   @Output() isFormValid = new BehaviorSubject<boolean>(false);
 
-  constructor(protected store: Store) {
+  constructor(
+    protected store: Store,
+    private i18nService: PryI18nService
+  ) {
     super();
     this.store.dispatch(MetadataActions.loadMetadata());
 
     this.subscriptions.add(
       this.store.select(MetadataSelectors.metadata).subscribe((metadata) => {
-        this.possibleThemes = metadata?.find((meta) => meta.name === '_theme')?.allowedValues ?? [];
+        this.possibleThemes = [...(metadata?.find((meta) => meta.name === '_theme')?.allowedValues ?? [])];
+        this.possibleThemes.sort((themeA, themeB) =>
+          this.i18nService
+            .instant((this.themePrefix ?? '') + themeA)
+            .localeCompare(this.i18nService.instant((this.themePrefix ?? '') + themeB))
+        );
       })
     );
 
