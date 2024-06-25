@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { DataSource } from '../../../../core/store/data-source/data-source.model';
@@ -12,7 +12,6 @@ import { DataSourceSelectors } from '../../../../core/store/data-source/data-sou
   templateUrl: 'datasource-selector.component.html'
 })
 export class DatasourceSelectorComponent extends SubscriptionnerDirective {
-  datasources$: Observable<DataSource[]>;
   manifest$ = new BehaviorSubject<WidgetManifest | null>(null);
   selectedDatasources$: Observable<DataSource[]>;
 
@@ -31,18 +30,27 @@ export class DatasourceSelectorComponent extends SubscriptionnerDirective {
   @Output() validated = new EventEmitter();
   @Output() itemsChanged = new EventEmitter<string[]>();
 
-  constructor(private store: Store) {
+  constructor(
+    private store: Store,
+    private cdr: ChangeDetectorRef
+  ) {
     super();
 
-    this.datasources$ = combineLatest([
+    this.selectedDatasources$ = combineLatest([
       this.store.select(DataSourceSelectors.getDataSourcesSorted),
       this.selectedIds$
     ]).pipe(
-      map(([datasources, selectedIds]) => DatasourceUtils.getAllDatasourcesWithUnknowns(datasources, selectedIds))
+      map(([datasources, selectedIds]) =>
+        DatasourceUtils.getAllDatasourcesWithUnknowns(datasources, selectedIds).filter((ds) =>
+          selectedIds.includes(ds.id)
+        )
+      )
     );
-
-    this.selectedDatasources$ = combineLatest([this.datasources$, this.selectedIds$]).pipe(
-      map(([datasources, selected]) => datasources.filter((ds) => selected.includes(ds.id)))
+    this.subscriptions.add(
+      this.selectedIds$.subscribe((selectedIds) => {
+        this.itemsChanged.emit(selectedIds);
+        this.cdr.detectChanges();
+      })
     );
   }
 
@@ -56,10 +64,11 @@ export class DatasourceSelectorComponent extends SubscriptionnerDirective {
         ? this.selectedIds$.value.filter((i) => i !== id)
         : [...this.selectedIds$.value, id]
     );
+    this.cdr.detectChanges();
   }
 
   updateDatasourceList(ids: string[]) {
     this.selectedIds$.next(ids);
-    this.itemsChanged.emit(ids);
+    this.cdr.detectChanges();
   }
 }
