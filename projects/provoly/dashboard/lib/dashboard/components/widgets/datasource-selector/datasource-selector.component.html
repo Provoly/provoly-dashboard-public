@@ -29,6 +29,7 @@
     mode="selector"
     [selectedDatasources]="(selectedIds$ | async) ?? []"
     (datasourceSelected)="updateDatasourceList($event)"
+    (searchOrCategoryChanged)="searchOrCategoryChanged$.next()"
   ></pry-datasource-list>
   @if (showButtons) {
     <div class="m-btn-group o-datasource-selector__footer">

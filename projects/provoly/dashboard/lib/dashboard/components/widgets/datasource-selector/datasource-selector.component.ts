@@ -1,11 +1,12 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, Subject } from 'rxjs';
 import { DataSource } from '../../../../core/store/data-source/data-source.model';
 import { WidgetManifest } from '../../../../core/model/manifest.interface';
 import { SubscriptionnerDirective } from '../../subscriptionner.directive';
 import { DatasourceUtils } from '../../../../core/store/data-source/datasource-utils';
 import { DataSourceSelectors } from '../../../../core/store/data-source/data-source.selectors';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'pry-datasource-selector',
@@ -16,6 +17,7 @@ export class DatasourceSelectorComponent extends SubscriptionnerDirective {
   selectedDatasources$: Observable<DataSource[]>;
 
   selectedIds$ = new BehaviorSubject<string[]>([]);
+  searchOrCategoryChanged$ = new Subject<void>();
 
   @Input() showButtons = true;
   @Input() showTitle = true;
@@ -49,7 +51,12 @@ export class DatasourceSelectorComponent extends SubscriptionnerDirective {
     this.subscriptions.add(
       this.selectedIds$.subscribe((selectedIds) => {
         this.itemsChanged.emit(selectedIds);
-        this.cdr.detectChanges();
+        this.detectChanges();
+      })
+    );
+    this.subscriptions.add(
+      this.searchOrCategoryChanged$.pipe(delay(50)).subscribe(() => {
+        this.detectChanges();
       })
     );
   }
@@ -64,11 +71,15 @@ export class DatasourceSelectorComponent extends SubscriptionnerDirective {
         ? this.selectedIds$.value.filter((i) => i !== id)
         : [...this.selectedIds$.value, id]
     );
-    this.cdr.detectChanges();
+    this.detectChanges();
   }
 
   updateDatasourceList(ids: string[]) {
     this.selectedIds$.next(ids);
+    this.detectChanges();
+  }
+
+  detectChanges() {
     this.cdr.detectChanges();
   }
 }

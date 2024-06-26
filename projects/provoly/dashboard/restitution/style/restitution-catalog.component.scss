@@ -18,6 +18,12 @@
       max-height: 100%;
     }
   }
+
+  .a-h1 {
+    padding: 0;
+    margin-top: toRem(25);
+    margin-left: toRem(20);
+  }
 }
 
 .m-context-menu {

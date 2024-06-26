@@ -1,4 +1,4 @@
-import { BehaviorSubject, combineLatest, map, Observable, Subject, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Dataset, DataSource } from '../../../../../core/store/data-source/data-source.model';
@@ -8,6 +8,7 @@ import { Category } from '../../../../../core/store/category/category.interface'
 import { DashboardActions } from '../../../../store/dashboard.actions';
 import { SubscriptionnerDirective } from '../../../subscriptionner.directive';
 import { DatasourceUtils } from '../../../../../core/store/data-source/datasource-utils';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'pry-datasource-list',
@@ -26,13 +27,14 @@ export class PryDatasourceListComponent extends SubscriptionnerDirective impleme
 
   @Input() set mode(mode: 'list' | 'selector') {
     this._mode$.next(mode);
-  };
+  }
   @Input() set selectedDatasources(datasourceIds: string[]) {
     this.selectedDatasources$.next(datasourceIds);
   }
 
   @Output() consultedDataset = new EventEmitter<Dataset>();
   @Output() datasourceSelected = new EventEmitter<string[]>();
+  @Output() searchOrCategoryChanged = new EventEmitter<void>();
 
   constructor(protected store: Store<any>) {
     super();
@@ -51,6 +53,16 @@ export class PryDatasourceListComponent extends SubscriptionnerDirective impleme
     this.store.dispatch(DataSourceActions.dataset.getCategories());
     this.categories$ = this.store.select(DataSourceSelectors.categories);
     this.store.dispatch(DataSourceActions.dataset.listVersions());
+    this.subscriptions.add(
+      this.selectedCategories$.subscribe((_) => {
+        this.searchOrCategoryChanged.next();
+      })
+    );
+    this.subscriptions.add(
+      this.search$.pipe(debounceTime(100)).subscribe((_) => {
+        this.searchOrCategoryChanged.next();
+      })
+    );
   }
 
   ngOnInit() {
@@ -63,11 +75,12 @@ export class PryDatasourceListComponent extends SubscriptionnerDirective impleme
       this.datasets$
     ]).pipe(
       map(([mode, query, selectedCategories, selectedDs, datasources, datasets]) =>
-        mode === 'list' ? this.search(datasets, query, selectedCategories)
-        : this.search(datasources, query, selectedCategories)
-          .map((dataset) => ({ ...dataset, isSelected: selectedDs.includes(dataset.id) }))
-          .sort((a, b) => Number(b.isSelected) - Number(a.isSelected))
-        )
+        mode === 'list'
+          ? this.search(datasets, query, selectedCategories)
+          : this.search(datasources, query, selectedCategories)
+              .map((dataset) => ({ ...dataset, isSelected: selectedDs.includes(dataset.id) }))
+              .sort((a, b) => Number(b.isSelected) - Number(a.isSelected))
+      )
     );
   }
 

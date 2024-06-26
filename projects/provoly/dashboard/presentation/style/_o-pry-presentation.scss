@@ -39,7 +39,7 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-gap: toRem(30);
   padding: toRem(4) toRem(4) toRem(20) toRem(4);
-  overflow-y: visible;
+  overflow-y: auto;
 
   .a-h3 {
     white-space: nowrap;

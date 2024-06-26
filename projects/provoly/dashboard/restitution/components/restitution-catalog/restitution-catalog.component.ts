@@ -19,7 +19,6 @@ export class PryRestitutionCatalogComponent {
   restitution?: Widget;
   overlayRef?: OverlayRef;
   @ViewChild('modalActions', { read: TemplateRef }) templateActions!: TemplateRef<any>;
-  canModify$: Observable<boolean>;
 
   constructor(
     private store: Store,
@@ -46,9 +45,6 @@ export class PryRestitutionCatalogComponent {
         )
       )
     );
-
-    this.canModify$ =
-      this.access && this.selectedRestitution ? this.access.canModifyWidget(this.selectedRestitution) : of(false);
   }
 
   selectMode(newMode: ViewMode) {
@@ -102,5 +98,9 @@ export class PryRestitutionCatalogComponent {
       this.overlayRef = undefined;
       this.selectedRestitution = null;
     }
+  }
+
+  canModify$(widget?: Widget): Observable<boolean> {
+    return this.access && widget ? this.access.canModifyWidget(widget) : of(false);
   }
 }
