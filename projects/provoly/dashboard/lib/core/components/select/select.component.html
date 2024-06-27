@@ -25,6 +25,7 @@
         [attr.aria-disabled]="disabled"
         [disabled]="disabled"
         (keydown)="onKeydownAutocompleteInput($event)"
+        [placeholder]="placeholder"
         #input
       />
     </ng-container>
@@ -51,13 +52,13 @@
                 [height]="iconSize[1]"
               ></pry-icon>
               <ng-container *ngIf="bindLabel ? item?.[bindLabel] : item as value">
-                {{ (i18nPrefix ?? '') + value | i18n : { warn: false } }}
+                {{ (i18nPrefix ?? '') + value | i18n: { warn: false } }}
                 <span
                   *ngIf="multiple && clearable"
                   class="a-pry-select__clear"
                   (click)="clear($event, item)"
                   aria-hidden="true"
-                >×</span
+                  >×</span
                 >
               </ng-container>
             </ng-template>
@@ -121,8 +122,11 @@
             <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
           </ng-container>
           <ng-template #noTemplate>
-            <pry-checkbox (click)="$event.preventDefault()" *ngIf="multiple"
-                          [ngModel]="(valueItems$ | async).includes(item)"></pry-checkbox>
+            <pry-checkbox
+              (click)="$event.preventDefault()"
+              *ngIf="multiple"
+              [ngModel]="(valueItems$ | async).includes(item)"
+            ></pry-checkbox>
             <pry-icon
               *ngIf="bindIcon"
               [iconSvg]="item[bindIcon]"
@@ -130,7 +134,7 @@
               [height]="iconSize[1]"
             ></pry-icon>
             <ng-container *ngIf="bindLabel ? item?.[bindLabel] : item as value">
-              {{ (i18nPrefix ? i18nPrefix : '') + value | i18n : { warn: false } }}
+              {{ (i18nPrefix ? i18nPrefix : '') + value | i18n: { warn: false } }}
             </ng-container>
           </ng-template>
         </div>
