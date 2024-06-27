@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, combineLatest, map, Observable, Subject } from 'rxjs';
 import { DataSource } from '../../../../core/store/data-source/data-source.model';
@@ -12,7 +12,7 @@ import { delay } from 'rxjs/operators';
   selector: 'pry-datasource-selector',
   templateUrl: 'datasource-selector.component.html'
 })
-export class DatasourceSelectorComponent extends SubscriptionnerDirective {
+export class DatasourceSelectorComponent extends SubscriptionnerDirective implements OnInit {
   manifest$ = new BehaviorSubject<WidgetManifest | null>(null);
   selectedDatasources$: Observable<DataSource[]>;
 
@@ -48,6 +48,9 @@ export class DatasourceSelectorComponent extends SubscriptionnerDirective {
         )
       )
     );
+  }
+
+  ngOnInit() {
     this.subscriptions.add(
       this.selectedIds$.subscribe((selectedIds) => {
         this.itemsChanged.emit(selectedIds);

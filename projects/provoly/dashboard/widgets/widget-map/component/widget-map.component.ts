@@ -534,11 +534,11 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         this.optionsCopy.layers?.forEach(
           (layer) => (this.layerSettingsExpandedState[layer.title ?? 'MISSING TITLE'] = false)
         );
-        if (this.optionsCopy.layers && this.optionsCopy.layers.some((layer) => !layer.group))
+        if (this.optionsCopy.layers && this.optionsCopy.layers.some((layer) => !layer.group || layer.group === DEFAULT_LAYER_GROUP))
           this.optionsCopy.layers
             ?.filter(
               (l) =>
-                !l.group &&
+                (!l.group || l.group === DEFAULT_LAYER_GROUP) &&
                 !this.layerGroups
                   .find((group) => group.name === DEFAULT_LAYER_GROUP)
                   ?.visibleLayers.includes(l.title ?? 'MISSING TITLE')
