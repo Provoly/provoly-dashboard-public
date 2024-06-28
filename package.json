@@ -40,7 +40,7 @@
     "lint-prettier-ci": "npx prettier ./src ./projects --check",
     "pub": "cd dist/@provoly/dashboard; npm publish --access=public; cd ../..",
     "bundle:size": "ng build --stats-json; npx webpack-bundle-analyzer dist/*/stats.json",
-    "docs": "compodoc -p ./tsconfig.docs.json -d ./compodoc",
+    "docs": "compodoc -p ./tsconfig.docs.json -d ./compodoc --silent",
     "cve": "npm audit --json > ./npm_audit_report.json"
   },
   "dependencies": {
