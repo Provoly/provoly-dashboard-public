@@ -60,7 +60,7 @@
             {{ '@pry.widget.map.layerSettings.addLayerGroup' | i18n }}
           </button>
         </div>
-        <ng-container *ngFor="let group of layerGroups$ | async; let groupIdx = index">
+        <ng-container *ngFor="let group of layerGroups; let groupIdx = index">
           <div *ngIf="isGroupUsedByWidgetLayers(group)" class="o-layer-settings__group">
             <div class="m-form-label-field o-layer-settings__group-title">
               <label class="a-label" for="map_layerGroupTitle-{{ groupIdx }}">
@@ -68,11 +68,15 @@
                 >{{ '@pry.widget.map.layerSettings.optionalColon' | i18n }}
               </label>
               <div class="u-display-flex">
-                <pry-edit-input
-                  editButtonTooltip="@pry.widget.map.layerSettings.editGroupName"
-                  (validated)="updateLayerGroup(group.name, $event, group.singleLayer, group.visibleLayers)"
-                  [ngModel]="group.name === DEFAULT_LAYER_GROUP ? ('@pry.widget.map.noGroup' | i18n) : group.name"
-                ></pry-edit-input>
+                <div class="m-form-label-field">
+                  <input
+                    id="map_layerGroupTitle-{{ groupIdx }}"
+                    class="a-form-field"
+                    type="text"
+                    (change)="updateLayerGroupName(group, $event)"
+                    [value]="group.name === DEFAULT_LAYER_GROUP ? ('@pry.widget.map.noGroup' | i18n) : group.name"
+                  />
+                </div>
                 <button
                   *ngIf="group.name !== DEFAULT_LAYER_GROUP"
                   class="a-btn--icon-only a-tooltip o-layer-settings__delete-group"
@@ -84,34 +88,36 @@
                 </button>
               </div>
             </div>
-            <div class="m-form-radio-group">
-              <div class="m-form-radio-group__item">
-                <input
-                  type="radio"
-                  id="multiselection-{{ groupIdx }}"
-                  [ngModel]="group.singleLayer"
-                  (ngModelChange)="updateLayerGroup(group.name, undefined, $event)"
-                  [value]="false"
-                  [name]="group.name"
-                />
-                <label class="a-label" for="multiselection-{{ groupIdx }}">{{
-                  '@pry.widget.map.layerSettings.multipleLayer' | i18n
-                }}</label>
+            @if (group.name !== DEFAULT_LAYER_GROUP) {
+              <div class="m-form-radio-group">
+                <div class="m-form-radio-group__item">
+                  <input
+                    type="radio"
+                    id="multiselection-{{ groupIdx }}"
+                    [ngModel]="group.singleLayer"
+                    (ngModelChange)="updateLayerGroupSingleLayer(group, $event)"
+                    [value]="false"
+                    [name]="group.name"
+                  />
+                  <label class="a-label" for="multiselection-{{ groupIdx }}">{{
+                    '@pry.widget.map.layerSettings.multipleLayer' | i18n
+                  }}</label>
+                </div>
+                <div class="m-form-radio-group__item">
+                  <input
+                    type="radio"
+                    id="monoselection-{{ groupIdx }}"
+                    [ngModel]="group.singleLayer"
+                    (ngModelChange)="updateLayerGroupSingleLayer(group, $event)"
+                    [value]="true"
+                    [name]="group.name"
+                  />
+                  <label class="a-label" for="monoselection-{{ groupIdx }}">{{
+                    '@pry.widget.map.layerSettings.singleLayer' | i18n
+                  }}</label>
+                </div>
               </div>
-              <div class="m-form-radio-group__item">
-                <input
-                  type="radio"
-                  id="monoselection-{{ groupIdx }}"
-                  [ngModel]="group.singleLayer"
-                  (ngModelChange)="updateLayerGroup(group.name, undefined, $event, group.visibleLayers)"
-                  [value]="true"
-                  [name]="group.name"
-                />
-                <label class="a-label" for="monoselection-{{ groupIdx }}">{{
-                  '@pry.widget.map.layerSettings.singleLayer' | i18n
-                }}</label>
-              </div>
-            </div>
+            }
             <div class="m-btn-group">
               <div class="u-display-flex -align-center">
                 <button (click)="addLayer(group)" class="a-btn -link-like" type="button">
@@ -187,12 +193,16 @@
                           {{ '@pry.widget.map.layerOptions' | i18n: { index: i + 1 } }}
                         </legend>
                         <div class="m-form-label-field">
-                          <pry-edit-input
-                            label="@pry.widget.map.layerTitle"
-                            editButtonTooltip="@pry.widget.map.layerSettings.editLayerTitle"
-                            (validated)="changeTitle($event, layer, group)"
-                            [ngModel]="layer.title"
-                          ></pry-edit-input>
+                          <label class="a-label" for="layer_{{ i + 1 }}_title">{{
+                            '@pry.widget.map.layerTitle' | i18n
+                          }}</label>
+                          <input
+                            id="layer_{{ i + 1 }}_title"
+                            class="a-form-field"
+                            type="text"
+                            (change)="changeTitle($event, layer, group)"
+                            [value]="layer.title"
+                          />
                         </div>
                         <div class="m-form-label-field" *ngIf="!['geoserver', 'auto'].includes(layer.type)">
                           <label class="a-label" for="map_layerType">{{
@@ -511,11 +521,7 @@
         <pry-icon iconSvg="layers" [width]="18" [height]="18"></pry-icon>
       </button>
     </div>
-    <div
-      class="m-map-pop-in -max-width-220"
-      [class.-hidden]="!layersTabOpen"
-      [style.top.px]="layersTop$ | async"
-    >
+    <div class="m-map-pop-in -max-width-220" [class.-hidden]="!layersTabOpen" [style.top.px]="layersTop$ | async">
       <h4 class="a-h4">{{ '@pry.widget.map.layerSettings.selectLayers' | i18n }}</h4>
       <div class="m-map-pop-in__content" [style.max-height.px]="layersHeight$ | async">
         @for (group of layerGroups$ | async; track group; let groupIdx = $index) {
@@ -595,7 +601,7 @@
     <div class="m-map-pop-in" [class.-hidden]="!legendTabOpen" [style.top.px]="legendTop$ | async">
       <h4 class="a-h4">{{ '@pry.widget.map.legendsTitle' | i18n }}</h4>
       <div class="m-map-pop-in__content" [style.max-height.px]="layersHeight$ | async">
-        @for (geoLayer of (legendLayers$ | async); track geoLayer; let index = $index) {
+        @for (geoLayer of legendLayers$ | async; track geoLayer; let index = $index) {
           @if (isLayerVisible(geoLayer)) {
             <div class="m-map-pop-in__title" (click)="toggleLegend(index)">
               @if (isLayerRendered(geoLayer) && !!geoLayer.title) {
@@ -623,7 +629,7 @@
             [class.-hidden]="!legendTabOpen || legendTabClosed[index] || !isLayerRendered(geoLayer)"
             [style.max-height.px]="legendHeight$ | async"
           >
-            @if ((geoLayer | legendUrl: { capabilities: (wmsCapabilities$ | async) }); as url) {
+            @if (geoLayer | legendUrl: { capabilities: (wmsCapabilities$ | async) }; as url) {
               <img
                 [src]="url | getSecuredImage | async"
                 [alt]="'@pry.widget.map.legend' | i18n: { layer: geoLayer.title }"

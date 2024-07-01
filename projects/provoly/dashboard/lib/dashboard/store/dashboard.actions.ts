@@ -257,10 +257,11 @@ export const DashboardActions = {
   ),
   initDefaultLayerGroup: createAction('[Dashboard] init default layer group', props<{ layers?: string[] }>()),
   addLayerGroup: createAction('[Dashboard] add map layer group', props<Partial<LayerGroup>>()),
-  updateLayerGroup: createAction(
-    '[Dashboard] update map layer group',
-    props<{ name: string; newName?: string; singleLayer?: boolean; visibleLayers?: string | string[] }>()
+  updateLayerVisibility: createAction(
+    '[Dashboard] update visible layers on the layer group',
+    props<{ name: string; visibleLayers?: string | string[] }>()
   ),
   confirmLayerGroupDeletion: createAction('[Dashboard] confirm deleting map layer group', props<{ name: string }>()),
-  deleteLayerGroup: createAction('[Dashboard] delete map layer group', props<{ name: string }>())
+  deleteLayerGroup: createAction('[Dashboard] delete map layer group', props<{ name: string }>()),
+  updateLayerGroups: createAction('[Dashboard] update all layer groups', props<{ layerGroups: LayerGroup[] }>())
 };

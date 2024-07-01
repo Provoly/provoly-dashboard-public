@@ -545,7 +545,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
             )
             .forEach((layer) => {
               this.store.dispatch(
-                DashboardActions.updateLayerGroup({
+                DashboardActions.updateLayerVisibility({
                   name: DEFAULT_LAYER_GROUP,
                   visibleLayers: layer.title ?? 'MISSING TITLE'
                 })
@@ -1259,7 +1259,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.layerSettingsExpandedState[title] = false;
 
     this.store.dispatch(
-      DashboardActions.updateLayerGroup({ name: group.name, visibleLayers: [...group.visibleLayers, title] })
+      DashboardActions.updateLayerVisibility({ name: group.name, visibleLayers: [...group.visibleLayers, title] })
     );
     this.updateLayerOrder();
   }
@@ -1288,16 +1288,45 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     }
   }
 
-  changeTitle($event: any, layer: MapWidgetLayerOptions, group: LayerGroup) {
-    const visibleLayers = group.visibleLayers.map((layerTitle) => (layerTitle === layer.title ? $event : layerTitle));
-    this.store.dispatch(DashboardActions.updateLayerGroup({ name: group.name, visibleLayers }));
+  updateLayerGroupSingleLayer(group: LayerGroup, singleLayer: boolean) {
+    this.updateLayerGroup(group, singleLayer, singleLayer ? [group.visibleLayers[0]] : group.visibleLayers);
+  }
+
+  updateLayerGroup(group: LayerGroup | string, singleLayer?: boolean, visibleLayers?: string[] | string) {
+    const layerGroup = typeof group === 'string' ? this.layerGroups.find((g) => g.name === group) : group;
+    const groupIndex = this.layerGroups.findIndex((g) => g.name === layerGroup!.name);
+    this.layerGroups = this.layerGroups.map((g, i) =>
+      i === groupIndex
+        ? {
+            ...g,
+            singleLayer: singleLayer ?? layerGroup!.singleLayer,
+            visibleLayers:
+              typeof visibleLayers === 'string'
+                ? [...layerGroup!.visibleLayers, visibleLayers]
+                : visibleLayers ?? layerGroup!.visibleLayers
+          }
+        : g
+    );
+  }
+
+  changeTitle($event: Event, layer: MapWidgetLayerOptions, group: LayerGroup) {
+    const newTitle = ($event.currentTarget as HTMLInputElement).value;
+    this.updateLayerGroup(
+      group,
+      undefined,
+      this.layerGroups
+        .filter((g) => g.name === group.name)
+        .map((g, i) => g.visibleLayers.map((l) => (l === layer.title ? newTitle : l)))
+        .flat()
+    );
     delete this.layerSettingsExpandedState[layer.title!];
-    layer.title = $event;
-    this.layerSettingsExpandedState[$event] = true;
+    layer.title = newTitle;
+    this.layerSettingsExpandedState[newTitle] = true;
   }
 
   emitManifest() {
     this.removeEmptyLayerGroups();
+    this.store.dispatch(DashboardActions.updateLayerGroups({ layerGroups: this.layerGroups }));
     this.manifestModified.emit({
       widgetIndex: this.widgetIndex,
       manifest: {
@@ -1332,8 +1361,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   deleteLayer(i: number, layer: MapWidgetLayerOptions, group: LayerGroup) {
     this.optionsCopy?.layers?.splice(i, 1);
     this.updateLayerGroup(
-      group.name,
-      undefined,
+      group,
       undefined,
       group.visibleLayers.filter((l) => l !== layer.title)
     );
@@ -1473,9 +1501,11 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         });
       if (_layer) {
         olLayer?.setVisible(true);
-        this.store.dispatch(DashboardActions.updateLayerGroup({ name: group.name, visibleLayers: [_layer.title!] }));
+        this.store.dispatch(
+          DashboardActions.updateLayerVisibility({ name: group.name, visibleLayers: [_layer.title!] })
+        );
       } else {
-        this.store.dispatch(DashboardActions.updateLayerGroup({ name: group.name, visibleLayers: [] }));
+        this.store.dispatch(DashboardActions.updateLayerVisibility({ name: group.name, visibleLayers: [] }));
       }
     } else {
       olLayer?.setVisible(!olLayer?.getVisible());
@@ -1483,7 +1513,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       const visibleLayers = group.visibleLayers.includes(_layer?.title!)
         ? group.visibleLayers.filter((layer) => layer !== _layer?.title)
         : [...group.visibleLayers, _layer?.title!];
-      this.store.dispatch(DashboardActions.updateLayerGroup({ name: group.name, visibleLayers }));
+      this.store.dispatch(DashboardActions.updateLayerVisibility({ name: group.name, visibleLayers }));
     }
     this.map.updateSize();
   }
@@ -1628,56 +1658,51 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.addLayer(group);
   }
 
-  updateLayerGroup(name: string, newName?: string, singleLayer?: boolean, visibleLayers?: string[]) {
-    if (newName === undefined && singleLayer !== undefined && visibleLayers !== undefined) {
-      this.store.dispatch(
-        DashboardActions.updateLayerGroup({
-          name,
-          newName,
+  updateLayerGroupName(group: LayerGroup, $event: Event) {
+    const [name, singleLayer, visibleLayers] = [group.name, group.singleLayer, group.visibleLayers];
+    const groupIndex = this.layerGroups.findIndex((g) => g.name === group.name);
+    const newName = ($event.currentTarget as HTMLInputElement).value;
+
+    if (name === DEFAULT_LAYER_GROUP) {
+      const layersToTransfer =
+        this.optionsCopy.layers?.filter((layer) => layer.group === DEFAULT_LAYER_GROUP).map((l) => l.title) ?? [];
+      this.layerGroups = [
+        ...this.layerGroups,
+        {
+          name: newName,
           singleLayer,
-          visibleLayers: singleLayer ? [visibleLayers[0]] : visibleLayers
-        })
+          visibleLayers: visibleLayers!.filter((l) => layersToTransfer.includes(l))
+        }
+      ];
+      this.layerGroups = this.layerGroups.map((g, i) =>
+        i === groupIndex
+          ? {
+              name: DEFAULT_LAYER_GROUP,
+              singleLayer,
+              visibleLayers: visibleLayers!.filter((l) => !layersToTransfer.includes(l))
+            }
+          : g
       );
-    } else if (name !== newName) {
-      if (name === DEFAULT_LAYER_GROUP) {
-        const layersToTransfer =
-          this.optionsCopy.layers?.filter((layer) => layer.group === DEFAULT_LAYER_GROUP).map((l) => l.title) ?? [];
-        this.store.dispatch(
-          DashboardActions.addLayerGroup({
-            name: newName,
-            singleLayer,
-            visibleLayers: visibleLayers!.filter((l) => layersToTransfer.includes(l))
-          })
-        );
-        this.store.dispatch(
-          DashboardActions.updateLayerGroup({
-            name: DEFAULT_LAYER_GROUP,
-            newName: undefined,
-            singleLayer: undefined,
-            visibleLayers: visibleLayers!.filter((l) => !layersToTransfer.includes(l))
-          })
-        );
-      } else {
-        this.store.dispatch(DashboardActions.updateLayerGroup({ name, newName, singleLayer, visibleLayers }));
-      }
-      // update groups on options layers
-      if (newName !== undefined && this.optionsCopy.layers) {
-        this.optionsCopy.layers = this.optionsCopy.layers.map((layer) =>
-          layer.group === name
-            ? {
-                ...layer,
-                group: newName
-              }
-            : layer
-        );
-      }
-      // update groups on ol layers
-      if (newName !== undefined) {
-        this.mapLayers.forEach((layer) => {
-          if (layer.getProperties()['group'] === name) layer.set('group', newName);
-        });
-      }
+    } else {
+      this.layerGroups = this.layerGroups.map((g, i) =>
+        i === groupIndex ? { name: newName, singleLayer, visibleLayers } : g
+      );
     }
+    // update groups on options layers
+    if (this.optionsCopy.layers) {
+      this.optionsCopy.layers = this.optionsCopy.layers.map((layer) =>
+        layer.group === name
+          ? {
+              ...layer,
+              group: newName
+            }
+          : layer
+      );
+    }
+    // update groups on ol layers
+    this.mapLayers.forEach((layer) => {
+      if (layer.getProperties()['group'] === name) layer.set('group', newName);
+    });
   }
 
   deleteLayerGroup(name: string) {
@@ -1698,23 +1723,17 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   moveLayerBetweenGroups(movedLayer: MapWidgetLayerOptions, newGroup: string) {
     // remove it from old group
-    this.store.dispatch(
-      DashboardActions.updateLayerGroup({
-        name: movedLayer.group!,
-        visibleLayers: this.layerGroups
-          ?.find((group) => group.name === movedLayer.group!)
-          ?.visibleLayers.filter((layer) => layer !== movedLayer.title)
-      })
+    this.updateLayerGroup(
+      movedLayer.group!,
+      undefined,
+      this.layerGroups
+        ?.find((group) => group.name === movedLayer.group!)
+        ?.visibleLayers.filter((layer) => layer !== movedLayer.title)
     );
 
     // add it to new group
     movedLayer.group = newGroup;
-    this.store.dispatch(
-      DashboardActions.updateLayerGroup({
-        name: newGroup ?? DEFAULT_LAYER_GROUP,
-        visibleLayers: movedLayer.title!
-      })
-    );
+    this.updateLayerGroup(newGroup ?? DEFAULT_LAYER_GROUP, undefined, movedLayer.title!);
     this.removeEmptyLayerGroups();
   }
 

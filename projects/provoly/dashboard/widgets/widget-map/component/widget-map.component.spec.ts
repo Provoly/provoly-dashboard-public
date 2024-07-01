@@ -5,6 +5,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import {
   ClassSelectors,
   ConfigSelectors,
+  DashboardActions,
   DashboardSelectors,
   DataSourceSelectors,
   FieldSelectors,
@@ -591,7 +592,7 @@ describe('WidgetMapComponent', () => {
         {
           type: 'wms',
           background: true,
-          order: WidgetMapUtils.BACKGROUND_ORDER,
+          order: WidgetMapUtils.BACKGROUND_ORDER
         }
       ],
       style: 'style1',
@@ -702,9 +703,6 @@ describe('WidgetMapComponent', () => {
   });
 
   describe('layer groups', () => {
-    it('should initialise default group in the store on component init if there isnt one with all layers that dont have a group', () => {
-      // expect(storeSpy).toHaveBeenCalledWith(DashboardActions.initDefaultLayerGroup({ layers: [] }));
-    });
     it('should assign default group to all layers that dont have a group on init', () => {
       expect(component.optionsCopy.layers?.map((layer) => layer.group)).toEqual([
         'test-group',
@@ -779,7 +777,7 @@ describe('WidgetMapComponent', () => {
         ]);
       });
     });
-    it('should move layer up and reassign orders (orders sorted by group order in store)', () => {
+    it('should move layer up and reassign orders (layer assigned based by group order)', () => {
       component.optionsCopy.layers = [
         { title: '1', type: 'heatmap', order: 1, group: 'red' },
         { title: '2', type: 'heatmap', order: 2, group: 'green' },
@@ -802,18 +800,51 @@ describe('WidgetMapComponent', () => {
         { title: '5', type: 'heatmap', order: 5, group: 'blue' }
       ]);
     });
-  });
-  describe('updateLayerGroup', () => {
-    it('if the group name is being changed, update it also on the layers', () => {
-      const group = { name: 'group3', singleLayer: false, visibleLayers: [] } as LayerGroup;
+    describe('updateLayerGroupName', () => {
+      it('if the group name is being changed, update it also on the options layers and ol layers', () => {
+        const group = { name: 'group3', singleLayer: false, visibleLayers: [] } as LayerGroup;
 
-      component.addLayer(group);
-      component.updateLayerGroup('group3', 'newName');
+        component.addLayer(group);
+        component.updateLayerGroupName(group, { currentTarget: { value: 'newName' } } as unknown as Event);
 
-      expect(component.optionsCopy.layers?.find((layer) => layer.group === group.name)).toEqual(undefined);
-      expect(component.optionsCopy.layers?.map((layer) => layer.group).filter((group) => group === 'newName')).toEqual([
-        'newName'
-      ]);
+        expect(component.optionsCopy.layers?.find((layer) => layer.group === group.name)).toEqual(undefined);
+        expect(
+          component.optionsCopy.layers?.map((layer) => layer.group).filter((group) => group === 'newName')
+        ).toEqual(['newName']);
+      });
+      it('if the DEFAULT group is being renamed, create a new group instead and transfer the visibleLayers', () => {
+        // can't rename the default group since it's shared between all map widgets of the manifest
+        expect(component.layerGroups.find((g) => g.name === DEFAULT_LAYER_GROUP)?.visibleLayers.length).toEqual(1);
+
+        component.updateLayerGroupName(mockLayerGroups[0], { currentTarget: { value: 'newName' } } as unknown as Event);
+
+        expect(component.layerGroups.find((g) => g.name === DEFAULT_LAYER_GROUP)).toBeDefined();
+        expect(component.layerGroups.find((g) => g.name === DEFAULT_LAYER_GROUP)?.visibleLayers.length).toEqual(0);
+
+        expect(component.layerGroups.find((g) => g.name === 'newName')).toBeDefined();
+        expect(component.layerGroups.find((g) => g.name === 'newName')?.visibleLayers.length).toEqual(1);
+      });
+    });
+    describe('updateLayerGroupSingleLayer', () => {
+      it('if single layer is true, the visibleLayers will always have only one element', () => {
+        const spy = jest.spyOn(component, 'updateLayerGroup');
+        const { name, singleLayer, visibleLayers } = mockLayerGroups[0];
+        component.updateLayerGroupSingleLayer(mockLayerGroups[0], true);
+        expect(spy).toHaveBeenCalledWith(mockLayerGroups[0], true, [visibleLayers[0]]);
+        expect(component.layerGroups.find((g) => g.name === name)?.visibleLayers.length).toBe(1);
+      });
+    });
+    describe('changeTitle', () => {
+      it('when a layers title is updated, the title should be updated in the visbleLayers of its group', () => {
+        component.changeTitle(
+          { currentTarget: { value: 'my-layer' } } as unknown as Event,
+          component.optionsCopy.layers![2],
+          mockLayerGroups[0]
+        );
+        expect(component.layerGroups.find((g) => g.name === mockLayerGroups[0].name)?.visibleLayers[0]).toBe(
+          'my-layer'
+        );
+      });
     });
   });
 });
