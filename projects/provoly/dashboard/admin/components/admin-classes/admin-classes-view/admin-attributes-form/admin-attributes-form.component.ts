@@ -195,7 +195,7 @@ export class AdminAttributesFormComponent extends SubscriptionnerDirective imple
     this.subscriptions.add(
       ref.component!.category.subscribe((category) => {
         this.attrForm.patchValue({
-          categories: category.id
+          category: category.id
         });
       })
     );

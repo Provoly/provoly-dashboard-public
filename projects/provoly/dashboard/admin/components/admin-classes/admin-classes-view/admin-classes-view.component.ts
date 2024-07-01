@@ -16,7 +16,8 @@ import {
   ConfigActions,
   Field,
   FieldActions,
-  FieldSelectors
+  FieldSelectors,
+  PryI18nService
 } from '@provoly/dashboard';
 import { combineLatest, filter, map, Observable, of, Subscription } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
@@ -53,7 +54,8 @@ export class AdminClassesViewComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef
+    private viewContainerRef: ViewContainerRef,
+    private i18n: PryI18nService
   ) {
     this.store.dispatch(ClassActions.load());
     this.store.dispatch(FieldActions.load());
@@ -108,8 +110,10 @@ export class AdminClassesViewComponent implements OnInit, OnDestroy {
           (attr: Attribute) =>
             ({
               ...attr,
-              fieldName: fields.find((field) => field.id === attr.field)?.name || 'unknown',
-              categoryName: categories.find((category) => category.id === attr.category)?.name || 'unknown'
+              fieldName: fields.find((field) => field.id === attr.field)?.name || this.i18n.instant('@pry.admin.attributes.unknownField'),
+              categoryName: attr.category ?
+                categories.find((category) => category.id === attr.category)?.name ?? this.i18n.instant('@pry.admin.attributes.unknownCategory')
+                : this.i18n.instant('@pry.admin.attributes.noCategory')
             }) as AttributeExtended
         );
       })

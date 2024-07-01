@@ -31,6 +31,11 @@ export const enTranslations = {
       size: 'Image size',
       deleteAttributeConfirmMessage:
         'This attribute will no longer be visible for the associated data. Are you sure you want to delete this?',
+      attributes: {
+        unknownField: 'Unknown field',
+        unknownCategory: 'Unknown category',
+        noCategory: 'No category'
+      },
       position: {
         FULL: 'Full icon',
         TOP_LEFT: 'Top left',
