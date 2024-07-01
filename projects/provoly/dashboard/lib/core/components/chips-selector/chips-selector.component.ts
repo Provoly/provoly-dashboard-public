@@ -52,8 +52,6 @@ export class ChipsSelectorComponent extends SubscriptionnerDirective {
         items?.forEach((item) => (this.idToLabel[this.getItemValue(item)] = this.getItemLabel(item)))
       )
     );
-
-    this.subscriptions.add(this.usedItems$.subscribe((usedItems) => this.itemsChanged.emit(usedItems ?? [])));
   }
 
   toggleItemSelection(item: any) {
@@ -63,6 +61,7 @@ export class ChipsSelectorComponent extends SubscriptionnerDirective {
       this.usedItems$.next(this.usedItems$.getValue().filter((usedItem) => !this.areItemsEqual(usedItem, item)));
     }
     this.cdr.detectChanges();
+    this.itemsChanged.emit(this.usedItems$.getValue());
   }
 
   search($event: any) {
@@ -77,7 +76,7 @@ export class ChipsSelectorComponent extends SubscriptionnerDirective {
   getItemLabel(item: any) {
     const label = this.bindLabel ? item[this.bindLabel] : item;
     const labelTranslated = this.itemTranslationStringBase
-      ? this.i18n.instant(this.itemTranslationStringBase + label)
+      ? this.i18n.instant(this.itemTranslationStringBase + label, undefined, false)
       : label;
     return typeof labelTranslated === 'string'
       ? labelTranslated.startsWith(this.itemTranslationStringBase)
@@ -93,6 +92,6 @@ export class ChipsSelectorComponent extends SubscriptionnerDirective {
   isItemUsed(item: any, usedItems?: any[]) {
     return usedItems
       ? usedItems.find((usedItem) => this.areItemsEqual(usedItem, item))
-      : this.usedItems$.getValue().find((usedItem) => this.areItemsEqual(usedItem, item));
+      : (this.usedItems$.getValue() ?? []).find((usedItem) => this.areItemsEqual(usedItem, item));
   }
 }

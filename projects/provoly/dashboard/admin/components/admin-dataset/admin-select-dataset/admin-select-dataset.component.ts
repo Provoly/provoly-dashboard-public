@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
@@ -49,6 +49,7 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
     private router: Router,
     private route: ActivatedRoute,
     private i18n: PryI18nService,
+    private cdr: ChangeDetectorRef,
     @Optional() @Inject(PRY_ACCESS_TOKEN) protected access: PryBaseAccess
   ) {
     super();
@@ -167,7 +168,7 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
 
   getGroupLabel(groupName: string) {
     const i18nBase = '@pry.components.chipsSelector.share.groups.';
-    const label = this.i18n.instant(i18nBase + groupName);
+    const label = this.i18n.instant(i18nBase + groupName, undefined, false);
     return label.startsWith(i18nBase) ? groupName : label;
   }
 
@@ -190,6 +191,7 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
         this.disableShareButton$.next(false);
       }
     }
+    this.cdr.detectChanges();
   }
 
   canModify$(dataset: Dataset) {

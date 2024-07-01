@@ -309,9 +309,9 @@ export const frTranslations = {
       }
     },
     share: {
-      private: 'Privé',
-      public: 'Public',
-      groups: 'Restreint',
+      PRIVATE: 'Privé',
+      GROUPS: "Partagé aux groupes d'utilisateurs",
+      PUBLIC: 'Public',
       type: 'Visibilité',
       users: 'Utilisateurs autorisés',
       groupLabels: {

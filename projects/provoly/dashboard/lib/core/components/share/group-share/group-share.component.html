@@ -7,7 +7,7 @@
         [id]="type.label"
         [value]="type.value"
         [ngModel]="radioValue"
-        (ngModelChange)="changeGroupsBasedOnRadioValue($event)"
+        (ngModelChange)="onRadioValueChange($event)"
         [disabled]="data.disableRadios[type.value]"
       />
       <label [for]="type.label" class="a-label" [class.a-label--disabled]="data.disableRadios[type.value]">
@@ -16,21 +16,15 @@
     </div>
   </div>
   @if (radioValue === PryShareMode.GROUPS) {
-    @if (data.groups.length > 0) {
-      <pry-chips-selector
-        bindLabel="name"
-        bindValue="name"
-        translationStringBase="@pry.components.chipsSelector.share."
-        itemTranslationStringBase="@pry.components.chipsSelector.share.groups."
-        [items]="data.groups"
-        (itemsChanged)="changeGroups($event)"
-        [usedItems]="data.assignedGroups"
-        [showSearchbar]="data.groups.length > 6"
-      ></pry-chips-selector>
-    } @else {
-      <p class="m-text--center">
-        {{ '@pry.share.noGroups' | i18n }}
-      </p>
-    }
+    <pry-chips-selector
+      bindLabel="name"
+      bindValue="name"
+      translationStringBase="@pry.components.chipsSelector.share."
+      itemTranslationStringBase="@pry.components.chipsSelector.share.groups."
+      [items]="data.groups"
+      (itemsChanged)="changeGroups($event, 'groupSelectionChange')"
+      [usedItems]="data.assignedGroups"
+      [showSearchbar]="data.groups.length > 6"
+    ></pry-chips-selector>
   }
 }

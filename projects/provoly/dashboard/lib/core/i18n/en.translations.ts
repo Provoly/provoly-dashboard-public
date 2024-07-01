@@ -304,9 +304,9 @@ export const enTranslations = {
       }
     },
     share: {
-      private: 'Private',
-      public: 'Public',
-      groups: 'Restricted',
+      PRIVATE: 'Private',
+      GROUPS: 'Shared to some user groups',
+      PUBLIC: 'Public',
       type: 'Visibility',
       users: 'Authorized users',
       noGroups: 'No group available',

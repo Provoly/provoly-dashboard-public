@@ -32,6 +32,7 @@
           <tr>
             <th></th>
             <th *ngFor="let conf of configHeader" [prySortHeader]="conf.label">{{ conf.label }}</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -57,6 +58,16 @@
             <td>{{ dataset.name }}</td>
             <td>{{ dataset.oClass | translateId: { type: 'class', output: 'name' } | async }}</td>
             <td>{{ '@pry.admin.dataset.' + dataset.type | i18n }}</td>
+            <td>
+            <pry-icon
+              [iconSvg]="getShareLevel(dataset.groups).toLowerCase()"
+              class="a-tooltip -tooltip-no-wrap"
+              [attr.data-tooltip]="'@pry.share.' + getShareLevel(dataset.groups) | i18n"
+              data-tooltip-position="left"
+              [height]="17"
+              [width]="17"
+            ></pry-icon>
+          </td>
           </tr>
         </tbody>
       </table>

@@ -8,6 +8,7 @@ import {
   DataSourceActions,
   DataSourceSelectors,
   DataSourceState,
+  getShareLevel,
   PryI18nService
 } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
@@ -98,4 +99,6 @@ export class AdminDatasetComponent {
     this.store.dispatch(AdminDatasetActions.selectDataset({ dataset }));
     this.store.dispatch(AdminActions.selectComponentType({ componentType: 'AdminSelectDatasetComponent' }));
   }
+
+  protected readonly getShareLevel = getShareLevel;
 }

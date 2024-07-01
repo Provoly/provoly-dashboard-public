@@ -7,26 +7,9 @@ import { MockI18nPipe } from '@provoly/dashboard/mock/pipe/mock-i18n.pipe';
 import { MockPryChipsSelectorComponent } from '@provoly/dashboard/mock/components/mock-pry-chips-selector.component';
 import { provideMockStore } from '@ngrx/store/testing';
 import { hot } from 'jest-marbles';
+import { mockGroups } from '@provoly/dashboard/mock/data/mockGroups';
 
-const groups = [
-  {
-    id: '1',
-    system: true,
-    name: 'ALL'
-  },
-  {
-    id: '4',
-    system: false,
-    name: 'CUSTOM-GROUP'
-  },
-  {
-    id: '11',
-    system: true,
-    name: 'CUSTOM-GROUP-2'
-  }
-];
-
-const groupNames = groups.map((group) => group.name);
+const groupNames = mockGroups.map((group) => group.name);
 
 describe('PryGroupShareComponent', () => {
   let component: PryGroupShareComponent;
@@ -41,7 +24,7 @@ describe('PryGroupShareComponent', () => {
           selectors: [
             {
               selector: ConfigSelectors.accessGroups,
-              value: groups
+              value: mockGroups
             }
           ]
         })
@@ -72,7 +55,7 @@ describe('PryGroupShareComponent', () => {
     it('should return all groups except ALL', () => {
       fixture.detectChanges();
       const expected$ = hot('a', {
-        a: groups.filter((group) => group.name !== 'ALL')
+        a: mockGroups.filter((group) => group.name !== 'ALL')
       });
       expect(component.groups$).toBeObservable(expected$);
     });
@@ -105,34 +88,33 @@ describe('PryGroupShareComponent', () => {
         const spy = jest.spyOn(component, 'changeGroups');
         fixture.detectChanges();
 
-        component.changeGroupsBasedOnRadioValue(PryShareMode.PUBLIC);
-        component.changeGroupsBasedOnRadioValue(PryShareMode.PRIVATE);
+        component.onRadioValueChange(PryShareMode.PUBLIC);
+        component.onRadioValueChange(PryShareMode.PRIVATE);
 
-        expect(spy).toHaveBeenCalledWith([]);
+        expect(spy).toHaveBeenCalledWith([], 'radioChange');
       });
 
       it('should output an array with a string "ALL" if radioValue set to PUBLIC', () => {
         const spy = jest.spyOn(component, 'changeGroups');
         fixture.detectChanges();
 
-        component.changeGroupsBasedOnRadioValue(PryShareMode.PUBLIC);
+        component.onRadioValueChange(PryShareMode.PUBLIC);
 
-        expect(spy).toHaveBeenCalledWith(['ALL']);
+        expect(spy).toHaveBeenCalledWith(['ALL'], 'radioChange');
       });
 
       it('should reput the original groups present on the dashboard everytime when removing and reputting RESTRICTED mode', () => {
         const spy = jest.spyOn(component, 'changeGroups');
         fixture.detectChanges();
 
-        // this observable serves to track the input value of the component, not to track the groups assigned within the component
         expect(component.assignedGroups$).toBeObservable(hot('a', { a: [] }));
 
-        component.changeGroupsBasedOnRadioValue(PryShareMode.GROUPS);
-        expect(spy).toHaveBeenCalledWith([]);
+        component.onRadioValueChange(PryShareMode.GROUPS);
+        expect(spy).toHaveBeenCalledWith([], 'radioChange');
 
-        component.changeGroupsBasedOnRadioValue(PryShareMode.PUBLIC);
-        component.changeGroupsBasedOnRadioValue(PryShareMode.GROUPS);
-        expect(spy).toHaveBeenCalledWith([]);
+        component.onRadioValueChange(PryShareMode.PUBLIC);
+        component.onRadioValueChange(PryShareMode.GROUPS);
+        expect(spy).toHaveBeenCalledWith([], 'radioChange');
 
         expect(component.assignedGroupNames$.getValue()).toEqual([]);
         expect(component.assignedGroups$).toBeObservable(hot('a', { a: [] }));

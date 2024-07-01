@@ -14,7 +14,6 @@ import { Store } from '@ngrx/store';
 import { ConfigSelectors } from '../../../store/config/config.selectors';
 import { ConfigActions } from '../../../store/config/config.actions';
 import { SubscriptionnerDirective } from '../../../../dashboard/components/subscriptionner.directive';
-import equal from 'fast-deep-equal/es6';
 import { AUTHENTICATED_USERS_GROUP, PUBLIC_GROUP } from '../share.utils';
 
 export enum PryShareMode {
@@ -39,7 +38,6 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
   private _onChange = (groups: string[]) => groups;
   private _onTouched = () => {};
 
-  // for tracking input
   assignedGroupNames$ = new BehaviorSubject<string[]>([]);
 
   radioValue = PryShareMode.PRIVATE;
@@ -107,15 +105,15 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
     );
   }
 
-  writeValue(value: string[] | undefined) {
+  writeValue(value: string[] | undefined, from: 'ngModel' | 'radioChange' | 'groupSelectionChange' = 'ngModel'): void {
     value = value ?? [];
-    if (!equal(this.assignedGroupNames$.getValue(), value)) {
-      this._onChange(value);
-      this.assignedGroupNames$.next(value);
+    this._onChange(value);
+    this.assignedGroupNames$.next(value);
+    if (from === 'ngModel') {
       this.updateRadioValue(value);
-      this._onTouched();
-      this._cd.markForCheck();
     }
+    this._onTouched();
+    this._cd.markForCheck();
   }
 
   registerOnChange(fn: any): void {
@@ -126,6 +124,30 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
     this._onTouched = fn;
   }
 
+  onRadioValueChange(radioValue: PryShareMode): void {
+    this.radioValue = radioValue;
+    this.radioValueChange.emit(radioValue);
+
+    switch (radioValue) {
+      case PryShareMode.PRIVATE:
+        this.changeGroups([], 'radioChange');
+        break;
+      case PryShareMode.GROUPS:
+        this.changeGroups(this.assignedGroupNames$.getValue().filter((g) => g !== PUBLIC_GROUP) ?? [], 'radioChange');
+        break;
+      case PryShareMode.PUBLIC:
+        this.changeGroups([PUBLIC_GROUP], 'radioChange');
+        break;
+    }
+  }
+
+  changeGroups(groups: (Group | string)[], from: 'radioChange' | 'groupSelectionChange') {
+    this.writeValue(
+      groups.map((group) => (typeof group === 'string' ? group : group.name)),
+      from
+    );
+  }
+
   updateRadioValue(groups: string[]) {
     if (groups.length === 0) {
       this.radioValue = PryShareMode.PRIVATE;
@@ -133,33 +155,6 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
       this.radioValue = PryShareMode.PUBLIC;
     } else {
       this.radioValue = PryShareMode.GROUPS;
-    }
-  }
-
-  changeGroupsBasedOnRadioValue(type: PryShareMode): void {
-    if (this.radioValue !== type) {
-      this.radioValue = type;
-      this.radioValueChange.emit(type);
-
-      switch (type) {
-        case PryShareMode.PRIVATE:
-          this.changeGroups([]);
-          break;
-        case PryShareMode.GROUPS:
-          this.changeGroups(this.assignedGroupNames$.getValue() ?? []);
-          break;
-        case PryShareMode.PUBLIC:
-          this.changeGroups(['ALL']);
-          break;
-      }
-    }
-  }
-
-  changeGroups(groups: (Group | string)[] | null) {
-    if (groups) {
-      this._onChange(groups.map((group) => (typeof group === 'string' ? group : group.name)));
-      this._onTouched();
-      this._cd.markForCheck();
     }
   }
 }

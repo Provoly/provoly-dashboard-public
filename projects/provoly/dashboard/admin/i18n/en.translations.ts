@@ -29,6 +29,7 @@ export const enTranslations = {
       defaultRule: 'Default Rule (applies only if no other rules are verified)',
       displayModeImage: 'Image display mode',
       size: 'Image size',
+      share: 'Share',
       deleteAttributeConfirmMessage:
         'This attribute will no longer be visible for the associated data. Are you sure you want to delete this?',
       attributes: {
@@ -48,7 +49,7 @@ export const enTranslations = {
         template: 'Tooltip (Map & Relations)',
         update: 'Update tooltip',
         advanced: 'Advanced mode',
-        name: 'business model',
+        name: 'Business model',
         technicalId: 'Technical Id',
         type: 'Choose which kind of tooltip to use',
         simplified: 'Choose which attributes to display',
@@ -141,7 +142,8 @@ export const enTranslations = {
         delete:
           'All versions and associated data will be deleted. Restitutions and presentations using this dataset will no longer display the corresponding data. Do you confirm the deletion?',
         title: 'Dataset',
-        details: 'Dataset details',
+        datasetDetails: 'Dataset details',
+        details: 'Details',
         id: 'Id',
         name: 'Name',
         oClass: 'Business model',

@@ -2,6 +2,7 @@ import { ManifestDescription } from '../../model/manifest.interface';
 import { Dataset } from '../../store/data-source/data-source.model';
 import { Group } from './share.model';
 import { PryI18nService } from '../../i18n/i18n.service';
+import { PryShareMode } from './group-share/group-share.component';
 
 export const PUBLIC_GROUP = 'ALL';
 export const AUTHENTICATED_USERS_GROUP = 'AUTHENTICATED';
@@ -21,6 +22,16 @@ export const getGroupLabelByName = (groupName: string, i18n: PryI18nService): st
     ? groupName
     : i18n.instant('@pry.share.groupLabels.' + groupName);
 };
+
+export const getShareLevel = (groups: string[]) => {
+  if (groups.length === 0) {
+    return PryShareMode.PRIVATE;
+  } else if (groups.length === 1 && groups[0] === PUBLIC_GROUP) {
+    return PryShareMode.PUBLIC;
+  } else {
+    return PryShareMode.GROUPS;
+  }
+}
 
 // DASHBOARD GROUP RIGHTS METHODS
 
