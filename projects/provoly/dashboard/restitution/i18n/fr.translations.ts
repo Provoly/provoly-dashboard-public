@@ -5,7 +5,7 @@ export const frTranslations = {
       data_type: 'Type de données',
       graph_title: 'Titre de la restitution',
       description: 'Description',
-      image: 'Image',
+      image: 'Image d’illustration',
       close: 'Annuler',
       validate: 'Valider',
       share: 'Partager',

@@ -188,7 +188,7 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
       datasource: this.form.selectedDataSources ?? [],
       header: true,
       options: {
-        ...widgetType?.manifest.options,
+        ...(this.edit ? this.customManifest.options : widgetType?.manifest.options),
         title: this.form.title
       }
     };

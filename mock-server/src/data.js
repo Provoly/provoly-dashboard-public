@@ -140,7 +140,7 @@ const getWidgets = () => {
 const saveWidget = (widget) => {
   const previous = widgetList.findIndex((w) => w.id === widget.id);
   if (previous === -1) {
-    widgetList.push(widget);
+    widgetList.push({ ...widget, owner: true });
   } else {
     widgetList[previous] = { ...widget, owner: widgetList[previous].owner };
   }
