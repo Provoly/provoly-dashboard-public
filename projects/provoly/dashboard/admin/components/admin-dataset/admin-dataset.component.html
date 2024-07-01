@@ -1,54 +1,67 @@
-<div class="o-base-container">
+<div class="o-base-container u-display-flex -column">
   <h1 class="a-h1">{{ '@pry.admin.dataset.title' | i18n }}</h1>
-  <ng-container *ngIf="datasetList$ | async as datasetList">
-    <table
-      class="a-table"
-      prySortTable
-      prySortActive="name"
-      prySortDirection="asc"
-      (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
-    >
-      <caption>
-        {{
-          '@pry.admin.dataset.title' | i18n
-        }},
-        {{
-          '@pry.action.sortableColumnHeader' | i18n
-        }}
-      </caption>
-      <thead>
-        <tr>
-          <th></th>
-          <th *ngFor="let conf of configHeader" [prySortHeader]="conf.label">{{ conf.label }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="let dataset of datasetList | prySortData: sortActive : sortDirection"
-          (click)="selectDataset(dataset)"
-          [class.is-selected]="(selectedDataset$ | async) === dataset.id"
-        >
-          <td class="view-details">
-            <button
-              id="button-dataset- + {{ dataset.id }}"
-              type="button"
-              class="a-btn a-btn--icon-only"
-              title="{{ '@pry.action.viewDetails' | i18n }}"
-              [attr.aria-expanded]="(selectedDataset$ | async) === dataset.id"
-              aria-haspopup
-              [attr.aria-controls]="'panel-dataset-' + dataset.id"
-            >
-              <span class="u-visually-hidden">{{ dataset.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
-              <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
-            </button>
-          </td>
-          <td>{{ dataset.name }}</td>
-          <td>{{ dataset.oClass | translateId: { type: 'class', output: 'name' } | async }}</td>
-          <td>{{ '@pry.admin.dataset.' + dataset.type | i18n }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </ng-container>
+  @if (loading$ | async; as loading) {
+    <div class="a-page-loader -relative" [style.display]="'flex'">
+      <pry-icon
+        iconSvg="loader"
+        class="no-widget__loading"
+        [alt]="'@pry.widget.target.loading' | i18n"
+        [width]="200"
+        [height]="200"
+      />
+      <p>{{ '@pry.widget.target.loading' | i18n }}...</p>
+    </div>
+  } @else {
+    @if (datasetList$ | async; as datasetList) {
+      <table
+        class="a-table"
+        prySortTable
+        prySortActive="name"
+        prySortDirection="asc"
+        (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
+      >
+        <caption>
+          {{
+            '@pry.admin.dataset.title' | i18n
+          }},
+          {{
+            '@pry.action.sortableColumnHeader' | i18n
+          }}
+        </caption>
+        <thead>
+          <tr>
+            <th></th>
+            <th *ngFor="let conf of configHeader" [prySortHeader]="conf.label">{{ conf.label }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let dataset of datasetList | prySortData: sortActive : sortDirection"
+            (click)="selectDataset(dataset)"
+            [class.is-selected]="(selectedDataset$ | async) === dataset.id"
+          >
+            <td class="view-details">
+              <button
+                id="button-dataset- + {{ dataset.id }}"
+                type="button"
+                class="a-btn a-btn--icon-only"
+                title="{{ '@pry.action.viewDetails' | i18n }}"
+                [attr.aria-expanded]="(selectedDataset$ | async) === dataset.id"
+                aria-haspopup
+                [attr.aria-controls]="'panel-dataset-' + dataset.id"
+              >
+                <span class="u-visually-hidden">{{ dataset.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
+                <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
+              </button>
+            </td>
+            <td>{{ dataset.name }}</td>
+            <td>{{ dataset.oClass | translateId: { type: 'class', output: 'name' } | async }}</td>
+            <td>{{ '@pry.admin.dataset.' + dataset.type | i18n }}</td>
+          </tr>
+        </tbody>
+      </table>
+    }
+  }
 </div>
 
 <pry-modal

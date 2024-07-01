@@ -9,4 +9,10 @@
   position: absolute;
 
   z-index: 999; // 1 smaller than the .cdk-overlay-container
+
+  &.-relative {
+    position: relative;
+    width: auto;
+    height: auto;
+  }
 }

@@ -32,6 +32,7 @@ const allAttributes = createSelector(classes, (state) => state?.flatMap((c) => c
 const datasetCounts = createSelector(feature, (state) => state?.datasetCounts);
 const getAttributeById = (id: string) =>
   createSelector(allAttributes, (attributes) => attributes.filter((attribute) => attribute.id === id));
+const loading = createSelector(feature, (state) => state?.loading);
 
 export const ClassSelectors = {
   feature,
@@ -42,5 +43,6 @@ export const ClassSelectors = {
   attributesByFieldId,
   allAttributes,
   datasetCounts,
-  getAttributeById
+  getAttributeById,
+  loading
 };

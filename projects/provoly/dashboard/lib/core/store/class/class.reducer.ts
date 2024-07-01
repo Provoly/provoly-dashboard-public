@@ -29,7 +29,14 @@ export const initialClassState: ClassState = adapter.getInitialState({
 
 const internalReducer = createReducer(
   initialClassState,
-  on(ClassActions.loadSuccess, (state, action) => adapter.setAll(action.classes, state)),
+  on(ClassActions.load, (state, action) => ({
+    ...state,
+    loading: true
+  })),
+  on(ClassActions.loadSuccess, (state, action) => ({
+    ...adapter.setAll(action.classes, state),
+    loading: false
+  })),
   on(ClassActions.loadDatasetCount, (state, action) => ({
     ...state,
     loading: true

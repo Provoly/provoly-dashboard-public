@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   ClassActions,
+  ClassSelectors,
   Dataset,
   DataSourceActions,
   DataSourceSelectors,
@@ -29,6 +30,7 @@ export class AdminDatasetComponent {
   configHeader: Array<IConfigHeader>;
   labelDatasetSelected: string = '';
   editOpened: boolean = false;
+  loading$: Observable<boolean>;
 
   validateAction: () => void;
   cancelAction: () => void;
@@ -39,6 +41,7 @@ export class AdminDatasetComponent {
     private router: Router,
     private route: ActivatedRoute
   ) {
+    this.loading$ = this.store.select(ClassSelectors.loading);
     this.store.dispatch(DataSourceActions.dataset.loadDataset());
     this.store.dispatch(ClassActions.load());
     this.validateAction = () => this.validateName(this.labelDatasetSelected);
