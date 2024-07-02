@@ -304,9 +304,16 @@ export const enTranslations = {
       }
     },
     share: {
-      PRIVATE: 'Private',
-      GROUPS: 'Shared to some user groups',
-      PUBLIC: 'Public',
+      iconLabel: {
+        PRIVATE: 'Private',
+        GROUPS: 'Shared to some user groups',
+        PUBLIC: 'Public',
+      },
+      radioLabel: {
+        PRIVATE: 'Private',
+        GROUPS: 'Share to selected user groups',
+        PUBLIC: 'Public',
+      },
       type: 'Visibility',
       users: 'Authorized users',
       noGroups: 'No group available',

@@ -309,9 +309,16 @@ export const frTranslations = {
       }
     },
     share: {
-      PRIVATE: 'Privé',
-      GROUPS: "Partagé aux groupes d'utilisateurs",
-      PUBLIC: 'Public',
+      iconLabel: {
+        PRIVATE: 'Privé',
+        GROUPS: "Partagé aux groupes d'utilisateurs",
+        PUBLIC: 'Public',
+      },
+      radioLabel: {
+        PRIVATE: 'Privé',
+        GROUPS: 'Restreint',
+        PUBLIC: 'Public',
+      },
       type: 'Visibilité',
       users: 'Utilisateurs autorisés',
       groupLabels: {

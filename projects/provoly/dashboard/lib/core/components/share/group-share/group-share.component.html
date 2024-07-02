@@ -1,17 +1,17 @@
 @if (templateData$ | async; as data) {
   <div class="m-form-radio-group">
-    <div *ngFor="let type of shareModes" class="m-form-radio-group__item">
+    <div *ngFor="let shareMode of shareModes" class="m-form-radio-group__item">
       <input
         type="radio"
         name="visibility"
-        [id]="type.label"
-        [value]="type.value"
+        [id]="'radio_share_' + shareMode"
+        [value]="shareMode"
         [ngModel]="radioValue"
         (ngModelChange)="onRadioValueChange($event)"
-        [disabled]="data.disableRadios[type.value]"
+        [disabled]="data.disableRadios[shareMode]"
       />
-      <label [for]="type.label" class="a-label" [class.a-label--disabled]="data.disableRadios[type.value]">
-        {{ '@pry.share.' + type.label | i18n }}
+      <label [for]="'radio_share_' + shareMode" class="a-label" [class.a-label--disabled]="data.disableRadios[shareMode]">
+        {{ '@pry.share.radioLabel.' + shareMode | i18n }}
       </label>
     </div>
   </div>

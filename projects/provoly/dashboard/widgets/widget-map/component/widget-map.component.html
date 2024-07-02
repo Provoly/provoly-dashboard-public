@@ -68,7 +68,7 @@
                 >{{ '@pry.widget.map.layerSettings.optionalColon' | i18n }}
               </label>
               <div class="u-display-flex">
-                <div class="m-form-label-field">
+                <div class="m-form-label-field u-display-flex -row -gap-10">
                   <input
                     id="map_layerGroupTitle-{{ groupIdx }}"
                     class="a-form-field"
@@ -76,16 +76,16 @@
                     (change)="updateLayerGroupName(group, $event)"
                     [value]="group.name === DEFAULT_LAYER_GROUP ? ('@pry.widget.map.noGroup' | i18n) : group.name"
                   />
+                  <button
+                    *ngIf="group.name !== DEFAULT_LAYER_GROUP"
+                    class="a-btn--icon-only a-tooltip o-layer-settings__delete-group"
+                    [attr.data-tooltip]="'@pry.widget.map.layerSettings.deleteGroup' | i18n"
+                    data-tooltip-position="left"
+                    (click)="deleteLayerGroup(group.name)"
+                  >
+                    <pry-icon [height]="16" [width]="16" iconSvg="bin_normal"></pry-icon>
+                  </button>
                 </div>
-                <button
-                  *ngIf="group.name !== DEFAULT_LAYER_GROUP"
-                  class="a-btn--icon-only a-tooltip o-layer-settings__delete-group"
-                  [attr.data-tooltip]="'@pry.widget.map.layerSettings.deleteGroup' | i18n"
-                  data-tooltip-position="left"
-                  (click)="deleteLayerGroup(group.name)"
-                >
-                  <pry-icon [height]="16" [width]="16" iconSvg="bin_normal"></pry-icon>
-                </button>
               </div>
             </div>
             @if (group.name !== DEFAULT_LAYER_GROUP) {

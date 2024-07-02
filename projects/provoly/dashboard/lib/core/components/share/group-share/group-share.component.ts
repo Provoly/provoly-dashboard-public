@@ -44,7 +44,7 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
   assignedGroups$: Observable<Group[]>;
   groups$: Observable<Group[]>;
   PryShareMode = PryShareMode;
-  shareModes: { label: string; value: PryShareMode }[] = [];
+  shareModes = Object.values(PryShareMode);
   templateData$: Observable<{
     groups: Group[];
     assignedGroups: Group[];
@@ -96,10 +96,6 @@ export class PryGroupShareComponent extends SubscriptionnerDirective implements 
           }) ?? []
       )
     );
-    this.shareModes = Object.keys(PryShareMode).map((label) => ({
-      label: label.toLowerCase(),
-      value: PryShareMode[<keyof typeof PryShareMode>label]
-    }));
     this.templateData$ = combineLatest([this.groups$, this.assignedGroups$, this._disableRadios$]).pipe(
       map(([groups, assignedGroups, disableRadios]) => ({ groups, assignedGroups, disableRadios }))
     );
