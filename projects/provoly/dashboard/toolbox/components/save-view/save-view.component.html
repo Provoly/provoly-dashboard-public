@@ -9,7 +9,7 @@
           (click)="directSave()"
           [disabled]="!(isCurrentPresentationModified$ | async)"
         >
-          <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.save' | i18n }} ({{ nbPages }})</ng-container>
+          <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.save' | i18n: { nbPages } }}</ng-container>
         </button>
       }
     </div>
@@ -22,7 +22,7 @@
       aria-describedby="infoTooltip_saveAs"
     >
       <button type="button" #saveAs class="a-btn a-btn--secondary" (click)="toggleSaveAs()" aria-haspopup="dialog">
-        <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.rename' | i18n }} ({{ nbPages }})</ng-container>
+        <ng-container *ngIf="displayLabels">{{ '@pry.toolbox.rename' | i18n: { nbPages } }}</ng-container>
       </button>
     </div>
   </ng-container>

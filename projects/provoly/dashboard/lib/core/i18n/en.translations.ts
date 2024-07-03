@@ -121,9 +121,9 @@ export const enTranslations = {
       detail: 'Detail',
       chart: 'Chart',
       resultSet: 'Named Queries',
-      rename: 'Save my presentation',
+      rename: 'Save as ({{nbPages}})',
       restore: 'Restore closed pages',
-      save: 'Save',
+      save: 'Save ({{nbPages}})',
       drag: 'Restitution...',
       dragIndication: 'Insert a',
       barchart: 'Bar',
@@ -307,12 +307,12 @@ export const enTranslations = {
       iconLabel: {
         PRIVATE: 'Private',
         GROUPS: 'Shared to some user groups',
-        PUBLIC: 'Public',
+        PUBLIC: 'Public'
       },
       radioLabel: {
         PRIVATE: 'Private',
         GROUPS: 'Share to selected user groups',
-        PUBLIC: 'Public',
+        PUBLIC: 'Public'
       },
       type: 'Visibility',
       users: 'Authorized users',

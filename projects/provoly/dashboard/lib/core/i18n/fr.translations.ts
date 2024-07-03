@@ -121,9 +121,9 @@ export const frTranslations = {
       detail: 'Détail',
       chart: 'Graphique',
       resultSet: 'Recherches nommées',
-      rename: 'Enregistrer sous',
+      rename: 'Enregistrer sous ({{nbPages}})',
       restore: 'Restaurer les pages',
-      save: 'Enregistrer',
+      save: 'Enregistrer ({{nbPages}})',
       drag: 'Restitution...',
       dragIndication: 'Insérer un',
       barchart: 'Barres',
@@ -312,12 +312,12 @@ export const frTranslations = {
       iconLabel: {
         PRIVATE: 'Privé',
         GROUPS: "Partagé aux groupes d'utilisateurs",
-        PUBLIC: 'Public',
+        PUBLIC: 'Public'
       },
       radioLabel: {
         PRIVATE: 'Privé',
         GROUPS: 'Restreint',
-        PUBLIC: 'Public',
+        PUBLIC: 'Public'
       },
       type: 'Visibilité',
       users: 'Utilisateurs autorisés',
