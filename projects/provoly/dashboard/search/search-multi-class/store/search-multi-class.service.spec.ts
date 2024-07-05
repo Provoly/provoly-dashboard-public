@@ -28,55 +28,6 @@ const conditions: MultiClassCondition[] = [
   }
 ];
 
-const classes: Class[] = [
-  {
-    id: 'class1',
-    name: 'class1',
-    attributes: [
-      {
-        field: 'field1',
-        id: 'id'
-      } as Attribute,
-      {
-        field: 'field2',
-        id: 'id2'
-      } as Attribute,
-      {
-        field: 'field3',
-        id: 'id3'
-      } as Attribute
-    ]
-  } as Class,
-  {
-    id: 'class2',
-    name: 'class2',
-    attributes: [
-      {
-        field: 'field1',
-        id: 'id'
-      } as Attribute,
-      {
-        field: 'field2',
-        id: 'id2'
-      } as Attribute
-    ]
-  } as Class,
-  {
-    id: 'class3',
-    name: 'class3',
-    attributes: [
-      {
-        field: 'field2',
-        id: 'id4'
-      } as Attribute,
-      {
-        field: 'field4',
-        id: 'id4'
-      } as Attribute
-    ]
-  } as Class
-];
-
 const fields: Field[] = [
   {
     id: 'field1',
@@ -96,6 +47,55 @@ const fields: Field[] = [
     id: 'field4',
     name: 'field4'
   } as Field
+];
+
+const classes: Class[] = [
+  {
+    id: 'class1',
+    name: 'class1',
+    attributes: [
+      {
+        field: fields[0],
+        id: 'id'
+      } as Attribute,
+      {
+        field: fields[1],
+        id: 'id2'
+      } as Attribute,
+      {
+        field: fields[2],
+        id: 'id3'
+      } as Attribute
+    ]
+  } as Class,
+  {
+    id: 'class2',
+    name: 'class2',
+    attributes: [
+      {
+        field: fields[0],
+        id: 'id'
+      } as Attribute,
+      {
+        field: fields[1],
+        id: 'id2'
+      } as Attribute
+    ]
+  } as Class,
+  {
+    id: 'class3',
+    name: 'class3',
+    attributes: [
+      {
+        field: fields[1],
+        id: 'id4'
+      } as Attribute,
+      {
+        field: fields[3],
+        id: 'id4'
+      } as Attribute
+    ]
+  } as Class
 ];
 
 jest.mock('uuid');

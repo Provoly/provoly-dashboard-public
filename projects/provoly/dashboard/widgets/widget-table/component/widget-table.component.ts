@@ -74,11 +74,11 @@ export class WidgetTableComponent extends DataWidgetComponent {
 
     this.classes$ = this.store.select(ClassSelectors.classes);
 
-    this.fields$ = combineLatest([this.resultSet$, this.classes$, this.store.select(FieldSelectors.fields)]).pipe(
+    this.fields$ = combineLatest([this.resultSet$, this.classes$]).pipe(
       map(
-        ([resultSet, classes, fields]) =>
+        ([resultSet, classes]) =>
           [
-            ...ItemUtils.getFieldsForClasses(Object.keys(resultSet.items), classes, fields),
+            ...ItemUtils.getFieldsForClasses(Object.keys(resultSet.items), classes),
             ...baseItemProperties.map((p) => ({ name: p, id: p }) as Field)
           ] as Field[]
       ),
@@ -95,12 +95,15 @@ export class WidgetTableComponent extends DataWidgetComponent {
       map(([options, resultSet, classes, fields, defs]) => {
         if (!options.columns || options.columns.length === 0) {
           const attributes = ItemUtils.getAttributesFromRs(resultSet, classes, fields, defs);
-          const uniqueProps = [...new Set(attributes.map(({ name, technicalName }) => ({ name, technicalName })))];
+          const uniqueProps = [
+            ...new Set(attributes.map(({ name, technicalName, field }) => ({ name, technicalName, field })))
+          ];
 
           options.columns = uniqueProps.map((property) => ({
             property: property.technicalName,
             label: property.name,
-            attributeId: attributes.find((attr) => attr.technicalName === property.technicalName)?.id
+            attributeId: attributes.find((attr) => attr.technicalName === property.technicalName)?.id,
+            field: property.field
           })) as ColumnDefinition[];
         }
         options.style = options.style ?? DEFAULT_TABLE_WIDGET_STYLE.value;

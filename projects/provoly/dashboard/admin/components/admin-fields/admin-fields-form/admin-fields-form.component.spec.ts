@@ -17,7 +17,6 @@ import { FieldsActions } from '../store/fields.actions';
 import { AdminFieldsFormComponent } from './admin-fields-form.component';
 import { MockPryI18nService } from '../../../../mock/service/mock-i18n.service';
 import { MockPryCheckboxComponent } from '../../../../mock/components/mock-pry-checkbox.component';
-import { DEFAULT_DATE_FORMAT } from '@provoly/dashboard/components/data-format';
 
 describe('AdminFieldsFormComponent', () => {
   let component: AdminFieldsFormComponent;
@@ -167,7 +166,7 @@ describe('AdminFieldsFormComponent', () => {
       expect(component.formatOptions?.get('unit')).toBeFalsy();
       expect(component.formatOptions?.get('isLocaleFormat')).toBeFalsy();
       expect(component.formatOptions?.get('decimalPrecision')).toBeFalsy();
-      expect(component.formatOptions?.value).toEqual({ dateFormat: DEFAULT_DATE_FORMAT.value });
+      expect(component.formatOptions?.value).toEqual({ dateFormat: null });
     });
     it('should set formatOptions to undefined for any other field type', () => {
       component.form.patchValue({ type: FieldType.STRING });

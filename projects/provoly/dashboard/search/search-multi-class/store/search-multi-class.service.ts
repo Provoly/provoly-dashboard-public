@@ -85,7 +85,7 @@ export class SearchMultiClassService {
       ...new Set(
         availableClasses.reduce((acc: Field[], c: Class) => {
           const fieldsByClass = c.attributes
-            .map((a) => fields.find((f) => f.id === a.field))
+            .map((a) => fields.find((f) => f.id === a.field.id))
             .filter((f): f is Field => f !== undefined);
           fieldsByClass.forEach((f) => {
             classesByFields[f.id] = classesByFields[f.id] ? [...classesByFields[f.id], c.name] : [c.name];
@@ -110,7 +110,7 @@ export class SearchMultiClassService {
     const selectedFields = this.getSelectedFields(conditions);
     const availableClasses = this.getClassesIntersectFields(selectedFields, classes);
     return condition
-      ? availableClasses.filter((c) => c.attributes.find((a) => a.field === condition.field))
+      ? availableClasses.filter((c) => c.attributes.find((a) => a.field.id === condition.field))
       : availableClasses;
   }
 
@@ -141,7 +141,7 @@ export class SearchMultiClassService {
   private getClassesIntersectFields(fields: string[], classes: Class[]): Class[] {
     return fields?.length > 0
       ? classes.filter((c) => {
-          const fieldsInClass = c.attributes.map((a) => a.field);
+          const fieldsInClass = c.attributes.map((a) => a.field.id);
           const intersect = fields.filter((field) => fieldsInClass.includes(field)).length;
           return intersect === fields.length;
         })

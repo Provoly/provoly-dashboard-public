@@ -1,138 +1,122 @@
 <pry-widget-analytic-css></pry-widget-analytic-css>
 <div class="o-widget o-widget__analytic">
-  <pry-widget-header
-    *ngIf="displayHeader$ | async"
-    [widgetIndex]="widgetIndex"
-    [manifest]="manifest"
-    (manifestModified)="manifestModified.emit($event)"
-    #header
-    [headerOptions]="(displayHeader$ | async) ?? {}"
-    [datasourceIds]="(datasourceIds$ | async) ?? []"
-  >
-    <pry-settings
-      (saveTriggered)="emitManifest()"
-      (changeTitle)="changeWidgetTitle($event)"
-      [headerPresent]="displayHeader$ | async"
+  @if (displayHeader$ | async) {
+    <pry-widget-header
       [widgetIndex]="widgetIndex"
-      [header]="header"
-      [open$]="open$"
-      class="o-settings"
+      [manifest]="manifest"
+      (manifestModified)="manifestModified.emit($event)"
+      #header
+      [headerOptions]="(displayHeader$ | async) ?? {}"
+      [datasourceIds]="(datasourceIds$ | async) ?? []"
     >
-      <div class="o-settings__fields">
-        <div class="m-form-label-field">
-          <label class="a-label" for="primaryProp">{{ '@pry.widget.analytic.primaryProp' | i18n }}</label>
-          <pry-select
-            (ngModelChange)="change($event, 'primaryProp')"
-            [items]="availableProperties$ | async"
-            [ngModel]="optionsCopy.primaryProp"
-            bindLabel="name"
-            bindValue="name"
-            id="primaryProp"
-          ></pry-select>
-        </div>
-        <div class="m-form-label-field">
-          <label class="a-label" for="secondaryProp">{{ '@pry.widget.analytic.secondaryProp' | i18n }}</label>
-          <pry-select
-            (ngModelChange)="change($event, 'secondaryProp')"
-            [items]="availableProperties$ | async"
-            [ngModel]="optionsCopy.secondaryProp"
-            bindLabel="name"
-            bindValue="name"
-            id="secondaryProp"
-            [clearable]="true"
-          ></pry-select>
-        </div>
-        <div class="m-form-label-field">
-          <label class="a-label" for="verticalProp">{{ '@pry.widget.analytic.verticalProp' | i18n }}</label>
-          <pry-select
-            (ngModelChange)="change($event, 'verticalProp')"
-            [items]="availableProperties$ | async"
-            [ngModel]="optionsCopy.verticalProp"
-            bindLabel="name"
-            bindValue="name"
-            id="verticalProp"
-          ></pry-select>
-        </div>
-        <div class="m-form-label-field">
-          <label class="a-label" for="valueProp">{{ '@pry.widget.analytic.valueProp' | i18n }}</label>
-          <pry-select
-            (ngModelChange)="change($event, 'valueProp')"
-            [items]="availableProperties$ | async"
-            [ngModel]="optionsCopy.valueProp"
-            bindLabel="name"
-            bindValue="name"
-            id="valueProp"
-          ></pry-select>
-        </div>
-        <div class="m-form-label-field">
-          <pry-checkbox (ngModelChange)="toggleColorConfig($event)" [ngModel]="!!optionsCopy.colorConfig">
-            {{ '@pry.widget.analytic.colorConfig' | i18n }}
-          </pry-checkbox>
-          @if (optionsCopy.colorConfig) {
-            <div class="m-form-label-field">
-              <label class="a-label" for="colorProp">{{ '@pry.widget.analytic.colorProp' | i18n }}</label>
-              <pry-select
-                (ngModelChange)="changeColorConfig($event, 'prop')"
-                [items]="availableProperties$ | async"
-                [ngModel]="optionsCopy.colorConfig.prop"
-                bindLabel="name"
-                bindValue="name"
-                id="colorProp"
-              ></pry-select>
-            </div>
-            <div class="m-form-label-field">
-              <label class="a-label" for="colorProp">{{ '@pry.widget.analytic.colors' | i18n }}</label>
-              <div
-                class="o-widget__analytic__color-picker-container u-display-flex -align-center"
-                cdkDropList
-                (cdkDropListDropped)="drop($event)"
-                cdkDropListOrientation="horizontal"
-              >
-                @for (color of optionsCopy.colorConfig.colors; track color; let i = $index) {
-                  <div class="o-widget__analytic__color-picker" cdkDrag>
-                    <pry-color-picker
-                      [ngModel]="color"
-                      (ngModelChange)="modifyColorScheme($event, i)"
-                    ></pry-color-picker>
-                    <button (click)="removeColor(i)" class="o-widget__analytic__color-picker-remove">
-                      <pry-icon iconSvg="close" [height]="15" [width]="15"></pry-icon>
-                    </button>
-                    <div *cdkDragPreview>
-                      <pry-color-picker [ngModel]="color"></pry-color-picker>
-                    </div>
-                  </div>
-                }
-                <button
-                  type="button"
-                  class="a-btn a-btn--icon-only o-widget__analytic__color-picker-add"
-                  (click)="modifyColorScheme()"
-                >
-                  <pry-icon iconSvg="add" [height]="20" [width]="20"></pry-icon>
-                </button>
+      <pry-settings
+        (saveTriggered)="emitManifest()"
+        (changeTitle)="changeWidgetTitle($event)"
+        [headerPresent]="displayHeader$ | async"
+        [widgetIndex]="widgetIndex"
+        [header]="header"
+        [open$]="open$"
+        class="o-settings"
+      >
+        <div class="o-settings__fields">
+          <div class="m-form-label-field">
+            <label class="a-label" for="primaryProp">{{ '@pry.widget.analytic.primaryProp' | i18n }}</label>
+            <pry-select
+              (ngModelChange)="change($event, 'primaryProp')"
+              [items]="availableProperties$ | async"
+              [ngModel]="optionsCopy.primaryProp"
+              bindLabel="name"
+              bindValue="name"
+              id="primaryProp"
+            ></pry-select>
+          </div>
+          <div class="m-form-label-field">
+            <label class="a-label" for="secondaryProp">{{ '@pry.widget.analytic.secondaryProp' | i18n }}</label>
+            <pry-select
+              (ngModelChange)="change($event, 'secondaryProp')"
+              [items]="availableProperties$ | async"
+              [ngModel]="optionsCopy.secondaryProp"
+              bindLabel="name"
+              bindValue="name"
+              id="secondaryProp"
+              [clearable]="true"
+            ></pry-select>
+          </div>
+          <div class="m-form-label-field">
+            <label class="a-label" for="verticalProp">{{ '@pry.widget.analytic.verticalProp' | i18n }}</label>
+            <pry-select
+              (ngModelChange)="change($event, 'verticalProp')"
+              [items]="availableProperties$ | async"
+              [ngModel]="optionsCopy.verticalProp"
+              bindLabel="name"
+              bindValue="name"
+              id="verticalProp"
+            ></pry-select>
+          </div>
+          <div class="m-form-label-field">
+            <label class="a-label" for="valueProp">{{ '@pry.widget.analytic.valueProp' | i18n }}</label>
+            <pry-select
+              (ngModelChange)="change($event, 'valueProp')"
+              [items]="availableProperties$ | async"
+              [ngModel]="optionsCopy.valueProp"
+              bindLabel="name"
+              bindValue="name"
+              id="valueProp"
+            ></pry-select>
+          </div>
+          <div class="m-form-label-field">
+            <pry-checkbox (ngModelChange)="toggleColorConfig($event)" [ngModel]="!!optionsCopy.colorConfig">
+              {{ '@pry.widget.analytic.colorConfig' | i18n }}
+            </pry-checkbox>
+            @if (optionsCopy.colorConfig) {
+              <div class="m-form-label-field">
+                <label class="a-label" for="colorProp">{{ '@pry.widget.analytic.colorProp' | i18n }}</label>
+                <pry-select
+                  (ngModelChange)="changeColorConfig($event, 'prop')"
+                  [items]="availableProperties$ | async"
+                  [ngModel]="optionsCopy.colorConfig.prop"
+                  bindLabel="name"
+                  bindValue="name"
+                  id="colorProp"
+                ></pry-select>
               </div>
-            </div>
-          }
+              <div class="m-form-label-field">
+                <label class="a-label" for="colorProp">{{ '@pry.widget.analytic.colors' | i18n }}</label>
+                <div
+                  class="o-widget__analytic__color-picker-container u-display-flex -align-center"
+                  cdkDropList
+                  (cdkDropListDropped)="drop($event)"
+                  cdkDropListOrientation="horizontal"
+                >
+                  @for (color of optionsCopy.colorConfig.colors; track color; let i = $index) {
+                    <div class="o-widget__analytic__color-picker" cdkDrag>
+                      <pry-color-picker
+                        [ngModel]="color"
+                        (ngModelChange)="modifyColorScheme($event, i)"
+                      ></pry-color-picker>
+                      <button (click)="removeColor(i)" class="o-widget__analytic__color-picker-remove">
+                        <pry-icon iconSvg="close" [height]="15" [width]="15"></pry-icon>
+                      </button>
+                      <div *cdkDragPreview>
+                        <pry-color-picker [ngModel]="color"></pry-color-picker>
+                      </div>
+                    </div>
+                  }
+                  <button
+                    type="button"
+                    class="a-btn a-btn--icon-only o-widget__analytic__color-picker-add"
+                    (click)="modifyColorScheme()"
+                  >
+                    <pry-icon iconSvg="add" [height]="20" [width]="20"></pry-icon>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
         </div>
-        <div class="m-form-label-field">
-          <pry-checkbox (ngModelChange)="toggleFormat($event)" [ngModel]="!!optionsCopy.format">
-            {{ '@pry.widget.analytic.format' | i18n }}
-          </pry-checkbox>
-          @if (optionsCopy.format) {
-            <div class="m-form-label-field">
-              <label class="a-label" for="format">{{ '@pry.widget.analytic.suffix' | i18n }}</label>
-              <input
-                type="text"
-                class="a-form-field"
-                id="format"
-                [ngModel]="optionsCopy.format.suffix"
-                (ngModelChange)="changeFormat($event)"
-              />
-            </div>
-          }
-        </div>
-      </div>
-    </pry-settings>
-  </pry-widget-header>
+      </pry-settings>
+    </pry-widget-header>
+  }
   <div class="o-widget__analytic__table">
     <table [style.height.px]="height$ | async">
       <thead>
@@ -155,58 +139,62 @@
           </tr>
         }
       </thead>
-      <tbody>
-        @for (line of lines$ | async; track line.name) {
-          <tr>
-            <th>{{ line.name }}</th>
-            @for (primary of primaryProperty$ | async; track primary) {
-              @if (optionsCopy.secondaryProp) {
-                @for (secondary of secondaryProperty$ | async; track secondary) {
+      @if (this.valuePropField$ | async; as field) {
+        <tbody>
+          @for (line of lines$ | async; track line.name) {
+            <tr>
+              <th>{{ line.name }}</th>
+              @for (primary of primaryProperty$ | async; track primary) {
+                @if (optionsCopy.secondaryProp) {
+                  @for (secondary of secondaryProperty$ | async; track secondary) {
+                    <td
+                      [ngStyle]="
+                        optionsCopy.colorConfig
+                          ? { 'background-color': (colorMap$ | async)?.[line.name]?.[primary] }
+                          : {}
+                      "
+                    >
+                      {{ line.value[primary][secondary] | dataFormat: field }}
+                    </td>
+                  }
+                } @else {
                   <td
                     [ngStyle]="
                       optionsCopy.colorConfig ? { 'background-color': (colorMap$ | async)?.[line.name]?.[primary] } : {}
                     "
                   >
-                    {{ line.value[primary][secondary] | dataFormat: true : optionsCopy.format?.suffix }}
+                    {{ line.value[primary] | dataFormat: field }}
                   </td>
                 }
-              } @else {
-                <td
-                  [ngStyle]="
-                    optionsCopy.colorConfig ? { 'background-color': (colorMap$ | async)?.[line.name]?.[primary] } : {}
-                  "
-                >
-                  {{ line.value[primary] | dataFormat: true : optionsCopy.format?.suffix }}
+              }
+            </tr>
+          }
+        </tbody>
+        <tfoot>
+          @for (line of totals$ | async; track line.name) {
+            <tr class="partial-total">
+              <th>{{ line.name }}</th>
+              @for (primary of primaryProperty$ | async; track primary) {
+                @for (secondary of secondaryProperty$ | async; track secondary) {
+                  <td>
+                    {{ line.value[primary][secondary] | dataFormat: field }}
+                  </td>
+                }
+              }
+            </tr>
+          }
+          @for (line of grandTotals$ | async; track line.name) {
+            <tr class="grand-total">
+              <th>{{ line.name }}</th>
+              @for (primary of primaryProperty$ | async; track primary) {
+                <td [colSpan]="(secondaryProperty$ | async)?.length ?? 1">
+                  {{ line.value[primary] | dataFormat: field }}
                 </td>
               }
-            }
-          </tr>
-        }
-      </tbody>
-      <tfoot>
-        @for (line of totals$ | async; track line.name) {
-          <tr class="partial-total">
-            <th>{{ line.name }}</th>
-            @for (primary of primaryProperty$ | async; track primary) {
-              @for (secondary of secondaryProperty$ | async; track secondary) {
-                <td>
-                  {{ line.value[primary][secondary] }}
-                </td>
-              }
-            }
-          </tr>
-        }
-        @for (line of grandTotals$ | async; track line.name) {
-          <tr class="grand-total">
-            <th>{{ line.name }}</th>
-            @for (primary of primaryProperty$ | async; track primary) {
-              <td [colSpan]="(secondaryProperty$ | async)?.length ?? 1">
-                {{ line.value[primary] }}
-              </td>
-            }
-          </tr>
-        }
-      </tfoot>
+            </tr>
+          }
+        </tfoot>
+      }
     </table>
   </div>
 </div>

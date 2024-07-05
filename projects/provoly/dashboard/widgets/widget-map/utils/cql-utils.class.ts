@@ -16,7 +16,7 @@ export class CqlUtils {
     return filters[datasourceId]
       .map((cond) => {
         const attribute = attributesReference.find((attr) => attr.id === cond.attribute);
-        const field = fields.find((f) => f.id === attribute?.field);
+        const field = attribute?.field;
         const attributeName = attribute?.technicalName;
 
         return this.getConditionsForValue(attributeName, cond, field, datasourceId);

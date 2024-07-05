@@ -1,5 +1,5 @@
 import { Attribute } from '../store/class/class.interface';
-import { FieldType } from '../store/field/field.interface';
+import { Field } from '../store/field/field.interface';
 
 export interface Predicate {
   id: string;
@@ -70,7 +70,7 @@ export interface AttributeExtended {
   id: string;
   name: string;
   technicalName: string;
-  field: string;
+  field: Field;
   fieldName: string;
   category?: string;
   categoryName?: string;

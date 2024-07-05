@@ -90,13 +90,13 @@ export class ItemUtils {
     ];
   }
 
-  static getFieldsForClasses(classesId: string[], classes: Class[], fields: Field[]): Field[] {
+  static getFieldsForClasses(classesId: string[], classes: Class[]): Field[] {
     return [
       ...new Set(
         classesId
           .map((classId) => classes.find((cl) => cl.id === classId) as Class)
           .filter((oClass) => oClass !== undefined)
-          .map((oClass: Class) => oClass.attributes.map((attr) => fields.find((f) => f.id === attr.field)!))
+          .map((oClass: Class) => oClass.attributes.map((attr) => attr.field))
           .map((fields: Field[]) => fields.filter((f) => !!f))
           .reduce((p: Field[], c: Field[]) => [...p, ...c], [])
       )
@@ -125,7 +125,7 @@ export class ItemUtils {
           .filter((oClass) => oClass !== undefined)
           .map((oClass) => oClass.attributes)
           .reduce((p, c) => [...p, ...c], [])
-          .filter((attr: Attribute) => !!fields.find((f) => f.id === attr.field))
+          .filter((attr: Attribute) => !!fields.find((f) => f.id === attr.field.id))
       )
     ];
   }
@@ -135,7 +135,7 @@ export class ItemUtils {
       defs[clazz.id ?? ''] ??
       (clazz ?? { attributes: [] }).attributes
         .filter((attr) => {
-          const attrField = fields.find((f) => f.id === attr.field);
+          const attrField = fields.find((f) => f.id === attr.field.id);
           return attrField && !GeometricFieldTypes.includes(attrField.type);
         })
         .map((attr) => attr.name)

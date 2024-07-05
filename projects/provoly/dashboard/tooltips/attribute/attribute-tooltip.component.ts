@@ -1,54 +1,44 @@
-import { Component } from '@angular/core';
-import { BaseTooltipComponent, Class, ClassSelectors, TranslateIdPipe } from '@provoly/dashboard';
-import { map, Observable, of, switchMap } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Attribute, BaseTooltipComponent, ClassSelectors, Field, TranslateIdPipe } from '@provoly/dashboard';
+import { map, Observable, of } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'pry-attribute-tooltip',
   templateUrl: './attribute-tooltip.component.html'
 })
-export class AttributeTooltipComponent extends BaseTooltipComponent {
-  private classes$: Observable<Class[]>;
+export class AttributeTooltipComponent extends BaseTooltipComponent implements OnInit {
+  protected attributes$!: Observable<Attribute[]>;
 
-  constructor(private translateIdPipe: TranslateIdPipe, private store: Store<any>) {
+  constructor(
+    private translateIdPipe: TranslateIdPipe,
+    private store: Store<any>
+  ) {
     super();
     this.context = this.context ?? { attributes: [] };
-    this.classes$ = this.store.select(ClassSelectors.classes);
   }
 
-  getAttributeName(attribute: string): Observable<string> {
-    return this.classes$.pipe(
-      map(
-        (classes) =>
-          classes
-            .map((clazz) => clazz.attributes)
-            .flat()
-            .find((attr) => attr.id === attribute)?.name ?? attribute
-      )
+  ngOnInit() {
+    this.attributes$ = this.store.select(ClassSelectors.classes).pipe(
+      map((classes) => {
+        return classes
+          .map((c) => c.attributes)
+          .flat()
+          .filter((attr) => this.context.attributes.includes(attr.id));
+      })
     );
   }
 
-  getAttributeTechnicalName(attribute: string): Observable<string> {
-    return this.classes$.pipe(
-      map(
-        (classes) =>
-          classes
-            .map((clazz) => clazz.attributes)
-            .flat()
-            .find((attr) => attr.id === attribute)?.technicalName ?? attribute
-      )
-    );
-  }
-
-  getValue(attribute: string, limit = 9999): Observable<string> {
-    return this.getAttributeTechnicalName(attribute).pipe(
-      switchMap((attribute: string) => this._getValue(attribute)),
-      map((value) => {
+  getValue(attrTechnicalName: string, limit = 9999): Observable<string | number> {
+    return this._getValue(attrTechnicalName).pipe(
+      withLatestFrom(this.attributes$),
+      map(([value, attributes]) => {
+        const field = attributes.find((attr) => attr.technicalName === attrTechnicalName)?.field;
         switch (typeof value) {
           case 'undefined':
             return '';
           case 'number':
-            return value.toString();
           case 'string':
             return value;
           default:
@@ -59,6 +49,7 @@ export class AttributeTooltipComponent extends BaseTooltipComponent {
     );
   }
 
+  // attribute: 'id' | 'oClass' | attributeTechnicalName
   _getValue(attribute: string): Observable<string | undefined | number> {
     if (!this.data.item.properties) {
       // This is for Provoly-like items

@@ -607,12 +607,12 @@ router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items/aggregate', (req,
         .get()
         .map((clazz) => clazz.attributes.find((attr) => attr.id === query.aggregatedBy))
         .find((attr) => !!attr);
-      const abscissaField = dataModule.fields.get().find((field) => field.id === abscissaAttr?.field);
+      const abscissaField = dataModule.fields.get().find((field) => field.id === abscissaAttr?.field.id);
       const ordinateAttr = dataModule.class
         .get()
         .map((clazz) => clazz.attributes.find((attr) => attr.id === query.valueField))
         .find((attr) => !!attr);
-      const ordinateField = dataModule.fields.get().find((field) => field.id === ordinateAttr?.field);
+      const ordinateField = dataModule.fields.get().find((field) => field.id === ordinateAttr?.field.id);
 
       let series = [];
       if (query.groupBy) {
@@ -620,7 +620,7 @@ router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items/aggregate', (req,
           .get()
           .map((clazz) => clazz.attributes.find((attr) => attr.id === query.groupBy))
           .find((attr) => !!attr);
-        const groupByField = dataModule.fields.get().find((field) => field.id === groupByAttr?.field);
+        const groupByField = dataModule.fields.get().find((field) => field.id === groupByAttr?.field.id);
         const nbSeries = casual.integer((from = 3), (to = 7));
         for (let i = 0; i < nbSeries; i++) {
           series[i] = fieldGeneratorModule.generateFieldValue(groupByField);

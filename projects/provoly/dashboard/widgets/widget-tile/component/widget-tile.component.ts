@@ -39,7 +39,7 @@ export class WidgetTileComponent extends DataWidgetComponent {
   classes$: Observable<Class[]>;
   optionsCopy: TileWidgetOptions = {};
   WIDGET_HEADER_HEIGHT = WIDGET_HEADER_HEIGHT;
-  propertiesToDisplay$: Observable<{ [p: string]: { label: string; prop: string }[] } | undefined>;
+  propertiesToDisplay$: Observable<{ [p: string]: { label: string; prop: string; field: Field }[] } | undefined>;
   fields: Field[] = [];
   classes: Class[] = [];
 
@@ -75,7 +75,8 @@ export class WidgetTileComponent extends DataWidgetComponent {
               ...clazz.attributes
                 .map((attr) => ({
                   label: attr.name,
-                  prop: attr.technicalName
+                  prop: attr.technicalName,
+                  field: attr.field
                 }))
                 .filter((_, i) => i < maxTilesAttributes)
             ]
@@ -89,7 +90,8 @@ export class WidgetTileComponent extends DataWidgetComponent {
                 .filter((attr) => tileDefs[clazz.id].includes(attr.name))
                 .map((attr) => ({
                   label: attr.name,
-                  prop: attr.technicalName
+                  prop: attr.technicalName,
+                  field: attr.field
                 }))
             ]
           }))
@@ -151,16 +153,8 @@ export class WidgetTileComponent extends DataWidgetComponent {
 
   isRaw(property: string, classId: string): boolean {
     const clazz = this.classes.find((clazz) => clazz.id === classId);
-    if (!!clazz) {
-      const prop = clazz.attributes.find((attr) => attr.name === property);
-      if (!!prop) {
-        const field = this.fields.find((field) => field.id === prop.field);
-        if (!!field) {
-          return field.type === FieldType.RAW;
-        }
-      }
-    }
-    return false;
+    const prop = clazz?.attributes.find((attr) => attr.name === property);
+    return prop?.field.type === FieldType.RAW ?? false;
   }
 
   hasMetadata(value: AttributeSimpleValue | Item) {

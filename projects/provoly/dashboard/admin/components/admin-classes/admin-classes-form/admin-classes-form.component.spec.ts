@@ -16,16 +16,9 @@ import { AdminClassActions } from '../store/admin-class.actions';
 import { AdminClassesFormComponent } from './admin-classes-form.component';
 import { MockPrySelectComponent } from '@provoly/dashboard/mock/components/mock-pry-select.component';
 import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
+import { mockClasses } from '@provoly/dashboard/mock/data/mockModel';
 
 jest.mock('uuid', () => ({ v4: () => 'adfd01fb-309b-4e1c-9117-44d003f5d7fc' }));
-
-let attribute = {
-  id: 'adfd01fb-309b-4e1c-9117-44d003f5d7fc',
-  name: 'id',
-  technicalName: 'id',
-  field: FIELD_UUID,
-  multiValued: false
-};
 
 describe('AdminClassesFormComponent', () => {
   let component: AdminClassesFormComponent;
@@ -91,12 +84,7 @@ describe('AdminClassesFormComponent', () => {
 
   it('should update current class', fakeAsync(() => {
     const spyStore = jest.spyOn(store, 'dispatch');
-    component._currentClass = {
-      id: 'idLieu',
-      name: 'lieu',
-      attributes: [attribute],
-      icon: ''
-    };
+    component._currentClass = mockClasses[0];
 
     let editedClass = component._currentClass;
     editedClass.name = 'endroit';
@@ -109,12 +97,7 @@ describe('AdminClassesFormComponent', () => {
   }));
 
   it('should not update current class because name is required', fakeAsync(() => {
-    component._currentClass = {
-      id: 'idLieu',
-      name: 'lieu',
-      icon: 'test1.png',
-      attributes: [attribute]
-    };
+    component._currentClass = mockClasses[0];
 
     let editedClass = component._currentClass;
     editedClass.name = '';

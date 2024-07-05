@@ -156,10 +156,8 @@ export class PrySearchConditionComponent implements OnDestroy {
       .select(SearchMonoClassSelectors.selectMonoClassSearchAttributeById(attributeId))
       .pipe(
         filter((attr): attr is Attribute => attr !== undefined),
-        switchMap((attr: Attribute) => this.store.select(FieldSelectors.fieldById(attr.field))),
-        filter((field): field is Field => field !== undefined),
-        map((field: Field) => {
-          const fieldType = field.type;
+        map((attr: Attribute) => {
+          const fieldType = attr.field.type;
           if (fieldType === FieldType.STRING || fieldType === FieldType.KEYWORD) {
             return OPERATOR_OPTIONS.filter((el) => el.type === 'string');
           } else if (

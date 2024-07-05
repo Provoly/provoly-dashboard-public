@@ -1,35 +1,15 @@
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { Class, ClassSelectors, Field, FieldSelectors, FieldType } from '@provoly/dashboard';
+import { ClassSelectors, Field, FieldSelectors, FieldType } from '@provoly/dashboard';
 import { SearchMonoClassSelectors } from '../../store/search-mono-class.selectors';
 import { PrySearchSelectAttributeComponent } from './search-select-attribute.component';
+import { mockClasses } from '@provoly/dashboard/mock/data/mockModel';
 
 describe('PrySearchSelectAttributeComponent', () => {
   let component: PrySearchSelectAttributeComponent;
   let fixture: ComponentFixture<PrySearchSelectAttributeComponent>;
   let store: MockStore;
-
-  let classMock: Class = {
-    id: 'a',
-    name: 'name',
-    attributes: [
-      {
-        id: 'attrId',
-        field: 'field',
-        multiValued: false,
-        name: 'name',
-        technicalName: 'name'
-      },
-      {
-        id: 'attrId2',
-        field: 'field2',
-        multiValued: false,
-        name: 'name',
-        technicalName: 'name'
-      }
-    ]
-  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -40,7 +20,7 @@ describe('PrySearchSelectAttributeComponent', () => {
             {
               selector: ClassSelectors.entities,
               value: {
-                id: classMock
+                id: mockClasses
               }
             },
             {

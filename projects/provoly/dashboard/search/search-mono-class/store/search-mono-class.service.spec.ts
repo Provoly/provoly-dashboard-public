@@ -141,6 +141,23 @@ describe('SearchMonoClassService', () => {
       .mockImplementationOnce(() => 'leaf2')
       .mockImplementationOnce(() => 'child2')
       .mockImplementationOnce(() => 'leaf3');
+    const fields: Field[] = [
+      {
+        id: 'field1',
+        type: FieldType.DECIMAL,
+        name: 'field1'
+      },
+      {
+        id: 'field2',
+        type: FieldType.INSTANT,
+        name: 'field2'
+      },
+      {
+        id: 'field3',
+        type: FieldType.STRING,
+        name: 'field3'
+      }
+    ];
     const conditions: Condition = {
       type: 'AND',
       composed: [
@@ -180,35 +197,18 @@ describe('SearchMonoClassService', () => {
         attributes: [
           {
             id: 'attr1',
-            field: 'field1'
+            field: fields[0]
           },
           {
             id: 'attr2',
-            field: 'field2'
+            field: fields[1]
           },
           {
             id: 'attr3',
-            field: 'field3'
+            field: fields[2]
           }
         ]
       } as Class
-    ];
-    const fields: Field[] = [
-      {
-        id: 'field1',
-        type: FieldType.DECIMAL,
-        name: 'field1'
-      },
-      {
-        id: 'field2',
-        type: FieldType.INSTANT,
-        name: 'field2'
-      },
-      {
-        id: 'field3',
-        type: FieldType.STRING,
-        name: 'field3'
-      }
     ];
     const monoConditions: { id: string; conditions: NormalizedCondition[] } = service.loadNormalizedConditions(
       conditions,

@@ -329,13 +329,13 @@ export const frTranslations = {
           dateFormat: 'Format de date',
           noDateFormat: 'Pas de format de date specifié',
           dateFormatOptions: {
-            datetime: 'Date et heure',
-            date: 'Date',
-            monthyear: 'Mois et année',
-            daymonth: 'Jour et mois',
-            year: 'Année',
-            month: 'Mois',
-            day: 'Jour'
+            DATETIME: 'Date et heure',
+            DATE: 'Date',
+            MONTH_YEAR: 'Mois et année',
+            DAY_MONTH: 'Jour et mois',
+            YEAR: 'Année',
+            MONTH: 'Mois',
+            DAY: 'Jour'
           }
         }
       },

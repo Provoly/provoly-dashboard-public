@@ -4,10 +4,11 @@ import { NgModule, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BaseTooltipComponent, BaseTooltipModule, PryCoreModule } from '@provoly/dashboard';
 import { AttributeTooltipComponent } from './attribute-tooltip.component';
+import { PryDataFormatModule } from '@provoly/dashboard/components/data-format';
 
 @NgModule({
   declarations: [AttributeTooltipComponent],
-  imports: [CommonModule, FormsModule, OverlayModule, PryCoreModule],
+  imports: [CommonModule, FormsModule, OverlayModule, PryCoreModule, PryDataFormatModule],
   exports: [AttributeTooltipComponent]
 })
 export class PryAttributeTooltipModule extends BaseTooltipModule {

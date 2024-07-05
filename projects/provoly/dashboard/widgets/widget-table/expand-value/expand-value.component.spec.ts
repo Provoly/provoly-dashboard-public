@@ -1,10 +1,8 @@
-import { DecimalPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PryI18nService } from '@provoly/dashboard';
-import { MockDecimalPipe } from '../../../mock/pipe/mock-decimal.pipe';
-import { FormatNumberPipe } from '../expand-value/format-number.pipe';
 
 import { ExpandValueComponent } from './expand-value.component';
+import { MockDataFormatPipe } from '@provoly/dashboard/mock/pipe/mock-data-format.pipe';
 
 describe('ExpandValueComponent', () => {
   let component: ExpandValueComponent;
@@ -13,8 +11,7 @@ describe('ExpandValueComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ExpandValueComponent, FormatNumberPipe],
-      providers: [{ provide: DecimalPipe, useClass: MockDecimalPipe }]
+      declarations: [ExpandValueComponent, MockDataFormatPipe]
     }).compileComponents();
   });
 

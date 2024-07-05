@@ -2,6 +2,7 @@ import { Attribute, NormalizedCondition } from '@provoly/dashboard';
 import * as fromSearchMonoClass from './search-mono-class.reducer';
 import { initialSearchMonoClassState, SearchMonoClassState } from './search-mono-class.reducer';
 import { SearchMonoClassSelectors } from './search-mono-class.selectors';
+import { mockFields } from '@provoly/dashboard/mock/data/mockModel';
 
 describe('SearchMonoClassSelectors', () => {
   const initialState = { ...initialSearchMonoClassState };
@@ -40,7 +41,7 @@ describe('SearchMonoClassSelectors', () => {
             attributes: [
               {
                 id: 'id',
-                field: 'field',
+                field: mockFields[0],
                 multiValued: false
               } as Attribute
             ]
@@ -51,7 +52,7 @@ describe('SearchMonoClassSelectors', () => {
       expect(result).toEqual([
         {
           id: 'id',
-          field: 'field',
+          field: mockFields[0],
           multiValued: false
         } as Attribute
       ]);
@@ -62,13 +63,13 @@ describe('SearchMonoClassSelectors', () => {
       const result = SearchMonoClassSelectors.selectMonoClassSearchAttributeById('attr').projector([
         {
           id: 'attr',
-          field: 'field',
+          field: mockFields[0],
           multiValued: false
         } as Attribute
       ]);
       expect(result).toEqual({
         id: 'attr',
-        field: 'field',
+        field: mockFields[0],
         multiValued: false
       } as Attribute);
     });

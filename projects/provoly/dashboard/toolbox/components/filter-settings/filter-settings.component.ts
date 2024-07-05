@@ -146,7 +146,7 @@ export class PryFilterSettingsComponent extends ToolboxActionComponent {
               technicalName: attr.technicalName,
               label: `${attr.name} / ${dataSource.name}`,
               datasource: dataSource.id,
-              type: fields.find((field) => field.id === attr.field)?.type ?? FieldType.STRING
+              type: attr.field.type ?? FieldType.STRING
             }))
           )
           .flat()

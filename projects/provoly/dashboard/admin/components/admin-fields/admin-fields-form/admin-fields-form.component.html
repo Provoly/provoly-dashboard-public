@@ -109,7 +109,7 @@
               inputId="field_format_locale_number_format"
               [inhibit]="false"
             >
-              {{ '@pry.admin.fields.formatOptions.localeFormat' | i18n }}
+              {{ '@pry.admin.fields.formatOptions.isLocaleFormat' | i18n }}
             </pry-checkbox>
           </div>
           <div class="m-form-label-field -width-sm">
@@ -129,6 +129,7 @@
               [items]="dateFormats"
               [isForm]="true"
               i18nPrefix="@pry.admin.fields.formatOptions.dateFormatOptions."
+              [clearable]="true"
             ></pry-select>
           </div>
         </ng-template>

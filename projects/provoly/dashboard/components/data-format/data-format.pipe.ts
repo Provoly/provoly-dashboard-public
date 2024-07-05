@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { FormatOptions } from '@provoly/dashboard';
 
 export const LOCALE = {
   value: navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language
@@ -8,20 +9,38 @@ export const LOCALE = {
 export class DataFormatPipe implements PipeTransform {
   constructor() {}
 
-  transform(value?: any, toLocale?: boolean, suffix?: string, dateFormat?: string, ...args: any[]): any {
+  transform(
+    value: any,
+    { isLocaleFormat, unit, decimalPrecision, format }: Partial<FormatOptions> | undefined = {}
+  ): any {
     let result = value;
-    if (toLocale) {
-      result = toLocaleString(value);
-    }
-    if (suffix) {
-      result = result + ' ' + suffix;
+
+    if (value === null || value === undefined) {
+      return value;
     }
 
-    if (dateFormat) {
-      result = new Intl.DateTimeFormat(
-        LOCALE.value,
-        dateFormatOptions.value[dateFormat] ?? DEFAULT_DATE_FORMAT.value
-      ).format(getDate(value));
+    if (typeof value === 'object') {
+      return JSON.stringify(value);
+    }
+
+    if (decimalPrecision) {
+      result = new Intl.NumberFormat(undefined, {
+        // @ts-ignore
+        roundingMode: 'floor',
+        minimumFractionDigits: decimalPrecision,
+        maximumFractionDigits: decimalPrecision
+      }).format(value);
+    }
+
+    if (isLocaleFormat) {
+      result = toLocaleString(result);
+    }
+    if (unit) {
+      result = result + ' ' + unit;
+    }
+
+    if (format) {
+      result = new Intl.DateTimeFormat(LOCALE.value, dateFormatOptions.value[format]).format(getDate(value));
     }
 
     return result;
@@ -29,11 +48,10 @@ export class DataFormatPipe implements PipeTransform {
 }
 
 // number formatting methods
-
 const toLocaleString = (value?: string | number) => {
   switch (typeof value) {
     case 'number':
-      return new Intl.NumberFormat().format(value);
+      return new Intl.NumberFormat(LOCALE.value, { maximumFractionDigits: 20 }).format(value);
     case 'string':
       return value;
     default:
@@ -42,43 +60,38 @@ const toLocaleString = (value?: string | number) => {
 };
 
 // date formatting methods
-
 export const dateFormatOptions: { value: { [key: string]: Intl.DateTimeFormatOptions } } = {
   value: {
-    datetime: {
+    DATETIME: {
       year: 'numeric',
       month: 'numeric',
       day: 'numeric',
       hour: 'numeric',
       minute: 'numeric'
     },
-    date: {
+    DATE: {
       year: 'numeric',
-      month: 'numeric',
-      day: 'numeric'
-    },
-    monthyear: {
-      month: '2-digit',
-      year: 'numeric'
-    },
-    daymonth: {
       month: '2-digit',
       day: '2-digit'
     },
-    year: {
+    MONTH_YEAR: {
+      month: '2-digit',
       year: 'numeric'
     },
-    month: {
+    DAY_MONTH: {
+      month: '2-digit',
+      day: '2-digit'
+    },
+    YEAR: {
+      year: 'numeric'
+    },
+    MONTH: {
       month: '2-digit'
     },
-    day: {
+    DAY: {
       day: '2-digit'
     }
   }
-};
-
-export const DEFAULT_DATE_FORMAT = {
-  value: 'datetime'
 };
 
 const getDate = (value: string | number | Date): Date => {
@@ -86,4 +99,25 @@ const getDate = (value: string | number | Date): Date => {
     return new Date(value);
   }
   return value;
+};
+
+export const toD3Format = (format?: string) => {
+  switch (format) {
+    case 'DATETIME':
+      return '%Y-%m-%dT%H:%M:%S';
+    case 'DATE':
+      return '%Y-%m-%d';
+    case 'MONTH_YEAR':
+      return '%m-%Y';
+    case 'DAY_MONTH':
+      return '%d-%m';
+    case 'YEAR':
+      return '%Y';
+    case 'MONTH':
+      return '%m';
+    case 'DAY':
+      return '%d';
+    default:
+      return '%Y-%B-%dT%H:%M:%S';
+  }
 };

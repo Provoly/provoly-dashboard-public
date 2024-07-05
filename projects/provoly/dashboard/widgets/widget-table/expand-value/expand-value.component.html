@@ -1,8 +1,11 @@
 <div class="a-expandable-value">
-  <span class="a-expandable-value__initial">{{ (firstValue | formatNumber).text }}{{ isArray ? ' (*)' : '' }}</span>
+  <span class="a-expandable-value__initial">
+    {{ firstValue | dataFormat: field }}
+    {{ isArray ? ' (*)' : '' }}
+  </span>
   <div class="a-expandable-value__expanded" *ngIf="isArray">
     <div *ngFor="let value of rest">
-      {{ (value | formatNumber).text }}
+      {{ value | dataFormat: field }}
     </div>
   </div>
 </div>

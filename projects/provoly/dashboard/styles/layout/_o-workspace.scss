@@ -17,6 +17,7 @@
   .o-container {
     height: 100%;
     padding: toRem(20);
+    overflow: scroll;
   }
 
   &__toolbox {

@@ -48,7 +48,9 @@ export class SearchMonoClassEffects {
     this.actions$.pipe(
       ofType(SearchMonoClassActions.addNormalizedConditionAttributeForConditionId),
       mergeMap((action) =>
-        combineLatest([of(action), this.store.select(FieldSelectors.fieldById(action.attribute.field))]).pipe(first())
+        combineLatest([of(action), this.store.select(FieldSelectors.fieldById(action.attribute.field.id))]).pipe(
+          first()
+        )
       ),
       map(([action, field]) => {
         const pattern = this.searchMonoClassService.getPatternForField(field);

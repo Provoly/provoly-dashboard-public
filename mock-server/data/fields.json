@@ -23,12 +23,16 @@
   {
     "id": "9fc993db-ab5f-403d-883d-1bb3970692af",
     "name": "humidite",
-    "type": "decimal"
+    "type": "decimal",
+    "unit": "hPa",
+    "isLocaleFormat": true
   },
   {
     "id": "ea1f6255-9e67-41e6-89a2-1c1bd5a0a5ce",
     "name": "temperature_en_degre_c",
-    "type": "decimal"
+    "type": "decimal",
+    "decimalPrecision": 2,
+    "unit": "°C"
   },
   {
     "id": "eothr255-9e67-41e6-89a2-1c1bd5a0a5ce",
@@ -93,7 +97,8 @@
   {
     "id": "qsdf622e-d44f-426b-bfdd-9b19e83f44da",
     "name": "heure_utc",
-    "type": "instant"
+    "type": "instant",
+    "format": "DAY_MONTH"
   },
   {
     "id": "wxcvbef3-dd45-4130-8668-7ecf77a00002",

@@ -196,8 +196,7 @@ const generateFieldValue = (attr) => {
     default:
       // no specific attr name value generation
       // get attr type using field
-      const type = fields.get().find((f) => f.id === attr.field) || { type: attr.type ?? 'unknown' };
-      return generateAttrValueByFieldType(type, attr);
+      return generateAttrValueByFieldType(attr.field, attr);
   }
 };
 

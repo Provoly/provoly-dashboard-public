@@ -32,7 +32,7 @@ export class AdminFieldsSelectComponent implements OnInit, OnDestroy {
         return classes
           .map((clazz) =>
             clazz.attributes
-              .filter((attribute) => attribute.field === field?.id)
+              .filter((attribute) => attribute.field.id === field?.id)
               .map((attribute) => ({ technicalName: attribute.technicalName, classId: clazz.id }))
           )
           .flat();

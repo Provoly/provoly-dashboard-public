@@ -16,11 +16,8 @@ export class PrySearchSelectAttributeComponent {
       filter((id): id is string => id !== null),
       switchMap((id) => this.store.select(ClassSelectors.classById(id))),
       filter((clazz): clazz is Class => clazz !== undefined),
-      withLatestFrom(this.store.select(FieldSelectors.fields)),
-      map(([clazz, fields]) => {
-        const attributes = [...(clazz.attributes ?? [])].filter(
-          (attr) => fields.find((field) => field.id === attr.field)?.type !== FieldType.RAW
-        );
+      map((clazz) => {
+        const attributes = [...(clazz.attributes ?? [])].filter((attr) => attr.field.type !== FieldType.RAW);
         return attributes.sort((a, b) => a.name.localeCompare(b.name));
       })
     );

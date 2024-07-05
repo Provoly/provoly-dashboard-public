@@ -193,7 +193,7 @@ export class WidgetDetailComponent extends BaseWidgetComponent {
     }
   }
 
-  isRaw(property: { name: string; attribute: Attribute }) {
-    return this.fields.find((field) => field.id === property.attribute.field)?.type === FieldType.RAW;
+  isRaw(attribute: Attribute) {
+    return attribute.field?.type === FieldType.RAW;
   }
 }

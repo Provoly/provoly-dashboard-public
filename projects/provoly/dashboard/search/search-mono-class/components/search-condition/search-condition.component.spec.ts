@@ -44,31 +44,31 @@ const classes = {
     attributes: [
       {
         id: 'attrStringId',
-        field: 'fieldStringId',
+        field: fields['fieldStringId'],
         multiValued: false,
         name: 'attr'
       },
       {
         id: 'attrKeywordId',
-        field: 'fieldKeywordId',
+        field: fields['fieldKeywordId'],
         multiValued: false,
         name: 'attr'
       },
       {
         id: 'attrDecimalId',
-        field: 'fieldDecimalId',
+        field: fields['fieldDecimalId'],
         multiValued: false,
         name: 'attr'
       },
       {
         id: 'attrIntegerId',
-        field: 'fieldIntegerId',
+        field: fields['fieldIntegerId'],
         multiValued: false,
         name: 'attr'
       },
       {
         id: 'attrInstantId',
-        field: 'fieldInstantId',
+        field: fields['fieldInstantId'],
         multiValued: false,
         name: 'attr'
       }

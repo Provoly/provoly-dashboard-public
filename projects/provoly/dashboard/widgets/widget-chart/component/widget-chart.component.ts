@@ -141,18 +141,15 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
     this.subscriptions.add(this.variableAttributes$.subscribe((attrs) => (this.variableAttributes = attrs)));
     this.subscriptions.add(this.fields$.subscribe((attrs) => (this.fields = attrs)));
 
-    this.variables$ = combineLatest([this.variableAttributes$, this.fields$]).pipe(
-      map(([attributes, fields]) => {
+    this.variables$ = this.variableAttributes$.pipe(
+      map((attributes) => {
         return attributes.map(
           (attr) =>
             (({
               name: attr.technicalName,
               label: attr.name,
-              type: this.translateToVegaType(
-                fields.find((field) => field.id === attr.field)?.type ?? FieldType.STRING,
-                attr.name
-              )
-            } as VariableDefinition) ?? [])
+              type: this.translateToVegaType(attr.field.type, attr.name)
+            }) as VariableDefinition) ?? []
         );
       })
     );
@@ -199,7 +196,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
             ) {
               return true;
             } else {
-              const field = fields.find((field) => field.id === attribute.field);
+              const field = fields.find((field) => field.id === attribute.field.id);
               return [FieldType.DECIMAL, FieldType.INSTANT, FieldType.LONG, FieldType.INTEGER].includes(
                 field?.type ?? FieldType.STRING
               );
@@ -227,7 +224,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
       map(([variableFields, items, fields, _]) => {
         return variableFields
           .filter((attribute) => {
-            const field = fields.find((field) => field.id === attribute.field);
+            const field = fields.find((field) => field.id === attribute.field.id);
             return [FieldType.DECIMAL, FieldType.INSTANT, FieldType.LONG, FieldType.INTEGER].includes(
               field?.type ?? FieldType.STRING
             );
@@ -254,7 +251,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
       map(([variableFields, items, fields, _]) => {
         return variableFields
           .filter((attribute) => {
-            const field = fields.find((field) => field.id === attribute.field);
+            const field = fields.find((field) => field.id === attribute.field.id);
             return [FieldType.STRING, FieldType.KEYWORD].includes(field?.type ?? FieldType.INTEGER);
           })
           .filter((attribute) =>
@@ -520,7 +517,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
               category: (item.attributes[options.radar?.categoryProp ?? ''] as AttributeSimpleValue)?.value ?? 'object',
               key: (item.attributes[options.radar?.keyProp ?? ''] as AttributeSimpleValue)?.value,
               value: (item.attributes[options.radar?.valueProp ?? ''] as AttributeSimpleValue)?.value
-            } as RadarValue)
+            }) as RadarValue
         )
         .filter((a: RadarValue) => a.value !== undefined && a.value !== null && !!a.key);
     }
@@ -587,7 +584,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
     if (!!attr) {
       this.optionsCopy.selectedVariables[index].name = attr.name;
       this.optionsCopy.selectedVariables[index].label = attr.name;
-      const field = this.fields.find((field) => field.id === attr.field)?.type ?? FieldType.STRING;
+      const field = this.fields.find((field) => field.id === attr.field.id)?.type ?? FieldType.STRING;
       this.optionsCopy.selectedVariables[index].type = this.translateToVegaType(field, attr.name);
       this.optionsCopy.selectedVariables[index].axisOptions = this.minTick(field);
       this.optionsCopy.title =

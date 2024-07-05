@@ -204,7 +204,7 @@
                             </p>
                           }
                           @if (!['metadata', 'oClass'].includes(column.property)) {
-                            <pry-expand-value [value]="item | getValue: column.property | async"></pry-expand-value>
+                            <pry-expand-value [value]="item | getValue: column.property | async" [field]="column.field"></pry-expand-value>
                           }
                         </td>
                       }

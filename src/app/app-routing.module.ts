@@ -104,7 +104,7 @@ const routes: Routes = [
             type: 'table',
             layout: { x: 1, y: 1, height: 10, width: 12 },
             options: {},
-            datasource: ['06406e7e-37cd-41ce-b5fc-36d233e5ae5c']
+            datasource: ['17b90da3-f448-4cc3-bfd8-74c8b8481590']
           }
         ]
       } as DashboardManifest
@@ -155,6 +155,22 @@ const routes: Routes = [
             layout: { x: 1, y: 1, height: 12, width: 12 },
             options: { layout: 'simple' },
             datasource: '39061554-298f-4f56-8cd2-51ccec998307'
+          }
+        ]
+      } as DashboardManifest
+    }
+  },
+  {
+    path: 'detail',
+    component: DashboardContainerComponent,
+    data: {
+      manifest: {
+        widgets: [
+          {
+            type: 'detail',
+            layout: { x: 1, y: 1, height: 12, width: 12 },
+            options: { layout: 'simple' },
+            datasource: '17b90da3-f448-4cc3-bfd8-74c8b8481590'
           }
         ]
       } as DashboardManifest

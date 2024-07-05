@@ -356,7 +356,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
     this.autoDatasetLayers$ = combineLatest([
       this.classes$,
-      this.fields$,
       this.usedDatasources$.pipe(
         startWith([]),
         map(
@@ -366,23 +365,23 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       )
     ]).pipe(
       map(
-        ([classes, fields, dataSets]) =>
+        ([classes, dataSets]) =>
           dataSets
             .map((ds) => {
               const model = classes.find((clazz) => clazz.id === ds.oClass);
-              const geoAttributes = (
-                model?.attributes.map((attr) => ({ attr, field: fields.find((f) => attr.field === f.id) })) ?? []
-              ).filter(({ attr, field }) => !!field && GeometricFieldTypes.includes(field.type));
+              const geoAttributes = (model?.attributes.map((attr) => attr) ?? []).filter((attr) =>
+                GeometricFieldTypes.includes(attr.field.type)
+              );
               return geoAttributes.map(
-                (geo) =>
+                (attr) =>
                   ({
                     type: 'auto',
-                    title: `${ds.name}${geoAttributes.length > 1 ? ' - ' + geo.attr.name : ''}`,
+                    title: `${ds.name}${geoAttributes.length > 1 ? ' - ' + attr.name : ''}`,
                     oClass: ds.oClass,
                     key: ds.id,
-                    subType: geo.field!.type,
+                    subType: attr.field!.type,
                     classes: [ds.oClass],
-                    attribute: geo.attr.technicalName,
+                    attribute: attr.technicalName,
                     group: DEFAULT_LAYER_GROUP
                   }) as MapAutoLayerOptions
               );
@@ -900,12 +899,11 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.fitExtents$ = combineLatest([
       this.options$,
       this.classes$,
-      this.fields$,
       this.datasourceFilters$,
       this.wmsCapabilities$
     ]).pipe(
       debounceTime(100),
-      switchMap(([options, classes, fields, filters, wmsCapabilities]) =>
+      switchMap(([options, classes, filters, wmsCapabilities]) =>
         (options.layers ?? []).find((layer) => ['geoserver', 'wms'].includes(layer.type) && layer.fit)
           ? combineLatest([
               ...((options.layers?.filter((layer) => layer.type === 'geoserver') ?? []) as MapGeoServerLayerOptions[])
@@ -914,9 +912,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                   (
                     classes.find((clazz) => clazz.id === layer.oClass) ?? ({ attributes: [] } as unknown as Class)
                   ).attributes
-                    .map((attr) => ({ attr, field: fields.find((field) => field.id === attr.field) }))
-                    .filter(({ attr, field }) => GeometricFieldTypes.includes(field?.type ?? '----'))
-                    .map(({ attr, field }) =>
+                    .filter((attr) => GeometricFieldTypes.includes(attr.field.type))
+                    .map((attr) =>
                       this.pryAggregationService
                         .aggregate([layer.datasourceId], {
                           ordinate: { operation: Operation.EXTENT, attribute: attr.id, label: attr.name, keep0: false }
@@ -924,7 +921,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
                         .pipe(
                           map((extentResponse: AggregationResult) =>
                             WidgetMapUtils.projectExtentAggregationResponse(
-                              field!,
+                              attr.field!,
                               extentResponse,
                               layer,
                               wmsCapabilities,

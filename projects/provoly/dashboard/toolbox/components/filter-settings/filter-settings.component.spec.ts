@@ -1,4 +1,4 @@
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { Overlay } from '@angular/cdk/overlay';
 import { Injector, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -242,7 +242,7 @@ describe('FilterSettingsComponent', () => {
             customId: 'intensity@fakeid',
             label: 'intensity / ds-name',
             technicalName: 'intensity',
-            type: 'keyword'
+            type: 'string'
           },
           {
             datasource: 'fakeid',

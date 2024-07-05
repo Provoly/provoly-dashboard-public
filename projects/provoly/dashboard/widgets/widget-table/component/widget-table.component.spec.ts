@@ -83,7 +83,7 @@ describe('WidgetTableComponent', () => {
                 },
                 {
                   id: 'c',
-                  attributes: [{ id: '3', field: 'f2', name: 'field-name-3', technicalName: 'field-name-3' }]
+                  attributes: [{ id: '3', field: 'f3', name: 'field-name-3', technicalName: 'field-name-3' }]
                 },
                 { id: 'd', attributes: [{ id: '4', field: 'f2', name: 'field-name-4', technicalName: 'field-name-4' }] }
               ]
@@ -186,9 +186,9 @@ describe('WidgetTableComponent', () => {
     expect(component.columns$).toBeObservable(
       hot('a', {
         a: [
-          { attributeId: '1', label: 'field-name-1', property: 'field-name-1' },
-          { attributeId: '2', label: 'field-name-2', property: 'field-name-2' },
-          { attributeId: '3', label: 'field-name-3', property: 'field-name-3' }
+          { attributeId: '1', field: 'f1', label: 'field-name-1', property: 'field-name-1' },
+          { attributeId: '2', field: 'f2', label: 'field-name-2', property: 'field-name-2' },
+          { attributeId: '3', field: 'f3', label: 'field-name-3', property: 'field-name-3' }
         ]
       })
     );

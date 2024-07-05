@@ -74,7 +74,7 @@ export class TooltipFactoryService {
   }
 
   generateTooltip(
-    type: string,
+    type: string, // class id
     parentInjector: Injector,
     container: ViewContainerRef
   ): Observable<ComponentRef<BaseTooltipComponent> | null> {

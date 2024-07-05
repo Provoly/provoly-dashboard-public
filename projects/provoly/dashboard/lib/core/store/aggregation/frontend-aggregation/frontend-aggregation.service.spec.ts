@@ -54,10 +54,10 @@ const classes = [
   {
     id: 'a',
     attributes: [
-      { id: '1', field: 'f1', name: '1' },
-      { id: '2', field: 'f2', name: '2' },
-      { id: '3', field: 'f3', name: '3' },
-      { id: '4', field: 'f4', name: '4' }
+      { id: '1', field: { name: 'f1', id: 'f1' }, name: '1' },
+      { id: '2', field: { name: 'f2', id: 'f2' }, name: '2' },
+      { id: '3', field: { name: 'f3', id: 'f3' }, name: '3' },
+      { id: '4', field: { name: 'f4', id: 'f4' }, name: '4' }
     ]
   }
 ] as Class[];

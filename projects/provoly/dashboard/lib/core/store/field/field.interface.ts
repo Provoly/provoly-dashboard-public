@@ -1,5 +1,3 @@
-import { MetadataValue } from '../../model/admin-api.model';
-
 export enum FieldType {
   STRING = 'string',
   KEYWORD = 'keyword',
@@ -17,17 +15,18 @@ export enum FieldType {
   GEOMETRYCOLLECTION = 'GeometryCollection'
 }
 
-export interface Field {
+export interface FormatOptions {
+  format?: string;
+  decimalPrecision?: number;
+  unit?: string;
+  isLocaleFormat?: boolean;
+}
+
+export interface Field extends FormatOptions {
   id: string;
   name: string;
   type: FieldType;
   crs?: string;
-
-  // formatting options
-  format?: string; // date format
-  decimalPrecision?: number;
-  unit?: string;
-  isLocaleFormat?: boolean;
 }
 
 export const GeometricFieldTypes = [

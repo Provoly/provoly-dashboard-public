@@ -42,9 +42,7 @@ export class AttributeConditionComponent {
     );
     this.field$ = this.attribute$.pipe(
       filter((attr): attr is Attribute => attr !== undefined),
-      switchMap((attr) => {
-        return this.store.select(FieldSelectors.fieldById(attr.field));
-      })
+      map((attr) => attr.field)
     );
 
     this.operatorOptions$ = this.field$.pipe(

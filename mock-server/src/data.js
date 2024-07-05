@@ -30,7 +30,11 @@ let shareConflict = JSON.parse(fs.readFileSync('./data/shareConflict.json', 'utf
 const getClasses = () =>
   classes.map((oClass) => ({
     ...oClass,
-    attributes: oClass.attributes.map((attr) => ({ ...attr, technicalName: attr.technicalName ?? attr.name }))
+    attributes: oClass.attributes.map((attr) => ({
+      ...attr,
+      technicalName: attr.technicalName ?? attr.name,
+      field: fields.find(f => f.id === attr.field)
+    }))
   }));
 
 Object.keys(queryResponses).forEach((key) => {

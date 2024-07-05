@@ -135,7 +135,7 @@ export class SearchMonoClassService {
       };
     } else {
       const id = masterId ?? uuidV4();
-      const field = this.getFieldFromAttribute(cond?.attribute, classes, fields);
+      const field = this.getFieldFromAttribute(cond?.attribute, classes);
       const condition: NormalizedCondition = field
         ? {
             id,
@@ -181,13 +181,12 @@ export class SearchMonoClassService {
     }
   }
 
-  private getFieldFromAttribute(attributeId: string | undefined, classes: Class[], fields: Field[]): Field | undefined {
+  private getFieldFromAttribute(attributeId: string | undefined, classes: Class[]): Field | undefined {
     if (!attributeId) {
       return undefined;
     }
-    const attribute = classes
+    return classes
       .reduce((acc, clazz) => [...acc, ...clazz.attributes], [] as Attribute[])
-      .find((a) => a.id === attributeId);
-    return fields.find((f) => f.id === attribute?.field);
+      .find((a) => a.id === attributeId)?.field;
   }
 }

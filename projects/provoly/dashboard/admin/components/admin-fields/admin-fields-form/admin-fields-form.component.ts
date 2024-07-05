@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, Optional } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -17,7 +17,7 @@ import { v4 as uuid } from 'uuid';
 import { noWhitespaceValidator } from '../../../components/admin.component';
 import { AdminActions } from '../../../store/admin.actions';
 import { FieldsActions } from '../store/fields.actions';
-import { dateFormatOptions, DEFAULT_DATE_FORMAT } from '@provoly/dashboard/components/data-format';
+import { dateFormatOptions } from '@provoly/dashboard/components/data-format';
 
 export const CRS_OPTIONS = [
   { label: 'WGS84 (EPSG:4326)', code: 'EPSG:4326' },
@@ -51,7 +51,6 @@ export class AdminFieldsFormComponent extends SubscriptionnerDirective implement
   nameAlreadyExists$?: Observable<boolean>;
 
   dateFormats = Object.keys(dateFormatOptions.value);
-  defaultDateFormat = Object.keys(dateFormatOptions.value);
 
   goBackPath: string;
   goBackPathEdit: string;
@@ -216,7 +215,7 @@ export class AdminFieldsFormComponent extends SubscriptionnerDirective implement
         this.formatOptions?.removeControl('isLocaleFormat');
         this.formatOptions?.removeControl('unit');
         this.formatOptions?.removeControl('decimalPrecision');
-        this.formatOptions?.setControl('dateFormat', new FormControl(DEFAULT_DATE_FORMAT.value));
+        this.formatOptions?.setControl('dateFormat', new FormControl(null));
         break;
       default:
         this.form.removeControl('formatOptions');

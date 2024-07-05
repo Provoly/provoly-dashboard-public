@@ -103,16 +103,17 @@ export class AdminClassesViewComponent implements OnInit, OnDestroy {
   }
 
   private getAttrExtended() {
-    return combineLatest([this.attributes$, this.fields$, this.categories$]).pipe(
-      filter(([attributes, fields, categories]) => fields.length > 0 && categories.length > 0),
-      map(([attributes, fields, categories]) => {
+    return combineLatest([this.attributes$, this.categories$]).pipe(
+      filter(([attributes, categories]) => categories.length > 0),
+      map(([attributes, categories]) => {
         return attributes.map(
           (attr: Attribute) =>
             ({
               ...attr,
-              fieldName: fields.find((field) => field.id === attr.field)?.name || this.i18n.instant('@pry.admin.attributes.unknownField'),
-              categoryName: attr.category ?
-                categories.find((category) => category.id === attr.category)?.name ?? this.i18n.instant('@pry.admin.attributes.unknownCategory')
+              fieldName: attr.field.name,
+              categoryName: attr.category
+                ? categories.find((category) => category.id === attr.category)?.name ??
+                  this.i18n.instant('@pry.admin.attributes.unknownCategory')
                 : this.i18n.instant('@pry.admin.attributes.noCategory')
             }) as AttributeExtended
         );

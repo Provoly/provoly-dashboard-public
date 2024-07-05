@@ -45,7 +45,10 @@ export class PrySearchOrderComponent implements AfterViewInit {
     this.hover = false;
   }
 
-  constructor(private store: Store<any>, private translateService: PryI18nService) {
+  constructor(
+    private store: Store<any>,
+    private translateService: PryI18nService
+  ) {
     this.masterId$ = this.store.select(SearchMonoClassSelectors.selectMonoClassConditionsMasterId);
     this.monoClassId$ = this.store.select(SearchMonoClassSelectors.selectMonoClassIdSearch);
     this.order$ = this.store.select(SearchMonoClassSelectors.order);
@@ -54,8 +57,7 @@ export class PrySearchOrderComponent implements AfterViewInit {
 
     this.variableAttributes$ = combineLatest([this.monoClassId$, this.classes$]).pipe(
       map(([classId, classes]) => classes.find((clazz) => clazz.id === classId)?.attributes ?? []),
-      withLatestFrom(this.fields$),
-      map(([attrs, fields]) => attrs.filter((attr) => fields.find((f) => f.id === attr.field)?.type !== FieldType.RAW)),
+      map((attrs) => attrs.filter((attr) => attr.field.type !== FieldType.RAW)),
       map((attrs) =>
         attrs.concat({
           name: this.translateService.instant('@pry.search.composed.orderNone'),

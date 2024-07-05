@@ -325,13 +325,13 @@ export const enTranslations = {
           dateFormat: 'Date format',
           noDateFormat: 'No date format provided',
           dateFormatOptions: {
-            datetime: 'Date and time',
-            date: 'Date',
-            monthyear: 'Month and year',
-            daymonth: 'Day and month',
-            year: 'Year',
-            month: 'Month',
-            day: 'Day'
+            DATETIME: 'Date and time',
+            DATE: 'Date',
+            MONTH_YEAR: 'Month and year',
+            DAY_MONTH: 'Day and month',
+            YEAR: 'Year',
+            MONTH: 'Month',
+            DAY: 'Day'
           }
         }
       },

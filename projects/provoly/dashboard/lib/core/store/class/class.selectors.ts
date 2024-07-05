@@ -25,7 +25,7 @@ const classByAttributeId = (attribute: string) =>
 
 const attributesByFieldId = (field: string) =>
   createSelector(classes, (classes: Class[]) =>
-    classes.map((c) => c.attributes.filter((a) => a.field === field)).reduce((acc, attrs) => [...acc, ...attrs], [])
+    classes.map((c) => c.attributes.filter((a) => a.field.id === field)).reduce((acc, attrs) => [...acc, ...attrs], [])
   );
 
 const allAttributes = createSelector(classes, (state) => state?.flatMap((c) => c.attributes));

@@ -45,6 +45,7 @@ import embed, { vega } from 'vega-embed';
 import { mergeDeep, TopLevelSpec } from 'vega-lite';
 import { initConfig } from 'vega-lite/build/src/config';
 import { PrySchemeService } from '@provoly/dashboard/components/scheme-picker';
+import { toD3Format } from '@provoly/dashboard/components/data-format';
 
 export const CHART_INTERVAL_STEP = 3;
 
@@ -62,9 +63,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   fields$: Observable<Field[]>;
   classes$: Observable<Class[]>;
   attributeTypes$: Observable<{
-    ordinate: { vegaType: VegaType; fieldType: any; name: string };
-    abscissa: { vegaType: VegaType; fieldType: any; name: string };
-    groupBy: { vegaType?: VegaType; fieldType?: any; name: string };
+    ordinate: { vegaType: VegaType; field?: Field; name: string };
+    abscissa: { vegaType: VegaType; field?: Field; name: string };
+    groupBy: { vegaType?: VegaType; field?: Field; name: string };
   }>;
   aggregatedValues$: Observable<{ data: any; operation: any }>;
   WIDGET_HEADER_HEIGHT = WIDGET_HEADER_HEIGHT;
@@ -127,18 +128,24 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     this.fields$ = this.store.select(FieldSelectors.fields);
     this.classes$ = this.store.select(ClassSelectors.classes);
 
+    const usedAttributes$ = combineLatest([this.usedDatasources$, this.classes$]).pipe(
+      map(([datasources, classes]) => {
+        const usedClasses = datasources
+          .filter((ds) => ds.sourceType === 'dataset')
+          // @ts-ignore
+          .map((ds: Dataset) => ds.oClass);
+
+        return this.classes.filter((c) => usedClasses.includes(c.id));
+      })
+    );
+
     this.operations$ = combineLatest([this.usedDatasources$, this.classes$, this.fields$]).pipe(
       map(([datasources, classes, fields]) =>
         classes
           .filter((clazz) => datasources.map((ds) => ('oClass' in ds ? ds.oClass : undefined)).includes(clazz.id))
           .map((clazz) => clazz.attributes)
           .map((attrs) =>
-            attrs.filter((attr) => {
-              const field = fields.find((field) => {
-                return field.id === attr.field;
-              });
-              return !!field && [FieldType.INTEGER, FieldType.DECIMAL, FieldType.LONG].includes(field.type);
-            })
+            attrs.filter((attr) => [FieldType.INTEGER, FieldType.DECIMAL, FieldType.LONG].includes(attr.field.type))
           )
           .reduce((a, b) => [...a, ...b], [])
           .filter((attr) => !!attr)
@@ -201,7 +208,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           .map((attrs) =>
             attrs.filter((attr) => {
               const field = fields.find((field) => {
-                return field.id === attr.field;
+                return field.id === attr.field.id;
               });
               return (
                 !!field &&
@@ -226,7 +233,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           .map((attrs) =>
             attrs.filter((attr) => {
               const field = fields.find((field) => {
-                return field.id === attr.field;
+                return field.id === attr.field.id;
               });
               if (
                 this.optionsCopy$.value &&
@@ -277,26 +284,23 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
         const groupBy = classes
           .map((clazz) => clazz.attributes.find((attr) => attr.id === options?.groupBy?.attribute))
           .find((attr) => !!attr);
-        const abscissaFieldType = fields.find((field) => field.id === abscissa?.field)?.type ?? FieldType.STRING;
-        const ordinateFieldType = fields.find((field) => field.id === ordinate?.field)?.type ?? FieldType.STRING;
-        const groupByFieldType = fields.find((field) => field.id === groupBy?.field)?.type ?? FieldType.STRING;
         return {
           abscissa: {
-            fieldType: abscissaFieldType,
-            vegaType: this.translateToVegaType(abscissaFieldType, abscissa?.name ?? ''),
+            field: abscissa?.field,
+            vegaType: this.translateToVegaType(abscissa?.field.type, abscissa?.name ?? ''),
             name: abscissa?.name ?? ''
           },
           ordinate: {
-            fieldType: ordinateFieldType,
+            fieldType: ordinate?.field,
             vegaType:
               options!.ordinate.operation === Operation.COUNT || options!.ordinate.operation === Operation.DISTINCT
                 ? VegaType.QUANTITATIVE
-                : this.translateToVegaType(ordinateFieldType, ordinate?.name ?? ''),
+                : this.translateToVegaType(abscissa?.field.type, ordinate?.name ?? ''),
             name: ordinate?.name ?? ''
           },
           groupBy: {
-            fieldType: groupByFieldType,
-            vegaType: this.translateToVegaType(groupByFieldType, groupBy?.name),
+            field: groupBy?.field,
+            vegaType: this.translateToVegaType(groupBy?.field.type, groupBy?.name),
             name: groupBy?.name ?? ''
           }
         };
@@ -404,18 +408,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                         bin: options.graph.type.indexOf('histogram') >= 0,
                         ...this.getTimeUnit(options, types.abscissa.vegaType),
                         axis: {
-                          //format: types.abscissa.vegaType === VegaType.TEMPORAL ? '%Y-%B-%dT%H:%M:%S' : undefined,
                           grid: false,
-                          ...WidgetAggregatedChartComponent.minTick(types.abscissa.fieldType),
-                          labelExpr: `height < 300 ? ${
-                            types.abscissa.vegaType === VegaType.TEMPORAL
-                              ? "timeFormat(datum.value, '%Y-%B-%dT%H:%M:%S')"
-                              : 'truncate(datum.value, 10)'
-                          } : ${
-                            types.abscissa.vegaType === VegaType.TEMPORAL
-                              ? "timeFormat(datum.value, '%Y-%B-%dT%H:%M:%S')"
-                              : 'datum.value'
-                          }`,
+                          ...WidgetAggregatedChartComponent.minTick(types.abscissa.field?.type ?? FieldType.STRING),
+                          labelExpr: this.getAxisFormat(types.abscissa.vegaType, types.abscissa.field),
                           ...this.getLabelAngle(types.abscissa.vegaType, values.data)
                         },
                         scale: {
@@ -432,7 +427,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                         title: options.ordinate.label,
                         type: types.ordinate.vegaType,
                         axis: {
-                          ...WidgetAggregatedChartComponent.minTick(types.ordinate.fieldType),
+                          ...WidgetAggregatedChartComponent.minTick(types.ordinate.field?.type ?? FieldType.STRING),
                           ...this.setTickCount(values.data)
                         },
                         scale: {
@@ -469,11 +464,14 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                             field: 'key',
                             type: types.abscissa.vegaType,
                             title: options.abscissa.label,
-                            ...(types.abscissa.vegaType === 'temporal'
-                              ? { format: '%Y-%B-%dT%H:%M:%S', scale: { type: 'utc' } }
-                              : {})
+                            ...this.getDataFormat(types.abscissa.vegaType, types.abscissa.field)
                           },
-                          { field: 'value', type: types.ordinate.vegaType, title: options.ordinate.label },
+                          {
+                            field: 'value',
+                            type: types.ordinate.vegaType,
+                            title: options.ordinate.label,
+                            ...this.getDataFormat(types.ordinate.vegaType, types.ordinate.field)
+                          },
                           {
                             field: 'series',
                             title: legendTitle,
@@ -485,11 +483,14 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                             field: 'key',
                             type: types.abscissa.vegaType,
                             title: options.abscissa.label,
-                            ...(types.abscissa.vegaType === 'temporal'
-                              ? { format: '%Y-%B-%dT%H:%M:%S', scale: { type: 'utc' } }
-                              : {})
+                            ...this.getDataFormat(types.abscissa.vegaType, types.abscissa.field)
                           },
-                          { field: 'value', type: types.ordinate.vegaType, title: options.ordinate.label }
+                          {
+                            field: 'value',
+                            type: types.ordinate.vegaType,
+                            title: options.ordinate.label,
+                            ...this.getDataFormat(types.ordinate.vegaType, types.ordinate.field)
+                          }
                         ]
                     : undefined
                 }
@@ -752,7 +753,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
         abscissa: { ...this.optionsCopy$.value?.abscissa, label: attr?.name ?? 'attr-not-found' }
       });
 
-      this.copyAbscissaField = this.fields.find((field) => attr?.field === field.id);
+      this.copyAbscissaField = this.fields.find((field) => attr?.field.id === field.id);
 
       this.enableIntervals(!!this.optionsCopy$.value?.abscissa.interval);
     }
@@ -782,7 +783,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
         ordinate: { ...this.optionsCopy$.value?.ordinate, label: attr?.name ?? 'attr-not-found' }
       });
 
-      this.copyOrdinateField = this.fields.find((field) => attr?.field === field.id);
+      this.copyOrdinateField = this.fields.find((field) => attr?.field.id === field.id);
     }
   }
 
@@ -1053,5 +1054,28 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
 
   isTimeInterval(abscissaInterval: string | number) {
     return typeof abscissaInterval === 'string';
+  }
+
+  getAxisFormat(axisType: string, field?: Field) {
+    const timeFormat = `timeFormat(datum.value, '${toD3Format(field?.format)}')`;
+    const numberFormat = `.${field?.decimalPrecision ?? 2}d`;
+    const truncatedFormat = 'truncate(datum.value, 10)';
+
+    return `height < 300 ? ${
+      axisType === VegaType.TEMPORAL ? timeFormat : axisType === VegaType.QUANTITATIVE ? numberFormat : truncatedFormat
+    } : ${
+      axisType === VegaType.TEMPORAL ? timeFormat : axisType === VegaType.QUANTITATIVE ? numberFormat : 'datum.value'
+    }`;
+  }
+
+  getDataFormat(axisType: string, field?: Field) {
+    switch (axisType) {
+      case VegaType.TEMPORAL:
+        return { format: toD3Format(field?.format), scale: { type: 'utc' } };
+      case VegaType.QUANTITATIVE:
+        return { format: `.${field?.decimalPrecision ?? 2}d` };
+      default:
+        return {};
+    }
   }
 }

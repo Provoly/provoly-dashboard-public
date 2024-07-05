@@ -1,3 +1,5 @@
+import { Field } from '../store/field/field.interface';
+
 export interface TableWidgetOptions {
   columns?: ColumnDefinition[];
   style?: TableWidgetStyle | any;
@@ -8,6 +10,7 @@ export interface ColumnDefinition {
   type?: string;
   property: string;
   attributeId?: string;
+  field?: Field
 }
 
 export interface TableWidgetStyle {

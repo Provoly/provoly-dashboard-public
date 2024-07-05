@@ -41,30 +41,6 @@ const rs = {
   relations: []
 } as ResultSet;
 
-const classes = [
-  {
-    id: 'aaa',
-    name: 'a',
-    attributes: [
-      { id: 'loc', name: 'loc', technicalName: 'loc', field: 'loc-xxxx' },
-      { id: 'lat', name: 'lat', technicalName: 'lat', field: 'lat-xxxx' },
-      { id: 'lng', name: 'lng', technicalName: 'lng', field: 'lng-xxxx' },
-      { id: 'intensity', name: 'intensity', technicalName: 'intensity', field: 'intensity-xxxx' }
-    ]
-  },
-  {
-    id: 'geoClass',
-    name: 'geoClassName',
-    attributes: [
-      { id: 'loc', name: 'loc', technicalName: 'loc', field: 'loc-xxxx' },
-      { id: 'lat', name: 'lat', technicalName: 'lat', field: 'lat-xxxx' },
-      { id: 'lng', name: 'lng', technicalName: 'lng', field: 'lng-xxxx' },
-      { id: 'zone', name: 'zone', technicalName: 'zone', field: 'zone' },
-      { id: 'intensity', name: 'intensity', technicalName: 'intensity', field: 'intensity-xxxx' }
-    ]
-  }
-] as Class[];
-
 const fields = [
   { id: 'loc-xxxx', type: FieldType.POINT },
   { id: 'lat-xxxx', type: 'decimal' },
@@ -75,6 +51,30 @@ const fields = [
     type: 'decimal'
   }
 ] as Field[];
+
+const classes = [
+  {
+    id: 'aaa',
+    name: 'a',
+    attributes: [
+      { id: 'loc', name: 'loc', technicalName: 'loc', field: fields[0] },
+      { id: 'lat', name: 'lat', technicalName: 'lat', field: fields[1] },
+      { id: 'lng', name: 'lng', technicalName: 'lng', field: fields[2] },
+      { id: 'intensity', name: 'intensity', technicalName: 'intensity', field: fields[4] }
+    ]
+  },
+  {
+    id: 'geoClass',
+    name: 'geoClassName',
+    attributes: [
+      { id: 'loc', name: 'loc', technicalName: 'loc', field: fields[0] },
+      { id: 'lat', name: 'lat', technicalName: 'lat', field: fields[1] },
+      { id: 'lng', name: 'lng', technicalName: 'lng', field: fields[2] },
+      { id: 'zone', name: 'zone', technicalName: 'zone', field: fields[3] },
+      { id: 'intensity', name: 'intensity', technicalName: 'intensity', field: fields[4] }
+    ]
+  }
+] as Class[];
 
 export const mapUtilsData = {
   rs,
@@ -213,7 +213,7 @@ describe('WidgetMapUtils functions', () => {
         id: 'sxxx',
         name: 'location',
         technicalName: 'location',
-        field: 'b',
+        field: { id: 'b', type: FieldType.POINT, name: 'geo' },
         multiValued: true
       });
       expect(geometry).toBeDefined();

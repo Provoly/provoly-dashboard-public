@@ -28,7 +28,7 @@ describe('AdminFieldsComponent', () => {
                   attributes: [
                     {
                       id: 'attr1',
-                      field: 'field1'
+                      field: { id: 'field1', name: 'field1' }
                     }
                   ]
                 } as Class

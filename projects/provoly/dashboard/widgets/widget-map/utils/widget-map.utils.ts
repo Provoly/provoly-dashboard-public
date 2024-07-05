@@ -55,19 +55,14 @@ export class WidgetMapUtils {
 
         const geometry = WidgetMapUtils.geometryForLayer(layer);
 
-        let candidates = [] as {
-          attr: Attribute;
-          field: Field | undefined;
-        }[];
+        let candidates: Attribute[] = [];
         if (Object.keys(resultSet.items).length > 0) {
           // Based on items that we have to display
 
           candidates = Object.keys(resultSet.items)
             .map((key) => ({ items: resultSet.items[key], oClass: classes.find((cl) => cl.id === key) }))
             .map(({ items, oClass }) =>
-              (oClass ?? { attributes: [] }).attributes
-                .map((attr) => ({ attr, field: fields.find((f) => f.id === attr.field) }))
-                .filter((attr) => attr.field?.type === geometry)
+              (oClass ?? { attributes: [] }).attributes.filter((attr) => attr.field?.type === geometry)
             )
             .reduce((p, c) => [...p, ...c], []);
         } else {
@@ -75,12 +70,11 @@ export class WidgetMapUtils {
           candidates = classesNotFiltered
             .map((clazz) => clazz.attributes)
             .flat()
-            .map((attr) => ({ attr, field: fields.find((field) => field.id === attr.field) }))
-            .filter(({ attr, field }) => field?.type === geometry);
+            .filter((attr) => attr.field.type === geometry);
         }
 
         if (candidates.length > 0) {
-          specificLayer.attribute = candidates[0].attr.technicalName;
+          specificLayer.attribute = candidates[0].technicalName;
         }
       }
     }
@@ -112,14 +106,13 @@ export class WidgetMapUtils {
           .map((key) => ({ items: resultSet.items[key], oClass: classes.find((cl) => cl.id === key) }))
           .map(({ items, oClass }) => {
             return (oClass ?? { attributes: [] }).attributes
-              .map((attr) => ({ attr, field: fields.find((f) => f.id === attr.field) }))
               .filter((attr) => attr.field?.type === FieldType.DECIMAL || attr.field?.type === FieldType.INTEGER)
               .map((attr) => {
-                const attrValues = ItemUtils.pertinentValue(items, attr.attr);
+                const attrValues = ItemUtils.pertinentValue(items, attr);
                 return {
                   min: Math.min(...attrValues),
                   max: Math.max(...attrValues),
-                  technicalName: attr.attr.technicalName
+                  technicalName: attr.technicalName
                 };
               });
           })

@@ -7,8 +7,4 @@ export interface AnalyticWidgetOptions {
     prop: string;
     colors: string[];
   };
-  // @TODO remove later when field formatting is implemented
-  format?: {
-    suffix?: string;
-  };
 }

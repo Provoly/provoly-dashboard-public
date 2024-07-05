@@ -1,21 +1,34 @@
 import { CqlUtils } from '@provoly/dashboard/widgets/widget-map';
 import { Class, Field, FieldType } from '@provoly/dashboard';
 
+export const fields: Field[] = [
+  { id: 'attr-field', name: 'fAttr', type: FieldType.STRING },
+  { id: 'other-field', name: 'fOther', type: FieldType.INTEGER }
+];
+
 export const classes: Class[] = [
   {
     id: 'aaa',
     name: 'a',
     attributes: [
-      { id: 'attribute', name: 'attribute', technicalName: 'attribute', field: 'attr-field', multiValued: false },
-      { id: 'other', name: 'other', technicalName: 'other', field: 'other-field', multiValued: false }
+      {
+        id: 'attribute',
+        name: 'attribute',
+        technicalName: 'attribute',
+        field: fields[0],
+        multiValued: false
+      },
+      {
+        id: 'other',
+        name: 'other',
+        technicalName: 'other',
+        field: fields[1],
+        multiValued: false
+      }
     ]
   }
 ];
 
-export const fields: Field[] = [
-  { id: 'attr-field', name: 'fAttr', type: FieldType.STRING },
-  { id: 'other-field', name: 'fOther', type: FieldType.INTEGER }
-];
 describe('CqlUtils', () => {
   describe('getConditionsForValue', () => {
     it('should translate EQUALS condition', () => {

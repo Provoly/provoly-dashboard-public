@@ -20,6 +20,7 @@ import { WidgetTileComponent } from './component/widget-tile.component';
 import { enTranslations } from './i18n/en.translations';
 import { frTranslations } from './i18n/fr.translations';
 import { PryWidgetTileCssComponent } from './style/css.component';
+import { PryDataFormatModule } from '@provoly/dashboard/components/data-format';
 
 @NgModule({
   declarations: [WidgetTileComponent, PryWidgetTileCssComponent],
@@ -35,7 +36,8 @@ import { PryWidgetTileCssComponent } from './style/css.component';
     PryToggleModule,
     WidgetDetailModule,
     WidgetMapModule,
-    PryI18nModule
+    PryI18nModule,
+    PryDataFormatModule
   ],
   exports: [WidgetTileComponent]
 })

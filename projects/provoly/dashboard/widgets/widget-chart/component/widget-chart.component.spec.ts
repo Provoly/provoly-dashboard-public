@@ -27,6 +27,13 @@ import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 import { WidgetChartComponent } from './widget-chart.component';
 import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
+const fields = [
+  { id: 'f1', name: 'field-name-1', type: 'string' },
+  { id: 'f2', name: 'field-name-2', type: 'string' },
+  { id: 'f3', name: 'field-name-3', type: 'integer' },
+  { id: 'f4', name: 'field-name-4', type: 'instant' }
+];
+
 describe('WidgetChartComponent', () => {
   let component: WidgetChartComponent;
   let fixture: ComponentFixture<WidgetChartComponent>;
@@ -65,29 +72,24 @@ describe('WidgetChartComponent', () => {
             },
             {
               selector: FieldSelectors.fields,
-              value: [
-                { id: 'f1', name: 'field-name-1', type: 'string' },
-                { id: 'f2', name: 'field-name-2', type: 'string' },
-                { id: 'f3', name: 'field-name-3', type: 'integer' },
-                { id: 'f4', name: 'field-name-4', type: 'instant' }
-              ]
+              value: fields
             },
             {
               selector: ClassSelectors.classes,
               value: [
                 {
                   id: 'a',
-                  attributes: [{ id: '1', field: 'f1', name: 'field-name-1', technicalName: 'field-name-1' }]
+                  attributes: [{ id: '1', field: fields[0], name: 'attr-1', technicalName: 'attr-1' }]
                 },
                 {
                   id: 'b',
-                  attributes: [{ id: '2', field: 'f2', name: 'field-name-2', technicalName: 'field-name-2' }]
+                  attributes: [{ id: '2', field: fields[1], name: 'attr-2', technicalName: 'attr-2' }]
                 },
                 {
                   id: 'c',
-                  attributes: [{ id: '3', field: 'f3', name: 'field-name-3', technicalName: 'field-name-3' }]
+                  attributes: [{ id: '3', field: fields[2], name: 'attr-3', technicalName: 'attr-3' }]
                 },
-                { id: 'd', attributes: [{ id: '4', field: 'f4', name: 'field-name-4', technicalName: 'field-name-4' }] }
+                { id: 'd', attributes: [{ id: '4', field: fields[3], name: 'attr-4', technicalName: 'attr-4' }] }
               ]
             },
             {
@@ -217,7 +219,7 @@ describe('WidgetChartComponent', () => {
       ],
       tooltip: true,
       legend: true,
-      title: 'field-name-1, field-name-2',
+      title: 'attr-1, attr-2',
       locale: 'fr'
     };
 
@@ -270,7 +272,7 @@ describe('WidgetChartComponent', () => {
           type: 'quantitative'
         }
       ],
-      title: 'field-name-1, field-name-2',
+      title: 'attr-1, attr-2',
       legend: true,
       tooltip: true,
       locale: 'fr'
@@ -340,7 +342,7 @@ describe('WidgetChartComponent', () => {
       mockVariablesWidgetCharts[1],
       mockVariablesWidgetCharts[6]
     ]);
-    expect(component.optionsCopy.title).toEqual('field-name-1, field-name-2');
+    expect(component.optionsCopy.title).toEqual('attr-1, attr-2');
   });
 
   it('should change the chart title', () => {
@@ -488,7 +490,7 @@ describe('WidgetChartComponent', () => {
           }
         ],
         tooltip: true,
-        title: 'field-name-1, field-name-2',
+        title: 'attr-1, attr-2',
         locale: 'fr'
       };
 

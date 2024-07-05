@@ -92,8 +92,8 @@
                   class="o-properties__list__item"
                 >
                   <p class="o-properties__list__item__label" *ngIf="i === 0">{{ property.name }}:</p>
-                  <p class="o-properties__list__item__value" *ngIf="!isRaw(property)">{{ value?.value }}</p>
-                  <p class="o-properties__list__item__raw" *ngIf="isRaw(property)">
+                  <p class="o-properties__list__item__value" *ngIf="!isRaw(property.attribute)">{{ value?.value }}</p>
+                  <p class="o-properties__list__item__raw" *ngIf="isRaw(property.attribute)">
                     <pry-vizualize-raw [item]="couple.item" [propertyName]="property.name"></pry-vizualize-raw>
                   </p>
                   <ng-container *ngIf="hasMetadata(value)">

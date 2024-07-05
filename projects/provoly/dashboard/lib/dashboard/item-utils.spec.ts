@@ -37,7 +37,7 @@ describe('ItemUtils functions', () => {
           id: 'sxxx',
           name: 'string',
           technicalName: 'string',
-          field: 'a',
+          field: { id: 'a', name: 'a', type: FieldType.STRING },
           multiValued: false
         })
       ).toEqual('a');
@@ -46,7 +46,7 @@ describe('ItemUtils functions', () => {
           id: 'sxxx',
           name: 'integer',
           technicalName: 'integer',
-          field: 'b',
+          field: { id: 'b', name: 'b', type: FieldType.STRING },
           multiValued: false
         })
       ).toEqual(5);
@@ -57,7 +57,7 @@ describe('ItemUtils functions', () => {
           id: 'sxxx',
           name: 'string',
           technicalName: 'string',
-          field: 'a',
+          field: { id: 'a', name: 'a', type: FieldType.STRING },
           multiValued: false
         })
       ).toEqual('a');
@@ -66,7 +66,7 @@ describe('ItemUtils functions', () => {
           id: 'sxxx',
           name: 'multi',
           technicalName: 'multi',
-          field: 'b',
+          field: { id: 'b', name: 'b', type: FieldType.STRING },
           multiValued: true
         })
       ).toEqual([44.6, -0.89]);

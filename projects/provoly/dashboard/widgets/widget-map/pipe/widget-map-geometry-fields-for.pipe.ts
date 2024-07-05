@@ -54,10 +54,7 @@ export class GeometryFieldsForPipe implements PipeTransform {
           .map((oClassId) => classes.find((cl) => cl.id === oClassId) ?? { attributes: [] as Attribute[] })
           .map((oClass) => oClass.attributes)
           .reduce((prev, curr) => [...prev, ...curr], [])
-          .filter((attr) => {
-            const attrField = fields.find((f) => f.id === attr.field);
-            return !!attrField && attrField.type === type;
-          })
+          .filter((attr) => attr.field.type === type)
           .sort((a, b) => a.technicalName.localeCompare(b.technicalName));
 
         const resArr = [] as Attribute[];

@@ -81,7 +81,7 @@
               >
                 <p class="o-properties__list__item__label" *ngIf="i === 0">{{ property.label }}:</p>
                 <p class="o-properties__list__item__value" *ngIf="!isRaw(property.label, item.oClass)">
-                  {{ value?.value }}
+                  {{ value?.value | dataFormat: property.field }}
                 </p>
                 <p class="o-properties__list__item__raw" *ngIf="isRaw(property.label, item.oClass)">
                   <pry-vizualize-raw [item]="item" [propertyName]="property.label"></pry-vizualize-raw>

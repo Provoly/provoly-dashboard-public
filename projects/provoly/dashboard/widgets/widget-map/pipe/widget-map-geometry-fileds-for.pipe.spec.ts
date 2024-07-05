@@ -1,5 +1,5 @@
 import { Store } from '@ngrx/store';
-import { Class, Field, FieldSelectors } from '@provoly/dashboard';
+import { Class, Field, FieldSelectors, FieldType } from '@provoly/dashboard';
 import { hot } from 'jest-marbles';
 import { BehaviorSubject, of } from 'rxjs';
 import { mapUtilsData } from '../utils/widget-map.utils.spec';
@@ -21,7 +21,7 @@ describe('WidgetMapGeometryFieldsForPipe', () => {
       pipe.transform({ type: 'bubble', attribute: '' }, { resultSet: of({ items: { aaa: [] }, relations: [] }) })
     ).toBeObservable(
       hot('a', {
-        a: [{ field: 'loc-xxxx', id: 'loc', name: 'loc', technicalName: 'loc' }]
+        a: [{ field: { id: 'loc-xxxx', type: FieldType.POINT }, id: 'loc', name: 'loc', technicalName: 'loc' }]
       })
     );
   });

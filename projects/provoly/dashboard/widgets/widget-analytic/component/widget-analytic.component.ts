@@ -6,6 +6,7 @@ import {
   Class,
   ClassSelectors,
   DataWidgetComponent,
+  Field,
   Item,
   ResultSet,
   WIDGET_HEADER_HEIGHT
@@ -35,6 +36,7 @@ export class WidgetAnalyticComponent extends DataWidgetComponent {
   height$: Observable<number>;
   classes$: Observable<Class[]>;
   availableProperties$: Observable<Attribute[]>;
+  valuePropField$: Observable<Field | undefined>;
 
   change($event: string, prop: 'primaryProp' | 'secondaryProp' | 'valueProp' | 'verticalProp') {
     this.optionsCopy[prop] = $event;
@@ -51,10 +53,6 @@ export class WidgetAnalyticComponent extends DataWidgetComponent {
         break;
       }
     }
-  }
-
-  changeFormat($event: string, prop = 'suffix') {
-    this.optionsCopy.format!.suffix = $event;
   }
 
   constructor(store: Store<any>, el: ElementRef) {
@@ -141,6 +139,11 @@ export class WidgetAnalyticComponent extends DataWidgetComponent {
           .filter((cl) => !!cl) as Class[];
         return presentClasses.map((cl) => cl.attributes).flat();
       })
+    );
+
+    this.valuePropField$ = combineLatest([this.availableProperties$, this.options$]).pipe(
+      map(([attributes, options]) =>
+        attributes.find((attr) => attr.technicalName === options.valueProp)?.field)
     );
   }
 
@@ -236,16 +239,6 @@ export class WidgetAnalyticComponent extends DataWidgetComponent {
         this.optionsCopy.colorConfig = { prop: '', colors: [] };
       } else {
         this.optionsCopy.colorConfig = undefined;
-      }
-    }
-  }
-
-  toggleFormat($event: boolean) {
-    if ($event !== !!this.optionsCopy.format) {
-      if (!this.optionsCopy.format) {
-        this.optionsCopy.format = { suffix: '' };
-      } else {
-        this.optionsCopy.format = undefined;
       }
     }
   }
