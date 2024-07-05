@@ -77,7 +77,7 @@ describe('FieldsEffects', () => {
       });
 
       const expected$ = hot('--a-', {
-        a: FieldsActions.saveFieldFailure({ error: new Error('error') })
+        a: FieldsActions.failure({ error: new Error('error') })
       });
       expect(effects.saveField$).toBeObservable(expected$);
       expect(effects.saveField$).toSatisfyOnFlush(() => {

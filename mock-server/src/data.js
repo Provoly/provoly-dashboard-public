@@ -285,8 +285,13 @@ const getFields = () => {
   return fields;
 };
 
-const putFields = (field) => {
+const postFields = (field) => {
   return fields.push(field);
+};
+
+const putFields = (field) => {
+  const fieldIndex = fields.findIndex((f) => f.id === field.id);
+  fields.splice(fieldIndex, 1, field);
 };
 
 const generateDatasetVersions = () => {
@@ -385,6 +390,7 @@ module.exports = {
   },
   fields: {
     get: getFields,
+    post: postFields,
     put: putFields,
     delete: deleteField
   },

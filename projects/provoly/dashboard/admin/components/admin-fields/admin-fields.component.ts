@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { ClassActions, ClassSelectors, Field, FIELD_OPTIONS, FieldActions, FieldSelectors } from '@provoly/dashboard';
+import { ClassActions, ClassSelectors, Field, FIELD_I18N, FieldActions, FieldSelectors } from '@provoly/dashboard';
 import { map, Observable, of, switchMap, zip } from 'rxjs';
 import { AdminActions } from '../../store/admin.actions';
 import { FieldExtended } from './store/admin-fields.model';
@@ -19,7 +19,11 @@ export class AdminFieldsComponent {
   sortDirection? = 'asc';
   currentFieldId$: Observable<string | undefined>;
 
-  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private store: Store<any>,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.store.dispatch(ClassActions.load());
     this.store.dispatch(FieldActions.load());
     this.store.dispatch(FieldsActions.unselectField());
@@ -30,7 +34,7 @@ export class AdminFieldsComponent {
         zip(fields.map((field) => zip(of(field), this.store.select(ClassSelectors.attributesByFieldId(field.id)))))
       ),
       map((superFields) =>
-        superFields.map(([field, attributes]) => ({ ...field, attributes: attributes?.length ?? 0 } as FieldExtended))
+        superFields.map(([field, attributes]) => ({ ...field, attributes: attributes?.length ?? 0 }) as FieldExtended)
       )
     );
     const path = this.router.createUrlTree(['.', 'new'], { relativeTo: this.route });
@@ -56,7 +60,5 @@ export class AdminFieldsComponent {
     this.store.dispatch(AdminActions.fetchFieldAssociations({ id: field.id }));
   }
 
-  getTranslationType(type: string) {
-    return FIELD_OPTIONS.find((el) => el.varType === type)?.translation || 'undefined';
-  }
+  protected readonly FIELD_I18N = FIELD_I18N;
 }

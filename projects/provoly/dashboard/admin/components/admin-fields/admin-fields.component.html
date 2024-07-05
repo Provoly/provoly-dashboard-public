@@ -44,7 +44,7 @@
           </button>
         </td>
         <td>{{ field.name }}</td>
-        <td>{{ getTranslationType(field.type) | i18n }}</td>
+        <td>{{ FIELD_I18N.label + field.type | i18n }}</td>
         <td>{{ field.attributes }}</td>
       </tr>
     </tbody>

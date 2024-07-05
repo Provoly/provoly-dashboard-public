@@ -47,10 +47,12 @@
         ></pry-select>
       </div>
       <div class="m-form-label-field">
-        <pry-checkbox formControlName="normalizeGeo">{{ '@pry.import.normalize' | i18n }}</pry-checkbox>
+        <pry-checkbox formControlName="normalizeGeo" inputId="normalizeGeo">{{
+          '@pry.import.normalize' | i18n
+        }}</pry-checkbox>
       </div>
       <div class="m-form-label-field">
-        <label class="a-h3">{{ '@pry.dataset.version.productionDate' | i18n }}</label>
+        <label class="a-h3" for="productionDate">{{ '@pry.dataset.version.productionDate' | i18n }}</label>
         <input
           formControlName="productionDate"
           id="productionDate"
@@ -70,7 +72,7 @@
         }
       </div>
       <div class="m-form-label-field">
-        <label class="a-h3">{{ '@pry.dataset.version.producer' | i18n }}</label>
+        <label class="a-h3" for="producer">{{ '@pry.dataset.version.producer' | i18n }}</label>
         <input formControlName="producer" id="producer" class="a-form-field" type="text" maxlength="100" />
         @if (producer.touched && producer.invalid) {
           <label id="producer-error" for="producer" class="a-label a-label--help -error">
@@ -81,8 +83,8 @@
         }
       </div>
       <div class="m-form-label-field">
-        <label class="a-h3">{{ '@pry.dataset.version.additionalInformation' | i18n }}</label>
-        <pry-text-editor formControlName="additionalInformation"></pry-text-editor>
+        <label class="a-h3" for="additionalInformation">{{ '@pry.dataset.version.additionalInformation' | i18n }}</label>
+        <pry-text-editor formControlName="additionalInformation" id="additionalInformation"></pry-text-editor>
       </div>
       <div class="o-import__actions u-display-flex -justify-center">
         <button class="a-btn a-btn--primary" [disabled]="form.invalid">

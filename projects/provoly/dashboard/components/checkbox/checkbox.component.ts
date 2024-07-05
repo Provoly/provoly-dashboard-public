@@ -15,11 +15,13 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class PryCheckboxComponent implements ControlValueAccessor, AfterViewInit {
   @Input() circle = true;
+  @Input() name = '';
+  @Input() inputId = '';
+  @Input() inhibit = true;
   onChange: any = () => {};
   onTouch: any = () => {};
   checked = false;
   disabled = false;
-  inhibate = true;
 
   constructor(private _cd: ChangeDetectorRef) {}
 
@@ -33,7 +35,7 @@ export class PryCheckboxComponent implements ControlValueAccessor, AfterViewInit
 
   // Define what should happen in this component, if something changes outside
   writeValue(checked: boolean) {
-    if (this.checked !== checked && !this.inhibate) {
+    if (this.checked !== checked && !this.inhibit) {
       this.checked = checked;
       this.onChange(this.checked);
       this.onTouch();
@@ -47,6 +49,6 @@ export class PryCheckboxComponent implements ControlValueAccessor, AfterViewInit
   }
 
   ngAfterViewInit(): void {
-    this.inhibate = false;
+    this.inhibit = false;
   }
 }

@@ -1,138 +1,250 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit, Optional } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
+  FIELD_I18N,
   Field,
-  FIELD_OPTIONS,
   FieldActions,
   FieldSelectors,
+  FieldType,
   GeometricFieldTypes,
-  PryI18nService
+  PryI18nService,
+  SubscriptionnerDirective
 } from '@provoly/dashboard';
-import { combineLatest, map, Observable, startWith, Subscription } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import { noWhitespaceValidator } from '../../../components/admin.component';
 import { AdminActions } from '../../../store/admin.actions';
 import { FieldsActions } from '../store/fields.actions';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { dateFormatOptions, DEFAULT_DATE_FORMAT } from '@provoly/dashboard/components/data-format';
 
 export const CRS_OPTIONS = [
   { label: 'WGS84 (EPSG:4326)', code: 'EPSG:4326' },
   { label: 'Lambert93 (EPSG: 2154)', code: 'EPSG:2154' }
 ];
 
+interface FieldForm {
+  name: FormControl<string>;
+  type: FormControl<FieldType>;
+  crs?: FormControl<string | undefined>;
+  formatOptions?: FormGroup<FormatOptionsForm>;
+}
+
+interface FormatOptionsForm {
+  isLocaleFormat?: FormControl<boolean | null>;
+  unit?: FormControl<string | null>;
+  decimalPrecision?: FormControl<number | null>;
+  dateFormat?: FormControl<string | null>;
+}
+
 @Component({
   selector: 'pry-admin-fields-form',
   templateUrl: './admin-fields-form.component.html'
 })
-export class AdminFieldsFormComponent implements OnInit, OnDestroy {
-  fieldNames$?: Observable<string[]>;
-  nameAlreadyExists$?: Observable<boolean>;
-  sub = new Subscription();
+export class AdminFieldsFormComponent extends SubscriptionnerDirective implements OnInit, OnDestroy {
+  @Input() currentField?: Field;
 
-  fieldForm: UntypedFormGroup;
+  form: FormGroup<FieldForm>;
+  fieldTypes: FieldType[];
+  fieldNames$: Observable<string[]>;
+  nameAlreadyExists$?: Observable<boolean>;
+
+  dateFormats = Object.keys(dateFormatOptions.value);
+  defaultDateFormat = Object.keys(dateFormatOptions.value);
+
   goBackPath: string;
   goBackPathEdit: string;
-  isSubmitted = false;
-  fieldTypeTranslations: { [key: string]: string }[] = [];
-  selectedFieldTypeDescription$?: Observable<string>;
-  @Input() currentField?: Field;
 
   constructor(
     private store: Store<any>,
     private router: Router,
     private route: ActivatedRoute,
-    private formBuilder: UntypedFormBuilder,
-    private i18nService: PryI18nService
+    private i18n: PryI18nService
   ) {
-    this.fieldTypeTranslations = FIELD_OPTIONS.map((translate) => ({
-      varType: translate.varType,
-      translation: this.i18nService.instant(translate.translation),
-      description: this.i18nService.instant(translate.description)
-    }));
-    this.fieldTypeTranslations.sort((a, b) => a['translation'].localeCompare(b['translation']));
+    super();
     this.store.dispatch(FieldActions.load());
-    this.goBackPath = this.router.createUrlTree(['..'], { relativeTo: this.route }).toString();
-    this.goBackPathEdit = this.router.createUrlTree(['../..'], { relativeTo: this.route }).toString();
-    this.fieldForm = this.formBuilder.group({
-      id: [uuid()],
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100), noWhitespaceValidator]],
-      type: [this.fieldTypeTranslations[0]['varType']]
-    });
-  }
 
-  ngOnInit(): void {
     this.fieldNames$ = this.store
       .select(FieldSelectors.fields)
-      .pipe(map((fields: Field[]) => fields.map((field: Field) => field.name.toLowerCase())));
+      .pipe(map((fields) => fields.map((field) => field.name.toLowerCase())));
 
-    this.nameAlreadyExists$ = combineLatest([
-      this.fieldForm.get('name')?.valueChanges as Observable<string>,
-      this.fieldNames$
-    ]).pipe(map(([value, fieldNames]) => fieldNames.includes(value.toLowerCase()) && value != this.currentField?.name));
-    this.sub.add(
+    this.fieldTypes = Object.values(FieldType)
+      .filter((type) => type !== FieldType.GEOMETRYCOLLECTION)
+      .sort((a, b) => {
+        const [labelA, labelB] = [this.i18n.instant(FIELD_I18N.label + a), this.i18n.instant(FIELD_I18N.label + b)];
+        return labelA.localeCompare(labelB);
+      });
+
+    this.form = new FormGroup<FieldForm>({
+      name: new FormControl('', {
+        validators: [Validators.required, Validators.minLength(3), Validators.maxLength(100), noWhitespaceValidator],
+        nonNullable: true
+      }),
+      type: new FormControl(this.fieldTypes[0], { nonNullable: true }),
+      formatOptions: new FormGroup({})
+    });
+
+    this.subscriptions.add(this.type?.valueChanges.subscribe((type) => this.setFormatOptionControls(type)));
+    this.form.patchValue({ type: this.fieldTypes[0] });
+
+    this.nameAlreadyExists$ = combineLatest([this.name!.valueChanges, this.fieldNames$]).pipe(
+      map(([value, fieldNames]) => fieldNames.includes(value.toLowerCase()) && value != this.currentField?.name)
+    );
+    this.subscriptions.add(
       this.nameAlreadyExists$.subscribe((value) => {
         if (value) {
-          this.fieldForm.controls['name'].setErrors({ 'same-name': true });
+          this.name?.setErrors({ 'same-name': true });
         }
         return value;
       })
     );
 
+    this.goBackPath = this.router.createUrlTree(['..'], { relativeTo: this.route }).toString();
+    this.goBackPathEdit = this.router.createUrlTree(['../..'], { relativeTo: this.route }).toString();
+  }
+
+  ngOnInit(): void {
     if (this.currentField) {
-      this.fieldForm.patchValue({
-        id: this.currentField.id,
+      this.form.patchValue({
         name: this.currentField.name,
         type: this.currentField.type
       });
-      this.fieldForm.controls['type'].disable();
+      this.type!.disable();
       if (this.isGeographicType) {
-        this.fieldForm.addControl('crs', new FormControl(this.currentField.crs, [Validators.required]));
-        this.fieldForm.controls['crs'].disable();
+        this.form.addControl<'crs'>(
+          'crs',
+          new FormControl(this.currentField.crs, { validators: [Validators.required], nonNullable: true })
+        );
+        this.crs?.disable();
       }
+      this.setFormatOptionValues();
     }
-
-    this.selectedFieldTypeDescription$ = this.fieldForm.get('type')?.valueChanges.pipe(
-      startWith(this.currentField?.type ?? this.fieldTypeTranslations[0]['varType']),
-      distinctUntilChanged(),
-      map(
-        (selectedType: string) =>
-          this.fieldTypeTranslations.find((translation) => translation['varType'] === selectedType)?.['description'] ??
-          ''
-      )
+    this.subscriptions.add(
+      this.type!.valueChanges.subscribe((type) => {
+        if (this.isGeographicType) {
+          this.form.addControl(
+            'crs',
+            new FormControl(CRS_OPTIONS[0].code, { validators: [Validators.required], nonNullable: true })
+          );
+        } else {
+          this.form.removeControl('crs');
+        }
+      })
     );
-
-    this.fieldForm.get('type')!.valueChanges.subscribe((type) => {
-      if (this.isGeographicType) {
-        this.fieldForm.addControl('crs', new FormControl(CRS_OPTIONS[0].code, [Validators.required]));
-      } else {
-        this.fieldForm.removeControl('crs');
-      }
-    });
   }
 
-  get isGeographicType() {
-    return GeometricFieldTypes.includes(this.fieldForm.get('type')?.value);
+  get name(): AbstractControl<string> | null {
+    return this.form.get('name');
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
+  get type(): AbstractControl<FieldType> | null {
+    return this.form.get('type');
+  }
+
+  get crs(): AbstractControl<string | undefined> | null {
+    return this.form.get('crs');
+  }
+
+  get formatOptions(): FormGroup<FormatOptionsForm> | null {
+    return this.form.get('formatOptions') as FormGroup<FormatOptionsForm>;
+  }
+
+  get isGeographicType(): boolean {
+    return GeometricFieldTypes.includes(this.type?.value as string);
   }
 
   goBack() {
     this.store.dispatch(AdminActions.routeTo({ path: this.getPath(), params: undefined }));
   }
 
-  addField() {
-    this.fieldForm.patchValue({
-      name: this.fieldForm.value.name.trim()
+  getFormValue() {
+    return {
+      name: this.name!.value,
+      type: this.type!.value,
+      crs: this.crs?.value,
+      unit: this.formatOptions?.value.unit ?? undefined,
+      decimalPrecision: this.formatOptions?.value.decimalPrecision ?? undefined,
+      isLocaleFormat: this.formatOptions?.value.isLocaleFormat ?? undefined,
+      format: this.formatOptions?.value.dateFormat ?? undefined
+    };
+  }
+
+  submit() {
+    this.form.patchValue({
+      name: this.name?.value?.trim()
     });
-    this.isSubmitted = true;
-    if (this.fieldForm.valid) {
-      this.isSubmitted = false;
-      let fieldToSave = this.fieldForm.getRawValue() as Field;
-      this.store.dispatch(FieldsActions.saveField({ field: fieldToSave, route: this.getPath() }));
+    if (this.form.valid) {
+      this.currentField ? this.updateField() : this.saveField();
+    }
+  }
+
+  saveField() {
+    this.store.dispatch(
+      FieldsActions.saveField({
+        field: { id: uuid(), ...this.getFormValue() },
+        route: this.getPath()
+      })
+    );
+  }
+
+  updateField() {
+    this.store.dispatch(
+      FieldsActions.updateField({
+        field: { id: this.currentField!.id, ...this.getFormValue() },
+        route: this.getPath()
+      })
+    );
+  }
+
+  setFormatOptionControls(type: FieldType | null) {
+    switch (type) {
+      case FieldType.INTEGER:
+      case FieldType.LONG:
+        this.formatOptions?.addControl('isLocaleFormat', new FormControl(true));
+        this.formatOptions?.setControl('unit', new FormControl(null));
+        this.formatOptions?.removeControl('decimalPrecision');
+        this.formatOptions?.removeControl('dateFormat');
+        break;
+      case FieldType.DECIMAL:
+        this.formatOptions?.addControl('isLocaleFormat', new FormControl(true));
+        this.formatOptions?.setControl('unit', new FormControl(null));
+        this.formatOptions?.setControl('decimalPrecision', new FormControl(2));
+        this.formatOptions?.removeControl('dateFormat');
+        break;
+      case FieldType.INSTANT:
+        this.formatOptions?.removeControl('isLocaleFormat');
+        this.formatOptions?.removeControl('unit');
+        this.formatOptions?.removeControl('decimalPrecision');
+        this.formatOptions?.setControl('dateFormat', new FormControl(DEFAULT_DATE_FORMAT.value));
+        break;
+      default:
+        this.form.removeControl('formatOptions');
+        break;
+    }
+  }
+
+  setFormatOptionValues() {
+    switch (this.currentField?.type) {
+      case FieldType.INTEGER:
+      case FieldType.LONG:
+        this.formatOptions?.patchValue({
+          isLocaleFormat: this.currentField?.isLocaleFormat,
+          unit: this.currentField?.unit
+        });
+        break;
+      case FieldType.DECIMAL:
+        this.formatOptions?.patchValue({
+          isLocaleFormat: this.currentField?.isLocaleFormat,
+          unit: this.currentField?.unit,
+          decimalPrecision: this.currentField?.decimalPrecision
+        });
+        break;
+      case FieldType.INSTANT:
+        this.formatOptions?.patchValue({ dateFormat: this.currentField?.format });
+        break;
+      default:
+        break;
     }
   }
 
@@ -141,4 +253,6 @@ export class AdminFieldsFormComponent implements OnInit, OnDestroy {
   }
 
   protected readonly CRS_OPTIONS = CRS_OPTIONS;
+  protected readonly FieldType = FieldType;
+  protected readonly FIELD_I18N = FIELD_I18N;
 }

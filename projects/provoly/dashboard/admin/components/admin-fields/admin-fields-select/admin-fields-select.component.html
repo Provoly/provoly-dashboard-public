@@ -21,16 +21,73 @@
   </pry-tab-group>
 
   <ng-template #fieldDetails>
-    <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
-    <p class="a-p">
-      {{ '@pry.admin.fields.name' | i18n }} :
-      <strong>{{ field.name }}</strong>
-    </p>
-    <p class="a-p">{{ '@pry.admin.fields.description' | i18n }} :</p>
-    <p class="a-p">
-      {{ '@pry.admin.fields.type' | i18n }} :
-      <strong>{{ getTranslationType(field.type) | i18n }}</strong>
-    </p>
+    <div class="u-display-flex -column -gap-20">
+      <div>
+        <h4 class="a-h4">{{ '@pry.admin.fields.name' | i18n }}</h4>
+        <span>{{ field.name }}</span>
+      </div>
+      <div>
+        <h4 class="a-h4">{{ '@pry.admin.fields.type' | i18n }}</h4>
+        <span>{{ FIELD_I18N.label + field.type | i18n }}</span>
+      </div>
+      @if ([FieldType.INTEGER, FieldType.LONG, FieldType.DECIMAL, FieldType.INSTANT].includes(field.type)) {
+        <div>
+          <h3 class="a-h3 -no-padding">{{ '@pry.admin.fields.formatOptions.title' | i18n }}</h3>
+          <div class="u-display-flex -column -gap-20">
+            @switch (field.type) {
+              @case (FieldType.INTEGER) {
+                <ng-container *ngTemplateOutlet="numberFormatOptions"></ng-container>
+              }
+              @case (FieldType.LONG) {
+                <ng-container *ngTemplateOutlet="numberFormatOptions"></ng-container>
+              }
+              @case (FieldType.DECIMAL) {
+                <ng-container *ngTemplateOutlet="numberFormatOptions"></ng-container>
+                <div>
+                  <h4 class="a-h4">{{ '@pry.admin.fields.formatOptions.decimalPrecision' | i18n }}</h4>
+                  @if (field.decimalPrecision) {
+                    <span>{{ field.decimalPrecision }}</span>
+                  } @else {
+                    <span class="-italic">{{ '@pry.admin.fields.formatOptions.noDecimalPrecision' | i18n }}</span>
+                  }
+                </div>
+              }
+              @case (FieldType.INSTANT) {
+                <div>
+                  <h4 class="a-h4">{{ '@pry.admin.fields.formatOptions.dateFormat' | i18n }}</h4>
+                  @if (field.format) {
+                    <span>{{ field.format }}</span>
+                  } @else {
+                    <span class="-italic">{{ '@pry.admin.fields.formatOptions.noDateFormat' | i18n }}</span>
+                  }
+                </div>
+              }
+            }
+          </div>
+        </div>
+      }
+      @if (field.crs) {
+        <div>
+          <h4 class="a-h4">{{ '@pry.admin.fields.crs' | i18n }}</h4>
+          <span>{{ field.crs }}</span>
+        </div>
+      }
+    </div>
+
+    <ng-template #numberFormatOptions>
+      <div>
+        <h4 class="a-h4">{{ '@pry.admin.fields.formatOptions.unit' | i18n }}</h4>
+        @if (field.unit) {
+          <span>{{ field.unit }}</span>
+        } @else {
+          <span class="-italic">{{ '@pry.admin.fields.formatOptions.noUnit' | i18n }}</span>
+        }
+      </div>
+      <div>
+        <h4 class="a-h4">{{ '@pry.admin.fields.formatOptions.isLocaleFormat' | i18n }}</h4>
+        <span>{{ (field.isLocaleFormat ? '@pry.action.yes' : '@pry.action.no') | i18n }}</span>
+      </div>
+    </ng-template>
   </ng-template>
 
   <ng-template #fieldAssociations>

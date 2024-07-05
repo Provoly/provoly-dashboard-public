@@ -19,6 +19,8 @@ export class MockPryCheckboxComponent {
   private _onTouched = () => {};
   _disabled = false;
   @Input() value: any;
+  @Input() inhibit: any;
+  @Input() inputId: any;
   @Output() valueChanged?: EventEmitter<any>;
 
   registerOnChange(fn: any): void {}

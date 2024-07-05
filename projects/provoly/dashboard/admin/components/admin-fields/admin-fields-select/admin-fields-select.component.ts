@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { concatLatestFrom } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Associations, ClassSelectors, Field, FIELD_OPTIONS } from '@provoly/dashboard';
+import { Associations, ClassSelectors, FIELD_I18N, Field, FieldType } from '@provoly/dashboard';
 import { combineLatest, map, Observable, Subscription } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { FieldsActions } from '../store/fields.actions';
@@ -20,7 +20,11 @@ export class AdminFieldsSelectComponent implements OnInit, OnDestroy {
   sub = new Subscription();
   attributes$: Observable<{ technicalName: string; classId: string }[]>;
 
-  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private store: Store<any>,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.currentField$ = this.store.select(FieldsSelectors.selectedField);
     this.associations$ = this.store.select(AdminSelectors.selectedAssociation);
     this.attributes$ = combineLatest([this.currentField$, store.select(ClassSelectors.classes)]).pipe(
@@ -72,10 +76,6 @@ export class AdminFieldsSelectComponent implements OnInit, OnDestroy {
     );
   }
 
-  getTranslationType(type: string) {
-    return FIELD_OPTIONS.find((el) => el.varType === type)?.translation || 'undefined';
-  }
-
   closePanel() {
     this.store.dispatch(FieldsActions.unselectField());
     this.store.dispatch(AdminActions.togglePanel({ panelOpen: false }));
@@ -99,4 +99,7 @@ export class AdminFieldsSelectComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
+
+  protected readonly FIELD_I18N = FIELD_I18N;
+  protected readonly FieldType = FieldType;
 }

@@ -2,7 +2,7 @@
   <div class="m-form-label-field -width-sm">
     <label class="a-label" for="attr_technicalName">{{ '@pry.admin.classes.attributes.technicalName' | i18n }}</label>
     <input id="attr_technicalName" type="text" class="a-form-field" formControlName="technicalName" required />
-    <label class="a-label a-label--help -error" *ngIf="technicalNameAlreadyExists$ | async">{{
+    <label class="a-label a-label--help -error" for="attr_technicalName" *ngIf="technicalNameAlreadyExists$ | async">{{
       '@pry.admin.exists' | i18n
     }}</label>
     <div *ngIf="attrForm.get('technicalName')?.invalid">
@@ -34,7 +34,7 @@
   <div class="m-form-label-field -width-sm">
     <label class="a-label" for="attr_name">{{ '@pry.admin.classes.attributes.name' | i18n }}</label>
     <input id="attr_name" type="text" class="a-form-field" formControlName="name" />
-    <label class="a-label a-label--help -error" *ngIf="nameAlreadyExists$ | async">{{
+    <label class="a-label a-label--help -error" for="attr_name" *ngIf="nameAlreadyExists$ | async">{{
       '@pry.admin.exists' | i18n
     }}</label>
     <div *ngIf="attrForm.get('name')?.invalid">
@@ -70,9 +70,8 @@
         </div>
       </ng-template>
       <div
-        *ngIf="selectedFieldTypeDescription$ | async as description"
-        class="m-info-icon a-tooltip -tooltip-width-lg u-self-center -flex-shrink-0"
-        [attr.data-tooltip]="description"
+        class="m-info-icon a-tooltip -tooltip-width-lg u-self-center u-flex-shrink-0"
+        [attr.data-tooltip]="(selectedFieldTypeDescription$ | async) ?? '' | i18n"
         data-tooltip-position="right"
       >
         <span>i</span>
@@ -80,7 +79,7 @@
     </div>
     <div *ngIf="attrForm.get('field')?.invalid">
       <div *ngIf="attrForm.get('field')?.dirty && attrForm.get('field')?.hasError('required')">
-        <label class="a-label a-label--help -error">{{ '@pry.admin.required' | i18n }}</label>
+        <label class="a-label a-label--help -error" for="type">{{ '@pry.admin.required' | i18n }}</label>
       </div>
     </div>
   </div>

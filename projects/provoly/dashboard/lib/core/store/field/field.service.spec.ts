@@ -55,8 +55,16 @@ describe('FieldService', () => {
   it('should save field', () => {
     service.saveField(mockField).subscribe();
 
-    const req = httpTestingController.expectOne('ref/model/field');
+    const req = httpTestingController.expectOne('ref/model/fields');
     expect(req.request.method).toEqual('POST');
+    req.flush({});
+  });
+
+  it('should update field', () => {
+    service.updateField(mockField).subscribe();
+
+    const req = httpTestingController.expectOne('ref/model/fields');
+    expect(req.request.method).toEqual('PUT');
     req.flush({});
   });
 

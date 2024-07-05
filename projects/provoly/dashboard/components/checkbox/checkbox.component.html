@@ -1,7 +1,9 @@
-<label class="a-checkbox" [class.a-checkbox--circle]="circle">
+<label class="a-checkbox" [class.a-checkbox--circle]="circle" [for]="inputId">
   <input
     class="a-checkbox__input"
     type="checkbox"
+    [id]="inputId"
+    [name]="name"
     [ngModel]="checked"
     (ngModelChange)="writeValue($event)"
     [disabled]="disabled"

@@ -278,21 +278,21 @@ export const frTranslations = {
         className: 'Classe',
         confirmFieldDeletion: 'Confirmez-vous la suppression de ce type métier ?',
         fieldType: {
-          int: 'Nombre entier',
+          integer: 'Nombre entier',
           long: 'Nombre entier long',
           decimal: 'Nombre décimal',
           string: 'Texte brut',
           keyword: 'Texte indexé',
           instant: 'Date',
           raw: 'Donnée non structurée',
-          point: 'Point',
-          multipoint: 'Multi-points',
-          line: 'Ligne',
-          multiline: 'Multi-lignes',
-          polygon: 'Polygone',
-          multipolygon: 'Multi-polygones',
+          Point: 'Point',
+          MultiPoint: 'Multi-points',
+          LineString: 'Ligne',
+          MultiLineString: 'Multi-lignes',
+          Polygon: 'Polygone',
+          MultiPolygon: 'Multi-polygones',
           information: {
-            int: 'Permet de stocker des données numériques entières inférieures à 2^32',
+            integer: 'Permet de stocker des données numériques entières inférieures à 2^32',
             long: 'Permet de stocker des données numériques entières pouvant dépasser 2^32',
             decimal: 'Permet de stocker des données numériques avec des décimales',
             string:
@@ -301,22 +301,42 @@ export const frTranslations = {
               'Permet de stocker des données au format alphanumérique. Ces données sont indexées : il est possible de faire une recherche dessus ainsi que des agrégations.',
             instant: 'Permet de stocker une date',
             raw: 'permet de stocker des données de type image ou fichier',
-            point:
+            Point:
               "Permet de stocker des coordonnées géographiques d'un objet représenté par un point (format géojson)",
-            multipoint:
+            MultiPoint:
               "Permet de stocker des coordonnées géographiques d'un objet composé de plusieurs points non reliés (format géojson)",
-            line: "Permet de stocker des coordonnées géographiques d'un objet représenté comme une ligne (format géojson)",
-            multiline:
+            LineString:
+              "Permet de stocker des coordonnées géographiques d'un objet représenté comme une ligne (format géojson)",
+            MultiLineString:
               "Permet de stocker des coordonnées géographiques d'un objet représenté avec plusieurs lignes non reliées entre elles (longitude et latitude format géojson)",
-            polygon:
+            Polygon:
               "Permet de stocker des coordonnées géographiques d'un objet représenté par un polygone (format géojson)",
-            multipolygon:
+            MultiPolygon:
               "Permet de stocker des coordonnées géographiques d'un objet représenté par plusieurs polygones imbriqués ou non (format géojson)"
           }
         },
         rawMethods: {
           http: 'Depuis une url',
           upload: 'Téléverser depuis mon ordinateur'
+        },
+        formatOptions: {
+          title: 'Options de formatage',
+          decimalPrecision: 'Nombre de décimales souhaité',
+          noDecimalPrecision: 'Pas de précision spécifiée',
+          isLocaleFormat: 'Formatage comme nombre',
+          unit: 'Unité',
+          noUnit: "Pas d'unité spécifiée",
+          dateFormat: 'Format de date',
+          noDateFormat: 'Pas de format de date specifié',
+          dateFormatOptions: {
+            datetime: 'Date et heure',
+            date: 'Date',
+            monthyear: 'Mois et année',
+            daymonth: 'Jour et mois',
+            year: 'Année',
+            month: 'Mois',
+            day: 'Jour'
+          }
         }
       },
       userInfo: {

@@ -258,7 +258,9 @@ export const frTranslations = {
       back: 'Retour',
       filterByType: 'Filtrer par type',
       editMetadata: 'Modifier la métadonnée',
-      addMetadata: 'Ajouter la métadonnée'
+      addMetadata: 'Ajouter la métadonnée',
+      yes: 'Oui',
+      no: 'Non'
     },
     snack: {
       default: 'Vega a rencontré une erreur en utilisant vos données et paramétrage.',

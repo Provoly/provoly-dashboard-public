@@ -275,21 +275,21 @@ export const enTranslations = {
         className: 'Class',
         confirmFieldDeletion: 'Confirm deleting the selected field',
         fieldType: {
-          int: 'Integer',
+          integer: 'Integer',
           long: 'Long number',
           decimal: 'Double number',
           string: 'Text',
           keyword: 'Keyword',
           instant: 'date',
           raw: 'Raw',
-          point: 'Point',
-          multipoint: 'Multi-points',
-          line: 'Line',
-          multiline: 'Multi-lines',
-          polygon: 'Polygon',
-          multipolygon: 'Multi-polygons',
+          Point: 'Point',
+          MultiPoint: 'Multi-points',
+          LineString: 'Line',
+          MultiLineString: 'Multi-lines',
+          Polygon: 'Polygon',
+          MultiPolygon: 'Multi-polygons',
           information: {
-            int: 'Allows you to store integer numeric data less than 2^32',
+            integer: 'Allows you to store integer numeric data less than 2^32',
             long: 'Allows you to store integer numeric data that can exceed 2^32',
             decimal: 'Allows you to store numeric data with decimal places',
             string:
@@ -298,21 +298,41 @@ export const enTranslations = {
               'Allows you to store data in alphanumeric format. This data is indexed: it is possible to search on it as well as aggregations.',
             instant: 'Allows you to store a date',
             raw: 'allows you to store image or file type data',
-            point: 'Allows you to store geographic coordinates of an object represented by a point (geo-json format)',
-            multipoint:
+            Point: 'Allows you to store geographic coordinates of an object represented by a point (geo-json format)',
+            MultiPoint:
               'Allows you to store geographic coordinates of an object composed of several unconnected points (geo-json format)',
-            line: 'Allows you to store geographic coordinates of an object represented as a line (geo-json format)',
-            multiline:
+            LineString:
+              'Allows you to store geographic coordinates of an object represented as a line (geo-json format)',
+            MultiLineString:
               'Allows you to store geographic coordinates of an object represented with several unconnected lines (longitude and latitude geo-json format)',
-            polygon:
+            Polygon:
               'Allows you to store geographic coordinates of an object represented by a polygon (geo-json format)',
-            multipolygon:
+            MultiPolygon:
               'Allows you to store geographic coordinates of an object represented by several polygons nested or not (geo-json format)'
           }
         },
         rawMethods: {
           http: 'From external url',
           upload: 'Upload from my computer'
+        },
+        formatOptions: {
+          title: 'Formatting options',
+          decimalPrecision: 'Decimal precision',
+          noDecimalPrecision: 'No decimal precision provided',
+          isLocaleFormat: 'Localized format',
+          unit: 'Unit',
+          noUnit: 'No unit provided',
+          dateFormat: 'Date format',
+          noDateFormat: 'No date format provided',
+          dateFormatOptions: {
+            datetime: 'Date and time',
+            date: 'Date',
+            monthyear: 'Month and year',
+            daymonth: 'Day and month',
+            year: 'Year',
+            month: 'Month',
+            day: 'Day'
+          }
         }
       },
       userInfo: {

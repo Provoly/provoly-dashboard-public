@@ -253,7 +253,9 @@ export const enTranslations = {
       back: 'Back',
       filterByType: 'Filter by type',
       editMetadata: 'Edit metadata',
-      addMetadata: 'Add metadata'
+      addMetadata: 'Add metadata',
+      yes: 'Yes',
+      no: 'No'
     },
     snack: {
       default: 'Vega encountered an error using your data and settings.',

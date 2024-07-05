@@ -171,7 +171,11 @@ router.on(['OPTIONS', 'DELETE'], '/ref/model/class/id/:id', (req, res, params) =
   makeResponseOk(res);
 });
 
-router.on(['OPTIONS', 'GET'], '/ref/model/fields', (req, res, params) => {
+router.on(['OPTIONS'], '/ref/model/fields', (req, res, params) => {
+  makeResponseOk(res);
+});
+
+router.on(['GET'], '/ref/model/fields', (req, res, params) => {
   makeResponseOk(res, dataModule.fields.get());
 });
 
@@ -179,21 +183,23 @@ router.on(['OPTIONS', 'GET'], '/ref/model/fields/:id/associations', (req, res, p
   makeResponseOk(res, dataModule.association.get(params.id));
 });
 
-router.on(['OPTIONS', 'POST'], '/ref/model/field', (req, res, params) => {
+router.on(['POST'], '/ref/model/fields', (req, res, params) => {
   readPayload(req).then((payload) => {
     if (payload) {
-      let fieldIndex = dataModule.fields.get().findIndex((obj) => obj.id === payload.id);
-      if (fieldIndex !== -1) {
-        dataModule.fields.get()[fieldIndex].id = payload.id;
-        dataModule.fields.get()[fieldIndex].name = payload.name;
-        dataModule.fields.get()[fieldIndex].type = payload.type;
-      } else {
-        JSON.stringify(dataModule.fields.put(payload));
-      }
+      dataModule.fields.post(payload);
       fs.writeFileSync('./data/fields.json', JSON.stringify(dataModule.fields.get(), null, 2));
     }
     makeResponseOk(res);
   });
+});
+
+router.on(['PUT'], '/ref/model/fields', (req, res, params) => {
+  readPayload(req).then((payload) => {
+    if (payload) {
+      dataModule.fields.put(payload);
+    }
+  });
+  makeResponseOk(res);
 });
 
 router.on(['OPTIONS', 'DELETE'], '/ref/model/fields/:id', (req, res, params) => {

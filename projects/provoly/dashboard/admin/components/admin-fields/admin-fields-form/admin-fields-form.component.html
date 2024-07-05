@@ -1,5 +1,5 @@
 <div>
-  <form class="o-form" [formGroup]="fieldForm" (ngSubmit)="addField()">
+  <form class="o-form" [formGroup]="form" (ngSubmit)="submit()">
     <div class="m-form-label-field -width-sm">
       <label id="name-label" for="field_name" class="a-label">
         {{ '@pry.admin.fields.name' | i18n }} *
@@ -10,48 +10,47 @@
         type="text"
         class="a-form-field"
         formControlName="name"
-        [attr.aria-labelledby]="isSubmitted && fieldForm.get('name')?.invalid ? 'name-label name-error' : 'name-label'"
-        [attr.aria-invalid]="isSubmitted && fieldForm.get('name')?.invalid"
-        required
+        [attr.aria-labelledby]="name?.dirty && name?.invalid ? 'name-label name-error' : 'name-label'"
+        [attr.aria-invalid]="name?.dirty && name?.invalid"
       />
-      <label
-        *ngIf="isSubmitted && fieldForm.get('name')?.invalid"
-        id="name-error"
-        for="field_name"
-        class="a-label a-label--help -error"
-      >
-        <span *ngIf="fieldForm.get('name')?.hasError('same-name')">{{ '@pry.admin.exists' | i18n }}</span>
-        <span *ngIf="fieldForm.get('name')?.hasError('required')">{{ '@pry.admin.required' | i18n }}</span>
-        <span *ngIf="fieldForm.get('name')?.hasError('minlength')">{{
-          '@pry.admin.minLength' | i18n : { len: 3 }
-        }}</span>
-        <span *ngIf="fieldForm.get('name')?.hasError('maxlength')">{{
-          '@pry.admin.maxLength' | i18n : { len: 100 }
-        }}</span>
-        <span *ngIf="fieldForm.get('name')?.hasError('whitespace') && !fieldForm.get('name')?.hasError('minlength')">{{
-          '@pry.admin.noWhitespace' | i18n
-        }}</span>
-      </label>
+      @if (name?.dirty && name?.invalid) {
+        <label id="name-error" for="field_name" class="a-label a-label--help -error">
+          @if (name?.hasError('same-name')) {
+            <span>{{ '@pry.admin.exists' | i18n }}</span>
+          }
+          @if (name?.hasError('required')) {
+            <span>{{ '@pry.admin.required' | i18n }}</span>
+          }
+          @if (name?.hasError('minlength')) {
+            <span>{{ '@pry.admin.minLength' | i18n: { len: 3 } }}</span>
+          }
+          @if (name?.hasError('maxlength')) {
+            <span>{{ '@pry.admin.maxLength' | i18n: { len: 100 } }}</span>
+          }
+          @if (name?.hasError('whitespace') && !name?.hasError('minlength')) {
+            <span>{{ '@pry.admin.noWhitespace' | i18n }}</span>
+          }
+        </label>
+      }
     </div>
 
     <div class="m-form-label-field -width-sm">
-      <label class="a-label">
+      <label class="a-label" for="field_type">
         {{ '@pry.admin.fields.type' | i18n }} *
         <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
       </label>
       <div class="u-display-flex">
         <pry-select
-          class="-width-sm"
+          id="field_type"
+          class="u-flex-grow-1"
           formControlName="type"
-          [items]="fieldTypeTranslations"
-          bindValue="varType"
-          bindLabel="translation"
+          [items]="fieldTypes"
+          [i18nPrefix]="FIELD_I18N.label"
           [isForm]="true"
         ></pry-select>
         <div
-          *ngIf="selectedFieldTypeDescription$ | async as description"
-          class="m-info-icon a-tooltip -tooltip-width-lg u-self-center -flex-shrink-0"
-          [attr.data-tooltip]="description"
+          class="m-info-icon a-tooltip -tooltip-width-lg u-self-center u-flex-shrink-0"
+          [attr.data-tooltip]="FIELD_I18N.information + this.type?.value | i18n"
           data-tooltip-position="right"
         >
           <span>i</span>
@@ -59,31 +58,82 @@
       </div>
     </div>
 
-    <div class="m-form-label-field -width-sm" *ngIf="isGeographicType">
-      <label class="a-label">
-        {{ '@pry.admin.fields.crs' | i18n }} *
-        <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
-      </label>
-      <div class="u-display-flex">
-        <pry-select
-          class="-width-sm"
-          formControlName="crs"
-          [items]="CRS_OPTIONS"
-          bindValue="code"
-          bindLabel="label"
-          [isForm]="true"
-          id="crs"
-        ></pry-select>
+    @if (isGeographicType) {
+      <div class="m-form-label-field -width-sm">
+        <label class="a-label" for="crs">
+          {{ '@pry.admin.fields.crs' | i18n }} *
+          <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+        </label>
+        <div class="u-display-flex">
+          <pry-select
+            class="-width-sm"
+            formControlName="crs"
+            [items]="CRS_OPTIONS"
+            bindValue="code"
+            bindLabel="label"
+            [isForm]="true"
+            id="crs"
+          ></pry-select>
+        </div>
+        @if (crs?.dirty && crs?.invalid) {
+          <label id="crs-error" for="crs" class="a-label a-label--help -error">
+            @if (crs?.hasError('required')) {
+              <span>{{ '@pry.admin.required' | i18n }}</span>
+            }
+          </label>
+        }
       </div>
-      <label
-        *ngIf="isSubmitted && fieldForm.get('crs') && fieldForm.get('crs')?.invalid"
-        id="crs-error"
-        for="crs"
-        class="a-label a-label--help -error"
-      >
-        <span *ngIf="fieldForm.get('name')?.hasError('required')">{{ '@pry.admin.required' | i18n }}</span>
-      </label>
-    </div>
+    }
+
+    @if (formatOptions) {
+      <div formGroupName="formatOptions">
+        <h3 class="a-h3">{{ '@pry.admin.fields.formatOptions.title' | i18n }}</h3>
+        @if (type?.value === FieldType.INTEGER || type?.value === FieldType.LONG || type?.value === FieldType.DECIMAL) {
+          <ng-container *ngTemplateOutlet="numberFormatOptions"></ng-container>
+        } @else if (type?.value === FieldType.INSTANT) {
+          <ng-container *ngTemplateOutlet="dateFormatOptions"></ng-container>
+        }
+
+        <ng-template #numberFormatOptions>
+          @if (type?.value === FieldType.DECIMAL) {
+            <div class="m-form-label-field -width-sm">
+              <label class="a-label" for="field_format_comma">{{
+                '@pry.admin.fields.formatOptions.decimalPrecision' | i18n
+              }}</label>
+              <input formControlName="decimalPrecision" id="field_format_comma" type="number" class="a-form-field" />
+            </div>
+          }
+          <div class="m-form-label-field -width-sm">
+            <pry-checkbox
+              formControlName="isLocaleFormat"
+              inputId="field_format_locale_number_format"
+              [inhibit]="false"
+            >
+              {{ '@pry.admin.fields.formatOptions.localeFormat' | i18n }}
+            </pry-checkbox>
+          </div>
+          <div class="m-form-label-field -width-sm">
+            <label class="a-label" for="field_format_unit">{{ '@pry.admin.fields.formatOptions.unit' | i18n }}</label>
+            <input formControlName="unit" id="field_format_unit" type="text" class="a-form-field" />
+          </div>
+        </ng-template>
+
+        <ng-template #dateFormatOptions>
+          <div class="m-form-label-field -width-sm">
+            <label class="a-label" for="field_format_date">{{
+              '@pry.admin.fields.formatOptions.dateFormat' | i18n
+            }}</label>
+            <pry-select
+              formControlName="dateFormat"
+              id="field_format_date"
+              [items]="dateFormats"
+              [isForm]="true"
+              i18nPrefix="@pry.admin.fields.formatOptions.dateFormatOptions."
+            ></pry-select>
+          </div>
+        </ng-template>
+      </div>
+    }
 
     <div class="m-btn-group -width-sm">
       <button

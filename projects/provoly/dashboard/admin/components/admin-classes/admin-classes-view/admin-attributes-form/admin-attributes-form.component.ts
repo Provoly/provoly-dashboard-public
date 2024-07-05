@@ -10,19 +10,20 @@ import {
   Class,
   DEFAULT_CATEGORY_UUID,
   Field,
-  FIELD_OPTIONS,
+  FIELD_I18N,
   FieldActions,
   FieldSelectors,
   PryDialogService,
   PryI18nService,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
-import { debounceTime, distinctUntilChanged, map, Observable, startWith, switchMap } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, startWith } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import { noWhitespaceValidator } from '../../../../components/admin.component';
 import { AdminActions } from '../../../../store/admin.actions';
 import { AdminClassActions } from '../../store/admin-class.actions';
 import { AddCategoryModalComponent } from '../../../shared/add-category-modal/add-category-modal.component';
+import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'pry-admin-attributes-form',
@@ -39,8 +40,7 @@ export class AdminAttributesFormComponent extends SubscriptionnerDirective imple
   technicalNameAlreadyExists = false;
 
   fields$: Observable<Field[]>;
-  selectedFieldTypeDescription$?: Observable<string | undefined>;
-  fieldTypeDescription = FIELD_OPTIONS;
+  selectedFieldTypeDescription$!: Observable<string>;
   categories$: Observable<Category[]>;
 
   @Input() selectedClass?: Class;
@@ -130,19 +130,14 @@ export class AdminAttributesFormComponent extends SubscriptionnerDirective imple
       );
     }
 
-    this.selectedFieldTypeDescription$ = this.attrForm.get('field')?.valueChanges.pipe(
-      startWith(this.attrForm.get('field')?.value),
-      distinctUntilChanged(),
-      switchMap((selectedFieldId) => {
-        return this.fields$.pipe(
-          map((fields) => {
-            const fieldDescription = this.fieldTypeDescription.find(
-              (fieldType) => fieldType.varType === fields.find((field) => field.id === selectedFieldId)?.type
-            );
-            return fieldDescription ? this.i18nService.instant(fieldDescription.description) : '';
-          })
-        );
-      })
+    this.selectedFieldTypeDescription$ = combineLatest([
+      this.attrForm.get('field')!.valueChanges.pipe(startWith(this.attrForm.get('field')?.value)),
+      this.fields$
+    ]).pipe(
+      map(
+        ([selectedFieldId, fields]) =>
+          FIELD_I18N.information + fields.find((field) => field.id === selectedFieldId)?.type
+      )
     );
   }
 
@@ -201,4 +196,6 @@ export class AdminAttributesFormComponent extends SubscriptionnerDirective imple
     );
     this.subscriptions.add(ref.component!.closeModal.subscribe(() => ref.close()));
   }
+
+  protected readonly FIELD_I18N = FIELD_I18N;
 }

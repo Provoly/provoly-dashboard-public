@@ -1,3 +1,5 @@
+import { MetadataValue } from '../../model/admin-api.model';
+
 export enum FieldType {
   STRING = 'string',
   KEYWORD = 'keyword',
@@ -12,9 +14,7 @@ export enum FieldType {
   MULTILINE = 'MultiLineString',
   POLYGON = 'Polygon',
   MULTIPOLYGON = 'MultiPolygon',
-  GEOMETRYCOLLECTION = 'GeometryCollection',
-  OCLASS = 'modèle de données',
-  DATASET = 'test'
+  GEOMETRYCOLLECTION = 'GeometryCollection'
 }
 
 export interface Field {
@@ -22,6 +22,12 @@ export interface Field {
   name: string;
   type: FieldType;
   crs?: string;
+
+  // formatting options
+  format?: string; // date format
+  decimalPrecision?: number;
+  unit?: string;
+  isLocaleFormat?: boolean;
 }
 
 export const GeometricFieldTypes = [
