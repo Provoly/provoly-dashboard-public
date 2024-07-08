@@ -108,7 +108,7 @@ export class WidgetVegaComponent extends DataWidgetComponent implements AfterVie
           this.view?.finalize();
 
           // @ts-ignore
-          if (this.document.debugFNTP !== undefined) {
+          if (this.document.logVegaSpec !== undefined) {
             console.log(JSON.stringify(spec, undefined, 4));
           }
 
