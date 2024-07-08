@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PRY_ACCESS_GUARD } from '@provoly/dashboard';
-import { PryImportComponent } from './components/import.component';
+import { PryImportFormComponent } from './components/form/import-form.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: PryImportComponent,
+    component: PryImportFormComponent,
     data: {
       access: {
         module: 'dashboard',

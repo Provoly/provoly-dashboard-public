@@ -10,11 +10,13 @@ import { PryI18nService } from '../../i18n/i18n.service';
 import { SearchService } from '../search/search.service';
 import { DataSourceActions } from './data-source.actions';
 import { DataSourceEffects } from './data-source.effects';
-import { NamedQuery } from './data-source.model';
+import { DatasetVersion, NamedQuery } from './data-source.model';
 import { DataSourceState, initialDataSourceState } from './data-source.reducer';
 import { DataSourceService } from './data-source.service';
 import { NamedQueryTypes } from './named-query-types.model';
 import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { clone, headers, mockHttpResponse } from '@provoly/dashboard/mock/data/mockHttp';
 
 const buildState = (state: Partial<DataSourceState>) =>
   Object.assign({}, { '@pry/datasources': JSON.parse(JSON.stringify({ ...initialDataSourceState, ...state })) });
@@ -63,7 +65,7 @@ describe('DataSourceEffects', () => {
   let effects: DataSourceEffects;
   const initialState = initialDataSourceState;
   let searchService: SearchService;
-  let namedQueryService: DataSourceService;
+  let dsService: DataSourceService;
   let snackbarService: PrySnackbarService;
   let store: MockStore<any>;
 
@@ -80,7 +82,13 @@ describe('DataSourceEffects', () => {
           useValue: {
             get: () => of(namedQueryList),
             delete: () => null,
-            getDatasetVersionsById: () => of([])
+            getDatasetVersionsById: () => of([]),
+            getDatasetVersions: () =>
+              of({
+                ...mockHttpResponse,
+                headers: new HttpHeaders(headers),
+                clone: clone
+              })
           }
         },
         {
@@ -98,7 +106,7 @@ describe('DataSourceEffects', () => {
 
     effects = TestBed.inject(DataSourceEffects);
     searchService = TestBed.inject<SearchService>(SearchService);
-    namedQueryService = TestBed.inject<DataSourceService>(DataSourceService);
+    dsService = TestBed.inject<DataSourceService>(DataSourceService);
     snackbarService = TestBed.inject<PrySnackbarService>(PrySnackbarService);
     store = TestBed.inject(MockStore);
   });
@@ -157,7 +165,7 @@ describe('DataSourceEffects', () => {
 
   describe('deleteNamedQuery$', function () {
     it('should call to load after delete completed', () => {
-      const getSpy = jest.spyOn(namedQueryService, 'delete').mockReturnValue(of({ data: { success: true } }));
+      const getSpy = jest.spyOn(dsService, 'delete').mockReturnValue(of({ data: { success: true } }));
       store.setState(
         buildState({
           ...initialState
@@ -190,7 +198,7 @@ describe('DataSourceEffects', () => {
 
   describe('listVersionsById$', function () {
     it('should trigger updateVersionList once versions received', () => {
-      const getSpy = jest.spyOn(namedQueryService, 'getDatasetVersionsById').mockReturnValue(of([]));
+      const getSpy = jest.spyOn(dsService, 'getDatasetVersionsById').mockReturnValue(of([]));
       store.setState(
         buildState({
           ...initialState
@@ -206,6 +214,29 @@ describe('DataSourceEffects', () => {
       });
       expect(effects.listVersionsById$).toBeObservable(expected$);
       expect(effects.listVersionsById$).toSatisfyOnFlush(() => {
+        expect(getSpy).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('listVersions$', function () {
+    it('should trigger listVersionsSuccess once versions received', () => {
+      const getSpy = jest.spyOn(dsService, 'getDatasetVersions');
+      store.setState(
+        buildState({
+          ...initialState
+        })
+      );
+
+      actions$ = hot('--a-', {
+        a: DataSourceActions.dataset.listVersions({ orderBy: 'ASC', sortBy: 'a' })
+      });
+
+      const expected$ = hot('--a-', {
+        a: DataSourceActions.dataset.listVersionsSuccess({ versions: [], totalVersionCount: 400 })
+      });
+      expect(effects.listVersions$).toBeObservable(expected$);
+      expect(effects.listVersions$).toSatisfyOnFlush(() => {
         expect(getSpy).toHaveBeenCalled();
       });
     });

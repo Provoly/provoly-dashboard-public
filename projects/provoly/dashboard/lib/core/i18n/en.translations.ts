@@ -424,5 +424,36 @@ export const enTranslations = {
   },
   a11y: {
     modalStatusTableDescr: 'Dataset version warnings and errors'
+  },
+  dataset: {
+    version: {
+      title: 'Title',
+      name: 'Dataset name',
+      productionDate: 'Production date',
+      importDate: 'Import date',
+      number: 'Version number',
+      producer: 'Data producer',
+      additionalInformation: 'Version information',
+      fileName: 'Source file name',
+      notProvided: 'Not provided',
+      state: {
+        INDEXING: 'Loading',
+        LOADING: 'Loading',
+        INACTIVE: 'Invalid',
+        ERROR: 'Error',
+        ACTIVE: 'Available',
+        DELETING: 'Deleting',
+        currentlyActive: 'Active'
+      },
+      stateFilter: {
+        INDEXING: 'Loading (indexing)',
+        LOADING: 'Loading',
+        INACTIVE: 'Invalid',
+        ERROR: 'Error',
+        ACTIVE: 'Available',
+        DELETING: 'Deleting',
+        DELETE_ERROR: 'Deletion error'
+      }
+    }
   }
 };

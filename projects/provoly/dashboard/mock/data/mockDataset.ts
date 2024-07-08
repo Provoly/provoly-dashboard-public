@@ -36,37 +36,37 @@ export const mockDatasetVersions: DatasetVersion[] = [
     id: 'AAAA-BBBB-CCCC',
     oClass: '123456789',
     metadata: [],
-    dataset: 'dataset-id',
+    dataset: mockDatasets[1],
     lastModified: '2022-10-05T14:48:00.000Z',
     available: true,
     version: 1,
     state: 'OK',
-    withFile: false,
+    fileName: 'ds1 file name',
     hasWarnings: false
   },
   {
     id: 'CCCC-BBBB-AAAA',
     oClass: '123456789',
     metadata: [],
-    dataset: 'dataset-id',
+    dataset: mockDatasets[0],
     lastModified: '2022-10-20T14:48:00.000Z',
     available: true,
     version: 2,
     state: 'OK',
-    withFile: false,
+    fileName: 'ds2 file name',
     hasWarnings: false
   }
 ];
 
 export const mockDatasetVersion = {
   id: 'test-id',
-  dataset: 'test-ds-id',
+  dataset: mockDatasets[0],
   oClass: 'test-class',
   lastModified: '2023-01-20',
   available: true,
   version: 10,
   state: 'ERROR',
-  withFile: false,
+  fileName: 'test ds file name',
   metadata: [],
   hasWarnings: false
 };

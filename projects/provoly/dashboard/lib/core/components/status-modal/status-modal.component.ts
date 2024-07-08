@@ -1,15 +1,17 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
 import { DataSourceActions } from '../../store/data-source/data-source.actions';
 import { DatasetVersion } from '../../store/data-source/data-source.model';
 import { DataSourceSelectors } from '../../store/data-source/data-source.selectors';
+import { PryDialogRef } from '../overlay/dialog-ref';
+import { PRY_DIALOG_DATA } from '../overlay/dialog.service';
 
 @Component({
-  selector: 'pry-modal-status',
-  templateUrl: 'modal-status.component.html'
+  selector: 'pry-status-modal',
+  templateUrl: 'status-modal.component.html'
 })
-export class PryModalStatusComponent {
+export class PryStatusModalComponent {
   @Output() gotoConsult = new EventEmitter<DatasetVersion>();
   datasetPreviews$?: Observable<
     {
@@ -24,10 +26,15 @@ export class PryModalStatusComponent {
   messageCount$?: Observable<number>;
   _version?: DatasetVersion;
 
-  @Input() set version(version: DatasetVersion | undefined) {
-    this._version = version;
-    if (!!version) {
-      this.store.dispatch(DataSourceActions.dataset.previews.getById({ id: version.id }));
+  constructor(
+    private store: Store,
+    private dialogRef: PryDialogRef<PryStatusModalComponent>,
+    @Inject(PRY_DIALOG_DATA)
+    private data: { version: DatasetVersion }
+  ) {
+    this._version = data.version;
+    if (!!this._version) {
+      this.store.dispatch(DataSourceActions.dataset.previews.getById({ id: this._version.id }));
       this.datasetPreviews$ = this.store.select(DataSourceSelectors.datasetPreviews).pipe(
         map((previews) =>
           previews
@@ -47,9 +54,7 @@ export class PryModalStatusComponent {
     }
   }
 
-  constructor(private store: Store) {}
-
-  goBack() {
-    this.gotoConsult.emit(this.version);
+  close() {
+    this.dialogRef.close();
   }
 }

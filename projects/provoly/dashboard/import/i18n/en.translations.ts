@@ -1,5 +1,18 @@
 export const enTranslations = {
   '@pry': {
+    importList: {
+      title: 'List of imported data',
+      filter: {
+        dsName: 'Name',
+        status: 'Import status',
+        date: 'Import date'
+      },
+      dsName: 'Name',
+      date: 'Date of creation',
+      number: 'Version number',
+      status: 'Version status',
+      actions: 'Actions'
+    },
     import: {
       title: 'Import data',
       datasetImport: 'Import in :',
@@ -30,7 +43,8 @@ export const enTranslations = {
         FORMAT: '"{{name}}": "{{receivedValue}}" could not be converted to type "{{type}}"',
         STORAGE: 'Storage stack trace error: {{elasticError}}'
       },
-      normalize: 'Standardize geographic shapes'
+      normalize: 'Standardize geographic shapes',
+      multiple: 'Upload multiple files'
     }
   }
 };

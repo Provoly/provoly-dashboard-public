@@ -501,9 +501,11 @@ router.on(['DELETE'], '/ref/abac/context/:name', (req, res, params) => {
 router.on(['OPTIONS', 'GET'], '/ref/model/class/datasets/count', (req, res, params) => {
   makeResponseOk(res, dataModule.datasetCount());
 });
-router.on(['OPTIONS', 'GET'], '/ref/dataset-versions', (req, res, params) =>
-  makeResponseOk(res, dataModule.datasetVersions.get())
-);
+router.on(['OPTIONS', 'GET'], '/ref/dataset-versions', (req, res, params) => {
+  res.setHeader('X-Total-Count', '500');
+  res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
+  makeResponseOk(res, dataModule.datasetVersions.get());
+});
 router.on(['OPTIONS', 'GET'], '/ref/datasets/id/:id/dataset-versions', (req, res, params) =>
   makeResponseOk(res, dataModule.datasetVersions.getById(params.id))
 );

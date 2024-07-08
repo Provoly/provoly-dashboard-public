@@ -1,19 +1,18 @@
 @use '../../styles/abstracts' as *;
+@use '../../styles-theme/abstracts-theme/variables.theme' as *;
 
 /* Organism - import */
 .o-import {
-  display: flex;
-  flex-direction: column;
   overflow: scroll;
   height: 100%;
   padding: toRem(15) toRem(25);
 
-  .u-display-flex {
-    gap: toRem(75);
+  &__header, &__form-container {
+    width: 50%;
   }
 
-  &__form {
-    max-width: 50%;
+  .u-display-flex {
+    gap: toRem(75);
   }
 
   .o-file-input {
@@ -38,5 +37,50 @@
 
   .a-pry-select__content {
     flex: 1;
+  }
+}
+
+.o-import-list {
+  height: 100%;
+
+  .a-h1 {
+    padding: 0;
+  }
+
+  .warning {
+    color: themed($theme-map, 'color', 'status', 'error');
+  }
+
+  .m-filter__input-wrapper {
+    height: toRem(40);
+  }
+
+  .m-filter__date-input-separator {
+    line-height: 0;
+  }
+
+  .a-table {
+    tbody td.-cell-with-icon {
+      margin: 0;
+      padding: toRem(20);
+      height: 100%;
+    }
+  }
+
+  &__content {
+    overflow: auto;
+  }
+}
+
+.m-version-modal {
+  background-color: white;
+  max-width: toRem(380);
+  max-height: toRem(600);
+  padding: 0 toRem(20) toRem(20) toRem(10) ;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+
+  &__list {
+    @extend %list-unstyled;
+    overflow: auto;
   }
 }

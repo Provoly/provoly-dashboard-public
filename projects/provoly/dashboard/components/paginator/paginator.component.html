@@ -1,0 +1,112 @@
+<pry-paginator-css></pry-paginator-css>
+<div
+  class="o-paginator u-display-flex -align-center"
+  [class.o-paginator--long]="mode() === 'long'"
+  [class.o-paginator--short]="mode() === 'short'"
+>
+  @if (mode() === 'long') {
+    <ng-container *ngTemplateOutlet="longPaginator"></ng-container>
+  } @else {
+    <ng-container *ngTemplateOutlet="shortPaginator"></ng-container>
+  }
+</div>
+
+<ng-template #shortPaginator>
+  <button (click)="changePage(1)" [disabled]="currentPage() === 1">
+    <pry-icon iconSvg="skip-left-fill"></pry-icon>
+  </button>
+  <button (click)="changePage(currentPage() - 1)" [disabled]="currentPage() === 1">
+    <pry-icon iconSvg="arrow-left-s-fill"></pry-icon>
+  </button>
+  <span class="o-paginator__page-counter">{{ currentPage() }} / {{ nbOfPages() }}</span>
+  <button (click)="changePage(currentPage() + 1)" [disabled]="currentPage() === nbOfPages()">
+    <pry-icon iconSvg="arrow-right-s-fill"></pry-icon>
+  </button>
+  <button (click)="changePage(nbOfPages())" [disabled]="currentPage() === nbOfPages()">
+    <pry-icon iconSvg="skip-right-fill"></pry-icon>
+  </button>
+</ng-template>
+
+<ng-template #longPaginator>
+  @if (currentPage() > 1) {
+    <button (click)="changePage(currentPage() - 1)">
+      <pry-icon iconSvg="chevron_left"></pry-icon>
+    </button>
+  }
+  @if (nbOfPages() > 8) {
+    @if (currentPage() < 3) {
+      @for (page of pages().slice(0, 3); track page) {
+        <button
+          class="a-btn -small-circle -no-padding"
+          [class.a-btn--primary]="page === currentPage()"
+          [class.a-btn--ghost]="page !== currentPage()"
+          (click)="changePage(page)"
+        >
+          {{ page }}
+        </button>
+      }
+      <span class="u-self-end">...</span>
+      <button class="a-btn -small-circle -no-padding" (click)="changePage(pages().length)">
+        {{ pages().length }}
+      </button>
+    } @else if (currentPage() > pages().length - 2) {
+      <button
+        class="a-btn -small-circle -no-padding"
+        (click)="changePage(1)"
+        [class.a-btn--primary]="currentPage() === 1"
+        [class.a-btn--ghost]="currentPage() !== 1"
+      >
+        1
+      </button>
+      <span class="u-self-end">...</span>
+      @for (page of pages().slice(-3); track page) {
+        <button
+          class="a-btn -small-circle -no-padding"
+          [class.a-btn--primary]="page === currentPage()"
+          [class.a-btn--ghost]="page !== currentPage()"
+          (click)="changePage(page)"
+        >
+          {{ page }}
+        </button>
+      }
+    } @else {
+      <button class="a-btn -small-circle -no-padding" (click)="changePage(1)">1</button>
+      <span>...</span>
+      @for (page of pages().slice(currentPage() - 2, currentPage() + 1); track page) {
+        <button
+          class="a-btn -small-circle -no-padding"
+          [class.a-btn--primary]="page === currentPage()"
+          [class.a-btn--ghost]="page !== currentPage()"
+          (click)="changePage(page)"
+        >
+          {{ page }}
+        </button>
+      }
+      <span>...</span>
+      <button
+        class="a-btn -small-circle -no-padding"
+        [class.a-btn--primary]="currentPage() === pages().length"
+        [class.a-btn--ghost]="currentPage() !== pages().length"
+        (click)="changePage(pages().length)"
+      >
+        {{ pages().length }}
+      </button>
+    }
+  } @else {
+    @for (page of pages(); track page) {
+      <button
+        class="a-btn -small-circle -no-padding"
+        [class.a-btn--primary]="page === currentPage()"
+        [class.a-btn--ghost]="page !== currentPage()"
+        (click)="changePage(page)"
+      >
+        {{ page }}
+      </button>
+    }
+  }
+  @if (currentPage() < pages().length) {
+    <button (click)="changePage(currentPage() + 1)">
+      <pry-icon iconSvg="chevron_right"></pry-icon>
+    </button>
+  }
+</ng-template>

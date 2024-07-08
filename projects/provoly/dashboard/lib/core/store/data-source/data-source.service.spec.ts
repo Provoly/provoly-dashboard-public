@@ -10,6 +10,8 @@ import {
 } from '@provoly/dashboard';
 import { DataSourceService } from './data-source.service';
 import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
+import { mockDatasetVersion } from '@provoly/dashboard/mock/data/mockDataset';
+import { HttpRequest } from '@angular/common/http';
 
 describe('NamedQueryService', () => {
   let service: DataSourceService;
@@ -157,9 +159,24 @@ describe('NamedQueryService', () => {
 
   describe('getDatasetVersions', () => {
     it('should get versions of all datasets', () => {
-      service.getDatasetVersions().subscribe(() => {});
+      service
+        .getDatasetVersions({
+          dataset: 'fakeid',
+          limit: 10,
+          offset: 0
+        })
+        .subscribe(() => {});
 
-      httpTestingController.expectOne('ref/dataset-versions');
+      const req = httpTestingController.expectOne((request: HttpRequest<any>) => {
+        return request.url === 'ref/dataset-versions';
+      });
+
+      expect(req.request.method).toEqual('GET');
+      expect(req.request.params.get('dataset')).toEqual('fakeid');
+      expect(req.request.params.get('limit')).toEqual('10');
+      expect(req.request.params.get('offset')).toEqual('0');
+      expect(req.request.method).toEqual('GET');
+      req.flush([mockDatasetVersion]);
     });
   });
 

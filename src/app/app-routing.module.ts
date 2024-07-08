@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardManifest, Filter, PRY_ACCESS_GUARD, TooltipMode } from '@provoly/dashboard';
-import { PryImportComponent } from '@provoly/dashboard/import';
 import { PryPipelineListComponent } from '@provoly/dashboard/pipeline';
 import { PryPresentationComponent } from '@provoly/dashboard/presentation';
 import { PrySearchToolsComponent } from '@provoly/dashboard/search';
@@ -14,6 +13,7 @@ import { DashboardContainerComponent } from './dashboard-container/dashboard-con
 import { SearchContainerComponent } from './search-container/search-container.component';
 import { vegaExampleSpec } from './vega-example-spec.constant';
 import { PryTextEditorComponent } from '@provoly/dashboard/components/text-editor';
+import { PryImportFormComponent, PryImportListComponent } from '@provoly/dashboard/import';
 
 const routes: Routes = [
   /* In a real app, do not make routes like these ones */
@@ -404,8 +404,12 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'import',
-    component: PryImportComponent
+    path: 'import-form',
+    component: PryImportFormComponent
+  },
+  {
+    path: 'import-list',
+    component: PryImportListComponent
   },
   {
     path: 'editor',

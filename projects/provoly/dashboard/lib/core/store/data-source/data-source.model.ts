@@ -41,17 +41,18 @@ export interface Dataset extends DescriptionQuery {
   groups?: string[];
   slug: string;
   categories?: Category[];
+  activeVersion?: DatasetVersion;
 }
 
 export interface DatasetVersion {
   id: string;
-  dataset: string;
+  dataset: Dataset;
   oClass: string;
   lastModified: string;
   available: boolean;
   version: number;
   state: string;
-  withFile: boolean;
+  fileName: string;
   metadata: any[];
   hasWarnings: boolean;
   productionDate?: string;

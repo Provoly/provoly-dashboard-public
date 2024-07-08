@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
 import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from '../search/search.constants';
-import { DatasetVersion, DataSource } from './data-source.model';
+import { DataSource } from './data-source.model';
 import { dataSourceFeatureKey, DataSourceState } from './data-source.reducer';
 import { DatasourceUtils } from './datasource-utils';
 
@@ -38,16 +38,7 @@ const getDataSourcesSorted = createSelector(
     [...nqs, ...dsd].sort((nq1, nq2) => nq1.name.toLowerCase().localeCompare(nq2.name.toLowerCase())) as DataSource[]
 );
 const datasetVersions = createSelector(selectFeature, (state) => state?.datasetVersions ?? []);
-const memoizeDatasetVersions = {} as any;
-const matchingDatasetVersions = (datasetId: string) => {
-  if (!memoizeDatasetVersions[datasetId]) {
-    memoizeDatasetVersions[datasetId] = createSelector(datasetVersions, (datasetVersions) => {
-      return datasetVersions.filter((datasetVersion: DatasetVersion) => datasetVersion.dataset === datasetId);
-    });
-  }
-
-  return memoizeDatasetVersions[datasetId] as MemoizedSelector<any, DatasetVersion[]>;
-};
+const totalVersionCount = createSelector(selectFeature, (state) => state.totalVersionCount);
 const datasetPreviews = createSelector(selectFeature, (state) => state?.previews ?? []);
 const categories = createSelector(selectFeature, (state) => state.categories);
 
@@ -67,7 +58,7 @@ export const DataSourceSelectors = {
   getDataSources,
   getDataSourcesSorted,
   datasetVersions,
-  matchingDatasetVersions,
+  totalVersionCount,
   datasetPreviews,
   categories
 };

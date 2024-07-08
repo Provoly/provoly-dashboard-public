@@ -78,22 +78,25 @@
       <span class="a-label">{{ '@pry.dataset.description' | i18n }}</span>
       <span>{{ dataset.description ?? ('@pry.dataset.version.notProvided' | i18n) }}</span>
     </div>
-    @if (activeVersion$ | async; as activeVersion) {
+    @if (dataset.activeVersion) {
       <div>
         <span class="a-label">{{ '@pry.dataset.version.productionDate' | i18n }}</span>
         <span>{{
-          (activeVersion?.productionDate | date: 'dd-MM-yyyy, HH:mm') ?? ('@pry.dataset.version.notProvided' | i18n)
+          (dataset.activeVersion.productionDate | date: 'dd-MM-yyyy, HH:mm') ??
+            ('@pry.dataset.version.notProvided' | i18n)
         }}</span>
       </div>
       <div>
         <span class="a-label">{{ '@pry.dataset.version.producer' | i18n }}</span>
-        <span>{{ activeVersion?.producer ?? ('@pry.dataset.version.notProvided' | i18n) }}</span>
+        <span>{{ dataset.activeVersion.producer ?? ('@pry.dataset.version.notProvided' | i18n) }}</span>
       </div>
       <div>
         <span class="a-label">{{ '@pry.dataset.version.additionalInformation' | i18n }}</span>
         <div
           class="version-information"
-          [innerHTML]="activeVersion?.additionalInformation ?? ('@pry.dataset.version.notProvided' | i18n) | mdToHtml"
+          [innerHTML]="
+            dataset.activeVersion.additionalInformation ?? ('@pry.dataset.version.notProvided' | i18n) | mdToHtml
+          "
         ></div>
       </div>
     } @else {
@@ -123,7 +126,7 @@
   </div>
 </ng-template>
 <ng-template #datasetVersions>
-  <div *ngIf="activeVersionId$ | async as activeVersionId" class="dataset-detail__table table-container">
+  <div class="dataset-detail__table table-container">
     <table class="a-table">
       <caption>
         {{
@@ -151,7 +154,7 @@
         >
           <td>
             {{ version.version }}
-            <pry-icon *ngIf="activeVersionId === version.id" iconSvg="check" class="check"></pry-icon>
+            <pry-icon *ngIf="dataset.activeVersion?.id === version.id" iconSvg="check" class="check"></pry-icon>
           </td>
           <td>
             <div
@@ -164,15 +167,16 @@
           </td>
           <td>
             {{
-              (activeVersionId === version.id
-                ? '@pry.dataset.version.currentlyActive'
-                : '@pry.dataset.version.' + version.state
-              ) | i18n
+              version.id === dataset.activeVersion?.id
+                ? '@pry.dataset.version.state.currentlyActive'
+                : ('@pry.dataset.version.state.' + version.state | i18n)
             }}
             <div
               *ngIf="version.state !== 'DELETING'"
               class="m-info-icon a-tooltip -tooltip-width-md"
-              [attr.data-tooltip]="'@pry.dataset.tooltip.' + getVersionTooltipContent(version, activeVersionId) | i18n"
+              [attr.data-tooltip]="
+                '@pry.dataset.tooltip.' + getVersionTooltipContent(version, dataset.activeVersion?.id) | i18n
+              "
               data-tooltip-position="right"
             >
               <span>i</span>
@@ -251,7 +255,3 @@
     </table>
   </div>
 </ng-template>
-
-<ng-container *ngIf="showModalStatus">
-  <pry-modal-status [version]="selectedDatasetVersion" (gotoConsult)="goToConsult($event)"></pry-modal-status>
-</ng-container>

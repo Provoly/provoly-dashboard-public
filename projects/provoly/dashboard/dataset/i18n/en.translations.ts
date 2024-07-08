@@ -27,18 +27,6 @@ export const enTranslations = {
       since_day: 'Last update :',
       noActiveVersion: 'No active version',
       version: {
-        title: 'Title',
-        productionDate: 'Production date',
-        producer: 'Data producer',
-        additionalInformation: 'Version information',
-        notProvided: 'Not provided',
-        INDEXING: 'Loading',
-        LOADING: 'Loading',
-        INACTIVE: 'Invalid',
-        ERROR: 'Error',
-        ACTIVE: 'Available',
-        DELETING: 'Deleting',
-        currentlyActive: 'Active',
         delete: {
           title: 'Delete version',
           message: 'Deleting this version will remove associated data. Are you sure you want to delete it?'

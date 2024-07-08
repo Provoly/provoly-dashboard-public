@@ -192,8 +192,13 @@ export class DataSourceEffects {
     this.actions$.pipe(
       ofType(DataSourceActions.dataset.listVersions),
       switchMap((action) =>
-        this.dataSourceService.getDatasetVersions().pipe(
-          map((versions) => DataSourceActions.dataset.listVersionsSuccess({ versions })),
+        this.dataSourceService.getDatasetVersions(action).pipe(
+          map((response) =>
+            DataSourceActions.dataset.listVersionsSuccess({
+              versions: response.body ?? [],
+              totalVersionCount: +(response.headers.get('x-total-count') ?? 0)
+            })
+          ),
           catchError((_) => [DataSourceActions.dataset.listVersionsFailure()])
         )
       )
@@ -242,7 +247,7 @@ export class DataSourceEffects {
         DataSourceActions.dataset.activateDatasetVersionSuccess,
         DataSourceActions.dataset.deactivateDatasetVersionSuccess
       ),
-      map((action: any) => DataSourceActions.dataset.listVersions())
+      map((action: any) => DataSourceActions.dataset.listVersions({}))
     )
   );
 
@@ -303,7 +308,7 @@ export class DataSourceEffects {
       ofType(DataSourceActions.dataset.deleteVersion),
       switchMap((action) =>
         this.dataSourceService.deleteDatasetVersion(action.version).pipe(
-          mergeMap(() => [DataSourceActions.dataset.listVersionsByDatasetId({ id: action.version.dataset })]),
+          mergeMap(() => [DataSourceActions.dataset.listVersionsByDatasetId({ id: action.version.dataset.id })]),
           catchError((err) => [DataSourceActions.dataset.deleteVersionFailure({ err })])
         )
       )

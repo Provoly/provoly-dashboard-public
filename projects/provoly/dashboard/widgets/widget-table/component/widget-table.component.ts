@@ -36,6 +36,7 @@ export interface Pagination {
   loaded: number;
   loadedPages: number;
   noFillersItems: number;
+  total: number;
 }
 
 @Component({

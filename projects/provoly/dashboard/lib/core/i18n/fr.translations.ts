@@ -430,6 +430,39 @@ export const frTranslations = {
     },
     a11y: {
       modalStatusTableDescr: 'Les warnings et les erreurs de la version de dataset'
+    },
+    dataset: {
+      version: {
+        title: 'Intitulé',
+        name: 'Nom de la source de données',
+        productionDate: 'Date de production',
+        importDate: "Date d'import",
+        number: 'Numéro de version',
+        producer: 'Producteur de données',
+        additionalInformation: 'Informations de la version',
+        fileName: 'Nom du fichier source',
+        notProvided: 'Non renseigné',
+        stateTitle: 'Statut',
+        state: {
+          INDEXING: 'En chargement',
+          LOADING: 'En chargement',
+          INACTIVE: 'Invalide',
+          ERROR: 'En erreur',
+          ACTIVE: 'Disponible',
+          DELETING: 'En cours de suppression',
+          DELETE_ERROR: 'Erreur de suppression',
+          currentlyActive: 'Actif'
+        },
+        stateFilter: {
+          INDEXING: 'En chargement (indexing)',
+          LOADING: 'En chargement (loading)',
+          INACTIVE: 'Invalide',
+          ERROR: 'En erreur',
+          ACTIVE: 'Disponible',
+          DELETING: 'En cours de suppression',
+          DELETE_ERROR: 'Erreur de suppression'
+        }
+      }
     }
   }
 };

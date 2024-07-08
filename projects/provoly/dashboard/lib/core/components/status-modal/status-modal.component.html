@@ -1,4 +1,4 @@
-<div class="o-modal-wrapper__backdrop" (click)="goBack()">
+<div class="o-modal-wrapper__backdrop" (click)="close()">
   <div class="o-modal-wrapper -extra-large">
     <div class="o-modal__top">
       <div class="o-modal__top__title">
@@ -11,7 +11,7 @@
         </h2>
       </div>
       <div class="o-modal__top__close">
-        <button class="a-btn a-btn--icon-only" (click)="goBack()">
+        <button class="a-btn a-btn--icon-only" (click)="close()">
           <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
           <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
         </button>

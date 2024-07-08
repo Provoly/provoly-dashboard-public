@@ -1,7 +1,12 @@
 <pry-import-css></pry-import-css>
-<div class="o-import">
-  <h1 class="a-h1">{{ '@pry.import.title' | i18n }}</h1>
-  <div class="u-display-flex">
+<div class="o-import u-display-flex -column">
+  <div class="o-import__header u-display-flex -justify-space-between">
+    <h1 class="a-h1">{{ '@pry.import.title' | i18n }}</h1>
+    <pry-checkbox [ngModel]="multipleImports" (click)="multipleImportChange()">
+      {{ '@pry.import.multiple' | i18n }}
+    </pry-checkbox>
+  </div>
+  <div class="o-import__form-container u-display-flex">
     <form class="o-import__form" [formGroup]="form" (ngSubmit)="submit()">
       <div class="m-form-label-field">
         <label class="a-h3" for="datasets">{{ '@pry.import.fileType' | i18n }}</label>

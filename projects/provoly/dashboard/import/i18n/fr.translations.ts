@@ -1,5 +1,18 @@
 export const frTranslations = {
   '@pry': {
+    importList: {
+      title: 'Liste des données intégrées',
+      filter: {
+        dsName: 'Nom',
+        status: 'Status import',
+        date: 'Date import'
+      },
+      dsName: 'Nom',
+      date: 'Date de création de la version',
+      number: 'N° Version',
+      status: 'Status de version',
+      actions: 'Actions'
+    },
     import: {
       title: 'Import de données',
       datasetImport: 'Importer dans un jeu de données:',
@@ -34,7 +47,8 @@ export const frTranslations = {
           "«\u00A0{{name}}\u00A0»: «\u00A0{{receivedValue}}\u00A0»  n'a pas pu être convertie en type «\u00A0{{type}}\u00A0»",
         STORAGE: 'Storage stack trace error: {{elasticError}}'
       },
-      normalize: 'Normaliser les formes géographiques'
+      normalize: 'Normaliser les formes géographiques',
+      multiple: 'Import multiple'
     }
   }
 };

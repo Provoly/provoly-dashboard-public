@@ -42,10 +42,22 @@ export const DataSourceActions = {
     loadedDataset: createAction('[Dataset] loaded datasets', props<{ datasets: Dataset[] }>()),
     failure: createAction('[Dataset] failure effect Dataset', props<{ error: any }>()),
 
-    listVersions: createAction('[Dataset] Get Dataset versions'),
+    listVersions: createAction(
+      '[Dataset] Get Dataset versions',
+      props<{
+        limit?: number;
+        offset?: number;
+        dataset?: string;
+        sortBy?: string;
+        orderBy?: 'ASC' | 'DESC';
+        dateMin?: string;
+        dateMax?: string;
+        status?: string;
+      }>()
+    ),
     listVersionsSuccess: createAction(
       '[Dataset] Get Dataset versions Success',
-      props<{ versions: DatasetVersion[] }>()
+      props<{ versions: DatasetVersion[]; totalVersionCount: number }>()
     ),
     listVersionsFailure: createAction('[Dataset] Get Dataset versions Failure'),
     listVersionsByDatasetId: createAction('[Dataset] Get Dataset Versions by Dataset Id', props<{ id: string }>()),
@@ -109,6 +121,6 @@ export const DataSourceActions = {
     deleteVersion: createAction('[Dataset] Delete datasetVersion', props<{ version: DatasetVersion }>()),
     deleteVersionFailure: createAction('[Dataset] Delete datasetVersion failure', props<{ err: any }>()),
     getCategories: createAction('[Dataset] Get Categories'),
-    getCategoriesSuccess: createAction('[Dataset] Get Categories Success', props<{ categories: Category[] }>()),
+    getCategoriesSuccess: createAction('[Dataset] Get Categories Success', props<{ categories: Category[] }>())
   }
 };

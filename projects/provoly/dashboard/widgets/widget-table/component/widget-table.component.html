@@ -216,42 +216,17 @@
           }
         }
         @if (pagination.totalPages > 0) {
-          <div class="a-table-pagination">
-            <div class="a-table-pagination__spacing">
-              <div>
-                <button (click)="goToPage(0)" [disabled]="pagination.page <= 0">
-                  <pry-icon iconSvg="skip-left-fill"></pry-icon>
-                </button>
-              </div>
-              <div>
-                <button (click)="goToPage(pagination.page - 1)" [disabled]="pagination.page <= 0">
-                  <pry-icon iconSvg="arrow-left-s-fill"></pry-icon>
-                </button>
-              </div>
-              <div class="a-table-pagination__spacing__label">
-                <p>{{ pagination.page + 1 }} / {{ pagination.loadedPages }}</p>
-              </div>
-              <div>
-                <button
-                  (click)="goToPage(pagination.page + 1)"
-                  [disabled]="pagination.page + 1 >= pagination.loadedPages"
-                >
-                  <pry-icon iconSvg="arrow-right-s-fill"></pry-icon>
-                </button>
-              </div>
-              <div>
-                <button
-                  (click)="goToPage(pagination.loadedPages - 1)"
-                  [disabled]="pagination.page + 1 >= pagination.loadedPages"
-                >
-                  <pry-icon iconSvg="skip-right-fill"></pry-icon>
-                </button>
-              </div>
-              <div class="a-table-pagination__spacing__label">
-                ({{
-                  '@pry.widget.table.remaining' | i18n: { remaining: pagination.totalPages - pagination.loadedPages }
-                }})
-              </div>
+          <div class="u-display-flex">
+            <pry-paginator
+              [totalItemNb]="pagination.total"
+              (pageChange)="goToPage($event - 1)"
+              [nbPerPage]="pagination.rows"
+              mode="short"
+            ></pry-paginator>
+            <div class="a-table__pagination-label">
+              ({{
+                '@pry.widget.table.remaining' | i18n: { remaining: pagination.totalPages - pagination.loadedPages }
+              }})
             </div>
           </div>
         }

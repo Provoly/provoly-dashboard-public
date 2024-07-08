@@ -306,17 +306,20 @@ const generateDatasetVersions = () => {
       for (let i = 1; i < howMany; i++) {
         versions.push({
           id: casual.uuid,
-          dataset: dataset.id,
+          dataset: dataset,
           oClass: dataset.oClass,
           lastModified: '2023-07-12T14:28:16.089390Z',
           version: i,
           state: i > howMany - 4 ? 'ACTIVE' : casual.random_element(['ACTIVE', 'ERROR', 'INDEXING', 'INACTIVE']),
-          withFile: false,
+          fileName: 'file name',
           metadata: [],
           hasWarnings: casual.boolean,
           productionDate: casual.date('YYYY-MM-DD'),
           producer: casual.company_name,
-          additionalInformation: casual.sentence
+          additionalInformation: casual.sentence,
+          activeVersion: {
+            id: 'active-dataset-version-id'
+          }
         });
       }
       return versions;
@@ -339,7 +342,7 @@ const getDatasetVersions = () => {
 };
 
 const getDatasetVersionsByDatasetId = (id) => {
-  return datasetVersions.filter((version) => version.dataset === id);
+  return datasetVersions.filter((version) => version.dataset.id === id);
 };
 
 const deactivateDatasetVersion = (id) => {

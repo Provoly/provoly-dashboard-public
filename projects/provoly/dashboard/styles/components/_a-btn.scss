@@ -152,6 +152,13 @@
     @include outlineOnFocus($border-radius: 50%);
   }
 
+  &.-small-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    @include outlineOnFocus($border-radius: 50%);
+  }
+
   // Classic link aspect
   &.-link-like {
     justify-content: left;

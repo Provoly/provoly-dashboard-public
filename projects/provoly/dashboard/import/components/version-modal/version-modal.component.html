@@ -1,0 +1,54 @@
+<pry-import-css></pry-import-css>
+<div class="m-version-modal o-modal">
+  <div class="o-modal__top">
+    <div class="o-modal__top__title">
+      <h2 class="a-h2" id="dialog_title">
+        {{ '@pry.toolbox.about' | i18n }}
+      </h2>
+    </div>
+    <div class="o-modal__top__close">
+      <button class="a-btn a-btn--icon-only" (click)="close()">
+        <pry-icon iconSvg="close" [height]="20" [width]="20"></pry-icon>
+        <h4 class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</h4>
+      </button>
+    </div>
+  </div>
+  @if (version) {
+    <ul class="m-version-modal__list u-display-flex -column -gap-20">
+      <li>
+        <h4 class="bold">{{ '@pry.dataset.version.name' | i18n }}</h4>
+        <span>{{ version.dataset.name }}</span>
+      </li>
+      <li>
+        <h4>{{ '@pry.dataset.version.number' | i18n }}</h4>
+        <span>{{ version.version }}</span>
+      </li>
+      <li>
+        <h4 class="a-h4">{{ '@pry.dataset.version.importDate' | i18n }}</h4>
+        <span>{{ version.productionDate }}</span>
+      </li>
+      <li>
+        <h4>{{ '@pry.dataset.version.stateTitle' | i18n }}</h4>
+        <span>{{
+          version.id === version.dataset.activeVersion?.id
+            ? '@pry.dataset.version.state.currentlyActive'
+            : ('@pry.dataset.version.state.' + version.state | i18n)
+        }}</span>
+      </li>
+      <li>
+        <h4>{{ '@pry.dataset.version.fileName' | i18n }}</h4>
+        <span>{{ version.fileName }}</span>
+      </li>
+      <li>
+        <h4>{{ '@pry.dataset.version.producer' | i18n }}</h4>
+        <span>{{ version.producer }}</span>
+      </li>
+      @if (version.additionalInformation) {
+        <li>
+          <h4>{{ '@pry.dataset.version.additionalInformation' | i18n }}</h4>
+          <span>{{ version.additionalInformation | mdToHtml }}</span>
+        </li>
+      }
+    </ul>
+  }
+</div>

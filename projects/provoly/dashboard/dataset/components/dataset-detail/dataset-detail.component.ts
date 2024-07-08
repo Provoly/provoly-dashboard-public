@@ -9,6 +9,8 @@ import {
   DataSourceSelectors,
   PRY_ACCESS_TOKEN,
   PryBaseAccess,
+  PryDialogService,
+  PryStatusModalComponent,
   ResultSets,
   SearchActions,
   SubscriptionnerDirective,
@@ -51,11 +53,8 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
   tab: number = 0;
   datasetItems$: Observable<ResultSets | null>;
   public datasetVersions$!: Observable<DatasetVersion[]>;
-  showModalStatus: boolean = false;
   selectedDatasetVersion?: DatasetVersion;
   selectedMode: ViewMode = ViewMode.CONSULT;
-  activeVersion$!: Observable<DatasetVersion | undefined>;
-  activeVersionId$!: Observable<string>;
   isEditingVersion = false;
   canModify$!: Observable<boolean>;
 
@@ -64,7 +63,8 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
 
   constructor(
     private store: Store,
-    @Optional() @Inject(PRY_ACCESS_TOKEN) protected access: PryBaseAccess
+    @Optional() @Inject(PRY_ACCESS_TOKEN) protected access: PryBaseAccess,
+    private dialog: PryDialogService
   ) {
     super();
     this.datasetItems$ = this.store.select(DashboardSelectors.resultSets);
@@ -88,16 +88,7 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
       })
     );
 
-    this.datasetVersions$ = this.store
-      .select(DataSourceSelectors.matchingDatasetVersions(this.dataset.id))
-      .pipe(map((res) => [...res].sort((a, b) => b.version - a.version)));
-    this.activeVersion$ = this.datasetVersions$.pipe(
-      map((versions) =>
-        versions.sort((v1, v2) => v2.version - v1.version).find((version) => version.state === 'ACTIVE')
-      )
-    );
-    this.activeVersionId$ = this.activeVersion$.pipe(map((version) => version?.id ?? '-1'));
-
+    this.datasetVersions$ = this.store.select(DataSourceSelectors.datasetVersions);
     this.subscriptions.add(
       this.datasetVersions$.subscribe((versions) => {
         if (this.selectedVersion) {
@@ -115,7 +106,7 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
 
   goBack() {
     this.goToCatalog.emit();
-    this.store.dispatch(DataSourceActions.dataset.listVersions());
+    this.store.dispatch(DataSourceActions.dataset.listVersions({}));
   }
 
   refresh() {
@@ -126,13 +117,7 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
         from: 'PryDatasetDetailComponent.refresh()'
       })
     );
-    this.store.dispatch(DataSourceActions.dataset.listVersions());
-  }
-
-  goToConsult(version: DatasetVersion | undefined): void {
-    this.selectedDatasetVersion = version;
-    this.showModalStatus = false;
-    this.selectedMode = ViewMode.CONSULT;
+    this.store.dispatch(DataSourceActions.dataset.listVersions({}));
   }
 
   switch(number: number) {
@@ -158,11 +143,10 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
   consultErrors($event: Event, version: DatasetVersion) {
     $event.preventDefault();
     $event.stopPropagation();
-    this.selectedDatasetVersion = version;
-    this.showModalStatus = true;
+    this.dialog.open(PryStatusModalComponent, { data: { version: version } });
   }
 
-  getVersionTooltipContent(version: DatasetVersion, activeVersionId: string) {
+  getVersionTooltipContent(version: DatasetVersion, activeVersionId?: string) {
     switch (version.state) {
       case 'ERROR':
         return 'error';

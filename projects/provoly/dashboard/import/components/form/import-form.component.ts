@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnDestroy, Output, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   Dataset,
@@ -12,8 +12,8 @@ import {
   SubscriptionnerDirective
 } from '@provoly/dashboard';
 import { map, Observable, take } from 'rxjs';
-import { ImportActions } from '../store/import.actions';
-import { ImportSelectors } from '../store/import.selectors';
+import { ImportActions } from '../../store/import.actions';
+import { ImportSelectors } from '../../store/import.selectors';
 import { withLatestFrom } from 'rxjs/operators';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -30,10 +30,10 @@ interface ImportForm {
 }
 
 @Component({
-  selector: 'pry-import',
-  templateUrl: './import.component.html'
+  selector: 'pry-import-form',
+  templateUrl: './import-form.component.html'
 })
-export class PryImportComponent extends SubscriptionnerDirective implements OnDestroy {
+export class PryImportFormComponent extends SubscriptionnerDirective implements OnDestroy {
   datasets$: Observable<Dataset[]>;
   loading$: Observable<boolean>;
 
@@ -74,6 +74,10 @@ export class PryImportComponent extends SubscriptionnerDirective implements OnDe
     }
   };
 
+  multipleImports = false;
+  @Output() multipleImportsValue = new EventEmitter<boolean>();
+  @Output() formSubmitted = new EventEmitter<void>();
+
   constructor(
     private store: Store,
     private dsService: DataSourceService,
@@ -82,7 +86,7 @@ export class PryImportComponent extends SubscriptionnerDirective implements OnDe
   ) {
     super();
     store.dispatch(DataSourceActions.dataset.loadDataset());
-    this.store.dispatch(DataSourceActions.dataset.listVersions());
+    this.store.dispatch(DataSourceActions.dataset.listVersions({}));
     this.datasets$ = store
       .select(DataSourceSelectors.datasets)
       .pipe(
@@ -95,24 +99,15 @@ export class PryImportComponent extends SubscriptionnerDirective implements OnDe
     this.loading$ = store.select(ImportSelectors.loading);
 
     this.subscriptions.add(
-      this.form
-        .get('dataset')
-        ?.valueChanges.pipe(withLatestFrom(this.store.select(DataSourceSelectors.datasetVersions)))
-        .subscribe(([dataset, versions]) => {
-          this.clearMessage();
-          if (
-            dataset &&
-            versions.some(
-              (version) =>
-                version.dataset === dataset.id && (version.state === 'ACTIVE' || version.state === 'INDEXING')
-            )
-          ) {
-            this.getLastActiveVersion(dataset);
-          } else {
-            this.form.patchValue({ producer: '', productionDate: DateUtils.formatDate(new Date()) });
-            this.producer.markAsPristine();
-          }
-        })
+      this.form.get('dataset')?.valueChanges.subscribe((dataset) => {
+        this.clearMessage();
+        if (dataset && dataset.activeVersion) {
+          this.getLastActiveVersion(dataset);
+        } else {
+          this.form.patchValue({ producer: '', productionDate: DateUtils.formatDate(new Date()) });
+          this.producer.markAsPristine();
+        }
+      })
     );
   }
 
@@ -175,6 +170,7 @@ export class PryImportComponent extends SubscriptionnerDirective implements OnDe
       this.showMessage = true;
       setTimeout(() => this.message.nativeElement.scrollIntoView({ behavior: 'smooth' }));
       this.form.patchValue({ file: null });
+      this.formSubmitted.emit();
     }
   }
 
@@ -202,6 +198,11 @@ export class PryImportComponent extends SubscriptionnerDirective implements OnDe
 
   clearMessage(): void {
     if (this.showMessage) this.showMessage = false;
+  }
+
+  multipleImportChange() {
+    this.multipleImports = !this.multipleImports;
+    this.multipleImportsValue.emit(this.multipleImports);
   }
 
   protected readonly Object = Object;

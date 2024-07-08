@@ -24,6 +24,7 @@ import { ResizableComponent } from './resizable/resizable.component';
 import { ResizableDirective } from './resizable/resizable.directive';
 import { PryWidgetTableCssComponent } from './style/css.component';
 import { PryDataFormatModule } from '@provoly/dashboard/components/data-format';
+import { PryPaginatorModule } from '@provoly/dashboard/components/paginator';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { PryDataFormatModule } from '@provoly/dashboard/components/data-format';
     PryCheckboxModule,
     PryToggleModule,
     PryI18nModule,
-    PryDataFormatModule
+    PryDataFormatModule,
+    PryPaginatorModule
   ],
   exports: [WidgetTableComponent]
 })

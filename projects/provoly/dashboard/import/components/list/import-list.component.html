@@ -1,0 +1,119 @@
+<pry-import-css></pry-import-css>
+<div class="o-import-list u-display-flex -column -gap-20">
+  <h1 class="a-h1">{{ '@pry.importList.title' | i18n }}</h1>
+  <div class="o-import-list__filters u-display-flex -gap-20">
+    <div class="m-filter__input-wrapper m-filter__input-wrapper--dropdown" #dsRef>
+      <label class="a-label m-filter__label" for="dataset_name_filter">
+        {{ '@pry.importList.filter.dsName' | i18n }}&nbsp;:&nbsp;
+      </label>
+      <pry-select
+        id="dataset_name_filter"
+        [items]="datasets$ | async"
+        [(ngModel)]="filters.dataset"
+        [clearable]="true"
+        [autocomplete]="true"
+        aria-labelledby="item-label"
+        bindLabel="name"
+        bindValue="id"
+        [elementRef]="dsRef"
+      ></pry-select>
+    </div>
+    <div class="m-filter__input-wrapper m-filter__input-wrapper--dropdown" #statusRef>
+      <label class="a-label m-filter__label" for="import_status">
+        {{ '@pry.importList.filter.status' | i18n }}&nbsp;:&nbsp;
+      </label>
+      <pry-select
+        id="import_status"
+        [items]="possibleStatus"
+        [(ngModel)]="filters.status"
+        [clearable]="true"
+        aria-labelledby="item-label"
+        [elementRef]="statusRef"
+        i18nPrefix="@pry.dataset.version.stateFilter."
+      ></pry-select>
+    </div>
+    <div class="m-filter__input-wrapper m-filter__input-wrapper--dropdown">
+      <fieldset class="u-display-flex -align-center">
+        <legend class="a-label m-filter__label">{{ '@pry.importList.filter.date' | i18n }}&nbsp;:&nbsp;</legend>
+        <input class="m-filter__input" type="date" [(ngModel)]="filters.dateMin" />
+        <span class="m-filter__date-input-separator">&nbsp;-&nbsp;</span>
+        <input class="m-filter__input" type="date" [(ngModel)]="filters.dateMax" />
+      </fieldset>
+    </div>
+    <button type="button" class="a-btn a-btn--icon-only u-self-center" (click)="clearFilters()">
+      <pry-icon iconSvg="clear_filter" [width]="30" [height]="30"></pry-icon>
+    </button>
+    <button type="button" class="a-btn a-btn--primary" (click)="loadData()">
+      {{ '@pry.toolbox.apply' | i18n }}
+      <pry-icon iconSvg="refresh_filter" [width]="18" [height]="18"></pry-icon>
+    </button>
+  </div>
+  <div class="o-import-list__content">
+    <table class="a-table" prySortTable (prySortChange)="sortChange($event)">
+      <caption>
+        {{
+          '@pry.admin.dataset.title' | i18n
+        }},
+        {{
+          '@pry.action.sortableColumnHeader' | i18n
+        }}
+      </caption>
+      <thead>
+        <tr>
+          <th id="import_list_header_dataset" prySortHeader="DATASET_NAME">
+            {{ '@pry.importList.dsName' | i18n }}
+          </th>
+          <th>{{ '@pry.importList.number' | i18n }}</th>
+          <th id="import_list_header_date" prySortHeader="DATE" (sortChange)="sortChange($event)">
+            {{ '@pry.importList.date' | i18n }}
+          </th>
+          <th>{{ '@pry.importList.status' | i18n }}</th>
+          <th>{{ '@pry.importList.actions' | i18n }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (version of datasetVersions$ | async; track version.id) {
+          <tr>
+            <td>{{ version.dataset.name }}</td>
+            <td>
+              {{ version.version }}
+            </td>
+            <td>
+              {{ version.productionDate | date: 'dd/MM/yyyy HH:mm' }}
+            </td>
+            <td class="u-display-flex -align-center -cell-with-icon">
+              @if (version.state === 'ACTIVE') {
+                <pry-icon iconSvg="check" class="check" [height]="20" [width]="20"></pry-icon>
+              } @else if (version.state === 'WARNING' || version.state === 'ERROR') {
+                <pry-icon iconSvg="warning-triangle" class="warning" [height]="20" [width]="20"></pry-icon>
+              }
+              {{
+                version.id === version.dataset.activeVersion?.id
+                  ? '@pry.dataset.version.state.currentlyActive'
+                  : ('@pry.dataset.version.state.' + version.state | i18n)
+              }}
+            </td>
+            @if (version.state === 'ACTIVE' || version.state === 'INACTIVE') {
+              <td>
+                <button class="a-btn a-btn--secondary" (click)="openInfoModal(version)">Consulter</button>
+              </td>
+            } @else if (version.state === 'ERROR' || version.state === 'WARNING') {
+              <td>
+                <button class="a-btn a-btn--secondary" (click)="openErrorModal(version)">
+                  {{ version.state === 'ERROR' ? 'Consulter erreurs' : 'Consulter warnings' }}
+                </button>
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <pry-paginator
+    [action]="loadDataAction()"
+    [nbPerPage]="10"
+    [totalItemNb]="(totalVersionCount$ | async)!"
+    class="u-self-center"
+  ></pry-paginator>
+</div>

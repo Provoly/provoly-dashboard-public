@@ -1,0 +1,11 @@
+@use '../../../styles/abstracts/index' as *;
+
+.o-paginator {
+  &__page-counter {
+    margin-bottom: toRem(5);
+  }
+}
+
+.o-paginator--short {
+  gap: 0;
+}

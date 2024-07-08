@@ -62,7 +62,7 @@ describe('Dataset Reducer', () => {
   });
 
   describe('dataset versions', () => {
-    it('should filter old versions and update version list with new ones', () => {
+    it('get by id should set datasetVersions list with new list', () => {
       expect(
         dataSourceReducer(
           {
@@ -75,6 +75,22 @@ describe('Dataset Reducer', () => {
         ...initialState,
         datasetVersions: mockDatasetVersions,
         isLoading: false
+      });
+    });
+    it('get for all version should set versions and total count (for pagination)', () => {
+      expect(
+        dataSourceReducer(
+          {
+            ...initialState,
+            datasetVersions: []
+          },
+          DataSourceActions.dataset.listVersionsSuccess({ versions: mockDatasetVersions, totalVersionCount: 300 })
+        )
+      ).toEqual({
+        ...initialState,
+        datasetVersions: mockDatasetVersions,
+        totalVersionCount: 300,
+        loading: false
       });
     });
   });

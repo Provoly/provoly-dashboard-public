@@ -7,7 +7,6 @@ import {
   PryI18nModule,
   PryI18nService,
   PryIconModule,
-  PryModalStatusModule,
   PryOverlayModule,
   PrySelectModule, PrySinceDateModule
 } from '@provoly/dashboard';
@@ -34,7 +33,6 @@ import { PryTextEditorModule } from '@provoly/dashboard/components/text-editor';
     PryI18nModule,
     FormsModule,
     PryDashboardModule,
-    PryModalStatusModule,
     ReactiveFormsModule,
     PryTextEditorModule,
     PrySelectModule,

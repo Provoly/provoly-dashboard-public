@@ -109,7 +109,7 @@ export class AdminSelectDatasetComponent extends SubscriptionnerDirective implem
                       moduleAccess: 'admin',
                       pageAccess: 'dataset',
                       actionAccess: 'write',
-                      disabled: versions.filter((v) => v.dataset === dataset.id).length > 0
+                      disabled: versions.filter((v) => v.dataset.id === dataset.id).length > 0
                     }
                   ]
                 })

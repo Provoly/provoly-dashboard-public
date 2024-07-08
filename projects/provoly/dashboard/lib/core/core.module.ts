@@ -13,7 +13,7 @@ import { BaseMenuComponent } from './components/base-menu/base-menu.component';
 import { BaseToolboxActionComponent } from './components/base-toolbox-action/base-toolbox-action.component';
 import { BaseToolboxComponent } from './components/base-toolbox/base-toolbox.component';
 import { PryIconModule } from './components/icon/icon.module';
-import { PryModalStatusModule } from './components/modal-status/modal-status.module';
+import { PryStatusModalModule } from './components/status-modal/status-modal.module';
 import { PryNqColorSelectorComponent } from './components/nq-color-selector/nq-color-selector.component';
 import { PryOverlayModule } from './components/overlay/overlay.module';
 import { PrySelectImageComponent } from './components/select-image/select-image.component';
@@ -97,7 +97,7 @@ const SELECTORS = [
     OverlayModule,
     PryOverlayModule,
     PryI18nModule,
-    PryModalStatusModule,
+    PryStatusModalModule,
     CdkAccordionModule,
     FormsModule
   ],

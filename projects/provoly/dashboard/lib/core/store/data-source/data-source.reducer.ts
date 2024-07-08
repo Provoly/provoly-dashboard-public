@@ -15,6 +15,7 @@ export interface DataSourceState {
   datasets: Dataset[];
   error?: Error;
   datasetVersions: DatasetVersion[];
+  totalVersionCount: number; // for pagination
   selectedDatasetVersion: DatasetVersion | null;
   previews: DatasetPreview[];
   categories: Category[];
@@ -26,6 +27,7 @@ export const initialDataSourceState: DataSourceState = {
   isRename: false,
   datasets: [],
   datasetVersions: [],
+  totalVersionCount: 0,
   selectedDatasetVersion: null,
   previews: [],
   categories: []
@@ -83,7 +85,8 @@ export const dataSourceReducer = createReducer(
   on(DataSourceActions.dataset.listVersionsSuccess, (state, action) => ({
     ...state,
     loading: false,
-    datasetVersions: action.versions
+    datasetVersions: action.versions,
+    totalVersionCount: action.totalVersionCount
   })),
   on(DataSourceActions.dataset.listVersionsFailure, (state) => ({
     ...state,
@@ -123,7 +126,7 @@ export const dataSourceReducer = createReducer(
   })),
   on(DataSourceActions.dataset.updateVersionList, (state, action) => ({
     ...state,
-    datasetVersions: [...state.datasetVersions.filter((version) => version.id === action.id), ...action.versions]
+    datasetVersions: action.versions
   })),
   on(DataSourceActions.dataset.previews.getById, (state) => ({
     ...state,

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map, mergeMap, Observable, of, switchMap } from 'rxjs';
@@ -96,10 +96,33 @@ export class DataSourceService {
     );
   }
 
-  getDatasetVersions() {
-    return this.store
-      .select(ConfigSelectors.refUrl)
-      .pipe(switchMap((url) => this.httpClient.get<DatasetVersion[]>(encodeURI(`${url}/dataset-versions`))));
+  getDatasetVersions(props: {
+    limit?: number;
+    offset?: number;
+    dataset?: string;
+    sortBy?: string;
+    orderBy?: 'ASC' | 'DESC';
+    dateMin?: string;
+    dateMax?: string;
+    status?: string;
+  }): Observable<HttpResponse<DatasetVersion[]>> {
+    return this.store.select(ConfigSelectors.refUrl).pipe(
+      switchMap((url) => {
+        const { limit, offset, dataset, sortBy, orderBy, dateMin, dateMax, status } = props;
+        let params = new HttpParams();
+        params = params.set('limit', (limit ?? 20).toString());
+        params = params.set('offset', (offset ?? 0).toString());
+        if (dataset) params = params.set('dataset', dataset);
+        if (sortBy) params = params.set('sortBy', sortBy).set('orderBy', orderBy ?? 'ASC');
+        if (dateMin) params = params.set('dateMin', dateMin);
+        if (dateMax) params = params.set('dateMax', dateMax);
+        if (status) params = params.set('status', status);
+        return this.httpClient.get<DatasetVersion[]>(encodeURI(`${url}/dataset-versions`), {
+          params,
+          observe: 'response'
+        });
+      })
+    );
   }
 
   getDatasetVersionsById(id: string) {

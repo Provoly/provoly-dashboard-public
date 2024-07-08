@@ -52,7 +52,7 @@ export class PryDatasourceListComponent extends SubscriptionnerDirective impleme
 
     this.store.dispatch(DataSourceActions.dataset.getCategories());
     this.categories$ = this.store.select(DataSourceSelectors.categories);
-    this.store.dispatch(DataSourceActions.dataset.listVersions());
+    this.store.dispatch(DataSourceActions.dataset.listVersions({}));
     this.subscriptions.add(
       this.selectedCategories$.subscribe((_) => {
         this.searchOrCategoryChanged.next();
