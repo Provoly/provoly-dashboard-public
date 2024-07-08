@@ -25,7 +25,7 @@
         [attr.aria-disabled]="disabled"
         [disabled]="disabled"
         (keydown)="onKeydownAutocompleteInput($event)"
-        [placeholder]="placeholder"
+        [placeholder]="placeholder ?? ''"
         #input
       />
     </ng-container>

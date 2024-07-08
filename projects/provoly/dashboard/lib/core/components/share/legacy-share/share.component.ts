@@ -19,12 +19,12 @@ export class PryShareComponent implements ControlValueAccessor {
   private _onTouched = () => {};
   _disabled = false;
   value: string[] = [];
-  stringValue: 'private' | 'public' = 'private';
+  stringValue: 'PRIVATE' | 'PUBLIC' = 'PRIVATE';
   @Input() labelProperty = 'label';
   @Input() valueProperty = 'value';
   visibilityTypes: { name: string; icon: string }[] = [
-    { name: 'public', icon: 'public' },
-    { name: 'private', icon: 'private' }
+    { name: 'PUBLIC', icon: 'public' },
+    { name: 'PRIVATE', icon: 'private' }
   ];
 
   constructor(private _cd: ChangeDetectorRef) {}
@@ -45,7 +45,7 @@ export class PryShareComponent implements ControlValueAccessor {
   writeValue(value: string[]) {
     if (value) {
       this.value = value;
-      this.stringValue = value.length > 0 ? 'public' : 'private';
+      this.stringValue = value.length > 0 ? 'PUBLIC' : 'PRIVATE';
       this._onChange(this.value);
       this._onTouched();
       this._cd.markForCheck();
@@ -53,7 +53,7 @@ export class PryShareComponent implements ControlValueAccessor {
   }
 
   onChange($event: string) {
-    this.value = $event === 'public' ? [PUBLIC_GROUP] : [];
+    this.value = $event === 'PUBLIC' ? [PUBLIC_GROUP] : [];
     this.writeValue(this.value);
     this._onTouched();
     this._cd.markForCheck();
