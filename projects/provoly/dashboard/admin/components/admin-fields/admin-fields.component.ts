@@ -1,8 +1,15 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { ClassActions, ClassSelectors, Field, FIELD_I18N, FieldActions, FieldSelectors } from '@provoly/dashboard';
-import { map, Observable, of, switchMap, zip } from 'rxjs';
+import {
+  Class,
+  ClassActions,
+  ClassSelectors,
+  FIELD_I18N,
+  FieldActions,
+  FieldSelectors
+} from '@provoly/dashboard';
+import { map, Observable, combineLatest } from 'rxjs';
 import { AdminActions } from '../../store/admin.actions';
 import { FieldExtended } from './store/admin-fields.model';
 import { FieldsActions } from './store/fields.actions';
@@ -29,12 +36,18 @@ export class AdminFieldsComponent {
     this.store.dispatch(FieldsActions.unselectField());
     this.currentFieldId$ = this.store.select(FieldsSelectors.selectedFieldId);
 
-    this.fields$ = this.store.select(FieldSelectors.fields).pipe(
-      switchMap((fields: Field[]) =>
-        zip(fields.map((field) => zip(of(field), this.store.select(ClassSelectors.attributesByFieldId(field.id)))))
-      ),
-      map((superFields) =>
-        superFields.map(([field, attributes]) => ({ ...field, attributes: attributes?.length ?? 0 }) as FieldExtended)
+    this.fields$ = combineLatest([
+      this.store.select(FieldSelectors.fields),
+      this.store.select(ClassSelectors.classes)
+    ]).pipe(
+      map(([fields, classes]) =>
+        fields.map((f) => ({
+          ...f,
+          attributeCount: classes.reduce(
+            (p: number, c: Class) => p + c.attributes.filter((a) => a.field.id === f.id).length,
+            0
+          )
+        }))
       )
     );
     const path = this.router.createUrlTree(['.', 'new'], { relativeTo: this.route });

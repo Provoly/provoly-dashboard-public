@@ -1,52 +1,52 @@
 <div class="o-base-container">
   <h1 class="a-h1">{{ '@pry.admin.fields.list' | i18n }}</h1>
-  <table
-    class="a-table"
-    prySortTable
-    prySortActive="name"
-    prySortDirection="asc"
-    (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
-  >
-    <caption>
-      {{
-        '@pry.admin.fields.list' | i18n
-      }},
-      {{
-        '@pry.action.sortableColumnHeader' | i18n
-      }}
-    </caption>
-    <thead>
-      <tr>
-        <th></th>
-        <th prySortHeader="name">{{ '@pry.admin.fields.name' | i18n }}</th>
-        <th prySortHeader="type">{{ '@pry.admin.fields.type' | i18n }}</th>
-        <th prySortHeader="attributes">{{ '@pry.admin.fields.attributes' | i18n }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        *ngFor="let field of fields$ | async | prySortData: sortActive : sortDirection"
-        (click)="selectField(field)"
-        [class.is-selected]="(currentFieldId$ | async) === field.id"
-      >
-        <td class="view-details">
-          <button
-            [id]="'button-field-' + field.id"
-            type="button"
-            class="a-btn a-btn--icon-only"
-            title="{{ '@pry.action.viewDetails' | i18n }}"
-            [attr.aria-expanded]="(currentFieldId$ | async) === field.id"
-            aria-haspopup
-            [attr.aria-controls]="'panel-field-' + field.id"
-          >
-            <span class="u-visually-hidden">{{ field.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
-            <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
-          </button>
-        </td>
-        <td>{{ field.name }}</td>
-        <td>{{ FIELD_I18N.label + field.type | i18n }}</td>
-        <td>{{ field.attributes }}</td>
-      </tr>
-    </tbody>
-  </table>
+  @if (fields$ | async; as fields) {
+    <table
+      class="a-table"
+      prySortTable
+      prySortActive="name"
+      prySortDirection="asc"
+      (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
+    >
+      <caption>
+        {{
+          '@pry.admin.fields.list' | i18n
+        }},
+        {{
+          '@pry.action.sortableColumnHeader' | i18n
+        }}
+      </caption>
+      <thead>
+        <tr>
+          <th></th>
+          <th prySortHeader="name">{{ '@pry.admin.fields.name' | i18n }}</th>
+          <th prySortHeader="type">{{ '@pry.admin.fields.type' | i18n }}</th>
+          <th prySortHeader="attributes">{{ '@pry.admin.fields.attributes' | i18n }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (field of fields | prySortData: sortActive : sortDirection; track field.id) {
+          <tr (click)="selectField(field)" [class.is-selected]="(currentFieldId$ | async) === field.id">
+            <td class="view-details">
+              <button
+                [id]="'button-field-' + field.id"
+                type="button"
+                class="a-btn a-btn--icon-only"
+                title="{{ '@pry.action.viewDetails' | i18n }}"
+                [attr.aria-expanded]="(currentFieldId$ | async) === field.id"
+                aria-haspopup
+                [attr.aria-controls]="'panel-field-' + field.id"
+              >
+                <span class="u-visually-hidden">{{ field.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
+                <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
+              </button>
+            </td>
+            <td>{{ field.name }}</td>
+            <td>{{ FIELD_I18N.label + field.type | i18n }}</td>
+            <td>{{ field.attributeCount }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
 </div>

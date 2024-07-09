@@ -1,5 +1,5 @@
 import { Field } from '@provoly/dashboard';
 
 export interface FieldExtended extends Field {
-  attributes: number;
+  attributeCount: number;
 }
