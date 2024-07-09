@@ -949,32 +949,6 @@ export class DashboardEffects {
     )
   );
 
-  confirmLayerGroupDeletion$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(DashboardActions.confirmLayerGroupDeletion),
-        tap((action) => {
-          const data: PryDialogConfirmData = {
-            title: '@pry.widget.map.layerSettings.confirmDelete',
-            actions: [
-              {
-                id: 0,
-                label: '@pry.toolbox.manifest.validate',
-                actions: [DashboardActions.deleteLayerGroup({ name: action.name })]
-              },
-              {
-                id: 1,
-                label: '@pry.toolbox.manifest.close',
-                color: 'secondary'
-              }
-            ]
-          };
-          this.pryDialog.open(PryDialogConfirmComponent, { data });
-        })
-      ),
-    { dispatch: false }
-  );
-
   constructor(
     private dashboardInitService: DashboardInitService,
     private actions$: Actions,

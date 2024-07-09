@@ -5,7 +5,6 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import {
   ClassSelectors,
   ConfigSelectors,
-  DashboardActions,
   DashboardSelectors,
   DataSourceSelectors,
   FieldSelectors,
@@ -43,7 +42,6 @@ import { WidgetMapUtils } from '@provoly/dashboard/widgets/widget-map';
 import { mockLayerGroups } from '@provoly/dashboard/mock/data/mockLayerGroups';
 import SpyInstance = jest.SpyInstance;
 import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
-import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 describe('WidgetMapComponent', () => {
   let component: WidgetMapComponent;
@@ -844,6 +842,37 @@ describe('WidgetMapComponent', () => {
         expect(component.layerGroups.find((g) => g.name === mockLayerGroups[0].name)?.visibleLayers[0]).toBe(
           'my-layer'
         );
+      });
+    });
+    describe('removeEmptyLayerGroups', () => {
+      it('should remove all groups that are not assigned to any layers', () => {
+        component.optionsCopy.layers = [
+          { title: 'layer1', attribute: 'attr1', group: 'group2', type: 'heatmap' },
+          { title: 'layer2', attribute: 'attr2', group: 'DEFAULT', type: 'heatmap' }
+        ];
+        component.layerGroups = [
+          { name: 'group1', singleLayer: false, visibleLayers: ['layer1'] },
+          { name: 'group2', singleLayer: false, visibleLayers: [] },
+          { name: 'group3', singleLayer: false, visibleLayers: [] },
+          { name: 'DEFAULT', singleLayer: false, visibleLayers: [] }
+        ];
+
+        expect(component.layerGroups.length).toBe(4);
+        component.removeEmptyLayerGroups();
+        expect(component.layerGroups.length).toBe(2);
+      });
+      it('should never remove the DEFAULT group', () => {
+        component.optionsCopy.layers = [
+          { title: 'layer1', attribute: 'attr1', group: 'group1', type: 'heatmap' }
+        ];
+        component.layerGroups = [
+          { name: 'group1', singleLayer: false, visibleLayers: ['layer1'] },
+          { name: 'DEFAULT', singleLayer: false, visibleLayers: [] }
+        ];
+
+        expect(component.layerGroups.length).toBe(2);
+        component.removeEmptyLayerGroups();
+        expect(component.layerGroups.length).toBe(2);
       });
     });
   });

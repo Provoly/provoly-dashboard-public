@@ -766,23 +766,6 @@ const internalReducer = createReducer<DashboardState>(
       }
     }
   })),
-  on(DashboardActions.addLayerGroup, (state, action) => ({
-    ...state,
-    manifests: {
-      ...state.manifests,
-      manifest: {
-        ...state.manifests.manifest,
-        layerGroups: [
-          ...(state.manifests.manifest.layerGroups ?? []),
-          {
-            name: action.name ?? 'MISSING NAME',
-            singleLayer: action.singleLayer ?? false,
-            visibleLayers: action.visibleLayers ?? ([] as string[])
-          }
-        ]
-      }
-    }
-  })),
   on(DashboardActions.updateLayerVisibility, (state, action) => ({
     ...state,
     manifests: {
@@ -803,16 +786,6 @@ const internalReducer = createReducer<DashboardState>(
               : group
           )
         ]
-      }
-    }
-  })),
-  on(DashboardActions.deleteLayerGroup, (state, action) => ({
-    ...state,
-    manifests: {
-      ...state.manifests,
-      manifest: {
-        ...state.manifests.manifest,
-        layerGroups: state.manifests.manifest.layerGroups!.filter((group) => group.name !== action.name)
       }
     }
   })),

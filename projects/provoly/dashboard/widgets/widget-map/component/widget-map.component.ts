@@ -533,7 +533,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         this.optionsCopy.layers?.forEach(
           (layer) => (this.layerSettingsExpandedState[layer.title ?? 'MISSING TITLE'] = false)
         );
-        if (this.optionsCopy.layers && this.optionsCopy.layers.some((layer) => !layer.group || layer.group === DEFAULT_LAYER_GROUP))
+        if (
+          this.optionsCopy.layers &&
+          this.optionsCopy.layers.some((layer) => !layer.group || layer.group === DEFAULT_LAYER_GROUP)
+        )
           this.optionsCopy.layers
             ?.filter(
               (l) =>
@@ -1254,10 +1257,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       type: 'marker'
     });
     this.layerSettingsExpandedState[title] = false;
-
-    this.store.dispatch(
-      DashboardActions.updateLayerVisibility({ name: group.name, visibleLayers: [...group.visibleLayers, title] })
-    );
+    this.updateLayerGroup(group, undefined, title);
     this.updateLayerOrder();
   }
 
@@ -1642,15 +1642,19 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   addLayerGroup() {
-    this.store.dispatch(
-      DashboardActions.addLayerGroup({
+    console.log(this.layerGroups)
+    console.log(this.optionsCopy.layers)
+    this.layerGroups = [
+      ...this.layerGroups,
+      {
         name:
-          this.translateService.instant('@pry.widget.map.layerSettings.group') +
-          ' ' +
-          (this.layerGroups.length + 1).toString()
-      })
-    );
-
+          this.translateService.instant('@pry.widget.map.layerSettings.group') + ' ' + (this.layerGroups.length + 1),
+        singleLayer: false,
+        visibleLayers: []
+      }
+    ];
+    console.log(this.layerGroups)
+    console.log(this.optionsCopy.layers)
     const group = this.layerGroups[this.layerGroups.length - 1];
     this.addLayer(group);
   }
@@ -1703,8 +1707,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   deleteLayerGroup(name: string) {
-    this.store.dispatch(DashboardActions.confirmLayerGroupDeletion({ name }));
-    this.optionsCopy.layers = this.optionsCopy.layers?.filter((layer) => layer.group !== name);
+    this.layerGroups = this.layerGroups.filter((group) => group.name !== name);
+    this.optionsCopy.layers = this.optionsCopy.layers?.map((layer) =>
+      layer.group == name ? { ...layer, group: DEFAULT_LAYER_GROUP } : layer
+    );
   }
 
   drop(event: CdkDragDrop<MapWidgetLayerOptions[]>, group: LayerGroup): void {
@@ -1782,18 +1788,10 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   removeEmptyLayerGroups() {
-    this.layerGroups.forEach((group) => {
-      if (
-        !this.optionsCopy.layers?.map((layer) => layer.group).includes(group.name) &&
-        group.name !== DEFAULT_LAYER_GROUP
-      ) {
-        this.store.dispatch(
-          DashboardActions.deleteLayerGroup({
-            name: group.name
-          })
-        );
-      }
-    });
+    this.layerGroups = this.layerGroups.filter(
+      (group) =>
+        this.optionsCopy.layers?.some((layer) => layer.group === group.name) || group.name === DEFAULT_LAYER_GROUP
+    );
   }
 
   protected readonly DEFAULT_LAYER_GROUP = DEFAULT_LAYER_GROUP;

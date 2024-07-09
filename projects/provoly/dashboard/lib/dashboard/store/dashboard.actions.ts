@@ -256,12 +256,9 @@ export const DashboardActions = {
     props<{ presentation: ManifestDescription; viewMode: ViewMode }>()
   ),
   initDefaultLayerGroup: createAction('[Dashboard] init default layer group', props<{ layers?: string[] }>()),
-  addLayerGroup: createAction('[Dashboard] add map layer group', props<Partial<LayerGroup>>()),
   updateLayerVisibility: createAction(
     '[Dashboard] update visible layers on the layer group',
     props<{ name: string; visibleLayers?: string | string[] }>()
   ),
-  confirmLayerGroupDeletion: createAction('[Dashboard] confirm deleting map layer group', props<{ name: string }>()),
-  deleteLayerGroup: createAction('[Dashboard] delete map layer group', props<{ name: string }>()),
   updateLayerGroups: createAction('[Dashboard] update all layer groups', props<{ layerGroups: LayerGroup[] }>())
 };
