@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PryPaginatorComponent } from '@provoly/dashboard/components/paginator/paginator.component';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { Action, Store } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { PryPaginatorCssComponent } from '@provoly/dashboard/components/paginator/style/css.component';
 import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pry-icon.component';
 import { DataSourceActions } from '@provoly/dashboard';

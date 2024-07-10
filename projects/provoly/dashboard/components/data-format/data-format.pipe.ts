@@ -11,7 +11,7 @@ export class DataFormatPipe implements PipeTransform {
 
   transform(
     value: any,
-    { isLocaleFormat, unit, decimalPrecision, format }: Partial<FormatOptions> | undefined = {}
+    { localeFormat, unit, decimalPrecision, format }: Partial<FormatOptions> | undefined = {}
   ): any {
     let result = value;
 
@@ -32,11 +32,11 @@ export class DataFormatPipe implements PipeTransform {
       }).format(value);
     }
 
-    if (isLocaleFormat) {
+    if (localeFormat) {
       result = toLocaleString(result);
     }
     if (unit) {
-      result = result + ' ' + unit;
+      result = result + unit;
     }
 
     if (format) {

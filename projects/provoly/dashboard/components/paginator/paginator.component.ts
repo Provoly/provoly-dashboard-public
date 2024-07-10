@@ -1,4 +1,4 @@
-import { Component, computed, effect, EventEmitter, inject, input, Output, signal } from '@angular/core';
+import { Component, computed, effect, EventEmitter, inject, input, Output, signal, untracked } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
 
 @Component({
@@ -35,9 +35,9 @@ export class PryPaginatorComponent {
   }
 
   dispatchPageChangeAction() {
-    if (this.action()) {
+    if (untracked(this.action)) {
       this.store.dispatch({
-        ...this.action(),
+        ...untracked(this.action),
         // @ts-ignore
         offset: (this.currentPage() - 1) * this.nbPerPage(),
         limit: this.nbPerPage()

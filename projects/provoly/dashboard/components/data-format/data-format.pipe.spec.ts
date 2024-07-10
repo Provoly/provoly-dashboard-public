@@ -13,30 +13,30 @@ describe('DataFormatPipe', () => {
 
   describe('numbers', () => {
     it('should format number to locale format (us)', () => {
-      expect(pipe.transform(123456, { isLocaleFormat: true })).toBe('123,456');
+      expect(pipe.transform(123456, { localeFormat: true })).toBe('123,456');
     });
     it('should format number to locale format (fr)', () => {
       LOCALE.value = 'fr-FR';
-      expect(pipe.transform(123456, { isLocaleFormat: true })).toBe('123 456');
+      expect(pipe.transform(123456, { localeFormat: true })).toBe('123 456');
     });
     it('should add suffix', () => {
-      expect(pipe.transform(123456, { unit: 'km' })).toBe('123456 km');
+      expect(pipe.transform(123456, { unit: ' km' })).toBe('123456 km');
     });
     it('should format to locale and add suffix', () => {
-      expect(pipe.transform(123456, { isLocaleFormat: true, unit: 'km' })).toBe('123,456 km');
+      expect(pipe.transform(123456, { localeFormat: true, unit: ' km' })).toBe('123,456 km');
     });
   });
 
   describe('floats', () => {
     it('should format float to locale format (us)', () => {
-      expect(pipe.transform(123456.234, { isLocaleFormat: true })).toBe('123,456.234');
+      expect(pipe.transform(123456.234, { localeFormat: true })).toBe('123,456.234');
     });
     it('should format number to locale format (fr)', () => {
       LOCALE.value = 'fr-FR';
-      expect(pipe.transform(123456.234, { isLocaleFormat: true })).toBe('123 456,234');
+      expect(pipe.transform(123456.234, { localeFormat: true })).toBe('123 456,234');
     });
     it('should add suffix', () => {
-      expect(pipe.transform(123.456, { unit: 'km' })).toBe('123.456 km');
+      expect(pipe.transform(123.456, { unit: ' km' })).toBe('123.456 km');
     });
     it('should apply decimal precision', () => {
       expect(pipe.transform(123.456888, { decimalPrecision: 3 })).toBe('123.457');
@@ -48,10 +48,10 @@ describe('DataFormatPipe', () => {
       expect(pipe.transform(123, { decimalPrecision: 3 })).toBe('123.000');
     });
     it('should format to locale and add suffix', () => {
-      expect(pipe.transform(123456.234, { isLocaleFormat: true, unit: 'km' })).toBe('123,456.234 km');
+      expect(pipe.transform(123456.234, { localeFormat: true, unit: ' km' })).toBe('123,456.234 km');
     });
     it('should apply precision, format to locale and add suffix', () => {
-      expect(pipe.transform(123456.288, { isLocaleFormat: true, unit: 'km', decimalPrecision: 1 })).toBe(
+      expect(pipe.transform(123456.288, { localeFormat: true, unit: ' km', decimalPrecision: 1 })).toBe(
         '123,456.3 km'
       );
     });

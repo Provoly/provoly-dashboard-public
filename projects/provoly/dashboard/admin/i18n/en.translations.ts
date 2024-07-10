@@ -319,7 +319,7 @@ export const enTranslations = {
           title: 'Formatting options',
           decimalPrecision: 'Decimal precision',
           noDecimalPrecision: 'No decimal precision provided',
-          isLocaleFormat: 'Localized format',
+          localeFormat: 'Localized format',
           unit: 'Unit',
           noUnit: 'No unit provided',
           dateFormat: 'Date format',

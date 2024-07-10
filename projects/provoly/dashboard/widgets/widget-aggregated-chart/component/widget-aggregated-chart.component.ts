@@ -410,7 +410,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                         axis: {
                           grid: false,
                           ...WidgetAggregatedChartComponent.minTick(types.abscissa.field?.type ?? FieldType.STRING),
-                          labelExpr: this.getAxisFormat(types.abscissa.vegaType, types.abscissa.field),
+                          labelExpr: this.getLabelExpr('x', types.abscissa.vegaType, types.abscissa.field),
                           ...this.getLabelAngle(types.abscissa.vegaType, values.data)
                         },
                         scale: {
@@ -428,7 +428,8 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                         type: types.ordinate.vegaType,
                         axis: {
                           ...WidgetAggregatedChartComponent.minTick(types.ordinate.field?.type ?? FieldType.STRING),
-                          ...this.setTickCount(values.data)
+                          ...this.setTickCount(values.data),
+                          labelExpr: this.getLabelExpr('y', types.ordinate.vegaType, types.ordinate.field)
                         },
                         scale: {
                           zero: types.ordinate.vegaType === VegaType.QUANTITATIVE ? !!options.ordinate.keep0 : false
@@ -559,7 +560,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       combineLatest([this.vegaLiteSpec$, this.trigger$]).subscribe(([spec, _]) => {
         if (this.vega) {
           this.view?.finalize();
-          // console.log(JSON.stringify(spec));
+         // console.log(JSON.stringify(spec));
           embed(this.vega.nativeElement, JSON.parse(JSON.stringify(spec)), {
             actions: false,
             renderer: 'canvas',
@@ -1056,12 +1057,15 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     return typeof abscissaInterval === 'string';
   }
 
-  getAxisFormat(axisType: string, field?: Field) {
+  getLabelExpr(axis: 'x' | 'y', axisType: string, field?: Field) {
+    const truncateBasedOn = axis === 'x' ? 'height < 300' : 'width < 100';
     const timeFormat = `timeFormat(datum.value, '${toD3Format(field?.format)}')`;
-    const numberFormat = `.${field?.decimalPrecision ?? 2}d`;
+    const numberFormat = field?.decimalPrecision
+      ? `format(datum.value, '.${field?.decimalPrecision}f')`
+      : 'datum.value';
     const truncatedFormat = 'truncate(datum.value, 10)';
 
-    return `height < 300 ? ${
+    return `${truncateBasedOn} ? ${
       axisType === VegaType.TEMPORAL ? timeFormat : axisType === VegaType.QUANTITATIVE ? numberFormat : truncatedFormat
     } : ${
       axisType === VegaType.TEMPORAL ? timeFormat : axisType === VegaType.QUANTITATIVE ? numberFormat : 'datum.value'
@@ -1073,7 +1077,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       case VegaType.TEMPORAL:
         return { format: toD3Format(field?.format), scale: { type: 'utc' } };
       case VegaType.QUANTITATIVE:
-        return { format: `.${field?.decimalPrecision ?? 2}d` };
+        return field?.decimalPrecision ? { format: `.${field?.decimalPrecision}f` } : {};
       default:
         return {};
     }

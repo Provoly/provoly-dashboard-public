@@ -19,7 +19,7 @@ export interface FormatOptions {
   format?: string;
   decimalPrecision?: number;
   unit?: string;
-  isLocaleFormat?: boolean;
+  localeFormat?: boolean;
 }
 
 export interface Field extends FormatOptions {

@@ -63,7 +63,7 @@ describe('FieldService', () => {
   it('should update field', () => {
     service.updateField(mockField).subscribe();
 
-    const req = httpTestingController.expectOne('ref/model/fields/id-1');
+    const req = httpTestingController.expectOne('ref/model/fields/id/id-1');
     expect(req.request.method).toEqual('PUT');
     req.flush({});
   });

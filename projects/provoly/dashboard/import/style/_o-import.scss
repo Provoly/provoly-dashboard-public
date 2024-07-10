@@ -70,6 +70,12 @@
   &__content {
     overflow: auto;
   }
+
+  &__state-filter {
+    pry-select {
+      min-width: toRem(150);
+    }
+  }
 }
 
 .m-version-modal {

@@ -56,7 +56,7 @@
                 <div>
                   <h4 class="a-h4">{{ '@pry.admin.fields.formatOptions.dateFormat' | i18n }}</h4>
                   @if (field.format) {
-                    <span>{{ '@pry.admin.fields.formatOptions.dateFormatOptions' + field.format | i18n }}</span>
+                    <span>{{ '@pry.admin.fields.formatOptions.dateFormatOptions.' + field.format | i18n }}</span>
                   } @else {
                     <span class="-italic">{{ '@pry.admin.fields.formatOptions.noDateFormat' | i18n }}</span>
                   }
@@ -84,8 +84,8 @@
         }
       </div>
       <div>
-        <h4 class="a-h4">{{ '@pry.admin.fields.formatOptions.isLocaleFormat' | i18n }}</h4>
-        <span>{{ (field.isLocaleFormat ? '@pry.action.yes' : '@pry.action.no') | i18n }}</span>
+        <h4 class="a-h4">{{ '@pry.admin.fields.formatOptions.localeFormat' | i18n }}</h4>
+        <span>{{ (field.localeFormat ? '@pry.action.yes' : '@pry.action.no') | i18n }}</span>
       </div>
     </ng-template>
   </ng-template>

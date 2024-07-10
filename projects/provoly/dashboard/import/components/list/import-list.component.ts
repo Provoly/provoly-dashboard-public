@@ -1,4 +1,4 @@
-import { Component, input, OnInit } from '@angular/core';
+import { Component, effect, input, OnInit, signal, WritableSignal } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
 import {
   Dataset,
@@ -19,7 +19,7 @@ import { GlobalPositionStrategy } from '@angular/cdk/overlay';
   templateUrl: './import-list.component.html'
 })
 export class PryImportListComponent extends SubscriptionnerDirective implements OnInit {
-  loadDataAction = input<Action>(DataSourceActions.dataset.listVersions({}));
+  loadDataAction = signal(DataSourceActions.dataset.listVersions({}));
   refreshClick = input<Observable<void>>();
 
   datasets$: Observable<Dataset[]>;
@@ -51,6 +51,11 @@ export class PryImportListComponent extends SubscriptionnerDirective implements 
 
   clearFilters(): void {
     this.filters = { dataset: undefined, status: undefined, dateMin: undefined, dateMax: undefined };
+    this.store.dispatch({
+      ...this.loadDataAction(),
+      limit: 10,
+      ...this.sort
+    });
   }
 
   loadData(): void {
@@ -83,5 +88,9 @@ export class PryImportListComponent extends SubscriptionnerDirective implements 
     this.sort.sortBy = $event.direction as 'asc' | 'desc';
     this.sort.orderBy = $event.active as 'DATASET_NAME' | 'DATE';
     this.loadData();
+  }
+
+  updateFilters() {
+    this.loadDataAction.update((loadDataAction) => ({ ...loadDataAction, ...this.filters }));
   }
 }

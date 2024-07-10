@@ -25,7 +25,8 @@
     "name": "humidite",
     "type": "decimal",
     "unit": "hPa",
-    "isLocaleFormat": true
+    "localeFormat": true,
+    "decimalPrecision": 3
   },
   {
     "id": "ea1f6255-9e67-41e6-89a2-1c1bd5a0a5ce",

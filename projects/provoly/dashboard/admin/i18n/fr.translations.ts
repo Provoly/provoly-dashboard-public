@@ -323,7 +323,7 @@ export const frTranslations = {
           title: 'Options de formatage',
           decimalPrecision: 'Nombre de décimales souhaité',
           noDecimalPrecision: 'Pas de précision spécifiée',
-          isLocaleFormat: 'Formatage comme nombre',
+          localeFormat: 'Formatage comme nombre',
           unit: 'Unité',
           noUnit: "Pas d'unité spécifiée",
           dateFormat: 'Format de date',

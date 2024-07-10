@@ -185,13 +185,12 @@ describe('WidgetAggregatedChartComponent', () => {
                 bin: false,
                 field: 'key',
                 scale: { zero: true },
-                timeUnit: undefined,
                 title: undefined,
                 type: 'nominal'
               },
               xOffset: undefined,
               y: {
-                axis: {},
+                axis: { labelExpr: 'width < 100 ? truncate(datum.value, 10) : datum.value' },
                 field: 'value',
                 scale: { zero: false },
                 stack: true,
@@ -330,13 +329,12 @@ describe('WidgetAggregatedChartComponent', () => {
                 bin: false,
                 field: 'key',
                 scale: { zero: true },
-                timeUnit: undefined,
                 title: 'ABS',
                 type: 'nominal'
               },
               xOffset: { field: 'series' },
               y: {
-                axis: {},
+                axis: { labelExpr: 'width < 100 ? truncate(datum.value, 10) : datum.value' },
                 field: 'value',
                 scale: { zero: false },
                 stack: true,
@@ -415,13 +413,12 @@ describe('WidgetAggregatedChartComponent', () => {
                 bin: false,
                 field: 'key',
                 scale: { zero: true },
-                timeUnit: undefined,
                 title: 'ABS',
                 type: 'nominal'
               },
               xOffset: undefined,
               y: {
-                axis: {},
+                axis: { labelExpr: 'width < 100 ? truncate(datum.value, 10) : datum.value' },
                 field: 'value',
                 scale: { zero: false },
                 title: 'ORD',

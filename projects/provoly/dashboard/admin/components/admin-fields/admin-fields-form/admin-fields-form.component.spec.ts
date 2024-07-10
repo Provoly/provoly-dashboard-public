@@ -54,13 +54,13 @@ describe('AdminFieldsFormComponent', () => {
         name: 'my-field',
         type: FieldType.INTEGER,
         unit: 'unit',
-        isLocaleFormat: true
+        localeFormat: true
       };
       component.ngOnInit();
       expect(component.form.getRawValue()).toEqual({
         name: 'my-field',
         type: FieldType.INTEGER,
-        formatOptions: { unit: 'unit', isLocaleFormat: true }
+        formatOptions: { unit: 'unit', localeFormat: true }
       });
     });
     it('type DECIMAL', () => {
@@ -70,13 +70,13 @@ describe('AdminFieldsFormComponent', () => {
         type: FieldType.DECIMAL,
         unit: 'unit',
         decimalPrecision: 2,
-        isLocaleFormat: true
+        localeFormat: true
       };
       component.ngOnInit();
       expect(component.form.getRawValue()).toEqual({
         name: 'my-field',
         type: FieldType.DECIMAL,
-        formatOptions: { unit: 'unit', decimalPrecision: 2, isLocaleFormat: true }
+        formatOptions: { unit: 'unit', decimalPrecision: 2, localeFormat: true }
       });
     });
     it('type INSTANT', () => {
@@ -134,9 +134,9 @@ describe('AdminFieldsFormComponent', () => {
       expect(component.formatOptions).toBeTruthy();
       expect(component.formatOptions?.get('dateFormat')).toBeFalsy();
       expect(component.formatOptions?.get('unit')).toBeTruthy();
-      expect(component.formatOptions?.get('isLocaleFormat')).toBeTruthy();
+      expect(component.formatOptions?.get('localeFormat')).toBeTruthy();
       expect(component.formatOptions?.get('decimalPrecision')).toBeFalsy();
-      expect(component.formatOptions?.value).toEqual({ isLocaleFormat: true, unit: null });
+      expect(component.formatOptions?.value).toEqual({ localeFormat: true, unit: null });
     });
     it('should set default format options for LONG field type', () => {
       component.form.patchValue({ type: FieldType.LONG });
@@ -144,9 +144,9 @@ describe('AdminFieldsFormComponent', () => {
       expect(component.formatOptions).toBeTruthy();
       expect(component.formatOptions?.get('dateFormat')).toBeFalsy();
       expect(component.formatOptions?.get('unit')).toBeTruthy();
-      expect(component.formatOptions?.get('isLocaleFormat')).toBeTruthy();
+      expect(component.formatOptions?.get('localeFormat')).toBeTruthy();
       expect(component.formatOptions?.get('decimalPrecision')).toBeFalsy();
-      expect(component.formatOptions?.value).toEqual({ isLocaleFormat: true, unit: null });
+      expect(component.formatOptions?.value).toEqual({ localeFormat: true, unit: null });
     });
     it('should set default format options for DECIMAL field type', () => {
       component.form.patchValue({ type: FieldType.DECIMAL });
@@ -154,9 +154,9 @@ describe('AdminFieldsFormComponent', () => {
       expect(component.formatOptions).toBeTruthy();
       expect(component.formatOptions?.get('dateFormat')).toBeFalsy();
       expect(component.formatOptions?.get('unit')).toBeTruthy();
-      expect(component.formatOptions?.get('isLocaleFormat')).toBeTruthy();
+      expect(component.formatOptions?.get('localeFormat')).toBeTruthy();
       expect(component.formatOptions?.get('decimalPrecision')).toBeTruthy();
-      expect(component.formatOptions?.value).toEqual({ isLocaleFormat: true, unit: null, decimalPrecision: 2 });
+      expect(component.formatOptions?.value).toEqual({ localeFormat: true, unit: null, decimalPrecision: 2 });
     });
     it('should set default format options for INSTANT field type', () => {
       component.form.patchValue({ type: FieldType.INSTANT });
@@ -164,7 +164,7 @@ describe('AdminFieldsFormComponent', () => {
       expect(component.formatOptions).toBeTruthy();
       expect(component.formatOptions?.get('dateFormat')).toBeTruthy();
       expect(component.formatOptions?.get('unit')).toBeFalsy();
-      expect(component.formatOptions?.get('isLocaleFormat')).toBeFalsy();
+      expect(component.formatOptions?.get('localeFormat')).toBeFalsy();
       expect(component.formatOptions?.get('decimalPrecision')).toBeFalsy();
       expect(component.formatOptions?.value).toEqual({ dateFormat: null });
     });
@@ -191,7 +191,7 @@ describe('AdminFieldsFormComponent', () => {
       type: FieldType.DECIMAL,
       unit: 'unit',
       decimalPrecision: 2,
-      isLocaleFormat: true, // set to true by default
+      localeFormat: true, // set to true by default
       crs: undefined,
       format: undefined
     });

@@ -32,7 +32,7 @@ interface FieldForm {
 }
 
 interface FormatOptionsForm {
-  isLocaleFormat?: FormControl<boolean | null>;
+  localeFormat?: FormControl<boolean | null>;
   unit?: FormControl<string | null>;
   decimalPrecision?: FormControl<number | null>;
   dateFormat?: FormControl<string | null>;
@@ -164,7 +164,7 @@ export class AdminFieldsFormComponent extends SubscriptionnerDirective implement
       crs: this.crs?.value,
       unit: this.formatOptions?.value.unit ?? undefined,
       decimalPrecision: this.formatOptions?.value.decimalPrecision ?? undefined,
-      isLocaleFormat: this.formatOptions?.value.isLocaleFormat ?? undefined,
+      localeFormat: this.formatOptions?.value.localeFormat ?? undefined,
       format: this.formatOptions?.value.dateFormat ?? undefined
     };
   }
@@ -200,19 +200,19 @@ export class AdminFieldsFormComponent extends SubscriptionnerDirective implement
     switch (type) {
       case FieldType.INTEGER:
       case FieldType.LONG:
-        this.formatOptions?.addControl('isLocaleFormat', new FormControl(true));
+        this.formatOptions?.addControl('localeFormat', new FormControl(true));
         this.formatOptions?.setControl('unit', new FormControl(null));
         this.formatOptions?.removeControl('decimalPrecision');
         this.formatOptions?.removeControl('dateFormat');
         break;
       case FieldType.DECIMAL:
-        this.formatOptions?.addControl('isLocaleFormat', new FormControl(true));
+        this.formatOptions?.addControl('localeFormat', new FormControl(true));
         this.formatOptions?.setControl('unit', new FormControl(null));
         this.formatOptions?.setControl('decimalPrecision', new FormControl(2));
         this.formatOptions?.removeControl('dateFormat');
         break;
       case FieldType.INSTANT:
-        this.formatOptions?.removeControl('isLocaleFormat');
+        this.formatOptions?.removeControl('localeFormat');
         this.formatOptions?.removeControl('unit');
         this.formatOptions?.removeControl('decimalPrecision');
         this.formatOptions?.setControl('dateFormat', new FormControl(null));
@@ -228,13 +228,13 @@ export class AdminFieldsFormComponent extends SubscriptionnerDirective implement
       case FieldType.INTEGER:
       case FieldType.LONG:
         this.formatOptions?.patchValue({
-          isLocaleFormat: this.currentField?.isLocaleFormat,
+          localeFormat: this.currentField?.localeFormat,
           unit: this.currentField?.unit
         });
         break;
       case FieldType.DECIMAL:
         this.formatOptions?.patchValue({
-          isLocaleFormat: this.currentField?.isLocaleFormat,
+          localeFormat: this.currentField?.localeFormat,
           unit: this.currentField?.unit,
           decimalPrecision: this.currentField?.decimalPrecision
         });

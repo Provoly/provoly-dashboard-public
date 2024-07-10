@@ -29,7 +29,7 @@ export class FieldService {
   updateField(field: Field): Observable<void> {
     return this.store
       .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.put<void>(encodeURI(`${url}/model/fields/${field.id}`), field)));
+      .pipe(mergeMap((url) => this.httpClient.put<void>(encodeURI(`${url}/model/fields/id/${field.id}`), field)));
   }
 
   deleteField(id: string): Observable<void> {
