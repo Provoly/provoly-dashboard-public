@@ -76,11 +76,12 @@ const components = [
   FilterGroupComponent,
   DatasourceSelectorComponent,
   PryDatasourceCardComponent,
-  PryDatasourceListComponent
+  PryDatasourceListComponent,
+  PryFilterGroupCssComponent
 ];
 
 @NgModule({
-  declarations: [...components, PryFilterGroupCssComponent],
+  declarations: [...components],
   imports: [
     CommonModule,
     FormsModule,

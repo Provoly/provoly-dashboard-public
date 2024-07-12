@@ -1,6 +1,12 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { BaseFilterComponent, SearchActions, SearchSelectors, SearchService } from '@provoly/dashboard';
+import {
+  BaseFilterComponent,
+  PrySelectComponent,
+  SearchActions,
+  SearchSelectors,
+  SearchService
+} from '@provoly/dashboard';
 import {
   BehaviorSubject,
   catchError,
@@ -31,6 +37,7 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
   possibleFilterValues$!: Observable<string[]>;
   possibleFilterValues: string[] = [];
   items$ = new BehaviorSubject<string[]>([]);
+  @ViewChild('select') select!: PrySelectComponent;
 
   constructor(
     store: Store,

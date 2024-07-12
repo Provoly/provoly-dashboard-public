@@ -1,22 +1,24 @@
 import { Component, Inject } from '@angular/core';
-import { BehaviorSubject, Observable } from "rxjs";
-import { Store } from "@ngrx/store";
-import { GlobalManifest } from "../../../../core/model/manifest.interface";
-import { DashboardSelectors } from "../../../store/dashboard.selectors";
-import { DashboardActions } from "../../../store/dashboard.actions";
-import { DOCUMENT } from "@angular/common";
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { GlobalManifest } from '../../../../core/model/manifest.interface';
+import { DashboardSelectors } from '../../../store/dashboard.selectors';
+import { DashboardActions } from '../../../store/dashboard.actions';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'pry-filter-group',
-  templateUrl:'./filter-group.component.html'
+  templateUrl: './filter-group.component.html'
 })
-
 export class FilterGroupComponent {
   globalManifest$: Observable<GlobalManifest>;
   apply$ = new BehaviorSubject<void>(undefined);
   isSelectOpen = false;
 
-  constructor(private store: Store, @Inject(DOCUMENT) private document: Document) {
+  constructor(
+    protected store: Store,
+    @Inject(DOCUMENT) private document: Document
+  ) {
     this.globalManifest$ = this.store.select(DashboardSelectors.globalManifest);
   }
 

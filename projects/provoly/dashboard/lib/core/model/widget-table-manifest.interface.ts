@@ -10,7 +10,7 @@ export interface ColumnDefinition {
   type?: string;
   property: string;
   attributeId?: string;
-  field?: Field
+  field?: Field;
 }
 
 export interface TableWidgetStyle {

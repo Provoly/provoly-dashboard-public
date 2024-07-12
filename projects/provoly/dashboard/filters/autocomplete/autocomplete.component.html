@@ -1,24 +1,24 @@
 <pry-autocomplete-css></pry-autocomplete-css>
-<div
-  class="m-filter__input-wrapper m-filter__input-wrapper--dropdown"
-  *ngIf="filter"
-  (keyup)="updateSearch($event)"
-  #ref
->
-  <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
-  <pry-select
-    [id]="filter.name"
-    [items]="items$ | async"
-    [ngModel]="filter.value"
-    (ngModelChange)="setFilter($event)"
-    [clearable]="true"
-    [autocomplete]="true"
-    [externalAutocompleteService]="true"
-    aria-labelledby="item-label"
-    (blur)="updateSearch($event)"
-    [elementRef]="ref"
-    (cleared)="clear()"
-    [loading]="loader"
-    (clicked)="resetAutocompleteValues()"
-  ></pry-select>
-</div>
+@if (filter) {
+  <div class="m-filter__input-wrapper m-filter__input-wrapper--dropdown" (keyup)="updateSearch($event)" #ref>
+    @if (filter.name) {
+      <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
+    }
+    <pry-select
+      [id]="filter.name"
+      [items]="items$ | async"
+      [ngModel]="filter.value"
+      (ngModelChange)="setFilter($event)"
+      [clearable]="true"
+      [autocomplete]="true"
+      [externalAutocompleteService]="true"
+      aria-labelledby="item-label"
+      (blur)="updateSearch($event)"
+      [elementRef]="ref"
+      (cleared)="clear()"
+      [loading]="loader"
+      (clicked)="resetAutocompleteValues()"
+      #select
+    ></pry-select>
+  </div>
+}

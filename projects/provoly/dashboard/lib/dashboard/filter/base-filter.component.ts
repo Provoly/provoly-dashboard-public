@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Filter } from '../../core/model/filter.interface';
 import { SubscriptionnerDirective } from '../components/subscriptionner.directive';
@@ -9,6 +9,7 @@ export class BaseFilterComponent extends SubscriptionnerDirective implements OnI
   @Input() filter?: Filter;
   type!: string;
   protected _value: any;
+  @Output() valueUpdated = new EventEmitter<any>();
 
   constructor(protected store: Store) {
     super();
@@ -21,6 +22,7 @@ export class BaseFilterComponent extends SubscriptionnerDirective implements OnI
 
   updateFilter(value: any) {
     this._value = value;
+    this.valueUpdated.next(value);
   }
 
   validateFilters() {

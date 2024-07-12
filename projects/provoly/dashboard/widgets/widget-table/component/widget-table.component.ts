@@ -15,7 +15,6 @@ import {
   DataWidgetComponent,
   DEFAULT_TABLE_WIDGET_STYLE,
   Field,
-  FieldSelectors,
   FieldType,
   Item,
   ItemUtils,

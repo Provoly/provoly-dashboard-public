@@ -50,7 +50,7 @@ import { PryPaginatorModule } from '@provoly/dashboard/components/paginator';
     PryDataFormatModule,
     PryPaginatorModule
   ],
-  exports: [WidgetTableComponent]
+  exports: [WidgetTableComponent, ExpandValueComponent, GetValuePipe]
 })
 export class WidgetTableModule extends BaseWidgetModule {
   constructor(private pryTranslateService: PryI18nService) {
