@@ -32,6 +32,7 @@ export const frTranslations = {
       size: "Taille de l'image",
       deleteAttributeConfirmMessage:
         'Cet attribut ne sera plus visible pour les données le possédant. Confirmez-vous la suppression ?',
+      invalid: 'Valeur invalide',
       attributes: {
         unknownField: 'Type métier inconnu',
         unknownCategory: 'Catégorie inconnue',

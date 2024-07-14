@@ -149,6 +149,10 @@ export class AdminFieldsFormComponent extends SubscriptionnerDirective implement
     return this.form.get('formatOptions') as FormGroup<FormatOptionsForm>;
   }
 
+  get decimalPrecision(): AbstractControl | null | undefined {
+    return this.form.get('formatOptions')?.get('decimalPrecision');
+  }
+
   get isGeographicType(): boolean {
     return GeometricFieldTypes.includes(this.type?.value as string);
   }
@@ -208,14 +212,14 @@ export class AdminFieldsFormComponent extends SubscriptionnerDirective implement
       case FieldType.DECIMAL:
         this.formatOptions?.addControl('localeFormat', new FormControl(true));
         this.formatOptions?.setControl('unit', new FormControl(null));
-        this.formatOptions?.setControl('decimalPrecision', new FormControl(2));
+        this.formatOptions?.setControl('decimalPrecision', new FormControl(2, [Validators.min(0), Validators.max(20)]));
         this.formatOptions?.removeControl('dateFormat');
         break;
       case FieldType.INSTANT:
         this.formatOptions?.removeControl('localeFormat');
         this.formatOptions?.removeControl('unit');
         this.formatOptions?.removeControl('decimalPrecision');
-        this.formatOptions?.setControl('dateFormat', new FormControl(null));
+        this.formatOptions?.setControl('dateFormat', new FormControl('DATETIME'));
         break;
       default:
         this.form.removeControl('formatOptions');

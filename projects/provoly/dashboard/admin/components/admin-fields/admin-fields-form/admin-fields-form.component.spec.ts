@@ -166,7 +166,7 @@ describe('AdminFieldsFormComponent', () => {
       expect(component.formatOptions?.get('unit')).toBeFalsy();
       expect(component.formatOptions?.get('localeFormat')).toBeFalsy();
       expect(component.formatOptions?.get('decimalPrecision')).toBeFalsy();
-      expect(component.formatOptions?.value).toEqual({ dateFormat: null });
+      expect(component.formatOptions?.value).toEqual({ dateFormat: 'DATETIME' });
     });
     it('should set formatOptions to undefined for any other field type', () => {
       component.form.patchValue({ type: FieldType.STRING });

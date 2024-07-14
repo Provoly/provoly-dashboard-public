@@ -20,10 +20,10 @@ describe('DataFormatPipe', () => {
       expect(pipe.transform(123456, { localeFormat: true })).toBe('123 456');
     });
     it('should add suffix', () => {
-      expect(pipe.transform(123456, { unit: ' km' })).toBe('123456 km');
+      expect(pipe.transform(123456, { unit: 'km' })).toBe('123456 km');
     });
     it('should format to locale and add suffix', () => {
-      expect(pipe.transform(123456, { localeFormat: true, unit: ' km' })).toBe('123,456 km');
+      expect(pipe.transform(123456, { localeFormat: true, unit: 'km' })).toBe('123,456 km');
     });
   });
 
@@ -36,7 +36,7 @@ describe('DataFormatPipe', () => {
       expect(pipe.transform(123456.234, { localeFormat: true })).toBe('123 456,234');
     });
     it('should add suffix', () => {
-      expect(pipe.transform(123.456, { unit: ' km' })).toBe('123.456 km');
+      expect(pipe.transform(123.456, { unit: 'km' })).toBe('123.456 km');
     });
     it('should apply decimal precision', () => {
       expect(pipe.transform(123.456888, { decimalPrecision: 3 })).toBe('123.457');
@@ -48,11 +48,11 @@ describe('DataFormatPipe', () => {
       expect(pipe.transform(123, { decimalPrecision: 3 })).toBe('123.000');
     });
     it('should format to locale and add suffix', () => {
-      expect(pipe.transform(123456.234, { localeFormat: true, unit: ' km' })).toBe('123,456.234 km');
+      expect(pipe.transform(123456.234, { localeFormat: true, unit: 'km' })).toBe('123,456.234 km');
     });
     it('should apply precision, format to locale and add suffix', () => {
-      expect(pipe.transform(123456.288, { localeFormat: true, unit: ' km', decimalPrecision: 1 })).toBe(
-        '123,456.3 km'
+      expect(pipe.transform(123456.288, { localeFormat: true, unit: 'km', decimalPrecision: 1 })).toBe(
+        '123,456.3 km'
       );
     });
   });
@@ -81,7 +81,7 @@ describe('DataFormatPipe', () => {
       expect(pipe.transform(undefined)).toBeUndefined();
     });
     it('should return undefined if value is undefined even if format options are provided', () => {
-      expect(pipe.transform(undefined)).toBeUndefined();
+      expect(pipe.transform(undefined, { unit: 'unit' })).toBeUndefined();
     });
     it('should return undefined if value is null', () => {
       expect(pipe.transform(null)).toBeNull();

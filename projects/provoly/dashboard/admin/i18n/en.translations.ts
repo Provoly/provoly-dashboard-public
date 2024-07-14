@@ -32,6 +32,7 @@ export const enTranslations = {
       share: 'Share',
       deleteAttributeConfirmMessage:
         'This attribute will no longer be visible for the associated data. Are you sure you want to delete this?',
+      invalid: 'Invalid value',
       attributes: {
         unknownField: 'Unknown field',
         unknownCategory: 'Unknown category',

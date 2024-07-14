@@ -100,15 +100,24 @@
               <label class="a-label" for="field_format_comma">{{
                 '@pry.admin.fields.formatOptions.decimalPrecision' | i18n
               }}</label>
-              <input formControlName="decimalPrecision" id="field_format_comma" type="number" class="a-form-field" />
+              <input
+                formControlName="decimalPrecision"
+                id="field_format_comma"
+                type="number"
+                min="0"
+                class="a-form-field"
+              />
+              @if (decimalPrecision?.dirty && decimalPrecision?.invalid) {
+                <label id="decimalPrecision-error" for="crs" class="a-label a-label--help -error">
+                  <label class="a-label a-label--help -error" for="field_format_comma">
+                    {{ '@pry.admin.invalid' | i18n }}
+                  </label>
+                </label>
+              }
             </div>
           }
           <div class="m-form-label-field -width-sm">
-            <pry-checkbox
-              formControlName="localeFormat"
-              inputId="field_format_locale_number_format"
-              [inhibit]="false"
-            >
+            <pry-checkbox formControlName="localeFormat" inputId="field_format_locale_number_format" [inhibit]="false">
               {{ '@pry.admin.fields.formatOptions.localeFormat' | i18n }}
             </pry-checkbox>
           </div>
@@ -146,6 +155,7 @@
       <button
         class="a-btn a-btn--primary"
         type="submit"
+        [disabled]="form.invalid"
         [innerHTML]="(currentField ? '@pry.admin.edit' : '@pry.admin.create') | i18n"
       ></button>
     </div>

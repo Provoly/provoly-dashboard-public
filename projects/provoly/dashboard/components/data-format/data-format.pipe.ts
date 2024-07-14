@@ -36,7 +36,7 @@ export class DataFormatPipe implements PipeTransform {
       result = toLocaleString(result);
     }
     if (unit) {
-      result = result + unit;
+      result = result + ' ' + unit;
     }
 
     if (format) {
