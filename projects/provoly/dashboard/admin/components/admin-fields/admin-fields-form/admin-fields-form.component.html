@@ -85,7 +85,12 @@
       </div>
     }
 
-    @if (formatOptions) {
+    @if (
+      type?.value === FieldType.INTEGER ||
+      type?.value === FieldType.LONG ||
+      type?.value === FieldType.DECIMAL ||
+      type?.value === FieldType.INSTANT
+    ) {
       <div formGroupName="formatOptions">
         <h3 class="a-h3">{{ '@pry.admin.fields.formatOptions.title' | i18n }}</h3>
         @if (type?.value === FieldType.INTEGER || type?.value === FieldType.LONG || type?.value === FieldType.DECIMAL) {

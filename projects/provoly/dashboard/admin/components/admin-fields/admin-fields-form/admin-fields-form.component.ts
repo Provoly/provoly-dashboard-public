@@ -222,7 +222,7 @@ export class AdminFieldsFormComponent extends SubscriptionnerDirective implement
         this.formatOptions?.setControl('dateFormat', new FormControl('DATETIME'));
         break;
       default:
-        this.form.removeControl('formatOptions');
+        this.form.setControl('formatOptions', new FormGroup({}));
         break;
     }
   }

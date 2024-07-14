@@ -131,7 +131,6 @@ describe('AdminFieldsFormComponent', () => {
     it('should set default format options for INTEGER field type', () => {
       component.form.patchValue({ type: FieldType.INTEGER });
 
-      expect(component.formatOptions).toBeTruthy();
       expect(component.formatOptions?.get('dateFormat')).toBeFalsy();
       expect(component.formatOptions?.get('unit')).toBeTruthy();
       expect(component.formatOptions?.get('localeFormat')).toBeTruthy();
@@ -141,7 +140,6 @@ describe('AdminFieldsFormComponent', () => {
     it('should set default format options for LONG field type', () => {
       component.form.patchValue({ type: FieldType.LONG });
 
-      expect(component.formatOptions).toBeTruthy();
       expect(component.formatOptions?.get('dateFormat')).toBeFalsy();
       expect(component.formatOptions?.get('unit')).toBeTruthy();
       expect(component.formatOptions?.get('localeFormat')).toBeTruthy();
@@ -151,7 +149,6 @@ describe('AdminFieldsFormComponent', () => {
     it('should set default format options for DECIMAL field type', () => {
       component.form.patchValue({ type: FieldType.DECIMAL });
 
-      expect(component.formatOptions).toBeTruthy();
       expect(component.formatOptions?.get('dateFormat')).toBeFalsy();
       expect(component.formatOptions?.get('unit')).toBeTruthy();
       expect(component.formatOptions?.get('localeFormat')).toBeTruthy();
@@ -161,7 +158,6 @@ describe('AdminFieldsFormComponent', () => {
     it('should set default format options for INSTANT field type', () => {
       component.form.patchValue({ type: FieldType.INSTANT });
 
-      expect(component.formatOptions).toBeTruthy();
       expect(component.formatOptions?.get('dateFormat')).toBeTruthy();
       expect(component.formatOptions?.get('unit')).toBeFalsy();
       expect(component.formatOptions?.get('localeFormat')).toBeFalsy();
@@ -170,13 +166,13 @@ describe('AdminFieldsFormComponent', () => {
     });
     it('should set formatOptions to undefined for any other field type', () => {
       component.form.patchValue({ type: FieldType.STRING });
-      expect(component.formatOptions).toBeFalsy();
+      expect(component.formatOptions?.value).toEqual({});
 
       component.form.patchValue({ type: FieldType.POINT });
-      expect(component.formatOptions).toBeFalsy();
+      expect(component.formatOptions?.value).toEqual({});
 
       component.form.patchValue({ type: FieldType.KEYWORD });
-      expect(component.formatOptions).toBeFalsy();
+      expect(component.formatOptions?.value).toEqual({});
     });
   });
 
