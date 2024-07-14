@@ -167,9 +167,10 @@
           </td>
           <td>
             {{
-              version.id === dataset.activeVersion?.id
+              (version.id === dataset.activeVersion?.id
                 ? '@pry.dataset.version.state.currentlyActive'
-                : ('@pry.dataset.version.state.' + version.state | i18n)
+                : '@pry.dataset.version.state.' + version.state
+              ) | i18n
             }}
             <div
               *ngIf="version.state !== 'DELETING'"
