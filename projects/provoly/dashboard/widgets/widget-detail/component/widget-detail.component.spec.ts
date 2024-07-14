@@ -19,6 +19,7 @@ import { MockTranslateItemToSymbolPipe } from '../../../mock/pipe/mock-translate
 import { MockTranslatePipe } from '../../../mock/pipe/mock-translate.pipe';
 import { WidgetDetailComponent } from './widget-detail.component';
 import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
+import { MockDataFormatPipe } from '@provoly/dashboard/mock/pipe/mock-data-format.pipe';
 
 describe('WidgetDetailComponent', () => {
   let component: WidgetDetailComponent;
@@ -35,7 +36,8 @@ describe('WidgetDetailComponent', () => {
         MockTranslateItemToSymbolPipe,
         MockPryWidgetHeaderComponent,
         MockI18nPipe,
-        MockPryWidgetDetailCssComponent
+        MockPryWidgetDetailCssComponent,
+        MockDataFormatPipe
       ],
       providers: [
         { provide: PryI18nService, useClass: MockPryI18nService },

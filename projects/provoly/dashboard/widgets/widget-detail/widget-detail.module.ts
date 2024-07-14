@@ -18,6 +18,7 @@ import { WidgetDetailComponent } from './component/widget-detail.component';
 import { enTranslations } from './i18n/en.translations';
 import { frTranslations } from './i18n/fr.translations';
 import { PryWidgetDetailCssComponent } from './style/css.component';
+import { PryDataFormatModule } from '@provoly/dashboard/components/data-format';
 
 @NgModule({
   declarations: [WidgetDetailComponent, PryWidgetDetailCssComponent],
@@ -31,7 +32,8 @@ import { PryWidgetDetailCssComponent } from './style/css.component';
     PryIconModule,
     PryCheckboxModule,
     PryToggleModule,
-    PryI18nModule
+    PryI18nModule,
+    PryDataFormatModule
   ],
   exports: [WidgetDetailComponent]
 })

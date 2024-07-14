@@ -92,7 +92,9 @@
                   class="o-properties__list__item"
                 >
                   <p class="o-properties__list__item__label" *ngIf="i === 0">{{ property.name }}:</p>
-                  <p class="o-properties__list__item__value" *ngIf="!isRaw(property.attribute)">{{ value?.value }}</p>
+                  <p class="o-properties__list__item__value" *ngIf="!isRaw(property.attribute)">
+                    {{ value?.value | dataFormat: property.attribute.field }}
+                  </p>
                   <p class="o-properties__list__item__raw" *ngIf="isRaw(property.attribute)">
                     <pry-vizualize-raw [item]="couple.item" [propertyName]="property.name"></pry-vizualize-raw>
                   </p>
