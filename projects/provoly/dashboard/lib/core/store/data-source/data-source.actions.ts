@@ -48,8 +48,8 @@ export const DataSourceActions = {
         limit?: number;
         offset?: number;
         dataset?: string;
-        sortBy?: string;
-        orderBy?: 'ASC' | 'DESC';
+        sortBy?: 'asc' | 'desc';
+        orderBy?: 'DATASET_NAME' | 'DATE';
         dateMin?: string;
         dateMax?: string;
         status?: string;

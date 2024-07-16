@@ -229,7 +229,7 @@ describe('DataSourceEffects', () => {
       );
 
       actions$ = hot('--a-', {
-        a: DataSourceActions.dataset.listVersions({ orderBy: 'ASC', sortBy: 'a' })
+        a: DataSourceActions.dataset.listVersions({ orderBy: 'DATASET_NAME', sortBy: 'asc' })
       });
 
       const expected$ = hot('--a-', {

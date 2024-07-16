@@ -100,8 +100,8 @@ export class DataSourceService {
     limit?: number;
     offset?: number;
     dataset?: string;
-    sortBy?: string;
-    orderBy?: 'ASC' | 'DESC';
+    sortBy?: 'asc' | 'desc';
+    orderBy?: 'DATASET_NAME' | 'DATE';
     dateMin?: string;
     dateMax?: string;
     status?: string;
@@ -114,9 +114,9 @@ export class DataSourceService {
         params = params.set('offset', (offset ?? 0).toString());
         if (dataset) params = params.set('dataset', dataset);
         if (sortBy) params = params.set('sortBy', sortBy).set('orderBy', orderBy ?? 'ASC');
-        if (dateMin) params = params.set('dateMin', dateMin);
-        if (dateMax) params = params.set('dateMax', dateMax);
-        if (status) params = params.set('status', status);
+        if (dateMin) params = params.set('dateMin', new Date(dateMin).toISOString());
+        if (dateMax) params = params.set('dateMax', new Date(dateMax).toISOString());
+        if (status) params = params.set('state', status);
         return this.httpClient.get<DatasetVersion[]>(encodeURI(`${url}/dataset-versions`), {
           params,
           observe: 'response'

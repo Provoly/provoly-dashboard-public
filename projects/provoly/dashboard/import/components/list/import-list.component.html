@@ -51,7 +51,13 @@
     </button>
   </div>
   <div class="o-import-list__content">
-    <table class="a-table" prySortTable (prySortChange)="sortChange($event)">
+    <table
+      class="a-table"
+      prySortTable
+      (prySortChange)="sortChange($event)"
+      [prySortDirection]="sort.sortBy"
+      [prySortActive]="sort.orderBy"
+    >
       <caption>
         {{
           '@pry.admin.dataset.title' | i18n
@@ -117,5 +123,6 @@
     [nbPerPage]="10"
     [totalItemNb]="(totalVersionCount$ | async)!"
     class="u-self-center"
+    [goBackToFirstPage]="goBackToFirstPage$ | async"
   ></pry-paginator>
 </div>

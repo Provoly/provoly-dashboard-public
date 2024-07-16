@@ -12,6 +12,7 @@ export class PryPaginatorComponent {
   nbPerPage = input<number>(10);
   totalItemNb = input<number>(100);
   mode = input<'long' | 'short'>('long');
+  goBackToFirstPage = input<any>();
 
   nbOfPages = computed(() => {
     return Math.floor(this.totalItemNb() / this.nbPerPage());
@@ -26,8 +27,17 @@ export class PryPaginatorComponent {
   constructor() {
     effect(
       () => {
+        // if current page changes, dispatch action to load data
         if (this.currentPage()) {
           this.dispatchPageChangeAction();
+        }
+      },
+      { allowSignalWrites: true }
+    );
+    effect(
+      () => {
+        if (this.goBackToFirstPage()) {
+          this.changePage(1);
         }
       },
       { allowSignalWrites: true }

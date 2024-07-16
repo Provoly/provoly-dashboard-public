@@ -10,7 +10,7 @@ import {
   PryStatusModalComponent,
   SubscriptionnerDirective
 } from '@provoly/dashboard';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { PryVersionModalComponent } from '../version-modal/version-modal.component';
 import { GlobalPositionStrategy } from '@angular/cdk/overlay';
 
@@ -19,7 +19,7 @@ import { GlobalPositionStrategy } from '@angular/cdk/overlay';
   templateUrl: './import-list.component.html'
 })
 export class PryImportListComponent extends SubscriptionnerDirective implements OnInit {
-  loadDataAction = signal(DataSourceActions.dataset.listVersions({}));
+  loadDataAction = signal(DataSourceActions.dataset.listVersions({ orderBy: 'DATE', sortBy: 'desc' }));
   refreshClick = input<Observable<void>>();
 
   datasets$: Observable<Dataset[]>;
@@ -32,7 +32,8 @@ export class PryImportListComponent extends SubscriptionnerDirective implements 
     dateMin: undefined,
     dateMax: undefined
   };
-  sort: { orderBy?: 'DATASET_NAME' | 'DATE'; sortBy?: 'asc' | 'desc' } = {};
+  sort: { orderBy?: 'DATASET_NAME' | 'DATE'; sortBy?: 'asc' | 'desc' } = { orderBy: 'DATE', sortBy: 'desc' };
+  goBackToFirstPage$ = new Subject<boolean>();
 
   constructor(
     private store: Store,
@@ -51,20 +52,21 @@ export class PryImportListComponent extends SubscriptionnerDirective implements 
 
   clearFilters(): void {
     this.filters = { dataset: undefined, status: undefined, dateMin: undefined, dateMax: undefined };
+    this.loadDataAction.update((loadDataAction) => ({ ...loadDataAction, offset: 0 }));
     this.store.dispatch({
       ...this.loadDataAction(),
       limit: 10,
       ...this.sort
     });
+    this.goBackToFirstPage();
   }
 
   loadData(): void {
     this.store.dispatch({
       ...this.loadDataAction(),
-      limit: 10,
-      ...this.filters,
-      ...this.sort
+      limit: 10
     });
+    this.goBackToFirstPage();
   }
 
   openInfoModal(version: DatasetVersion) {
@@ -87,10 +89,16 @@ export class PryImportListComponent extends SubscriptionnerDirective implements 
   sortChange($event: PrySortChange) {
     this.sort.sortBy = $event.direction as 'asc' | 'desc';
     this.sort.orderBy = $event.active as 'DATASET_NAME' | 'DATE';
+    this.loadDataAction.update((loadDataAction) => ({ ...loadDataAction, ...this.sort }));
     this.loadData();
   }
 
   updateFilters() {
     this.loadDataAction.update((loadDataAction) => ({ ...loadDataAction, ...this.filters }));
+  }
+
+  goBackToFirstPage() {
+    this.goBackToFirstPage$.next(true);
+    setTimeout(() => this.goBackToFirstPage$.next(false), 50);
   }
 }
