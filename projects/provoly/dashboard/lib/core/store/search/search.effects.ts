@@ -12,7 +12,11 @@ import { SearchService } from './search.service';
 
 @Injectable()
 export class SearchEffects {
-  constructor(private actions$: Actions, private searchService: SearchService, private store: Store) {}
+  constructor(
+    private actions$: Actions,
+    private searchService: SearchService,
+    private store: Store
+  ) {}
 
   searchNamed$ = createEffect(() =>
     this.actions$.pipe(

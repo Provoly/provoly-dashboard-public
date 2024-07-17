@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
 import { TypedAction } from '@ngrx/store/src/models';
-import { v4 as uuid } from 'uuid';
+import { v4 } from 'uuid';
 import { DashboardActions } from '../../store/dashboard.actions';
 import { BusAction } from '../bus-action.interface';
 import { ControlMessage, ControlMessageType } from './control-message.interface';
@@ -15,8 +15,11 @@ export class BusService {
   controlChannel: BroadcastChannel;
   buffer: Action[];
 
-  constructor(private store: Store<any>, private zone: NgZone) {
-    this.sender = uuid();
+  constructor(
+    private store: Store<any>,
+    private zone: NgZone
+  ) {
+    this.sender = new Date().toISOString() + v4();
     this.dataChannel = new BroadcastChannel('data');
     this.controlChannel = new BroadcastChannel('control');
     this.buffer = [];
@@ -33,7 +36,7 @@ export class BusService {
     };
 
     this.controlChannel.onmessage = (msg) =>
-      zone.run(() => {
+      this.zone.run(() => {
         this.manageControlMessage(msg.data);
       });
     this.dataChannel.onmessageerror = (msg) => {

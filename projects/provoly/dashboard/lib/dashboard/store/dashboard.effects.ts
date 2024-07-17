@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { combineLatest, merge, of, startWith, throwError } from 'rxjs';
+import { combineLatest, delay, merge, of, startWith, throwError } from 'rxjs';
 import { catchError, debounceTime, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 import {
   PryDialogConfirmComponent,
@@ -37,6 +37,7 @@ export class DashboardEffects {
   join$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.join),
+      delay(1000),
       withLatestFrom(
         this.store.select(DashboardSelectors.rank),
         this.store.select(DashboardSelectors.tenants),
@@ -47,6 +48,8 @@ export class DashboardEffects {
         this.store.select(DashboardSelectors.displayOptions)
       ),
       filter(([action, rank, tenants, manifest, resultSets, display]) => rank === 0),
+      debounceTime(200),
+      tap((v) => console.log(v)),
       map(([action, rank, tenants, manifest, resultSets, selectedIds, presentation, display]) =>
         DashboardActions.updateManifestAfterTenantJoin({
           tenants, // we already have added tenant in the reduce of the "join" action

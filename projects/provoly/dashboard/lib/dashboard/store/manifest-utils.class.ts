@@ -6,7 +6,7 @@ export class ManifestUtils {
     const mapOfDatasources = (
       manifest.windows
         .map((window) =>
-          (window.widgets ?? []).map((widget) => ({ datasetId: widget.datasource, excludeGeo: widget.type !== 'map' }))
+          (window.widgets ?? []).map((widget) => ({ datasetId: widget.datasource, excludeGeo: widget?.type !== 'map' }))
         )
         .flat(3)
         .filter((dataset) => !!dataset.datasetId)

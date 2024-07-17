@@ -117,7 +117,7 @@ const internalReducer = createReducer<DashboardState>(
     ...state,
     manifests: {
       ...state.manifests,
-      tenants: [...state.manifests.tenants, action.sender]
+      tenants: [...state.manifests.tenants, action.sender].sort()
     }
   })),
   on(DashboardActions.declareSenderId, (state, action) => ({
@@ -125,7 +125,7 @@ const internalReducer = createReducer<DashboardState>(
     manifests: {
       ...state.manifests,
       sender: action.sender,
-      tenants: state.manifests.tenants.length === 0 ? action.tenants : state.manifests.tenants
+      tenants: [...(state.manifests.tenants.length === 0 ? action.tenants : state.manifests.tenants)].sort()
     }
   })),
   on(
@@ -144,7 +144,7 @@ const internalReducer = createReducer<DashboardState>(
         ...state,
         manifests: {
           ...state.manifests,
-          tenants: action.tenants ?? state.manifests.tenants,
+          tenants: [...(action.tenants ?? state.manifests.tenants)].sort(),
           manifest: ManifestUtils.cleanupManifest(action.manifest),
           currentId: action.manifestId ?? state.manifests.currentId
         },

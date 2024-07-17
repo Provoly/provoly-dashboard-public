@@ -74,7 +74,7 @@ describe('Dashboard reducer', () => {
       expect(
         dashboardReducer(
           { ...initialState },
-          DashboardActions.updateManifest({ manifest, tenants: ['me', 'another'], selectedIds: [] })
+          DashboardActions.updateManifest({ manifest, tenants: ['another', 'me'], selectedIds: [] })
         )
       ).toEqual({
         ...initialState,
@@ -82,7 +82,7 @@ describe('Dashboard reducer', () => {
         manifests: {
           ...initialState.manifests,
           manifest: ManifestUtils.cleanupManifest(manifest),
-          tenants: ['me', 'another']
+          tenants: ['another', 'me']
         }
       });
     });
@@ -118,9 +118,10 @@ describe('Dashboard reducer', () => {
         ...initialState,
         manifests: {
           ...initialState.manifests,
-          tenants: ['me', 'known'],
+          tenants: ['known', 'me'],
           manifest: ManifestUtils.cleanupManifest(manifest)
-        }
+        },
+        display: undefined
       });
     });
   });
