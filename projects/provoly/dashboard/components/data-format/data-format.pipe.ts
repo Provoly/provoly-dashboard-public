@@ -23,41 +23,28 @@ export class DataFormatPipe implements PipeTransform {
       return JSON.stringify(value);
     }
 
-    if (decimalPrecision) {
-      result = new Intl.NumberFormat(undefined, {
+    if (decimalPrecision || localeFormat) {
+      result = new Intl.NumberFormat(LOCALE.value, {
         // @ts-ignore
         roundingMode: 'floor',
         minimumFractionDigits: decimalPrecision,
-        maximumFractionDigits: decimalPrecision
+        maximumFractionDigits: decimalPrecision,
+        useGrouping: localeFormat
       }).format(value);
     }
 
-    if (localeFormat) {
-      result = toLocaleString(result);
-    }
     if (unit) {
       result = result + ' ' + unit;
     }
 
     if (format) {
-      result = new Intl.DateTimeFormat(LOCALE.value, dateFormatOptions.value[format]).format(getDate(value));
+      const actualDate = getDate(value);
+      result = new Intl.DateTimeFormat(LOCALE.value, dateFormatOptions.value[format]).format(actualDate);
     }
 
     return result;
   }
 }
-
-// number formatting methods
-const toLocaleString = (value?: string | number) => {
-  switch (typeof value) {
-    case 'number':
-      return new Intl.NumberFormat(LOCALE.value, { maximumFractionDigits: 20 }).format(value);
-    case 'string':
-      return value;
-    default:
-      return value;
-  }
-};
 
 // date formatting methods
 export const dateFormatOptions: { value: { [key: string]: Intl.DateTimeFormatOptions } } = {

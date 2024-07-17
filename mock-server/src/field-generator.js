@@ -83,12 +83,12 @@ const wrapAttribute = (attr) => {
 function generateAttrValueByFieldType(type, attr) {
   switch (type.type) {
     case 'decimal':
-      return casual.double((from = 0), (to = 1000));
+      return casual.double((from = 0), (to = 10000000));
     case 'string':
     case 'keyword':
       return casual.sentence;
     case 'integer':
-      return casual.integer((from = 0), (to = 1000));
+      return casual.integer((from = 0), (to = 1000000));
     case 'long':
       return casual.integer((from = 10000), (to = 10000000));
     case 'instant':

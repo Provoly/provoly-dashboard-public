@@ -51,27 +51,33 @@ describe('DataFormatPipe', () => {
       expect(pipe.transform(123456.234, { localeFormat: true, unit: 'km' })).toBe('123,456.234 km');
     });
     it('should apply precision, format to locale and add suffix', () => {
-      expect(pipe.transform(123456.288, { localeFormat: true, unit: 'km', decimalPrecision: 1 })).toBe(
-        '123,456.3 km'
-      );
+      expect(pipe.transform(123456.288, { localeFormat: true, unit: 'km', decimalPrecision: 1 })).toBe('123,456.3 km');
+    });
+    it('should apply precision, but not locale', () => {
+      LOCALE.value = 'fr-FR';
+      expect(pipe.transform(123456.288, { localeFormat: false, decimalPrecision: 1 })).toBe('123456,3');
     });
   });
 
   describe('dates', () => {
-    const date = '2021-01-01T00:00:00.000Z';
+    const date = '2021-02-03T00:00:00.000Z';
+    // ignoring TZ instanciation problems since not related to format
     const cases = [
-      { format: 'DATETIME', expected: '1/1/2021, 12:00 AM' },
-      { format: 'DATE', expected: '01/01/2021' },
-      { format: 'MONTH_YEAR', expected: '01/2021' },
-      { format: 'DAY_MONTH', expected: '01/01' },
-      { format: 'YEAR', expected: '2021' },
-      { format: 'MONTH', expected: '01' },
-      { format: 'DAY', expected: '01' }
+      { format: 'DATETIME', expected: new RegExp('03/02/2021 [0-9]+:[0-9][0-9]'), locale: 'fr-FR' },
+      { format: 'DATETIME', expected: new RegExp('2/3/2021, [0-9]+:[0-9][0-9] AM'), locale: 'en-US' },
+      { format: 'DATE', expected: '03/02/2021', locale: 'fr-FR' },
+      { format: 'DATE', expected: '02/03/2021', locale: 'en-US' },
+      { format: 'MONTH_YEAR', expected: '02/2021', locale: 'fr-FR' },
+      { format: 'DAY_MONTH', expected: '03/02', locale: 'fr-FR' },
+      { format: 'YEAR', expected: '2021', locale: 'fr-FR' },
+      { format: 'MONTH', expected: '02', locale: 'fr-FR' },
+      { format: 'DAY', expected: '03', locale: 'fr-FR' }
     ];
 
     it('should format date to expected format', () => {
-      cases.forEach(({ format, expected }) => {
-        expect(pipe.transform(date, { format: format })).toBe(expected);
+      cases.forEach(({ format, expected, locale }) => {
+        LOCALE.value = locale;
+        expect(pipe.transform(date, { format: format })).toMatch(expected);
       });
     });
   });

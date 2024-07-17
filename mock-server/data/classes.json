@@ -1331,7 +1331,7 @@
           "name": "ckdo_decimal",
           "type": "decimal",
           "slug": "621dd18780_ckdo_decimal",
-          "decimalPrecision": null,
+          "decimalPrecision": 2,
           "localeFormat": false,
           "unit": "",
           "numeric": false,

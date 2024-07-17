@@ -11,6 +11,7 @@ import { mockDatasets } from '@provoly/dashboard/mock/data/mockDataset';
 import { MockPrySelectComponent } from '@provoly/dashboard/mock/components/mock-pry-select.component';
 import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 import { Overlay } from 'ol';
+import { MockPryDatasourceListComponent } from '@provoly/dashboard/mock/components/mock-pry-datasource-list.component';
 
 describe('PryDatasetComponent', () => {
   let component: PryDatasetComponent;
@@ -28,7 +29,8 @@ describe('PryDatasetComponent', () => {
         MockNgModelDirective,
         MockPryTabGroupComponent,
         MockPryTabComponent,
-        MockPrySelectComponent
+        MockPrySelectComponent,
+        MockPryDatasourceListComponent
       ],
       providers: [provideMockStore({}), { provide: Overlay, useValue: MockOverlay }]
     }).compileComponents();

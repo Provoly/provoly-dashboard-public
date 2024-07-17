@@ -45,5 +45,11 @@
     "classes": [
       "06406e7e-37cd-41ce-b5fc-36d233e5ae5c"
     ]
+  },
+  "aggregation-superficie": {
+    "number": 30,
+    "classes": [
+      "class-superficie"
+    ]
   }
 }
