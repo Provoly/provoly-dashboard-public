@@ -1,0 +1,53 @@
+{
+  "operation": "sum",
+  "values": [
+    {
+      "key": "Conifères",
+      "value": 17682.5
+    },
+    {
+      "key": "Cultures",
+      "value": 15700.849999999999
+    },
+    {
+      "key": "Feuillus",
+      "value": 13609.560000000001
+    },
+    {
+      "key": "Mixte",
+      "value": 19272.95
+    },
+    {
+      "key": "Prairies arbustives",
+      "value": 15793.619999999999
+    },
+    {
+      "key": "Prairies herbacées",
+      "value": 20470.46
+    },
+    {
+      "key": "Sols arborés",
+      "value": 15232.25
+    },
+    {
+      "key": "Sols artificialisés",
+      "value": 56655.81
+    },
+    {
+      "key": "Sols imperméabilisés",
+      "value": 39977.57
+    },
+    {
+      "key": "Vergers",
+      "value": 9838.77
+    },
+    {
+      "key": "Vignes",
+      "value": 22022.239999999998
+    },
+    {
+      "key": "Zones humides",
+      "value": 15306.76
+    }
+  ]
+}

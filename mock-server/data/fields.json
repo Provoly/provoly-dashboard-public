@@ -352,5 +352,34 @@
     "type": "MultiPolygon",
     "slug": "8270d984f7_zone",
     "crs": "EPSG:4326"
+  },
+  {
+    "id": "ff6e2527-0ed1-463a-ab95-33585463aa3d",
+    "name": "ckdo_int",
+    "type": "integer",
+    "slug": "305e10c3d3_ckdo_int",
+    "localeFormat": false,
+    "unit": null,
+    "numeric": true,
+    "geo": false
+  },
+  {
+    "id": "6994ede1-7689-489f-8003-115e7cd4646b",
+    "name": "ckdo_decimal",
+    "type": "decimal",
+    "slug": "621dd18780_ckdo_decimal",
+    "decimalPrecision": null,
+    "localeFormat": false,
+    "unit": "",
+    "numeric": false,
+    "geo": false
+  },
+  {
+    "id": "c23fff92-0d10-4f5a-91f5-80405a058291",
+    "name": "ckdo_keyword",
+    "type": "keyword",
+    "slug": "132a1582c9_ckdo_keyword",
+    "numeric": false,
+    "geo": false
   }
 ]

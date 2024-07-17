@@ -251,5 +251,14 @@
     "owner": false,
     "groups": [],
     "metadata": []
+  },
+  {
+    "id": "aggregation-superficie",
+    "name": "Aggrégation superficie",
+    "oClass": "class-superficie",
+    "type": "OPEN",
+    "owner": false,
+    "groups": [],
+    "metadata": []
   }
 ]

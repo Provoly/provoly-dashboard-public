@@ -26,6 +26,7 @@ let datasets = JSON.parse(fs.readFileSync('./data/datasets.json', 'utf8'));
 let transfos = JSON.parse(fs.readFileSync('./data/transfos.json', 'utf8'));
 let departements = JSON.parse(fs.readFileSync('./data/departements.json', 'utf8'));
 let shareConflict = JSON.parse(fs.readFileSync('./data/shareConflict.json', 'utf8'));
+const aggregationResponses = JSON.parse(fs.readFileSync('./data/aggregationResponses.json', 'utf8'));
 
 const getClasses = () =>
   classes.map((oClass) => ({
@@ -33,13 +34,19 @@ const getClasses = () =>
     attributes: oClass.attributes.map((attr) => ({
       ...attr,
       technicalName: attr.technicalName ?? attr.name,
-      field: fields.find(f => f.id === attr.field)
+      field: typeof attr.field === 'string' ? fields.find((f) => f.id === attr.field) : attr.field
     }))
   }));
 
 Object.keys(queryResponses).forEach((key) => {
   if (typeof queryResponses[key] === 'string') {
     queryResponses[key] = JSON.parse(fs.readFileSync(`./data/responses/${queryResponses[key]}`, 'utf8'));
+  }
+});
+
+Object.keys(aggregationResponses).forEach((key) => {
+  if (typeof aggregationResponses[key] === 'string') {
+    aggregationResponses[key] = JSON.parse(fs.readFileSync(`./data/responses/${aggregationResponses[key]}`, 'utf8'));
   }
 });
 
@@ -414,6 +421,7 @@ module.exports = {
   relationTypes,
   links,
   queryResponses,
+  aggregationResponses,
   tasksDetailed,
   procedures,
   queryResponseTypes,

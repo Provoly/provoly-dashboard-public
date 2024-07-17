@@ -2068,5 +2068,55 @@
         }
       ]
     }
+  },
+  {
+    "name": "issue-954",
+    "manifest": {
+      "windows": [
+        {
+          "widgets": [
+            {
+              "type": "chart",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "width": 12,
+                "height": 12
+              },
+              "options": {
+                "graph": {
+                  "type": "bar-default",
+                  "tooltip": true,
+                  "legend": false
+                },
+                "abscissa": {
+                  "keep0": true,
+                  "limit": 20,
+                  "attribute": "e423c75c-6fd9-4372-8cd0-4aa9e2f8d401",
+                  "label": "Classification"
+                },
+                "ordinate": {
+                  "keep0": true,
+                  "operation": "none",
+                  "attribute": "81cc812b-e02c-4d30-8d2d-89d0f3e3799e",
+                  "label": "Surface (ha)"
+                },
+                "baseColor": "#40B688"
+              },
+              "datasource": [
+                "aggregation-superficie"
+              ]
+            }
+          ],
+          "grid": {
+            "columns": 12,
+            "rows": 12,
+            "layout": "1",
+            "gap": 15
+          },
+          "route": "/dashboard"
+        }
+      ]
+    }
   }
 ]
