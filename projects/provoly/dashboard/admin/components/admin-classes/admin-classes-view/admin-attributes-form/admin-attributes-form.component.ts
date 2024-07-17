@@ -23,7 +23,6 @@ import { noWhitespaceValidator } from '../../../../components/admin.component';
 import { AdminActions } from '../../../../store/admin.actions';
 import { AdminClassActions } from '../../store/admin-class.actions';
 import { AddCategoryModalComponent } from '../../../shared/add-category-modal/add-category-modal.component';
-import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'pry-admin-attributes-form',
@@ -134,9 +133,13 @@ export class AdminAttributesFormComponent extends SubscriptionnerDirective imple
       this.attrForm.get('field')!.valueChanges.pipe(startWith(this.attrForm.get('field')?.value)),
       this.fields$
     ]).pipe(
-      map(
-        ([selectedFieldId, fields]) =>
-          FIELD_I18N.information + fields.find((field) => field.id === selectedFieldId)?.type
+      map(([selectedFieldId, fields]) =>
+        !selectedFieldId
+          ? ''
+          : FIELD_I18N.information +
+            fields.find(
+              (field) => field.id === (typeof selectedFieldId === 'string' ? selectedFieldId : selectedFieldId.id)
+            )?.type
       )
     );
   }
