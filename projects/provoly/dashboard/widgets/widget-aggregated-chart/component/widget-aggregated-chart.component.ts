@@ -295,7 +295,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
             vegaType:
               options!.ordinate.operation === Operation.COUNT || options!.ordinate.operation === Operation.DISTINCT
                 ? VegaType.QUANTITATIVE
-                : this.translateToVegaType(abscissa?.field.type, ordinate?.name ?? ''),
+                : this.translateToVegaType(ordinate?.field.type, ordinate?.name ?? ''),
             name: ordinate?.name ?? ''
           },
           groupBy: {
@@ -560,7 +560,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       combineLatest([this.vegaLiteSpec$, this.trigger$]).subscribe(([spec, _]) => {
         if (this.vega) {
           this.view?.finalize();
-         // console.log(JSON.stringify(spec));
+          // console.log(JSON.stringify(spec));
           embed(this.vega.nativeElement, JSON.parse(JSON.stringify(spec)), {
             actions: false,
             renderer: 'canvas',
