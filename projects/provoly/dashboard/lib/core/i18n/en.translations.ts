@@ -430,7 +430,7 @@ export const enTranslations = {
       title: 'Title',
       name: 'Dataset name',
       productionDate: 'Production date',
-      importDate: 'Import date',
+      lastModifiedDate: 'Last modified date',
       number: 'Version number',
       producer: 'Data producer',
       additionalInformation: 'Version information',

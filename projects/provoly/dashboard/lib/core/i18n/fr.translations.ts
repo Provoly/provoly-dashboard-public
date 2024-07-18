@@ -436,7 +436,7 @@ export const frTranslations = {
         title: 'Intitulé',
         name: 'Nom de la source de données',
         productionDate: 'Date de production',
-        importDate: "Date d'import",
+        lastModifiedDate: 'Date de dernière modification',
         number: 'Numéro de version',
         producer: 'Producteur de données',
         additionalInformation: 'Informations de la version',

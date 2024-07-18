@@ -5,10 +5,10 @@ export const enTranslations = {
       filter: {
         dsName: 'Name',
         status: 'Import status',
-        date: 'Import date'
+        date: 'Last modified date'
       },
       dsName: 'Name',
-      date: 'Date of creation',
+      date: 'Last modified date',
       number: 'Version number',
       status: 'Version status',
       actions: 'Actions'

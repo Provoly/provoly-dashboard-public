@@ -88,7 +88,7 @@
               {{ version.version }}
             </td>
             <td>
-              {{ version.productionDate | date: 'dd/MM/yyyy HH:mm' }}
+              {{ version.lastModified | date: 'dd/MM/yyyy HH:mm' }}
             </td>
             <td class="u-display-flex -align-center -cell-with-icon">
               @if (version.state === 'ACTIVE') {

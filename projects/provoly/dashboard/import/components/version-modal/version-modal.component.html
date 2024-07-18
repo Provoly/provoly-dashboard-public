@@ -24,8 +24,8 @@
         <span>{{ version.version }}</span>
       </li>
       <li>
-        <h4 class="a-h4">{{ '@pry.dataset.version.importDate' | i18n }}</h4>
-        <span>{{ version.productionDate }}</span>
+        <h4 class="a-h4">{{ '@pry.dataset.version.lastModifiedDate' | i18n }}</h4>
+        <span>{{ version.lastModified | date: 'dd/MM/yyyy HH:mm' }}</span>
       </li>
       <li>
         <h4>{{ '@pry.dataset.version.stateTitle' | i18n }}</h4>
