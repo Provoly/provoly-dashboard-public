@@ -102,10 +102,16 @@
                   : ('@pry.dataset.version.state.' + version.state | i18n)
               }}
             </td>
-            @if (version.state === 'ACTIVE' || version.state === 'INACTIVE') {
+            @if (version.state === 'ERROR') {
+              <td>
+                <button class="a-btn a-btn--secondary" (click)="openErrorModal(version)">
+                  {{ '@pry.dataset.buttonAction.ERROR' | i18n }}
+                </button>
+              </td>
+            } @else {
               <td>
                 <button class="a-btn a-btn--secondary" (click)="openInfoModal(version)">
-                  {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
+                  {{ '@pry.dataset.consult' | i18n }}
                 </button>
               </td>
               @if (version.hasWarnings) {
@@ -115,12 +121,6 @@
                   </button>
                 </td>
               }
-            } @else if (version.state === 'ERROR') {
-              <td>
-                <button class="a-btn a-btn--secondary" (click)="openErrorModal(version)">
-                  {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
-                </button>
-              </td>
             }
           </tr>
         }
