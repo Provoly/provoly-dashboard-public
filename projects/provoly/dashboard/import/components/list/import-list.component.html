@@ -104,12 +104,21 @@
             </td>
             @if (version.state === 'ACTIVE' || version.state === 'INACTIVE') {
               <td>
-                <button class="a-btn a-btn--secondary" (click)="openInfoModal(version)">Consulter</button>
+                <button class="a-btn a-btn--secondary" (click)="openInfoModal(version)">
+                  {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
+                </button>
               </td>
-            } @else if (version.state === 'ERROR' || version.state === 'WARNING') {
+              @if (version.hasWarnings) {
+                <td>
+                  <button class="a-btn a-btn--secondary" (click)="openErrorModal(version)">
+                    {{ '@pry.dataset.buttonAction.WARNING' | i18n }}
+                  </button>
+                </td>
+              }
+            } @else if (version.state === 'ERROR') {
               <td>
                 <button class="a-btn a-btn--secondary" (click)="openErrorModal(version)">
-                  {{ version.state === 'ERROR' ? 'Consulter erreurs' : 'Consulter warnings' }}
+                  {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
                 </button>
               </td>
             }
