@@ -88,13 +88,7 @@
             class="no-widget"
             [style.grid-area]="backgroundArea$ | async"
           >
-            <pry-icon
-              iconSvg="loader"
-              class="no-widget__loading"
-              [alt]="'@pry.widget.target.loading' | i18n"
-              [width]="100"
-              [height]="100"
-            />
+            <pry-page-loader></pry-page-loader>
             <span class="no-widget__text">{{ '@pry.widget.target.loading' | i18n }}...</span>
           </div>
           <ng-template #notLoading>
@@ -124,13 +118,7 @@
           [style.width.px]="params.gridWidth"
           [style.height.px]="params.gridHeight"
         >
-          <pry-icon
-            iconSvg="loader"
-            class="no-widget__loading"
-            [alt]="'@pry.widget.target.loading' | i18n"
-            [width]="200"
-            [height]="200"
-          />
+          <pry-page-loader></pry-page-loader>
           <p>{{ '@pry.widget.target.loading' | i18n }}...</p>
         </div>
       </ng-container>

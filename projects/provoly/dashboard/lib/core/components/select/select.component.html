@@ -92,14 +92,7 @@
   >
     <div class="a-pry-select__options__option -hint" *ngIf="loading" [style.width.px]="modalWidth">
       <div class="no-widget no-widget__loader">
-        <pry-icon
-          iconSvg="loader"
-          class="no-widget__loading"
-          [alt]="'@pry.widget.target.loading' | i18n"
-          [width]="30"
-          [height]="30"
-          *ngIf="loading"
-        />
+        <pry-page-loader></pry-page-loader>
       </div>
       <p>{{ '@pry.select.loading' | i18n }}...</p>
     </div>

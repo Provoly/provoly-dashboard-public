@@ -54,6 +54,7 @@ import { AutomaticGridLayoutDefinition } from '../core/model/automatic-grid-layo
 import { PryDatasourceCardComponent } from './components/widgets/datasource-selector/datasource-card/datasource-card.component';
 import { PryDatasourceListComponent } from './components/widgets/datasource-selector/datasource-list/datasource-list.component';
 import { PrySinceDateModule } from '../core/pipes/since-date/since-date.module';
+import { PryPageLoaderModule } from '@provoly/dashboard/components/page-loader';
 
 const components = [
   DashboardComponent,
@@ -96,7 +97,8 @@ const components = [
     EffectsModule.forFeature([ActionBusEffects, DashboardEffects]),
     PryDatePickerModule,
     PryI18nModule,
-    PrySinceDateModule
+    PrySinceDateModule,
+    PryPageLoaderModule
   ],
   exports: [...components],
   providers: []

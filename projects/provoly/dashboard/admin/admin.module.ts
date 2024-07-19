@@ -122,6 +122,7 @@ import { datasetFeatureKey, datasetReducer } from './components/admin-dataset/st
 import { AdminDatasetEffects } from './components/admin-dataset/store/admin-dataset.effects';
 import { AddCategoryModalComponent } from './components/shared/add-category-modal/add-category-modal.component';
 import { AdminFormDatasetComponent } from './components/admin-dataset/admin-form-dataset/admin-form-dataset.component';
+import { PryPageLoaderModule } from '@provoly/dashboard/components/page-loader';
 
 @NgModule({
   providers: [DatePipe],
@@ -242,7 +243,8 @@ import { AdminFormDatasetComponent } from './components/admin-dataset/admin-form
     PryI18nModule,
     PryExpandPanelModule,
     PryDatasetModule,
-    PryShareModule
+    PryShareModule,
+    PryPageLoaderModule
   ]
 })
 export class PryAdminModule {
