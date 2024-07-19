@@ -62,13 +62,31 @@
   .a-table {
     tbody td.-cell-with-icon {
       margin: 0;
-      padding: toRem(20);
+      padding: toRem(20) toRem(8);
       height: 100%;
     }
   }
 
   &__content {
     overflow: auto;
+
+    table tr {
+      th {
+        .m-btn-sorttable {
+          font-size: toRem(16);
+        }
+
+        &:first-child {
+          width: 30%;
+        }
+      }
+
+      td:nth-child(5) {
+        button {
+          margin-right: toRem(8);
+        }
+      }
+    }
   }
 
   &__state-filter {
@@ -82,7 +100,7 @@
   background-color: white;
   max-width: toRem(380);
   max-height: toRem(600);
-  padding: 0 toRem(20) toRem(20) toRem(10) ;
+  padding: 0 toRem(20) toRem(20) toRem(10);
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 
   &__list {

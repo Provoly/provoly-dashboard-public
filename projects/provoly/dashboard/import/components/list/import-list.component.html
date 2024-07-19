@@ -113,14 +113,12 @@
                 <button class="a-btn a-btn--secondary" (click)="openInfoModal(version)">
                   {{ '@pry.dataset.consult' | i18n }}
                 </button>
-              </td>
-              @if (version.hasWarnings) {
-                <td>
+                @if (version.hasWarnings) {
                   <button class="a-btn a-btn--secondary" (click)="openErrorModal(version)">
                     {{ '@pry.dataset.buttonAction.WARNING' | i18n }}
                   </button>
-                </td>
-              }
+                }
+              </td>
             }
           </tr>
         }
