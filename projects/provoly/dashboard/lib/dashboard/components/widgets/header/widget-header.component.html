@@ -6,7 +6,7 @@
     <ng-template #querySelector>
       <div *ngFor="let ds of usedDatasources$ | async" class="o-widget__header__content__query">
         <ng-container
-          *ngIf="ds.id | translateId : { type: 'datasource', output: 'icon', noDefault: true } | async as url"
+          *ngIf="ds.id | translateId: { type: 'datasource', output: 'icon', noDefault: true } | async as url"
         >
           <img [height]="20" [src]="url" [width]="20" alt="" class="o-widget__header__content__query__icon" />
         </ng-container>
@@ -52,7 +52,7 @@
       <li
         class="m-context-menu__list__item"
         role="none"
-        *ngIf="(manifest$ | async)?.datasource && (options === true || options['datasourceSelection'] === true)"
+        *ngIf="options === true || options['datasourceSelection'] === true"
       >
         <button
           type="button"
@@ -82,7 +82,7 @@
             <pry-icon [height]="17" [width]="17" iconSvg="launch"></pry-icon>
             {{
               (targetIndex !== -1 ? '@pry.widget.target.existing' : '@pry.widget.target.new')
-                | i18n : { targetIndex: this.targetIndex + 1 }
+                | i18n: { targetIndex: this.targetIndex + 1 }
             }}
           </button>
         </li>
