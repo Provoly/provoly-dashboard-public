@@ -14,9 +14,10 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class PryCheckboxComponent implements ControlValueAccessor, AfterViewInit {
+  static genId = 0;
   @Input() circle = true;
   @Input() name = '';
-  @Input() inputId = '';
+  @Input() inputId = `init-id-${PryCheckboxComponent.genId++}`;
   @Input() inhibit = true;
   onChange: any = () => {};
   onTouch: any = () => {};
