@@ -1,5 +1,5 @@
-import { Component, effect, input, OnInit, signal, WritableSignal } from '@angular/core';
-import { Action, Store } from '@ngrx/store';
+import { Component, input, OnInit, signal } from '@angular/core';
+import { Store } from '@ngrx/store';
 import {
   Dataset,
   DatasetVersion,
@@ -52,6 +52,7 @@ export class PryImportListComponent extends SubscriptionnerDirective implements 
 
   clearFilters(): void {
     this.filters = { dataset: undefined, status: undefined, dateMin: undefined, dateMax: undefined };
+    this.updateFilters();
     this.loadDataAction.update((loadDataAction) => ({ ...loadDataAction, offset: 0 }));
     this.store.dispatch({
       ...this.loadDataAction(),
