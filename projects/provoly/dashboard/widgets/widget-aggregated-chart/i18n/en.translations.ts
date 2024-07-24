@@ -18,6 +18,16 @@ export const enTranslations = {
           months: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
           shortMonths: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
         },
+        specializedLocale: {
+          default: '%Y-%m-%dT%H:%M:%S',
+          DATETIME: '%Y-%m-%dT%H:%M:%S',
+          DATE: '%Y-%m-%d',
+          MONTH_YEAR: '%m-%Y',
+          DAY_MONTH: '%d-%m',
+          YEAR: '%Y',
+          MONTH: '%m',
+          DAY: '%d'
+        },
         operation: {
           none: 'Attribute value',
           count: 'Count',

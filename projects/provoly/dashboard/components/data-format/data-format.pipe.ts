@@ -87,24 +87,3 @@ const getDate = (value: string | number | Date): Date => {
   }
   return value;
 };
-
-export const toD3Format = (format?: string) => {
-  switch (format) {
-    case 'DATETIME':
-      return '%Y-%m-%dT%H:%M:%S';
-    case 'DATE':
-      return '%Y-%m-%d';
-    case 'MONTH_YEAR':
-      return '%m-%Y';
-    case 'DAY_MONTH':
-      return '%d-%m';
-    case 'YEAR':
-      return '%Y';
-    case 'MONTH':
-      return '%m';
-    case 'DAY':
-      return '%d';
-    default:
-      return '%Y-%B-%dT%H:%M:%S';
-  }
-};

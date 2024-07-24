@@ -45,7 +45,6 @@ import embed, { vega } from 'vega-embed';
 import { mergeDeep, TopLevelSpec } from 'vega-lite';
 import { initConfig } from 'vega-lite/build/src/config';
 import { PrySchemeService } from '@provoly/dashboard/components/scheme-picker';
-import { toD3Format } from '@provoly/dashboard/components/data-format';
 
 export const CHART_INTERVAL_STEP = 3;
 
@@ -1059,7 +1058,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
 
   getLabelExpr(axis: 'x' | 'y', axisType: string, field?: Field) {
     const truncateBasedOn = axis === 'x' ? 'height < 300' : 'width < 100';
-    const timeFormat = `timeFormat(datum.value, '${toD3Format(field?.format)}')`;
+    const timeFormat = `timeFormat(datum.value, '${this.getLocaleFormat(field?.format)}')`;
     const numberFormat = field?.decimalPrecision
       ? `format(datum.value, '.${field?.decimalPrecision}f')`
       : 'datum.value';
@@ -1075,11 +1074,16 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   getDataFormat(axisType: string, field?: Field) {
     switch (axisType) {
       case VegaType.TEMPORAL:
-        return { format: toD3Format(field?.format), scale: { type: 'utc' } };
+        return { format: this.getLocaleFormat(field?.format), scale: { type: 'utc' } };
       case VegaType.QUANTITATIVE:
         return field?.decimalPrecision ? { format: `.${field?.decimalPrecision}f` } : {};
       default:
         return {};
     }
+  }
+
+  getLocaleFormat(type: string | undefined) {
+    const formats = this.translateService.instantObject('@pry.widget.chart.specializedLocale');
+    return formats[type ?? 'default'];
   }
 }

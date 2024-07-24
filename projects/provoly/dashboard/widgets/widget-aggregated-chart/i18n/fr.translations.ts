@@ -3,7 +3,7 @@ export const frTranslations = {
     widget: {
       chart: {
         numberLocale: {
-          decimal: '.',
+          decimal: ',',
           thousands: ' ',
           grouping: [3],
           currency: ['€', '']
@@ -17,6 +17,16 @@ export const frTranslations = {
           shortDays: ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'],
           months: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
           shortMonths: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+        },
+        specializedLocale: {
+          default: '%Y-%m-%dT%H:%M:%S',
+          DATETIME: '%Y-%m-%dT%H:%M:%S',
+          DATE: '%d/%m/%Y',
+          MONTH_YEAR: '%m/%Y',
+          DAY_MONTH: '%d/%m',
+          YEAR: '%Y',
+          MONTH: '%m',
+          DAY: '%d'
         },
         operation: {
           none: "Valeur de l'attribut",

@@ -115,13 +115,8 @@ export class WidgetVegaComponent extends DataWidgetComponent implements AfterVie
           embed(this.vega.nativeElement, JSON.parse(JSON.stringify(spec)), {
             actions: false,
             renderer: 'canvas',
-            formatLocale: {
-              decimal: this.translateService.instant('@pry.format.decimal'),
-              thousands: this.translateService.instant('@pry.format.thousands'),
-              grouping: this.translateService.instant('@pry.format.grouping'),
-              currency: this.translateService.instant('@pry.format.currency'),
-              percent: '\u202f%'
-            }
+            formatLocale: this.translateService.instantObject('@pry.widget.chart.numberLocale'),
+            timeFormatLocale: this.translateService.instantObject('@pry.widget.chart.timeFormatLocale')
           }).then((result) => (this.view = result.view));
         } else {
           setTimeout(() => this.trigger$.next(), 100);
