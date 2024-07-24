@@ -684,10 +684,14 @@ router.on(['OPTIONS', 'POST'], '/data/data-sources/values', (req, res, params) =
       const attrType = dataModule.fields.get().find((field) => field.id === attr?.type)?.type || 'number';
 
       const result = [];
-      for (let i = 0; i < limit; i++) {
-        result.push(value + '' + (['number', 'decimal'].includes(attrType) ? casual.integer((from = 0)) : casual.word));
+      if (value.length < 5) {
+        for (let i = 0; i < limit; i++) {
+          result.push(
+            value + '' + (['number', 'decimal'].includes(attrType) ? casual.integer((from = 0)) : casual.word)
+          );
+        }
+        result.sort();
       }
-      result.sort();
       setTimeout(() => {
         makeResponseOk(res, result);
       }, 1000);

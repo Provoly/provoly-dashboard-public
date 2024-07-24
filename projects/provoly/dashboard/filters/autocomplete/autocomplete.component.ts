@@ -88,8 +88,8 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
     setTimeout(() => this.preventInitCall$.next(), 200);
 
     this.subscriptions.add(
-      combineLatest([this.possibleFilterValues$, this.autocomplete$.pipe(startWith([] as string[]))])
-        .pipe(map(([possibleValues, autocomplete]) => (autocomplete.length > 0 ? autocomplete : possibleValues)))
+      combineLatest([this.possibleFilterValues$, this.autocomplete$.pipe(startWith(null))])
+        .pipe(map(([possibleValues, autocomplete]) => (!!autocomplete ? autocomplete : possibleValues)))
         .subscribe((values) => this.items$.next(values))
     );
   }

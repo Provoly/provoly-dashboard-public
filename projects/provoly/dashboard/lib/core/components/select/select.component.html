@@ -14,7 +14,7 @@
   (keydown)="onKeydownSelect($event)"
 >
   <div class="a-pry-select__content">
-    <ng-container *ngIf="autocomplete; else noAutocomplete">
+    @if (autocomplete) {
       <input
         type="text"
         class="a-pry-select__search"
@@ -28,48 +28,46 @@
         [placeholder]="placeholder ?? ''"
         #input
       />
-    </ng-container>
-    <ng-template #noAutocomplete>
-      <ng-container *ngIf="(valueItems$ | async).length === 0; else selectedValues">
-        <span class="a-pry-select__placeholder">{{ placeholder }}</span>
-      </ng-container>
-      <ng-template #selectedValues>
-        <ng-container *ngFor="let item of valueItems$ | async">
-          <div
-            class="a-pry-select__value"
-            [class.pry-select-form]="isForm"
-            [class.-multiple]="multiple"
-            [ngClass]="item ? item[bindClasses ?? ''] ?? {} : {}"
-          >
-            <ng-container *ngIf="template; else noTemplateLabel">
-              <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
-            </ng-container>
-            <ng-template #noTemplateLabel>
-              <pry-icon
-                *ngIf="bindIcon"
-                [iconSvg]="item[bindIcon]"
-                [width]="iconSize[0]"
-                [height]="iconSize[1]"
-              ></pry-icon>
-              <ng-container *ngIf="bindLabel ? item?.[bindLabel] : item as value">
-                {{ (i18nPrefix ?? '') + value | i18n: { warn: false } }}
-                <span
-                  *ngIf="multiple && clearable"
-                  class="a-pry-select__clear"
-                  (click)="clear($event, item)"
-                  aria-hidden="true"
-                  >×</span
-                >
-              </ng-container>
-            </ng-template>
-          </div>
-        </ng-container>
-      </ng-template>
+    } @else if ((valueItems$ | async).length === 0) {
+      <span class="a-pry-select__placeholder">{{ placeholder }}</span>
       <div class="a-pry-select__filler"></div>
-    </ng-template>
+    } @else {
+      <ng-container *ngFor="let item of valueItems$ | async">
+        <div
+          class="a-pry-select__value"
+          [class.pry-select-form]="isForm"
+          [class.-multiple]="multiple"
+          [ngClass]="item ? item[bindClasses ?? ''] ?? {} : {}"
+        >
+          @if (template) {
+            <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
+          } @else {
+            <pry-icon
+              *ngIf="bindIcon"
+              [iconSvg]="item[bindIcon]"
+              [width]="iconSize[0]"
+              [height]="iconSize[1]"
+            ></pry-icon>
+            @if (bindLabel ? item?.[bindLabel] : item; as value) {
+              {{ (i18nPrefix ?? '') + value | i18n: { warn: false } }}
+              <span
+                *ngIf="multiple && clearable"
+                class="a-pry-select__clear"
+                (click)="clear($event, item)"
+                aria-hidden="true"
+                >×</span
+              >
+            }
+          }
+        </div>
+      </ng-container>
+      <div class="a-pry-select__filler"></div>
+    }
   </div>
   <div class="a-pry-select__actions">
-    <span *ngIf="clearable" class="a-pry-select__clear" (click)="clearAll($event)" aria-hidden="true">×</span>
+    @if (clearable) {
+      <span class="a-pry-select__clear" (click)="clearAll($event)" aria-hidden="true">×</span>
+    }
     <pry-icon
       class="a-pry-select__toggle"
       [iconSvg]="open ? 'chevron_top' : 'chevron_bottom'"
@@ -90,14 +88,15 @@
     cdkTrapFocus="!autocomplete"
     [cdkTrapFocusAutoCapture]="!autocomplete"
   >
-    <div class="a-pry-select__options__option -hint" *ngIf="loading" [style.width.px]="modalWidth">
-      <div class="no-widget no-widget__loader">
-        <pry-page-loader></pry-page-loader>
+    @if (loading) {
+      <div class="a-pry-select__options__option -hint" [style.width.px]="modalWidth">
+        <div class="no-widget no-widget__loader">
+          <pry-page-loader></pry-page-loader>
+        </div>
+        <p>{{ '@pry.select.loading' | i18n }}...</p>
       </div>
-      <p>{{ '@pry.select.loading' | i18n }}...</p>
-    </div>
-    <ng-container *ngIf="!loading">
-      <ng-container *ngFor="let item of matchingItems$ | async; let index = index; let first = first; let last = last">
+    } @else {
+      @for (item of matchingItems$ | async; track item.id; let index = $index; let first = $first; let last = $last) {
         <div
           class="a-pry-select__options__option"
           [attr.aria-selected]="(valueItems$ | async).includes(item)"
@@ -111,27 +110,28 @@
           tabindex="0"
           #optionDivRef
         >
-          <ng-container *ngIf="template; else noTemplate">
+          @if (template) {
             <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
-          </ng-container>
-          <ng-template #noTemplate>
-            <pry-checkbox
-              (click)="$event.preventDefault()"
-              *ngIf="multiple"
-              [ngModel]="(valueItems$ | async).includes(item)"
-            ></pry-checkbox>
-            <pry-icon
-              *ngIf="bindIcon"
-              [iconSvg]="item[bindIcon]"
-              [width]="iconSize[0]"
-              [height]="iconSize[1]"
-            ></pry-icon>
-            <ng-container *ngIf="bindLabel ? item?.[bindLabel] : item as value">
+          } @else {
+            @if (multiple) {
+              <pry-checkbox
+                (click)="$event.preventDefault()"
+                [ngModel]="(valueItems$ | async).includes(item)"
+              ></pry-checkbox>
+            }
+            @if (bindIcon) {
+              <pry-icon [iconSvg]="item[bindIcon]" [width]="iconSize[0]" [height]="iconSize[1]"></pry-icon>
+            }
+            @if (bindLabel ? item?.[bindLabel] : item; as value) {
               {{ (i18nPrefix ? i18nPrefix : '') + value | i18n: { warn: false } }}
-            </ng-container>
-          </ng-template>
+            }
+          }
         </div>
-      </ng-container>
-    </ng-container>
+      } @empty {
+        <div class="a-pry-select__options__option -hint" [style.width.px]="modalWidth">
+          <p>{{ '@pry.select.empty' | i18n }}</p>
+        </div>
+      }
+    }
   </div>
 </ng-template>
