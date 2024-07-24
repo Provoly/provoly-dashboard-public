@@ -34,79 +34,86 @@
     </pry-settings>
   </pry-widget-header>
   <div class="o-widget--tile-wrapper" [style.top]="(displayHeader$ | async) ? WIDGET_HEADER_HEIGHT + 'px' : 0">
-    <div class="no-result" *ngIf="(items$ | async)?.length === 0">
-      <img
-        class="no-result__search"
-        src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
-        alt="{{ '@pry.widget.tile.empty' | i18n }}"
-        aria-hidden="true"
-      />
-      <span class="no-result__text">{{ '@pry.widget.tile.empty' | i18n }}</span>
-    </div>
+    @if ((items$ | async)?.length === 0) {
+      <div class="no-result">
+        <img
+          class="no-result__search"
+          src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
+          alt="{{ '@pry.widget.tile.empty' | i18n }}"
+          aria-hidden="true"
+        />
+        <span class="no-result__text">{{ '@pry.widget.tile.empty' | i18n }}</span>
+      </div>
+    }
     <ul class="o-widget--tile__list">
-      <li
-        class="o-widget--tile__list__item"
-        *ngFor="let item of items$ | async; let index = index"
-        (contextmenu)="contextMenu($event, item)"
-      >
-        <div class="o-widget--tile__list__item__header">
-          <img
-            [height]="25"
-            [width]="25"
-            [src]="item | translateItemToSymbol | async"
-            [alt]="item.oClass | translateId: { type: 'class', output: 'name' } | async"
-          />
-          <h3 class="o-widget--tile__list__item__header__title">
-            {{
-              item.oClass
-                | translateId
-                  : {
-                      type: 'class',
-                      output: 'name'
-                    }
-                | async
-            }}
-          </h3>
-          <pry-checkbox
-            [ngModel]="(selectedIds$ | async).includes(item.id)"
-            (click)="select($event, item)"
-          ></pry-checkbox>
-        </div>
-        <div class="o-properties">
-          <ul class="o-properties__list">
-            <ng-container *ngFor="let property of (propertiesToDisplay$ | async)![item.oClass]">
-              <li
-                *ngFor="let value of getValue(item, property.prop); let i = index; let c = count"
-                class="o-properties__list__item"
-              >
-                <p class="o-properties__list__item__label" *ngIf="i === 0">{{ property.label }}:</p>
-                <p class="o-properties__list__item__value" *ngIf="!isRaw(property.label, item.oClass)">
-                  {{ value?.value | dataFormat: property.field }}
-                </p>
-                <p class="o-properties__list__item__raw" *ngIf="isRaw(property.label, item.oClass)">
-                  <pry-vizualize-raw [item]="item" [propertyName]="property.label"></pry-vizualize-raw>
-                </p>
-                <ng-container *ngIf="hasMetadata(value)">
-                  <pry-metadata [item]="value"></pry-metadata>
-                </ng-container>
-              </li>
-            </ng-container>
-          </ul>
-        </div>
-        <div (click)="toggleMap(index)" class="o-widget--tile__list__item__footer">
-          <button
-            type="button"
-            class="a-btn a-btn--icon-text -link-like"
-            aria-controls="tile-map-xxx"
-            aria-expanded="false"
-          >
-            {{ '@pry.widget.tile.map' | i18n }}
-          </button>
-        </div>
-        <div class="o-widget--tile__list__item__map" *ngIf="maps[index]" id="tile-map-xxx">
-          <pry-widget-map [staticManifest]="mapManifest" [staticResultSet]="resultSetWithItem(item)"></pry-widget-map>
-        </div>
-      </li>
+      @for (item of items$ | async; track item.id; let index = $index) {
+        <li class="o-widget--tile__list__item" (contextmenu)="contextMenu($event, item)">
+          <div class="o-widget--tile__list__item__header">
+            <img
+              [height]="25"
+              [width]="25"
+              [src]="item | translateItemToSymbol | async"
+              [alt]="item.oClass | translateId: { type: 'class', output: 'name' } | async"
+            />
+            <h3 class="o-widget--tile__list__item__header__title">
+              {{
+                item.oClass
+                  | translateId
+                    : {
+                        type: 'class',
+                        output: 'name'
+                      }
+                  | async
+              }}
+            </h3>
+            <pry-checkbox
+              [ngModel]="(selectedIds$ | async).includes(item.id)"
+              (click)="select($event, item)"
+            ></pry-checkbox>
+          </div>
+          <div class="o-properties">
+            <ul class="o-properties__list">
+              @for (property of (propertiesToDisplay$ | async)![item.oClass]; track property.prop) {
+                <li
+                  *ngFor="let value of getValue(item, property.prop); let i = index; let c = count"
+                  class="o-properties__list__item"
+                >
+                  @if (i === 0) {
+                    <p class="o-properties__list__item__label">{{ property.label }}:</p>
+                  }
+                  @if (!isRaw(property.label, item.oClass)) {
+                    <p class="o-properties__list__item__value">
+                      {{ value?.value | dataFormat: property.field }}
+                    </p>
+                  } @else {
+                    <p class="o-properties__list__item__raw">
+                      <pry-vizualize-raw [item]="item" [propertyName]="property.label"></pry-vizualize-raw>
+                    </p>
+                  }
+                  @if (hasMetadata(value)) {
+                    <pry-metadata [item]="value"></pry-metadata>
+                  }
+                </li>
+              }
+            </ul>
+          </div>
+          <div (click)="toggleMap(index, item)" class="o-widget--tile__list__item__footer">
+            <button
+              type="button"
+              class="a-btn a-btn--icon-text -link-like"
+              aria-controls="tile-map-xxx"
+              aria-expanded="false"
+            >
+              {{ '@pry.widget.tile.map' | i18n }}
+            </button>
+          </div>
+          @if (maps[index]) {
+            <div class="o-widget--tile__list__item__map" id="tile-map-xxx">
+              <pry-widget-map [staticManifest]="mapManifest" [staticResultSet]="maps[index]!"></pry-widget-map>
+            </div>
+          }
+        </li>
+      }
     </ul>
   </div>
 </div>

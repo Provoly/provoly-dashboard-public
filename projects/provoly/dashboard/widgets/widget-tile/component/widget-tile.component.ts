@@ -29,7 +29,7 @@ export class WidgetTileComponent extends DataWidgetComponent {
   options$: Observable<TileWidgetOptions>;
   items$: Observable<Item[]>;
   selectedIds$: Observable<any>;
-  maps: boolean[] = [];
+  maps: (undefined | ResultSet)[] = [];
   mapManifest = {
     type: 'map',
     header: false,
@@ -124,8 +124,10 @@ export class WidgetTileComponent extends DataWidgetComponent {
     this.store.dispatch(DashboardActions.select({ id: item.id, cumulative: !$event.shiftKey }));
   }
 
-  toggleMap(index: number) {
-    this.maps[index] = !this.maps[index];
+  toggleMap(index: number, item: Item) {
+    this.maps[index] = !this.maps[index]
+      ? ({ items: { [item.oClass]: [item] }, relations: [] } as ResultSet)
+      : undefined;
   }
 
   resultSetWithItem(item: Item): ResultSet {
