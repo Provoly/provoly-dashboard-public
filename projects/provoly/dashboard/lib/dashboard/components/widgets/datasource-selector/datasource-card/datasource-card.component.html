@@ -34,7 +34,7 @@
     <span class="o-datasource-card__date">
       @if (datasource.sourceType === 'dataset') {
         @if (datasource.activeVersion) {
-          {{ '@pry.dataset.since_day' | i18n }} {{ datasource.activeVersion.productionDate! | sinceDate }}
+          {{ '@pry.dataset.since_day' | i18n }} {{ datasource.activeVersion.lastModified! | sinceDate }}
         } @else {
           <span class="-italic">{{ '@pry.dataset.noActiveVersion' | i18n }}</span>
         }
