@@ -684,14 +684,19 @@ const internalReducer = createReducer<DashboardState>(
       }
     };
   }),
-  on(DashboardActions.getWmsFeatures, DashboardActions.resetWmsFeatures, (state, action) => {
-    const features = { ...state.wmsFeatures };
-    delete features[action.componentId];
-    return {
-      ...state,
-      wmsFeatures: features
-    };
-  }),
+  on(
+    DashboardActions.getWmsFeatures,
+    DashboardActions.resetWmsFeatures,
+    DashboardActions.getWfsFeaturesForPointStackTooltips,
+    (state, action) => {
+      const features = { ...state.wmsFeatures };
+      delete features[action.componentId];
+      return {
+        ...state,
+        wmsFeatures: features
+      };
+    }
+  ),
   on(DashboardActions.addWmsFeatures, (state, action) => {
     const allComponentFeatures = [...(state.wmsFeatures[action.componentId] ?? []), ...action.features];
     const deDupedIds = [...new Set(allComponentFeatures.map((feat) => feat.id))];
