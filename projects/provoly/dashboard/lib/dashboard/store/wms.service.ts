@@ -60,13 +60,16 @@ export class WmsService {
 }
 
 const wfsUrlBuilder = (wmsUrl: string, bbox: number[], geomPropName: string, params?: string[]) => {
+  const isBboxPoint = bbox[0] === bbox[2] && bbox[1] === bbox[3];
   const wfsFragments: { [key: string]: string | undefined } = {
     service: 'WFS',
     version: '2.0.0',
     request: 'GetFeature',
     outputFormat: 'application/json',
     typeNames: undefined,
-    cql_filter: `BBOX(${geomPropName},${bbox.join(',')})`,
+    cql_filter: isBboxPoint
+      ? `EQUALS(${geomPropName}, POINT(${bbox[0]} ${bbox[1]}))`
+      : `BBOX(${geomPropName},${bbox.join(',')})`,
     srsName: undefined,
     params: params ? `&${params.join('&')}` : ''
   };
