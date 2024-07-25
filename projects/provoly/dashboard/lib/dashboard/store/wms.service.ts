@@ -53,20 +53,20 @@ export class WmsService {
     return this.httpClient.get(url).pipe(map((json: any) => json));
   }
 
-  getWfsFeatures(wmsUrl: string, bbox: number[]): Observable<{ features: any[] }> {
-    const url = wfsUrlBuilder(wmsUrl, bbox);
+  getWfsFeatures(wmsUrl: string, bbox: number[], geomPropName: string): Observable<{ features: any[] }> {
+    const url = wfsUrlBuilder(wmsUrl, bbox, geomPropName);
     return this.httpClient.get(url).pipe(map((json: any) => json));
   }
 }
 
-const wfsUrlBuilder = (wmsUrl: string, bbox: number[], params?: string[]) => {
+const wfsUrlBuilder = (wmsUrl: string, bbox: number[], geomPropName: string, params?: string[]) => {
   const wfsFragments: { [key: string]: string | undefined } = {
     service: 'WFS',
     version: '2.0.0',
     request: 'GetFeature',
     outputFormat: 'application/json',
     typeNames: undefined,
-    cql_filter: `BBOX(geom,${bbox.join(',')})`,
+    cql_filter: `BBOX(${geomPropName},${bbox.join(',')})`,
     srsName: undefined,
     params: params ? `&${params.join('&')}` : ''
   };

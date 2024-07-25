@@ -129,6 +129,7 @@ export interface MapGeoServerLayerOptions extends BaseWidgetMapLayerOptions {
   name: string;
   getWfsFeaturesForTooltips?: boolean;
   additionalParameters?: any;
+  geomPropName?: string;
 }
 
 export interface MapAutoLayerOptions extends BaseWidgetMapLayerOptions {
