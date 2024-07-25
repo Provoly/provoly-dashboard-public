@@ -82,7 +82,8 @@ const wfsUrlBuilder = (wmsUrl: string, bbox: number[], params?: string[]) => {
     base +
     '?' +
     Object.entries(wfsFragments)
-      .map(([key, value]) => (value ? `${key}=${value}` : ''))
+      .map(([key, value]) => (value ? `${key}=${value}` : undefined))
+      .filter((val) => !!val)
       .join('&')
   );
 };
