@@ -68,7 +68,7 @@ const wfsUrlBuilder = (wmsUrl: string, bbox: number[], geomPropName: string, par
     outputFormat: 'application/json',
     typeNames: undefined,
     cql_filter: isBboxPoint
-      ? `EQUALS(${geomPropName}, POINT(${bbox[0]} ${bbox[1]}))`
+      ? `DWITHIN(${geomPropName}, POINT(${bbox[0]} ${bbox[1]}),1,meters)`
       : `BBOX(${geomPropName},${bbox.join(',')})`,
     srsName: undefined,
     params: params ? `&${params.join('&')}` : ''
