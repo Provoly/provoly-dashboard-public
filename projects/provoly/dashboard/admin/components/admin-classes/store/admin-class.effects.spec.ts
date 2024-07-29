@@ -149,7 +149,7 @@ describe('ClassesEffects', () => {
       });
       expect(effects.saveAttributeForClass$).toBeObservable(expected$);
       expect(effects.saveAttributeForClass$).toSatisfyOnFlush(() => {
-        expect(getSpy).toHaveBeenCalled();
+        expect(getSpy).toHaveBeenCalledWith('id', attribute);
       });
     });
     it('should call saveAttributeForClass failure', () => {

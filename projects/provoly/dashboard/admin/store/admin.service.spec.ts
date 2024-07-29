@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import { Associations, ConfigSelectors, Predicate } from '@provoly/dashboard';
+import { Associations, Attribute, ConfigSelectors, FieldType, Predicate } from '@provoly/dashboard';
 import { associations } from '@provoly/dashboard/mock/data/mockItemAdmin';
 
 import { AdminService } from './admin.service';
@@ -153,6 +153,26 @@ describe('Admin Service', () => {
       req.flush(associations);
 
       expect(association).toBeDefined();
+    });
+  });
+
+  describe('saveAttributeForClass', () => {
+    const classId = 'fakeClassId';
+    it('should save a new Attribute for a class', () => {
+      const attribute: Attribute = {
+        id: 'fakeAttributeId',
+        name: 'fakeAttributeName',
+        technicalName: 'fakeAttributeTechnicalName',
+        field: { id: 'id', name: 'name', type: FieldType.DECIMAL },
+        multiValued: false
+      };
+
+      service.saveAttributeForClass(classId, attribute).subscribe();
+
+      const req = httpTestingController.expectOne(`ref/model/class/id/${classId}/attribute`);
+      expect(req.request.method).toBe('PUT');
+
+      req.flush({});
     });
   });
 });
