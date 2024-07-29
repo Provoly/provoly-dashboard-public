@@ -2,7 +2,7 @@
 <div class="o-import u-display-flex -column">
   <div class="o-import__header u-display-flex -justify-space-between">
     <h1 class="a-h1">{{ '@pry.import.title' | i18n }}</h1>
-    <pry-checkbox [ngModel]="multipleImports" (click)="multipleImportChange()">
+    <pry-checkbox [ngModel]="multipleImports" (ngModelChange)="multipleImportChange($event)">
       {{ '@pry.import.multiple' | i18n }}
     </pry-checkbox>
   </div>

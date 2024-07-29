@@ -14,7 +14,6 @@ import {
 import { map, Observable, take } from 'rxjs';
 import { ImportActions } from '../../store/import.actions';
 import { ImportSelectors } from '../../store/import.selectors';
-import { withLatestFrom } from 'rxjs/operators';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
 type FileExtension = 'csv' | 'zip';
@@ -200,9 +199,8 @@ export class PryImportFormComponent extends SubscriptionnerDirective implements 
     if (this.showMessage) this.showMessage = false;
   }
 
-  multipleImportChange() {
-    this.multipleImports = !this.multipleImports;
-    this.multipleImportsValue.emit(this.multipleImports);
+  multipleImportChange(checkBoxValue: boolean) {
+    this.multipleImportsValue.emit(checkBoxValue);
   }
 
   protected readonly Object = Object;
