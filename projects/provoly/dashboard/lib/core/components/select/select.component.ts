@@ -130,6 +130,7 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
             })
           : items
       ),
+      map((items) => items.filter((item) => !!item)),
       tap(() => this._cd.detectChanges())
     );
     this.valueItems$ = combineLatest([this.value$, this._items$]).pipe(
@@ -379,4 +380,7 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
       () => this.select(event, item, index)
     );
   focusInitialSelection = () => this.a11yService.focusInitialSelection(this.autocomplete, this.optionsModalRef);
+  trackFn(index: number, item: any) {
+    return item.id ?? item;
+  }
 }
