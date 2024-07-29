@@ -148,7 +148,7 @@ export class DataSourceService {
       .select(ConfigSelectors.refUrl)
       .pipe(
         switchMap((url) =>
-          this.httpClient.post<DatasetVersion>(encodeURI(`${url}/dataset-versions/id/${versionId}/deactivate`), null)
+          this.httpClient.post<void>(encodeURI(`${url}/dataset-versions/id/${versionId}/deactivate`), null)
         )
       );
   }
@@ -158,7 +158,7 @@ export class DataSourceService {
       .select(ConfigSelectors.refUrl)
       .pipe(
         switchMap((url) =>
-          this.httpClient.post<DatasetVersion>(encodeURI(`${url}/dataset-versions/id/${versionId}/activate`), null)
+          this.httpClient.post<void>(encodeURI(`${url}/dataset-versions/id/${versionId}/activate`), null)
         )
       );
   }

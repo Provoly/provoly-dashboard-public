@@ -103,7 +103,7 @@ export const dataSourceReducer = createReducer(
   on(DataSourceActions.dataset.deactivateDatasetVersionSuccess, (state, action) => ({
     ...state,
     loading: false,
-    datasetVersion: action.datasetVersion
+    datasetVersion: undefined
   })),
   on(DataSourceActions.dataset.deactivateDatasetVersionFailure, (state, action) => ({
     ...state,
@@ -117,7 +117,7 @@ export const dataSourceReducer = createReducer(
   on(DataSourceActions.dataset.activateDatasetVersionSuccess, (state, action) => ({
     ...state,
     loading: false,
-    datasetVersion: action.datasetVersion
+    datasetVersion: undefined
   })),
   on(DataSourceActions.dataset.activateDatasetVersionFailure, (state, action) => ({
     ...state,

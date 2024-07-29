@@ -76,7 +76,7 @@ export const DataSourceActions = {
     deactivateDatasetVersionSuccess: createAction(
       '[Dataset] Deactivate dataset version success',
       props<{
-        datasetVersion: DatasetVersion;
+        datasetId: string;
       }>()
     ),
     deactivateDatasetVersionFailure: createAction(
@@ -95,7 +95,7 @@ export const DataSourceActions = {
     activateDatasetVersionSuccess: createAction(
       '[Dataset] Activate dataset version success',
       props<{
-        datasetVersion: DatasetVersion;
+        datasetId: string;
       }>()
     ),
     activateDatasetVersionFailure: createAction(

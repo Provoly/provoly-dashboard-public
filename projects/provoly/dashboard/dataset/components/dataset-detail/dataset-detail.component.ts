@@ -117,7 +117,7 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
         from: 'PryDatasetDetailComponent.refresh()'
       })
     );
-    this.store.dispatch(DataSourceActions.dataset.listVersions({}));
+    this.store.dispatch(DataSourceActions.dataset.listVersionsByDatasetId({ id: this.dataset.id }));
   }
 
   switch(number: number) {

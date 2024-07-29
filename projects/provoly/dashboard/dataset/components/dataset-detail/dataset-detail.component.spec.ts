@@ -44,7 +44,7 @@ describe('PryDatasetDetailComponent', () => {
 
   it('should refresh both datasources and dataset versions', () => {
     const spyDsItems = jest.spyOn(SearchActions, 'getDatasourceItems');
-    const spyDsVersions = jest.spyOn(DataSourceActions.dataset, 'listVersions');
+    const spyDsVersions = jest.spyOn(DataSourceActions.dataset, 'listVersionsByDatasetId');
 
     component.refresh();
 

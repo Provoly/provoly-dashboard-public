@@ -222,7 +222,7 @@ export class DataSourceEffects {
       ofType(DataSourceActions.dataset.deactivateDatasetVersion),
       switchMap((action: any) =>
         this.dataSourceService.deactivateDatasetVersion(action.versionId).pipe(
-          map((datasetVersion) => DataSourceActions.dataset.deactivateDatasetVersionSuccess({ datasetVersion })),
+          map(() => DataSourceActions.dataset.deactivateDatasetVersionSuccess({ datasetId: action.datasetId })),
           catchError((error) => [DataSourceActions.dataset.deactivateDatasetVersionFailure({ error })])
         )
       )
@@ -234,7 +234,7 @@ export class DataSourceEffects {
       ofType(DataSourceActions.dataset.activateDatasetVersion),
       switchMap((action: any) =>
         this.dataSourceService.activateDatasetVersion(action.versionId).pipe(
-          map((datasetVersion) => DataSourceActions.dataset.activateDatasetVersionSuccess({ datasetVersion })),
+          map(() => DataSourceActions.dataset.activateDatasetVersionSuccess({ datasetId: action.datasetId })),
           catchError((error) => [DataSourceActions.dataset.activateDatasetVersionFailure({ error })])
         )
       )
@@ -247,7 +247,7 @@ export class DataSourceEffects {
         DataSourceActions.dataset.activateDatasetVersionSuccess,
         DataSourceActions.dataset.deactivateDatasetVersionSuccess
       ),
-      map((action: any) => DataSourceActions.dataset.listVersions({}))
+      map((action) => DataSourceActions.dataset.listVersionsByDatasetId({ id: action.datasetId }))
     )
   );
 
