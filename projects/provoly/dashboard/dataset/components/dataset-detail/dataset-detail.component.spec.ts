@@ -45,6 +45,7 @@ describe('PryDatasetDetailComponent', () => {
   it('should refresh both datasources and dataset versions', () => {
     const spyDsItems = jest.spyOn(SearchActions, 'getDatasourceItems');
     const spyDsVersions = jest.spyOn(DataSourceActions.dataset, 'listVersionsByDatasetId');
+    const spyDs = jest.spyOn(DataSourceActions.dataset, 'loadDataset');
 
     component.refresh();
 
@@ -54,6 +55,7 @@ describe('PryDatasetDetailComponent', () => {
       from: 'PryDatasetDetailComponent.refresh()'
     });
     expect(spyDsVersions).toHaveBeenCalled();
+    expect(spyDs).toHaveBeenCalled();
   });
 
   describe('should handle CTA action based on datasetVersion.state', () => {

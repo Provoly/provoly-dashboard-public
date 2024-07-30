@@ -57,6 +57,7 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
   selectedMode: ViewMode = ViewMode.CONSULT;
   isEditingVersion = false;
   canModify$!: Observable<boolean>;
+  currentDataset$!: Observable<Dataset | undefined>;
 
   isPanelOpen: boolean = false;
   selectedVersion?: DatasetVersion;
@@ -88,6 +89,9 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
       })
     );
 
+    this.currentDataset$ = this.store
+      .select(DataSourceSelectors.datasets)
+      .pipe(map((datasets) => datasets.find((currentDataset) => currentDataset.id === this.dataset.id)));
     this.datasetVersions$ = this.store.select(DataSourceSelectors.datasetVersions);
     this.subscriptions.add(
       this.datasetVersions$.subscribe((versions) => {
@@ -117,6 +121,7 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
         from: 'PryDatasetDetailComponent.refresh()'
       })
     );
+    this.store.dispatch(DataSourceActions.dataset.loadDataset());
     this.store.dispatch(DataSourceActions.dataset.listVersionsByDatasetId({ id: this.dataset.id }));
   }
 

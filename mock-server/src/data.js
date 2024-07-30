@@ -311,23 +311,34 @@ const generateDatasetVersions = () => {
       const versions = [];
       const howMany = casual.integer((from = 5), (to = 10));
       for (let i = 1; i < howMany; i++) {
-        versions.push({
-          id: casual.uuid,
-          dataset: dataset,
-          oClass: dataset.oClass,
-          lastModified: '2023-07-12T14:28:16.089390Z',
-          version: i,
-          state: i > howMany - 4 ? 'ACTIVE' : casual.random_element(['ACTIVE', 'ERROR', 'INDEXING', 'INACTIVE']),
-          fileName: 'file name',
-          metadata: [],
-          hasWarnings: casual.boolean,
-          productionDate: casual.date('YYYY-MM-DD'),
-          producer: casual.company_name,
-          additionalInformation: casual.sentence,
-          activeVersion: {
-            id: 'active-dataset-version-id'
-          }
-        });
+        if (i === dataset.activeVersion.version) {
+          versions.push({
+            ...dataset.activeVersion,
+            dataset: {
+              ...dataset,
+              activeVersion: undefined
+            },
+            oClass: dataset.oClass
+          });
+        } else {
+          versions.push({
+            id: casual.uuid,
+            dataset: {
+              ...dataset,
+              activeVersion: undefined
+            },
+            oClass: dataset.oClass,
+            lastModified: '2023-07-12T14:28:16.089390Z',
+            version: i,
+            state: i > howMany - 4 ? 'ACTIVE' : casual.random_element(['ACTIVE', 'ERROR', 'INDEXING', 'INACTIVE']),
+            fileName: 'file name',
+            metadata: [],
+            hasWarnings: casual.boolean,
+            productionDate: casual.date('YYYY-MM-DD'),
+            producer: casual.company_name,
+            additionalInformation: casual.sentence
+          });
+        }
       }
       return versions;
     })
@@ -353,7 +364,14 @@ const getDatasetVersionsByDatasetId = (id) => {
 };
 
 const deactivateDatasetVersion = (id) => {
-  datasetVersions.find((datasetVersion) => datasetVersion.id === id).state = 'INACTIVE';
+  const datasetVersion = datasetVersions.find((datasetVersion) => datasetVersion.id === id);
+  datasetVersion.state = 'INACTIVE';
+  const dataset = datasets.find((dataset) => dataset.id === datasetVersion.dataset.id);
+  if (dataset.activeVersion.id === id) {
+    dataset.activeVersion = datasetVersions
+      .filter((datasetVersion) => datasetVersion.state === 'ACTIVE')
+      .find((datasetVersion) => datasetVersion.dataset.id === dataset.id);
+  }
   return datasetVersions;
 };
 const deleteDatasetVersion = (id) => {
@@ -361,7 +379,12 @@ const deleteDatasetVersion = (id) => {
 };
 
 const activateDatasetVersion = (id) => {
-  datasetVersions.find((datasetVersion) => datasetVersion.id === id).state = 'ACTIVE';
+  const datasetVersion = datasetVersions.find((datasetVersion) => datasetVersion.id === id);
+  datasetVersion.state = 'ACTIVE';
+  const dataset = datasets.find((dataset) => dataset.id === datasetVersion.dataset.id);
+  if (!dataset.activeVersion || dataset.activeVersion.version < datasetVersion.version) {
+    dataset.activeVersion = datasetVersion;
+  }
   return datasetVersions;
 };
 

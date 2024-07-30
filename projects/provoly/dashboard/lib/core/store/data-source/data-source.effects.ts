@@ -247,7 +247,10 @@ export class DataSourceEffects {
         DataSourceActions.dataset.activateDatasetVersionSuccess,
         DataSourceActions.dataset.deactivateDatasetVersionSuccess
       ),
-      map((action) => DataSourceActions.dataset.listVersionsByDatasetId({ id: action.datasetId }))
+      map((action) => {
+        this.store.dispatch(DataSourceActions.dataset.loadDataset());
+        return DataSourceActions.dataset.listVersionsByDatasetId({ id: action.datasetId });
+      })
     )
   );
 

@@ -4,6 +4,17 @@
     "name": "ds-open",
     "oClass": "06406e7e-37cd-41ce-b5fc-36d233e5ae5c",
     "type": "OPEN",
+    "activeVersion": {
+      "id": "6795f3bf-58a1-4f48-992e-e068cf21441c",
+      "dataset": "06406e7e-37cd-41ce-b5fc-36d233e5ae5c",
+      "oClass": "06406e7e-37cd-41ce-b5fc-36d233e5ae5c",
+      "lastModified": "2023-07-12T14:28:16.089390Z",
+      "version": 1,
+      "state": "ACTIVE",
+      "metadata": [],
+      "hasWarnings": false,
+      "additionalInformation": "Laborum eius porro consequatur."
+    },
     "owner": true,
     "groups": [],
     "metadata": [
@@ -34,6 +45,16 @@
     "name": "ds-modifiable",
     "oClass": "17b90da3-f448-4cc3-bfd8-74c8b8481590",
     "type": "MODIFIABLE",
+    "activeVersion": {
+      "id": "5415f3d5-570e-4b65-98f2-fbb8479b99c9",
+      "dataset": "17b90da3-f448-4cc3-bfd8-74c8b8481590",
+      "oClass": "17b90da3-f448-4cc3-bfd8-74c8b8481590",
+      "lastModified": "2023-07-12T14:28:16.089390Z",
+      "version": 1,
+      "state": "ACTIVE",
+      "metadata": [],
+      "additionalInformation": "Laborum eius porro consequatur."
+    },
     "description": "test de l'ajout d'une description",
     "owner": true,
     "groups": [],
@@ -56,6 +77,20 @@
     "name": "ds-closed",
     "oClass": "d260d53d-3529-4712-bedb-6517ecad5784",
     "type": "CLOSED",
+    "activeVersion": {
+      "id": "f66dbdc1-498c-4298-9c5c-28562f9c995a",
+      "dataset": "d260d53d-3529-4712-bedb-6517ecad5784",
+      "oClass": "d260d53d-3529-4712-bedb-6517ecad5784",
+      "lastModified": "2023-07-12T14:28:16.089390Z",
+      "version": 1,
+      "state": "ACTIVE",
+      "fileName": "fileName.csv",
+      "metadata": [],
+      "hasWarnings": false,
+      "productionDate": "2022-11-23",
+      "producer": "Cole, Wuckert and Strosin",
+      "additionalInformation": "Laborum eius porro consequatur."
+    },
     "owner": true,
     "groups": [],
     "metadata": [
@@ -74,6 +109,20 @@
     "name": "data-parking",
     "oClass": "5032106e-ca16-4742-a8f9-a43757c99d67",
     "type": "CLOSED",
+    "activeVersion": {
+      "id": "abaa8623-a9f9-48c9-8e31-890004049244",
+      "dataset": "15061554-298f-4f56-8cd2-52ccec998307",
+      "oClass": "5032106e-ca16-4742-a8f9-a43757c99d67",
+      "lastModified": "2023-07-12T14:28:16.089390Z",
+      "version": 2,
+      "state": "ACTIVE",
+      "fileName": "fileName2.csv",
+      "metadata": [],
+      "hasWarnings": false,
+      "productionDate": "2023-11-23",
+      "producer": "Cole, Wuckert and Strosin",
+      "additionalInformation": "Laborum eius porro consequatur."
+    },
     "owner": true,
     "groups": [],
     "metadata": []
@@ -83,6 +132,16 @@
     "name": "Tronçon de route",
     "oClass": "123456789-69a6-474e-8f46-7cc8796ed151",
     "type": "OPEN",
+    "activeVersion": {
+      "id": "28c380d4-25b5-4f01-affb-2bf019c86dcd",
+      "dataset": "06406e7e-37cd-41ce-b5fc-36d233e6ae5c",
+      "oClass": "123456789-69a6-474e-8f46-7cc8796ed151",
+      "lastModified": "2023-07-12T14:28:16.089390Z",
+      "version": 1,
+      "state": "ACTIVE",
+      "metadata": [],
+      "additionalInformation": "Laborum eius porro consequatur."
+    },
     "owner": true,
     "groups": [],
     "metadata": [
@@ -109,6 +168,16 @@
     "name": "CKDo:EquipementsPublics",
     "oClass": "0e745c78-4a74-4bfd-9789-06ec93f7d364",
     "type": "OPEN",
+    "activeVersion": {
+      "id": "7d43e0b3-4823-41d4-ae8b-227a67feeeb6",
+      "dataset": "s6406e7e-37cd-41ce-b5fc-36d233e6ae5c",
+      "oClass": "0e745c78-4a74-4bfd-9789-06ec93f7d364",
+      "lastModified": "2023-07-12T14:28:16.089390Z",
+      "version": 1,
+      "state": "ACTIVE",
+      "metadata": [],
+      "additionalInformation": "Laborum eius porro consequatur."
+    },
     "owner": true,
     "groups": [],
     "metadata": [
@@ -143,6 +212,16 @@
     "name": "Entreprises",
     "oClass": "123456789-69a6-474e-8f46-7cc8796ed151",
     "type": "OPEN",
+    "activeVersion": {
+      "id": "85b381df-fb52-4f47-b230-fd12ee77fa88",
+      "dataset": "c036bf25-757f-46de-9170-e4540df44c14",
+      "oClass": "123456789-69a6-474e-8f46-7cc8796ed151",
+      "lastModified": "2023-07-12T14:28:16.089390Z",
+      "version": 1,
+      "state": "ACTIVE",
+      "metadata": [],
+      "additionalInformation": "Laborum eius porro consequatur."
+    },
     "owner": true,
     "groups": [],
     "metadata": [
@@ -177,6 +256,16 @@
     "name": "Geodata",
     "oClass": "44444444-69a6-474e-8f46-7cc8796ed151",
     "type": "OPEN",
+    "activeVersion": {
+      "id": "a2e5a9fd-49fc-4a89-8443-f705d217176f",
+      "dataset": "geospe-cifi-cdat-acd2-51ccec998307",
+      "oClass": "44444444-69a6-474e-8f46-7cc8796ed151",
+      "lastModified": "2023-07-12T14:28:16.089390Z",
+      "version": 1,
+      "state": "ACTIVE",
+      "metadata": [],
+      "additionalInformation": "Laborum eius porro consequatur."
+    },
     "owner": true,
     "groups": [],
     "metadata": []
@@ -186,6 +275,16 @@
     "name": "Geodata (geoserver)",
     "oClass": "17b90da3-f448-4cc3-bfd8-74c8b8481590",
     "type": "OPEN",
+    "activeVersion": {
+      "id": "f3161cdb-37f5-48dc-b4ae-85f2483bd5ea",
+      "dataset": "meteo-cifi-cdat-acd2-51ccec998307",
+      "oClass": "17b90da3-f448-4cc3-bfd8-74c8b8481590",
+      "lastModified": "2023-07-12T14:28:16.089390Z",
+      "version": 1,
+      "state": "ACTIVE",
+      "metadata": [],
+      "additionalInformation": "Laborum eius porro consequatur."
+    },
     "owner": true,
     "groups": [],
     "metadata": [
@@ -212,6 +311,16 @@
     "name": "VCUB Lambert 93",
     "oClass": "48804bd2-e940-4ff8-8d45-62123279eb6a",
     "type": "OPEN",
+    "activeVersion": {
+      "id": "500a6e63-4299-4b0b-84ca-53815a9d1467",
+      "dataset": "dataset-lambert-93",
+      "oClass": "48804bd2-e940-4ff8-8d45-62123279eb6a",
+      "lastModified": "2023-07-12T14:28:16.089390Z",
+      "version": 1,
+      "state": "ACTIVE",
+      "metadata": [],
+      "additionalInformation": "Laborum eius porro consequatur."
+    },
     "owner": false,
     "groups": [],
     "metadata": []
@@ -221,6 +330,20 @@
     "name": "Territoires sélectionables",
     "oClass": "class-territoires-selectionnables",
     "type": "CLOSED",
+    "activeVersion": {
+      "id": "5e42a49a-fcc6-4761-bb60-9cabb6bfeb41",
+      "dataset": "dataset-territoires-selectionnables",
+      "oClass": "class-territoires-selectionnables",
+      "lastModified": "2024-07-28T14:28:16.089390Z",
+      "version": 3,
+      "state": "ACTIVE",
+      "fileName": "fileName3.csv",
+      "metadata": [],
+      "hasWarnings": false,
+      "productionDate": "2024-01-23",
+      "producer": "Cole, Wuckert and Strosin",
+      "additionalInformation": "Laborum eius porro consequatur."
+    },
     "owner": false,
     "groups": [],
     "metadata": []
@@ -230,6 +353,20 @@
     "name": "Aggrégation pont inondation testttttttttttttttttttt",
     "oClass": "class-aggregation-fntp",
     "type": "CLOSED",
+    "activeVersion": {
+      "id": "6d4a12e0-9ee4-40e3-808a-1f9108c4a40a",
+      "dataset": "dataset-aggregation-fntp",
+      "oClass": "class-aggregation-fntp",
+      "lastModified": "2023-07-12T14:28:16.089390Z",
+      "version": 4,
+      "state": "ACTIVE",
+      "fileName": "fileName.csv",
+      "metadata": [],
+      "hasWarnings": false,
+      "productionDate": "2022-11-23",
+      "producer": "Cole, Wuckert and Strosin",
+      "additionalInformation": "Laborum eius porro consequatur."
+    },
     "owner": true,
     "groups": [],
     "metadata": []
@@ -239,6 +376,16 @@
     "name": "DR2",
     "oClass": "classe-dr2",
     "type": "OPEN",
+    "activeVersion": {
+      "id": "e9be739e-797e-4b06-b505-203dccebb57d",
+      "dataset": "dataset-dr2",
+      "oClass": "classe-dr2",
+      "lastModified": "2023-07-12T14:28:16.089390Z",
+      "version": 1,
+      "state": "ACTIVE",
+      "metadata": [],
+      "additionalInformation": "Laborum eius porro consequatur."
+    },
     "owner": false,
     "groups": [],
     "metadata": []
@@ -248,6 +395,16 @@
     "name": "DR2-COLOR",
     "oClass": "classe-dr2-with-color",
     "type": "OPEN",
+    "activeVersion": {
+      "id": "2202d169-aea0-4597-bdfa-98bacad6052b",
+      "dataset": "dataset-dr2-with-color",
+      "oClass": "classe-dr2-with-color",
+      "lastModified": "2023-07-12T14:28:16.089390Z",
+      "version": 1,
+      "state": "ACTIVE",
+      "metadata": [],
+      "additionalInformation": "Laborum eius porro consequatur."
+    },
     "owner": false,
     "groups": [],
     "metadata": []
@@ -257,6 +414,16 @@
     "name": "Aggrégation superficie",
     "oClass": "class-superficie",
     "type": "OPEN",
+    "activeVersion": {
+      "id": "d5714d4c-7f0b-4233-a851-48fe452a2eb1",
+      "dataset": "aggregation-superficie",
+      "oClass": "class-superficie",
+      "lastModified": "2023-07-12T14:28:16.089390Z",
+      "version": 1,
+      "state": "ACTIVE",
+      "metadata": [],
+      "additionalInformation": "Laborum eius porro consequatur."
+    },
     "owner": false,
     "groups": [],
     "metadata": []
