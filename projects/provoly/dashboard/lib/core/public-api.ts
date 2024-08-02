@@ -112,6 +112,7 @@ export * from './access/access.model';
 export * from './access/access.service';
 export * from './access/access.utils';
 export * from './auth/geoAuth.service';
+export * from './auth/provoly-roles.contant';
 export * from './ws/websocket.service';
 export * from './symbol/symbol.service';
 export * from './toolbox/toolbox-manifest.service';
