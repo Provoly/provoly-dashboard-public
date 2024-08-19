@@ -49,7 +49,6 @@ export class DashboardEffects {
       ),
       filter(([action, rank, tenants, manifest, resultSets, display]) => rank === 0),
       debounceTime(200),
-      tap((v) => console.log(v)),
       map(([action, rank, tenants, manifest, resultSets, selectedIds, presentation, display]) =>
         DashboardActions.updateManifestAfterTenantJoin({
           tenants, // we already have added tenant in the reduce of the "join" action
