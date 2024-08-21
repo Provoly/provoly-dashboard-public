@@ -57,7 +57,9 @@ export const enTranslations = {
         greaterThanDate: 'After',
         lowerThanDate: 'Before',
         innerBoundsDate: 'Between',
-        outerBoundsDate: 'Outside'
+        outerBoundsDate: 'Outside',
+        in: 'In',
+        not_in: 'Not in'
       },
       placeholder: {
         search: 'Enter value...',

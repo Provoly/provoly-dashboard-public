@@ -79,6 +79,7 @@ export class FormMetadataComponent implements OnInit, OnDestroy {
         type: this.metadata.type,
         description: this.metadata.description
       });
+      this.metaForm.controls['type'].disable();
       if (this.isMetaSimpleEdit) {
         this.metaForm.controls['name'].disable();
       }

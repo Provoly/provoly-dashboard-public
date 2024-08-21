@@ -51,7 +51,7 @@
             bindLabel="translation"
             [ngModel]="condition.operator"
             (ngModelChange)="onChangeOperator($event, condition.id)"
-            [readonly]="readonly"
+            [disabled]="readonly"
           ></pry-select>
         </div>
 

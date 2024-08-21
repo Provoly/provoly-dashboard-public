@@ -41,7 +41,9 @@ export type OperatorType =
   | 'LOWER_THAN'
   | 'INNER_BOUNDS'
   | 'OUTER_BOUNDS'
-  | 'NOT_EQUALS';
+  | 'NOT_EQUALS'
+  | 'IN'
+  | 'NOT_IN';
 
 export interface OperatorOption {
   type: 'string' | 'number' | 'date';
@@ -67,7 +69,13 @@ export const OPERATOR_OPTIONS: OperatorOption[] = [
   { type: 'date', operator: 'GREATER_THAN', translation: '@pry.search.operator.greaterThanDate', twoValues: false },
   { type: 'date', operator: 'LOWER_THAN', translation: '@pry.search.operator.lowerThanDate', twoValues: false },
   { type: 'date', operator: 'INNER_BOUNDS', translation: '@pry.search.operator.innerBoundsDate', twoValues: true },
-  { type: 'date', operator: 'OUTER_BOUNDS', translation: '@pry.search.operator.outerBoundsDate', twoValues: true }
+  { type: 'date', operator: 'OUTER_BOUNDS', translation: '@pry.search.operator.outerBoundsDate', twoValues: true },
+  { type: 'number', operator: 'IN', translation: '@pry.search.operator.in', twoValues: false },
+  { type: 'number', operator: 'NOT_IN', translation: '@pry.search.operator.not_in', twoValues: false },
+  { type: 'date', operator: 'IN', translation: '@pry.search.operator.in', twoValues: false },
+  { type: 'date', operator: 'NOT_IN', translation: '@pry.search.operator.not_in', twoValues: false },
+  { type: 'string', operator: 'IN', translation: '@pry.search.operator.in', twoValues: false },
+  { type: 'string', operator: 'NOT_IN', translation: '@pry.search.operator.not_in', twoValues: false }
 ];
 
 export interface AbacRulesConditions {

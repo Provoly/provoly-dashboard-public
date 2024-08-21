@@ -39,7 +39,7 @@
         i18nPrefix="@pry.admin.storage.options."
         formControlName="storage"
         id="storage_options"
-        [readonly]="!!_currentClass"
+        [disabled]="!!_currentClass"
       ></pry-select>
     </div>
     <div class="m-info-icon a-tooltip -tooltip-width-md" [attr.data-tooltip]="'@pry.admin.storage.description.' + classForm.get('storage')?.value | i18n" data-tooltip-position="right">

@@ -28,7 +28,7 @@
         <label class="a-label u-visually-hidden" for="metadata_operator">???</label>
         <pry-select
           id="metadata_operator"
-          [readonly]="readonly"
+          [disabled]="readonly"
           [style.width.px]="160"
           [items]="operators$ | async"
           bindValue="operator"
@@ -66,7 +66,7 @@
       <ng-template #metadataUserTpl>
         <div class="m-pry-overlay-wrapper">
           <ng-container *ngFor="let metadataUser of metadataUsers$ | async">
-            <button class="m-pry-overlay-item" (click)="onSelectMetadataUser(condition.id, metadataUser)">
+            <button class="m-pry-overlay-item" (click)="onSelectMetadataUser(condition.id, condition.operator, metadataUser)">
               {{ metadataUser.name }}
             </button>
           </ng-container>

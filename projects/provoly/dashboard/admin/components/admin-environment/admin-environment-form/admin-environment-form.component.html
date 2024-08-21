@@ -35,7 +35,7 @@
         bindValue="varType"
         bindLabel="translation"
         (ngModelChange)="onTypeChange($event)"
-        [readonly]="!!_currentEnv"
+        [disabled]="!!_currentEnv"
         [isForm]="true"
       ></pry-select>
     </div>

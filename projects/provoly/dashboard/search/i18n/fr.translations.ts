@@ -57,7 +57,9 @@ export const frTranslations = {
         greaterThanDate: 'Après',
         lowerThanDate: 'Avant',
         innerBoundsDate: 'Entre deux dates',
-        outerBoundsDate: "A l'extérieur d'une période"
+        outerBoundsDate: "A l'extérieur d'une période",
+        in: 'Appartient à',
+        not_in: "N'appartient pas à"
       },
       placeholder: {
         search: 'Entrer la valeur ...',

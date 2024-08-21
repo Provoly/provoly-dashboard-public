@@ -5,8 +5,6 @@ import {
   Class,
   ClassSelectors,
   DateRange,
-  Field,
-  FieldSelectors,
   FieldType,
   NormalizedCondition,
   OPERATOR_OPTIONS,

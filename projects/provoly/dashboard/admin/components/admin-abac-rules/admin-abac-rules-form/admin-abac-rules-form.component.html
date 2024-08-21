@@ -96,7 +96,7 @@
                 ? 'predicate-label predicate-error'
                 : 'predicate-label'
             "
-            [readonly]="readonly"
+            [disabled]="readonly"
             [items]="predicates$ | async"
             bindLabel="name"
             bindValue="id"

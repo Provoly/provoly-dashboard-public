@@ -58,7 +58,6 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
   @Input() isForm = false;
   @Input() required?: any;
   @Input() name?: any;
-  @Input() readonly = false;
   @Input() autocomplete: boolean = false;
   @Input() alwaysShowAutosuggestedValues: boolean = false;
   @Input() externalAutocompleteService: boolean = false;

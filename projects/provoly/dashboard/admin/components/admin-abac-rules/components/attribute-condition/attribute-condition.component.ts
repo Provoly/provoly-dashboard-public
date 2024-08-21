@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Attribute, Class, ClassSelectors, Field, FieldSelectors, FieldType, IMetadata } from '@provoly/dashboard';
-import { combineLatest, filter, map, mergeMap, Observable, of, switchMap } from 'rxjs';
+import { Attribute, Class, ClassSelectors, Field, FieldType, IMetadata } from '@provoly/dashboard';
+import { combineLatest, filter, map, mergeMap, Observable, of } from 'rxjs';
 import { AbacRulesActions } from '../../store/abac-rules.actions';
 import { NormalizedCondition, OPERATOR_OPTIONS, OperatorOption, OperatorType } from '../../store/abac-rules.model';
 import { AbacRulesSelectors } from '../../store/abac-rules.selectors';

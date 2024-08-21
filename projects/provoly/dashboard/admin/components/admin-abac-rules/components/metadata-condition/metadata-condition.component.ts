@@ -29,7 +29,9 @@ export class MetadataConditionComponent {
 
   operators$ = of([
     { operator: 'EQUALS', translation: '@pry.search.operator.equalsString' },
-    { operator: 'NOT_EQUALS', translation: '@pry.search.operator.notEqualsString' }
+    { operator: 'NOT_EQUALS', translation: '@pry.search.operator.notEqualsString' },
+    { operator: 'IN', translation: '@pry.search.operator.in' },
+    { operator: 'NOT_IN', translation: '@pry.search.operator.not_in' }
   ]);
 
   constructor(private store: Store<any>) {
@@ -64,9 +66,12 @@ export class MetadataConditionComponent {
     );
   }
 
-  onSelectMetadataUser(conditionId: string, metadata: IMetadata) {
+  onSelectMetadataUser(conditionId: string, operator: OperatorType | undefined, metadata: IMetadata) {
     this.metadataUserOpen = false;
-    const value = `\${user.metadata('${metadata.name}')}`;
+    const value =
+      operator === 'IN' || operator === 'NOT_IN'
+        ? `\${user.metadata('${metadata.name}')}`
+        : `\${user.metadata('${metadata.name}').getFirst()}`;
     this.store.dispatch(
       AbacRulesActions.updateEditAbacRuleConditionProperty({
         conditionId,
