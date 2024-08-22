@@ -336,7 +336,8 @@ const generateDatasetVersions = () => {
             hasWarnings: casual.boolean,
             productionDate: casual.date('YYYY-MM-DD'),
             producer: casual.company_name,
-            additionalInformation: casual.sentence
+            additionalInformation:
+              '<B>' + casual.title + '</B><ul><li>' + casual.sentence + '</li><li>' + casual.sentence + '</li></ul>'
           });
         }
       }

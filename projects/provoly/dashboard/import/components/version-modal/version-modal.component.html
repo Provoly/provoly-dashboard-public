@@ -46,7 +46,7 @@
       @if (version.additionalInformation) {
         <li>
           <h4>{{ '@pry.dataset.version.additionalInformation' | i18n }}</h4>
-          <span>{{ version.additionalInformation | mdToHtml }}</span>
+          <span [innerHTML]="version.additionalInformation | mdToHtml"></span>
         </li>
       }
     </ul>
