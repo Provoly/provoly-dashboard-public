@@ -38,6 +38,38 @@ const getClasses = () =>
     }))
   }));
 
+const updateAttribute = (classId, payload) => {
+  const clazz = classes.find((cl) => cl.id === classId);
+  if (!clazz) {
+    console.warn('Updating unknown clazz');
+  } else {
+    let attributeIndex = clazz.attributes.length > 0 ? clazz.attributes.findIndex((obj) => obj.id === payload.id) : -1;
+    if (attributeIndex !== -1) {
+      clazz.attributes[attributeIndex].id = payload.id;
+      clazz.attributes[attributeIndex].name = payload.name;
+      clazz.attributes[attributeIndex].technicalName = payload.technicalName;
+      clazz.attributes[attributeIndex].field = payload.field;
+      clazz.attributes[attributeIndex].category = payload.category;
+    } else {
+      clazz.attributes.push(payload);
+    }
+  }
+};
+
+writeClasses = () =>
+  classes.map((oClass) => ({
+    ...oClass,
+    attributes: oClass.attributes.map((attr) => {
+      const field = typeof attr.field === 'string' ? fields.find((f) => f.id === attr.field) : attr.field;
+      const fieldExists = !!fields.find((f) => f.id === field.id);
+      return {
+        ...attr,
+        technicalName: attr.technicalName ?? attr.name,
+        field: fieldExists ? field.id : field
+      };
+    })
+  }));
+
 Object.keys(queryResponses).forEach((key) => {
   if (typeof queryResponses[key] === 'string') {
     queryResponses[key] = JSON.parse(fs.readFileSync(`./data/responses/${queryResponses[key]}`, 'utf8'));
@@ -424,7 +456,9 @@ const getGroups = () => [
 module.exports = {
   class: {
     get: getClasses,
-    ids: classesIds
+    ids: classesIds,
+    update: updateAttribute,
+    write: writeClasses
   },
   fields: {
     get: getFields,

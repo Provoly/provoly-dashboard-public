@@ -1018,6 +1018,15 @@
         "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
         "multiValued": false,
         "technicalName": "azd"
+      },
+      {
+        "id": "31a57c23-a20c-4ee5-ad88-8e7043e018a7",
+        "technicalName": "azdazdadz",
+        "name": "azdazdadz",
+        "description": "",
+        "field": "347f6eca-6276-4993-bfeb-53cbbbba6f56-accroches_libres",
+        "category": "cf666d66-838f-4d92-a4d2-a315df21fac9",
+        "multiValued": false
       }
     ]
   },
@@ -1255,16 +1264,7 @@
         "id": "fc79c09d-e65d-45d1-aebc-d5c7bdc05001",
         "name": "Code Année",
         "technicalName": "Code Année",
-        "field": {
-          "id": "ff6e2527-0ed1-463a-ab95-33585463aa3d",
-          "name": "ckdo_int",
-          "type": "integer",
-          "slug": "305e10c3d3_ckdo_int",
-          "localeFormat": false,
-          "unit": null,
-          "numeric": true,
-          "geo": false
-        },
+        "field": "ff6e2527-0ed1-463a-ab95-33585463aa3d",
         "category": null,
         "multiValued": false,
         "slug": "6293d08bd5_code-annee"
@@ -1273,17 +1273,7 @@
         "id": "7780f860-bfa2-4cc6-9f33-78a77c4bf911",
         "name": "EPCI",
         "technicalName": "EPCI",
-        "field": {
-          "id": "6994ede1-7689-489f-8003-115e7cd4646b",
-          "name": "ckdo_decimal",
-          "type": "decimal",
-          "slug": "621dd18780_ckdo_decimal",
-          "decimalPrecision": null,
-          "localeFormat": false,
-          "unit": "",
-          "numeric": false,
-          "geo": false
-        },
+        "field": "6994ede1-7689-489f-8003-115e7cd4646b",
         "category": null,
         "multiValued": false,
         "slug": "562610113b_epci"
@@ -1292,14 +1282,7 @@
         "id": "e423c75c-6fd9-4372-8cd0-4aa9e2f8d401",
         "name": "Classification",
         "technicalName": "Classification",
-        "field": {
-          "id": "c23fff92-0d10-4f5a-91f5-80405a058291",
-          "name": "ckdo_keyword",
-          "type": "keyword",
-          "slug": "132a1582c9_ckdo_keyword",
-          "numeric": false,
-          "geo": false
-        },
+        "field": "c23fff92-0d10-4f5a-91f5-80405a058291",
         "category": null,
         "multiValued": false,
         "slug": "9ed1230fd5_classification"
@@ -1308,16 +1291,7 @@
         "id": "ebe53e1e-492b-46e0-9bfb-ebb6684149f5",
         "name": "Année",
         "technicalName": "Année",
-        "field": {
-          "id": "ff6e2527-0ed1-463a-ab95-33585463aa3d",
-          "name": "ckdo_int",
-          "type": "integer",
-          "slug": "305e10c3d3_ckdo_int",
-          "localeFormat": false,
-          "unit": null,
-          "numeric": true,
-          "geo": false
-        },
+        "field": "ff6e2527-0ed1-463a-ab95-33585463aa3d",
         "category": null,
         "multiValued": false,
         "slug": "9da0c7e1cf_annee"
@@ -1326,17 +1300,7 @@
         "id": "7be6dceb-520f-4a49-837e-051c026baa48",
         "name": "Pourcentage surface",
         "technicalName": "Pourcentage surface",
-        "field": {
-          "id": "6994ede1-7689-489f-8003-115e7cd4646b",
-          "name": "ckdo_decimal",
-          "type": "decimal",
-          "slug": "621dd18780_ckdo_decimal",
-          "decimalPrecision": 2,
-          "localeFormat": false,
-          "unit": "",
-          "numeric": false,
-          "geo": false
-        },
+        "field": "6994ede1-7689-489f-8003-115e7cd4646b",
         "category": null,
         "multiValued": false,
         "slug": "ac9f813efb_pourcentage-surface"
@@ -1345,17 +1309,7 @@
         "id": "81cc812b-e02c-4d30-8d2d-89d0f3e3799e",
         "name": "Surface (ha)",
         "technicalName": "Surface (ha)",
-        "field": {
-          "id": "6994ede1-7689-489f-8003-115e7cd4646b",
-          "name": "ckdo_decimal",
-          "type": "decimal",
-          "slug": "621dd18780_ckdo_decimal",
-          "decimalPrecision": null,
-          "localeFormat": false,
-          "unit": "",
-          "numeric": false,
-          "geo": false
-        },
+        "field": "6994ede1-7689-489f-8003-115e7cd4646b",
         "category": null,
         "multiValued": false,
         "slug": "33c02d833e_surface-ha"
@@ -1364,17 +1318,7 @@
         "id": "b4ad37fe-01a3-4f1d-9deb-5518f284039b",
         "name": "Estimation séquestration",
         "technicalName": "Estimation séquestration",
-        "field": {
-          "id": "6994ede1-7689-489f-8003-115e7cd4646b",
-          "name": "ckdo_decimal",
-          "type": "decimal",
-          "slug": "621dd18780_ckdo_decimal",
-          "decimalPrecision": null,
-          "localeFormat": false,
-          "unit": "",
-          "numeric": false,
-          "geo": false
-        },
+        "field": "6994ede1-7689-489f-8003-115e7cd4646b",
         "category": null,
         "multiValued": false,
         "slug": "49ff24623d_estimation-sequestration"

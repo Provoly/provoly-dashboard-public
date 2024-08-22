@@ -105,23 +105,8 @@ router.on(['OPTIONS', 'GET'], '/ref/model/class/:id/associations', (req, res, pa
 router.on(['OPTIONS', 'PUT'], '/ref/model/class/id/:id/attribute', (req, res, params) => {
   readPayload(req).then((payload) => {
     if (payload) {
-      let classIndex = dataModule.class.get().findIndex((obj) => obj.id === params.id);
-      if (classIndex !== -1) {
-        let attributeIndex =
-          dataModule.class.get()[classIndex].attributes.length > 0
-            ? dataModule.class.get()[classIndex].attributes.findIndex((obj) => obj.id === payload.id)
-            : -1;
-        if (attributeIndex !== -1) {
-          dataModule.class.get()[classIndex].attributes[attributeIndex].id = payload.id;
-          dataModule.class.get()[classIndex].attributes[attributeIndex].name = payload.name;
-          dataModule.class.get()[classIndex].attributes[attributeIndex].technicalName = payload.technicalName;
-          dataModule.class.get()[classIndex].attributes[attributeIndex].field = payload.field;
-          dataModule.class.get()[classIndex].attributes[attributeIndex].category = payload.category;
-        } else {
-          dataModule.class.get()[classIndex].attributes.push(payload);
-        }
-        fs.writeFileSync('./data/classes.json', JSON.stringify(dataModule.class.get(), null, 2));
-      }
+      dataModule.class.update(params.id, payload);
+      fs.writeFileSync('./data/classes.json', JSON.stringify(dataModule.class.write(), null, 2));
     }
     makeResponseOk(res);
   });
