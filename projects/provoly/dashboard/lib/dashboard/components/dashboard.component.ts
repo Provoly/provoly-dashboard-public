@@ -56,6 +56,7 @@ import { SubscriptionnerDirective } from './subscriptionner.directive';
 import { WidgetInstanciatorComponent } from './widgets/widget-instanciator/widget-instanciator.component';
 import { SearchSelectors } from '../../core/store/search/search.selectors';
 import { DataSourceSelectors } from '../../core/store/data-source/data-source.selectors';
+import { WidgetFactoryService } from './widgets/widget-instanciator/widget-factory.service';
 
 export const MIME_TYPE_WIDGET_MANIFEST = 'application/widget-manifest';
 export const MIME_TYPE_WIDGET_TYPE = 'application/widget-type-';
@@ -141,7 +142,8 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
   constructor(
     private store: Store<any>,
     private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef
+    private viewContainerRef: ViewContainerRef,
+    private widgetFactoryService: WidgetFactoryService
   ) {
     super();
     this.loading$ = this.store.select(DashboardSelectors.loading);
@@ -202,19 +204,30 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
     this.subscriptions.add(
       this.staticDashboard$.subscribe((manifest) => {
         if (!!manifest) {
-          const getDataActions = (
-            (
-              [
-                ...new Set(
-                  (manifest.widgets ?? ([] as WidgetManifest[]))
-                    .reduce((p, c) => [...p, c], [] as WidgetManifest[])
-                    .map((widManifest) => widManifest.datasource)
-                )
-              ] as (string | string[])[]
-            ).reduce((p, c) => [...p, ...(Array.isArray(c) ? c : [c])], []) as string[]
-          ).map((resultSet) => DashboardActions.assertResultSets({ id: resultSet }));
+          const getDataActions = (manifest.widgets ?? ([] as WidgetManifest[]))
+            .reduce((p, c) => [...p, c], [] as WidgetManifest[])
+            .map((widManifest) => this.widgetFactoryService.datasourcesToAutoLoad(widManifest))
+            .flat()
+            .reduce(
+              (p, c) => ({
+                ...p,
+                [c.datasetId]: {
+                  ...p[c.datasetId],
+                  ...c,
+                  excludeGeo: p[c.datasetId]?.excludeGeo === false ? p[c.datasetId].excludeGeo : c.excludeGeo
+                }
+              }),
+              {} as { [key: string]: { datasetId: string; excludeGeo: boolean } }
+            ) as { [key: string]: { datasetId: string; excludeGeo: boolean } };
 
-          getDataActions.forEach((action) => this.store.dispatch(action));
+          Object.keys(getDataActions).forEach((key) =>
+            this.store.dispatch(
+              DashboardActions.assertResultSets({
+                id: getDataActions[key].datasetId,
+                excludeGeo: getDataActions[key].excludeGeo
+              })
+            )
+          );
         }
       })
     );
