@@ -25,7 +25,7 @@ describe('Dataset Reducer', () => {
         )
       ).toEqual({
         ...initialState,
-        isLoading: true
+        loading: true
       });
     });
   });
@@ -41,7 +41,7 @@ describe('Dataset Reducer', () => {
       ).toEqual({
         ...initialState,
         datasets: mockDatasets,
-        isLoading: false
+        loading: false
       });
     });
   });
@@ -74,7 +74,7 @@ describe('Dataset Reducer', () => {
       ).toEqual({
         ...initialState,
         datasetVersions: mockDatasetVersions,
-        isLoading: false
+        loading: false
       });
     });
     it('get for all version should set versions and total count (for pagination)', () => {

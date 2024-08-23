@@ -79,7 +79,7 @@ export class PrySearchToolsComponent implements OnDestroy {
   private sub = new Subscription();
 
   constructor(private store: Store<DataSourceState | SearchMultiClassState | FieldState | ClassState>) {
-    this.loading$ = this.store.select(DataSourceSelectors.selectFeature).pipe(map((state) => state.isLoading));
+    this.loading$ = this.store.select(DataSourceSelectors.isLoading);
     this.store.dispatch(DataSourceActions.load());
     this.store.dispatch(FieldActions.load());
     this.store.dispatch(ClassActions.load());

@@ -60,6 +60,7 @@
   }
 
   .a-table {
+    height: 100%;
     tbody td.-cell-with-icon {
       margin: 0;
       padding: toRem(20) toRem(8);
@@ -69,6 +70,7 @@
 
   &__content {
     overflow: auto;
+    height: 100%;
 
     table tr {
       th {

@@ -34,12 +34,14 @@ export class PryImportListComponent extends SubscriptionnerDirective implements 
   };
   sort: { orderBy?: 'DATASET_NAME' | 'DATE'; sortBy?: 'asc' | 'desc' } = { orderBy: 'DATE', sortBy: 'desc' };
   goBackToFirstPage$ = new Subject<boolean>();
+  loading$: Observable<boolean>;
 
   constructor(
     private store: Store,
     private dialog: PryDialogService
   ) {
     super();
+    this.loading$ = this.store.select(DataSourceSelectors.isLoading);
     this.store.dispatch(DataSourceActions.dataset.loadDataset());
     this.datasets$ = this.store.select(DataSourceSelectors.datasets);
     this.datasetVersions$ = this.store.select(DataSourceSelectors.datasetVersions);

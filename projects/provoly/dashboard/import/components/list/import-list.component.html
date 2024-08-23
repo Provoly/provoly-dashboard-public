@@ -81,46 +81,57 @@
         </tr>
       </thead>
       <tbody>
-        @for (version of datasetVersions$ | async; track version.id) {
+        @if (loading$ | async; as loading) {
           <tr>
-            <td>{{ version.dataset.name }}</td>
-            <td>
-              {{ version.version }}
+            <td colSpan="5">
+              <div class="a-page-loader -relative" [style.display]="'flex'">
+                <pry-page-loader></pry-page-loader>
+                <p>{{ '@pry.widget.target.loading' | i18n }}...</p>
+              </div>
             </td>
-            <td>
-              {{ version.lastModified | date: 'dd/MM/yyyy HH:mm' }}
-            </td>
-            <td class="u-display-flex -align-center -cell-with-icon">
-              @if (version.state === 'ACTIVE') {
-                <pry-icon iconSvg="check" class="check" [height]="20" [width]="20"></pry-icon>
-              } @else if (version.state === 'WARNING' || version.state === 'ERROR') {
-                <pry-icon iconSvg="warning-triangle" class="warning" [height]="20" [width]="20"></pry-icon>
-              }
-              {{
-                version.id === version.dataset.activeVersion?.id
-                  ? '@pry.dataset.version.state.currentlyActive'
-                  : ('@pry.dataset.version.state.' + version.state | i18n)
-              }}
-            </td>
-            @if (version.state === 'ERROR') {
-              <td>
-                <button class="a-btn a-btn--secondary" (click)="openErrorModal(version)">
-                  {{ '@pry.dataset.buttonAction.ERROR' | i18n }}
-                </button>
-              </td>
-            } @else {
-              <td>
-                <button class="a-btn a-btn--secondary" (click)="openInfoModal(version)">
-                  {{ '@pry.dataset.consult' | i18n }}
-                </button>
-                @if (version.hasWarnings) {
-                  <button class="a-btn a-btn--secondary" (click)="openErrorModal(version)">
-                    {{ '@pry.dataset.buttonAction.WARNING' | i18n }}
-                  </button>
-                }
-              </td>
-            }
           </tr>
+        } @else {
+          @for (version of datasetVersions$ | async; track version.id) {
+            <tr>
+              <td>{{ version.dataset.name }}</td>
+              <td>
+                {{ version.version }}
+              </td>
+              <td>
+                {{ version.lastModified | date: 'dd/MM/yyyy HH:mm' }}
+              </td>
+              <td class="u-display-flex -align-center -cell-with-icon">
+                @if (version.state === 'ACTIVE') {
+                  <pry-icon iconSvg="check" class="check" [height]="20" [width]="20"></pry-icon>
+                } @else if (version.state === 'WARNING' || version.state === 'ERROR') {
+                  <pry-icon iconSvg="warning-triangle" class="warning" [height]="20" [width]="20"></pry-icon>
+                }
+                {{
+                  version.id === version.dataset.activeVersion?.id
+                    ? '@pry.dataset.version.state.currentlyActive'
+                    : ('@pry.dataset.version.state.' + version.state | i18n)
+                }}
+              </td>
+              @if (version.state === 'ERROR') {
+                <td>
+                  <button class="a-btn a-btn--secondary" (click)="openErrorModal(version)">
+                    {{ '@pry.dataset.buttonAction.ERROR' | i18n }}
+                  </button>
+                </td>
+              } @else {
+                <td>
+                  <button class="a-btn a-btn--secondary" (click)="openInfoModal(version)">
+                    {{ '@pry.dataset.consult' | i18n }}
+                  </button>
+                  @if (version.hasWarnings) {
+                    <button class="a-btn a-btn--secondary" (click)="openErrorModal(version)">
+                      {{ '@pry.dataset.buttonAction.WARNING' | i18n }}
+                    </button>
+                  }
+                </td>
+              }
+            </tr>
+          }
         }
       </tbody>
     </table>

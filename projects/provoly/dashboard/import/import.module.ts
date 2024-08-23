@@ -10,7 +10,8 @@ import {
   PryI18nService,
   PryIconModule,
   PrySelectModule,
-  PrySinceDateModule, PrySortModule
+  PrySinceDateModule,
+  PrySortModule
 } from '@provoly/dashboard';
 
 import { enTranslations } from './i18n/en.translations';
@@ -25,6 +26,7 @@ import { PryImportFormComponent } from './components/form/import-form.component'
 import { PryImportListComponent } from './components/list/import-list.component';
 import { PryPaginatorModule } from '@provoly/dashboard/components/paginator';
 import { PryVersionModalComponent } from './components/version-modal/version-modal.component';
+import { PryPageLoaderModule } from '@provoly/dashboard/components/page-loader';
 
 @NgModule({
   providers: [DatePipe],
@@ -45,7 +47,8 @@ import { PryVersionModalComponent } from './components/version-modal/version-mod
     PryDatePickerModule,
     PrySinceDateModule,
     PryPaginatorModule,
-    PrySortModule
+    PrySortModule,
+    PryPageLoaderModule
   ],
   exports: [PryImportFormComponent, PryImportListComponent, PryVersionModalComponent]
 })

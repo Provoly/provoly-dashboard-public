@@ -7,7 +7,7 @@ import { Category } from '../category/category.interface';
 export const dataSourceFeatureKey = '@pry/datasources';
 
 export interface DataSourceState {
-  isLoading: boolean;
+  loading: boolean;
   list: NamedQuery[];
   currentEdit?: NamedQuery;
   fromWidget?: { widgetIndex: number; editedQuery: string };
@@ -22,7 +22,7 @@ export interface DataSourceState {
 }
 
 export const initialDataSourceState: DataSourceState = {
-  isLoading: false,
+  loading: false,
   list: [],
   isRename: false,
   datasets: [],
@@ -35,13 +35,13 @@ export const initialDataSourceState: DataSourceState = {
 
 export const dataSourceReducer = createReducer(
   initialDataSourceState,
-  on(DataSourceActions.namedQuery.load, (state) => ({ ...state, error: undefined, isLoading: true })),
-  on(DataSourceActions.namedQuery.loaded, (state, action) => ({ ...state, list: action.list, isLoading: false })),
-  on(DataSourceActions.namedQuery.delete, (state) => ({ ...state, error: undefined, isLoading: false })),
-  on(DataSourceActions.namedQuery.failure, (state, action) => ({ ...state, error: action.error, isLoading: false })),
+  on(DataSourceActions.namedQuery.load, (state) => ({ ...state, error: undefined, loading: true })),
+  on(DataSourceActions.namedQuery.loaded, (state, action) => ({ ...state, list: action.list, loading: false })),
+  on(DataSourceActions.namedQuery.delete, (state) => ({ ...state, error: undefined, loading: false })),
+  on(DataSourceActions.namedQuery.failure, (state, action) => ({ ...state, error: action.error, loading: false })),
   on(DataSourceActions.namedQuery.openEdit, (state, action) => ({
     ...state,
-    isLoading: false,
+    loading: false,
     currentEdit: action.currentEdit,
     fromWidget:
       action.widgetIndex !== undefined
@@ -55,7 +55,7 @@ export const dataSourceReducer = createReducer(
     ...state,
     currentEdit: undefined,
     fromWidget: undefined,
-    isLoading: false
+    loading: false
   })),
   on(DataSourceActions.namedQuery.updateCurrentEdit, (state, action) => ({
     ...state,
@@ -67,16 +67,16 @@ export const dataSourceReducer = createReducer(
   })),
   on(DataSourceActions.namedQuery.openRename, (state) => ({ ...state, isRename: true })),
   on(DataSourceActions.namedQuery.stopRename, (state) => ({ ...state, isRename: false })),
-  on(DataSourceActions.dataset.loadDataset, (state) => ({ ...state, error: undefined, isLoading: true })),
+  on(DataSourceActions.dataset.loadDataset, (state) => ({ ...state, error: undefined, loading: true })),
   on(DataSourceActions.dataset.loadedDataset, (state, action) => ({
     ...state,
     datasets: action.datasets,
-    isLoading: false
+    loading: false
   })),
   on(DataSourceActions.dataset.failure, (state, action) => ({
     ...state,
     error: action.error,
-    isLoading: false
+    loading: false
   })),
   on(DataSourceActions.dataset.listVersions, (state) => ({
     ...state,

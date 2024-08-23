@@ -29,7 +29,7 @@ const isRename = createSelector(selectFeature, (state) => state.isRename);
 const editFromWidget = createSelector(selectFeature, (state) => state.fromWidget);
 const datasets = createSelector(selectFeature, (state) => state.datasets);
 const errors = createSelector(selectFeature, (state) => state.error);
-const isLoading = createSelector(selectFeature, (state) => state.isLoading);
+const isLoading = createSelector(selectFeature, (state) => state.loading);
 const getDataSources = createSelector(getAllNamedQuery, datasets, (nqs, dsd) => [...nqs, ...dsd] as DataSource[]);
 const getDataSourcesSorted = createSelector(
   getAllNamedQuery,
