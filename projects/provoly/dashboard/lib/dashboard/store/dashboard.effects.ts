@@ -202,71 +202,59 @@ export class DashboardEffects {
         this.store.select(DashboardSelectors.quickOrder)
       ),
       mergeMap(([action, manifest, resultSets, resultSetsParams, quickOrder]) => {
-        // @ts-ignore
-        if (!action.id) {
-          // First send aggregate updates
-          const toAggregateActions = (
-            [
-              ...new Set(
-                manifest.windows
-                  .map((winManifest) => (winManifest ?? {}).widgets ?? [])
-                  .reduce((p, c) => [...p, ...c], [])
-                  .map((widManifest) => this.widgetFactoryService.aggregatesToAutoLoad(widManifest))
-                  .reduce((p, c) => [...p, ...c], [] as string[])
-              )
-            ] as string[]
-          ).map((ds) => DashboardActions.triggerAggregate({ id: ds }));
+        const manifestToCheck: GlobalManifest =
+          action.type === DashboardActions.assertResultSets.type && action.staticManifest
+            ? { windows: [action.staticManifest] }
+            : manifest;
 
-          const toItemsActions = Object.values(
-            manifest.windows
-              .map((winManifest) => (winManifest ?? {}).widgets ?? [])
-              .reduce((p, c) => [...p, ...c], [])
-              .map((widManifest) => this.widgetFactoryService.datasourcesToAutoLoad(widManifest))
-              .flat()
-              .reduce(
-                (p, c) => ({
-                  ...p,
-                  [c.datasetId]: {
-                    ...p[c.datasetId],
-                    ...c,
-                    excludeGeo: p[c.datasetId]?.excludeGeo === false ? p[c.datasetId].excludeGeo : c.excludeGeo
-                  }
-                }),
-                {} as { [key: string]: { datasetId: string; excludeGeo: boolean } }
-              )
-          )
-            .filter(
-              (resultSet) =>
-                !!resultSet.datasetId &&
-                resultSet.datasetId !== '' &&
-                (!resultSets[resultSet.datasetId] ||
-                  resultSetsParams[resultSet.datasetId] !==
-                    this.searchService.getItemsSerializedParams(resultSet.datasetId, quickOrder))
+        // First send aggregate updates
+        const toAggregateActions = (
+          [
+            ...new Set(
+              manifestToCheck.windows
+                .map((winManifest) => (winManifest ?? {}).widgets ?? [])
+                .reduce((p, c) => [...p, ...c], [])
+                .map((widManifest) => this.widgetFactoryService.aggregatesToAutoLoad(widManifest))
+                .reduce((p, c) => [...p, ...c], [] as string[])
             )
-            .map((resultSet) =>
-              SearchActions.getDatasourceItems({
-                id: resultSet.datasetId,
-                excludeGeo: resultSet.excludeGeo,
-                from: 'DashboardEffects.assertResultSets$-1'
-              })
-            );
+          ] as string[]
+        ).map((ds) => DashboardActions.triggerAggregate({ id: ds }));
 
-          return [...toItemsActions, ...toAggregateActions];
-        } else {
-          // @ts-ignore
-          if (!resultSets[action.id]) {
-            return [
-              SearchActions.getDatasourceItems({
-                // @ts-ignore
-                id: action.id as string,
-                // @ts-ignore
-                excludeGeo: action.excludeGeo != undefined ? action.excludeGeo : true,
-                from: 'DashboardEffects.assertResultSets$-2'
-              })
-            ];
-          }
-          return [];
-        }
+        const toItemsActions = Object.values(
+          manifestToCheck.windows
+            .map((winManifest) => (winManifest ?? {}).widgets ?? [])
+            .reduce((p, c) => [...p, ...c], [])
+            .map((widManifest) => this.widgetFactoryService.datasourcesToAutoLoad(widManifest))
+            .flat()
+            .reduce(
+              (p, c) => ({
+                ...p,
+                [c.datasetId]: {
+                  ...p[c.datasetId],
+                  ...c,
+                  excludeGeo: p[c.datasetId]?.excludeGeo === false ? p[c.datasetId].excludeGeo : c.excludeGeo
+                }
+              }),
+              {} as { [key: string]: { datasetId: string; excludeGeo: boolean } }
+            )
+        )
+          .filter(
+            (resultSet) =>
+              !!resultSet.datasetId &&
+              resultSet.datasetId !== '' &&
+              (!resultSets[resultSet.datasetId] ||
+                resultSetsParams[resultSet.datasetId] !==
+                  this.searchService.getItemsSerializedParams(resultSet.datasetId, quickOrder))
+          )
+          .map((resultSet) =>
+            SearchActions.getDatasourceItems({
+              id: resultSet.datasetId,
+              excludeGeo: resultSet.excludeGeo,
+              from: 'DashboardEffects.assertResultSets$-1'
+            })
+          );
+
+        return [...toItemsActions, ...toAggregateActions];
       })
     )
   );

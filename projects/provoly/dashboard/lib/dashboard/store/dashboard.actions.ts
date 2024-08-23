@@ -165,7 +165,7 @@ export const DashboardActions = {
   followManifestRoute: createAction('[Dashboard] (bus) follow manifest route'),
   moveWidget: createAction('[Dashboard] moving widget', props<{ widgetIndex: number; targetIndex: number }>()),
   maximizeWidget: createAction('[Dashboard] maximize widget', props<{ widgetIndex: number }>()),
-  assertResultSets: createAction('[Dashboard] assert resultSet', props<{ id?: string; excludeGeo?: boolean }>()),
+  assertResultSets: createAction('[Dashboard] assert resultSet', props<{ staticManifest?: DashboardManifest }>()),
   updateResultSet: createAction(
     '[Dashboard] (bus) received named resultSet',
     props<{ id: string; resultSet: ResultSet; params?: string }>()
