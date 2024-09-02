@@ -9,7 +9,9 @@ const operators = [
   'END_WITH',
   'LOWER_THAN',
   'INSIDE',
-  'OUTSIDE'
+  'OUTSIDE',
+  'IN',
+  'NOT_IN'
 ];
 
 export class FilterParamEncoder extends HttpUrlEncodingCodec {
@@ -20,9 +22,7 @@ export class FilterParamEncoder extends HttpUrlEncodingCodec {
   override encodeValue(v: string): string {
     const hasOperator = operators.includes(v.split(',')?.[1]);
     if (hasOperator) {
-      const fragments = v.split(',');
-      fragments[2] = encodeURIComponent(fragments.splice(2).join('\\,'));
-      return fragments.slice(0, 3).join(',');
+      return v;
     }
     return encodeURIComponent(v);
   }

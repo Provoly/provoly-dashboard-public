@@ -3,9 +3,9 @@ import { FilterParamEncoder } from './filter-param-encoder';
 describe('FilterParamEncoder', () => {
   const encoder = new FilterParamEncoder();
 
-  it('should encode commas in filter value but leave other commas', () => {
+  it('should not encode commas in filter value for well known operator', () => {
     expect(encoder.encodeValue('ds-id,CONTAINS,filter,value,with,commas')).toBe(
-      'ds-id,CONTAINS,filter%5C%2Cvalue%5C%2Cwith%5C%2Ccommas'
+      'ds-id,CONTAINS,filter,value,with,commas'
     );
   });
 

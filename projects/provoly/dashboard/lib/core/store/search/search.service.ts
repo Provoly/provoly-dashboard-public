@@ -60,7 +60,10 @@ export class SearchService {
       this.filters[id]
         .filter((filter) => filter.value !== null && filter.value !== undefined)
         .forEach((filter) => {
-          params = params.append('filter', `${filter.attribute},${filter.operator},${filter.value!.toString()}`);
+          const value = Array.isArray(filter.value)
+            ? filter.value.map((v) => encodeURIComponent(v.toString().split(',').join('\\,'))).join(',')
+            : encodeURIComponent(filter.value!.toString().replace(/,/g, '\\,'));
+          params = params.append('filter', `${filter.attribute},${filter.operator},${value}`);
         });
     }
     if (includeLimit) {
