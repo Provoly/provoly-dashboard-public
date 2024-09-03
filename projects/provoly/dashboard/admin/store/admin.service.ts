@@ -137,9 +137,13 @@ export class AdminService {
   }
 
   saveClass(clazz: Class): Observable<void> {
+    const clazzToSave = {
+      ...clazz,
+      attributes: [...clazz.attributes.map((attr) => ({ ...attr, field: attr.field.id }))]
+    };
     return this.store
       .select(ConfigSelectors.refUrl)
-      .pipe(mergeMap((url) => this.httpClient.post<void>(encodeURI(`${url}/model/class`), clazz)));
+      .pipe(mergeMap((url) => this.httpClient.post<void>(encodeURI(`${url}/model/class`), clazzToSave)));
   }
 
   saveAttributeForClass(classId: string, attribute: Attribute): Observable<void> {
