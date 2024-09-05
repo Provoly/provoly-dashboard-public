@@ -79,7 +79,13 @@
                   {{ presentation.description }}
                 </div>
               </div>
-              <p class="a-p -date">{{ presentation.modificationDate | sinceDate }}</p>
+              <div class="u-display-flex -justify-space-between -align-center">
+                <p class="a-p -date">{{ presentation.modificationDate | sinceDate }}</p>
+                @if (presentation.theme !== undefined) {
+                  <span class="a-chip -theme -md u-self-end"
+                        [class.-u-hidden]="!showTheme">{{ presentation.theme }}</span>
+                }
+              </div>
             </div>
             <div
               class="o-presentation__item__footer a-tooltip -tooltip-no-wrap"

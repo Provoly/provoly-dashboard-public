@@ -119,6 +119,14 @@
           margin-bottom: 0;
         }
       }
+
+      .a-chip {
+        &.-theme {
+          &.-u-hidden {
+            display: none;
+          }
+        }
+      }
     }
 
     &__title-container {

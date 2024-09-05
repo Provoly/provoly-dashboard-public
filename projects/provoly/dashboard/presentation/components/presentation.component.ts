@@ -29,14 +29,18 @@ import {
 import { BehaviorSubject, combineLatest, map, Observable, of, startWith } from 'rxjs';
 import { v4 } from 'uuid';
 
+interface ManifestDescriptionWithTheme extends ManifestDescription {
+  theme: string | undefined;
+}
+
 @Component({
   selector: 'pry-presentation',
   templateUrl: './presentation.component.html'
 })
 export class PryPresentationComponent extends SubscriptionnerDirective {
-  manifests$: Observable<ManifestDescription[]>;
+  manifests$: Observable<ManifestDescriptionWithTheme[]>;
   search$ = new BehaviorSubject('');
-  filteredPresentations$: Observable<ManifestDescription[]>;
+  filteredPresentations$: Observable<ManifestDescriptionWithTheme[]>;
 
   selectedPresentation$ = new BehaviorSubject<ManifestDescription | undefined>(undefined);
   selectedMode: ViewMode = ViewMode.CATALOG;
@@ -52,6 +56,7 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
   @Input() themePrefix: string | null = null;
   @Input() mode: 'theme' | 'meta' = 'meta';
   @Input() hideToolbox = false;
+  @Input() showTheme = true;
 
   listOfManifests$ = new BehaviorSubject<ManifestDescription[] | null>(null);
   @Input() set listOfManifests(manifests: ManifestDescription[] | null) {
@@ -94,7 +99,18 @@ export class PryPresentationComponent extends SubscriptionnerDirective {
           )
         ),
       this.listOfManifests$
-    ]).pipe(map(([dynamics, statics]) => statics ?? dynamics));
+    ]).pipe(
+      map(([dynamics, statics]) => statics ?? dynamics),
+      map((manifests) =>
+        manifests.map(
+          (manifest) =>
+            ({
+              ...manifest,
+              theme: manifest.metadata?.find((meta) => meta.metadataDef.name === '_theme')?.value
+            }) as ManifestDescriptionWithTheme
+        )
+      )
+    );
 
     this.filteredPresentations$ = combineLatest([
       this.manifests$,

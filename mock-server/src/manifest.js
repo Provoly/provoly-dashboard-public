@@ -14,6 +14,15 @@ let shareConflict = JSON.parse(fs.readFileSync('./data/shareConflict.json', 'utf
 module.exports = {
   list: () => {
     const list = manifests.map((manifest, idx) => {
+      const theme = {
+        metadataDef: {
+          ...metadatas.find((metadata) => metadata.name === '_theme')
+        },
+        value: metadatas.find((metadata) => metadata.name === '_theme').allowedValues[
+          casual.integer(0, metadatas.find((metadata) => metadata.name === '_theme').allowedValues.length - 1)
+        ]
+      };
+
       return {
         id: manifest.id,
         name: manifest.name,
@@ -33,16 +42,7 @@ module.exports = {
               .filter((dataset) => !!dataset)
           )
         ],
-        metadata: [
-          {
-            metadataDef: {
-              ...metadatas.find((metadata) => metadata.name === '_theme')
-            },
-            value: metadatas.find((metadata) => metadata.name === '_theme').allowedValues[
-              casual.integer(0, metadatas.find((metadata) => metadata.name === '_theme').allowedValues.length - 1)
-            ]
-          }
-        ],
+        metadata: casual.boolean ? [] : [theme],
         additionalInformation: manifest.additionalInformation
       };
     });
