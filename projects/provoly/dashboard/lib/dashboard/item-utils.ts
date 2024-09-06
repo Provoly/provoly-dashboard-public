@@ -123,7 +123,11 @@ export class ItemUtils {
         Object.keys(resultSet?.items || {})
           .map((classId) => classes.find((cl) => cl.id === classId) as Class)
           .filter((oClass) => oClass !== undefined)
-          .map((oClass) => oClass.attributes)
+          .map((oClass) =>
+            oClass.attributes.filter((attr) =>
+              ItemUtils.getClassNonGeoAttributesNames(oClass, definitions, fields).includes(attr.name)
+            )
+          )
           .reduce((p, c) => [...p, ...c], [])
           .filter((attr: Attribute) => !!fields.find((f) => f.id === attr.field.id))
       )

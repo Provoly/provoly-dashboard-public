@@ -1,4 +1,4 @@
-import { FieldType } from '@provoly/dashboard';
+import { Attribute, Class, Field, FieldType, ResultSet } from '@provoly/dashboard';
 import { Item } from '../core/model/item.interface';
 import { ItemUtils } from './item-utils';
 
@@ -71,5 +71,59 @@ describe('ItemUtils functions', () => {
         })
       ).toEqual([44.6, -0.89]);
     });
+  });
+
+  it('should get default attributes from Rs', () => {
+    const resultSet: ResultSet = {
+      items: { fakeClassId: [item] },
+      relations: [],
+      autoRefreshInterval: undefined,
+      merged: undefined,
+      count: undefined
+    };
+    const expectedAttributesFiltered: Attribute[] = [
+      {
+        id: 'sxxx',
+        name: 'chaine',
+        technicalName: 'string',
+        field: { id: 'a', name: 'a', type: FieldType.STRING },
+        multiValued: false
+      },
+      {
+        id: 'dxxx',
+        name: 'décimale',
+        technicalName: 'decimal',
+        field: { id: 'c', name: 'c', type: FieldType.DECIMAL },
+        multiValued: false
+      }
+    ];
+    const allAtributes: Attribute[] = [
+      ...expectedAttributesFiltered,
+      {
+        id: 'ixxx',
+        name: 'entier',
+        technicalName: 'integer',
+        field: { id: 'b', name: 'b', type: FieldType.INTEGER },
+        multiValued: false
+      }
+    ];
+    const clazz: Class = {
+      id: 'fakeClassId',
+      name: 'fakeClassName',
+      attributes: allAtributes
+    };
+    const fields: Field[] = [
+      { id: 'a', name: 'a', type: FieldType.STRING },
+      {
+        id: 'b',
+        name: 'b',
+        type: FieldType.INTEGER
+      },
+      { id: 'c', name: 'c', type: FieldType.DECIMAL }
+    ];
+    const defs: { [key: string]: string[] } = { fakeClassId: ['chaine', 'décimale'] };
+
+    expect(ItemUtils.getAttributesFromRs(resultSet, [clazz], fields, defs)).toEqual(expectedAttributesFiltered);
+    expect(ItemUtils.getAttributesFromRs(resultSet, [clazz], fields, undefined)).toEqual(allAtributes);
   });
 });
