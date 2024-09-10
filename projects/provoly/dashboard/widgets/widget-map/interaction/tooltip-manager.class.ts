@@ -231,8 +231,7 @@ export class TooltipManager {
             url,
             oClass: layer.getProperties()['oClass'] ?? '',
             coordinates: pixel,
-            componentId: this.parent.id,
-            geomProName: layer.getProperties()['geomPropName']
+            componentId: this.parent.id
           })
         );
       } else {

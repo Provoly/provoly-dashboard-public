@@ -53,23 +53,27 @@ export class WmsService {
     return this.httpClient.get(url).pipe(map((json: any) => json));
   }
 
-  getWfsFeatures(wmsUrl: string, bbox: number[], geomPropName: string): Observable<{ features: any[] }> {
-    const url = wfsUrlBuilder(wmsUrl, bbox, geomPropName);
+  getWfsFeatures(wmsUrl: string, bbox: number[]): Observable<{ features: any[] }> {
+    const url = wfsUrlBuilder(wmsUrl, bbox);
     return this.httpClient.get(url).pipe(map((json: any) => json));
   }
 }
 
-const wfsUrlBuilder = (wmsUrl: string, bbox: number[], geomPropName: string, params?: string[]) => {
-  const isBboxPoint = bbox[0] === bbox[2] && bbox[1] === bbox[3];
+const BBOX_ENHANCE_DISTANCE = 0.0001;
+const wfsUrlBuilder = (wmsUrl: string, bbox: number[], params?: string[]) => {
+  const enhancedBbox = [
+    bbox[0] - BBOX_ENHANCE_DISTANCE,
+    bbox[1] - BBOX_ENHANCE_DISTANCE,
+    bbox[2] + BBOX_ENHANCE_DISTANCE,
+    bbox[3] + BBOX_ENHANCE_DISTANCE
+  ];
   const wfsFragments: { [key: string]: string | undefined } = {
     service: 'WFS',
     version: '2.0.0',
     request: 'GetFeature',
     outputFormat: 'application/json',
     typeNames: undefined,
-    cql_filter: isBboxPoint
-      ? `DWITHIN(${geomPropName}, POINT(${bbox[0]} ${bbox[1]}),1,meters)`
-      : `BBOX(${geomPropName},${bbox.join(',')})`,
+    bbox: `${enhancedBbox.join(',')},EPSG:4326`,
     srsName: undefined,
     params: params ? `&${params.join('&')}` : ''
   };
@@ -77,9 +81,7 @@ const wfsUrlBuilder = (wmsUrl: string, bbox: number[], geomPropName: string, par
   const wmsUrlFragments = wmsUrl.split('&');
   wfsFragments['typeNames'] = wmsUrlFragments.find((param) => param.includes('LAYERS'))?.split('=')[1];
   wfsFragments['srsName'] = wmsUrlFragments.find((param) => param.toUpperCase().includes('CRS'))?.split('=')[1];
-  wfsFragments['cql_filter'] += wmsUrlFragments.find((param) => param.toUpperCase().includes('CQL_FILTER'))
-    ? ' AND ' + wmsUrlFragments.find((param) => param.toUpperCase().includes('CQL_FILTER'))?.split('=')[1]
-    : '';
+  wfsFragments['cql_filter'] = wmsUrlFragments.find((param) => param.includes('CQL_FILTER'))?.split('=')[1];
 
   return (
     base +

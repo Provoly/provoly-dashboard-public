@@ -231,7 +231,7 @@ export const DashboardActions = {
   ),
   getWfsFeaturesForPointStackTooltips: createAction(
     '[Widget map] Get wfs Features for showing stack tooltips',
-    props<{ url: string; oClass: string; coordinates: number[]; componentId: string; geomProName: string }>()
+    props<{ url: string; oClass: string; coordinates: number[]; componentId: string }>()
   ),
   updateDisplayOptions: createAction(
     '[Dashboard/Display] (bus) Update displayed dashboard management features',
