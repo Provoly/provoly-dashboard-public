@@ -1,3 +1,4 @@
 {
-  "aggregation-superficie": "aggregation-superficie.json"
+  "aggregation-superficie": "aggregation-superficie.json",
+  "histogram": "histogram.json"
 }

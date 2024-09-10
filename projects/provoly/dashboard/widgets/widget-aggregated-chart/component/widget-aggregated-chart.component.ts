@@ -123,6 +123,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     );
     this.options$.pipe(filter((opt) => !!opt)).subscribe((options) => {
       this.optionsCopy$.next(JSON.parse(JSON.stringify(options)));
+      if ([GraphType.HISTOGRAM].includes(options.graph?.type)) {
+        this.enableIntervals(true);
+      }
     });
     this.fields$ = this.store.select(FieldSelectors.fields);
     this.classes$ = this.store.select(ClassSelectors.classes);
@@ -404,8 +407,6 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                         field: 'key',
                         title: options.abscissa.label,
                         type: this.getAbscissaType(types.abscissa.vegaType, !!options.graph.sort),
-                        bin: options.graph.type.indexOf('histogram') >= 0,
-                        ...this.getTimeUnit(options, types.abscissa.vegaType),
                         axis: {
                           grid: false,
                           ...WidgetAggregatedChartComponent.minTick(types.abscissa.field?.type ?? FieldType.STRING),
@@ -817,13 +818,29 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   enableIntervals($event: any) {
     if (this.optionsCopy$.value) {
       if ($event) {
+        // if interval is not defined intialization depends on field type
+        let newIntervalValue =
+          this.optionsCopy$.value.abscissa?.interval ??
+          (this.copyAbscissaField?.type !== FieldType.INSTANT ? CHART_INTERVAL_STEP : 'second');
+        // if date time interval and field is not date, reinitializing interval value
+        if (
+          typeof this.optionsCopy$.value.abscissa?.interval === 'string' &&
+          this.copyAbscissaField?.type !== FieldType.INSTANT
+        ) {
+          newIntervalValue = CHART_INTERVAL_STEP;
+        }
+        // if numeric interval and field is date, reinitializing interval value
+        if (
+          typeof this.optionsCopy$.value.abscissa?.interval !== 'string' &&
+          this.copyAbscissaField?.type === FieldType.INSTANT
+        ) {
+          newIntervalValue = 'second';
+        }
         this.optionsCopy$.next({
           ...this.optionsCopy$.value,
           abscissa: {
             ...this.optionsCopy$.value?.abscissa,
-            interval:
-              this.optionsCopy$.value?.abscissa?.interval ??
-              (this.copyAbscissaField?.type !== FieldType.INSTANT ? CHART_INTERVAL_STEP : 'second')
+            interval: newIntervalValue
           }
         });
       } else {
@@ -1029,15 +1046,6 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     }
   }
 
-  getTimeUnit(options: ChartAggregatedWidgetOptions, abscissaType: VegaType) {
-    if (abscissaType === VegaType.TEMPORAL && typeof options.abscissa.interval === 'string') {
-      return { timeUnit: options.abscissa.interval };
-    } else if (abscissaType === VegaType.TEMPORAL && !!options.graph.sort) {
-      return { timeUnit: 'utcyearmonthdate' };
-    }
-    return {};
-  }
-
   getLabelAngle(abscissaType: VegaType, data: { key: string | number; value: any }[]) {
     if (
       [VegaType.NOMINAL, VegaType.ORDINAL].includes(abscissaType) &&
@@ -1049,6 +1057,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   }
 
   getAbscissaType(abscissaVegaType: VegaType, hasSort: boolean) {
+    if (abscissaVegaType === VegaType.TEMPORAL) {
+      return abscissaVegaType;
+    }
     return hasSort ? VegaType.ORDINAL : abscissaVegaType;
   }
 

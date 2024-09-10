@@ -52,7 +52,7 @@ const generateMetadata = () => {
   const howMany = Math.round(Math.random() * 100) % 5;
   for (let i = 0; i < howMany; i++) {
     const metaType = metaTypes[Math.round(Math.random() * 100) % metaTypes.length];
-    metas[casual.word] = generateAttrValueByFieldType({ type: metaType }, { name: 'meta' });
+    metas[casual.word] = generateAttrValueByFieldType({ name: 'meta', type: metaType });
   }
   return metas;
 };
@@ -80,8 +80,8 @@ const wrapAttribute = (attr) => {
   }
 };
 
-function generateAttrValueByFieldType(type, attr) {
-  switch (type.type) {
+function generateAttrValueByFieldType(attr) {
+  switch (attr.type) {
     case 'decimal':
       return casual.double((from = 0), (to = 10000000));
     case 'string':
@@ -126,7 +126,7 @@ function generateAttrValueByFieldType(type, attr) {
         coordinates: casual.multiPolygon
       };
     default:
-      console.error('Cannot generate attr value for ', attr, type.type);
+      console.error('Cannot generate attr value for ', attr);
       return 'Cannot generate attr value for this';
   }
 }
@@ -196,7 +196,7 @@ const generateFieldValue = (attr) => {
     default:
       // no specific attr name value generation
       // get attr type using field
-      return generateAttrValueByFieldType(attr.field, attr);
+      return generateAttrValueByFieldType(attr);
   }
 };
 

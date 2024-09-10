@@ -427,5 +427,24 @@
     "owner": false,
     "groups": [],
     "metadata": []
+  },
+  {
+    "id": "histogram",
+    "name": "Histogramme",
+    "oClass": "class-histogram",
+    "type": "OPEN",
+    "activeVersion": {
+      "id": "e72d9d2a-a3e3-49db-afc4-056e092f7945",
+      "dataset": "histogram",
+      "oClass": "class-histogram",
+      "lastModified": "2023-07-12T14:28:16.089390Z",
+      "version": 1,
+      "state": "ACTIVE",
+      "metadata": [],
+      "additionalInformation": "Laborum eius porro consequatur."
+    },
+    "owner": false,
+    "groups": [],
+    "metadata": []
   }
 ]

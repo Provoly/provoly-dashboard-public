@@ -1326,5 +1326,51 @@
     ],
     "storage": "ELASTIC",
     "metadata": []
+  },
+  {
+    "id": "class-histogram",
+    "slug": "f6f94380c0_classification_histogram",
+    "name": "class-histogram",
+    "icon": null,
+    "attributes": [
+      {
+        "id": "81a917fb-6d9b-41d1-807a-4e7ca9103f23",
+        "name": "date",
+        "technicalName": "Date",
+        "field": "azerbef3-dd45-4130-8668-7ecf77a00001",
+        "category": null,
+        "multiValued": false,
+        "slug": "81a917fb-date"
+      },
+      {
+        "id": "daf27e3f-e336-43b1-9337-d2d01be90de9",
+        "name": "valeur",
+        "technicalName": "valeur",
+        "field": "6994ede1-7689-489f-8003-115e7cd4646b",
+        "category": null,
+        "multiValued": false,
+        "slug": "562610113b_valeur"
+      },
+      {
+        "id": "9500a9ec-114e-4957-97c4-05016d7b4108",
+        "name": "date2",
+        "technicalName": "Date2",
+        "field": "azerbef3-dd45-4130-8668-7ecf77a00001",
+        "category": null,
+        "multiValued": false,
+        "slug": "81a917fb-date2"
+      },
+      {
+        "id": "5aed658b-9512-43be-97a5-93557384e428",
+        "name": "valeur2",
+        "technicalName": "valeur2",
+        "field": "6994ede1-7689-489f-8003-115e7cd4646b",
+        "category": null,
+        "multiValued": false,
+        "slug": "562610113b_valeur2"
+      }
+    ],
+    "storage": "ELASTIC",
+    "metadata": []
   }
 ]
