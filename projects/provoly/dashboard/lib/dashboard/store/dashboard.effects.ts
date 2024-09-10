@@ -832,11 +832,10 @@ export class DashboardEffects {
           wmsJson.features[0] &&
           wmsJson.features[0].properties.count &&
           wmsJson.features[0].properties.countunique &&
-          wmsJson.features[0].properties.count > 1 &&
-          wmsJson.features[0].properties.countunique === 1
+          wmsJson.features[0].properties.count > 1
         ) {
-          let envBBOXCoords: number[] = [...wmsJson.features[0].properties.envBBOX.matchAll(/\d+.\d+/g)].map(
-            (m) => m[0]
+          let envBBOXCoords = [...wmsJson.features[0].properties.envBBOX.matchAll(/\d+.\d+/g)].map((m) =>
+            parseFloat(m[0])
           );
           return this.wmsService
             .getWfsFeatures(action.url, envBBOXCoords)
