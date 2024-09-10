@@ -182,7 +182,6 @@ describe('WidgetAggregatedChartComponent', () => {
               theta: undefined,
               x: {
                 axis: { grid: false, labelExpr: 'height < 300 ? truncate(datum.value, 10) : datum.value' },
-                bin: false,
                 field: 'key',
                 scale: { zero: true },
                 title: undefined,
@@ -326,7 +325,6 @@ describe('WidgetAggregatedChartComponent', () => {
               theta: undefined,
               x: {
                 axis: { grid: false, labelExpr: 'height < 300 ? truncate(datum.value, 10) : datum.value' },
-                bin: false,
                 field: 'key',
                 scale: { zero: true },
                 title: 'ABS',
@@ -410,7 +408,6 @@ describe('WidgetAggregatedChartComponent', () => {
               theta: undefined,
               x: {
                 axis: { grid: false, labelExpr: 'height < 300 ? truncate(datum.value, 10) : datum.value' },
-                bin: false,
                 field: 'key',
                 scale: { zero: true },
                 title: 'ABS',
