@@ -28,8 +28,11 @@ export class PryI18nService {
   }
 
   updateTranslations() {
-    let calculated = {};
-    Object.values(this.langObjects[this.currentLang]).forEach((obj) => (calculated = deepMerge(obj, calculated)));
+    const keyOrdered = Object.keys(this.langObjects[this.currentLang]).sort();
+    const calculated = keyOrdered.reduce(
+      (previous, currentKey) => deepMerge(this.langObjects[this.currentLang][currentKey], previous),
+      {}
+    ) as Translation;
     this.translations$.next(calculated);
   }
 
