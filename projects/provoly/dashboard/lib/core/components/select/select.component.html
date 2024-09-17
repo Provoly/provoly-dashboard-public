@@ -65,9 +65,11 @@
     }
   </div>
   <div class="a-pry-select__actions">
-    @if (clearable) {
-      <span class="a-pry-select__clear" (click)="clearAll($event)" aria-hidden="true">×</span>
-    }
+    <div class="a-pry-select__actions__clear-button">
+      @if (clearable && (search$ | async)) {
+        <span class="a-pry-select__clear" (click)="clearAll($event)" aria-hidden="true">×</span>
+      }
+    </div>
     <pry-icon
       class="a-pry-select__toggle"
       [iconSvg]="open ? 'chevron_top' : 'chevron_bottom'"

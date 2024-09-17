@@ -26,6 +26,10 @@
     display: flex;
     gap: toRem(5);
     align-items: center;
+
+    &__clear-button {
+      width: 8px;
+    }
   }
 
   &__value {
