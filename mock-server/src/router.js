@@ -293,7 +293,7 @@ router.on(['OPTIONS', 'PUT'], '/ref/users/id/:userId/metadata/id/:metadataId', (
           dataModule.users[userIndex].metadata?.filter(
             (metadata) => metadata.userProfile.id !== params['metadataId']
           ) ?? [];
-        payload.value?.forEach((value) => {
+        payload.values?.forEach((value) => {
           let meta = dataModule.userMetadatas.find((x) => x.id === params['metadataId']);
           newUserMetadatas.push({ userProfile: meta, value });
         });

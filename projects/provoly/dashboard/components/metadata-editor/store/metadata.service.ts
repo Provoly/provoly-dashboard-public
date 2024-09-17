@@ -41,7 +41,7 @@ export class MetadataService {
     return this.store.select(ConfigSelectors.refUrl).pipe(
       mergeMap((url) =>
         this.httpClient.put<void>(encodeURI(`${url}/users/id/${userId}/metadata/id/${metaId}`), {
-          value: value
+          values: value
         })
       )
     );
