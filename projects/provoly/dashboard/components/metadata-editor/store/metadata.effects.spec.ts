@@ -233,7 +233,7 @@ describe('MetadataEffects', () => {
         a: MetadataActions.addMetadataUser({
           userId: 'idBuffy',
           metaId: metadataUser[0].userProfile.id,
-          value: 'toto'
+          value: ['toto']
         })
       });
 
@@ -259,7 +259,7 @@ describe('MetadataEffects', () => {
         a: MetadataActions.addMetadataUser({
           userId: 'idBuffy',
           metaId: metadataUser[0].userProfile.id,
-          value: 'toto'
+          value: ['toto']
         })
       });
 

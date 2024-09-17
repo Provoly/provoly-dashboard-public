@@ -19,6 +19,7 @@ export class AdminUserSelectComponent implements OnInit, OnDestroy {
   compId: number;
   selectedUser$: Observable<UserInfo | undefined>;
   userMetadata$: Observable<MetadataUser[] | undefined>;
+  currentUsermetadatas?: MetadataUser[] | undefined;
   editable$: Observable<boolean>;
 
   metadata$: Observable<IMetadata[]>;
@@ -36,6 +37,9 @@ export class AdminUserSelectComponent implements OnInit, OnDestroy {
 
     this.selectedUser$ = this.store.select(AdminUserSelectors.selectedUser);
     this.userMetadata$ = this.store.select(MetadataSelectors.selectedUserProfile);
+    this.userMetadata$.subscribe((metas) => {
+      this.currentUsermetadatas = metas;
+    });
     this.metadata$ = this.store.select(MetadataSelectors.userProfile);
     this.editable$ = this.store.select(AdminUserSelectors.editable);
 
@@ -64,11 +68,19 @@ export class AdminUserSelectComponent implements OnInit, OnDestroy {
   }
 
   addMetadataUser(metadata: MetaEventType) {
+    const newMetadatas = this.getCurrentMetadatasValuesOfUserProfile(metadata.metadataId)
+      // removing redundant values
+      .filter((val) => val !== metadata.value)
+      // removing  previous value if editing
+      .filter((val) => !metadata.previousValue || val !== metadata.previousValue);
+    if (metadata.value) {
+      newMetadatas.push(metadata.value);
+    }
     this.store.dispatch(
       MetadataActions.addMetadataUser({
         userId: metadata.id,
         metaId: metadata.metadataId,
-        value: metadata.value
+        value: newMetadatas
       })
     );
   }
@@ -77,7 +89,11 @@ export class AdminUserSelectComponent implements OnInit, OnDestroy {
     this.store.dispatch(MetadataActions.deleteMetadataUser({ userId: this.userId, metadataId: metadata.metadataId }));
   }
 
-  switch(number: number) {
-    this.tab = number;
+  private getCurrentMetadatasValuesOfUserProfile(userProfileId: string): any[] {
+    return (
+      this.currentUsermetadatas
+        ?.filter((metadata) => metadata.userProfile.id === userProfileId)
+        .map((metadata) => metadata.value) ?? []
+    );
   }
 }

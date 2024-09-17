@@ -1,39 +1,70 @@
 <pry-metadata-editor-css></pry-metadata-editor-css>
-<div *ngFor="let metadata of (_metadata$ | async) ?? []">
+@for (groupedMetadatas of _metadataGroupedByDef$ | async; track groupedMetadatas.metadataDef.id) {
   <div class="o-tabs__panel__content__actions">
-    <div class="o-tabs__panel__content__actions__text">
-      <span class="o-tabs__panel__content__actions__text__label">{{ metaDefinition(metadata).name }} :</span>
-      <span class="o-tabs__panel__content__actions__text__value">{{ metadata.value }}</span>
-    </div>
-
-    <div class="o-tabs__panel__content__actions__buttons">
-      <ng-container *ngIf="!metaDefinition(metadata).readOnly">
-        <ng-container *pryAccess="{ module: 'admin', page: 'dataset', action: 'write' }">
-          <button type="button" class="a-btn a-btn--icon-only" aria-pressed="false">
-            <span class="u-visually-hidden">{{ '@pry.action.edit' | i18n }} {{ metaDefinition(metadata).name }}</span>
-            <pry-icon
-              class="edit-icon"
-              iconSvg="edit"
-              [width]="15"
-              [height]="15"
-              (click)="editMetadata(metadata)"
-            ></pry-icon>
-          </button>
-          <button type="button" class="a-btn a-btn--icon-only" aria-pressed="false">
-            <span class="u-visually-hidden">{{ '@pry.action.delete' | i18n }} {{ metaDefinition(metadata).name }}</span>
-            <pry-icon
-              class="delete-icon"
-              iconSvg="delete"
-              [width]="15"
-              [height]="15"
-              (click)="removeMetadata(metadata)"
-            ></pry-icon>
-          </button>
+    <div class="o-tabs__panel__content__actions__def">
+      <span class="o-tabs__panel__content__actions__text__label">{{ groupedMetadatas.metadataDef.name }}</span>
+      <div class="o-tabs__panel__content__actions__buttons">
+        <ng-container *ngIf="!groupedMetadatas.metadataDef.readOnly">
+          <ng-container *pryAccess="{ module: 'admin', page: 'dataset', action: 'write' }">
+            <button type="button" class="a-btn a-btn--icon-only" aria-pressed="false">
+              <span class="u-visually-hidden">
+                {{ '@pry.action.delete' | i18n }} {{ groupedMetadatas.metadataDef.name }}
+              </span>
+              <pry-icon
+                class="delete-icon"
+                iconSvg="delete"
+                [width]="15"
+                [height]="15"
+                (click)="removeMetadata(groupedMetadatas.metadataDef)"
+              ></pry-icon>
+            </button>
+          </ng-container>
         </ng-container>
-      </ng-container>
+      </div>
     </div>
+    <ul>
+      @for (metadata of groupedMetadatas.metadata; track metadata.value; let i = $index) {
+        <li class="o-tabs__panel__content__actions__def">
+          <div class="o-tabs__panel__content__actions__text">
+            <span class="o-tabs__panel__content__actions__text__value">{{ metadata.value }}</span>
+          </div>
+          <div class="o-tabs__panel__content__actions__buttons">
+            <ng-container *ngIf="!metaDefinition(metadata).readOnly">
+              <ng-container *pryAccess="{ module: 'admin', page: 'dataset', action: 'write' }">
+                <button type="button" class="a-btn a-btn--icon-only" aria-pressed="false">
+                  <span class="u-visually-hidden">
+                    {{ '@pry.action.edit' | i18n }} {{ metaDefinition(metadata).name }}
+                  </span>
+                  <pry-icon
+                    class="edit-icon"
+                    iconSvg="edit"
+                    [width]="15"
+                    [height]="15"
+                    (click)="editMetadata(metadata)"
+                  ></pry-icon>
+                </button>
+                @if ((_type$ | async) === 'user') {
+                  <button type="button" class="a-btn a-btn--icon-only" aria-pressed="false">
+                    <span class="u-visually-hidden">
+                      {{ '@pry.action.delete' | i18n }} {{ groupedMetadatas.metadataDef.name }}
+                    </span>
+                        <pry-icon
+                          class="delete-icon"
+                          iconSvg="delete"
+                          [width]="15"
+                          [height]="15"
+                          (click)="removeMetadataValue(metadata)"
+                        ></pry-icon>
+                  </button>
+                }
+              </ng-container>
+            </ng-container>
+          </div>
+        </li>
+      }
+    </ul>
   </div>
-</div>
+}
 
 <ng-container *pryAccess="{ module: 'admin', page: 'dataset', action: 'write' }">
   <form class="o-form -border-top" [formGroup]="form" (ngSubmit)="addDatasetMetadata()">

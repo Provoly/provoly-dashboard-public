@@ -82,6 +82,26 @@
           "allowedValues": []
         },
         "value": "12"
+      },
+      {
+        "userProfile": {
+          "id": "8ca1f298-d412-421c-8f46-6f425bfe2cda",
+          "name": "zzz",
+          "type": "DOUBLE",
+          "description": null,
+          "allowedValues": []
+        },
+        "value": "22"
+      },
+      {
+        "userProfile": {
+          "id": "8ca1f298-d412-421c-8f46-6f425bfe2cda",
+          "name": "zzz",
+          "type": "DOUBLE",
+          "description": null,
+          "allowedValues": []
+        },
+        "value": "33"
       }
     ]
   },
@@ -105,5 +125,16 @@
         "value": "test"
       }
     ]
+  },
+  {
+    "id": "idWithoutMetadatas",
+    "claim": "clame",
+    "name": "Without",
+    "familyName": "Metadata",
+    "email": "without.metadata@sunnydale.fr",
+    "roles": [
+      "pry-admin"
+    ],
+    "metadata": []
   }
 ]

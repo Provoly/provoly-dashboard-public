@@ -8,7 +8,10 @@ import { mergeMap, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class MetadataService {
-  constructor(private httpClient: HttpClient, private store: Store<any>) {}
+  constructor(
+    private httpClient: HttpClient,
+    private store: Store<any>
+  ) {}
 
   getMetadataList(): Observable<any> {
     return this.store
@@ -34,7 +37,7 @@ export class MetadataService {
       .pipe(mergeMap((url) => this.httpClient.get<MetadataUser[]>(`${url}/users/id/${userId}/metadata`)));
   }
 
-  addMetadataUser(userId: string, metaId: string, value: any): Observable<void> {
+  addMetadataUser(userId: string, metaId: string, value: any[]): Observable<void> {
     return this.store.select(ConfigSelectors.refUrl).pipe(
       mergeMap((url) =>
         this.httpClient.put<void>(encodeURI(`${url}/users/id/${userId}/metadata/id/${metaId}`), {

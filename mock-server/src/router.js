@@ -289,15 +289,15 @@ router.on(['OPTIONS', 'PUT'], '/ref/users/id/:userId/metadata/id/:metadataId', (
     if (payload) {
       let userIndex = dataModule.users.findIndex((obj) => obj.id === params['userId']);
       if (userIndex !== -1) {
-        let metaUserIndex = dataModule.users[userIndex].metadata.findIndex(
-          (obj) => obj.userProfile.id === params['metadataId']
-        );
-        if (metaUserIndex !== -1) {
-          dataModule.users[userIndex].metadata[metaUserIndex].value = payload.value;
-        } else {
+        let newUserMetadatas =
+          dataModule.users[userIndex].metadata?.filter(
+            (metadata) => metadata.userProfile.id !== params['metadataId']
+          ) ?? [];
+        payload.value?.forEach((value) => {
           let meta = dataModule.userMetadatas.find((x) => x.id === params['metadataId']);
-          dataModule.users[userIndex].metadata.push({ userProfile: meta, value: payload.value });
-        }
+          newUserMetadatas.push({ userProfile: meta, value });
+        });
+        dataModule.users[userIndex].metadata = newUserMetadatas;
       }
       fs.writeFileSync('./data/users.json', JSON.stringify(dataModule.users, null, 2));
     }

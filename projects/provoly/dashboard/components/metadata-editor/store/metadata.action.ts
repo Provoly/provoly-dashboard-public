@@ -68,7 +68,7 @@ export const MetadataActions = {
 
   addMetadataUser: createAction(
     `[Metadata/User] Add Metadata of selected Users`,
-    props<{ userId: string; metaId: string; value: any }>()
+    props<{ userId: string; metaId: string; value: any[] }>()
   ),
   addMetadataUserSuccess: createAction(
     `[Metadata/User] Add Metadata of selected Users Success`,

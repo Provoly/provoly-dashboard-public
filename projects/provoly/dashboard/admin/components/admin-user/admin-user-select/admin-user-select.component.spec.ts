@@ -81,7 +81,7 @@ describe('AdminUserSelectComponent', () => {
         MetadataActions.addMetadataUser({
           userId: 'id',
           metaId: 'metadataId',
-          value: '3'
+          value: ['3']
         })
       ]
     ]);
