@@ -16,6 +16,7 @@ import { Store } from '@ngrx/store';
 import { TOOLTIP_PADDING, WidgetMapComponent } from '../component/widget-map.component';
 import { InteractionManager } from './interaction-manager.class';
 import { Layer } from 'ol/layer';
+import { Coordinate } from 'ol/coordinate';
 
 export class TooltipManager {
   private tooltipFactoryService!: TooltipFactoryService;
@@ -23,7 +24,6 @@ export class TooltipManager {
   private store!: Store;
   wmsFeatures$!: Observable<any[]>;
   classicFeatures$: BehaviorSubject<any> = new BehaviorSubject([]);
-  public tooltipIndex = 0;
   popupOverlay?: Overlay;
   map!: Map;
   popup!: ElementRef;
@@ -35,6 +35,8 @@ export class TooltipManager {
   public tooltipEvent?: MapBrowserEvent<MouseEvent>;
   parent!: WidgetMapComponent;
   interactionPopupOverlay!: Overlay;
+  tooltipDisplayedIndex$ = new BehaviorSubject(0);
+  private calculatedTooltipPosition?: Coordinate;
 
   init(
     tooltipFactoryService: TooltipFactoryService,
@@ -60,11 +62,10 @@ export class TooltipManager {
     this.wmsFeatures$ = this.store.select(DashboardSelectors.wmsFeatures(this.parent.id));
 
     subscriptions.add(
-      combineLatest([this.wmsFeatures$, this.classicFeatures$])
+      combineLatest([this.wmsFeatures$, this.classicFeatures$, this.tooltipDisplayedIndex$])
         .pipe(debounceTime(50), withLatestFrom(widgetSize$, displayHeader$))
-        .subscribe(([[wmsFeatures, classicFeatures], size, header]) => {
+        .subscribe(([[wmsFeatures, classicFeatures, tooltipIndex], size, header]) => {
           if (map) {
-            this.tooltipIndex = 0;
             if (this.popupOverlay !== null) {
               this.clearTooltip();
             }
@@ -74,18 +75,11 @@ export class TooltipManager {
             });
             this.map.addOverlay(this.popupOverlay);
             this.popupContent.clear();
-            const componentPromises = [] as Promise<ComponentRef<BaseTooltipComponent> | null>[];
-            wmsFeatures.forEach((value) => {
-              componentPromises.push(this.generateTooltip(value));
-            });
-            classicFeatures.forEach((value: any) => {
-              componentPromises.push(this.generateTooltip(value.values));
-            });
+            const allTooltipValues = [...wmsFeatures, ...classicFeatures.map((cf: any) => cf.values)];
 
-            Promise.all(componentPromises).then((promises) => {
-              const realComponents = promises.filter((component) => !!component);
-              this.tooltipNumber = realComponents.length;
-              if (realComponents.length <= 0) {
+            this.generateTooltip(allTooltipValues[tooltipIndex]).then((component) => {
+              this.tooltipNumber = allTooltipValues.length;
+              if (!component) {
                 popup.nativeElement.hidden = true;
                 this.popupOverlay?.setPosition([-9999999999, -9999999999]);
               } else {
@@ -95,17 +89,17 @@ export class TooltipManager {
                   height: 200 + (header ? WIDGET_HEADER_HEIGHT.value : 0) + TOOLTIP_PADDING,
                   width: 300 + TOOLTIP_PADDING
                 };
-                let pixel = this.tooltipEvent?.pixel;
-                if (!!pixel && pixel[0] + rect.width > size.width) {
-                  pixel[0] = size.width - rect.width;
+                if (!this.calculatedTooltipPosition) {
+                  let pixel = this.tooltipEvent?.pixel;
+                  if (!!pixel && pixel[0] + rect.width > size.width) {
+                    pixel[0] = size.width - rect.width;
+                  }
+                  if (!!pixel && pixel[1] + rect.height > size.height) {
+                    pixel[1] = size.height - rect.height;
+                  }
+                  this.calculatedTooltipPosition = this.map.getCoordinateFromPixel(pixel ?? [0, 0]);
                 }
-                if (!!pixel && pixel[1] + rect.height > size.height) {
-                  pixel[1] = size.height - rect.height;
-                }
-                setTimeout(() => {
-                  this.tooltipMove(0);
-                }, 10);
-                this.popupOverlay?.setPosition(this.map.getCoordinateFromPixel(pixel ?? [0, 0]));
+                this.popupOverlay?.setPosition(this.calculatedTooltipPosition);
               }
             });
           }
@@ -147,6 +141,7 @@ export class TooltipManager {
         this.getFeatureFromServer(wmsLayers, event.coordinate);
       }
       this.tooltipEvent = event;
+      this.calculatedTooltipPosition = undefined;
     };
 
     if (this.parent.optionsCopy.tooltipMode !== TooltipMode.NONE) {
@@ -155,26 +150,39 @@ export class TooltipManager {
     }
   }
 
+  previous = '-';
+  previousPromise?: Promise<any> = undefined;
+
   generateTooltip(value: {
     oClass: string;
     coordinates: Pixel;
     values: any;
   }): Promise<ComponentRef<BaseTooltipComponent> | null> {
-    return new Promise((resolve) => {
-      const component$ = this.tooltipFactoryService.generateTooltip(value.oClass, this.injector, this.popupContent);
-      this.previousTooltipSub?.unsubscribe();
-      this.previousTooltipSub = component$.subscribe((component) => {
-        if (component) {
-          if (this.previousTooltip) {
-            this.previousTooltip.destroy();
-          }
-          component.instance.data.item = value;
-          component.instance.popup = this.popup;
-          resolve(component);
-        }
-        resolve(null);
-      });
-    });
+    if (value) {
+      if (this.previous !== JSON.stringify(value)) {
+        this.previous = JSON.stringify(value);
+        this.previousPromise = new Promise((resolve) => {
+          const component$ = this.tooltipFactoryService.generateTooltip(value.oClass, this.injector, this.popupContent);
+          this.previousTooltipSub?.unsubscribe();
+          this.previousTooltipSub = component$.subscribe((component) => {
+            if (component) {
+              if (this.previousTooltip) {
+                this.previousTooltip.destroy();
+              }
+              component.instance.data.item = value;
+              component.instance.popup = this.popup;
+              resolve(component);
+            }
+            resolve(null);
+          });
+        });
+        return this.previousPromise;
+      } else {
+        return this.previousPromise!;
+      }
+    } else {
+      return Promise.resolve(null);
+    }
   }
 
   public clearTooltip(empty = false) {
@@ -190,24 +198,15 @@ export class TooltipManager {
 
   public tooltipMove(number: number) {
     if (this.tooltipCanMove(number)) {
-      this.setStyleAsync(this.tooltipIndex, 'none');
-      this.tooltipIndex = this.tooltipIndex + number;
-      this.setStyleAsync(this.tooltipIndex, 'block');
+      this.tooltipDisplayedIndex$.next(this.tooltipDisplayedIndex$.getValue() + number);
     }
   }
 
-  private setStyleAsync(idx: number, value: string) {
-    setTimeout(() => {
-      const targetContainer = this.popupContent.get(idx);
-      if (targetContainer) {
-        // @ts-ignore
-        targetContainer.rootNodes[0].style.display = value;
-      }
-    }, 100);
-  }
-
   public tooltipCanMove(number: number) {
-    return this.tooltipIndex + number >= 0 && this.tooltipIndex + number < this.tooltipNumber;
+    return (
+      this.tooltipDisplayedIndex$.getValue() + number >= 0 &&
+      this.tooltipDisplayedIndex$.getValue() + number < this.tooltipNumber
+    );
   }
 
   getFeatureFromServer(wmsLayers: Layer<any>[], pixel: Pixel) {

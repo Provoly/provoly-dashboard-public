@@ -682,7 +682,7 @@
 
   <div #popup class="m-tooltip m-tooltip--popup" [hidden]="true" role="tooltip">
     <div class="m-tooltip--popup__header">
-      <p>{{ tooltipManager.tooltipIndex + 1 }} / {{ tooltipManager.tooltipNumber }}</p>
+      <p>{{ ((tooltipManager.tooltipDisplayedIndex$ | async) ?? 0) + 1 }} / {{ tooltipManager.tooltipNumber }}</p>
       <button
         class="a-btn a-btn--primary a-btn--icon-only"
         (click)="tooltipManager.tooltipMove(-1)"
