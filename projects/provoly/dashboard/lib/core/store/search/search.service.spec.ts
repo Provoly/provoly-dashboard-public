@@ -47,6 +47,16 @@ describe('SearchService', () => {
           attribute: 'attributeId5',
           operator: 'EQUALS',
           value: [5, 51, 52.5]
+        },
+        {
+          attribute: 'attributeId6',
+          operator: 'INSIDE',
+          value: '2024-01-01,2024-12-31'
+        },
+        {
+          attribute: 'attributeId7',
+          operator: 'OUTSIDE',
+          value: '2024-01-01,2024-12-31'
         }
       ]
     };
@@ -57,7 +67,9 @@ describe('SearchService', () => {
         '&filter=attributeId2,EQUALS,value2' +
         '&filter=attributeId3,EQUALS,val%5C%2Cue%5C%2C3' +
         '&filter=attributeId4,EQUALS,4' +
-        '&filter=attributeId5,EQUALS,5,51,52.5'
+        '&filter=attributeId5,EQUALS,5,51,52.5' +
+        '&filter=attributeId6,INSIDE,2024-01-01,2024-12-31' +
+        '&filter=attributeId7,OUTSIDE,2024-01-01,2024-12-31'
     );
   });
 });

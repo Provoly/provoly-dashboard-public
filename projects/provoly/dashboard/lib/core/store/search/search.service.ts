@@ -60,9 +60,15 @@ export class SearchService {
       this.filters[id]
         .filter((filter) => filter.value !== null && filter.value !== undefined)
         .forEach((filter) => {
-          const value = Array.isArray(filter.value)
-            ? filter.value.map((v) => encodeURIComponent(v.toString().split(',').join('\\,'))).join(',')
-            : encodeURIComponent(filter.value!.toString().replace(/,/g, '\\,'));
+          let valuesToAddToParams = filter.value;
+          // INSIDE and OUTSIDE operators uses 2 values but not sent in an array, values are separated by a coma
+          // wich must not be encoded (as if values were in an array)
+          if (['INSIDE', 'OUTSIDE'].find((val) => val === filter.operator) !== undefined) {
+            valuesToAddToParams = (filter.value as string).split(',');
+          }
+          const value = Array.isArray(valuesToAddToParams)
+            ? valuesToAddToParams.map((v) => encodeURIComponent(v.toString().split(',').join('\\,'))).join(',')
+            : encodeURIComponent(valuesToAddToParams!.toString().replace(/,/g, '\\,'));
           params = params.append('filter', `${filter.attribute},${filter.operator},${value}`);
         });
     }
