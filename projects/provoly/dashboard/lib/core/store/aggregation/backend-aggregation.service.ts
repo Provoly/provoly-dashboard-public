@@ -17,6 +17,7 @@ import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from '../search/search
 import { SearchService } from '../search/search.service';
 import { AggregationResult, PryAggregationService } from './base-aggregation.service';
 import { debounceTime } from 'rxjs/operators';
+import { FilterParamEncoder } from '../search/filter-param-encoder';
 
 @Injectable({
   providedIn: 'root'
@@ -75,7 +76,7 @@ export class PryBackendAggregationService extends PryAggregationService {
       return of({ operation: options.ordinate?.operation ?? 'none', values: [] } as AggregationResult);
     }
 
-    let params = new HttpParams();
+    let params = new HttpParams({ encoder: new FilterParamEncoder() });
     if (options.abscissa && options.abscissa.attribute) {
       params = params.set('aggregatedBy', options.abscissa.attribute);
     } else {

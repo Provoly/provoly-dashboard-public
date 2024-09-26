@@ -79,8 +79,8 @@ export class SearchService {
     return params;
   }
 
-  getOrder(quickOrder: ResultOrder | undefined, cumulative?: HttpParams): HttpParams {
-    let params = cumulative ?? new HttpParams({ encoder: new FilterParamEncoder() });
+  getOrder(quickOrder: ResultOrder | undefined): HttpParams {
+    let params = new HttpParams({ encoder: new FilterParamEncoder() });
     if (quickOrder) {
       params = params.append('order', `${quickOrder.attribute},${quickOrder.asc ?? ''}`);
     }
