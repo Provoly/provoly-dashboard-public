@@ -29,5 +29,9 @@ describe('PryTranslateService', () => {
         'Restitution of type 12 is unknown.'
       );
     });
+
+    it('should allow optional parameters', () => {
+      expect(translateService.instant('@pry.toolbox.rename')).toEqual('Save as ');
+    });
   });
 });

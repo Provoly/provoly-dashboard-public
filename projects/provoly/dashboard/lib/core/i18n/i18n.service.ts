@@ -75,9 +75,9 @@ export class PryI18nService {
     if (typeof response === 'string') {
       const matches = response.match(this.parameterRegexp);
       matches?.forEach((match) => {
-        const matchParam = match.substring(2, match.length - 2);
+        const matchParam = match.substring(2, match.length - 2).trim();
         const replaceRegexp = new RegExp(match, 'g');
-        const valueOfParam = params ? params[matchParam] : match;
+        const valueOfParam = params ? params[matchParam] : '';
         if (valueOfParam !== undefined) {
           response = (response as string).replace(replaceRegexp, valueOfParam);
         }
