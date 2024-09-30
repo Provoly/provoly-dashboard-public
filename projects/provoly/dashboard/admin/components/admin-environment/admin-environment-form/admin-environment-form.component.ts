@@ -47,6 +47,11 @@ export class AdminEnvironmentFormComponent implements OnInit, OnChanges, OnDestr
         this._currentEnv = ce;
         const type = ENV_OPTIONS.find((el) => el.varType === ce?.type);
         this.currentTypeTranslation = type ? type.translation : ENV_OPTIONS[0].translation;
+        if (!!this._currentEnv) {
+          this.envForm.controls['type'].disable({ onlySelf: true });
+        } else {
+          this.envForm.controls['type'].enable({ onlySelf: true });
+        }
       })
     );
   }

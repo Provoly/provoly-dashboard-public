@@ -25,12 +25,10 @@ export class DataFormatPipe implements PipeTransform {
 
     if (decimalPrecision || localeFormat) {
       result = new Intl.NumberFormat(LOCALE.value, {
-        // @ts-ignore
-        roundingMode: 'floor',
         minimumFractionDigits: decimalPrecision,
         maximumFractionDigits: decimalPrecision,
         useGrouping: localeFormat
-      }).format(value);
+      } as any).format(value);
     }
 
     if (unit) {

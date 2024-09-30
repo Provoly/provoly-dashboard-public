@@ -26,6 +26,11 @@ export class AdminClassesFormComponent extends SubscriptionnerDirective implemen
 
   @Input() set currentClass(val: Class) {
     this._currentClass = val;
+    if (!!this._currentClass) {
+      this.classForm.controls['storage'].disable({ onlySelf: true });
+    } else {
+      this.classForm.controls['storage'].enable({ onlySelf: true });
+    }
   }
 
   constructor(

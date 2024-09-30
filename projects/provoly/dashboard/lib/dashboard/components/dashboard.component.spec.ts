@@ -12,6 +12,7 @@ import { DashboardComponent } from './dashboard.component';
 import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pry-icon.component';
 import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 import { WidgetFactoryService } from '@provoly/dashboard';
+import { MockPryPageLoaderComponent } from '@provoly/dashboard/mock/components/mock-pry-page-loader.component';
 
 const exampleManifest = {
   widgets: [
@@ -35,7 +36,8 @@ describe('DashboardComponent', () => {
         MockPryContextMenuComponent,
         MockTranslatePipe,
         MockI18nPipe,
-        MockPryIconComponent
+        MockPryIconComponent,
+        MockPryPageLoaderComponent
       ],
       providers: [
         provideMockStore({

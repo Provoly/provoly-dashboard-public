@@ -21,9 +21,9 @@
     >
       <span *ngIf="classForm.get('name')?.hasError('same-name')">{{ '@pry.admin.exists' | i18n }}</span>
       <span *ngIf="classForm.get('name')?.hasError('required')">{{ '@pry.admin.required' | i18n }}</span>
-      <span *ngIf="classForm.get('name')?.hasError('minlength')">{{ '@pry.admin.minLength' | i18n : { len: 3 } }}</span>
+      <span *ngIf="classForm.get('name')?.hasError('minlength')">{{ '@pry.admin.minLength' | i18n: { len: 3 } }}</span>
       <span *ngIf="classForm.get('name')?.hasError('maxlength')">{{
-        '@pry.admin.maxLength' | i18n : { len: 100 }
+        '@pry.admin.maxLength' | i18n: { len: 100 }
       }}</span>
       <span *ngIf="classForm.get('name')?.hasError('whitespace')">{{ '@pry.admin.noWhitespace' | i18n }}</span>
     </label>
@@ -39,10 +39,13 @@
         i18nPrefix="@pry.admin.storage.options."
         formControlName="storage"
         id="storage_options"
-        [disabled]="!!_currentClass"
       ></pry-select>
     </div>
-    <div class="m-info-icon a-tooltip -tooltip-width-md" [attr.data-tooltip]="'@pry.admin.storage.description.' + classForm.get('storage')?.value | i18n" data-tooltip-position="right">
+    <div
+      class="m-info-icon a-tooltip -tooltip-width-md"
+      [attr.data-tooltip]="'@pry.admin.storage.description.' + classForm.get('storage')?.value | i18n"
+      data-tooltip-position="right"
+    >
       <span>i</span>
     </div>
   </div>

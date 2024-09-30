@@ -7,14 +7,14 @@
     "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json schematics/migration.json ../../../dist/@provoly/dashboard/"
   },
   "peerDependencies": {
-    "@angular/cdk": "16.x || 17.x",
-    "@angular/common": "16.x || 17.x",
-    "@angular/core": "16.x || 17.x",
-    "@angular/platform-browser": "16.x || 17.x",
-    "@angular/router": "16.x || 17.x",
-    "@ngrx/effects": "17.x",
-    "@ngrx/entity": "17.x",
-    "@ngrx/store": "17.x",
+    "@angular/cdk": "17.x || 18.x",
+    "@angular/common": "17.x || 18.x",
+    "@angular/core": "17.x || 18.x",
+    "@angular/platform-browser": "17.x || 18.x",
+    "@angular/router": "17.x || 18.x",
+    "@ngrx/effects": "18.x",
+    "@ngrx/entity": "18.x",
+    "@ngrx/store": "18.x",
     "buffer": "^6.0.0",
     "css-element-queries": "^1.2.3",
     "d3-drag": "^3.0.0",
@@ -72,7 +72,7 @@
     "@types/ol": "^6.5.3",
     "@types/uuid": "^9.0.0",
     "copyfiles": "^2.4.1",
-    "typescript": "~4.9.4"
+    "typescript": "~5.5.4"
   },
   "exports": {
     "./lib/theme/styles/themes": {

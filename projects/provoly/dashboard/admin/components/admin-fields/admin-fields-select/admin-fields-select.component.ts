@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { concatLatestFrom } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
-import { Associations, ClassSelectors, FIELD_I18N, Field, FieldType } from '@provoly/dashboard';
+import { Associations, ClassSelectors, Field, FIELD_I18N, FieldType } from '@provoly/dashboard';
 import { combineLatest, map, Observable, Subscription } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { FieldsActions } from '../store/fields.actions';

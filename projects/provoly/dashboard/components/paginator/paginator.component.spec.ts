@@ -1,11 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PryPaginatorComponent } from '@provoly/dashboard/components/paginator/paginator.component';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { Action } from '@ngrx/store';
 import { PryPaginatorCssComponent } from '@provoly/dashboard/components/paginator/style/css.component';
 import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pry-icon.component';
 import { DataSourceActions } from '@provoly/dashboard';
-import { input } from '@angular/core';
 
 describe('PaginatorComponent', () => {
   let component: PryPaginatorComponent;
@@ -42,7 +40,7 @@ describe('PaginatorComponent', () => {
   it('should dispatch page change action when currentPage is set', () => {
     // example action that uses pagination
     const action = DataSourceActions.dataset.listVersions({});
-    component.action = input<Action | undefined>(action);
+    fixture.componentRef.setInput('action', action);
     fixture.detectChanges();
 
     const spy = jest.spyOn(store, 'dispatch');
@@ -60,7 +58,7 @@ describe('PaginatorComponent', () => {
   it('should dispatch store action to load data for selected page', () => {
     // example action that uses pagination
     const action = DataSourceActions.dataset.listVersions({});
-    component.action = input<Action | undefined>(action);
+    fixture.componentRef.setInput('action', action);
     fixture.detectChanges();
 
     const spy = jest.spyOn(store, 'dispatch');

@@ -98,7 +98,13 @@
         <p>{{ '@pry.select.loading' | i18n }}...</p>
       </div>
     } @else {
-      @for (item of matchingItems$ | async; track trackFn; let index = $index; let first = $first; let last = $last) {
+      @for (
+        item of matchingItems$ | async;
+        track !!item.id ? item.id : item;
+        let index = $index;
+        let first = $first;
+        let last = $last
+      ) {
         <div
           class="a-pry-select__options__option"
           [attr.aria-selected]="(valueItems$ | async).includes(item)"

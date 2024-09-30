@@ -1,6 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
-import { TypedAction } from '@ngrx/store/src/models';
 import { v4 } from 'uuid';
 import { DashboardActions } from '../../store/dashboard.actions';
 import { BusAction } from '../bus-action.interface';
@@ -86,7 +85,7 @@ export class BusService {
     }
   }
 
-  bufferUntilJoined(action: TypedAction<any>) {
+  bufferUntilJoined(action: Action<any>) {
     // Buffers these actions until a new tab join
     this.buffer.push(action);
   }

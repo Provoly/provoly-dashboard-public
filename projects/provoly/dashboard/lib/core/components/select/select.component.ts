@@ -379,7 +379,4 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
       () => this.select(event, item, index)
     );
   focusInitialSelection = () => this.a11yService.focusInitialSelection(this.autocomplete, this.optionsModalRef);
-  trackFn(index: number, item: any) {
-    return item.id ?? item;
-  }
 }

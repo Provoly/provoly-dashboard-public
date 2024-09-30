@@ -28,7 +28,11 @@ export class PryNotificationContentComponent implements DoCheck, AfterViewInit {
   @ViewChild('button') button!: ElementRef<HTMLButtonElement>;
   left: number = 0;
 
-  constructor(protected store: Store, private router: Router, private i18nService: PryI18nService) {
+  constructor(
+    protected store: Store,
+    private router: Router,
+    private i18nService: PryI18nService
+  ) {
     this.notifications$ = this.store
       .select(NotificationSelectors.list)
       .pipe(
@@ -60,7 +64,12 @@ export class PryNotificationContentComponent implements DoCheck, AfterViewInit {
   }
 
   goTo(notification: PryNotification) {
-    this.router.navigateByUrl(notification.link ?? '');
+    const link = notification.link ?? '';
+    if (link.startsWith('http')) {
+      window.location.href = link;
+    } else {
+      this.router.navigateByUrl(notification.link ?? '');
+    }
     this.closed.next(true);
   }
 
