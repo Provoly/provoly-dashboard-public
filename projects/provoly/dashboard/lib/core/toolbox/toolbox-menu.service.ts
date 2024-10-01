@@ -143,7 +143,7 @@ export class ToolboxMenuService {
       map(([manifests, menuStructure, reference]) => {
         const types = [
           ...new Set(
-            Object.values(manifests)
+            Object.values(manifests as { [p: string]: WidgetManifest })
               .filter((manifest) => reference[manifest.type])
               .map((manifest) => manifest.type)
           )
@@ -157,7 +157,9 @@ export class ToolboxMenuService {
               type,
               label: matchingMenu.label,
               icon: matchingMenu.icon,
-              manifest: Object.values(manifests).find((manifest) => manifest.type === type) as WidgetManifest
+              manifest: Object.values(manifests as { [p: string]: WidgetManifest }).find(
+                (manifest) => manifest.type === type
+              ) as WidgetManifest
             };
           }
           const matchingSubMenu = menuStructure
