@@ -15,7 +15,7 @@
     <ng-template #notification>
       <div class="m-btn-group">
         <button type="button" #button class="a-btn a-btn--primary" (click)="deleteAll()">
-          {{ '@pry.notif.deleteAll' | i18n : { count: (notifications$ | async)?.length } }}
+          {{ '@pry.notif.deleteAll' | i18n: { count: (notifications$ | async)?.length } }}
         </button>
       </div>
     </ng-template>
@@ -27,15 +27,15 @@
           <h3 class="a-h3">
             {{
               hasTranslation(notification.text.code, '@pry.notif.title.')
-                ? ('@pry.notif.title.' + notification.text.code | i18n)
+                ? ('@pry.notif.title.' + notification.text.code | i18n: notification.text.param)
                 : notification.text.title
             }}
-            <span>{{ notification.creationDate | date : "dd/MM'&nbsp;&nbsp;&nbsp;'H':'mm" }}</span>
+            <span>{{ notification.creationDate | date: "dd/MM'&nbsp;&nbsp;&nbsp;'H':'mm" }}</span>
           </h3>
           <p class="a-p desc">
             {{
               hasTranslation(notification.text.code, '@pry.notif.title.')
-                ? ('@pry.notif.message.' + notification.text.code | i18n : notification.text.param)
+                ? ('@pry.notif.message.' + notification.text.code | i18n: notification.text.param)
                 : notification.text.code
             }}
           </p>
