@@ -13,6 +13,7 @@ import { ConfigSelectors } from '../config/config.selectors';
 import { DEFAULT_NAMED_QUERY_ID } from './search.constants';
 import { SearchState } from './search.reducer';
 import { FilterParamEncoder } from './filter-param-encoder';
+import { DateUtils } from '../../../dashboard/date-utils';
 
 export type ResultsetTransformation = (id: string, result: ResultSet) => ResultSet;
 
@@ -63,8 +64,15 @@ export class SearchService {
           let valuesToAddToParams = filter.value;
           // INSIDE and OUTSIDE operators uses 2 values but not sent in an array, values are separated by a coma
           // wich must not be encoded (as if values were in an array)
-          if (['INSIDE', 'OUTSIDE'].find((val) => val === filter.operator) !== undefined) {
+          const isMultiValued = ['INSIDE', 'OUTSIDE'].find((val) => val === filter.operator) !== undefined;
+          if (isMultiValued) {
             valuesToAddToParams = (filter.value as string).split(',');
+          }
+          // date filter value must be send in ISO-8601 format
+          if (filter.type === 'date') {
+            valuesToAddToParams = isMultiValued
+              ? (valuesToAddToParams as string[]).map((value) => DateUtils.parseToIsoString(value))
+              : DateUtils.parseToIsoString(valuesToAddToParams as string);
           }
           const value = Array.isArray(valuesToAddToParams)
             ? valuesToAddToParams.map((v) => encodeURIComponent(v.toString().split(',').join('\\,'))).join(',')

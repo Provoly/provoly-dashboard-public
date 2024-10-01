@@ -107,7 +107,40 @@ const routes: Routes = [
             datasource: ['17b90da3-f448-4cc3-bfd8-74c8b8481590']
           }
         ]
-      } as DashboardManifest
+      } as DashboardManifest,
+      filters: [
+        {
+          id: '236c1cce-9d57-4d52-84e5-0b86d6765296',
+          name: 'Date',
+          type: 'date',
+          attributes: [
+            {
+              id: 'd5d4cda4-7ff3-4f19-ab69-7c95745888cf',
+              technicalName: 'heure_utc',
+              label: 'Date',
+              datasource: '17b90da3-f448-4cc3-bfd8-74c8b8481590'
+            }
+          ],
+          operator: 'EQUALS',
+          value: '2024-12-31'
+        },
+        {
+          id: '37f0b018-3c7f-45d6-955f-5a814fb40c1c',
+          name: 'Plage date',
+          type: 'date',
+          attributes: [
+            {
+              id: 'd5d4cda4-7ff3-4f19-ab69-7c95745888cf',
+              technicalName: 'heure_utc',
+              label: 'Date',
+              datasource: '17b90da3-f448-4cc3-bfd8-74c8b8481590'
+            }
+          ],
+          operator: 'INSIDE',
+          hasDateRange: true,
+          value: '2024-01-01,2024-12-31'
+        }
+      ] as Filter[]
     }
   },
   {

@@ -35,7 +35,7 @@ describe('CqlUtils', () => {
       expect(
         CqlUtils.getConditionsForValue(
           'name',
-          { attribute: 'attribute', operator: 'EQUALS', value: 'value' },
+          { attribute: 'attribute', operator: 'EQUALS', value: 'value', type: 'text' },
           fields[0],
           'datasource'
         )
@@ -46,7 +46,7 @@ describe('CqlUtils', () => {
       expect(
         CqlUtils.getConditionsForValue(
           'name',
-          { attribute: 'attribute', operator: 'INSIDE', value: '1,2' },
+          { attribute: 'attribute', operator: 'INSIDE', value: '1,2', type: 'number' },
           fields[1],
           'datasource'
         )
@@ -61,8 +61,8 @@ describe('CqlUtils', () => {
           'name',
           {
             name: [
-              { attribute: 'attribute', operator: 'EQUALS', value: 'value' },
-              { attribute: 'other', operator: 'EQUALS', value: 5 }
+              { attribute: 'attribute', operator: 'EQUALS', value: 'value', type: 'text' },
+              { attribute: 'other', operator: 'EQUALS', value: 5, type: 'number' }
             ]
           },
           classes,
@@ -77,8 +77,8 @@ describe('CqlUtils', () => {
           'name',
           {
             name: [
-              { attribute: 'attribute', operator: 'EQUALS', value: ['a', 'b'] },
-              { attribute: 'other', operator: 'EQUALS', value: [1, 2] }
+              { attribute: 'attribute', operator: 'EQUALS', value: ['a', 'b'], type: 'text' },
+              { attribute: 'other', operator: 'EQUALS', value: [1, 2], type: 'number' }
             ]
           },
           classes,
@@ -93,8 +93,8 @@ describe('CqlUtils', () => {
           'name',
           {
             name: [
-              { attribute: 'attribute', operator: 'EQUALS', value: ['a', 'b'] },
-              { attribute: 'other', operator: 'INSIDE', value: '1,2' }
+              { attribute: 'attribute', operator: 'EQUALS', value: ['a', 'b'], type: 'text' },
+              { attribute: 'other', operator: 'INSIDE', value: '1,2', type: 'number' }
             ]
           },
           classes,
@@ -109,8 +109,8 @@ describe('CqlUtils', () => {
           'name',
           {
             name: [
-              { attribute: 'attribute', operator: 'CONTAINS', value: ['a', 'b'] },
-              { attribute: 'other', operator: 'INSIDE', value: '1,2' }
+              { attribute: 'attribute', operator: 'CONTAINS', value: ['a', 'b'], type: 'text' },
+              { attribute: 'other', operator: 'INSIDE', value: '1,2', type: 'number' }
             ]
           },
           classes,

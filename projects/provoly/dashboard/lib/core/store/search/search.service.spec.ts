@@ -26,37 +26,44 @@ describe('SearchService', () => {
         {
           attribute: 'attributeId',
           operator: 'CONTAINS',
-          value: ['AAA', 'BBB', 'CC,C']
+          value: ['AAA', 'BBB', 'CC,C'],
+          type: 'text'
         },
         {
           attribute: 'attributeId2',
           operator: 'EQUALS',
-          value: 'value2'
+          value: 'value2',
+          type: 'text'
         },
         {
           attribute: 'attributeId3',
           operator: 'EQUALS',
-          value: 'val,ue,3'
+          value: 'val,ue,3',
+          type: 'text'
         },
         {
           attribute: 'attributeId4',
           operator: 'EQUALS',
-          value: 4
+          value: 4,
+          type: 'number'
         },
         {
           attribute: 'attributeId5',
           operator: 'EQUALS',
-          value: [5, 51, 52.5]
+          value: [5, 51, 52.5],
+          type: 'number'
         },
         {
           attribute: 'attributeId6',
           operator: 'INSIDE',
-          value: '2024-01-01,2024-12-31'
+          value: '2024-01-01,2024-12-31',
+          type: 'date'
         },
         {
           attribute: 'attributeId7',
           operator: 'OUTSIDE',
-          value: '2024-01-01,2024-12-31'
+          value: '2024-01-01,2024-12-31',
+          type: 'date'
         }
       ]
     };
@@ -68,8 +75,8 @@ describe('SearchService', () => {
         '&filter=attributeId3,EQUALS,val%5C%2Cue%5C%2C3' +
         '&filter=attributeId4,EQUALS,4' +
         '&filter=attributeId5,EQUALS,5,51,52.5' +
-        '&filter=attributeId6,INSIDE,2024-01-01,2024-12-31' +
-        '&filter=attributeId7,OUTSIDE,2024-01-01,2024-12-31'
+        '&filter=attributeId6,INSIDE,2024-01-01T00%3A00%3A00.000Z,2024-12-31T00%3A00%3A00.000Z' +
+        '&filter=attributeId7,OUTSIDE,2024-01-01T00%3A00%3A00.000Z,2024-12-31T00%3A00%3A00.000Z'
     );
   });
 
@@ -79,27 +86,32 @@ describe('SearchService', () => {
         {
           attribute: 'attributeId',
           operator: 'CONTAINS',
-          value: ['AAA', 'BBB', 'CC,C']
+          value: ['AAA', 'BBB', 'CC,C'],
+          type: 'text'
         },
         {
           attribute: 'attributeId2',
           operator: 'EQUALS',
-          value: 'value2'
+          value: 'value2',
+          type: 'text'
         },
         {
           attribute: 'attributeId3',
           operator: 'EQUALS',
-          value: 'val,ue,3'
+          value: 'val,ue,3',
+          type: 'text'
         },
         {
           attribute: 'attributeId4',
           operator: 'EQUALS',
-          value: 4
+          value: 4,
+          type: 'number'
         },
         {
           attribute: 'attributeId5',
           operator: 'EQUALS',
-          value: [5, 51, 52.5]
+          value: [5, 51, 52.5],
+          type: 'number'
         }
       ]
     };

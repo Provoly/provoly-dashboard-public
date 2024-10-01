@@ -136,7 +136,8 @@ const datasourceFilters = createSelector(feature, (state: DashboardState) =>
             (obj[attribute.datasource] || (obj[attribute.datasource] = [])).push({
               attribute: attribute.id,
               operator: filter.operator ?? '',
-              value: filter.value
+              value: filter.value,
+              type: filter.type
             })
           ),
           obj
