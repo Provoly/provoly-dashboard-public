@@ -282,14 +282,12 @@ const routes: Routes = [
             layout: { x: 1, y: 1, height: 12, width: 12 },
             options: {
               primaryProp: 'horizon',
+              secondaryProp: 'risque',
               verticalProp: 'alea',
-              valueProp: 'encours',
+              valueProp: 'valeur',
               colorConfig: {
-                prop: 'score_global',
-                colors: ['#C9F3E9', '#FFF4ED', '#FFB0A5', '#FF7866', '#FF4127']
-              },
-              format: {
-                suffix: '€'
+                prop: 'color',
+                colors: ['#C9F3E9', '#FFF4ED', '#FFB0A5']
               }
             },
             datasource: 'dataset-dr2-with-color'

@@ -142,12 +142,14 @@ export class WidgetAnalyticComponent extends DataWidgetComponent {
     );
 
     this.valuePropField$ = combineLatest([this.availableProperties$, this.options$]).pipe(
-      map(([attributes, options]) =>
-        attributes.find((attr) => attr.technicalName === options.valueProp)?.field)
+      map(([attributes, options]) => attributes.find((attr) => attr.technicalName === options.valueProp)?.field)
     );
   }
 
   private matchAttributeValue(item: Item, prop?: string, comparisonValue?: string) {
+    if (prop === 'level' && !('level' in item.attributes)) {
+      return comparisonValue === '1';
+    }
     return comparisonValue && prop ? (item.attributes[prop] as AttributeSimpleValue).value == comparisonValue : true;
   }
 
@@ -186,7 +188,7 @@ export class WidgetAnalyticComponent extends DataWidgetComponent {
     });
   }
 
-  getPropertyLabelsForLevel(rs: ResultSet, property: string, level?: number) {
+  private getPropertyLabelsForLevel(rs: ResultSet, property: string, level?: number) {
     const values = Object.values(rs.items)
       .map((items) =>
         items
@@ -195,7 +197,7 @@ export class WidgetAnalyticComponent extends DataWidgetComponent {
               ? [level, '' + level].includes(
                   (item.attributes['level'] as AttributeSimpleValue).value as string | number
                 )
-              : true
+              : level === undefined || level === 1
           )
           .map((item) => (item.attributes[property] as AttributeSimpleValue)?.value + '')
       )
