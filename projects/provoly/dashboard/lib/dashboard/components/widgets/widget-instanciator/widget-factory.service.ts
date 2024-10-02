@@ -12,6 +12,10 @@ import { DataSource } from '../../../../core/store/data-source/data-source.model
 
 export const WIDGET_DEFINITION = new InjectionToken<string>('Widgets definition');
 
+export const NON_EXCLUDE_GEO_WIDGET_TYPES = {
+  values: ['map', 'tile']
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -86,7 +90,7 @@ export class WidgetFactoryService {
             (widgetDefinition.autoLoadDatasource === 'not-geo' && !DatasourceUtils.isGeo(matching)))
         );
       })
-      .map((ds) => ({ datasetId: ds, excludeGeo: manifest.type !== 'map' }));
+      .map((ds) => ({ datasetId: ds, excludeGeo: !NON_EXCLUDE_GEO_WIDGET_TYPES.values.includes(manifest.type) }));
   }
 
   aggregatesToAutoLoad(manifest: WidgetManifest) {
