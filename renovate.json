@@ -26,6 +26,23 @@
       "paths": ["mock-server/package.json"],
       "groupName": "mock server packages",
       "branchPrefix": "renovate/mock-server/"
+    },
+    {
+      "groupName": "GithubActions",
+      "description": "Github actions are grouped, and skip 'Required approvals' rule",
+      "matchDepTypes": [
+        "action"
+      ],
+      "automerge": true
+    },
+    {
+      "groupName": "AllPatchUpdates",
+      "description": "All patch and digest updates are grouped, and skip 'Required approvals' rule",
+      "matchUpdateTypes": [
+        "patch",
+        "digest"
+      ],
+      "automerge": true
     }
   ]
 }
