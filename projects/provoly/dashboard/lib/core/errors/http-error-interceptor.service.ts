@@ -11,7 +11,10 @@ export const httpErrorOptions = {
 
 @Injectable({ providedIn: 'root' })
 export class PryHttpErrorInterceptorService implements HttpInterceptor {
-  constructor(readonly snackbar: PrySnackbarService, private translateService: PryI18nService) {}
+  constructor(
+    readonly snackbar: PrySnackbarService,
+    private translateService: PryI18nService
+  ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
@@ -23,8 +26,6 @@ export class PryHttpErrorInterceptorService implements HttpInterceptor {
               type: 'error'
             });
           }
-
-          console.error(error);
         } else {
           if (error.status >= 400) {
             this.snackbar.dispatchOpenEvent({

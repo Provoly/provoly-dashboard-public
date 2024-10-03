@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { catchError, combineLatest, forkJoin, map, mergeMap, Observable, of } from 'rxjs';
+import { catchError, combineLatest, forkJoin, map, mergeMap, Observable, of, startWith } from 'rxjs';
 import { PrySnackbarService } from '../../components/snackbar/snackbar.service';
 import { PryI18nService } from '../../i18n/i18n.service';
 import { Widget } from '../../model/widget.interface';
@@ -124,8 +124,8 @@ export class ConfigService {
     );
   }
 
-  handleBackendVersionError(obs: Observable<BackendVersion>): Observable<BackendVersion> {
-    return obs.pipe(catchError(() => of({})));
+  handleBackendVersion(url: string): Observable<BackendVersion> {
+    return this.httpClient.get<BackendVersion>(encodeURI(url)).pipe(catchError(() => of({})));
   }
 
   getAllVersions(): Observable<Versions> {
@@ -137,32 +137,54 @@ export class ConfigService {
       this.store.select(ConfigSelectors.transfoUrl)
     ]).pipe(
       mergeMap(([ref, data, replay, exec, transfo]) => {
-        const allVersions: Observable<BackendVersion | FrontendVersion>[] = [
-          this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${ref}/about/version`))),
-          this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${data}/about/version`))),
-          this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${replay}/about/version`))),
-          this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${exec}/about/version`))),
-          this.handleBackendVersionError(this.httpClient.get<BackendVersion>(encodeURI(`${transfo}/about/version`))),
+        const allVersions: [
+          Observable<BackendVersion>,
+          Observable<BackendVersion>,
+          Observable<BackendVersion>,
+          Observable<BackendVersion>,
+          Observable<BackendVersion>,
+          Observable<FrontendVersion>
+        ] = [
+          this.handleBackendVersion(`${ref}/about/version`),
+          this.handleBackendVersion(`${data}/about/version`),
+          this.handleBackendVersion(`${replay}/about/version`),
+          this.handleBackendVersion(`${exec}/about/version`),
+          this.handleBackendVersion(`${transfo}/about/version`),
           this.httpClient.get<string>(encodeURI(`/assets/pry.version`)).pipe(
-            map((version) => (version ? { libVersion: version } : {})),
+            startWith({}),
+            map((version) => (version ? { libVersion: version } : {}) as FrontendVersion),
             catchError(() => of({}))
           )
         ];
         return combineLatest(allVersions).pipe(
-          map(([refVersion, dataVersion, replayVersion, execVersion, tranfoVersion, frontend]) => {
-            const versions: Versions = {
-              ref: refVersion,
-              data: dataVersion,
-              replay: replayVersion,
-              exec: execVersion,
-              transfo: tranfoVersion,
-              front: frontend
-            };
-            return versions;
-          })
+          map(
+            ([refVersion, dataVersion, replayVersion, execVersion, tranfoVersion, frontend]: [
+              BackendVersion,
+              BackendVersion,
+              BackendVersion,
+              BackendVersion,
+              BackendVersion,
+              FrontendVersion
+            ]) => {
+              const versions: Versions = {};
+              this.addVersionIfDetected(refVersion, 'ref', versions);
+              this.addVersionIfDetected(dataVersion, 'data', versions);
+              this.addVersionIfDetected(replayVersion, 'replay', versions);
+              this.addVersionIfDetected(execVersion, 'exec', versions);
+              this.addVersionIfDetected(tranfoVersion, 'transfo', versions);
+              this.addVersionIfDetected(frontend, 'front', versions);
+              return versions;
+            }
+          )
         );
       })
     );
+  }
+
+  private addVersionIfDetected(version: BackendVersion | FrontendVersion, type: string, versions: Versions) {
+    if (!!version && Object.keys(version).length > 0) {
+      versions[type] = version;
+    }
   }
 
   getAccessGroups(): Observable<Group[]> {
