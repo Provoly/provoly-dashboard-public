@@ -58,14 +58,6 @@
       [prySortDirection]="sort.sortBy"
       [prySortActive]="sort.orderBy"
     >
-      <caption>
-        {{
-          '@pry.admin.dataset.title' | i18n
-        }},
-        {{
-          '@pry.action.sortableColumnHeader' | i18n
-        }}
-      </caption>
       <thead>
         <tr>
           <th id="import_list_header_dataset" prySortHeader="DATASET_NAME">
@@ -135,6 +127,14 @@
           <tr></tr>
         }
       </tbody>
+      <caption>
+        {{
+          '@pry.admin.dataset.title' | i18n
+        }},
+        {{
+          '@pry.action.sortableColumnHeader' | i18n
+        }}
+      </caption>
     </table>
   </div>
   <pry-paginator
