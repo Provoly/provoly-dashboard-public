@@ -86,7 +86,9 @@
 
           <div
             *ngIf="
-              ['quantitative', 'temporal'].includes(translateToVegaType(copyAbscissaField?.type)) &&
+              ['quantitative', 'temporal'].includes(
+                (attributeTypes$ | async)?.abscissa?.vegaType?.toString() ?? '--'
+              ) &&
               optionsCopy.graph.type !== GraphType.DONUT &&
               optionsCopy.graph.type !== GraphType.CIRCULAR
             "

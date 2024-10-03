@@ -2118,5 +2118,55 @@
         }
       ]
     }
+  },
+  {
+    "name": "histo",
+    "manifest": {
+      "windows": [
+        {
+          "widgets": [
+            {
+              "type": "chart",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "width": 12,
+                "height": 12
+              },
+              "options": {
+                "graph": {
+                  "type": "bar-histogram",
+                  "tooltip": true,
+                  "legend": false
+                },
+                "abscissa": {
+                  "keep0": true,
+                  "interval": "hour",
+                  "limit": 20,
+                  "label": "date",
+                  "attribute": "81a917fb-6d9b-41d1-807a-4e7ca9103f23"
+                },
+                "ordinate": {
+                  "keep0": true,
+                  "operation": "sum",
+                  "label": "valeur",
+                  "attribute": "daf27e3f-e336-43b1-9337-d2d01be90de9"
+                },
+                "baseColor": "#40B688"
+              },
+              "datasource": [
+                "histogram"
+              ]
+            }
+          ],
+          "grid": {
+            "columns": 12,
+            "rows": 12,
+            "layout": "1",
+            "gap": 15
+          }
+        }
+      ]
+    }
   }
 ]

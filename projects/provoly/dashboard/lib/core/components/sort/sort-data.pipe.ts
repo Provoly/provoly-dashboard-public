@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'prySortData'
 })
 export class PrySortDataPipe<T> implements PipeTransform {
-  transform(list: T[], property: keyof T | null, direction: 'asc' | 'desc'): T[] {
+  transform(list: T[] | null, property: keyof T | null, direction: 'asc' | 'desc'): T[] {
     if (list) {
       const data = list.slice();
       if (!property) {
@@ -32,7 +32,7 @@ export class PrySortDataPipe<T> implements PipeTransform {
         }
       });
     }
-    return list;
+    return list ?? [];
   }
 
   private compareString(a: string, b: string, isAsc: boolean) {

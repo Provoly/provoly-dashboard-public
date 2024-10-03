@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
+  AggregationResult,
   Attribute,
   ChartAggregatedWidgetOptions,
   Class,
@@ -38,11 +39,12 @@ import {
   Subject,
   switchMap,
   tap,
+  throwError,
   withLatestFrom
 } from 'rxjs';
 import { View } from 'vega';
 import embed, { vega } from 'vega-embed';
-import { mergeDeep, TopLevelSpec } from 'vega-lite';
+import { DeepPartial, mergeDeep, TopLevelSpec } from 'vega-lite';
 import { initConfig } from 'vega-lite/build/src/config';
 import { PrySchemeService } from '@provoly/dashboard/components/scheme-picker';
 
@@ -62,9 +64,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   fields$: Observable<Field[]>;
   classes$: Observable<Class[]>;
   attributeTypes$: Observable<{
-    ordinate: { vegaType: VegaType; field?: Field; name: string };
-    abscissa: { vegaType: VegaType; field?: Field; name: string };
-    groupBy: { vegaType?: VegaType; field?: Field; name: string };
+    ordinate: { vegaType: VegaType; name: any; field: any };
+    groupBy: { vegaType: VegaType; field: any; name: any };
+    abscissa: { vegaType: VegaType; field: any; name: any };
   }>;
   aggregatedValues$: Observable<{ data: any; operation: any }>;
   WIDGET_HEADER_HEIGHT = WIDGET_HEADER_HEIGHT;
@@ -78,7 +80,6 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   fields: Field[] = [];
   ordinateAttributes$: Observable<Attribute[]>;
   triggerOrdinateAttributes$ = new Subject<void>();
-  copyAbscissaField?: Field;
   copyOrdinateField?: Field;
   noData$: Observable<boolean>;
   sortActive? = 'name';
@@ -90,6 +91,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
   ];
   noAggregationData$: Observable<boolean>;
   allowedClasses$: Observable<Class[]>;
+  // @ts-ignore
   colors = vega.scheme('Provoly');
   DEFAULT_ITEM_LIMIT = 20;
 
@@ -101,6 +103,8 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     private schemeService: PrySchemeService
   ) {
     super(store, el);
+    this.fields$ = this.store.select(FieldSelectors.fields);
+    this.classes$ = this.store.select(ClassSelectors.classes);
     this.typeOptions = Object.values(GraphType)
       .map((v) => ({
         id: v,
@@ -108,38 +112,39 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       }))
       .sort((a, b) => a.label.localeCompare(b.label));
 
-    this.options$ = this.manifest$.pipe(
-      map(
-        (manifest) =>
-          mergeDeep(
-            {
-              graph: { type: GraphType.BAR, tooltip: true, legend: false },
-              abscissa: { keep0: true },
-              ordinate: { keep0: true }
-            } as ChartAggregatedWidgetOptions,
-            (manifest.options ?? {}) as ChartAggregatedWidgetOptions
-          ) as ChartAggregatedWidgetOptions
-      )
-    );
-    this.options$.pipe(filter((opt) => !!opt)).subscribe((options) => {
-      this.optionsCopy$.next(JSON.parse(JSON.stringify(options)));
-      if ([GraphType.HISTOGRAM].includes(options.graph?.type)) {
-        this.enableIntervals(true);
-      }
-    });
-    this.fields$ = this.store.select(FieldSelectors.fields);
-    this.classes$ = this.store.select(ClassSelectors.classes);
+    this.options$ = combineLatest([this.manifest$, this.classes$]).pipe(
+      map(([manifest, classes]) => {
+        const options = manifest.options as ChartAggregatedWidgetOptions;
+        const abscissa = classes
+          .map((clazz) => clazz.attributes.find((attr) => attr.id === options.abscissa?.attribute))
+          .find((attr) => !!attr);
 
-    const usedAttributes$ = combineLatest([this.usedDatasources$, this.classes$]).pipe(
-      map(([datasources, classes]) => {
-        const usedClasses = datasources
-          .filter((ds) => ds.sourceType === 'dataset')
-          // @ts-ignore
-          .map((ds: Dataset) => ds.oClass);
+        const fixInterval = this.fixInterval(options, abscissa);
 
-        return this.classes.filter((c) => usedClasses.includes(c.id));
+        console.log(
+          {
+            graph: { type: GraphType.BAR, tooltip: true, legend: false },
+            abscissa: { keep0: true },
+            ordinate: { keep0: true }
+          } as ChartAggregatedWidgetOptions,
+          (options ?? {}) as DeepPartial<ChartAggregatedWidgetOptions>,
+          fixInterval as DeepPartial<ChartAggregatedWidgetOptions>
+        );
+        return mergeDeep(
+          {
+            graph: { type: GraphType.BAR, tooltip: true, legend: false },
+            abscissa: { keep0: true },
+            ordinate: { keep0: true }
+          } as ChartAggregatedWidgetOptions,
+          (options ?? {}) as DeepPartial<ChartAggregatedWidgetOptions>,
+          fixInterval as DeepPartial<ChartAggregatedWidgetOptions>
+        ) as ChartAggregatedWidgetOptions;
       })
     );
+    this.options$.pipe(filter((opt) => !!opt)).subscribe((options) => {
+      console.log(options);
+      this.optionsCopy$.next(JSON.parse(JSON.stringify(options)));
+    });
 
     this.operations$ = combineLatest([this.usedDatasources$, this.classes$, this.fields$]).pipe(
       map(([datasources, classes, fields]) =>
@@ -248,7 +253,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                   Operation.AVERAGE,
                   Operation.MEDIAN,
                   Operation.NONE
-                ].includes(this.optionsCopy$.value.ordinate.operation)
+                ]
+                  .map((op) => op.toString())
+                  .includes(this.optionsCopy$.value?.ordinate.operation ?? '----')
               ) {
                 return (
                   !!field &&
@@ -293,7 +300,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
             name: abscissa?.name ?? ''
           },
           ordinate: {
-            fieldType: ordinate?.field,
+            field: ordinate?.field,
             vegaType:
               options!.ordinate.operation === Operation.COUNT || options!.ordinate.operation === Operation.DISTINCT
                 ? VegaType.QUANTITATIVE
@@ -326,12 +333,12 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           tap(() => this.store.dispatch(SearchActions.setSearchLoading({ datasources, start: false }))),
           catchError((err) => {
             this.store.dispatch(SearchActions.setSearchLoading({ datasources, start: false }));
-            throw err;
+            return throwError(err);
           })
         )
-      ),
+      ) as any,
       withLatestFrom(this.options$),
-      map(([aggregate, options]) => {
+      map(([aggregate, options]: [AggregationResult, ChartAggregatedWidgetOptions]) => {
         // @ts-ignore
         if (aggregate.values.length > 0 && !aggregate.values[0].groupBy) {
           return {
@@ -357,8 +364,8 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           )
           .reduce((a, b) => [...a, ...b], []);
         return { operation: aggregate.operation, data: flattened };
-      }),
-      startWith({ operation: Operation.NONE, data: [] }),
+      }) as any,
+      startWith({ operation: Operation.NONE, data: {} }) as any,
       share()
     );
 
@@ -387,7 +394,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
         return mergeDeep(
           {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-            title: this.getTitle(options),
+            title: this.getTitle(options as ChartAggregatedWidgetOptions),
             width: 'container',
             height: (size.height ?? 100) - (display ? WIDGET_HEADER_HEIGHT.value : 0),
             padding: 10,
@@ -555,6 +562,27 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     );
   }
 
+  private fixInterval(
+    options: ChartAggregatedWidgetOptions,
+    abscissa: Attribute | undefined
+  ): Partial<ChartAggregatedWidgetOptions> {
+    const fixInterval = { abscissa: options.abscissa ?? {} } as ChartAggregatedWidgetOptions;
+    if (!!abscissa) {
+      let newIntervalValue =
+        options.abscissa?.interval ?? (abscissa.field.type !== FieldType.INSTANT ? CHART_INTERVAL_STEP : 'second');
+      // if date time interval and field is not date, reinitializing interval value
+      if (typeof options?.abscissa?.interval === 'string' && abscissa.field.type !== FieldType.INSTANT) {
+        newIntervalValue = CHART_INTERVAL_STEP;
+      }
+      // if numeric interval and field is date, reinitializing interval value
+      if (typeof options?.abscissa?.interval !== 'string' && abscissa.field.type === FieldType.INSTANT) {
+        newIntervalValue = 'second';
+      }
+      fixInterval.abscissa.interval = newIntervalValue;
+    }
+    return fixInterval;
+  }
+
   ngAfterViewInit() {
     this.subscriptions.add(
       combineLatest([this.vegaLiteSpec$, this.trigger$]).subscribe(([spec, _]) => {
@@ -580,7 +608,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     this.trigger$.next();
     if (
       this.optionsCopy$.value &&
-      (!!this.optionsCopy$.value.abscissa.limit || this.optionsCopy$.value.abscissa.limit === undefined)
+      (!!this.optionsCopy$.value?.abscissa.limit || this.optionsCopy$.value?.abscissa.limit === undefined)
     ) {
       this.toggleLimitItems(true);
     }
@@ -687,7 +715,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         graph: { ...this.optionsCopy$.value?.graph, title: $event }
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -696,15 +724,15 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         graph: { ...this.optionsCopy$.value?.graph, type: $event }
-      });
-      if ([GraphType.CIRCULAR, GraphType.DONUT].includes($event)) {
+      } as ChartAggregatedWidgetOptions);
+      if ([GraphType.CIRCULAR, GraphType.DONUT].map((gt) => gt.toString()).includes($event)) {
         this.optionsCopy$.next({
           ...this.optionsCopy$.value,
           groupBy: undefined,
           circleColorScheme: this.optionsCopy$.value?.circleColorScheme ?? 'Provoly'
-        });
+        } as ChartAggregatedWidgetOptions);
       }
-      if ([GraphType.HISTOGRAM].includes($event)) {
+      if ([GraphType.HISTOGRAM.toString()].includes($event)) {
         this.enableIntervals(true);
       }
     }
@@ -715,7 +743,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         graph: { ...this.optionsCopy$.value?.graph, donutSize: $event }
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -724,7 +752,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         ordinate: { ...this.optionsCopy$.value?.ordinate, operation: $event }
-      });
+      } as ChartAggregatedWidgetOptions);
       if ($event === Operation.COUNT || $event === Operation.DISTINCT) {
         this.optionsCopy$.next({
           ...this.optionsCopy$.value,
@@ -733,7 +761,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
             label: this.translateService.instant('@pry.widget.chart.operation.' + $event),
             attribute: undefined
           }
-        });
+        } as ChartAggregatedWidgetOptions);
       }
       setTimeout(() => this.triggerOrdinateAttributes$.next(), 10);
     }
@@ -741,22 +769,23 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
 
   changeAbscissa($event: string) {
     if ($event && this.optionsCopy$.value) {
-      this.optionsCopy$.next({
-        ...this.optionsCopy$.value,
-        abscissa: { ...this.optionsCopy$.value?.abscissa, attribute: $event }
-      });
       const attr = this.classes
         .map((clazz) => clazz.attributes)
         .reduce((a, b) => [...a, ...b], [])
         .find((attr) => attr.id === $event);
+
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
-        abscissa: { ...this.optionsCopy$.value?.abscissa, label: attr?.name ?? 'attr-not-found' }
-      });
-
-      this.copyAbscissaField = this.fields.find((field) => attr?.field.id === field.id);
-
-      this.enableIntervals(!!this.optionsCopy$.value?.abscissa.interval);
+        abscissa: {
+          ...this.optionsCopy$.value?.abscissa,
+          attribute: $event,
+          label: attr?.name ?? 'attr-not-found',
+          interval: this.fixInterval(
+            { ...this.optionsCopy$.value!, abscissa: { ...this.optionsCopy$.value!.abscissa, attribute: $event } },
+            attr
+          ).abscissa?.interval
+        }
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -765,7 +794,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         abscissa: { ...this.optionsCopy$.value?.abscissa, label: $event }
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -774,7 +803,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         ordinate: { ...this.optionsCopy$.value?.ordinate, attribute: $event }
-      });
+      } as ChartAggregatedWidgetOptions);
       const attr = this.classes
         .map((clazz) => clazz.attributes)
         .reduce((a, b) => [...a, ...b], [])
@@ -782,7 +811,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         ordinate: { ...this.optionsCopy$.value?.ordinate, label: attr?.name ?? 'attr-not-found' }
-      });
+      } as ChartAggregatedWidgetOptions);
 
       this.copyOrdinateField = this.fields.find((field) => attr?.field.id === field.id);
     }
@@ -793,7 +822,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         ordinate: { ...this.optionsCopy$.value?.ordinate, label: $event }
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -802,7 +831,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         abscissa: { ...this.optionsCopy$.value?.abscissa, keep0: $event }
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -811,44 +840,23 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         ordinate: { ...this.optionsCopy$.value?.ordinate, keep0: $event }
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
   enableIntervals($event: any) {
-    if (this.optionsCopy$.value) {
-      if ($event) {
-        // if interval is not defined intialization depends on field type
-        let newIntervalValue =
-          this.optionsCopy$.value.abscissa?.interval ??
-          (this.copyAbscissaField?.type !== FieldType.INSTANT ? CHART_INTERVAL_STEP : 'second');
-        // if date time interval and field is not date, reinitializing interval value
-        if (
-          typeof this.optionsCopy$.value.abscissa?.interval === 'string' &&
-          this.copyAbscissaField?.type !== FieldType.INSTANT
-        ) {
-          newIntervalValue = CHART_INTERVAL_STEP;
+    const attr = this.classes
+      .map((clazz) => clazz.attributes)
+      .reduce((a, b) => [...a, ...b], [])
+      .find((attr) => attr.id === this.optionsCopy$.value?.abscissa?.attribute);
+    if (attr) {
+      this.optionsCopy$.next({
+        ...this.optionsCopy$.value,
+        abscissa: {
+          ...this.optionsCopy$.value?.abscissa,
+          interval: $event ? this.fixInterval(this.optionsCopy$.value!, attr).abscissa?.interval : undefined
         }
-        // if numeric interval and field is date, reinitializing interval value
-        if (
-          typeof this.optionsCopy$.value.abscissa?.interval !== 'string' &&
-          this.copyAbscissaField?.type === FieldType.INSTANT
-        ) {
-          newIntervalValue = 'second';
-        }
-        this.optionsCopy$.next({
-          ...this.optionsCopy$.value,
-          abscissa: {
-            ...this.optionsCopy$.value?.abscissa,
-            interval: newIntervalValue
-          }
-        });
-      } else {
-        this.optionsCopy$.next({
-          ...this.optionsCopy$.value,
-          abscissa: { ...this.optionsCopy$.value?.abscissa, interval: undefined }
-        });
-      }
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -860,7 +868,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           ...this.optionsCopy$.value?.abscissa,
           interval: +$event
         }
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -869,10 +877,10 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         abscissa: {
-          ...this.optionsCopy$.value.abscissa,
+          ...this.optionsCopy$.value?.abscissa,
           interval: $event
         }
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -880,8 +888,8 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     if (this.optionsCopy$.value) {
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
-        graph: { ...this.optionsCopy$.value.graph, legend: $event }
-      });
+        graph: { ...this.optionsCopy$.value?.graph, legend: $event }
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -890,7 +898,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         graph: { ...this.optionsCopy$.value?.graph, tooltip: $event }
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -903,25 +911,25 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
             attribute: this.optionsCopy$.value?.groupBy?.attribute ?? '',
             color: this.schemeService.getDefaultScheme()
           }
-        });
+        } as ChartAggregatedWidgetOptions);
       } else {
         this.optionsCopy$.next({
           ...this.optionsCopy$.value,
           groupBy: undefined
-        });
+        } as ChartAggregatedWidgetOptions);
       }
     }
   }
 
   changeGroupBy($event: any) {
-    if (typeof $event === 'string' && this.optionsCopy$.value && this.optionsCopy$.value.groupBy) {
+    if (typeof $event === 'string' && this.optionsCopy$.value && this.optionsCopy$.value?.groupBy) {
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         groupBy: {
           ...this.optionsCopy$.value?.groupBy,
           attribute: $event
         }
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -930,10 +938,10 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         groupBy: {
-          attribute: this.optionsCopy$.value.groupBy?.attribute,
+          attribute: this.optionsCopy$.value?.groupBy?.attribute,
           color: $event
         }
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -951,7 +959,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           ...this.optionsCopy$.value?.graph,
           stacked: $event
         }
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -960,15 +968,15 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         graph: {
-          ...this.optionsCopy$.value.graph,
+          ...this.optionsCopy$.value?.graph,
           sort: $event
-            ? this.optionsCopy$.value.graph.sort ?? {
+            ? this.optionsCopy$.value?.graph.sort ?? {
                 value: 'key',
                 direction: 'asc'
               }
             : undefined
         }
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -977,10 +985,10 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         graph: {
-          ...this.optionsCopy$.value.graph,
-          sort: { ...this.optionsCopy$.value.graph.sort!, value: $event }
+          ...this.optionsCopy$.value?.graph,
+          sort: { ...this.optionsCopy$.value?.graph.sort!, value: $event }
         }
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -992,20 +1000,23 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           ...this.optionsCopy$.value?.graph,
           sort: { ...this.optionsCopy$.value?.graph.sort!, direction: $event }
         }
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
   toggleLimitItems($event: boolean) {
     if (this.optionsCopy$.value) {
-      if ($event !== !!this.optionsCopy$.value.abscissa.limit || this.optionsCopy$.value.abscissa.limit === undefined) {
+      if (
+        $event !== !!this.optionsCopy$.value?.abscissa.limit ||
+        this.optionsCopy$.value?.abscissa.limit === undefined
+      ) {
         this.optionsCopy$.next({
           ...this.optionsCopy$.value,
           abscissa: {
-            ...this.optionsCopy$.value.abscissa,
-            limit: this.optionsCopy$.value.abscissa.limit ? null : this.DEFAULT_ITEM_LIMIT
+            ...this.optionsCopy$.value?.abscissa,
+            limit: this.optionsCopy$.value?.abscissa.limit ? null : this.DEFAULT_ITEM_LIMIT
           }
-        });
+        } as ChartAggregatedWidgetOptions);
       }
     }
   }
@@ -1015,10 +1026,10 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         abscissa: {
-          ...this.optionsCopy$.value.abscissa,
+          ...this.optionsCopy$.value?.abscissa,
           limit: $event > 0 ? $event : 1
         }
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -1033,7 +1044,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         circleColorScheme: $event
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
@@ -1042,13 +1053,13 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       this.optionsCopy$.next({
         ...this.optionsCopy$.value,
         baseColor: $event
-      });
+      } as ChartAggregatedWidgetOptions);
     }
   }
 
   getLabelAngle(abscissaType: VegaType, data: { key: string | number; value: any }[]) {
     if (
-      [VegaType.NOMINAL, VegaType.ORDINAL].includes(abscissaType) &&
+      [VegaType.NOMINAL, VegaType.ORDINAL].map((vt) => vt.toString()).includes(abscissaType) &&
       data.some((item: { key: string | number; value: any }) => item.key.toString().length > 10)
     ) {
       return { labelAngle: -30 };
