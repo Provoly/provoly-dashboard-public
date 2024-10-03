@@ -20,13 +20,22 @@ export const frTranslations = {
         },
         specializedLocale: {
           default: '%Y-%m-%dT%H:%M:%S',
-          DATETIME: '%Y-%m-%dT%H:%M:%S',
+          DATETIME: '%Y/%m/%d %H:%M:%S',
           DATE: '%d/%m/%Y',
           MONTH_YEAR: '%m/%Y',
           DAY_MONTH: '%d/%m',
           YEAR: '%Y',
           MONTH: '%m',
-          DAY: '%d'
+          DAY: '%d',
+          interval: {
+            default: '%Y-%m-%dT%H:%M:%S',
+            second: '%Y/%m/%d %H:%M:%S',
+            minute: '%Y/%m/%d %H:%M',
+            hour: '%Y/%m/%d %H:00',
+            day: '%Y-%m-%d',
+            month: '%Y-%m',
+            year: '%Y'
+          }
         },
         operation: {
           none: "Valeur de l'attribut",

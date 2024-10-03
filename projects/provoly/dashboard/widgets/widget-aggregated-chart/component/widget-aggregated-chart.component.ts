@@ -417,7 +417,12 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                         axis: {
                           grid: false,
                           ...WidgetAggregatedChartComponent.minTick(types.abscissa.field?.type ?? FieldType.STRING),
-                          labelExpr: this.getLabelExpr('x', types.abscissa.vegaType, types.abscissa.field),
+                          labelExpr: this.getLabelExpr(
+                            'x',
+                            types.abscissa.vegaType,
+                            options?.abscissa?.interval as any,
+                            types.abscissa.field
+                          ),
                           ...this.getLabelAngle(types.abscissa.vegaType, values.data)
                         },
                         scale: {
@@ -436,7 +441,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                         axis: {
                           ...WidgetAggregatedChartComponent.minTick(types.ordinate.field?.type ?? FieldType.STRING),
                           ...this.setTickCount(values.data),
-                          labelExpr: this.getLabelExpr('y', types.ordinate.vegaType, types.ordinate.field)
+                          labelExpr: this.getLabelExpr('y', types.ordinate.vegaType, undefined, types.ordinate.field)
                         },
                         scale: {
                           zero: types.ordinate.vegaType === VegaType.QUANTITATIVE ? !!options.ordinate.keep0 : false
@@ -472,13 +477,17 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                             field: 'key',
                             type: types.abscissa.vegaType,
                             title: options.abscissa.label,
-                            ...this.getDataFormat(types.abscissa.vegaType, types.abscissa.field)
+                            ...this.getDataFormat(
+                              types.abscissa.vegaType,
+                              options?.abscissa?.interval as any,
+                              types.abscissa.field
+                            )
                           },
                           {
                             field: 'value',
                             type: types.ordinate.vegaType,
                             title: options.ordinate.label,
-                            ...this.getDataFormat(types.ordinate.vegaType, types.ordinate.field)
+                            ...this.getDataFormat(types.ordinate.vegaType, undefined, types.ordinate.field)
                           },
                           {
                             field: 'series',
@@ -491,13 +500,17 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                             field: 'key',
                             type: types.abscissa.vegaType,
                             title: options.abscissa.label,
-                            ...this.getDataFormat(types.abscissa.vegaType, types.abscissa.field)
+                            ...this.getDataFormat(
+                              types.abscissa.vegaType,
+                              options?.abscissa?.interval as any,
+                              types.abscissa.field
+                            )
                           },
                           {
                             field: 'value',
                             type: types.ordinate.vegaType,
                             title: options.ordinate.label,
-                            ...this.getDataFormat(types.ordinate.vegaType, types.ordinate.field)
+                            ...this.getDataFormat(types.ordinate.vegaType, undefined, types.ordinate.field)
                           }
                         ]
                     : undefined
@@ -508,7 +521,8 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           } as any,
           options.additionalSpec
         );
-      })
+      }),
+      tap((v) => console.log(v))
     );
 
     this.sortValues$ = this.optionsCopy$.pipe(
@@ -1059,8 +1073,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
 
   getLabelAngle(abscissaType: VegaType, data: { key: string | number; value: any }[]) {
     if (
-      [VegaType.NOMINAL, VegaType.ORDINAL].map((vt) => vt.toString()).includes(abscissaType) &&
-      data.some((item: { key: string | number; value: any }) => item.key.toString().length > 10)
+      ([VegaType.NOMINAL, VegaType.ORDINAL].map((vt) => vt.toString()).includes(abscissaType) &&
+        data.some((item: { key: string | number; value: any }) => item.key.toString().length > 10)) ||
+      [VegaType.TEMPORAL].map((vt) => vt.toString()).includes(abscissaType)
     ) {
       return { labelAngle: -30 };
     }
@@ -1078,25 +1093,23 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     return typeof abscissaInterval === 'string';
   }
 
-  getLabelExpr(axis: 'x' | 'y', axisType: string, field?: Field) {
+  getLabelExpr(axis: 'x' | 'y', axisType: string, interval: string | undefined, field?: Field) {
     const truncateBasedOn = axis === 'x' ? 'height < 300' : 'width < 100';
-    const timeFormat = `timeFormat(datum.value, '${this.getLocaleFormat(field?.format)}')`;
+    const timeFormat = `timeFormat(datum.value, '${this.getLocaleFormat(field?.format, interval)}')`;
     const numberFormat = field?.decimalPrecision
       ? `format(datum.value, '.${field?.decimalPrecision}f')`
       : 'datum.value';
     const truncatedFormat = 'truncate(datum.value, 10)';
 
-    return `${truncateBasedOn} ? ${
-      axisType === VegaType.TEMPORAL ? timeFormat : axisType === VegaType.QUANTITATIVE ? numberFormat : truncatedFormat
-    } : ${
-      axisType === VegaType.TEMPORAL ? timeFormat : axisType === VegaType.QUANTITATIVE ? numberFormat : 'datum.value'
-    }`;
+    return axisType === VegaType.TEMPORAL
+      ? timeFormat
+      : `${axisType === VegaType.QUANTITATIVE ? numberFormat : `${truncateBasedOn} ? ${truncatedFormat} : datum.value`}`;
   }
 
-  getDataFormat(axisType: string, field?: Field) {
+  getDataFormat(axisType: string, interval: string | undefined, field?: Field) {
     switch (axisType) {
       case VegaType.TEMPORAL:
-        return { format: this.getLocaleFormat(field?.format), scale: { type: 'utc' } };
+        return { format: this.getLocaleFormat(field?.format, interval), scale: { type: 'utc' } };
       case VegaType.QUANTITATIVE:
         return field?.decimalPrecision ? { format: `.${field?.decimalPrecision}f` } : {};
       default:
@@ -1104,8 +1117,13 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     }
   }
 
-  getLocaleFormat(type: string | undefined) {
-    const formats = this.translateService.instantObject('@pry.widget.chart.specializedLocale');
-    return formats[type ?? 'default'];
+  getLocaleFormat(type: string | undefined, interval: string | undefined) {
+    if (!interval) {
+      const formats = this.translateService.instantObject('@pry.widget.chart.specializedLocale');
+      return formats[type ?? 'default'];
+    } else {
+      const formats = this.translateService.instantObject('@pry.widget.chart.specializedLocale.interval');
+      return formats[interval ?? 'default'];
+    }
   }
 }

@@ -26,7 +26,16 @@ export const enTranslations = {
           DAY_MONTH: '%d-%m',
           YEAR: '%Y',
           MONTH: '%m',
-          DAY: '%d'
+          DAY: '%d',
+          interval: {
+            default: '%Y-%m-%dT%H:%M:%S',
+            second: '%Y-%m-%dT%H:%M:%S',
+            minute: '%Y-%m-%dT%H:%M',
+            hour: '%Y-%m-%dT%H:00',
+            day: '%Y-%m-%d',
+            month: '%Y-%m',
+            year: '%Y'
+          }
         },
         operation: {
           none: 'Attribute value',
