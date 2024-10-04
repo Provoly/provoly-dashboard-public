@@ -4,7 +4,7 @@
       <div class="m-filter__input-wrapper">
         <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
         <input
-          class="m-filter__input"
+          class="m-filter__input m-filter__input__date"
           [ngModel]="dates[0]"
           (ngModelChange)="onDateChange(0, $event)"
           type="date"
@@ -28,7 +28,7 @@
         <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
         <div class="m-filter__wrapper">
           <input
-            class="m-filter__input"
+            class="m-filter__input m-filter__input__date"
             [ngModel]="dates[0]"
             (ngModelChange)="onDateChange(0, $event)"
             type="date"
@@ -47,7 +47,7 @@
         <span class="m-filter__date-input-separator">&nbsp;-&nbsp;</span>
         <div class="m-filter__wrapper">
           <input
-            class="m-filter__input"
+            class="m-filter__input m-filter__input__date"
             [ngModel]="dates[1]"
             (ngModelChange)="onDateChange(1, $event)"
             type="date"

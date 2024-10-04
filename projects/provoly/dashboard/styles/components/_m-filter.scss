@@ -27,6 +27,11 @@
     min-height: toRem(20);
     line-height: toRem(12);
     padding: 0 toRem(2) toRem(1) toRem(1);
+
+    &__date {
+      width: toRem(85);
+      margin-right: toRem(5);
+    }
   }
 
   &__date-input-separator {
@@ -74,11 +79,11 @@
     }
 
     &--date {
-      right: toRem(35);
+      right: toRem(5);
     }
 
     &--two-dates {
-      right: toRem(35);
+      right: toRem(-5);
       bottom: toRem(0);
     }
   }
@@ -96,4 +101,14 @@ pry-filter-instanciator {
   display: flex;
   justify-content: space-around;
   padding: 0 toRem(10);
+}
+
+@supports (-moz-appearance:none) {
+  .m-filter__clear-wrapper.m-filter__clear-wrapper--two-dates {
+    right: toRem(-5);
+  }
+  .m-filter__input__date {
+    width: toRem(110);
+    margin-right: toRem(5);
+  }
 }

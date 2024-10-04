@@ -2166,6 +2166,25 @@
             "gap": 15
           }
         }
+      ],
+      "filters": [
+        {
+          "id": "76601cdf-56c1-4de4-bde9-d1d0ec3288e4",
+          "name": "date long nom voire très long",
+          "type": "date",
+          "attributes": [
+            {
+              "id": "81a917fb-6d9b-41d1-807a-4e7ca9103f23",
+              "customId": "81a917fb-6d9b-41d1-807a-4e7ca9103f23@histogram",
+              "technicalName": "Date",
+              "label": "date / Histogramme",
+              "datasource": "histogram",
+              "type": "instant"
+            }
+          ],
+          "operator": "INSIDE",
+          "hasDateRange": true
+        }
       ]
     }
   }
