@@ -142,6 +142,7 @@ export class TooltipManager {
       }
       this.tooltipEvent = event;
       this.calculatedTooltipPosition = undefined;
+      this.tooltipDisplayedIndex$.next(0);
     };
 
     if (this.parent.optionsCopy.tooltipMode !== TooltipMode.NONE) {
