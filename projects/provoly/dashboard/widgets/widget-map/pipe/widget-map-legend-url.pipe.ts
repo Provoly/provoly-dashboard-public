@@ -41,7 +41,7 @@ export class WidgetMapLegendUrlPipe implements PipeTransform {
       const resource = XMLUtils.find(legendUrl.childNodes, 'OnlineResource');
       if (resource) {
         // @ts-ignore
-        return decodeURIComponent(resource.getAttribute('xlink:href'));
+        return decodeURIComponent(resource.getAttribute('xlink:href')) + '&LEGEND_OPTIONS=forceLabels:on';
       }
     }
     return '';
