@@ -29,11 +29,12 @@ export const frTranslations = {
           DAY: '%d',
           interval: {
             default: '%Y-%m-%dT%H:%M:%S',
-            second: '%Y/%m/%d %H:%M:%S',
-            minute: '%Y/%m/%d %H:%M',
-            hour: '%Y/%m/%d %H:00',
-            day: '%Y-%m-%d',
-            month: '%Y-%m',
+            second: '%d/%m/%Y %H:%M:%S',
+            minute: '%d/%m/%Y %H:%M',
+            hour: '%d/%m/%Y %H:00',
+            day: '%d/%m/%Y',
+            week: '%V %Y',
+            month: '%m %Y',
             year: '%Y'
           }
         },

@@ -121,15 +121,6 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
 
         const fixInterval = this.fixInterval(options, abscissa);
 
-        console.log(
-          {
-            graph: { type: GraphType.BAR, tooltip: true, legend: false },
-            abscissa: { keep0: true },
-            ordinate: { keep0: true }
-          } as ChartAggregatedWidgetOptions,
-          (options ?? {}) as DeepPartial<ChartAggregatedWidgetOptions>,
-          fixInterval as DeepPartial<ChartAggregatedWidgetOptions>
-        );
         return mergeDeep(
           {
             graph: { type: GraphType.BAR, tooltip: true, legend: false },
@@ -142,7 +133,6 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       })
     );
     this.options$.pipe(filter((opt) => !!opt)).subscribe((options) => {
-      console.log(options);
       this.optionsCopy$.next(JSON.parse(JSON.stringify(options)));
     });
 
@@ -430,7 +420,8 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                           zero: !!options.abscissa.keep0
                           //type: WidgetChartComponent.isTimeUnitUTC(variables[0]) ? 'utc' : undefined
                         },
-                        ...this.getSort(options.abscissa.attribute, options.graph?.sort)
+                        ...this.getSort(options.abscissa.attribute, options.graph?.sort),
+                        timeUnit: this.getTimeUnit(options, types)
                       }
                     : undefined,
                   y: !isCircular
@@ -521,8 +512,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           } as any,
           options.additionalSpec
         );
-      }),
-      tap((v) => console.log(v))
+      })
     );
 
     this.sortValues$ = this.optionsCopy$.pipe(
@@ -581,6 +571,10 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     abscissa: Attribute | undefined
   ): Partial<ChartAggregatedWidgetOptions> {
     const fixInterval = { abscissa: options.abscissa ?? {} } as ChartAggregatedWidgetOptions;
+    if (options?.graph?.type !== GraphType.HISTOGRAM) {
+      fixInterval.abscissa.interval = undefined;
+      return fixInterval;
+    }
     if (!!abscissa) {
       let newIntervalValue =
         options.abscissa?.interval ?? (abscissa.field.type !== FieldType.INSTANT ? CHART_INTERVAL_STEP : 'second');
@@ -746,9 +740,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
           circleColorScheme: this.optionsCopy$.value?.circleColorScheme ?? 'Provoly'
         } as ChartAggregatedWidgetOptions);
       }
-      if ([GraphType.HISTOGRAM.toString()].includes($event)) {
-        this.enableIntervals(true);
-      }
+      this.enableIntervals([GraphType.HISTOGRAM.toString()].includes($event));
     }
   }
 
@@ -1125,5 +1117,26 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       const formats = this.translateService.instantObject('@pry.widget.chart.specializedLocale.interval');
       return formats[interval ?? 'default'];
     }
+  }
+
+  private getTimeUnit(options: ChartAggregatedWidgetOptions, types: any) {
+    if (
+      options?.graph.type !== GraphType.HISTOGRAM ||
+      types.abscissa.vegaType !== VegaType.TEMPORAL ||
+      !options?.abscissa?.interval
+    ) {
+      return undefined;
+    }
+    const vegaTimeUnits = {
+      year: 'binnedyear',
+      month: 'binnedyearmonth',
+      week: 'binnedyearweek',
+      day: 'binnedyearmonthdate',
+      hour: 'binnedyearmonthdatehours',
+      minute: 'binnedyearmonthdatehoursminutes',
+      second: 'binnedyearmonthdatehoursminutesseconds'
+    } as { [key: string]: string };
+
+    return vegaTimeUnits[options.abscissa.interval as string];
   }
 }

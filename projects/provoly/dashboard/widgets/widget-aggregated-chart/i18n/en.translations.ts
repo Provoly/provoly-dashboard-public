@@ -33,6 +33,7 @@ export const enTranslations = {
             minute: '%Y-%m-%dT%H:%M',
             hour: '%Y-%m-%dT%H:00',
             day: '%Y-%m-%d',
+            week: '%Y-%V',
             month: '%Y-%m',
             year: '%Y'
           }
