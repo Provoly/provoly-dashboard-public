@@ -12,7 +12,7 @@
       [src]="datasource.id | translateId: { type: 'datasource', output: 'icon' } | async"
     />
     <div class="o-datasource-card__title" ellipsis textElementSelector=".a-h4">
-      <h4 class="a-h4">{{ datasource.name }}</h4>
+      <p class="a-h4">{{ datasource.name }}</p>
     </div>
     @if (isSelectable) {
       <pry-checkbox

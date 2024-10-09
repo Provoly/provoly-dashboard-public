@@ -10,7 +10,9 @@ import {
   PRY_ACCESS_TOKEN,
   PryBaseAccess,
   PryDialogService,
+  PryI18nService,
   PryStatusModalComponent,
+  PryTitleService,
   ResultSets,
   SearchActions,
   SubscriptionnerDirective,
@@ -18,6 +20,7 @@ import {
   WidgetManifest
 } from '@provoly/dashboard';
 import { map, Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 let nextCompId = 0;
 
@@ -65,7 +68,9 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
   constructor(
     private store: Store,
     @Optional() @Inject(PRY_ACCESS_TOKEN) protected access: PryBaseAccess,
-    private dialog: PryDialogService
+    private dialog: PryDialogService,
+    private titleService: PryTitleService,
+    private i18nService: PryI18nService
   ) {
     super();
     this.datasetItems$ = this.store.select(DashboardSelectors.resultSets);
@@ -89,9 +94,17 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
       })
     );
 
-    this.currentDataset$ = this.store
-      .select(DataSourceSelectors.datasets)
-      .pipe(map((datasets) => datasets.find((currentDataset) => currentDataset.id === this.dataset.id)));
+    this.currentDataset$ = this.store.select(DataSourceSelectors.datasets).pipe(
+      map((datasets) => datasets.find((currentDataset) => currentDataset.id === this.dataset.id)),
+      tap((dataset) => {
+        if (dataset) {
+          this.titleService.changeTitle(
+            this.i18nService.instant('title.list-dataset-d', { name: dataset.name }, false)
+          );
+        }
+      })
+    );
+
     this.datasetVersions$ = this.store.select(DataSourceSelectors.datasetVersions);
     this.subscriptions.add(
       this.datasetVersions$.subscribe((versions) => {
@@ -110,6 +123,7 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
 
   goBack() {
     this.goToCatalog.emit();
+    this.titleService.changeTitle(this.i18nService.instant('title.list-dataset', {}, false));
     this.store.dispatch(DataSourceActions.dataset.listVersions({}));
   }
 

@@ -9,7 +9,7 @@
 <div class="o-dataset-layout">
   <div class="o-dataset-layout__content">
     <div class="a-p">
-      <h2 class="a-h1">{{ (currentDataset$ | async)?.name }}</h2>
+      <h1 class="a-h1">{{ (currentDataset$ | async)?.name }}</h1>
     </div>
 
     <div class="o-dataset-detail">
@@ -154,7 +154,11 @@
         >
           <td>
             {{ version.version }}
-            <pry-icon *ngIf="(currentDataset$ | async)?.activeVersion?.id === version.id" iconSvg="check" class="check"></pry-icon>
+            <pry-icon
+              *ngIf="(currentDataset$ | async)?.activeVersion?.id === version.id"
+              iconSvg="check"
+              class="check"
+            ></pry-icon>
           </td>
           <td>
             <div
@@ -176,7 +180,8 @@
               *ngIf="version.state !== 'DELETING'"
               class="m-info-icon a-tooltip -tooltip-width-md"
               [attr.data-tooltip]="
-                '@pry.dataset.tooltip.' + getVersionTooltipContent(version, (currentDataset$ | async)?.activeVersion?.id) | i18n
+                '@pry.dataset.tooltip.' +
+                  getVersionTooltipContent(version, (currentDataset$ | async)?.activeVersion?.id) | i18n
               "
               data-tooltip-position="right"
             >
