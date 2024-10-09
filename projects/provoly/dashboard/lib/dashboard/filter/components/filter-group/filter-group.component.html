@@ -2,11 +2,13 @@
 <ng-container *ngIf="globalManifest$ | async as manifest">
   <div class="o-container__filters" *ngIf="manifest.filters && manifest.filters.length > 0">
     <div class="o-container__filter-container" (click)="openSelect()">
-      <pry-filter-instanciator
-        *ngFor="let filter of manifest.filters"
-        [filter]="filter"
-        [applyFilter$]="apply$"
-      ></pry-filter-instanciator>
+      @for (filterDescription of manifest.filters; track filterDescription.id) {
+        <pry-filter-instanciator
+          [filter]="filterDescription"
+          [applyFilter$]="apply$"
+          (pressedEnter)="filter()"
+        ></pry-filter-instanciator>
+      }
     </div>
     <div class="o-container__filter-actions">
       <button type="button" class="a-btn a-btn--icon-only" (click)="clearFilters()">

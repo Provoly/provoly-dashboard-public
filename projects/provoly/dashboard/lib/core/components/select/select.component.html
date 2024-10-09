@@ -26,13 +26,14 @@
         [disabled]="disabled"
         (keydown)="onKeydownAutocompleteInput($event)"
         [placeholder]="placeholder ?? ''"
+        (keydown.enter)="enterPressed($event)"
         #input
       />
     } @else if ((valueItems$ | async).length === 0) {
       <span class="a-pry-select__placeholder">{{ placeholder }}</span>
       <div class="a-pry-select__filler"></div>
     } @else {
-      <ng-container *ngFor="let item of valueItems$ | async">
+      @for (item of valueItems$ | async; track !!item.id ? item.id : item) {
         <div
           class="a-pry-select__value"
           [class.pry-select-form]="isForm"
@@ -60,7 +61,7 @@
             }
           }
         </div>
-      </ng-container>
+      }
       <div class="a-pry-select__filler"></div>
     }
   </div>

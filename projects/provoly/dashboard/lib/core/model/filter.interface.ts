@@ -8,6 +8,7 @@ export interface Filter {
   possibleValues?: string; // only used in list-filter
   hasDateRange?: boolean;
   limit?: number;
+  placeholder?: string;
 }
 
 export interface FilterContext {

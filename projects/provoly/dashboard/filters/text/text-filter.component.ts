@@ -26,4 +26,11 @@ export class TextFilterComponent extends BaseFilterComponent {
   valueChange($event: any) {
     this.value$.next($event);
   }
+
+  enterPressed($event: any) {
+    this.setFilter($event.target.value);
+    setTimeout(() => {
+      this.pressedEnter.next();
+    }, 10);
+  }
 }

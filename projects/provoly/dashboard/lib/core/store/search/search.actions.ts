@@ -9,13 +9,13 @@ export const SearchActions = {
     props<{ payload: MonoClassSearchPayload | MultiClassSearchPayload | FullTextSearchPayload; id?: string }>()
   ),
   getDatasourceItems: createAction(
-    '[Search] (bus) get datasource items',
+    '[Search] (bus) get datasource items (not-active-action)',
     props<{ id: string; excludeGeo: boolean; from: string }>()
   ),
 
   // result Search
   searchSuccess: createAction(
-    '[Search Api] (bus) Search Success',
+    '[Search Api] (bus) Search Success (not-active-action)',
     props<{ resultSet: ResultSet; id?: string; params?: string }>()
   ),
   searchFailure: createAction('[Search Api] (bus) Search Failure', props<{ error: any; id?: string }>()),

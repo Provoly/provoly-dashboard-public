@@ -3,16 +3,25 @@ import { BaseFilterModule } from './base-filter.module';
 import { BaseFilterComponent } from './base-filter.component';
 
 const moduleRefCache = {} as { [moduleName: string]: BaseFilterModule };
+const standaloneRefCache = {} as { [moduleName: string]: BaseFilterComponent };
 
 export function filterLoader(module: any, prop: string): (injector: Injector) => Type<BaseFilterComponent> {
   return (injector: Injector) => {
+    const standalone = prop.endsWith('Component');
     if (!!moduleRefCache[prop]) {
       return moduleRefCache[prop].getComponent() as unknown as Type<BaseFilterComponent>;
+    } else if (!!standaloneRefCache[prop]) {
+      return standaloneRefCache[prop] as unknown as Type<BaseFilterComponent>;
     } else {
       if (!!module[prop]) {
-        const moduleRef = createNgModule(module[prop], Injector.create({ parent: injector, providers: [] }));
-        moduleRefCache[prop] = moduleRef.instance as BaseFilterModule;
-        return moduleRefCache[prop].getComponent() as unknown as Type<BaseFilterComponent>;
+        if (!standalone) {
+          const moduleRef = createNgModule(module[prop], Injector.create({ parent: injector, providers: [] }));
+          moduleRefCache[prop] = moduleRef.instance as BaseFilterModule;
+          return moduleRefCache[prop].getComponent() as unknown as Type<BaseFilterComponent>;
+        } else {
+          standaloneRefCache[prop] = module[prop];
+          return standaloneRefCache[prop] as unknown as Type<BaseFilterComponent>;
+        }
       } else {
         console.error(`module has no property ${prop}`, module);
         throw new Error(`module ${module} has no property ${prop}`);

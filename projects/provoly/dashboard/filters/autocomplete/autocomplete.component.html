@@ -18,6 +18,8 @@
       (cleared)="clear()"
       [loading]="loader"
       (clicked)="resetAutocompleteValues()"
+      [placeholder]="filter.placeholder ?? '' | i18n: { warn: false }"
+      (pressedEnter)="enterPressed($event)"
       #select
     ></pry-select>
   </div>

@@ -26,7 +26,6 @@ let uniqueId = 0;
 @Component({
   selector: 'pry-select',
   templateUrl: './select.component.html',
-
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -70,6 +69,7 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
   @Output() searched = new EventEmitter<string>();
   @Output() cleared = new EventEmitter<void>();
   @Output() clicked = new EventEmitter<void>();
+  @Output() pressedEnter = new EventEmitter<void>();
   @Input() bindClasses: any;
   search$ = new BehaviorSubject<string>('');
 
@@ -379,4 +379,8 @@ export class PrySelectComponent extends SubscriptionnerDirective implements Cont
       () => this.select(event, item, index)
     );
   focusInitialSelection = () => this.a11yService.focusInitialSelection(this.autocomplete, this.optionsModalRef);
+
+  enterPressed($event: any) {
+    this.pressedEnter.next();
+  }
 }

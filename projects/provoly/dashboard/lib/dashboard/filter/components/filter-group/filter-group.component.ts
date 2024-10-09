@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { GlobalManifest } from '../../../../core/model/manifest.interface';
@@ -14,6 +14,7 @@ export class FilterGroupComponent {
   globalManifest$: Observable<GlobalManifest>;
   apply$ = new BehaviorSubject<void>(undefined);
   isSelectOpen = false;
+  @Input() enterTriggerFilter = false;
 
   constructor(
     protected store: Store,

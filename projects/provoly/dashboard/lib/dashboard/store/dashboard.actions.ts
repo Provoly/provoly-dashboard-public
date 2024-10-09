@@ -167,7 +167,7 @@ export const DashboardActions = {
   maximizeWidget: createAction('[Dashboard] maximize widget', props<{ widgetIndex: number }>()),
   assertResultSets: createAction('[Dashboard] assert resultSet', props<{ staticManifest?: DashboardManifest }>()),
   updateResultSet: createAction(
-    '[Dashboard] (bus) received named resultSet',
+    '[Dashboard] (bus) received named resultSet (not-active-action)',
     props<{ id: string; resultSet: ResultSet; params?: string }>()
   ),
   addRelationsToResultSets: createAction(

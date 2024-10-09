@@ -17,7 +17,7 @@ export class ListFilterComponent extends BaseFilterComponent implements OnInit {
   override ngOnInit() {
     super.ngOnInit();
     if (this.filter?.possibleValues) {
-      this.possibleValues = [...new Set(this.filter?.possibleValues.split(',').map((value) => value.trim()))];
+      this.possibleValues = [...new Set(this.filter?.possibleValues.split(',').map((value) => value.trim()) ?? [])];
     }
   }
 

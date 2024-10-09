@@ -7,7 +7,9 @@
         [ngModel]="_value"
         (ngModelChange)="valueChange($event)"
         [id]="filter.name"
+        (keydown.enter)="enterPressed($event)"
         type="text"
+        [placeholder]="filter.placeholder ?? '' | i18n: { warn: false }"
       />
     </div>
     <span

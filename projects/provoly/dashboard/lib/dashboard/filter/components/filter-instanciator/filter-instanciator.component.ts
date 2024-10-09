@@ -2,9 +2,11 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Injector,
   Input,
   OnDestroy,
+  Output,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
@@ -23,6 +25,7 @@ export class FilterInstanciatorComponent extends SubscriptionnerDirective implem
   filter$ = new BehaviorSubject<Filter | null>(null);
   private applySub?: Subscription;
   private currentInstance?: BaseFilterComponent;
+  @Output() pressedEnter = new EventEmitter<void>();
 
   @Input() set filter(filter: Filter) {
     this.filter$.next(filter);
@@ -50,6 +53,10 @@ export class FilterInstanciatorComponent extends SubscriptionnerDirective implem
     this.subscriptions.add(
       this.filter$.subscribe((filter) => {
         if (filter) {
+          if (this.currentInstance) {
+            this.filterContainerRef.clear();
+            this.currentInstance = undefined;
+          }
           const component$ = this.filterFactoryService.generateFilter(
             filter.type,
             this.injector,
@@ -57,7 +64,8 @@ export class FilterInstanciatorComponent extends SubscriptionnerDirective implem
           );
           component$.subscribe((component) => {
             this.currentInstance = component.instance;
-            component.instance.filter = filter;
+            this.currentInstance.filter = filter;
+            this.currentInstance.pressedEnter = this.pressedEnter;
             this.changeDetector.detectChanges();
           });
         }

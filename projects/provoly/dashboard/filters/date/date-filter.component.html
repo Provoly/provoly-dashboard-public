@@ -9,6 +9,7 @@
           (ngModelChange)="onDateChange(0, $event)"
           type="date"
           [id]="filter.name"
+          [placeholder]="filter.placeholder ?? '' | i18n: { warn: false }"
         />
         <span
           *ngIf="!!dates[0]"
@@ -33,6 +34,7 @@
             (ngModelChange)="onDateChange(0, $event)"
             type="date"
             [id]="filter.name + '1'"
+            [placeholder]="filter.placeholder ?? '' | i18n: { warn: false }"
           />
           <span
             *ngIf="!!dates[0]"
@@ -52,6 +54,7 @@
             (ngModelChange)="onDateChange(1, $event)"
             type="date"
             [id]="filter.name + '2'"
+            [placeholder]="filter.placeholder ?? '' | i18n: { warn: false }"
           />
           <span
             *ngIf="!!dates[1]"

@@ -22,4 +22,11 @@ export class NumberFilterComponent extends BaseFilterComponent {
   setFilter(value: string) {
     super.updateFilter(value);
   }
+
+  enterPressed($event: any) {
+    this.setFilter($event.target.value);
+    setTimeout(() => {
+      this.pressedEnter.next();
+    }, 10);
+  }
 }

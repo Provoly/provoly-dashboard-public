@@ -115,4 +115,8 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
   clear() {
     this.search$.next('');
   }
+
+  enterPressed($event: void) {
+    this.pressedEnter.next();
+  }
 }
