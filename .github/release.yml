@@ -8,6 +8,7 @@ changelog:
       labels:
         - enhancement
         - feature
+        - FEATURE
     - title: 💣 Breaking changes
       labels:
         - "breaking change"
@@ -23,5 +24,6 @@ changelog:
           - fix
           - enhancement
           - feature
+          - FEATURE
           - "breaking change"
           - dependencies
