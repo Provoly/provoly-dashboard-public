@@ -11,6 +11,7 @@ export class BaseFilterComponent extends SubscriptionnerDirective implements OnI
   protected _value: any;
   @Output() valueUpdated = new EventEmitter<any>();
   @Output() pressedEnter = new EventEmitter<void>();
+  @Output() cleared = new EventEmitter<void>();
 
   constructor(protected store: Store) {
     super();

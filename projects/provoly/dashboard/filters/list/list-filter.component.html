@@ -10,5 +10,6 @@
     [autocomplete]="true"
     aria-labelledby="item-label"
     [placeholder]="filter.placeholder ?? '' | i18n: { warn: false }"
+    (cleared)="clear()"
   ></pry-select>
 </div>

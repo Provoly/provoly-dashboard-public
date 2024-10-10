@@ -33,4 +33,9 @@ export class TextFilterComponent extends BaseFilterComponent {
       this.pressedEnter.next();
     }, 10);
   }
+
+  clear() {
+    this.setFilter('');
+    this.cleared.next();
+  }
 }

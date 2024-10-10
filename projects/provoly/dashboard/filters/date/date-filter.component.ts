@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { BaseFilterComponent, DateUtils, SubscriptionnerDirective } from '@provoly/dashboard';
+import { BaseFilterComponent, SubscriptionnerDirective } from '@provoly/dashboard';
 
 @Component({
   selector: 'pry-date-filter',
@@ -40,5 +40,6 @@ export class DateFilterComponent extends BaseFilterComponent implements Subscrip
 
   clearDate(index: number) {
     this.onDateChange(index, '');
+    this.cleared.next();
   }
 }

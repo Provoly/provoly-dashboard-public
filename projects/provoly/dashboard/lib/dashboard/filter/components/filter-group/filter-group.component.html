@@ -6,7 +6,8 @@
         <pry-filter-instanciator
           [filter]="filterDescription"
           [applyFilter$]="apply$"
-          (pressedEnter)="filter()"
+          (pressedEnter)="enterPressed()"
+          (cleared)="cleared()"
         ></pry-filter-instanciator>
       }
     </div>

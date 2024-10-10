@@ -24,4 +24,9 @@ export class ListFilterComponent extends BaseFilterComponent implements OnInit {
   setFilter(value: string) {
     if (value !== this.filter?.value) super.updateFilter(value);
   }
+
+  clear() {
+    this.setFilter('');
+    this.cleared.next();
+  }
 }

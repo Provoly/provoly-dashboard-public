@@ -26,6 +26,7 @@ export class FilterInstanciatorComponent extends SubscriptionnerDirective implem
   private applySub?: Subscription;
   private currentInstance?: BaseFilterComponent;
   @Output() pressedEnter = new EventEmitter<void>();
+  @Output() cleared = new EventEmitter<void>();
 
   @Input() set filter(filter: Filter) {
     this.filter$.next(filter);
@@ -66,6 +67,7 @@ export class FilterInstanciatorComponent extends SubscriptionnerDirective implem
             this.currentInstance = component.instance;
             this.currentInstance.filter = filter;
             this.currentInstance.pressedEnter = this.pressedEnter;
+            this.currentInstance.cleared = this.cleared;
             this.changeDetector.detectChanges();
           });
         }

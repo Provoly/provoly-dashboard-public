@@ -15,7 +15,7 @@
     <span
       *ngIf="!!_value"
       class="m-filter__clear-wrapper m-filter__clear-wrapper--text"
-      (click)="setFilter('')"
+      (click)="clear()"
       [title]="'@pry.filters.clear' | i18n"
     >
       <span class="m-filter__clear">×</span>

@@ -15,6 +15,7 @@ export class FilterGroupComponent {
   apply$ = new BehaviorSubject<void>(undefined);
   isSelectOpen = false;
   @Input() enterTriggerFilter = false;
+  @Input() clearTriggerFilter = false;
 
   constructor(
     protected store: Store,
@@ -37,5 +38,17 @@ export class FilterGroupComponent {
       this.document
         .querySelector('.o-container__filter-container')
         ?.contains(document.querySelector('ng-dropdown-panel.ng-dropdown-panel')) || false;
+  }
+
+  enterPressed() {
+    if (this.enterTriggerFilter) {
+      this.filter();
+    }
+  }
+
+  cleared() {
+    if (this.clearTriggerFilter) {
+      this.filter();
+    }
   }
 }
