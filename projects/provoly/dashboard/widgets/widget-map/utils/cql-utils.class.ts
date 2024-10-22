@@ -37,7 +37,7 @@ export class CqlUtils {
 
     if (attributeName) {
       values.forEach((value) => {
-        if (value && (typeof value !== 'string' || value.length > 0)) {
+        if (value !== undefined && (typeof value !== 'string' || value.length > 0)) {
           const quoteSafeValue = `${value}`.replace(/'/g, "''");
           switch (cond.operator) {
             case 'EQUALS':
