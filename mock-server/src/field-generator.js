@@ -81,7 +81,7 @@ const wrapAttribute = (attr) => {
 };
 
 function generateAttrValueByFieldType(attr) {
-  switch (attr.type) {
+  switch (attr.field?.type ?? attr.type) {
     case 'decimal':
       return casual.double((from = 0), (to = 10000000));
     case 'string':
@@ -206,22 +206,27 @@ const generateItems = (classesTable, _excludeGeo) => {
   return classesTable.map((classId) => {
     const objectClass = data.class.get().find((oClass) => oClass.id === classId);
 
-    const attributes = objectClass.attributes
-      .filter(
-        (attr) =>
-          excludeGeo === false ||
-          excludeGeo === undefined ||
-          !geoTypes.includes(data.fields.get().find((field) => field.id === attr.field)?.type)
-      )
-      .map((attr) => ({ [attr.technicalName]: wrapAttribute(attr) }))
-      .reduce((p, c) => Object.assign(p, c), {});
+    if (!!objectClass) {
+      const attributes = objectClass.attributes
+        .filter(
+          (attr) =>
+            excludeGeo === false ||
+            excludeGeo === undefined ||
+            !geoTypes.includes(data.fields.get().find((field) => field.id === attr.field)?.type)
+        )
+        .map((attr) => ({ [attr.technicalName]: wrapAttribute(attr) }))
+        .reduce((p, c) => Object.assign(p, c), {});
 
-    return {
-      id: `${casual.uuid}@${datasetId}`,
-      oClass: classId,
-      metadata: generateMetadata(),
-      attributes
-    };
+      return {
+        id: `${casual.uuid}@${datasetId}`,
+        oClass: classId,
+        metadata: generateMetadata(),
+        attributes
+      };
+    } else {
+      console.error('Cannot generate item for classId', classId);
+      return null;
+    }
   });
 };
 

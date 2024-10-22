@@ -17,6 +17,7 @@ import {
   SearchActions,
   SubscriptionnerDirective,
   ViewMode,
+  WidgetFactoryService,
   WidgetManifest
 } from '@provoly/dashboard';
 import { map, Observable, of } from 'rxjs';
@@ -37,7 +38,8 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
       type: 'table',
       layout: { x: 1, y: 1, height: 12, width: 12 },
       options: {},
-      datasource: ['']
+      datasource: [''],
+      excludeGeo: 'exclude-geo'
     },
     map: {
       header: false,
@@ -48,7 +50,8 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
         fit: true,
         automaticLayers: true
       },
-      datasource: ['']
+      datasource: [''],
+      excludeGeo: 'exclude-geo'
     }
   } as { [key: string]: WidgetManifest };
   protected readonly ViewMode = ViewMode;
@@ -70,7 +73,8 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
     @Optional() @Inject(PRY_ACCESS_TOKEN) protected access: PryBaseAccess,
     private dialog: PryDialogService,
     private titleService: PryTitleService,
-    private i18nService: PryI18nService
+    private i18nService: PryI18nService,
+    private widgetFactoryService: WidgetFactoryService
   ) {
     super();
     this.datasetItems$ = this.store.select(DashboardSelectors.resultSets);
@@ -86,13 +90,6 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
     this.canModify$ = this.access?.canModifyDataset(this.dataset) ?? of(false);
     this.store.dispatch(DataSourceActions.dataset.listVersionsByDatasetId({ id: this.dataset.id }));
     this.store.dispatch(DashboardActions.removeFilters());
-    this.store.dispatch(
-      SearchActions.getDatasourceItems({
-        id: this.dataset.id,
-        excludeGeo: false,
-        from: 'PryDatasetDetailComponent.ngOnInit()'
-      })
-    );
 
     this.currentDataset$ = this.store.select(DataSourceSelectors.datasets).pipe(
       map((datasets) => datasets.find((currentDataset) => currentDataset.id === this.dataset.id)),

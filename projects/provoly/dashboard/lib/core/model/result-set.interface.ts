@@ -9,4 +9,5 @@ export interface ResultSet {
   autoRefreshInterval?: number;
   merged?: number;
   count?: { [classId: string]: { count: number; accurate: boolean } };
+  searchAfter?: string;
 }

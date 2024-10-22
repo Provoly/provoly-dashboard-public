@@ -14,6 +14,9 @@ import { DEFAULT_NAMED_QUERY_ID } from './search.constants';
 import { SearchState } from './search.reducer';
 import { FilterParamEncoder } from './filter-param-encoder';
 import { DateUtils } from '../../../dashboard/date-utils';
+import { NamedQueryTypes } from '../data-source/named-query-types.model';
+import { DataSourceSelectors } from '../data-source/data-source.selectors';
+import { DataSource } from '../data-source/data-source.model';
 
 export type ResultsetTransformation = (id: string, result: ResultSet) => ResultSet;
 
@@ -24,6 +27,7 @@ export class SearchService {
   transformations: ResultsetTransformation[] = [];
   filters: { [datasource: string]: FilterContext[] } = {};
   limits: { [p: string]: number } = {};
+  datasources: DataSource[] = [];
 
   constructor(
     private httpClient: HttpClient,
@@ -35,18 +39,31 @@ export class SearchService {
     store.select(ConfigSelectors.limits).subscribe((limits) => {
       this.limits = limits;
     });
+    store.select(DataSourceSelectors.getDataSources).subscribe((datasources) => {
+      this.datasources = datasources;
+    });
   }
 
-  getItems(id: string, quickOrder?: ResultOrder, excludeGeo?: boolean): Observable<ResultSet> {
-    const params = this.getItemsFilter(id, this.getOrder(quickOrder)).append('excludeGeo', excludeGeo ?? false);
-
+  getItems(id: string, quickOrder?: ResultOrder, excludeGeo?: boolean, searchAfter?: string): Observable<ResultSet> {
+    const params = this.getItemsFilter(id, this.getOrder(quickOrder));
     if (!id) {
       console.warn('Not sending items request with no datasource attached.');
       return of({ items: {}, relations: [] } as ResultSet);
     }
 
     return this.store.select(ConfigSelectors.dataUrl).pipe(
-      mergeMap((url) => this.httpClient.get<ResultSet>(encodeURI(`${url}/data-sources/id/${id}/items`), { params })),
+      mergeMap((url) => {
+        const ds = this.datasources.find((d) => d.id === id);
+        return this.httpClient.post<ResultSet>(
+          encodeURI(`${url}/data-sources/id/${id}/items`),
+          {
+            type: ds?.sourceType === 'namedQuery' ? ds.request.type : NamedQueryTypes.MONO_CLASS,
+            excludeGeo: excludeGeo ?? false,
+            searchAfter: searchAfter ?? undefined
+          },
+          { params }
+        );
+      }),
       map((rs) => this.applyTransformations('current', rs))
     );
   }
@@ -81,8 +98,10 @@ export class SearchService {
         });
     }
     if (includeLimit) {
-      const limit = this.limits[id] ?? this.limits['default'];
-      params = params.append('limit', limit);
+      const limit = this.limits[id];
+      if (limit) {
+        params = params.append('limit', limit);
+      }
     }
     return params;
   }
@@ -91,6 +110,8 @@ export class SearchService {
     let params = new HttpParams({ encoder: new FilterParamEncoder() });
     if (quickOrder) {
       params = params.append('order', `${quickOrder.attribute},${quickOrder.asc ?? ''}`);
+    } else {
+      params = params.append('order', 'true,asc');
     }
     return params;
   }

@@ -204,7 +204,10 @@
                             </p>
                           }
                           @if (!['metadata', 'oClass'].includes(column.property)) {
-                            <pry-expand-value [value]="item | getValue: column.property | async" [field]="column.field"></pry-expand-value>
+                            <pry-expand-value
+                              [value]="item | getValue: column.property | async"
+                              [field]="column.field"
+                            ></pry-expand-value>
                           }
                         </td>
                       }
@@ -221,13 +224,16 @@
               [totalItemNb]="pagination.total"
               (pageChange)="goToPage($event - 1)"
               [nbPerPage]="pagination.rows"
+              [loaded]="pagination.loaded"
               mode="short"
             ></pry-paginator>
-            <div class="a-table__pagination-label">
-              ({{
-                '@pry.widget.table.remaining' | i18n: { remaining: pagination.totalPages - pagination.loadedPages }
-              }})
-            </div>
+            @if (pagination.totalPages !== pagination.loadedPages) {
+              <div class="a-table__pagination-label">
+                ({{
+                  '@pry.widget.table.remaining' | i18n: { remaining: pagination.totalPages - pagination.loadedPages }
+                }})
+              </div>
+            }
           </div>
         }
       }

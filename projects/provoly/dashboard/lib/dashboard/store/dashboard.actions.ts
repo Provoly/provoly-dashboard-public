@@ -137,6 +137,7 @@ export const DashboardActions = {
     props<{ manifests: ManifestDescription[] }>()
   ),
   fetchStaticManifest: createAction('[Dashboard] (bus) fetching staticManifest', props<{ id: string }>()),
+  fetchMoreItems: createAction('[Dashboard] (bus) fetching more items', props<{ id: string; widgetType: string }>()),
   endLoading: createAction('[Dashboard] end loading'),
   updateStaticManifest: createAction(
     '[Dashboard] (bus) received staticManifest',
@@ -168,7 +169,7 @@ export const DashboardActions = {
   assertResultSets: createAction('[Dashboard] assert resultSet', props<{ staticManifest?: DashboardManifest }>()),
   updateResultSet: createAction(
     '[Dashboard] (bus) received named resultSet (not-active-action)',
-    props<{ id: string; resultSet: ResultSet; params?: string }>()
+    props<{ id: string; resultSet: ResultSet; params?: string; next?: boolean }>()
   ),
   addRelationsToResultSets: createAction(
     '[Dashboard] (bus) add relations to resultSet',

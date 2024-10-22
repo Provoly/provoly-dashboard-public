@@ -7,7 +7,7 @@ import { MockPryIconComponent } from '@provoly/dashboard/mock/components/mock-pr
 import { MockNgModelDirective } from '@provoly/dashboard/mock/directive/mock-ng-model.directive';
 import { MockPryTabGroupComponent } from '@provoly/dashboard/mock/components/mock-pry-tab-group.component';
 import { MockPryTabComponent } from '@provoly/dashboard/mock/components/mock-pry-tab.component';
-import { DataSourceActions, SearchActions } from '@provoly/dashboard';
+import { DataSourceActions, SearchActions, WidgetFactoryService, WidgetManifest } from '@provoly/dashboard';
 import { mockClickEvent, mockDatasets, mockDatasetVersion } from '../../../mock/data/mockDataset';
 import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
@@ -26,7 +26,20 @@ describe('PryDatasetDetailComponent', () => {
         MockPryTabGroupComponent,
         MockPryTabComponent
       ],
-      providers: [provideMockStore({}), { provide: Overlay, useValue: MockOverlay }]
+      providers: [
+        provideMockStore({}),
+        { provide: Overlay, useValue: MockOverlay },
+        {
+          provide: WidgetFactoryService,
+          useValue: {
+            datasourcesToAutoLoad: (wm: WidgetManifest) =>
+              (Array.isArray(wm.datasource) ? wm.datasource : [wm.datasource]).map((ds) => ({
+                datasetId: ds,
+                excludeGeo: true
+              }))
+          }
+        }
+      ]
     }).compileComponents();
   });
 

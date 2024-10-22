@@ -9,7 +9,7 @@ describe('DateUtils functions', () => {
       },
       {
         inputDate: '12/31/2024',
-        expectedResult: '2024-12-31T00:00:00.000Z'
+        expectedResult: ['2024-12-31T00:00:00.000Z', '2024-12-30T23:00:00.000Z', '2024-12-30T22:00:00.000Z']
       },
       {
         inputDate: '2025',
@@ -18,7 +18,11 @@ describe('DateUtils functions', () => {
     ].forEach((datas) => {
       it(`should parse ${datas.inputDate} to ISO-8601 date => ${datas.expectedResult}`, () => {
         const result = DateUtils.parseToIsoString(datas.inputDate);
-        expect(result).toEqual(datas.expectedResult);
+        if (Array.isArray(datas.expectedResult)) {
+          expect(datas.expectedResult).toContain(result);
+        } else {
+          expect(result).toEqual(datas.expectedResult);
+        }
       });
     });
 

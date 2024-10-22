@@ -10,13 +10,13 @@ export const SearchActions = {
   ),
   getDatasourceItems: createAction(
     '[Search] (bus) get datasource items (not-active-action)',
-    props<{ id: string; excludeGeo: boolean; from: string }>()
+    props<{ id: string; excludeGeo: boolean; from: string; next?: boolean }>()
   ),
 
   // result Search
   searchSuccess: createAction(
     '[Search Api] (bus) Search Success (not-active-action)',
-    props<{ resultSet: ResultSet; id?: string; params?: string }>()
+    props<{ resultSet: ResultSet; id?: string; params?: string; next?: boolean }>()
   ),
   searchFailure: createAction('[Search Api] (bus) Search Failure', props<{ error: any; id?: string }>()),
 

@@ -4,6 +4,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { MockPryDashboardComponent } from '@provoly/dashboard/mock/components/mock-pry-dashboard.component';
 
 import { DashboardContainerComponent } from './dashboard-container.component';
+import { MockPryFilterGroupComponent } from '@provoly/dashboard/mock/components/mock-pry-filter-group.component';
 
 describe('DashboardContainerComponent', () => {
   let component: DashboardContainerComponent;
@@ -13,7 +14,7 @@ describe('DashboardContainerComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       providers: [provideMockStore()],
-      declarations: [DashboardContainerComponent, MockPryDashboardComponent]
+      declarations: [DashboardContainerComponent, MockPryDashboardComponent, MockPryFilterGroupComponent]
     }).compileComponents();
   });
 

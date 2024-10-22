@@ -82,6 +82,7 @@ export interface WidgetManifest {
   datasource?: string | string[];
   header?: boolean;
   contextMenu?: boolean;
+  excludeGeo?: 'exclude-all' | 'exclude-none' | 'exclude-not-geo' | 'exclude-geo' | 'widget-type-based';
 }
 
 export interface CustomWidgetOptions {

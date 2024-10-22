@@ -20,12 +20,14 @@ import {
   ItemUtils,
   OrderValue,
   ResultOrder,
-  TableWidgetOptions, TableWidgetStyle,
+  TableWidgetOptions,
+  TableWidgetStyle,
   WIDGET_HEADER_HEIGHT
 } from '@provoly/dashboard';
 import equal from 'fast-deep-equal/es6';
-import { auditTime, BehaviorSubject, combineLatest, Observable, take } from 'rxjs';
+import { auditTime, BehaviorSubject, combineLatest, debounceTime, Observable, take } from 'rxjs';
 import { delay, filter, map, tap, withLatestFrom } from 'rxjs/operators';
+import { v4 } from 'uuid';
 
 export interface Pagination {
   totalPages: number;
@@ -95,16 +97,17 @@ export class WidgetTableComponent extends DataWidgetComponent {
       map(([options, resultSet, classes, fields, defs]) => {
         if (!options.columns || options.columns.length === 0) {
           const attributes = ItemUtils.getAttributesFromRs(resultSet, classes, fields, defs);
-          const uniqueProps = [
-            ...new Set(attributes.map(({ name, technicalName, field }) => ({ name, technicalName, field })))
-          ];
+          const uniqueProps = [...new Set(attributes.map((attr) => attr.technicalName))];
 
-          options.columns = uniqueProps.map((property) => ({
-            property: property.technicalName,
-            label: property.name,
-            attributeId: attributes.find((attr) => attr.technicalName === property.technicalName)?.id,
-            field: property.field
-          })) as ColumnDefinition[];
+          options.columns = uniqueProps.map((technicalName) => {
+            const property = attributes.find((attr) => attr.technicalName === technicalName)!;
+            return {
+              property: technicalName,
+              label: property.name,
+              attributeId: property.id,
+              field: property.field
+            };
+          }) as ColumnDefinition[];
         }
         options.style = options.style ?? DEFAULT_TABLE_WIDGET_STYLE.value;
         return options;
@@ -129,9 +132,11 @@ export class WidgetTableComponent extends DataWidgetComponent {
       this.actualPage$,
       this.widgetSize$,
       this.resultSet$,
-      this.displayHeader$
+      this.displayHeader$,
+      this.manifest$
     ]).pipe(
-      map(([items, actualPage, size, rs, headerPresent]) => {
+      debounceTime(100),
+      map(([items, actualPage, size, rs, headerPresent, manifest]) => {
         const rows = Math.max(
           1,
           Math.floor(
@@ -140,15 +145,30 @@ export class WidgetTableComponent extends DataWidgetComponent {
         );
         const total = Object.values(rs.count ?? {}).reduce((p, c) => c.count + p, 0);
         const loadedPages = Math.ceil(items.length / rows);
+        if (actualPage > 0 && actualPage >= loadedPages - 2) {
+          (Array.isArray(manifest.datasource)
+            ? manifest.datasource
+            : ([manifest.datasource].filter((s) => !!s) as string[])
+          ).forEach((id) => {
+            this.store.dispatch(
+              DashboardActions.fetchMoreItems({
+                id,
+                widgetType: 'table'
+              })
+            );
+          });
+        }
         const page = actualPage <= loadedPages ? actualPage : Math.max(0, loadedPages - 1);
         const filtered = items.filter((_, idx) => idx >= rows * page && idx < rows * (page + 1));
         const filteredWithFillers =
           filtered.length === rows
             ? filtered
             : filtered.concat(
-                new Array(rows - filtered.length).fill({
-                  metadata: { '__widget-table-filler': true }
-                } as unknown as Item)
+                new Array(rows - filtered.length)
+                  .fill({
+                    metadata: { '__widget-table-filler': true }
+                  } as unknown as Item)
+                  .map((obj) => ({ ...obj, id: v4() }))
               );
         return {
           rows,

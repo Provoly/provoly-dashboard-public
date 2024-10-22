@@ -19,10 +19,10 @@
     <pry-icon iconSvg="arrow-left-s-fill"></pry-icon>
   </button>
   <span class="o-paginator__page-counter">{{ currentPage() }} / {{ nbOfPages() }}</span>
-  <button (click)="changePage(currentPage() + 1)" [disabled]="currentPage() === nbOfPages()">
+  <button (click)="changePage(currentPage() + 1)" [disabled]="currentPage() === maxLoadedPage()">
     <pry-icon iconSvg="arrow-right-s-fill"></pry-icon>
   </button>
-  <button (click)="changePage(nbOfPages())" [disabled]="currentPage() === nbOfPages()">
+  <button (click)="changePage(maxLoadedPage())" [disabled]="currentPage() === maxLoadedPage()">
     <pry-icon iconSvg="skip-right-fill"></pry-icon>
   </button>
 </ng-template>

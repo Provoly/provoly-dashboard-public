@@ -17,7 +17,6 @@ const users = JSON.parse(fs.readFileSync('./data/users.json', 'utf8'));
 const relationTypes = JSON.parse(fs.readFileSync('./data/relationTypes.json', 'utf8'));
 const links = JSON.parse(fs.readFileSync('./data/links.json', 'utf8'));
 const queryResponses = JSON.parse(fs.readFileSync('./data/queryResponses.json', 'utf8'));
-const queryResponseTypes = JSON.parse(fs.readFileSync('./data/queryResponsesTypes.json', 'utf8'));
 const tasksDetailed = JSON.parse(fs.readFileSync('./data/tasksDetailed.json', 'utf8'));
 const procedures = JSON.parse(fs.readFileSync('./data/procedures.json', 'utf8'));
 const customClassJson = JSON.parse(fs.readFileSync('./data/customClass.json', 'utf8'));
@@ -92,15 +91,25 @@ const itemsAsResultSet = (items) => {
     ]
   };
   classes.forEach((classId) => (result.items[classId] = items.filter((result) => result.oClass === classId)));
+  let overallCount = 0;
   const counts = Object.keys(result.items).map((classId) => {
     const biggerRs = casual.boolean;
     const count = result.items[classId].length + (biggerRs ? casual.integer((from = 10000), (to = 100000)) : 0);
+    overallCount += count;
     return { [classId]: { count, accurate: count < 10000 } };
   });
   result.count = {};
   counts.forEach((c) => {
     Object.keys(c).forEach((key) => (result.count[key] = c[key]));
   }, {});
+  if (
+    overallCount >
+    Object.keys(result.items)
+      .map((classId) => result.items[classId].length)
+      .reduce((p, c) => p + c, 0)
+  ) {
+    result.searchAfter = 'searchAfterValue';
+  }
   return result;
 };
 
@@ -482,7 +491,6 @@ module.exports = {
   aggregationResponses,
   tasksDetailed,
   procedures,
-  queryResponseTypes,
   imageData,
   docData,
   datasetCount,

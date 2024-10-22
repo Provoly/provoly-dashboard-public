@@ -8,7 +8,7 @@ import { WidgetDefinition, WidgetLazyDefinition, WidgetStaticDefinition } from '
 import { DatasourceUtils } from '../../../../core/store/data-source/datasource-utils';
 import { DataSourceSelectors } from '../../../../core/store/data-source/data-source.selectors';
 import { Store } from '@ngrx/store';
-import { DataSource } from '../../../../core/store/data-source/data-source.model';
+import { Dataset, DataSource, NamedQuery } from '../../../../core/store/data-source/data-source.model';
 
 export const WIDGET_DEFINITION = new InjectionToken<string>('Widgets definition');
 
@@ -90,7 +90,26 @@ export class WidgetFactoryService {
             (widgetDefinition.autoLoadDatasource === 'not-geo' && !DatasourceUtils.isGeo(matching)))
         );
       })
-      .map((ds) => ({ datasetId: ds, excludeGeo: !NON_EXCLUDE_GEO_WIDGET_TYPES.values.includes(manifest.type) }));
+      .map((datasetId) => {
+        const matching = this.datasources.find((ds) => ds.id === datasetId)!;
+        return { datasetId: datasetId, excludeGeo: this.calculateExcludeGeo(manifest, matching) };
+      });
+  }
+
+  private calculateExcludeGeo(manifest: WidgetManifest, matching: NamedQuery | Dataset) {
+    if (manifest.excludeGeo === undefined || manifest.excludeGeo === 'widget-type-based') {
+      return !NON_EXCLUDE_GEO_WIDGET_TYPES.values.includes(manifest.type);
+    }
+    switch (manifest.excludeGeo) {
+      case 'exclude-all':
+        return true;
+      case 'exclude-none':
+        return false;
+      case 'exclude-geo':
+        return DatasourceUtils.isGeo(matching);
+      case 'exclude-not-geo':
+        return !DatasourceUtils.isGeo(matching);
+    }
   }
 
   aggregatesToAutoLoad(manifest: WidgetManifest) {

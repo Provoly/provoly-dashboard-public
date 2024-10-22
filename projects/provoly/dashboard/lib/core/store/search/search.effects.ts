@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, filter, map, mergeMap, withLatestFrom } from 'rxjs';
+import { catchError, debounceTime, EMPTY, filter, map, mergeMap, of, withLatestFrom } from 'rxjs';
 import { DashboardActions } from '../../../dashboard/store/dashboard.actions';
 import { DashboardSelectors } from '../../../dashboard/store/dashboard.selectors';
 import { MonoClassSearchPayload } from '../../model/search-mono-class.model';
@@ -9,33 +9,75 @@ import { FullTextSearchPayload, MultiClassSearchPayload } from '../../model/sear
 import { SearchActions } from './search.actions';
 import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from './search.constants';
 import { SearchService } from './search.service';
+import { WidgetFactoryService } from '../../../dashboard/components/widgets/widget-instanciator/widget-factory.service';
+import { WidgetManifest } from '../../model/manifest.interface';
+import { distinctUntilChanged } from 'rxjs/operators';
+import equal from 'fast-deep-equal/es6';
 
 @Injectable()
 export class SearchEffects {
   constructor(
     private actions$: Actions,
     private searchService: SearchService,
-    private store: Store
+    private store: Store,
+    private widgetFactoryService: WidgetFactoryService
   ) {}
 
   searchNamed$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SearchActions.getDatasourceItems),
-      withLatestFrom(this.store.select(DashboardSelectors.rank), this.store.select(DashboardSelectors.quickOrder)),
+      withLatestFrom(
+        this.store.select(DashboardSelectors.rank),
+        this.store.select(DashboardSelectors.quickOrder),
+        this.store.select(DashboardSelectors.resultSets)
+      ),
       filter(([_, rank]) => rank === 0),
       filter(([props, rank]) => props.id !== DEFAULT_NAMED_QUERY_ID && props.id !== EXPLORE_NAMED_QUERY_ID),
-      mergeMap(([props, rank, quickOrder]) =>
-        this.searchService.getItems(props.id, quickOrder[props.id], props.excludeGeo).pipe(
-          map((resultSet) =>
-            SearchActions.searchSuccess({
-              resultSet,
-              id: props.id,
-              params: this.searchService.getItemsSerializedParams(props.id, quickOrder)
-            })
-          ),
-          catchError((error) => [SearchActions.searchFailure({ error, id: props.id })])
-        )
+      distinctUntilChanged((p, c) => equal(p, c)),
+      debounceTime(100),
+      mergeMap(([props, rank, quickOrder, rs]) =>
+        this.searchService
+          .getItems(props.id, quickOrder[props.id], props.excludeGeo, props.next ? rs[props.id].searchAfter : undefined)
+          .pipe(
+            map((resultSet) =>
+              SearchActions.searchSuccess({
+                resultSet,
+                id: props.id,
+                params: this.searchService.getItemsSerializedParams(props.id, quickOrder),
+                next: props.next
+              })
+            ),
+            catchError((error) => [SearchActions.searchFailure({ error, id: props.id })])
+          )
       )
+    )
+  );
+
+  fetchMore$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DashboardActions.fetchMoreItems),
+      withLatestFrom(this.store.select(DashboardSelectors.rank), this.store.select(DashboardSelectors.resultSets)),
+      filter(([props, rank, rs]) => rank === 0 && !!rs[props.id].searchAfter),
+      debounceTime(300),
+      mergeMap(([props]) => {
+        const ds = this.widgetFactoryService.datasourcesToAutoLoad({
+          type: props.widgetType,
+          datasource: [props.id]
+        } as WidgetManifest)[0];
+
+        if (!!ds) {
+          return of(
+            SearchActions.getDatasourceItems({
+              id: ds.datasetId,
+              excludeGeo: ds.excludeGeo,
+              from: 'fetchMore',
+              next: true
+            })
+          );
+        } else {
+          return EMPTY;
+        }
+      })
     )
   );
 
@@ -59,7 +101,8 @@ export class SearchEffects {
         DashboardActions.updateResultSet({
           id: action.id ?? DEFAULT_NAMED_QUERY_ID,
           resultSet: action.resultSet,
-          params: action.params
+          params: action.params,
+          next: action.next
         })
       )
     )

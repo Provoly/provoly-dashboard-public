@@ -12,6 +12,7 @@ import { DEFAULT_NAMED_QUERY_ID } from './search.constants';
 import { SearchEffects } from './search.effects';
 import { initialSearchState, SearchState } from './search.reducer';
 import { SearchService } from './search.service';
+import { WidgetFactoryService, WidgetManifest } from '@provoly/dashboard';
 
 const buildState = (state: Partial<SearchState>) =>
   Object.assign({}, { '@pry/search': JSON.parse(JSON.stringify({ ...initialSearchState, ...state })) });
@@ -32,6 +33,16 @@ describe('SearchEffects', () => {
           provide: SearchService,
           useValue: {
             search: () => jest.fn()
+          }
+        },
+        {
+          provide: WidgetFactoryService,
+          useValue: {
+            datasourcesToAutoLoad: (wm: WidgetManifest) =>
+              (Array.isArray(wm.datasource) ? wm.datasource : [wm.datasource]).map((ds) => ({
+                datasetId: ds,
+                excludeGeo: true
+              }))
           }
         }
       ]

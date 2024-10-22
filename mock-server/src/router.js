@@ -57,6 +57,15 @@ function readQuery(req) {
   return query;
 }
 
+function readReq(req) {
+  return new Promise((resolve) => {
+    const query = readQuery(req);
+    readPayload(req).then((payload) => {
+      resolve({ ...query, ...payload });
+    });
+  });
+}
+
 const makeResponseOk = (res, toBeSent, code) => {
   const sendCode = !!code ? code : 200;
   res.setHeader(
@@ -539,7 +548,7 @@ router.on(['OPTIONS', 'POST'], '/data/items', (req, res, params) => {
   });
 });
 
-router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items', (req, res, params) => {
+router.on(['OPTIONS', 'GET', 'POST'], '/data/data-sources/id/:id/items', (req, res, params) => {
   if (params.id === '007') {
     makeResponseOk(res, null, 404);
   } else {
@@ -548,15 +557,23 @@ router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items', (req, res, para
       if (fixedResponse) {
         makeResponseOk(res, fixedResponse);
       } else {
-        const responseTypesLimited = dataModule.queryResponseTypes[params.id]?.classes || dataModule.class.ids;
-        const number = dataModule.queryResponseTypes[params.id]?.number ?? fieldGeneratorModule.generateNumberOfItems();
-        const tableOfClasses = [...new Array(number)].map(
-          () => responseTypesLimited[Math.round(Math.random() * 100) % responseTypesLimited.length]
-        );
-        const result = dataModule.itemsAsResultSet(
-          fieldGeneratorModule.generateItems(tableOfClasses, readQuery(req).excludeGeo)
-        );
-        makeResponseOk(res, result);
+        readReq(req).then((payload) => {
+          let tableOfClasses = [];
+          if (payload.type === 'MONO_CLASS') {
+            const classOfDataset = dataModule.dataset.getById(params.id).oClass;
+            const number = fieldGeneratorModule.generateNumberOfItems();
+            tableOfClasses = [...new Array(number)].map(() => classOfDataset);
+          } else if (payload.type === 'MULTI_CLASS') {
+            const nq = dataModule.namedQueries.find((nq) => nq.id === params.id);
+            const number = fieldGeneratorModule.generateNumberOfItems();
+            const classes = nq.request.oClasses;
+            tableOfClasses = [...new Array(number)].map(
+              () => classes[Math.round(Math.random() * 100) % classes.length]
+            );
+          }
+          const results = fieldGeneratorModule.generateItems(tableOfClasses, payload.excludeGeo);
+          makeResponseOk(res, dataModule.itemsAsResultSet(results));
+        });
       }
     }, fieldGeneratorModule.generateDelay());
   }

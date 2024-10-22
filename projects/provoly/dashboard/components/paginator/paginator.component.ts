@@ -13,14 +13,18 @@ export class PryPaginatorComponent {
   totalItemNb = input<number>(100);
   mode = input<'long' | 'short'>('long');
   goBackToFirstPage = input<any>();
+  loaded = input<number>(0);
 
   nbOfPages = computed(() => {
-    return Math.floor(this.totalItemNb() / this.nbPerPage());
+    return Math.ceil(this.totalItemNb() / this.nbPerPage());
   });
   pages = computed(() => {
     return Array.from({ length: this.nbOfPages() }, (_, i) => i + 1);
   });
   currentPage = signal(1);
+  maxLoadedPage = computed(() => {
+    return Math.ceil((this.loaded() ?? 0) / this.nbPerPage());
+  });
 
   @Output() pageChange = new EventEmitter<number>();
 
