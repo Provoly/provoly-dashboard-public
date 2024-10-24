@@ -1,357 +1,356 @@
 <pry-widget-aggregated-chart-css></pry-widget-aggregated-chart-css>
-<div
-  class="o-widget o-widget--chart"
-  *ngIf="optionsCopy$ | async as optionsCopy"
-  [class.-has-header]="displayHeader$ | async"
->
-  <pry-widget-header
-    [datasourceIds]="(datasourceIds$ | async) ?? []"
-    *ngIf="displayHeader$ | async"
-    [widgetIndex]="widgetIndex"
-    [manifest]="manifest"
-    (manifestModified)="manifestModified.emit($event)"
-    #header
-    [headerOptions]="(displayHeader$ | async) ?? {}"
-    [displayCount]="false"
-    [openData$]="openData$"
-  >
-    <pry-settings
-      (saveTriggered)="emitManifest()"
-      (changeTitle)="changeWidgetTitle($event)"
-      [headerPresent]="displayHeader$ | async"
-      [widgetIndex]="widgetIndex"
-      [open$]="open$"
-      [header]="header"
-      class="o-settings"
-    >
-      <div class="o-settings__popup__content__fields -condensed">
-        <div class="m-form-label-field">
-          <pry-edit-input
-            label="@pry.widget.chart.title"
-            (ngModelChange)="changeChartTitle($event)"
-            [ngModel]="optionsCopy.graph.title"
-          ></pry-edit-input>
-        </div>
-
-        <div *ngIf="optionsCopy" class="m-form-label-field">
-          <label class="a-label" for="chart_type">{{ '@pry.widget.chart.type' | i18n }}</label>
-          <pry-select
-            (ngModelChange)="changeType($event)"
-            [items]="typeOptions"
-            [ngModel]="optionsCopy.graph.type"
-            bindLabel="label"
-            bindValue="id"
-            id="chart_type"
-          ></pry-select>
-        </div>
-
-        <ng-container *ngIf="optionsCopy.graph.type === GraphType.DONUT">
-          <pry-range
-            [ngModel]="optionsCopy.graph.donutSize"
-            (ngModelChange)="changeDonutSize($event)"
-            labelTranslate="@pry.widget.chart.donutSize"
-            min="1"
-            max="500"
-          ></pry-range>
-        </ng-container>
-
-        <div class="m-form-label-field">
-          <pry-checkbox (ngModelChange)="toggleLegend($event)" [ngModel]="!!optionsCopy.graph.legend">
-            {{ '@pry.widget.chart.legend' | i18n }}
-          </pry-checkbox>
-        </div>
-      </div>
-
-      <ng-container *ngIf="!!optionsCopy.graph.type">
-        <div class="o-settings__popup__content__fields -condensed">
-          <div class="m-form-label-field">
-            <label class="a-label" for="abscissa">{{ '@pry.widget.chart.abscissa' | i18n }}</label>
-            <pry-select
-              (ngModelChange)="changeAbscissa($event)"
-              [items]="abscissaAttributes$ | async | prySortData: sortActive : sortDirection"
-              [ngModel]="optionsCopy.abscissa.attribute"
-              bindLabel="name"
-              bindValue="id"
-              id="abscissa"
-            ></pry-select>
-          </div>
-
-          <div class="m-form-label-field">
-            <pry-edit-input
-              label="@pry.widget.chart.dataLabel"
-              (ngModelChange)="changeAbscissaLabel($event)"
-              [ngModel]="optionsCopy.abscissa.label"
-            ></pry-edit-input>
-          </div>
-
-          <div
-            *ngIf="
-              ['quantitative', 'temporal'].includes(
-                (attributeTypes$ | async)?.abscissa?.vegaType?.toString() ?? '--'
-              ) &&
-              optionsCopy.graph.type !== GraphType.DONUT &&
-              optionsCopy.graph.type !== GraphType.CIRCULAR
-            "
-            class="m-form-label-field"
-          >
-            <pry-checkbox (ngModelChange)="changeKeep0Abscissa($event)" [ngModel]="optionsCopy.abscissa.keep0"
-              >{{ '@pry.widget.chart.origin' | i18n }}
-            </pry-checkbox>
-
-            <ng-container *ngIf="optionsCopy.graph.type === GraphType.HISTOGRAM">
-              <pry-checkbox
-                (ngModelChange)="enableIntervals($event)"
-                [ngModel]="!!optionsCopy.abscissa.interval"
-                [disabled]="optionsCopy.graph.type === GraphType.HISTOGRAM"
-                >{{ '@pry.widget.chart.interval' | i18n }}
-              </pry-checkbox>
-
-              <ng-container *ngIf="!!optionsCopy.abscissa.interval">
-                <ng-container *ngIf="!isTimeInterval(optionsCopy.abscissa.interval); else timeInterval">
-                  <pry-range
-                    [ngModel]="optionsCopy.abscissa.interval"
-                    (ngModelChange)="changeInterval($event)"
-                    labelTranslate="@pry.widget.chart.specifyInterval"
-                    min="1"
-                    max="10"
-                  ></pry-range>
-                </ng-container>
-
-                <ng-template #timeInterval>
-                  <label class="a-label" for="time_interval">{{ '@pry.widget.chart.timeInterval' | i18n }}</label>
-                  <pry-select
-                    (ngModelChange)="changeTimeInterval($event)"
-                    [items]="['second', 'minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']"
-                    [ngModel]="optionsCopy.abscissa.interval"
-                    i18nPrefix="@pry.widget.chart.time."
-                    id="time_interval"
-                  ></pry-select>
-                </ng-template>
-              </ng-container>
-            </ng-container>
-          </div>
-        </div>
-
-        <div class="o-settings__popup__content__fields -condensed">
-          <div class="m-form-label-field">
-            <label class="a-label" for="operations">{{ '@pry.widget.chart.operation.title' | i18n }}</label>
-            <pry-select
-              (ngModelChange)="changeOperation($event)"
-              [items]="operations$ | async"
-              [ngModel]="optionsCopy.ordinate.operation"
-              bindLabel="label"
-              bindValue="id"
-              id="operations"
-            ></pry-select>
-          </div>
-
-          <ng-container *ngIf="optionsCopy.ordinate.operation !== Operation.COUNT">
-            <div class="m-form-label-field">
-              <label class="a-label" for="ordinate">{{ '@pry.widget.chart.ordinate' | i18n }}</label>
-              <pry-select
-                (ngModelChange)="changeOrdinate($event)"
-                [items]="ordinateAttributes$ | async | prySortData: sortActive : sortDirection"
-                [ngModel]="optionsCopy.ordinate.attribute"
-                bindLabel="name"
-                bindValue="id"
-                id="ordinate"
-              ></pry-select>
-            </div>
-          </ng-container>
-
-          <div class="m-form-label-field">
-            <pry-edit-input
-              label="@pry.widget.chart.dataLabel"
-              (ngModelChange)="changeOrdinateLabel($event)"
-              [ngModel]="optionsCopy.ordinate.label"
-            ></pry-edit-input>
-          </div>
-
-          <div *ngIf="translateToVegaType(copyOrdinateField?.type) === 'quantitative'" class="m-form-label-field">
-            <pry-checkbox (ngModelChange)="changeKeep0Ordinate($event)" [ngModel]="optionsCopy.ordinate.keep0"
-              >{{ '@pry.widget.chart.origin' | i18n }}
-            </pry-checkbox>
-          </div>
-        </div>
-
-        <ng-container
-          *ngIf="optionsCopy.graph.type !== GraphType.DONUT && optionsCopy.graph.type !== GraphType.CIRCULAR"
+@if (optionsCopy$ | async; as optionsCopy) {
+  <div class="o-widget o-widget--chart" [class.-has-header]="displayHeader$ | async">
+    @if (displayHeader$ | async) {
+      <pry-widget-header
+        [datasourceIds]="(datasourceIds$ | async) ?? []"
+        [widgetIndex]="widgetIndex"
+        [manifest]="manifest"
+        (manifestModified)="manifestModified.emit($event)"
+        #header
+        [headerOptions]="(displayHeader$ | async) ?? {}"
+        [displayCount]="false"
+        [openData$]="openData$"
+      >
+        <pry-settings
+          (saveTriggered)="emitManifest()"
+          (changeTitle)="changeWidgetTitle($event)"
+          [headerPresent]="displayHeader$ | async"
+          [widgetIndex]="widgetIndex"
+          [open$]="open$"
+          [header]="header"
+          class="o-settings"
         >
           <div class="o-settings__popup__content__fields -condensed">
             <div class="m-form-label-field">
-              <pry-checkbox (ngModelChange)="toggleGroupBy($event)" [ngModel]="!!optionsCopy.groupBy"
-                >{{ '@pry.widget.chart.groupBy' | i18n }}
-              </pry-checkbox>
+              <pry-edit-input
+                label="@pry.widget.chart.title"
+                (ngModelChange)="changeChartTitle($event)"
+                [ngModel]="optionsCopy.graph.title"
+              ></pry-edit-input>
             </div>
 
-            <ng-container *ngIf="!!optionsCopy.groupBy">
+            @if (optionsCopy) {
               <div class="m-form-label-field">
-                <label class="a-label" for="chart_seriesAttr">{{ '@pry.widget.chart.groupAttr' | i18n }}</label>
+                <label class="a-label" for="chart_type">{{ '@pry.widget.chart.type' | i18n }}</label>
                 <pry-select
-                  (ngModelChange)="changeGroupBy($event)"
-                  [ngModel]="optionsCopy.groupBy.attribute"
+                  (ngModelChange)="changeType($event)"
+                  [items]="typeOptions"
+                  [ngModel]="optionsCopy.graph.type"
+                  bindLabel="label"
+                  bindValue="id"
+                  id="chart_type"
+                ></pry-select>
+              </div>
+            }
+
+            @if (optionsCopy.graph.type === GraphType.DONUT) {
+              <pry-range
+                [ngModel]="optionsCopy.graph.donutSize"
+                (ngModelChange)="changeDonutSize($event)"
+                labelTranslate="@pry.widget.chart.donutSize"
+                min="1"
+                max="500"
+              ></pry-range>
+            }
+
+            <div class="m-form-label-field">
+              <pry-checkbox (ngModelChange)="toggleLegend($event)" [ngModel]="!!optionsCopy.graph.legend">
+                {{ '@pry.widget.chart.legend' | i18n }}
+              </pry-checkbox>
+            </div>
+          </div>
+
+          @if (!!optionsCopy.graph.type) {
+            <div class="o-settings__popup__content__fields -condensed">
+              <div class="m-form-label-field">
+                <label class="a-label" for="abscissa">{{ '@pry.widget.chart.abscissa' | i18n }}</label>
+                <pry-select
+                  (ngModelChange)="changeAbscissa($event)"
                   [items]="abscissaAttributes$ | async | prySortData: sortActive : sortDirection"
+                  [ngModel]="optionsCopy.abscissa.attribute"
                   bindLabel="name"
                   bindValue="id"
-                  id="chart_seriesAttr"
+                  id="abscissa"
                 ></pry-select>
               </div>
 
               <div class="m-form-label-field">
-                <pry-scheme-picker
-                  (ngModelChange)="changeColorScheme($event)"
-                  [ngModel]="optionsCopy.groupBy.color"
-                ></pry-scheme-picker>
+                <pry-edit-input
+                  label="@pry.widget.chart.dataLabel"
+                  (ngModelChange)="changeAbscissaLabel($event)"
+                  [ngModel]="optionsCopy.abscissa.label"
+                ></pry-edit-input>
               </div>
 
-              <div class="m-form-label-field">
-                <pry-checkbox [ngModel]="optionsCopy.graph.stacked" (ngModelChange)="toggleStacked($event)">
-                  {{ '@pry.widget.chart.stacked' | i18n }}
-                </pry-checkbox>
-              </div>
-            </ng-container>
-          </div>
-          <div class="o-settings__popup__content__fields -condensed">
-            <div class="m-form-label-field">
-              <pry-checkbox
-                (ngModelChange)="toggleLimitItems($event)"
-                [ngModel]="optionsCopy.abscissa.limit !== undefined && optionsCopy.abscissa.limit !== null"
-              >
-                {{ '@pry.widget.chart.limit' | i18n }}
-              </pry-checkbox>
+              @if (
+                ['quantitative', 'temporal'].includes(
+                  (attributeTypes$ | async)?.abscissa?.vegaType?.toString() ?? '--'
+                ) &&
+                optionsCopy.graph.type !== GraphType.DONUT &&
+                optionsCopy.graph.type !== GraphType.CIRCULAR
+              ) {
+                <div class="m-form-label-field">
+                  <pry-checkbox (ngModelChange)="changeKeep0Abscissa($event)" [ngModel]="optionsCopy.abscissa.keep0"
+                    >{{ '@pry.widget.chart.origin' | i18n }}
+                  </pry-checkbox>
+
+                  @if (optionsCopy.graph.type === GraphType.HISTOGRAM) {
+                    <pry-checkbox
+                      (ngModelChange)="enableIntervals($event)"
+                      [ngModel]="!!optionsCopy.abscissa.interval"
+                      [disabled]="optionsCopy.graph.type === GraphType.HISTOGRAM"
+                      >{{ '@pry.widget.chart.interval' | i18n }}
+                    </pry-checkbox>
+
+                    @if (!!optionsCopy.abscissa.interval) {
+                      @if (!isTimeInterval(optionsCopy.abscissa.interval)) {
+                        <pry-range
+                          [ngModel]="optionsCopy.abscissa.interval"
+                          (ngModelChange)="changeInterval($event)"
+                          labelTranslate="@pry.widget.chart.specifyInterval"
+                          min="1"
+                          max="10"
+                        ></pry-range>
+                      } @else {
+                        <label class="a-label" for="time_interval">{{ '@pry.widget.chart.timeInterval' | i18n }}</label>
+                        <pry-select
+                          (ngModelChange)="changeTimeInterval($event)"
+                          [items]="['second', 'minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']"
+                          [ngModel]="optionsCopy.abscissa.interval"
+                          i18nPrefix="@pry.widget.chart.time."
+                          id="time_interval"
+                        ></pry-select>
+                      }
+                    }
+                  }
+                </div>
+              }
             </div>
-            <ng-container *ngIf="optionsCopy.abscissa.limit !== undefined && optionsCopy.abscissa.limit !== null">
+
+            <div class="o-settings__popup__content__fields -condensed">
               <div class="m-form-label-field">
-                <label class="a-label" for="chart_limitItemsValue">{{ '@pry.widget.chart.limitMaxNb' | i18n }}</label>
-                <input
-                  type="number"
-                  id="chart_limitItemsValue"
-                  class="a-form-field"
-                  [ngModel]="optionsCopy.abscissa.limit"
-                  (ngModelChange)="changeLimitValue($event)"
-                  min="1"
-                  step="1"
-                  [attr.aria-invalid]="optionsCopy.abscissa.limit < 1"
-                />
+                <label class="a-label" for="operations">{{ '@pry.widget.chart.operation.title' | i18n }}</label>
+                <pry-select
+                  (ngModelChange)="changeOperation($event)"
+                  [items]="operations$ | async"
+                  [ngModel]="optionsCopy.ordinate.operation"
+                  bindLabel="label"
+                  bindValue="id"
+                  id="operations"
+                ></pry-select>
               </div>
-            </ng-container>
-          </div>
-          <div class="o-settings__popup__content__fields -condensed">
-            <div class="m-form-label-field">
-              <pry-checkbox (ngModelChange)="toggleSort($event)" [ngModel]="!!optionsCopy.graph.sort"
-                >{{ '@pry.widget.chart.sort.title' | i18n }}
-              </pry-checkbox>
+
+              @if (optionsCopy.ordinate.operation !== Operation.COUNT) {
+                <div class="m-form-label-field">
+                  <label class="a-label" for="ordinate">{{ '@pry.widget.chart.ordinate' | i18n }}</label>
+                  <pry-select
+                    (ngModelChange)="changeOrdinate($event)"
+                    [items]="ordinateAttributes$ | async | prySortData: sortActive : sortDirection"
+                    [ngModel]="optionsCopy.ordinate.attribute"
+                    bindLabel="name"
+                    bindValue="id"
+                    id="ordinate"
+                  ></pry-select>
+                </div>
+              }
+
+              <div class="m-form-label-field">
+                <pry-edit-input
+                  label="@pry.widget.chart.dataLabel"
+                  (ngModelChange)="changeOrdinateLabel($event)"
+                  [ngModel]="optionsCopy.ordinate.label"
+                ></pry-edit-input>
+              </div>
+
+              @if (translateToVegaType(copyOrdinateField?.type) === 'quantitative') {
+                <div class="m-form-label-field">
+                  <pry-checkbox (ngModelChange)="changeKeep0Ordinate($event)" [ngModel]="optionsCopy.ordinate.keep0"
+                    >{{ '@pry.widget.chart.origin' | i18n }}
+                  </pry-checkbox>
+                </div>
+              }
             </div>
-            <ng-container *ngIf="!!optionsCopy.graph.sort">
+
+            @if (optionsCopy.graph.type !== GraphType.DONUT && optionsCopy.graph.type !== GraphType.CIRCULAR) {
+              <div class="o-settings__popup__content__fields -condensed">
+                <div class="m-form-label-field">
+                  <pry-checkbox (ngModelChange)="toggleGroupBy($event)" [ngModel]="!!optionsCopy.groupBy"
+                    >{{ '@pry.widget.chart.groupBy' | i18n }}
+                  </pry-checkbox>
+                </div>
+
+                @if (!!optionsCopy.groupBy) {
+                  <div class="m-form-label-field">
+                    <label class="a-label" for="chart_seriesAttr">{{ '@pry.widget.chart.groupAttr' | i18n }}</label>
+                    <pry-select
+                      (ngModelChange)="changeGroupBy($event)"
+                      [ngModel]="optionsCopy.groupBy.attribute"
+                      [items]="abscissaAttributes$ | async | prySortData: sortActive : sortDirection"
+                      bindLabel="name"
+                      bindValue="id"
+                      id="chart_seriesAttr"
+                    ></pry-select>
+                  </div>
+
+                  <div class="m-form-label-field">
+                    <pry-scheme-picker
+                      (ngModelChange)="changeColorScheme($event)"
+                      [ngModel]="optionsCopy.groupBy.color"
+                    ></pry-scheme-picker>
+                  </div>
+
+                  <div class="m-form-label-field">
+                    <pry-checkbox [ngModel]="optionsCopy.graph.stacked" (ngModelChange)="toggleStacked($event)">
+                      {{ '@pry.widget.chart.stacked' | i18n }}
+                    </pry-checkbox>
+                  </div>
+                }
+              </div>
+              <div class="o-settings__popup__content__fields -condensed">
+                <div class="m-form-label-field">
+                  <pry-checkbox
+                    (ngModelChange)="toggleLimitItems($event)"
+                    [ngModel]="optionsCopy.abscissa.limit !== undefined && optionsCopy.abscissa.limit !== null"
+                  >
+                    {{ '@pry.widget.chart.limit' | i18n }}
+                  </pry-checkbox>
+                </div>
+                @if (optionsCopy.abscissa.limit !== undefined && optionsCopy.abscissa.limit !== null) {
+                  <div class="m-form-label-field">
+                    <label class="a-label" for="chart_limitItemsValue">{{
+                      '@pry.widget.chart.limitMaxNb' | i18n
+                    }}</label>
+                    <input
+                      type="number"
+                      id="chart_limitItemsValue"
+                      class="a-form-field"
+                      [ngModel]="optionsCopy.abscissa.limit"
+                      (ngModelChange)="changeLimitValue($event)"
+                      min="1"
+                      step="1"
+                      [attr.aria-invalid]="optionsCopy.abscissa.limit < 1"
+                    />
+                  </div>
+                }
+              </div>
+              <div class="o-settings__popup__content__fields -condensed">
+                <div class="m-form-label-field">
+                  <pry-checkbox (ngModelChange)="toggleSort($event)" [ngModel]="!!optionsCopy.graph.sort"
+                    >{{ '@pry.widget.chart.sort.title' | i18n }}
+                  </pry-checkbox>
+                </div>
+                @if (!!optionsCopy.graph.sort) {
+                  <div class="m-form-label-field">
+                    <label class="a-label" for="chart_sortValue">{{ '@pry.widget.chart.sort.attribute' | i18n }}</label>
+                    <pry-select
+                      (ngModelChange)="changeSortValue($event)"
+                      [ngModel]="optionsCopy.graph.sort.value"
+                      [items]="sortValues$ | async"
+                      bindValue="value"
+                      bindLabel="label"
+                      id="chart_sortValue"
+                      [disabled]="optionsCopy.graph.type === GraphType.HISTOGRAM"
+                    ></pry-select>
+                  </div>
+                  <div class="m-form-label-field">
+                    <label class="a-label" for="chart_sortDirection">{{
+                      '@pry.widget.chart.sort.direction' | i18n
+                    }}</label>
+                    <pry-select
+                      (ngModelChange)="changeSortDirection($event)"
+                      [ngModel]="optionsCopy.graph.sort.direction"
+                      [items]="sortDirections"
+                      bindValue="value"
+                      bindLabel="label"
+                      id="chart_sortDirection"
+                    ></pry-select>
+                  </div>
+                }
+              </div>
+            }
+
+            @if (optionsCopy.graph.type === GraphType.DONUT || optionsCopy.graph.type === GraphType.CIRCULAR) {
+              <pry-scheme-picker
+                (ngModelChange)="changeCircleColorScheme($event)"
+                [ngModel]="optionsCopy.circleColorScheme"
+              ></pry-scheme-picker>
+            }
+
+            @if (
+              optionsCopy.graph.type !== GraphType.DONUT &&
+              optionsCopy.graph.type !== GraphType.CIRCULAR &&
+              !optionsCopy.groupBy
+            ) {
               <div class="m-form-label-field">
-                <label class="a-label" for="chart_sortValue">{{ '@pry.widget.chart.sort.attribute' | i18n }}</label>
-                <pry-select
-                  (ngModelChange)="changeSortValue($event)"
-                  [ngModel]="optionsCopy.graph.sort.value"
-                  [items]="sortValues$ | async"
-                  bindValue="value"
-                  bindLabel="label"
-                  id="chart_sortValue"
-                ></pry-select>
+                <label class="a-label" for="chart_baseColor">{{ '@pry.widget.chart.color' | i18n }}</label>
+                <pry-color-picker
+                  (ngModelChange)="changeBaseColor($event)"
+                  [ngModel]="optionsCopy.baseColor"
+                  id="chart_baseColor"
+                ></pry-color-picker>
+                <ng-template #templateOption let-item="item">
+                  <div class="aligned-option">
+                    <div class="a-chip -md" [style.background-color]="item">{{ item }}</div>
+                  </div>
+                </ng-template>
               </div>
-              <div class="m-form-label-field">
-                <label class="a-label" for="chart_sortDirection">{{ '@pry.widget.chart.sort.direction' | i18n }}</label>
-                <pry-select
-                  (ngModelChange)="changeSortDirection($event)"
-                  [ngModel]="optionsCopy.graph.sort.direction"
-                  [items]="sortDirections"
-                  bindValue="value"
-                  bindLabel="label"
-                  id="chart_sortDirection"
-                ></pry-select>
-              </div>
-            </ng-container>
-          </div>
-        </ng-container>
+            }
+          }
+        </pry-settings>
+      </pry-widget-header>
+    }
 
-        <ng-container
-          *ngIf="optionsCopy.graph.type === GraphType.DONUT || optionsCopy.graph.type === GraphType.CIRCULAR"
-        >
-          <pry-scheme-picker
-            (ngModelChange)="changeCircleColorScheme($event)"
-            [ngModel]="optionsCopy.circleColorScheme"
-          ></pry-scheme-picker>
-        </ng-container>
+    @if ((isChartValid$ | async) && !(noData$ | async) && !(noAggregationData$ | async)) {
+      <div #vega></div>
+    }
 
-        <ng-container
-          *ngIf="
-            optionsCopy.graph.type !== GraphType.DONUT &&
-            optionsCopy.graph.type !== GraphType.CIRCULAR &&
-            !optionsCopy.groupBy
-          "
-        >
-          <div class="m-form-label-field">
-            <label class="a-label" for="chart_baseColor">{{ '@pry.widget.chart.color' | i18n }}</label>
-            <pry-color-picker
-              (ngModelChange)="changeBaseColor($event)"
-              [ngModel]="optionsCopy.baseColor"
-              id="chart_baseColor"
-            ></pry-color-picker>
-            <ng-template #templateOption let-item="item">
-              <div class="aligned-option">
-                <div class="a-chip -md" [style.background-color]="item">{{ item }}</div>
-              </div>
-            </ng-template>
-          </div>
-        </ng-container>
-      </ng-container>
-    </pry-settings>
-  </pry-widget-header>
+    @if (noData$ | async) {
+      <div class="o-widget__choose-parameters">
+        <img
+          class="no-result__search"
+          src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
+          alt="{{ '@pry.widget.chart.noData' | i18n }}"
+          aria-hidden="true"
+        />
+        <span class="no-result__text">{{ '@pry.widget.chart.noData' | i18n }}</span>
+        <button type="button" (click)="openData()" class="a-btn a-btn--primary">
+          <pry-icon [height]="20" [width]="20" iconSvg="control"></pry-icon>
+          <span>{{ '@pry.widget.tooltip.readSearch' | i18n }}</span>
+        </button>
+      </div>
+    }
 
-  <ng-container *ngIf="(isChartValid$ | async) && !(noData$ | async) && !(noAggregationData$ | async)">
-    <div #vega></div>
-  </ng-container>
+    @if (!(noData$ | async) && (noAggregationData$ | async)) {
+      <div class="o-widget__choose-parameters">
+        <img
+          class="no-result__search"
+          src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
+          alt="{{ '@pry.widget.chart.aggNoResult' | i18n }}"
+          aria-hidden="true"
+        />
+        <span class="no-result__text">{{ '@pry.widget.chart.aggNoResult' | i18n }}</span>
+        <button type="button" (click)="openSettings()" class="a-btn a-btn--primary">
+          <pry-icon [height]="20" [width]="20" iconSvg="control"></pry-icon>
+          <span>{{ '@pry.widget.settings.title' | i18n }}</span>
+        </button>
+      </div>
+    }
 
-  <ng-container *ngIf="noData$ | async">
-    <div class="o-widget__choose-parameters">
-      <img
-        class="no-result__search"
-        src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
-        alt="{{ '@pry.widget.chart.noData' | i18n }}"
-        aria-hidden="true"
-      />
-      <span class="no-result__text">{{ '@pry.widget.chart.noData' | i18n }}</span>
-      <button type="button" (click)="openData()" class="a-btn a-btn--primary">
-        <pry-icon [height]="20" [width]="20" iconSvg="control"></pry-icon>
-        <span>{{ '@pry.widget.tooltip.readSearch' | i18n }}</span>
-      </button>
-    </div>
-  </ng-container>
-
-  <ng-container *ngIf="!(noData$ | async) && (noAggregationData$ | async)">
-    <div class="o-widget__choose-parameters">
-      <img
-        class="no-result__search"
-        src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
-        alt="{{ '@pry.widget.chart.aggNoResult' | i18n }}"
-        aria-hidden="true"
-      />
-      <span class="no-result__text">{{ '@pry.widget.chart.aggNoResult' | i18n }}</span>
-      <button type="button" (click)="openSettings()" class="a-btn a-btn--primary">
-        <pry-icon [height]="20" [width]="20" iconSvg="control"></pry-icon>
-        <span>{{ '@pry.widget.settings.title' | i18n }}</span>
-      </button>
-    </div>
-  </ng-container>
-
-  <ng-container *ngIf="!(noData$ | async) && !(noAggregationData$ | async) && !(isChartValid$ | async)">
-    <div class="o-widget__choose-parameters">
-      <img
-        class="no-result__search"
-        src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
-        alt="{{ '@pry.widget.chart.chooseParameters' | i18n }}"
-        aria-hidden="true"
-      />
-      <span class="no-result__text">{{ '@pry.widget.chart.chooseParameters' | i18n }}</span>
-      <button type="button" (click)="openSettings()" class="a-btn a-btn--primary">
-        <pry-icon [height]="20" [width]="20" iconSvg="control"></pry-icon>
-        <span>{{ '@pry.widget.settings.title' | i18n }}</span>
-      </button>
-    </div>
-  </ng-container>
-</div>
+    @if (!(noData$ | async) && !(noAggregationData$ | async) && !(isChartValid$ | async)) {
+      <div class="o-widget__choose-parameters">
+        <img
+          class="no-result__search"
+          src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
+          alt="{{ '@pry.widget.chart.chooseParameters' | i18n }}"
+          aria-hidden="true"
+        />
+        <span class="no-result__text">{{ '@pry.widget.chart.chooseParameters' | i18n }}</span>
+        <button type="button" (click)="openSettings()" class="a-btn a-btn--primary">
+          <pry-icon [height]="20" [width]="20" iconSvg="control"></pry-icon>
+          <span>{{ '@pry.widget.settings.title' | i18n }}</span>
+        </button>
+      </div>
+    }
+  </div>
+}

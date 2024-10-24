@@ -183,9 +183,10 @@ describe('WidgetAggregatedChartComponent', () => {
               x: {
                 axis: { grid: false, labelExpr: 'height < 300 ? truncate(datum.value, 10) : datum.value' },
                 field: 'key',
-                scale: { zero: true },
+                scale: { zero: true, reverse: false },
                 title: undefined,
-                type: 'nominal'
+                type: 'nominal',
+                timeUnit: undefined
               },
               xOffset: undefined,
               y: {
@@ -403,15 +404,17 @@ describe('WidgetAggregatedChartComponent', () => {
                 field: 'series',
                 legend: true,
                 scale: { scheme: 'my-color' },
-                title: 'field-name-3'
+                title: 'field-name-3',
+                value: undefined
               },
               theta: undefined,
               x: {
                 axis: { grid: false, labelExpr: 'height < 300 ? truncate(datum.value, 10) : datum.value' },
                 field: 'key',
-                scale: { zero: true },
+                scale: { zero: true, reverse: false },
                 title: 'ABS',
-                type: 'nominal'
+                type: 'nominal',
+                timeUnit: undefined
               },
               xOffset: undefined,
               y: {

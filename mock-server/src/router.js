@@ -586,31 +586,31 @@ router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items/aggregate', (req,
   } else {
     setTimeout(() => {
       const fixedResponse = dataModule.aggregationResponses[params.id];
-      if (fixedResponse) {
-        makeResponseOk(res, fixedResponse);
-      } else {
-        if (query.operation === 'extent') {
-          makeResponseOk(res, {
-            operation: 'extent',
-            values: [
-              {
-                key: 'result',
-                value: {
-                  bottom_right: {
-                    lon: -0.4505967056970596,
-                    lat: 44.739590024032775
-                  },
-                  top_left: {
-                    lon: -0.8907467289975025,
-                    lat: 45.044559749692354
-                  }
+      let result = fixedResponse ?? {
+        operation: query.operation,
+        values: []
+      };
+      if (query.operation === 'extent') {
+        result = {
+          operation: 'extent',
+          values: [
+            {
+              key: 'result',
+              value: {
+                bottom_right: {
+                  lon: -0.4505967056970596,
+                  lat: 44.739590024032775
+                },
+                top_left: {
+                  lon: -0.8907467289975025,
+                  lat: 45.044559749692354
                 }
               }
-            ]
-          });
-          return;
-        }
-
+            }
+          ]
+        };
+      }
+      if (!fixedResponse && query.operation !== 'extent') {
         const abscissaAttr = dataModule.class
           .get()
           .map((clazz) => clazz.attributes.find((attr) => attr.id === query.aggregatedBy))
@@ -635,10 +635,6 @@ router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items/aggregate', (req,
           }
         }
 
-        const result = {
-          operation: query.operation,
-          values: []
-        };
         if (!!abscissaField && (!!ordinateField || query.operation === 'count' || query.operation === 'cardinality')) {
           for (let i = 0; i < casual.integer((from = 10), (to = 40)); i++) {
             if (query.groupBy) {
@@ -668,8 +664,25 @@ router.on(['OPTIONS', 'GET'], '/data/data-sources/id/:id/items/aggregate', (req,
         } else {
           console.warn('abscissa or ordinate not found', query);
         }
-        makeResponseOk(res, result);
       }
+      if (query.order) {
+        const split = query.order.split(/,|%2C/);
+        const sortOrder = split[0];
+        const sortKey = split[1];
+        result.values = result.values.sort((a, b) =>
+          sortKey === 'KEY'
+            ? sortOrder === 'asc'
+              ? a.key.localeCompare(b.key)
+              : b.key.localeCompare(a.key)
+            : sortOrder === 'asc'
+              ? a.value - b.value
+              : b.value - a.value
+        );
+      }
+      if (query.limit) {
+        result.values = result.values.slice(0, query.limit);
+      }
+      makeResponseOk(res, result);
     }, fieldGeneratorModule.generateDelay());
   }
 });

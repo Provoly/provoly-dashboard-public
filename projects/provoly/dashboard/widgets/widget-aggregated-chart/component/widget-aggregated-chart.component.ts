@@ -403,7 +403,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                     ? {
                         field: 'key',
                         title: options.abscissa.label,
-                        type: this.getAbscissaType(types.abscissa.vegaType, !!options.graph.sort),
+                        type: this.getAbscissaType(types.abscissa.vegaType, options),
                         axis: {
                           grid: false,
                           ...WidgetAggregatedChartComponent.minTick(types.abscissa.field?.type ?? FieldType.STRING),
@@ -417,8 +417,9 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                         },
                         scale: {
                           // Force a false value here so that vega understands properly
-                          zero: !!options.abscissa.keep0
+                          zero: !!options.abscissa.keep0,
                           //type: WidgetChartComponent.isTimeUnitUTC(variables[0]) ? 'utc' : undefined
+                          reverse: this.reverseAxis(options, types)
                         },
                         ...this.getSort(options.abscissa.attribute, options.graph?.sort),
                         timeUnit: this.getTimeUnit(options, types)
@@ -458,7 +459,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
                   xOffset:
                     stacked &&
                     options.groupBy &&
-                    this.getAbscissaType(types.abscissa.vegaType, !!options.graph.sort) !== VegaType.TEMPORAL
+                    this.getAbscissaType(types.abscissa.vegaType, options) !== VegaType.TEMPORAL
                       ? { field: 'series' }
                       : undefined,
                   tooltip: options.graph.tooltip
@@ -992,7 +993,14 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
         ...this.optionsCopy$.value,
         graph: {
           ...this.optionsCopy$.value?.graph,
-          sort: { ...this.optionsCopy$.value?.graph.sort!, value: $event }
+          sort: {
+            ...this.optionsCopy$.value?.graph.sort!,
+            value: $event,
+            direction:
+              this.optionsCopy$.value.graph.type === GraphType.HISTOGRAM
+                ? 'asc'
+                : this.optionsCopy$.value?.graph.sort?.direction
+          }
         }
       } as ChartAggregatedWidgetOptions);
     }
@@ -1074,11 +1082,15 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     return {};
   }
 
-  getAbscissaType(abscissaVegaType: VegaType, hasSort: boolean) {
+  getAbscissaType(abscissaVegaType: VegaType, options: ChartAggregatedWidgetOptions) {
     if (abscissaVegaType === VegaType.TEMPORAL) {
-      return abscissaVegaType;
+      return options.graph.type !== GraphType.BAR
+        ? abscissaVegaType
+        : options.graph.sort?.value === 'value'
+          ? VegaType.ORDINAL
+          : VegaType.TEMPORAL;
     }
-    return hasSort ? VegaType.ORDINAL : abscissaVegaType;
+    return !!options.graph.sort ? VegaType.ORDINAL : abscissaVegaType;
   }
 
   isTimeInterval(abscissaInterval: string | number) {
@@ -1138,5 +1150,16 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     } as { [key: string]: string };
 
     return vegaTimeUnits[options.abscissa.interval as string];
+  }
+
+  private reverseAxis(options: ChartAggregatedWidgetOptions, types: any) {
+    if (options?.graph.type !== GraphType.HISTOGRAM && options?.graph.type !== GraphType.BAR) {
+      return undefined;
+    }
+    return (
+      types.abscissa.vegaType === VegaType.TEMPORAL &&
+      options?.graph.sort?.value === 'key' &&
+      options?.graph.sort?.direction === 'desc'
+    );
   }
 }

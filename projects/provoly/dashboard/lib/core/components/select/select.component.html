@@ -33,7 +33,7 @@
       <span class="a-pry-select__placeholder">{{ placeholder }}</span>
       <div class="a-pry-select__filler"></div>
     } @else {
-      @for (item of valueItems$ | async; track !!item.id ? item.id : item) {
+      @for (item of valueItems$ | async; track !!item && !!item.id ? item.id : item) {
         <div
           class="a-pry-select__value"
           [class.pry-select-form]="isForm"
@@ -101,7 +101,7 @@
     } @else {
       @for (
         item of matchingItems$ | async;
-        track !!item.id ? item.id : item;
+        track !!item && !!item.id ? item.id : item;
         let index = $index;
         let first = $first;
         let last = $last

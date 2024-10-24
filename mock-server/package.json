@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "axios": "^1.0.0",
-    "find-my-way": "^7.0.0",
+    "find-my-way": "^9.1.0",
     "nodemon": "^3.0.1"
   }
 }
