@@ -2187,5 +2187,63 @@
         }
       ]
     }
+  },
+  {
+    "name": "issue-1105",
+    "manifest": {
+      "windows": [
+        {
+          "widgets": [
+            {
+              "type": "map",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "width": 12,
+                "height": 12
+              },
+              "options": {
+                "automaticLayers": true,
+                "layers": [
+                ],
+                "tooltipMode": "click",
+                "style": "maptiler-basic",
+                "zoom": {
+                  "start": 11.683670460095076,
+                  "min": 3,
+                  "max": 18
+                },
+                "center": [
+                  -0.6813589995227713,
+                  44.88470529074877
+                ]
+              },
+              "datasource": [
+                "37e084ee-f714-4dc3-afe5-5a7cd203986c",
+                "ab28002c-3023-4278-8775-835825ee1944",
+                "36a70384-1007-45e9-8d3d-a25703566f68"
+              ]
+            }
+          ],
+          "grid": {
+            "columns": 12,
+            "rows": 12,
+            "layout": "1",
+            "gap": 15
+          }
+        }
+      ],
+      "layerGroups": [
+        {
+          "name": "DEFAULT",
+          "singleLayer": false,
+          "visibleLayers": [
+            "CNRA Inondation",
+            "f460253850_cnra-inondation",
+            "ds-open"
+          ]
+        }
+      ]
+    }
   }
 ]

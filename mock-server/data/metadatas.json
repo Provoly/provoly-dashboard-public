@@ -67,7 +67,7 @@
     "readOnly": false
   },
   {
-    "id": "146536da-01da-4538-990a-78a11c4696d8",
+    "id": "146536da-01da-4538-990a-78a11c4696d6",
     "name": "_geoNamespace",
     "type": "STRING",
     "description": "Namespace geoserver",
@@ -76,7 +76,7 @@
     "readOnly": false
   },
   {
-    "id": "146536da-01da-4538-990a-78a11c4696d8",
+    "id": "146536da-01da-4538-990a-78a11c4696d7",
     "name": "_geoKey",
     "type": "STRING",
     "description": "clé geoserver",

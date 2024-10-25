@@ -1348,5 +1348,370 @@
     ],
     "storage": "ELASTIC",
     "metadata": []
+  },
+  {
+    "id": "ccd06b8a-5556-48e4-9ed1-237e99ea6fe3",
+    "slug": "242c58bdd1_limites-administratives",
+    "name": "Limites Administratives",
+    "icon": null,
+    "attributes": [
+      {
+        "id": "f4da82ce-5a67-47fd-bad6-02fe7b4ad4ec",
+        "name": "IRIS",
+        "technicalName": "nom_iris",
+        "field": {
+          "id": "d833c1bb-ca14-4414-b131-a70495dc6300",
+          "name": "Texte indexé",
+          "type": "keyword",
+          "slug": "2c614ea1c6_texte-indexe",
+          "numeric": false,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "de4d2b8c66_nom_iris"
+      },
+      {
+        "id": "651808fc-70c8-4e5b-b510-b542b9896d7e",
+        "name": "EPCI",
+        "technicalName": "nom_epci",
+        "field": {
+          "id": "d833c1bb-ca14-4414-b131-a70495dc6300",
+          "name": "Texte indexé",
+          "type": "keyword",
+          "slug": "2c614ea1c6_texte-indexe",
+          "numeric": false,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "ad9e541fae_nom_epci"
+      },
+      {
+        "id": "fedcd268-9251-4797-baaf-72275bedb295",
+        "name": "Annee",
+        "technicalName": "Annee",
+        "field": {
+          "id": "64158326-fbc3-49f0-aef2-c9f5e91dbdd8",
+          "name": "Année",
+          "type": "integer",
+          "slug": "90becac888_annee",
+          "localeFormat": false,
+          "unit": null,
+          "numeric": true,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "ad919fd4ee_annee"
+      },
+      {
+        "id": "e9952aff-1c3d-469f-954c-1c8582a6675d",
+        "name": "Code commune",
+        "technicalName": "code_commu",
+        "field": {
+          "id": "d833c1bb-ca14-4414-b131-a70495dc6300",
+          "name": "Texte indexé",
+          "type": "keyword",
+          "slug": "2c614ea1c6_texte-indexe",
+          "numeric": false,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "a51beda1f3_code_commu"
+      },
+      {
+        "id": "0d43723b-2e79-48cb-a2e8-0d25640b20b4",
+        "name": "Commune",
+        "technicalName": "nom_commun",
+        "field": {
+          "id": "d833c1bb-ca14-4414-b131-a70495dc6300",
+          "name": "Texte indexé",
+          "type": "keyword",
+          "slug": "2c614ea1c6_texte-indexe",
+          "numeric": false,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "22baf8e01b_nom_commun"
+      },
+      {
+        "id": "c33c3287-f5d4-42fc-8945-cfd6689e0c26",
+        "name": "Numéro département",
+        "technicalName": "code_depar",
+        "field": {
+          "id": "d833c1bb-ca14-4414-b131-a70495dc6300",
+          "name": "Texte indexé",
+          "type": "keyword",
+          "slug": "2c614ea1c6_texte-indexe",
+          "numeric": false,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "aaf339cd33_code_depar"
+      },
+      {
+        "id": "562643e5-da60-4fc0-a6bc-a2bbbf36ba68",
+        "name": "Département",
+        "technicalName": "nom_depart",
+        "field": {
+          "id": "d833c1bb-ca14-4414-b131-a70495dc6300",
+          "name": "Texte indexé",
+          "type": "keyword",
+          "slug": "2c614ea1c6_texte-indexe",
+          "numeric": false,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "8f7a1d6c3a_nom_depart"
+      },
+      {
+        "id": "af82d4ac-8e83-4907-806b-5385c4c5f4d8",
+        "name": "Code IRIS",
+        "technicalName": "code_iris",
+        "field": {
+          "id": "d833c1bb-ca14-4414-b131-a70495dc6300",
+          "name": "Texte indexé",
+          "type": "keyword",
+          "slug": "2c614ea1c6_texte-indexe",
+          "numeric": false,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "08b2c6eee9_code_iris"
+      },
+      {
+        "id": "ab154b16-52ea-4ee9-8f3e-4b840e9b0769",
+        "name": "Population",
+        "technicalName": "population",
+        "field": {
+          "id": "a550ced1-981d-4130-ad22-f9daaad2183a",
+          "name": "Population (décimal)",
+          "type": "decimal",
+          "slug": "8bd6570399_population-decimal",
+          "decimalPrecision": 2,
+          "localeFormat": true,
+          "unit": "habitant(s)",
+          "numeric": false,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "33abceb07f_population"
+      },
+      {
+        "id": "106f51e5-4256-413a-b336-a76f7833cc33",
+        "name": "Emprise géographique",
+        "technicalName": "the_geom",
+        "field": {
+          "id": "1ef873e6-9278-4426-b02b-aab721db9e7c",
+          "name": "Multipolygone",
+          "type": "MultiPolygon",
+          "slug": "51cf823634_multipolygone",
+          "crs": "EPSG:4326",
+          "numeric": false,
+          "geo": true
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "35ba42e87c_the_geom"
+      },
+      {
+        "id": "460e0176-7bbd-42f5-b8ec-a52b59995eb2",
+        "name": "SIREN",
+        "technicalName": "code_siren",
+        "field": {
+          "id": "d833c1bb-ca14-4414-b131-a70495dc6300",
+          "name": "Texte indexé",
+          "type": "keyword",
+          "slug": "2c614ea1c6_texte-indexe",
+          "numeric": false,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "51671d0c8c_code_siren"
+      }
+    ],
+    "storage": "POSTGIS",
+    "metadata": []
+  },
+  {
+    "id": "dbc3c3e2-2418-4efd-b426-3ef242fcc152",
+    "slug": "fa25170b48_etablissements",
+    "name": "etablissements",
+    "icon": null,
+    "attributes": [
+      {
+        "id": "2c108070-a03d-4b76-a42e-c6a09ac2ae82",
+        "name": "ID",
+        "technicalName": "ID",
+        "field": {
+          "id": "06d228e3-a873-4740-b99a-d5803044cc95",
+          "name": "idx_txt",
+          "type": "keyword",
+          "slug": "79c4a646b1_idx_txt",
+          "numeric": false,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "058ec55cea_id"
+      },
+      {
+        "id": "eae648dd-6d09-4a12-bea4-890cc9ff75e0",
+        "name": "Adresse",
+        "technicalName": "ADRESSE",
+        "field": {
+          "id": "7d3ad69f-5de4-4e34-88c3-83160f5d0bc2",
+          "name": "libelle",
+          "type": "string",
+          "slug": "9838398cf0_libelle",
+          "numeric": false,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "7d03e54c5c_adresse"
+      },
+      {
+        "id": "7f3fd666-5a95-42c3-a2d9-30b068723a0e",
+        "name": "Nom",
+        "technicalName": "NOM",
+        "field": {
+          "id": "7d3ad69f-5de4-4e34-88c3-83160f5d0bc2",
+          "name": "libelle",
+          "type": "string",
+          "slug": "9838398cf0_libelle",
+          "numeric": false,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "2b0ded829a_nom"
+      },
+      {
+        "id": "d72165b6-f806-4754-9929-6fc94b9e1957",
+        "name": "Type",
+        "technicalName": "type",
+        "field": {
+          "id": "06d228e3-a873-4740-b99a-d5803044cc95",
+          "name": "idx_txt",
+          "type": "keyword",
+          "slug": "79c4a646b1_idx_txt",
+          "numeric": false,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "d1fa1b4520_type"
+      },
+      {
+        "id": "e0c5ecbe-6af0-4706-8c62-fa5f1294b5b9",
+        "name": "Emprise géographique",
+        "technicalName": "the_geom",
+        "field": {
+          "id": "c31fe757-3566-4442-8721-f4aced4dd159",
+          "name": "_position",
+          "type": "Point",
+          "slug": "388b609828__position",
+          "crs": "EPSG:4326",
+          "numeric": false,
+          "geo": true
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "020cde21fe_the_geom"
+      },
+      {
+        "id": "d729449c-8502-4c58-987d-3c096eb3a636",
+        "name": "fid",
+        "technicalName": "fid",
+        "field": {
+          "id": "f549b0d3-e558-4d7e-9fa3-16e06f9e3d94",
+          "name": "idx_numl",
+          "type": "long",
+          "slug": "2a753e564b_idx_numl",
+          "localeFormat": false,
+          "unit": null,
+          "numeric": false,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "495f398806_fid"
+      }
+    ],
+    "storage": "POSTGIS",
+    "metadata": []
+  },
+  {
+    "id": "80114fce-c4c1-49c4-83ba-4544be9c2a3f",
+    "slug": "5c79951d1d_alea_chaleurextreme",
+    "name": "alea_chaleurextreme",
+    "icon": null,
+    "attributes": [
+      {
+        "id": "967ff726-e193-43d9-aedf-70c0d3f328fa",
+        "name": "Zone géographique",
+        "technicalName": "the_geom",
+        "field": {
+          "id": "8caa4904-5680-4bf2-8921-25e076e4fa62",
+          "name": "_zone",
+          "type": "MultiPolygon",
+          "slug": "cea70e1be9__zone",
+          "crs": "EPSG:4326",
+          "numeric": false,
+          "geo": true
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "faf12d1b18_the_geom"
+      },
+      {
+        "id": "6ab821b3-6b57-476a-9f40-449259d2d54a",
+        "name": "point",
+        "technicalName": "point",
+        "field": {
+          "id": "85116f81-d1f1-4bda-b64d-f967ca44f1d2",
+          "name": "idx_num",
+          "type": "integer",
+          "slug": "5471e87ac3_idx_num",
+          "localeFormat": false,
+          "unit": null,
+          "numeric": true,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "0db53cace6_pt"
+      },
+      {
+        "id": "849e715b-a723-4dd3-b9d1-31baa8eff91f",
+        "name": "Nombre de jours de chaleur",
+        "technicalName": "valeur",
+        "field": {
+          "id": "4176564a-7aa9-466b-8314-fa82dbe64180",
+          "name": "Nombre de jours (décimal)",
+          "type": "decimal",
+          "slug": "630ed52ea7_nombre-de-jours-decimal",
+          "decimalPrecision": 2,
+          "localeFormat": true,
+          "unit": "jour(s)",
+          "numeric": false,
+          "geo": false
+        },
+        "category": null,
+        "multiValued": false,
+        "slug": "d388cb32a1_valeur"
+      }
+    ],
+    "storage": "POSTGIS",
+    "metadata": []
   }
 ]

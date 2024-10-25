@@ -1642,8 +1642,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   addLayerGroup() {
-    console.log(this.layerGroups)
-    console.log(this.optionsCopy.layers)
     this.layerGroups = [
       ...this.layerGroups,
       {
@@ -1653,8 +1651,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         visibleLayers: []
       }
     ];
-    console.log(this.layerGroups)
-    console.log(this.optionsCopy.layers)
     const group = this.layerGroups[this.layerGroups.length - 1];
     this.addLayer(group);
   }

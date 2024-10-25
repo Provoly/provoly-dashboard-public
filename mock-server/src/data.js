@@ -227,7 +227,12 @@ const getDatasetsWithMetadata = () => {
       const metadataRef = metadatas.find((metaRef) => metaRef.name === meta.metadataDef.name);
       return {
         ...meta,
-        metadataDef: { ...meta.metadataDef, readOnly: metadataRef?.readOnly, system: metadataRef?.system }
+        metadataDef: {
+          ...meta.metadataDef,
+          id: metadataRef?.id ?? meta.metadataDef.id,
+          readOnly: metadataRef?.readOnly,
+          system: metadataRef?.system
+        }
       };
     })
   }));
@@ -352,7 +357,7 @@ const generateDatasetVersions = () => {
       const versions = [];
       const howMany = casual.integer((from = 5), (to = 10));
       for (let i = 1; i < howMany; i++) {
-        if (i === dataset.activeVersion.version) {
+        if (dataset.activeVersion && i === dataset.activeVersion.version) {
           versions.push({
             ...dataset.activeVersion,
             dataset: {

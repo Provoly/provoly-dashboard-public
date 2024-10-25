@@ -446,5 +446,190 @@
     "owner": false,
     "groups": [],
     "metadata": []
+  },
+  {
+    "id": "37e084ee-f714-4dc3-afe5-5a7cd203986c",
+    "name": "Limites Administratives",
+    "oClass": "ccd06b8a-5556-48e4-9ed1-237e99ea6fe3",
+    "type": "CLOSED",
+    "description": "Référentiel des limites administratives",
+    "metadata": [
+      {
+        "value": "Limites Administratives",
+        "metadataDef": {
+          "id": "146536da-01da-4538-990a-78a11c4696d8",
+          "name": "_geoKey",
+          "type": "STRING",
+          "description": "init MD _geoKey",
+          "allowedValues": [],
+          "slug": "146536da__geoKey",
+          "readOnly": false,
+          "system": true
+        }
+      },
+      {
+        "value": "Provoly",
+        "metadataDef": {
+          "id": "dedfb486-4387-4906-8724-adf7bc637a33",
+          "name": "_geoNamespace",
+          "type": "STRING",
+          "description": "init MD _geoNamespace",
+          "allowedValues": [],
+          "slug": "dedfb486__geoNamespace",
+          "readOnly": false,
+          "system": false
+        }
+      },
+      {
+        "value": "60",
+        "metadataDef": {
+          "id": "0f7374af-d6c6-475d-a777-7e955bfbe40f",
+          "name": "_geoOpacity",
+          "type": "STRING",
+          "description": null,
+          "allowedValues": [],
+          "slug": "cd1e79301d__geoopacity",
+          "readOnly": false,
+          "system": false
+        }
+      }
+    ],
+    "groups": [
+      "ALL"
+    ],
+    "owner": true,
+    "slug": "5a0e0aeaff_limites-administratives",
+    "categories": [],
+    "activeVersion": {
+      "id": "d7bd2fc3-bf51-42df-bbec-e75d2d1e5b1d",
+      "dataset": "37e084ee-f714-4dc3-afe5-5a7cd203986c",
+      "oClass": "ccd06b8a-5556-48e4-9ed1-237e99ea6fe3",
+      "lastModified": "2024-10-24T09:56:45.422188Z",
+      "version": 1,
+      "state": "ACTIVE",
+      "fileName": "limites_administratives_hierarchie.zip",
+      "productionDate": "2024-10-24T09:54:00Z",
+      "producer": "op",
+      "additionalInformation": "Analyse Tooltip"
+    }
+  },
+  {
+    "id": "ab28002c-3023-4278-8775-835825ee1944",
+    "name": "Etablissements",
+    "oClass": "dbc3c3e2-2418-4efd-b426-3ef242fcc152",
+    "type": "CLOSED",
+    "description": "Etablissements sensibles (EPHAD, Ecole...)",
+    "metadata": [
+      {
+        "value": "Etablissements",
+        "metadataDef": {
+          "id": "146536da-01da-4538-990a-78a11c4696d8",
+          "name": "_geoKey",
+          "type": "STRING",
+          "description": "init MD _geoKey",
+          "allowedValues": [],
+          "slug": "146536da__geoKey",
+          "readOnly": false,
+          "system": true
+        }
+      },
+      {
+        "value": "Provoly",
+        "metadataDef": {
+          "id": "dedfb486-4387-4906-8724-adf7bc637a33",
+          "name": "_geoNamespace",
+          "type": "STRING",
+          "description": "init MD _geoNamespace",
+          "allowedValues": [],
+          "slug": "dedfb486__geoNamespace",
+          "readOnly": false,
+          "system": false
+        }
+      }
+    ],
+    "groups": [
+      "ALL"
+    ],
+    "owner": true,
+    "slug": "c5fb7ae623_etablissements",
+    "categories": [],
+    "activeVersion": {
+      "id": "5b50eaff-a692-4aa0-8799-5c77a72779c1",
+      "dataset": "ab28002c-3023-4278-8775-835825ee1944",
+      "oClass": "dbc3c3e2-2418-4efd-b426-3ef242fcc152",
+      "lastModified": "2024-10-24T11:35:48.789854Z",
+      "version": 1,
+      "state": "ACTIVE",
+      "fileName": "etablissements_france.zip",
+      "productionDate": "2024-10-24T11:35:00Z",
+      "producer": "onepoint",
+      "additionalInformation": null
+    }
+  },
+  {
+    "id": "36a70384-1007-45e9-8d3d-a25703566f68",
+    "name": "Chaleur extrême RCP26 Horizon 2030",
+    "oClass": "80114fce-c4c1-49c4-83ba-4544be9c2a3f",
+    "type": "CLOSED",
+    "description": "Modélisation de la chaleur extrême avec des projections temporelles allant jusqu’en 2100, s’appuyant sur les projections climatiques du GIEC qui est une source fiable experte, et générant des indicateurs pertinents à exploiter dans l’analyse (nombre de jours de fortes chaleurs, nombre de nuits anormalement chaudes …)",
+    "metadata": [
+      {
+        "value": "Chaleur extrême RCP26 Horizon 2030",
+        "metadataDef": {
+          "id": "146536da-01da-4538-990a-78a11c4696d8",
+          "name": "_geoKey",
+          "type": "STRING",
+          "description": "init MD _geoKey",
+          "allowedValues": [],
+          "slug": "146536da__geoKey",
+          "readOnly": false,
+          "system": true
+        }
+      },
+      {
+        "value": "Provoly",
+        "metadataDef": {
+          "id": "dedfb486-4387-4906-8724-adf7bc637a33",
+          "name": "_geoNamespace",
+          "type": "STRING",
+          "description": "init MD _geoNamespace",
+          "allowedValues": [],
+          "slug": "dedfb486__geoNamespace",
+          "readOnly": false,
+          "system": false
+        }
+      },
+      {
+        "value": "60",
+        "metadataDef": {
+          "id": "0f7374af-d6c6-475d-a777-7e955bfbe40f",
+          "name": "_geoOpacity",
+          "type": "STRING",
+          "description": null,
+          "allowedValues": [],
+          "slug": "cd1e79301d__geoopacity",
+          "readOnly": false,
+          "system": false
+        }
+      }
+    ],
+    "groups": [
+      "ALL"
+    ],
+    "owner": true,
+    "slug": "34bb7d0244_chaleur-extreme-rcp26-horizon-2030",
+    "categories": [],
+    "activeVersion": {
+      "id": "86edd40f-c811-4d07-b4dc-787766fe1c1c",
+      "dataset": "36a70384-1007-45e9-8d3d-a25703566f68",
+      "oClass": "80114fce-c4c1-49c4-83ba-4544be9c2a3f",
+      "lastModified": "2024-10-24T11:47:31.057165Z",
+      "version": 1,
+      "state": "ACTIVE",
+      "fileName": "ce_rcp26_2030.zip",
+      "productionDate": "2024-10-24T11:46:00Z",
+      "producer": "onepoint",
+      "additionalInformation": null
+    }
   }
 ]

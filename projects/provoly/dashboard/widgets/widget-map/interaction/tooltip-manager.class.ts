@@ -74,34 +74,38 @@ export class TooltipManager {
               offset: [9, 9]
             });
             this.map.addOverlay(this.popupOverlay);
-            this.popupContent.clear();
+
             const allTooltipValues = [...wmsFeatures, ...classicFeatures.map((cf: any) => cf.values)];
 
-            this.generateTooltip(allTooltipValues[tooltipIndex]).then((component) => {
-              this.tooltipNumber = allTooltipValues.length;
-              if (!component) {
-                popup.nativeElement.hidden = true;
-                this.popupOverlay?.setPosition([-9999999999, -9999999999]);
-              } else {
-                popup.nativeElement.hidden = false;
-                // Do not go outside the map
-                const rect = {
-                  height: 200 + (header ? WIDGET_HEADER_HEIGHT.value : 0) + TOOLTIP_PADDING,
-                  width: 300 + TOOLTIP_PADDING
-                };
-                if (!this.calculatedTooltipPosition) {
-                  let pixel = this.tooltipEvent?.pixel;
-                  if (!!pixel && pixel[0] + rect.width > size.width) {
-                    pixel[0] = size.width - rect.width;
+            if (allTooltipValues[tooltipIndex]) {
+              this.popupContent.clear();
+
+              this.generateTooltip(allTooltipValues[tooltipIndex]).then((component) => {
+                this.tooltipNumber = allTooltipValues.length;
+                if (!component) {
+                  popup.nativeElement.hidden = true;
+                  this.popupOverlay?.setPosition([-9999999999, -9999999999]);
+                } else {
+                  popup.nativeElement.hidden = false;
+                  // Do not go outside the map
+                  const rect = {
+                    height: 200 + (header ? WIDGET_HEADER_HEIGHT.value : 0) + TOOLTIP_PADDING,
+                    width: 300 + TOOLTIP_PADDING
+                  };
+                  if (!this.calculatedTooltipPosition) {
+                    let pixel = this.tooltipEvent?.pixel;
+                    if (!!pixel && pixel[0] + rect.width > size.width) {
+                      pixel[0] = size.width - rect.width;
+                    }
+                    if (!!pixel && pixel[1] + rect.height > size.height) {
+                      pixel[1] = size.height - rect.height;
+                    }
+                    this.calculatedTooltipPosition = this.map.getCoordinateFromPixel(pixel ?? [0, 0]);
                   }
-                  if (!!pixel && pixel[1] + rect.height > size.height) {
-                    pixel[1] = size.height - rect.height;
-                  }
-                  this.calculatedTooltipPosition = this.map.getCoordinateFromPixel(pixel ?? [0, 0]);
+                  this.popupOverlay?.setPosition(this.calculatedTooltipPosition);
                 }
-                this.popupOverlay?.setPosition(this.calculatedTooltipPosition);
-              }
-            });
+              });
+            }
           }
         })
     );
@@ -151,36 +155,27 @@ export class TooltipManager {
     }
   }
 
-  previous = '-';
-  previousPromise?: Promise<any> = undefined;
-
   generateTooltip(value: {
     oClass: string;
     coordinates: Pixel;
     values: any;
   }): Promise<ComponentRef<BaseTooltipComponent> | null> {
     if (value) {
-      if (this.previous !== JSON.stringify(value)) {
-        this.previous = JSON.stringify(value);
-        this.previousPromise = new Promise((resolve) => {
-          const component$ = this.tooltipFactoryService.generateTooltip(value.oClass, this.injector, this.popupContent);
-          this.previousTooltipSub?.unsubscribe();
-          this.previousTooltipSub = component$.subscribe((component) => {
-            if (component) {
-              if (this.previousTooltip) {
-                this.previousTooltip.destroy();
-              }
-              component.instance.data.item = value;
-              component.instance.popup = this.popup;
-              resolve(component);
+      return new Promise((resolve) => {
+        const component$ = this.tooltipFactoryService.generateTooltip(value.oClass, this.injector, this.popupContent);
+        this.previousTooltipSub?.unsubscribe();
+        this.previousTooltipSub = component$.subscribe((component) => {
+          if (component) {
+            if (this.previousTooltip) {
+              this.previousTooltip.destroy();
             }
-            resolve(null);
-          });
+            component.instance.data.item = value;
+            component.instance.popup = this.popup;
+            resolve(component);
+          }
+          resolve(null);
         });
-        return this.previousPromise;
-      } else {
-        return this.previousPromise!;
-      }
+      });
     } else {
       return Promise.resolve(null);
     }
