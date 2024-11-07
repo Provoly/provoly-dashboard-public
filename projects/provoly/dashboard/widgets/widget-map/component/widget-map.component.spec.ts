@@ -40,15 +40,12 @@ import { mapUtilsData } from '../utils/widget-map.utils.spec';
 import { DEFAULT_LAYER_GROUP, WidgetMapComponent } from './widget-map.component';
 import { WidgetMapUtils } from '@provoly/dashboard/widgets/widget-map';
 import { mockLayerGroups } from '@provoly/dashboard/mock/data/mockLayerGroups';
-import SpyInstance = jest.SpyInstance;
 import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 describe('WidgetMapComponent', () => {
   let component: WidgetMapComponent;
   let fixture: ComponentFixture<WidgetMapComponent>;
   let store: MockStore;
-  let snack: PrySnackbarService;
-  let storeSpy: SpyInstance;
 
   let warn: any;
 
@@ -179,10 +176,6 @@ describe('WidgetMapComponent', () => {
             {
               selector: ConfigSelectors.geoServerUrl,
               value: 'http://geoserver.url'
-            },
-            {
-              selector: DashboardSelectors.layerGroups,
-              value: [...mockLayerGroups] as LayerGroup[]
             }
           ]
         }),
@@ -206,11 +199,9 @@ describe('WidgetMapComponent', () => {
     }).compileComponents();
 
     store = TestBed.inject(MockStore);
-    snack = TestBed.inject(PrySnackbarService);
   });
 
   beforeEach(() => {
-    storeSpy = jest.spyOn(store, 'dispatch');
     fixture = TestBed.createComponent(WidgetMapComponent);
     component = fixture.componentInstance;
     component._manifest$ = of({
@@ -219,7 +210,8 @@ describe('WidgetMapComponent', () => {
       options: {
         style: 'a-style',
         layers: [{ type: 'heatmap', group: 'test-group' }, { type: 'marker' }, { type: 'point' }, { type: 'polygon' }],
-        tooltipMode: TooltipMode.CLICK
+        tooltipMode: TooltipMode.CLICK,
+        layerGroups: [...mockLayerGroups] as LayerGroup[]
       } as MapWidgetOptions,
       datasource: 'rs'
     });
@@ -253,10 +245,18 @@ describe('WidgetMapComponent', () => {
               intensityAttribute: 'intensity',
               intensityAsc: true,
               title: '@pry.widget.map.layerType.heatmap',
-              order: 0
+              order: 0,
+              group: DEFAULT_LAYER_GROUP
             }
           ],
-          tooltipMode: TooltipMode.CLICK
+          tooltipMode: TooltipMode.CLICK,
+          layerGroups: [
+            {
+              name: DEFAULT_LAYER_GROUP,
+              singleLayer: false,
+              visibleLayers: ['@pry.widget.map.layerType.heatmap']
+            }
+          ]
         }
       })
     );
@@ -275,7 +275,14 @@ describe('WidgetMapComponent', () => {
             order: 0
           }
         ],
-        tooltipMode: TooltipMode.CLICK
+        tooltipMode: TooltipMode.CLICK,
+        layerGroups: [
+          {
+            name: DEFAULT_LAYER_GROUP,
+            singleLayer: false,
+            visibleLayers: ['@pry.widget.map.layerType.heatmap']
+          }
+        ]
       });
     });
   });
@@ -296,10 +303,18 @@ describe('WidgetMapComponent', () => {
               type: 'marker',
               attribute: 'loc',
               title: '@pry.widget.map.layerType.marker',
-              order: 0
+              order: 0,
+              group: DEFAULT_LAYER_GROUP
             }
           ],
-          tooltipMode: TooltipMode.CLICK
+          tooltipMode: TooltipMode.CLICK,
+          layerGroups: [
+            {
+              name: DEFAULT_LAYER_GROUP,
+              singleLayer: false,
+              visibleLayers: ['@pry.widget.map.layerType.marker']
+            }
+          ]
         }
       })
     );
@@ -316,7 +331,14 @@ describe('WidgetMapComponent', () => {
             order: 0
           }
         ],
-        tooltipMode: TooltipMode.CLICK
+        tooltipMode: TooltipMode.CLICK,
+        layerGroups: [
+          {
+            name: DEFAULT_LAYER_GROUP,
+            singleLayer: false,
+            visibleLayers: ['@pry.widget.map.layerType.marker']
+          }
+        ]
       });
     });
   });
@@ -339,10 +361,18 @@ describe('WidgetMapComponent', () => {
               intensityAttribute: 'intensity',
               intensityAsc: true,
               title: '@pry.widget.map.layerType.bubble',
-              order: 0
+              order: 0,
+              group: DEFAULT_LAYER_GROUP
             }
           ],
-          tooltipMode: TooltipMode.CLICK
+          tooltipMode: TooltipMode.CLICK,
+          layerGroups: [
+            {
+              name: DEFAULT_LAYER_GROUP,
+              singleLayer: false,
+              visibleLayers: ['@pry.widget.map.layerType.bubble']
+            }
+          ]
         }
       })
     );
@@ -361,7 +391,14 @@ describe('WidgetMapComponent', () => {
             order: 0
           }
         ],
-        tooltipMode: TooltipMode.CLICK
+        tooltipMode: TooltipMode.CLICK,
+        layerGroups: [
+          {
+            name: DEFAULT_LAYER_GROUP,
+            singleLayer: false,
+            visibleLayers: ['@pry.widget.map.layerType.bubble']
+          }
+        ]
       });
     });
   });
@@ -392,6 +429,13 @@ describe('WidgetMapComponent', () => {
               type: 'heatmap',
               title: '@pry.widget.map.layerType.heatmap',
               order: 0
+            }
+          ],
+          layerGroups: [
+            {
+              name: DEFAULT_LAYER_GROUP,
+              singleLayer: false,
+              visibleLayers: ['@pry.widget.map.layerType.heatmap']
             }
           ]
         } as WidgetOptions,
@@ -488,7 +532,14 @@ describe('WidgetMapComponent', () => {
         }
       ],
       style: 'style1',
-      tooltipMode: 'click'
+      tooltipMode: 'click',
+      layerGroups: [
+        {
+          name: DEFAULT_LAYER_GROUP,
+          singleLayer: false,
+          visibleLayers: ['geoKey']
+        }
+      ]
     });
   });
 
@@ -539,7 +590,14 @@ describe('WidgetMapComponent', () => {
       ],
       style: 'style1',
       tooltipMode: 'click',
-      automaticLayers: true
+      automaticLayers: true,
+      layerGroups: [
+        {
+          name: DEFAULT_LAYER_GROUP,
+          singleLayer: false,
+          visibleLayers: ['resultset - loc', 'resultset - zone']
+        }
+      ]
     });
   });
 
@@ -590,12 +648,21 @@ describe('WidgetMapComponent', () => {
         {
           type: 'wms',
           background: true,
-          order: WidgetMapUtils.BACKGROUND_ORDER
+          order: WidgetMapUtils.BACKGROUND_ORDER,
+          group: DEFAULT_LAYER_GROUP,
+          title: '@pry.widget.map.layerType.wms'
         }
       ],
       style: 'style1',
       tooltipMode: 'click',
-      automaticLayers: true
+      automaticLayers: true,
+      layerGroups: [
+        {
+          name: 'DEFAULT',
+          singleLayer: false,
+          visibleLayers: ['resultset - loc', 'resultset - zone', '@pry.widget.map.layerType.wms']
+        }
+      ]
     });
   });
 
@@ -626,14 +693,15 @@ describe('WidgetMapComponent', () => {
 
     expect(results[results.length - 1]).toEqual({
       layers: [
-        { type: 'wms', paramLayer: '2', order: 3, title: '2' },
-        { type: 'wms', paramLayer: '3', order: 5.5, title: '3' },
-        { type: 'wms', paramLayer: '4', order: 8, title: '4' },
-        { type: 'wms', paramLayer: '5', order: 5003.5, title: '5' },
-        { type: 'wms', background: true, paramLayer: '1', order: 9999, title: '1' }
+        { type: 'wms', paramLayer: '2', order: 3, title: '2', group: DEFAULT_LAYER_GROUP },
+        { type: 'wms', paramLayer: '3', order: 5.5, title: '3', group: DEFAULT_LAYER_GROUP },
+        { type: 'wms', paramLayer: '4', order: 8, title: '4', group: DEFAULT_LAYER_GROUP },
+        { type: 'wms', paramLayer: '5', order: 5003.5, title: '5', group: DEFAULT_LAYER_GROUP },
+        { type: 'wms', background: true, paramLayer: '1', order: 9999, title: '1', group: DEFAULT_LAYER_GROUP }
       ],
       style: 'style1',
-      tooltipMode: 'click'
+      tooltipMode: 'click',
+      layerGroups: [{ name: DEFAULT_LAYER_GROUP, singleLayer: false, visibleLayers: ['2', '3', '4', '5', '1'] }]
     });
   });
 
@@ -658,13 +726,43 @@ describe('WidgetMapComponent', () => {
 
     expect(results[results.length - 1]).toEqual({
       layers: [
-        { type: 'heatmap', attribute: 'loc', order: 0, title: '@pry.widget.map.layerType.heatmap' },
-        { type: 'marker', attribute: 'loc', order: 1, title: '@pry.widget.map.layerType.marker' },
-        { type: 'point', attribute: 'loc', order: 2, title: '@pry.widget.map.layerType.point' },
-        { type: 'polygon', order: 3, title: '@pry.widget.map.layerType.polygon' }
+        {
+          type: 'heatmap',
+          attribute: 'loc',
+          order: 0,
+          title: '@pry.widget.map.layerType.heatmap',
+          group: DEFAULT_LAYER_GROUP
+        },
+        {
+          type: 'marker',
+          attribute: 'loc',
+          order: 1,
+          title: '@pry.widget.map.layerType.marker',
+          group: DEFAULT_LAYER_GROUP
+        },
+        {
+          type: 'point',
+          attribute: 'loc',
+          order: 2,
+          title: '@pry.widget.map.layerType.point',
+          group: DEFAULT_LAYER_GROUP
+        },
+        { type: 'polygon', order: 3, title: '@pry.widget.map.layerType.polygon', group: DEFAULT_LAYER_GROUP }
       ],
       style: 'style1',
-      tooltipMode: 'click'
+      tooltipMode: 'click',
+      layerGroups: [
+        {
+          name: 'DEFAULT',
+          singleLayer: false,
+          visibleLayers: [
+            '@pry.widget.map.layerType.heatmap',
+            '@pry.widget.map.layerType.marker',
+            '@pry.widget.map.layerType.point',
+            '@pry.widget.map.layerType.polygon'
+          ]
+        }
+      ]
     });
   });
 
@@ -690,13 +788,46 @@ describe('WidgetMapComponent', () => {
 
     expect(results[results.length - 1]).toEqual({
       layers: [
-        { type: 'heatmap', attribute: 'loc', order: 0, title: '@pry.widget.map.layerType.heatmap', fit: true },
-        { type: 'marker', attribute: 'loc', order: 1, title: '@pry.widget.map.layerType.marker', fit: true },
-        { type: 'point', attribute: 'loc', order: 2, title: '@pry.widget.map.layerType.point', fit: true },
-        { type: 'polygon', order: 3, title: '@pry.widget.map.layerType.polygon', fit: true }
+        {
+          type: 'heatmap',
+          attribute: 'loc',
+          order: 0,
+          title: '@pry.widget.map.layerType.heatmap',
+          fit: true,
+          group: DEFAULT_LAYER_GROUP
+        },
+        {
+          type: 'marker',
+          attribute: 'loc',
+          order: 1,
+          title: '@pry.widget.map.layerType.marker',
+          fit: true,
+          group: DEFAULT_LAYER_GROUP
+        },
+        {
+          type: 'point',
+          attribute: 'loc',
+          order: 2,
+          title: '@pry.widget.map.layerType.point',
+          fit: true,
+          group: DEFAULT_LAYER_GROUP
+        },
+        { type: 'polygon', order: 3, title: '@pry.widget.map.layerType.polygon', fit: true, group: DEFAULT_LAYER_GROUP }
       ],
       style: 'style1',
-      tooltipMode: 'click'
+      tooltipMode: 'click',
+      layerGroups: [
+        {
+          name: 'DEFAULT',
+          singleLayer: false,
+          visibleLayers: [
+            '@pry.widget.map.layerType.heatmap',
+            '@pry.widget.map.layerType.marker',
+            '@pry.widget.map.layerType.point',
+            '@pry.widget.map.layerType.polygon'
+          ]
+        }
+      ]
     });
   });
 
@@ -812,15 +943,19 @@ describe('WidgetMapComponent', () => {
       });
       it('if the DEFAULT group is being renamed, create a new group instead and transfer the visibleLayers', () => {
         // can't rename the default group since it's shared between all map widgets of the manifest
-        expect(component.layerGroups.find((g) => g.name === DEFAULT_LAYER_GROUP)?.visibleLayers.length).toEqual(1);
+        expect(
+          component.optionsCopy.layerGroups?.find((g) => g.name === DEFAULT_LAYER_GROUP)?.visibleLayers.length
+        ).toEqual(1);
 
         component.updateLayerGroupName(mockLayerGroups[0], { currentTarget: { value: 'newName' } } as unknown as Event);
 
-        expect(component.layerGroups.find((g) => g.name === DEFAULT_LAYER_GROUP)).toBeDefined();
-        expect(component.layerGroups.find((g) => g.name === DEFAULT_LAYER_GROUP)?.visibleLayers.length).toEqual(0);
+        expect(component.optionsCopy.layerGroups?.find((g) => g.name === DEFAULT_LAYER_GROUP)).toBeDefined();
+        expect(
+          component.optionsCopy.layerGroups?.find((g) => g.name === DEFAULT_LAYER_GROUP)?.visibleLayers.length
+        ).toEqual(0);
 
-        expect(component.layerGroups.find((g) => g.name === 'newName')).toBeDefined();
-        expect(component.layerGroups.find((g) => g.name === 'newName')?.visibleLayers.length).toEqual(1);
+        expect(component.optionsCopy.layerGroups?.find((g) => g.name === 'newName')).toBeDefined();
+        expect(component.optionsCopy.layerGroups?.find((g) => g.name === 'newName')?.visibleLayers.length).toEqual(1);
       });
     });
     describe('updateLayerGroupSingleLayer', () => {
@@ -829,7 +964,7 @@ describe('WidgetMapComponent', () => {
         const { name, singleLayer, visibleLayers } = mockLayerGroups[0];
         component.updateLayerGroupSingleLayer(mockLayerGroups[0], true);
         expect(spy).toHaveBeenCalledWith(mockLayerGroups[0], true, [visibleLayers[0]]);
-        expect(component.layerGroups.find((g) => g.name === name)?.visibleLayers.length).toBe(1);
+        expect(component.optionsCopy.layerGroups?.find((g) => g.name === name)?.visibleLayers.length).toBe(1);
       });
     });
     describe('changeTitle', () => {
@@ -839,9 +974,9 @@ describe('WidgetMapComponent', () => {
           component.optionsCopy.layers![2],
           mockLayerGroups[0]
         );
-        expect(component.layerGroups.find((g) => g.name === mockLayerGroups[0].name)?.visibleLayers[0]).toBe(
-          'my-layer'
-        );
+        expect(
+          component.optionsCopy.layerGroups?.find((g) => g.name === mockLayerGroups[0].name)?.visibleLayers[0]
+        ).toBe('my-layer');
       });
     });
     describe('removeEmptyLayerGroups', () => {
@@ -850,29 +985,27 @@ describe('WidgetMapComponent', () => {
           { title: 'layer1', attribute: 'attr1', group: 'group2', type: 'heatmap' },
           { title: 'layer2', attribute: 'attr2', group: 'DEFAULT', type: 'heatmap' }
         ];
-        component.layerGroups = [
+        component.optionsCopy.layerGroups = [
           { name: 'group1', singleLayer: false, visibleLayers: ['layer1'] },
           { name: 'group2', singleLayer: false, visibleLayers: [] },
           { name: 'group3', singleLayer: false, visibleLayers: [] },
           { name: 'DEFAULT', singleLayer: false, visibleLayers: [] }
         ];
 
-        expect(component.layerGroups.length).toBe(4);
+        expect(component.optionsCopy.layerGroups?.length).toBe(4);
         component.removeEmptyLayerGroups();
-        expect(component.layerGroups.length).toBe(2);
+        expect(component.optionsCopy.layerGroups?.length).toBe(2);
       });
       it('should never remove the DEFAULT group', () => {
-        component.optionsCopy.layers = [
-          { title: 'layer1', attribute: 'attr1', group: 'group1', type: 'heatmap' }
-        ];
-        component.layerGroups = [
+        component.optionsCopy.layers = [{ title: 'layer1', attribute: 'attr1', group: 'group1', type: 'heatmap' }];
+        component.optionsCopy.layerGroups = [
           { name: 'group1', singleLayer: false, visibleLayers: ['layer1'] },
           { name: 'DEFAULT', singleLayer: false, visibleLayers: [] }
         ];
 
-        expect(component.layerGroups.length).toBe(2);
+        expect(component.optionsCopy.layerGroups?.length).toBe(2);
         component.removeEmptyLayerGroups();
-        expect(component.layerGroups.length).toBe(2);
+        expect(component.optionsCopy.layerGroups?.length).toBe(2);
       });
     });
   });

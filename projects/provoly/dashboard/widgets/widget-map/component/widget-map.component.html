@@ -60,7 +60,7 @@
             {{ '@pry.widget.map.layerSettings.addLayerGroup' | i18n }}
           </button>
         </div>
-        <ng-container *ngFor="let group of layerGroups; let groupIdx = index">
+        <ng-container *ngFor="let group of optionsCopy.layerGroups; let groupIdx = index">
           <div *ngIf="isGroupUsedByWidgetLayers(group)" class="o-layer-settings__group">
             <div class="m-form-label-field o-layer-settings__group-title">
               <label class="a-label" for="map_layerGroupTitle-{{ groupIdx }}">
@@ -524,7 +524,7 @@
     <div class="m-map-pop-in -max-width-220" [class.-hidden]="!layersTabOpen" [style.top.px]="layersTop$ | async">
       <h4 class="a-h4">{{ '@pry.widget.map.layerSettings.selectLayers' | i18n }}</h4>
       <div class="m-map-pop-in__content" [style.max-height.px]="layersHeight$ | async">
-        @for (group of layerGroups$ | async; track group; let groupIdx = $index) {
+        @for (group of (options$ | async)?.layerGroups ?? []; track group; let groupIdx = $index) {
           @if (isGroupUsedByWidgetLayers(group)) {
             <div class="m-map-pop-in__title m-map-pop-in__group-title">
               <h5 class="a-h5">

@@ -6,7 +6,7 @@ import { DetailWidgetOptions } from './widget-detail-manifest.interface';
 import { GraphWidgetOptions } from './widget-graph-manifest.interface';
 import { IframeWidgetOptions } from './widget-iframe-manifest.interface';
 import { ImageWidgetOptions } from './widget-image-manifest.interface';
-import { LayerGroup, MapWidgetOptions } from './widget-map-manifest.interface';
+import { MapWidgetOptions } from './widget-map-manifest.interface';
 import { TableWidgetOptions } from './widget-table-manifest.interface';
 import { TemplateWidgetOptions } from './widget-template-manifest.interface';
 import { TileWidgetOptions } from './widget-tile-manifest.interface';
@@ -57,21 +57,10 @@ export interface DashboardManifest {
   widgets: WidgetManifest[];
 }
 
-export interface Payload {
-  filters: any[];
-}
-
-export interface Request {
-  url: string;
-  method: string;
-  payload: Payload;
-}
-
 export interface GlobalManifest {
   windows: DashboardManifest[];
   refreshRates?: { [key: string]: number };
   filters?: Filter[];
-  layerGroups?: LayerGroup[];
 }
 
 export interface WidgetManifest {

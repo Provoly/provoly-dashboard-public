@@ -13,7 +13,6 @@ import { Relation } from '../../core/model/relation.interface';
 import { OrderValue } from '../../core/model/result-order.interface';
 import { ResultSet, ResultSets } from '../../core/model/result-set.interface';
 import { GetCapabilitiesResponse } from './wms.service';
-import { LayerGroup } from '../../core/model/widget-map-manifest.interface';
 
 export type DashboardCellParams = {
   gridWidth: number;
@@ -255,11 +254,5 @@ export const DashboardActions = {
   loadPresentation: createAction(
     '[Dashboard] load presentation',
     props<{ presentation: ManifestDescription; viewMode: ViewMode }>()
-  ),
-  initDefaultLayerGroup: createAction('[Dashboard] init default layer group', props<{ layers?: string[] }>()),
-  updateLayerVisibility: createAction(
-    '[Dashboard] update visible layers on the layer group',
-    props<{ name: string; visibleLayers?: string | string[] }>()
-  ),
-  updateLayerGroups: createAction('[Dashboard] update all layer groups', props<{ layerGroups: LayerGroup[] }>())
+  )
 };

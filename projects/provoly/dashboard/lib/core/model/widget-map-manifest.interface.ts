@@ -17,6 +17,7 @@ export interface MapWidgetOptions {
   ignoreAutoLayer?: string[];
   automaticLayers?: boolean;
   slide?: boolean;
+  layerGroups?: LayerGroup[];
 }
 
 export type MapWidgetLayerOptions =

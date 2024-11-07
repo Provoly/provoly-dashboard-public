@@ -765,60 +765,6 @@ const internalReducer = createReducer<DashboardState>(
       ...state.manifests,
       loading: true
     }
-  })),
-  on(DashboardActions.initDefaultLayerGroup, (state, action) => ({
-    ...state,
-    manifests: {
-      ...state.manifests,
-      manifest: {
-        ...state.manifests.manifest,
-        layerGroups: state.manifests.manifest.layerGroups?.some((group) => group.name === 'DEFAULT')
-          ? state.manifests.manifest.layerGroups.map((group) =>
-              action.layers ? { ...group, visibleLayers: action.layers } : group
-            )
-          : [
-              ...(state.manifests.manifest.layerGroups ?? []),
-              {
-                name: 'DEFAULT',
-                singleLayer: false,
-                visibleLayers: action.layers ? action.layers : ([] as string[])
-              }
-            ]
-      }
-    }
-  })),
-  on(DashboardActions.updateLayerVisibility, (state, action) => ({
-    ...state,
-    manifests: {
-      ...state.manifests,
-      manifest: {
-        ...state.manifests.manifest,
-        layerGroups: [
-          ...(state.manifests.manifest.layerGroups ?? []).map((group) =>
-            group.name === action.name
-              ? {
-                  ...group,
-                  visibleLayers: action.visibleLayers
-                    ? typeof action.visibleLayers === 'string'
-                      ? [...group.visibleLayers, action.visibleLayers]
-                      : action.visibleLayers
-                    : group.visibleLayers
-                }
-              : group
-          )
-        ]
-      }
-    }
-  })),
-  on(DashboardActions.updateLayerGroups, (state, { layerGroups }) => ({
-    ...state,
-    manifests: {
-      ...state.manifests,
-      manifest: {
-        ...state.manifests.manifest,
-        layerGroups
-      }
-    }
   }))
 );
 

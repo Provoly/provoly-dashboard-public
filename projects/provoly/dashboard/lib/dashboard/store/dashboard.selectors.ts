@@ -160,7 +160,6 @@ const wmsFeatures = (componentId: string) => {
 
 const displayOptions = createSelector(feature, (state: DashboardState) => state?.display ?? BASE_DISPLAY_OPTIONS);
 const capabilities = createSelector(feature, (state: DashboardState) => state?.capabilities);
-const layerGroups = createSelector(feature, (state: DashboardState) => state?.manifests.manifest.layerGroups ?? []);
 
 export const DashboardSelectors = {
   feature,
@@ -198,6 +197,5 @@ export const DashboardSelectors = {
   datasourceFilters,
   wmsFeatures,
   displayOptions,
-  capabilities,
-  layerGroups
+  capabilities
 };

@@ -214,8 +214,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   attributions$: Observable<boolean>;
   olZoomElement$ = new BehaviorSubject<HTMLDivElement | null>(null);
   previousLayers: BaseLayer[] = [];
-  layerGroups$: Observable<LayerGroup[]>;
-  layerGroups: LayerGroup[] = [];
   layerSettingsExpandedState: { [key: string]: boolean } = {};
 
   constructor(
@@ -522,6 +520,23 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           }
         });
 
+        autoOptions.layers = autoOptions.layers.map((layer) => ({
+          ...layer,
+          title: layer.title ?? this.translateService.instant(`@pry.widget.map.layerType.${layer.type}`, { ...layer }),
+          group: layer.group ?? DEFAULT_LAYER_GROUP
+        }));
+
+        autoOptions.layerGroups = autoOptions.layerGroups ?? [];
+        if (!autoOptions.layerGroups.find((g) => g.name === DEFAULT_LAYER_GROUP)) {
+          autoOptions.layerGroups.push({
+            name: 'DEFAULT',
+            singleLayer: false,
+            visibleLayers: autoOptions.layers
+              ? autoOptions.layers.filter((layer) => layer.group === DEFAULT_LAYER_GROUP).map((layer) => layer.title)
+              : ([] as string[])
+          } as LayerGroup);
+        }
+
         return autoOptions;
       }),
       distinctUntilChanged((p, c) => equal(p, c))
@@ -533,26 +548,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         this.optionsCopy.layers?.forEach(
           (layer) => (this.layerSettingsExpandedState[layer.title ?? 'MISSING TITLE'] = false)
         );
-        if (
-          this.optionsCopy.layers &&
-          this.optionsCopy.layers.some((layer) => !layer.group || layer.group === DEFAULT_LAYER_GROUP)
-        )
-          this.optionsCopy.layers
-            ?.filter(
-              (l) =>
-                (!l.group || l.group === DEFAULT_LAYER_GROUP) &&
-                !this.layerGroups
-                  .find((group) => group.name === DEFAULT_LAYER_GROUP)
-                  ?.visibleLayers.includes(l.title ?? 'MISSING TITLE')
-            )
-            .forEach((layer) => {
-              this.store.dispatch(
-                DashboardActions.updateLayerVisibility({
-                  name: DEFAULT_LAYER_GROUP,
-                  visibleLayers: layer.title ?? 'MISSING TITLE'
-                })
-              );
-            });
         this.optionsCopy.layers = this.optionsCopy.layers?.map((layer) => ({
           ...layer,
           group: layer.group ?? DEFAULT_LAYER_GROUP
@@ -643,23 +638,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       map((options) =>
         (options.layers ?? []).map((layer) => !!layer.slide && layer.slide !== 'all').reduce((a, b) => a || b, false)
       )
-    );
-
-    this.layerGroups$ = this.store.select(DashboardSelectors.layerGroups);
-    this.subscriptions.add(
-      this.layerGroups$.subscribe((layerGroups) => {
-        this.layerGroups = layerGroups;
-      })
-    );
-    this.store.dispatch(
-      DashboardActions.initDefaultLayerGroup({
-        layers: this.optionsCopy.layers
-          ?.filter((layer) => layer.group === undefined)
-          .map(
-            (layer) =>
-              layer.title ?? this.translateService.instant(`@pry.widget.map.layerType.${layer.type}`, { ...layer })
-          )
-      })
     );
   }
 
@@ -761,8 +739,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         ([resultSet, options, classes, additionalLayers, itemStyles, filters, fields]) =>
           !!resultSet && !!options && !!classes && !!fields
       ),
-      withLatestFrom(this.layerGroups$),
-      map(([[resultSet, options, classes, additionalLayers, itemStyles, filters, fields], layerGroups]) => {
+      map(([resultSet, options, classes, additionalLayers, itemStyles, filters, fields]) => {
         let hasRelationLayer = null as unknown as VectorLayer<VectorSource<any>>;
 
         const layers = (options?.layers || [])
@@ -885,7 +862,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         }
         layers.push(...additionalLayers);
 
-        const visibleLayers = layerGroups.map((group) => group.visibleLayers).flat();
+        const visibleLayers = options.layerGroups!.map((group) => group.visibleLayers).flat();
         layers.forEach((layer, idx) => {
           if (!visibleLayers.includes(layer.get('title'))) {
             layer.setVisible(false);
@@ -1290,9 +1267,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   updateLayerGroup(group: LayerGroup | string, singleLayer?: boolean, visibleLayers?: string[] | string) {
-    const layerGroup = typeof group === 'string' ? this.layerGroups.find((g) => g.name === group) : group;
-    const groupIndex = this.layerGroups.findIndex((g) => g.name === layerGroup!.name);
-    this.layerGroups = this.layerGroups.map((g, i) =>
+    const layerGroup = typeof group === 'string' ? this.optionsCopy.layerGroups!.find((g) => g.name === group) : group;
+    const groupIndex = this.optionsCopy.layerGroups!.findIndex((g) => g.name === layerGroup!.name);
+    this.optionsCopy.layerGroups = this.optionsCopy.layerGroups!.map((g, i) =>
       i === groupIndex
         ? {
             ...g,
@@ -1311,8 +1288,8 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.updateLayerGroup(
       group,
       undefined,
-      this.layerGroups
-        .filter((g) => g.name === group.name)
+      this.optionsCopy
+        .layerGroups!.filter((g) => g.name === group.name)
         .map((g, i) => g.visibleLayers.map((l) => (l === layer.title ? newTitle : l)))
         .flat()
     );
@@ -1323,7 +1300,6 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   emitManifest() {
     this.removeEmptyLayerGroups();
-    this.store.dispatch(DashboardActions.updateLayerGroups({ layerGroups: this.layerGroups }));
     this.manifestModified.emit({
       widgetIndex: this.widgetIndex,
       manifest: {
@@ -1498,11 +1474,9 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         });
       if (_layer) {
         olLayer?.setVisible(true);
-        this.store.dispatch(
-          DashboardActions.updateLayerVisibility({ name: group.name, visibleLayers: [_layer.title!] })
-        );
+        this.updateLayerVisibility(group.name, [_layer.title!]);
       } else {
-        this.store.dispatch(DashboardActions.updateLayerVisibility({ name: group.name, visibleLayers: [] }));
+        this.updateLayerVisibility(group.name, []);
       }
     } else {
       olLayer?.setVisible(!olLayer?.getVisible());
@@ -1510,7 +1484,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
       const visibleLayers = group.visibleLayers.includes(_layer?.title!)
         ? group.visibleLayers.filter((layer) => layer !== _layer?.title)
         : [...group.visibleLayers, _layer?.title!];
-      this.store.dispatch(DashboardActions.updateLayerVisibility({ name: group.name, visibleLayers }));
+      this.updateLayerVisibility(group.name, visibleLayers);
     }
     this.map.updateSize();
   }
@@ -1519,8 +1493,27 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     if (group && group.visibleLayers) {
       return group.visibleLayers.includes(layer.title ?? '');
     } else {
-      return !!this.layerGroups.find((g) => g.name === layer.group)?.visibleLayers.includes(layer.title ?? '');
+      return !!this.optionsCopy
+        .layerGroups!.find((g) => g.name === layer.group)
+        ?.visibleLayers.includes(layer.title ?? '');
     }
+  }
+
+  updateLayerVisibility(name: string, visibleLayers: string[] | string) {
+    this.optionsCopy.layerGroups = [
+      ...(this.optionsCopy.layerGroups ?? []).map((group) =>
+        group.name === name
+          ? {
+              ...group,
+              visibleLayers: visibleLayers
+                ? typeof visibleLayers === 'string'
+                  ? [...group.visibleLayers, visibleLayers]
+                  : visibleLayers
+                : group.visibleLayers
+            }
+          : group
+      )
+    ];
   }
 
   changeAutoLayer($event: any) {
@@ -1642,36 +1635,38 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   addLayerGroup() {
-    this.layerGroups = [
-      ...this.layerGroups,
+    this.optionsCopy.layerGroups = [
+      ...this.optionsCopy.layerGroups!,
       {
         name:
-          this.translateService.instant('@pry.widget.map.layerSettings.group') + ' ' + (this.layerGroups.length + 1),
+          this.translateService.instant('@pry.widget.map.layerSettings.group') +
+          ' ' +
+          (this.optionsCopy.layerGroups!.length + 1),
         singleLayer: false,
         visibleLayers: []
       }
     ];
-    const group = this.layerGroups[this.layerGroups.length - 1];
+    const group = this.optionsCopy.layerGroups[this.optionsCopy.layerGroups.length - 1];
     this.addLayer(group);
   }
 
   updateLayerGroupName(group: LayerGroup, $event: Event) {
     const [name, singleLayer, visibleLayers] = [group.name, group.singleLayer, group.visibleLayers];
-    const groupIndex = this.layerGroups.findIndex((g) => g.name === group.name);
+    const groupIndex = this.optionsCopy.layerGroups!.findIndex((g) => g.name === group.name);
     const newName = ($event.currentTarget as HTMLInputElement).value;
 
     if (name === DEFAULT_LAYER_GROUP) {
       const layersToTransfer =
         this.optionsCopy.layers?.filter((layer) => layer.group === DEFAULT_LAYER_GROUP).map((l) => l.title) ?? [];
-      this.layerGroups = [
-        ...this.layerGroups,
+      this.optionsCopy.layerGroups = [
+        ...this.optionsCopy.layerGroups!,
         {
           name: newName,
           singleLayer,
           visibleLayers: visibleLayers!.filter((l) => layersToTransfer.includes(l))
         }
       ];
-      this.layerGroups = this.layerGroups.map((g, i) =>
+      this.optionsCopy.layerGroups = this.optionsCopy.layerGroups.map((g, i) =>
         i === groupIndex
           ? {
               name: DEFAULT_LAYER_GROUP,
@@ -1681,7 +1676,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           : g
       );
     } else {
-      this.layerGroups = this.layerGroups.map((g, i) =>
+      this.optionsCopy.layerGroups = this.optionsCopy.layerGroups!.map((g, i) =>
         i === groupIndex ? { name: newName, singleLayer, visibleLayers } : g
       );
     }
@@ -1703,7 +1698,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   deleteLayerGroup(name: string) {
-    this.layerGroups = this.layerGroups.filter((group) => group.name !== name);
+    this.optionsCopy.layerGroups = this.optionsCopy.layerGroups!.filter((group) => group.name !== name);
     this.optionsCopy.layers = this.optionsCopy.layers?.map((layer) =>
       layer.group == name ? { ...layer, group: DEFAULT_LAYER_GROUP } : layer
     );
@@ -1725,7 +1720,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.updateLayerGroup(
       movedLayer.group!,
       undefined,
-      this.layerGroups
+      this.optionsCopy.layerGroups
         ?.find((group) => group.name === movedLayer.group!)
         ?.visibleLayers.filter((layer) => layer !== movedLayer.title)
     );
@@ -1771,7 +1766,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
   updateLayerOrder() {
     let order = 1;
-    this.layerGroups?.forEach((group) => {
+    this.optionsCopy.layerGroups?.forEach((group) => {
       const groupLayers = this.optionsCopy.layers?.filter((layer) => layer.group === group.name);
       if (groupLayers) {
         groupLayers.forEach((layer) => (layer.order = order++));
@@ -1784,7 +1779,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
   }
 
   removeEmptyLayerGroups() {
-    this.layerGroups = this.layerGroups.filter(
+    this.optionsCopy.layerGroups = this.optionsCopy.layerGroups!.filter(
       (group) =>
         this.optionsCopy.layers?.some((layer) => layer.group === group.name) || group.name === DEFAULT_LAYER_GROUP
     );
