@@ -34,7 +34,6 @@ export class SearchEffects {
       filter(([_, rank]) => rank === 0),
       filter(([props, rank]) => props.id !== DEFAULT_NAMED_QUERY_ID && props.id !== EXPLORE_NAMED_QUERY_ID),
       distinctUntilChanged((p, c) => equal(p, c)),
-      debounceTime(100),
       mergeMap(([props, rank, quickOrder, rs]) =>
         this.searchService
           .getItems(props.id, quickOrder[props.id], props.excludeGeo, props.next ? rs[props.id].searchAfter : undefined)
