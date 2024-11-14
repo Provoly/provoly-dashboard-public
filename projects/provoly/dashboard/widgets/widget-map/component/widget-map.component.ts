@@ -1298,7 +1298,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     this.layerSettingsExpandedState[newTitle] = true;
   }
 
-  emitManifest() {
+  override emitManifest() {
     this.removeEmptyLayerGroups();
     this.manifestModified.emit({
       widgetIndex: this.widgetIndex,

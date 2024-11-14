@@ -667,7 +667,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
     }
   }
 
-  emitManifest() {
+  override emitManifest() {
     this.manifestModified.emit({
       widgetIndex: this.widgetIndex,
       manifest: {

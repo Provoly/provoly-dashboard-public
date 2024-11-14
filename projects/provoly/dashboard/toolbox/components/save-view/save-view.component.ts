@@ -92,6 +92,7 @@ export class SaveViewComponent extends ToolboxActionComponent {
 
   save() {
     this.store.dispatch(DashboardActions.requestAllRoutes());
+    this.store.dispatch(DashboardActions.requestManifestsToEmit());
     // Give time for routes to be updated
     setTimeout(() => {
       let presentation = {
@@ -122,7 +123,7 @@ export class SaveViewComponent extends ToolboxActionComponent {
         })
       );
       this.mode = 'directSave';
-    }, 200);
+    }, 1000); // Wait for routes and all widget manifests to be updated
     this.overlayRefSaveAs?.dispose();
     this.closeModals();
   }

@@ -134,7 +134,7 @@ export class WidgetTileComponent extends DataWidgetComponent {
     return { items: { [item.oClass]: [item] }, relations: [] };
   }
 
-  emitManifest() {
+  override emitManifest() {
     this.manifestModified.emit({
       widgetIndex: this.widgetIndex,
       manifest: {

@@ -45,7 +45,7 @@ export class WidgetTemplateComponent extends DataWidgetComponent {
     );
   }
 
-  emitManifest() {
+  override emitManifest() {
     this.manifestModified.emit({
       widgetIndex: this.widgetIndex,
       manifest: { ...this.manifest, options: this.optionsCopy }

@@ -25,7 +25,7 @@ export class WidgetIframeComponent extends BaseWidgetComponent {
     el: ElementRef
   ) {
     super(store, el);
-    this.options$ = this.manifest$.pipe(map((manifest) => ({ src: '', ...manifest.options } as IframeWidgetOptions)));
+    this.options$ = this.manifest$.pipe(map((manifest) => ({ src: '', ...manifest.options }) as IframeWidgetOptions));
     this.src$ = this.options$.pipe(
       map((options) =>
         !!options && !!options.src ? domSanitizer.bypassSecurityTrustResourceUrl(options.src) : undefined
@@ -64,7 +64,7 @@ export class WidgetIframeComponent extends BaseWidgetComponent {
     this.optionsCopy.src = $event.currentTarget.value;
   }
 
-  emitManifest() {
+  override emitManifest() {
     this.manifestModified.emit({
       widgetIndex: this.widgetIndex,
       manifest: { ...this.manifest, options: this.optionsCopy }

@@ -263,7 +263,7 @@ export class WidgetAnalyticComponent extends DataWidgetComponent {
     );
   }
 
-  emitManifest() {
+  override emitManifest() {
     this.manifestModified.emit({
       widgetIndex: this.widgetIndex,
       manifest: { ...this.manifest, options: this.optionsCopy }

@@ -662,7 +662,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
     return sort ? { sort: { field: sort.value, order: sort.direction + 'ending' } } : {};
   }
 
-  emitManifest() {
+  override emitManifest() {
     this.manifestModified.emit({
       widgetIndex: this.widgetIndex,
       manifest: {

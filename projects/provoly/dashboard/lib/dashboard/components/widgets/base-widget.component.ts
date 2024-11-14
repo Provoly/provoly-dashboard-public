@@ -53,7 +53,10 @@ export class BaseWidgetComponent extends SubscriptionnerDirective implements OnD
     return this.widgetIndex$.getValue();
   }
 
-  constructor(public store: Store<any>, protected el: ElementRef) {
+  constructor(
+    public store: Store<any>,
+    protected el: ElementRef
+  ) {
     super();
     this.manifest$ = this.observableList$.pipe(
       combineLatestWith(this.staticManifest$),
@@ -71,6 +74,8 @@ export class BaseWidgetComponent extends SubscriptionnerDirective implements OnD
       debounceTime(100),
       distinctUntilChanged((p, c) => p.width === c.width && p.height === c.height)
     );
+
+    document.addEventListener('emit-manifest', () => this.emitManifest());
   }
 
   ngAfterViewChecked(): void {
@@ -84,5 +89,9 @@ export class BaseWidgetComponent extends SubscriptionnerDirective implements OnD
 
   changeWidgetTitle($event: string) {
     this.manifest.title = $event;
+  }
+
+  emitManifest() {
+    console.warn('Emit manifest not implemented');
   }
 }

@@ -128,6 +128,7 @@ export const DashboardActions = {
     props<{ id?: string | string[]; widgetType: string; additionalOptions?: any }>()
   ),
   requestAllRoutes: createAction('[Dashboard] (bus) requesting route update'),
+  requestManifestsToEmit: createAction('[Dashboard] (bus) pre-save manifest, asking all widgets to emit'),
   updateRouteManifest: createAction('[Dashboard] (bus) updating route', props<{ sender?: string; route: string }>()),
   fetchManifestsList: createAction('[Dashboard] (bus) fetching available manifests'),
   setRefreshRate: createAction('[Dashboard] (bus) setting refreshRate', props<{ id: string; rate: number }>()),

@@ -252,7 +252,7 @@ export class WidgetTableComponent extends DataWidgetComponent {
     this.isOpen = !this.isOpen;
   }
 
-  emitManifest() {
+  override emitManifest() {
     this.manifestModified.emit({
       widgetIndex: this.widgetIndex,
       manifest: { ...this.manifest, options: this.optionsCopy }

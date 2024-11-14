@@ -132,7 +132,7 @@ export class WidgetVegaComponent extends DataWidgetComponent implements AfterVie
     });
   }
 
-  emitManifest() {
+  override emitManifest() {
     this.manifestModified.emit({
       widgetIndex: this.widgetIndex,
       manifest: { ...this.manifest, options: this.optionsCopy }

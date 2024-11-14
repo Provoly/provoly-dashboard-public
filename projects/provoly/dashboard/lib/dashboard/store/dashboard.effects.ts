@@ -188,6 +188,15 @@ export class DashboardEffects {
     )
   );
 
+  requestManifestsToEmit$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(DashboardActions.requestManifestsToEmit),
+        tap(() => document.dispatchEvent(new CustomEvent('emit-manifest')))
+      ),
+    { dispatch: false }
+  );
+
   assertResultSets$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
