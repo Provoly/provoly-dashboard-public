@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, debounceTime, EMPTY, filter, map, mergeMap, of, withLatestFrom } from 'rxjs';
+import { catchError, debounceTime, EMPTY, filter, groupBy, map, mergeMap, of, switchMap, withLatestFrom } from 'rxjs';
 import { DashboardActions } from '../../../dashboard/store/dashboard.actions';
 import { DashboardSelectors } from '../../../dashboard/store/dashboard.selectors';
 import { MonoClassSearchPayload } from '../../model/search-mono-class.model';
@@ -34,20 +34,31 @@ export class SearchEffects {
       filter(([_, rank]) => rank === 0),
       filter(([props, rank]) => props.id !== DEFAULT_NAMED_QUERY_ID && props.id !== EXPLORE_NAMED_QUERY_ID),
       distinctUntilChanged((p, c) => equal(p, c)),
-      mergeMap(([props, rank, quickOrder, rs]) =>
-        this.searchService
-          .getItems(props.id, quickOrder[props.id], props.excludeGeo, props.next ? rs[props.id].searchAfter : undefined)
-          .pipe(
-            map((resultSet) =>
-              SearchActions.searchSuccess({
-                resultSet,
-                id: props.id,
-                params: this.searchService.getItemsSerializedParams(props.id, quickOrder),
-                next: props.next
-              })
-            ),
-            catchError((error) => [SearchActions.searchFailure({ error, id: props.id })])
+      groupBy(([props, rank, quickOrder, rs]) => props.id),
+      mergeMap((group$) =>
+        group$.pipe(
+          debounceTime(100),
+          switchMap(([props, rank, quickOrder, rs]) =>
+            this.searchService
+              .getItems(
+                props.id,
+                quickOrder[props.id],
+                props.excludeGeo,
+                props.next ? rs[props.id].searchAfter : undefined
+              )
+              .pipe(
+                map((resultSet) =>
+                  SearchActions.searchSuccess({
+                    resultSet,
+                    id: props.id,
+                    params: this.searchService.getItemsSerializedParams(props.id, quickOrder),
+                    next: props.next
+                  })
+                ),
+                catchError((error) => [SearchActions.searchFailure({ error, id: props.id })])
+              )
           )
+        )
       )
     )
   );
