@@ -2245,5 +2245,51 @@
         }
       ]
     }
+  },
+  {
+    "name": "multi couche map",
+    "description": "",
+    "manifest": {
+      "windows": [
+        {
+          "widgets": [
+            {
+              "type": "map",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "height": 12,
+                "width": 12
+              },
+              "options": {
+                "automaticLayers": true,
+                "fit": true
+              },
+              "datasource": ["06406e7e-37cd-41ce-b5fc-36d233e5ae5c", "37e084ee-f714-4dc3-afe5-5a7cd203986c"]
+            }
+          ],
+          "route": "/dashboard"
+        }
+      ],
+      "filters": [
+        {
+          "id": "a7f2674c-39de-4f58-ac98-214d1f28282b",
+          "name": "mon filtre",
+          "type": "autocomplete",
+          "attributes": [
+            {
+              "id": "0d43723b-2e79-48cb-a2e8-0d25640b20b4",
+              "customId": "0d43723b-2e79-48cb-a2e8-0d25640b20b4@37e084ee-f714-4dc3-afe5-5a7cd203986c",
+              "technicalName": "nom_commun",
+              "label": "Commune / Limites Administratives",
+              "datasource": "37e084ee-f714-4dc3-afe5-5a7cd203986c",
+              "type": "keyword"
+            }
+          ],
+          "operator": "EQUALS",
+          "value": "BORDEAUX"
+        }
+      ]
+    }
   }
 ]

@@ -197,6 +197,13 @@ export class DashboardEffects {
     { dispatch: false }
   );
 
+  dispatchFilter$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DashboardActions.dispatchFilters),
+      map(() => DashboardActions.requestManifestsToEmit())
+    )
+  );
+
   assertResultSets$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
