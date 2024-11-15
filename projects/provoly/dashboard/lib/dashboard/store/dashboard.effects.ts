@@ -212,7 +212,9 @@ export class DashboardEffects {
       ),
       mergeMap(([action, manifest, resultSets, resultSetsParams, quickOrder]) => {
         const manifestToCheck: GlobalManifest =
-          action.type === DashboardActions.assertResultSets.type && action.staticManifest
+          (action.type === DashboardActions.assertResultSets.type ||
+            action.type === DashboardActions.dispatchFilters.type) &&
+          action.staticManifest
             ? { windows: [action.staticManifest] }
             : manifest;
 

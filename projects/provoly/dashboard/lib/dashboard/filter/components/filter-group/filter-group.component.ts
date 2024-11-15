@@ -26,7 +26,7 @@ export class FilterGroupComponent {
 
   filter() {
     this.apply$.next();
-    this.store.dispatch(DashboardActions.dispatchFilters());
+    this.store.dispatch(DashboardActions.dispatchFilters({}));
   }
 
   clearFilters() {

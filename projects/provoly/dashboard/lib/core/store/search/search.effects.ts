@@ -33,7 +33,6 @@ export class SearchEffects {
       ),
       filter(([_, rank]) => rank === 0),
       filter(([props, rank]) => props.id !== DEFAULT_NAMED_QUERY_ID && props.id !== EXPLORE_NAMED_QUERY_ID),
-      distinctUntilChanged((p, c) => equal(p, c)),
       groupBy(([props, rank, quickOrder, rs]) => props.id),
       mergeMap((group$) =>
         group$.pipe(
