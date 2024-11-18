@@ -536,13 +536,13 @@
                 <div class="m-map-pop-in__title" [class.-hidden]="!layersTabOpen">
                   <input
                     type="radio"
-                    [name]="group.name"
-                    id="radio-layer-group-{{ groupIdx }}"
+                    [name]="id + '-' + group.name"
+                    id="{{ id }}-radio-layer-group-{{ groupIdx }}"
                     [ngModel]="group.visibleLayers.length"
                     [value]="0"
                     (change)="changeVisibility(group)"
                   />
-                  <label class="a-label" for="radio-layer-group-{{ groupIdx }}">{{
+                  <label class="a-label" for="{{ id }}-radio-layer-group-{{ groupIdx }}">{{
                     '@pry.widget.map.layerSettings.noLayer' | i18n
                   }}</label>
                 </div>
@@ -551,13 +551,13 @@
                     <div class="m-map-pop-in__title" [class.-hidden]="!layersTabOpen">
                       <input
                         type="radio"
-                        [name]="group.name"
-                        id="radio-{{ group.name }}-layer-{{ index }}"
+                        [name]="id + '-' + group.name"
+                        id="{{ id }}-radio-{{ group.name }}-layer-{{ index }}"
                         [ngModel]="group.visibleLayers[0]"
                         [value]="layer.title"
                         (change)="changeVisibility(group, layer)"
                       />
-                      <label class="a-label" for="radio-{{ group.name }}-layer-{{ index }}">{{
+                      <label class="a-label" for="{{ id }}-radio-{{ group.name }}-layer-{{ index }}">{{
                         layer.title ?? ('@pry.widget.map.missingTitle' | i18n)
                       }}</label>
                     </div>
