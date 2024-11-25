@@ -1,13 +1,15 @@
 name: Sonar
 
 on:
+  pull_request:
+  push:
   workflow_dispatch:
   schedule:
     - cron: '30 0 * * *'
 
 jobs:
   sonar:
-    runs-on: provoly-runner
+    runs-on: provoly-arc-runner-on-rancher
     container: "${{ vars.REGISTRY_URL }}/docker-mirror/library/node:18-bullseye"
     steps:
       - name: Checkout repository
