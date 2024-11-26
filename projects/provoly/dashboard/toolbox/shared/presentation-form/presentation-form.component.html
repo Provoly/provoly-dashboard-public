@@ -55,7 +55,7 @@
     <div class="o-file-input">
       <pry-select-image
         id="presentation_image"
-        (changed)="image = $event"
+        (changed)="onImageChanged($event)"
         [iconUrl]="image"
         [mode]="type"
       ></pry-select-image>

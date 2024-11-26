@@ -128,4 +128,9 @@ export class PresentationFormComponent extends SubscriptionnerDirective implemen
       image: this.image
     };
   }
+
+  onImageChanged($event: string) {
+    this.image = $event;
+    this.formValue.next(this.getFormValue());
+  }
 }
