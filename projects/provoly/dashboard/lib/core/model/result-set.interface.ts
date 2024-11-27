@@ -5,6 +5,8 @@ export type ResultSets = { [key: string]: ResultSet };
 
 export interface ResultSet {
   items: { [classId: string]: Item[] };
+  sourceItems?: { [classId: string]: Item[] };
+  destinationItems?: { [classId: string]: Item[] };
   relations: Relation[];
   autoRefreshInterval?: number;
   merged?: number;

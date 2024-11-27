@@ -11,8 +11,6 @@ import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from './search.constan
 import { SearchService } from './search.service';
 import { WidgetFactoryService } from '../../../dashboard/components/widgets/widget-instanciator/widget-factory.service';
 import { WidgetManifest } from '../../model/manifest.interface';
-import { distinctUntilChanged } from 'rxjs/operators';
-import equal from 'fast-deep-equal/es6';
 
 @Injectable()
 export class SearchEffects {
@@ -43,7 +41,8 @@ export class SearchEffects {
                 props.id,
                 quickOrder[props.id],
                 props.excludeGeo,
-                props.next ? rs[props.id].searchAfter : undefined
+                props.next ? rs[props.id].searchAfter : undefined,
+                props.linkedItems
               )
               .pipe(
                 map((resultSet) =>
@@ -94,8 +93,12 @@ export class SearchEffects {
     this.actions$.pipe(
       ofType(SearchActions.search),
       mergeMap(
-        (props: { payload: MonoClassSearchPayload | MultiClassSearchPayload | FullTextSearchPayload; id?: string }) =>
-          this.searchService.search(props.payload).pipe(
+        (props: {
+          payload: MonoClassSearchPayload | MultiClassSearchPayload | FullTextSearchPayload;
+          id?: string;
+          linkedItems?: ('destination' | 'source')[];
+        }) =>
+          this.searchService.search(props.payload, props.id, props.linkedItems).pipe(
             map((resultSet) => SearchActions.searchSuccess({ resultSet, id: props.id })),
             catchError((error) => [SearchActions.searchFailure({ error, id: props.id })])
           )

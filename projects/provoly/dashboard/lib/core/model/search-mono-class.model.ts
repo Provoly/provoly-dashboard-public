@@ -49,11 +49,20 @@ export interface MonoClassSearchPayload {
   type: NamedQueryTypes.MONO_CLASS;
   oClass: string;
   icon?: string;
-  condition: Condition;
-  sort: {
+  condition?: Condition;
+  sort?: {
     attribute: string;
     direction: string;
   };
+  withRelation?:
+    | {
+        destination: string;
+        relationType: string;
+      }
+    | {
+        source: string;
+        relationType: string;
+      };
   limit?: number;
 }
 

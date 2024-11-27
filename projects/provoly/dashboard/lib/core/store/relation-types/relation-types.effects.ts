@@ -82,6 +82,18 @@ export class RelationTypesEffects {
     )
   );
 
+  deleteRelation$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RelationTypesActions.deleteRelation),
+      mergeMap((action) =>
+        this.service.deleteRelation(action.from, action.to, action.typeId).pipe(
+          map((relation) => DashboardActions.removeRelationsFromResultSets({ relation })),
+          catchError((error) => [RelationTypesActions.createRelationFailure({ error })])
+        )
+      )
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private service: RelationTypesService,

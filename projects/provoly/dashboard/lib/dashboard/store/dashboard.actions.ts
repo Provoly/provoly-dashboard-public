@@ -175,6 +175,10 @@ export const DashboardActions = {
     '[Dashboard] (bus) add relations to resultSet',
     props<{ relations: Relation[] }>()
   ),
+  removeRelationsFromResultSets: createAction(
+    '[Dashboard] (bus) remove relations from resultSet',
+    props<{ relation: Relation }>()
+  ),
   addItemToResultSets: createAction(
     '[Dashboard] (bus) add item to resultSet',
     props<{ item: Item; resultSet?: string }>()

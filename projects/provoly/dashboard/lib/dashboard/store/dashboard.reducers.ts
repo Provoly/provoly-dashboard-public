@@ -475,6 +475,32 @@ const internalReducer = createReducer<DashboardState>(
       }
     };
   }),
+  on(DashboardActions.removeRelationsFromResultSets, (state, action) => {
+    const updatedResultSets = JSON.parse(JSON.stringify(state.results.resultSets));
+
+    Object.keys(updatedResultSets).forEach((rsId) => {
+      const isConcerned = Object.keys(updatedResultSets[rsId].items).map((classId) => {
+        return updatedResultSets[rsId].items[classId].map(
+          (item: Item) => item.id === action.relation.source || item.id === action.relation.destination
+        );
+      });
+      if (isConcerned) {
+        updatedResultSets[rsId].relations.filter(
+          (rel: Relation) =>
+            rel.relationType !== action.relation.relationType ||
+            rel.source !== action.relation.source ||
+            rel.destination !== action.relation.destination
+        );
+      }
+    });
+    return {
+      ...state,
+      results: {
+        ...state.results,
+        resultSets: updatedResultSets
+      }
+    };
+  }),
   on(DashboardActions.addItemToResultSets, (state, action) => {
     const updatedResultSets = JSON.parse(JSON.stringify(state.results.resultSets));
 

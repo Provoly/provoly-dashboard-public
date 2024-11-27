@@ -24,6 +24,10 @@ export const RelationTypesActions = {
     '[Relation Types Api] Create Relation',
     props<{ from: string[]; to: string; typeId: string; inversion: boolean }>()
   ),
+  deleteRelation: createAction(
+    '[Relation Types Api] Delete Relation',
+    props<{ from: string; to: string; typeId: string }>()
+  ),
   createRelationSuccess: createAction('[Relation Types Api] Create Relation success'),
   createRelationFailure: createAction('[Relation Types Api] Create Relation failure', props<{ error: any }>()),
 

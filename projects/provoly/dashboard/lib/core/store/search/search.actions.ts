@@ -6,11 +6,21 @@ import { FullTextSearchPayload, MultiClassSearchPayload } from '../../model/sear
 export const SearchActions = {
   search: createAction(
     '[Search] search',
-    props<{ payload: MonoClassSearchPayload | MultiClassSearchPayload | FullTextSearchPayload; id?: string }>()
+    props<{
+      payload: MonoClassSearchPayload | MultiClassSearchPayload | FullTextSearchPayload;
+      id?: string;
+      linkedItems?: ('destination' | 'source')[];
+    }>()
   ),
   getDatasourceItems: createAction(
     '[Search] (bus) get datasource items (not-active-action)',
-    props<{ id: string; excludeGeo: boolean; from: string; next?: boolean }>()
+    props<{
+      id: string;
+      excludeGeo: boolean;
+      from: string;
+      next?: boolean;
+      linkedItems?: ('destination' | 'source')[];
+    }>()
   ),
 
   // result Search

@@ -50,4 +50,12 @@ export class RelationTypesService {
       map(() => relations)
     );
   }
+
+  deleteRelation(source: string, destination: string, relationType: string): Observable<Relation> {
+    const relation = { source, destination, relationType };
+    return this.store.select(ConfigSelectors.dataUrl).pipe(
+      mergeMap((url) => this.httpClient.delete<void>(`${url}/relations`, { body: relation })),
+      map(() => relation)
+    );
+  }
 }

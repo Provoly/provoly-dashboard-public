@@ -44,7 +44,13 @@ export class SearchService {
     });
   }
 
-  getItems(id: string, quickOrder?: ResultOrder, excludeGeo?: boolean, searchAfter?: string): Observable<ResultSet> {
+  getItems(
+    id: string,
+    quickOrder?: ResultOrder,
+    excludeGeo?: boolean,
+    searchAfter?: string,
+    linkedItems: ('destination' | 'source')[] = []
+  ): Observable<ResultSet> {
     const params = this.getItemsFilter(id, this.getOrder(quickOrder));
     if (!id) {
       console.warn('Not sending items request with no datasource attached.');
@@ -59,12 +65,13 @@ export class SearchService {
           {
             type: ds?.sourceType === 'namedQuery' ? ds.request.type : NamedQueryTypes.MONO_CLASS,
             excludeGeo: excludeGeo ?? false,
-            searchAfter: searchAfter ?? undefined
+            searchAfter: searchAfter ?? undefined,
+            linkedItems
           },
           { params }
         );
       }),
-      map((rs) => this.applyTransformations('current', rs))
+      map((rs) => this.applyTransformations(id, rs))
     );
   }
 
@@ -120,7 +127,11 @@ export class SearchService {
    * Launch a search request (and saves it as current search)
    * @param condition
    */
-  search(condition: MonoClassSearchPayload | MultiClassSearchPayload | FullTextSearchPayload): Observable<ResultSet> {
+  search(
+    condition: MonoClassSearchPayload | MultiClassSearchPayload | FullTextSearchPayload,
+    id?: string,
+    withLinkedItems: ('destination' | 'source')[] = []
+  ): Observable<ResultSet> {
     return combineLatest([
       this.store.select(ConfigSelectors.dataUrl),
       this.store.select(DashboardSelectors.quickOrder),
@@ -133,10 +144,19 @@ export class SearchService {
             quickOrder[DEFAULT_NAMED_QUERY_ID]?.asc ?? ''
           }`;
         }
-        const _condition = { ...condition, limit: limits[DEFAULT_NAMED_QUERY_ID] ?? limits['default'] };
+        const otherParams: { [key: string]: string } = {};
+        if (withLinkedItems.length > 0) {
+          if (withLinkedItems.includes('destination')) {
+            otherParams['withDestinationItems'] = 'true';
+          }
+          if (withLinkedItems.includes('source')) {
+            otherParams['withSourceItems'] = 'true';
+          }
+        }
+        const _condition = { ...condition, limit: limits[DEFAULT_NAMED_QUERY_ID] ?? limits['default'], ...otherParams };
         return this.httpClient.post<ResultSet>(encodeURI(`${url}/items/search`), _condition, { params });
       }),
-      map((rs) => this.applyTransformations(DEFAULT_NAMED_QUERY_ID, rs))
+      map((rs) => this.applyTransformations(id ?? DEFAULT_NAMED_QUERY_ID, rs))
     );
   }
 

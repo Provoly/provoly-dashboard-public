@@ -85,7 +85,7 @@ export class SearchMonoClassService {
   }
 
   loadNormalizedConditions(
-    cond: Condition,
+    cond: Condition | undefined,
     parentId: string,
     classes: Class[],
     fields: Field[],
@@ -141,9 +141,9 @@ export class SearchMonoClassService {
             id,
             parentId: parentId ?? null,
             type: 'ATTRIBUTE',
-            attribute: cond.attribute,
-            operator: cond.operator,
-            value: cond.value,
+            attribute: cond?.attribute,
+            operator: cond?.operator,
+            value: cond?.value,
             pattern: this.getPatternForField(field),
             isDate: field.type === FieldType.INSTANT
           }
