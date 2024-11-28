@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { combineLatest, map, mergeMap, Observable, of, switchMap } from 'rxjs';
+import { filter, map, mergeMap, Observable, of, switchMap, take, withLatestFrom } from 'rxjs';
 import { DashboardSelectors } from '../../../dashboard/store/dashboard.selectors';
 import { FilterContext } from '../../model/filter.interface';
 import { ResultOrder } from '../../model/result-order.interface';
@@ -132,11 +132,10 @@ export class SearchService {
     id?: string,
     withLinkedItems: ('destination' | 'source')[] = []
   ): Observable<ResultSet> {
-    return combineLatest([
-      this.store.select(ConfigSelectors.dataUrl),
-      this.store.select(DashboardSelectors.quickOrder),
-      this.store.select(ConfigSelectors.limits)
-    ]).pipe(
+    return this.store.select(ConfigSelectors.dataUrl).pipe(
+      filter((url) => !!url),
+      take(1),
+      withLatestFrom(this.store.select(DashboardSelectors.quickOrder), this.store.select(ConfigSelectors.limits)),
       mergeMap(([url, quickOrder, limits]) => {
         const params = {} as { [key: string]: string };
         if (quickOrder[DEFAULT_NAMED_QUERY_ID]) {
