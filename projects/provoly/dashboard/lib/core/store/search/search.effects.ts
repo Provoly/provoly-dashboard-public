@@ -100,7 +100,6 @@ export class SearchEffects {
         }) =>
           this.searchService.search(props.payload, props.id, props.linkedItems).pipe(
             map((resultSet) => {
-              console.log('search$', props);
               return SearchActions.searchSuccess({ resultSet, id: props.id });
             }),
             catchError((error) => [SearchActions.searchFailure({ error, id: props.id })])

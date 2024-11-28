@@ -48,6 +48,8 @@ export class ResultsetUtils {
       };
     });
 
+    rs1Copy.searchAfter = rs2.searchAfter ?? rs1Copy.searchAfter;
+
     return rs1Copy;
   }
 }

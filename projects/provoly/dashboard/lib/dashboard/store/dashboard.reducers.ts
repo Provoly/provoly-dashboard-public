@@ -23,6 +23,7 @@ import {
 } from './dashboard.contants';
 import { GetCapabilitiesResponse } from './wms.service';
 import { ManifestUtils } from './manifest-utils.class';
+import { ResultsetUtils } from '../resultset-utils';
 
 export const dashboardFeatureKey = '@pry/dashboard';
 
@@ -218,21 +219,7 @@ const internalReducer = createReducer<DashboardState>(
         ...state.results.resultSets,
         [action.id]: !action.next
           ? action.resultSet
-          : {
-              items: [
-                ...new Set(
-                  Object.keys(action.resultSet.items).concat(Object.keys(state.results.resultSets[action.id].items))
-                )
-              ]
-                .map((key) => ({
-                  [key]: [...action.resultSet.items[key], ...state.results.resultSets[action.id].items[key]]
-                }))
-                .reduce((p, c) => ({ ...p, ...c }), {}),
-              count: action.resultSet.count,
-              relations: [...state.results.resultSets[action.id].relations, ...action.resultSet.relations],
-              autoRefreshInterval: action.resultSet.autoRefreshInterval,
-              searchAfter: action.resultSet.searchAfter
-            }
+          : ResultsetUtils.mergeResultSets(state.results.resultSets[action.id], action.resultSet)
       },
       resultSetsParams: {
         ...state.results.resultSetsParams,
