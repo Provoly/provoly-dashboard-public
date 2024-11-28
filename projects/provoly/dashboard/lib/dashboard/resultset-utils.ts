@@ -6,7 +6,6 @@ export class ResultsetUtils {
   static mergeResultSets(rs1: ResultSet, rs2: ResultSet): ResultSet {
     if (!rs1) return rs2;
     if (!rs2) return rs1;
-    console.time('mergeResultSets');
     const rs1Copy = structuredClone(rs1) as ResultSet;
     Object.keys(rs2.items ?? {}).forEach((key) => {
       if (!rs1Copy.items[key]) {
@@ -47,9 +46,6 @@ export class ResultsetUtils {
     });
 
     rs1Copy.searchAfter = rs2.searchAfter ?? rs1Copy.searchAfter;
-
-    console.timeEnd('mergeResultSets');
-    console.timeLog('mergeResultSets');
 
     return rs1Copy;
   }
