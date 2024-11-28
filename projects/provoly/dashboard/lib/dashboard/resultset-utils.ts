@@ -6,14 +6,14 @@ export class ResultsetUtils {
   static mergeResultSets(rs1: ResultSet, rs2: ResultSet): ResultSet {
     if (!rs1) return rs2;
     if (!rs2) return rs1;
-    const rs1Copy = JSON.parse(JSON.stringify(rs1)) as ResultSet;
+    console.time('mergeResultSets');
+    const rs1Copy = structuredClone(rs1) as ResultSet;
     Object.keys(rs2.items ?? {}).forEach((key) => {
       if (!rs1Copy.items[key]) {
         rs1Copy.items[key] = [];
       }
       rs1Copy.items[key].push(...rs2.items[key]);
     });
-    rs1Copy.relations = [...(rs1Copy.relations ?? []), ...(rs2.relations ?? [])];
 
     /* Make items and relations unique in resulted dataset */
     Object.keys(rs1Copy.items).forEach((key) => {
@@ -21,18 +21,16 @@ export class ResultsetUtils {
       rs1Copy.items[key] = uniqueList.map((id) => rs1Copy.items[key].find((it) => it.id === id)) as Item[];
     });
 
-    const uniqueRelations = [
+    rs1Copy.relations = [
       ...new Set([
-        ...(rs1Copy.relations ?? []).map((rel) => `${rel.relationType}|${rel.source}|${rel.destination}`),
+        ...([...(rs1Copy.relations ?? []), ...(rs2.relations ?? [])] ?? []).map(
+          (rel) => `${rel.relationType}|${rel.source}|${rel.destination}`
+        ),
         ...(rs2.relations ?? []).map((rel) => `${rel.relationType}|${rel.source}|${rel.destination}`)
       ])
-    ];
-    rs1Copy.relations = uniqueRelations.map((key) => {
+    ].map((key) => {
       const splittedKey = key.split('|');
-      return rs1Copy.relations.find(
-        (rel) =>
-          rel.relationType === splittedKey[0] && rel.source === splittedKey[1] && rel.destination === splittedKey[2]
-      );
+      return { relationType: splittedKey[0], source: splittedKey[1], destination: splittedKey[2] };
     }) as Relation[];
 
     if (!rs1Copy.count) {
@@ -49,6 +47,9 @@ export class ResultsetUtils {
     });
 
     rs1Copy.searchAfter = rs2.searchAfter ?? rs1Copy.searchAfter;
+
+    console.timeEnd('mergeResultSets');
+    console.timeLog('mergeResultSets');
 
     return rs1Copy;
   }
