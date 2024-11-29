@@ -6,13 +6,13 @@
     prySortActive="name"
     prySortDirection="asc"
     (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
-  >
+    >
     <caption>
       {{
-        '@pry.admin.abac-rules.title.list' | i18n
+      '@pry.admin.abac-rules.title.list' | i18n
       }},
       {{
-        '@pry.action.sortableColumnHeader' | i18n
+      '@pry.action.sortableColumnHeader' | i18n
       }}
     </caption>
     <thead>
@@ -24,31 +24,33 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let rule of rules$ | async | prySortData: sortActive : sortDirection" (click)="goToSelectRule(rule)">
-        <td class="view-details">
-          <button
-            [id]="'button-arule-' + rule.id"
-            type="button"
-            class="a-btn a-btn--icon-only"
-            title="{{ '@pry.action.viewDetails' | i18n }}"
-          >
-            <span class="u-visually-hidden">{{ rule.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
-            <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
-          </button>
-        </td>
-        <td>{{ rule.name }}</td>
-        <td>
-          {{ '@pry.admin.abac-rules.form.' + (rule.type === 'METADATA' ? 'typeMetadata' : 'typeAttribute') | i18n }}
-        </td>
-        <td>
-          <span class="a-badge" [ngClass]="{ '-status-ok': rule.active, '-status-inactive': !rule.active }">
-            {{
+      @for (rule of rules$ | async | prySortData: sortActive : sortDirection; track rule) {
+        <tr (click)="goToSelectRule(rule)">
+          <td class="view-details">
+            <button
+              [id]="'button-arule-' + rule.id"
+              type="button"
+              class="a-btn a-btn--icon-only"
+              title="{{ '@pry.action.viewDetails' | i18n }}"
+              >
+              <span class="u-visually-hidden">{{ rule.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
+              <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
+            </button>
+          </td>
+          <td>{{ rule.name }}</td>
+          <td>
+            {{ '@pry.admin.abac-rules.form.' + (rule.type === 'METADATA' ? 'typeMetadata' : 'typeAttribute') | i18n }}
+          </td>
+          <td>
+            <span class="a-badge" [ngClass]="{ '-status-ok': rule.active, '-status-inactive': !rule.active }">
+              {{
               (rule.active ? '@pry.admin.abac-rules.form.statusActive' : '@pry.admin.abac-rules.form.statusInactive')
-                | i18n
-            }}
-          </span>
-        </td>
-      </tr>
+              | i18n
+              }}
+            </span>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>

@@ -4,18 +4,21 @@
     <span class="u-visually-hidden">({{ label | i18n }})</span>
   </label>
   <div class="o-pry-edit__wrapper" (mouseenter)="showButton = true" (mouseleave)="showButton = false">
-    <div class="o-pry-edit__value u-display-flex -align-center" *ngIf="!editMode">
-      {{ value }}
-    </div>
-    <input
-      *ngIf="editMode"
-      id="edit-input-{{ id }}"
-      type="text"
-      class="a-form-field o-pry-edit__input"
-      [ngModel]="value"
-      (ngModelChange)="writeValue($event)"
-      #input
-    />
+    @if (!editMode) {
+      <div class="o-pry-edit__value u-display-flex -align-center">
+        {{ value }}
+      </div>
+    }
+    @if (editMode) {
+      <input
+        id="edit-input-{{ id }}"
+        type="text"
+        class="a-form-field o-pry-edit__input"
+        [ngModel]="value"
+        (ngModelChange)="writeValue($event)"
+        #input
+        />
+    }
     <button
       [class.-button-visible]="showButton || editMode"
       type="button"
@@ -23,7 +26,7 @@
       (click)="toggle()"
       [attr.data-tooltip]="(editMode ? confirmButtonTooltip : editButtonTooltip) | i18n"
       data-tooltip-position="left"
-    >
+      >
       <pry-icon [width]="16" [height]="16" [iconSvg]="editMode ? 'check' : 'edit'"></pry-icon>
       <span class="u-visually-hidden">{{ '@pry.theme.editInput.toggle' | i18n }}</span>
     </button>

@@ -13,7 +13,7 @@ import { PredicatesEffects } from './predicates.effects';
 import { initialPredicateState, PredicateState } from './predicates.reducer';
 
 const buildState = (state: Partial<PredicateState>) =>
-  Object.assign({}, { '@pry/admin': JSON.parse(JSON.stringify({ ...initialPredicateState, ...state })) });
+  Object.assign({}, { '@pry/admin': structuredClone({ ...initialPredicateState, ...state }) });
 
 const predicates: Predicate[] = [
   {

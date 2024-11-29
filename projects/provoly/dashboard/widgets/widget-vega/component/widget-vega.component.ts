@@ -43,7 +43,7 @@ export class WidgetVegaComponent extends DataWidgetComponent implements AfterVie
     this.options$ = this.manifest$.pipe(map((manifest) => (manifest.options ?? {}) as any));
     this.subscriptions.add(
       this.options$.subscribe((options) => {
-        this.optionsCopy = JSON.parse(JSON.stringify(options));
+        this.optionsCopy = structuredClone(options);
         this.formattedBaseSpec = JSON.stringify(this.optionsCopy.baseSpec, undefined, 4);
         this.initialFormattedBaseSpec = JSON.stringify(this.optionsCopy.baseSpec, undefined, 4);
       })
@@ -54,7 +54,7 @@ export class WidgetVegaComponent extends DataWidgetComponent implements AfterVie
       map(([options, rs, size, header]) => {
         const data = WidgetVegaComponent.getValues(rs);
 
-        const vegaSpec = WidgetVegaComponent.placeData(options, JSON.parse(JSON.stringify(options.baseSpec)), data);
+        const vegaSpec = WidgetVegaComponent.placeData(options, structuredClone(options.baseSpec), data);
 
         vegaSpec.width = vegaSpec.width ?? size.width - 5;
         vegaSpec.height = vegaSpec.height ?? size.height - 5 - (header ? WIDGET_HEADER_HEIGHT.value : 0);
@@ -87,7 +87,7 @@ export class WidgetVegaComponent extends DataWidgetComponent implements AfterVie
   }
 
   static placeData(options: VegaWidgetOptions, baseSpec: any, data: { [key: string]: ValueType }[]) {
-    const clone = JSON.parse(JSON.stringify(baseSpec));
+    const clone = structuredClone(baseSpec);
     let ref = clone;
     (options.placeData ?? []).forEach((prop, idx, arr) => {
       if (ref) {
@@ -112,7 +112,7 @@ export class WidgetVegaComponent extends DataWidgetComponent implements AfterVie
             console.log(JSON.stringify(spec, undefined, 4));
           }
 
-          embed(this.vega.nativeElement, JSON.parse(JSON.stringify(spec)), {
+          embed(this.vega.nativeElement, structuredClone(spec), {
             actions: false,
             renderer: 'canvas',
             formatLocale: this.translateService.instantObject('@pry.widget.chart.numberLocale'),

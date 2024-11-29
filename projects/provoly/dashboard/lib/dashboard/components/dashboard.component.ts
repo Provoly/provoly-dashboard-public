@@ -168,7 +168,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
       combineLatestWith(this.staticDashboard$),
       switchMap(([windowManifest, staticDashboard]) => (!staticDashboard ? of(windowManifest) : of(staticDashboard))),
       map((_wManifest) => {
-        const wManifest = JSON.parse(JSON.stringify(_wManifest));
+        const wManifest = structuredClone(_wManifest);
         if (wManifest.grid?.layout && wManifest.grid.layout !== DashboardGridLayout.MANUAL) {
           // Complete with placeholders
           const size = WidgetPlacementUtils.getLayout(wManifest.grid.layout)?.places.length ?? 0;
@@ -455,7 +455,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
   prepareModification($event: MouseEvent, indexManifest: number) {
     this.move.initialX = $event.clientX;
     this.move.initialY = $event.clientY;
-    this.initialWidgetManifestList = JSON.parse(JSON.stringify((this.manifest || { widgets: [] }).widgets));
+    this.initialWidgetManifestList = structuredClone((this.manifest || { widgets: [] }).widgets);
     this.currentlyModifiedManifest = this.initialWidgetManifestList.splice(indexManifest, 1)[0];
     // console.log('prepare', this.currentlyModifiedManifest, this.initialWidgetManifestList);
   }
@@ -513,7 +513,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
           type: 'placeholder',
           layout: { x: target?.x ?? 0, y: target?.y ?? 0, width: 1, height: 1 }
         };
-        this.initialWidgetManifestList = JSON.parse(JSON.stringify((this.manifest || { widgets: [] }).widgets));
+        this.initialWidgetManifestList = structuredClone((this.manifest || { widgets: [] }).widgets);
         // console.log('create placeholder', this.currentlyModifiedManifest, this.initialWidgetManifestList);
 
         // We passed widget size as a mimetype so that we can still read it without security issues
@@ -583,7 +583,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
       const target = this.getTarget($event, optimize);
       if (target !== null) {
         this.checkForDragEnter($event);
-        const candidateWidget = JSON.parse(JSON.stringify(this.currentlyModifiedManifest));
+        const candidateWidget = structuredClone(this.currentlyModifiedManifest)!;
 
         switch (this.actionType) {
           case 'resize-nw':

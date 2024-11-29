@@ -3,9 +3,13 @@
     {{ firstValue | dataFormat: field }}
     {{ isArray ? ' (*)' : '' }}
   </span>
-  <div class="a-expandable-value__expanded" *ngIf="isArray">
-    <div *ngFor="let value of rest">
-      {{ value | dataFormat: field }}
+  @if (isArray) {
+    <div class="a-expandable-value__expanded">
+      @for (value of rest; track value) {
+        <div>
+          {{ value | dataFormat: field }}
+        </div>
+      }
     </div>
-  </div>
+  }
 </div>

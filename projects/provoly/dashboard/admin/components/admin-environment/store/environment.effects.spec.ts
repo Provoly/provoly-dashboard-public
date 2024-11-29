@@ -13,7 +13,7 @@ import { EnvironmentEffects } from './environment.effects';
 import { EnvironmentState, initialEnvironmentState } from './environment.reducer';
 
 const buildState = (state: Partial<EnvironmentState>) =>
-  Object.assign({}, { '@pry/admin': JSON.parse(JSON.stringify({ ...initialEnvironmentState, ...state })) });
+  Object.assign({}, { '@pry/admin': structuredClone({ ...initialEnvironmentState, ...state }) });
 
 const envs: Environment[] = [
   {

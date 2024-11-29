@@ -28,22 +28,18 @@
     (dragover)="dragMove($event)"
     (dragleave)="dragLeave($event)"
     (dragenter)="dragEnter($event)"
-  >
-    <ng-container
-      *ngFor="
-        let widgetManifest of (windowManifest$ | async)?.widgets || [];
-        let widgetIndex = index;
-        trackBy: trackWidgets
-      "
     >
+    @for (
+      widgetManifest of (windowManifest$ | async)?.widgets || []; track trackWidgets(widgetIndex,
+      widgetManifest); let widgetIndex = $index) {
       <div
         class="o-dashboard-widget"
         [class.-edited]="modeEdition"
         [style.gridColumn]="gridColumn(widgetManifest.layout)"
         [style.gridRow]="gridRow(widgetManifest.layout)"
         (drop)="droppingInWidget($event, widgetIndex)"
-      >
-        <ng-container *ngIf="modeEdition">
+        >
+        @if (modeEdition) {
           <div class="resize nw-resize" (mousedown)="startResize($event, widgetIndex, 'resize-nw')">
             <pry-icon iconSvg="north_west" [animation]="false"></pry-icon>
           </div>
@@ -64,34 +60,32 @@
               <span>{{ widgetManifest.title ?? ('@pry.toolbox.' + widgetManifest.type | i18n) }}</span>
             </div>
           </div>
-        </ng-container>
-        <ng-container *ngIf="!modeEdition">
+        }
+        @if (!modeEdition) {
           <pry-widget-instanciator
             [staticManifest]="widgetManifest"
             [widgetIndex]="widgetIndex"
           ></pry-widget-instanciator>
-        </ng-container>
+        }
       </div>
-    </ng-container>
+    }
 
-    <ng-container *ngIf="!noBackground">
-      <ng-container
-        *ngIf="{
-          noWidgets: (nonFillerWidgets$ | async) === 0,
-          globalLoading: loading$ | async,
-          fetchLoading: (dataFetching$ | async)?.length ?? 1 > 0
-        } as data"
-      >
-        <ng-container *ngIf="data.noWidgets">
-          <div
-            *ngIf="data.globalLoading; else notLoading"
-            class="no-widget"
-            [style.grid-area]="backgroundArea$ | async"
-          >
-            <pry-page-loader></pry-page-loader>
-            <span class="no-widget__text">{{ '@pry.widget.target.loading' | i18n }}...</span>
-          </div>
-          <ng-template #notLoading>
+    @if (!noBackground) {
+      @if ({
+        noWidgets: (nonFillerWidgets$ | async) === 0,
+        globalLoading: loading$ | async,
+        fetchLoading: (dataFetching$ | async)?.length ?? 1 > 0
+        }; as data) {
+        @if (data.noWidgets) {
+          @if (data.globalLoading) {
+            <div
+              class="no-widget"
+              [style.grid-area]="backgroundArea$ | async"
+              >
+              <pry-page-loader></pry-page-loader>
+              <span class="no-widget__text">{{ '@pry.widget.target.loading' | i18n }}...</span>
+            </div>
+          } @else {
             <div class="no-widget" [style.grid-area]="backgroundArea$ | async">
               <img
                 class="no-widget__search"
@@ -102,27 +96,27 @@
                     : '@pry.widget.target.none_auto'
                   ) | i18n
                 }}"
-              />
+                />
               <span class="no-widget__text">{{
                 (layout === DashboardGridLayout.MANUAL
-                  ? '@pry.widget.target.none_manual'
-                  : '@pry.widget.target.none_auto'
+                ? '@pry.widget.target.none_manual'
+                : '@pry.widget.target.none_auto'
                 ) | i18n
               }}</span>
             </div>
-          </ng-template>
-        </ng-container>
+          }
+        }
         <div
           class="a-page-loader backdrop"
           [style.display]="data.fetchLoading && !data.globalLoading ? 'flex' : 'none'"
           [style.width.px]="params.gridWidth"
           [style.height.px]="params.gridHeight"
-        >
+          >
           <pry-page-loader></pry-page-loader>
           <p>{{ '@pry.widget.target.loading' | i18n }}...</p>
         </div>
-      </ng-container>
-    </ng-container>
+      }
+    }
   </div>
 </div>
 <pry-context-menu></pry-context-menu>

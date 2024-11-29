@@ -1,6 +1,6 @@
 <ng-template #template>
   <ul class="m-context-menu__list">
-    <ng-container *ngIf="!!itemId">
+    @if (!!itemId) {
       <li class="m-context-menu__list__item">
         <button type="button" class="a-btn -link-like" (click)="selectionAddOrRemove()">
           {{ ((isSelected$ | async) ? '@pry.context.remove' : '@pry.context.add') | i18n }}
@@ -11,19 +11,23 @@
           {{ '@pry.context.invert' | i18n }}
         </button>
       </li>
-      <li class="m-context-menu__list__item" *ngIf="!!resultSet">
-        <button type="button" class="a-btn -link-like" (click)="proximity()" *ngIf="!!resultSet">
-          {{ '@pry.context.proximity' | i18n }}
-        </button>
-      </li>
-      <ng-container *ngIf="isModuleLoaded['graph']">
+      @if (!!resultSet) {
+        <li class="m-context-menu__list__item">
+          @if (!!resultSet) {
+            <button type="button" class="a-btn -link-like" (click)="proximity()">
+              {{ '@pry.context.proximity' | i18n }}
+            </button>
+          }
+        </li>
+      }
+      @if (isModuleLoaded['graph']) {
         <li class="m-context-menu__list__item">
           <button type="button" class="a-btn -link-like" (click)="explore()">
             {{ '@pry.context.explore' | i18n }}
           </button>
         </li>
-      </ng-container>
-      <ng-container *ngIf="isModuleLoaded['detail']">
+      }
+      @if (isModuleLoaded['detail']) {
         <li class="m-context-menu__list__item">
           <button type="button" class="a-btn -link-like" (click)="detail()">
             {{ '@pry.context.detail' | i18n }}
@@ -34,26 +38,29 @@
             {{ '@pry.context.flyingDetail' | i18n }}
           </button>
         </li>
-      </ng-container>
+      }
       <ng-container *pryAccess="{ module: 'dashboard', page: 'dashboard', action: 'edit_object' }">
         <li class="m-context-menu__list__item">
-          <pry-object-creation
-            (closed)="hide()"
-            [link]="true"
-            [object]="false"
-            [menu]="true"
-            *ngIf="(selectedItemsIds?.length ?? 0) > 0"
-          ></pry-object-creation>
-          <ng-container *ngIf="allowObjectCreation$ | async">
+          @if ((selectedItemsIds?.length ?? 0) > 0) {
+            <pry-object-creation
+              (closed)="hide()"
+              [link]="true"
+              [object]="false"
+              [menu]="true"
+            ></pry-object-creation>
+          }
+          @if (allowObjectCreation$ | async) {
             <pry-object-creation (closed)="hide()" [link]="true" [object]="true" [menu]="true"></pry-object-creation>
-          </ng-container>
+          }
         </li>
       </ng-container>
-    </ng-container>
+    }
     <ng-container *pryAccess="{ module: 'dashboard', page: 'dashboard', action: 'edit_object' }">
-      <li *ngIf="allowObjectCreation$| async" class="m-context-menu__list__item">
-        <pry-object-creation (closed)="hide()" [object]="true" [menu]="true"></pry-object-creation>
-      </li>
+      @if (allowObjectCreation$| async) {
+        <li class="m-context-menu__list__item">
+          <pry-object-creation (closed)="hide()" [object]="true" [menu]="true"></pry-object-creation>
+        </li>
+      }
     </ng-container>
   </ul>
 </ng-template>

@@ -5,17 +5,19 @@
     [attr.aria-expanded]="opened"
     [attr.aria-controls]="'metadata_' + id"
     (click)="toggle()"
-  >
+    >
     <pry-icon [width]="18" [height]="18" iconSvg="tags"></pry-icon>
     {{ '@pry.metadata.view' | i18n }}
   </button>
 
   <ul [id]="'metadata_' + id" class="m-metadata-tag__list">
-    <li *ngFor="let meta of metadata" class="m-metadata-tag__list__item">
-      <p class="m-metadata-tag__chip" [title]="meta.name + ': ' + meta.value">
-        <span class="m-metadata-tag__chip__label">{{ meta.name }}: </span>
-        {{ meta.value }}
-      </p>
-    </li>
+    @for (meta of metadata; track meta) {
+      <li class="m-metadata-tag__list__item">
+        <p class="m-metadata-tag__chip" [title]="meta.name + ': ' + meta.value">
+          <span class="m-metadata-tag__chip__label">{{ meta.name }}: </span>
+          {{ meta.value }}
+        </p>
+      </li>
+    }
   </ul>
 </div>

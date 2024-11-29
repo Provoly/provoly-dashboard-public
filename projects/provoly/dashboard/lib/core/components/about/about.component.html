@@ -3,13 +3,13 @@
     <span>i</span>
   </div>
   <div class="o-about__tooltip -position-{{ tooltipPosition }}">
-    <ng-container *ngFor="let version of (version$ | async) ?? {} | keyvalue">
+    @for (version of (version$ | async) ?? {} | keyvalue; track version) {
       <div class="o-about__line">
         {{ '@pry.about.' + version.key | i18n }}
         <p class="a-chip -md -no-wrap" [class.-not-found]="!hasVersion(version.value)">
           {{ displayVersion(version.value) }}
         </p>
       </div>
-    </ng-container>
+    }
   </div>
 </div>

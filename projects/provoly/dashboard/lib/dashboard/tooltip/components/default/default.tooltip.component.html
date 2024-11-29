@@ -1,21 +1,22 @@
 <div class="m-tooltip__item__content">
-  <ng-container *ngIf="data.item.properties; else defaultTooltip">
-    <p *ngFor="let property of data.item.properties">
-      <span>{{ property.key | titlecase }} :</span> {{ property.value }}
+  @if (data.item.properties) {
+    @for (property of data.item.properties; track property) {
+      <p>
+        <span>{{ property.key | titlecase }} :</span> {{ property.value }}
+      </p>
+    }
+  } @else {
+    <h3 class="a-h3 -attribute">
+      <img
+        [src]="data.item | translateItemToSymbol | async"
+        [alt]="data.item.oClass | translateId: { type: 'class', output: 'name' } | async"
+        width="32"
+        aria-hidden="true"
+        />
+      <span>{{ data.item.oClass | translateId: { type: 'class', output: 'name' } | async }}</span>
+    </h3>
+    <p>
+      <span>{{ '@pry.widget.itemId' | i18n }} :</span> {{ data.item?.id }}
     </p>
-  </ng-container>
+  }
 </div>
-<ng-template #defaultTooltip>
-  <h3 class="a-h3 -attribute">
-    <img
-      [src]="data.item | translateItemToSymbol | async"
-      [alt]="data.item.oClass | translateId: { type: 'class', output: 'name' } | async"
-      width="32"
-      aria-hidden="true"
-    />
-    <span>{{ data.item.oClass | translateId: { type: 'class', output: 'name' } | async }}</span>
-  </h3>
-  <p>
-    <span>{{ '@pry.widget.itemId' | i18n }} :</span> {{ data.item?.id }}
-  </p>
-</ng-template>

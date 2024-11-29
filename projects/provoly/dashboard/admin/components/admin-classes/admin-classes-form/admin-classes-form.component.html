@@ -12,21 +12,32 @@
       required
       type="text"
       [attr.aria-invalid]="isSubmitted && classForm.get('name')?.invalid"
-    />
-    <label
-      *ngIf="isSubmitted && classForm.get('name')?.invalid"
-      id="name-error"
-      for="name"
-      class="a-label a-label--help -error"
-    >
-      <span *ngIf="classForm.get('name')?.hasError('same-name')">{{ '@pry.admin.exists' | i18n }}</span>
-      <span *ngIf="classForm.get('name')?.hasError('required')">{{ '@pry.admin.required' | i18n }}</span>
-      <span *ngIf="classForm.get('name')?.hasError('minlength')">{{ '@pry.admin.minLength' | i18n: { len: 3 } }}</span>
-      <span *ngIf="classForm.get('name')?.hasError('maxlength')">{{
-        '@pry.admin.maxLength' | i18n: { len: 100 }
-      }}</span>
-      <span *ngIf="classForm.get('name')?.hasError('whitespace')">{{ '@pry.admin.noWhitespace' | i18n }}</span>
-    </label>
+      />
+    @if (isSubmitted && classForm.get('name')?.invalid) {
+      <label
+        id="name-error"
+        for="name"
+        class="a-label a-label--help -error"
+        >
+        @if (classForm.get('name')?.hasError('same-name')) {
+          <span>{{ '@pry.admin.exists' | i18n }}</span>
+        }
+        @if (classForm.get('name')?.hasError('required')) {
+          <span>{{ '@pry.admin.required' | i18n }}</span>
+        }
+        @if (classForm.get('name')?.hasError('minlength')) {
+          <span>{{ '@pry.admin.minLength' | i18n: { len: 3 } }}</span>
+        }
+        @if (classForm.get('name')?.hasError('maxlength')) {
+          <span>{{
+            '@pry.admin.maxLength' | i18n: { len: 100 }
+          }}</span>
+        }
+        @if (classForm.get('name')?.hasError('whitespace')) {
+          <span>{{ '@pry.admin.noWhitespace' | i18n }}</span>
+        }
+      </label>
+    }
   </div>
   <div class="u-display-flex -row -align-center">
     <div class="m-form-label-field -width-sm">
@@ -45,7 +56,7 @@
       class="m-info-icon a-tooltip -tooltip-width-md"
       [attr.data-tooltip]="'@pry.admin.storage.description.' + classForm.get('storage')?.value | i18n"
       data-tooltip-position="right"
-    >
+      >
       <span>i</span>
     </div>
   </div>

@@ -24,8 +24,10 @@
         [cdkDropListConnectedTo]="[notDefaultList]"
         class="list"
         (cdkDropListDropped)="drop($event)"
-      >
-        <div class="item" *ngFor="let item of defaultAttributes" cdkDrag>{{ item }}</div>
+        >
+        @for (item of defaultAttributes; track item) {
+          <div class="item" cdkDrag>{{ item }}</div>
+        }
       </div>
     </div>
 
@@ -38,8 +40,10 @@
         [cdkDropListConnectedTo]="[defaultList]"
         class="list"
         (cdkDropListDropped)="drop($event)"
-      >
-        <div class="item" *ngFor="let item of otherAttributes" cdkDrag>{{ item }}</div>
+        >
+        @for (item of otherAttributes; track item) {
+          <div class="item" cdkDrag>{{ item }}</div>
+        }
       </div>
     </div>
 
@@ -71,8 +75,10 @@
         [cdkDropListConnectedTo]="[notDefaultTilesList]"
         class="list"
         (cdkDropListDropped)="drop($event)"
-      >
-        <div class="item" *ngFor="let item of defaultTileAttributes" cdkDrag>{{ item }}</div>
+        >
+        @for (item of defaultTileAttributes; track item) {
+          <div class="item" cdkDrag>{{ item }}</div>
+        }
       </div>
     </div>
 
@@ -85,15 +91,17 @@
         [cdkDropListConnectedTo]="[defaultTilesList]"
         class="list"
         (cdkDropListDropped)="drop($event)"
-      >
-        <div class="item" *ngFor="let item of otherTileAttributes" cdkDrag>{{ item }}</div>
+        >
+        @for (item of otherTileAttributes; track item) {
+          <div class="item" cdkDrag>{{ item }}</div>
+        }
       </div>
     </div>
 
     <div>
-      <ng-container *ngIf="!isTileConfValid()">
+      @if (!isTileConfValid()) {
         <p>{{ '@pry.admin.customize.tileHint' | i18n : { max: maxTilesAttributes } }}</p>
-      </ng-container>
+      }
     </div>
 
     <div class="m-btn-group -width-lg">

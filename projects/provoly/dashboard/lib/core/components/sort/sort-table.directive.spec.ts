@@ -8,19 +8,23 @@ import { PrySortTableDirective } from './sort-table.directive';
 
 @Component({
   template: ` <table prySortTable prySortActive="toto1" prySortDirection="asc">
-    <thead>
-      <th prySortHeader="toto1">TOTO1</th>
-      <th prySortHeader="toto2">TOTO2</th>
-      <th *ngIf="change" prySortHeader="toto3">TOTO2</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td></td>
-        <td></td>
-        <td *ngIf="change"></td>
-      </tr>
-    </tbody>
-  </table>`
+      <thead>
+        <th prySortHeader="toto1">TOTO1</th>
+        <th prySortHeader="toto2">TOTO2</th>
+        @if (change) {
+          <th prySortHeader="toto3">TOTO2</th>
+        }
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          @if (change) {
+            <td></td>
+          }
+        </tr>
+      </tbody>
+    </table>`
 })
 class MockComponent {
   change = false;

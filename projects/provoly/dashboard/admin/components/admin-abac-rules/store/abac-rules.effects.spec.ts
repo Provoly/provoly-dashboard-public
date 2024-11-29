@@ -14,7 +14,7 @@ import { AbacRulesSelectors } from './abac-rules.selectors';
 import { AbacRulesService } from './abac-rules.service';
 
 const buildState = (state: Partial<AbacRuleState>) =>
-  Object.assign({}, { '@pry/admin/abacRules': JSON.parse(JSON.stringify({ ...initialAbacRuleState, ...state })) });
+  Object.assign({}, { '@pry/admin/abacRules': structuredClone({ ...initialAbacRuleState, ...state }) });
 
 const abacRule: AbacRule = {
   active: true,

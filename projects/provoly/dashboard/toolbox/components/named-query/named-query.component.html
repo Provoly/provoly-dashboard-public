@@ -7,12 +7,14 @@
       }
     </button>
 
-    <div class="combobox" *ngIf="displayCombo" (mouseleave)="toggle()">
-      @for (rs of namedQueries$ | async; track rs) {
-        <div draggable="true" (dragstart)="dragStart($event, rs)">
-          {{ rs | translateId: { type: 'datasource', output: 'name' } | async }}
-        </div>
-      }
-    </div>
+    @if (displayCombo) {
+      <div class="combobox" (mouseleave)="toggle()">
+        @for (rs of namedQueries$ | async; track rs) {
+          <div draggable="true" (dragstart)="dragStart($event, rs)">
+            {{ rs | translateId: { type: 'datasource', output: 'name' } | async }}
+          </div>
+        }
+      </div>
+    }
   </div>
 </div>

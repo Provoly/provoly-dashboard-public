@@ -133,7 +133,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
       })
     );
     this.options$.pipe(filter((opt) => !!opt)).subscribe((options) => {
-      this.optionsCopy$.next(JSON.parse(JSON.stringify(options)));
+      this.optionsCopy$.next(structuredClone(options));
     });
 
     this.operations$ = combineLatest([this.usedDatasources$, this.classes$, this.fields$]).pipe(
@@ -389,7 +389,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
             height: (size.height ?? 100) - (display ? WIDGET_HEADER_HEIGHT.value : 0),
             padding: 10,
             autosize: { type: 'fit', contains: 'padding' },
-            data: { values: JSON.parse(JSON.stringify(values.data)) },
+            data: { values: structuredClone(values.data) },
             layer: [
               {
                 mark: {
@@ -598,7 +598,7 @@ export class WidgetAggregatedChartComponent extends DataWidgetComponent implemen
         if (this.vega) {
           this.view?.finalize();
           // console.log(JSON.stringify(spec));
-          embed(this.vega.nativeElement, JSON.parse(JSON.stringify(spec)), {
+          embed(this.vega.nativeElement, structuredClone(spec), {
             actions: false,
             renderer: 'canvas',
             formatLocale: this.translateService.instantObject('@pry.widget.chart.numberLocale'),

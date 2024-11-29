@@ -1,33 +1,33 @@
-<div
-  *ngIf="currentPredicate$ | async as pred"
-  [id]="'panel-pred-' + pred.id"
-  [attr.aria-labelledby]="'button-pred-' + pred.id"
-  class="o-panel"
->
-  <div class="o-panel__header">
-    <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
-      <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
-      <pry-icon iconSvg="close"></pry-icon>
-    </button>
-
-    <h3 class="a-h3">
-      {{ '@pry.admin.predicates.info' | i18n }}
-    </h3>
-  </div>
-  <pry-tab-group translationStringBase="@pry.admin.">
-    <pry-tab [templateRef]="predicateDetails" name="details"></pry-tab>
-  </pry-tab-group>
-  <ng-template #predicateDetails>
-    <div>
-      <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
-      <p class="a-p">
-        {{ '@pry.admin.predicates.name' | i18n }} :
-        <strong>{{ pred.name }}</strong>
-      </p>
-      <p class="a-p">
-        {{ '@pry.admin.predicates.value' | i18n }} :
-        <strong>{{ pred.value }}</strong>
-      </p>
+@if (currentPredicate$ | async; as pred) {
+  <div
+    [id]="'panel-pred-' + pred.id"
+    [attr.aria-labelledby]="'button-pred-' + pred.id"
+    class="o-panel"
+    >
+    <div class="o-panel__header">
+      <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
+        <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
+        <pry-icon iconSvg="close"></pry-icon>
+      </button>
+      <h3 class="a-h3">
+        {{ '@pry.admin.predicates.info' | i18n }}
+      </h3>
     </div>
-  </ng-template>
-</div>
+    <pry-tab-group translationStringBase="@pry.admin.">
+      <pry-tab [templateRef]="predicateDetails" name="details"></pry-tab>
+    </pry-tab-group>
+    <ng-template #predicateDetails>
+      <div>
+        <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
+        <p class="a-p">
+          {{ '@pry.admin.predicates.name' | i18n }} :
+          <strong>{{ pred.name }}</strong>
+        </p>
+        <p class="a-p">
+          {{ '@pry.admin.predicates.value' | i18n }} :
+          <strong>{{ pred.value }}</strong>
+        </p>
+      </div>
+    </ng-template>
+  </div>
+}

@@ -1,6 +1,8 @@
 <div class="o-base-layout" [ngClass]="{ 'is-menu-open': menuOpen$ | async }">
   <pry-admin-title class="o-base-layout__title"></pry-admin-title>
-  <pry-admin-menu *ngIf="menuOpen$ | async" class="o-base-layout__menu"></pry-admin-menu>
+  @if (menuOpen$ | async) {
+    <pry-admin-menu class="o-base-layout__menu"></pry-admin-menu>
+  }
   <pry-base-toolbox
     class="o-base-layout__toolbox"
     [baseToolboxTranslation]="baseToolboxTranslation"
@@ -17,7 +19,7 @@
       class="o-base-layout__panel"
       [class.is-open]="panelOpen$ | async"
       [class.-model]="(limit$ | async) === 'model'"
-    >
+      >
       <div class="o-base-layout__panel__content">
         <ng-template #adminPanel></ng-template>
       </div>

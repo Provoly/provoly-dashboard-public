@@ -1,4 +1,6 @@
-<div *ngIf="currentEnv$ | async as currentEnv" class="o-base-container">
-  <h1 class="a-h1">{{ '@pry.admin.environment.edit' | i18n }}</h1>
-  <pry-admin-environment-form [currentEnv]="currentEnv"></pry-admin-environment-form>
-</div>
+@if (currentEnv$ | async; as currentEnv) {
+  <div class="o-base-container">
+    <h1 class="a-h1">{{ '@pry.admin.environment.edit' | i18n }}</h1>
+    <pry-admin-environment-form [currentEnv]="currentEnv"></pry-admin-environment-form>
+  </div>
+}

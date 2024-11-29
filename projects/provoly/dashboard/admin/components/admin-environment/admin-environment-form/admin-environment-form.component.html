@@ -13,17 +13,24 @@
         [required]="!_currentEnv"
         [attr.aria-labelledby]="isSubmitted && envForm.get('name')?.invalid ? 'name-label name-error' : 'name-label'"
         [attr.aria-invalid]="isSubmitted && envForm.get('name')?.invalid"
-      />
-      <label
-        *ngIf="isSubmitted && envForm.get('name')?.invalid"
-        id="name-error"
-        for="environment_name"
-        class="a-label a-label--help -error"
-      >
-        <span *ngIf="envForm.get('name')?.hasError('same-name')">{{ '@pry.admin.exists' | i18n }}</span>
-        <span *ngIf="envForm.get('name')?.hasError('required')">{{ '@pry.admin.required' | i18n }}</span>
-        <span *ngIf="envForm.get('name')?.hasError('pattern')">{{ '@pry.admin.environment.formatName' | i18n }}</span>
-      </label>
+        />
+      @if (isSubmitted && envForm.get('name')?.invalid) {
+        <label
+          id="name-error"
+          for="environment_name"
+          class="a-label a-label--help -error"
+          >
+          @if (envForm.get('name')?.hasError('same-name')) {
+            <span>{{ '@pry.admin.exists' | i18n }}</span>
+          }
+          @if (envForm.get('name')?.hasError('required')) {
+            <span>{{ '@pry.admin.required' | i18n }}</span>
+          }
+          @if (envForm.get('name')?.hasError('pattern')) {
+            <span>{{ '@pry.admin.environment.formatName' | i18n }}</span>
+          }
+        </label>
+      }
     </div>
 
     <div class="m-form-label-field -width-sm">
@@ -40,23 +47,22 @@
     </div>
 
     <div class="m-form-label-field -width-sm">
-      <ng-container *ngIf="envForm.value.type === 'DATE'; else inputText">
+      @if (envForm.value.type === 'DATE') {
         <label class="a-label" for="value_date">
           {{ '@pry.admin.environment.value' | i18n }} *
           <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
         </label>
         <input type="date" id="value_date" class="a-form-field" formControlName="value" required />
-        <label
-          *ngIf="isSubmitted && envForm.get('value')?.invalid && envForm.get('value')?.hasError('required')"
-          id="value_date_error"
-          for="value_date"
-          class="a-label a-label--help -error"
-        >
-          {{ '@pry.admin.required' | i18n }}
-        </label>
-      </ng-container>
-
-      <ng-template #inputText>
+        @if (isSubmitted && envForm.get('value')?.invalid && envForm.get('value')?.hasError('required')) {
+          <label
+            id="value_date_error"
+            for="value_date"
+            class="a-label a-label--help -error"
+            >
+            {{ '@pry.admin.required' | i18n }}
+          </label>
+        }
+      } @else {
         <label id="value-label" class="a-label">{{ '@pry.admin.environment.value' | i18n }}</label>
         <input
           id="environment_value"
@@ -68,20 +74,28 @@
           "
           [attr.aria-invalid]="isSubmitted && envForm.get('value')?.invalid"
           required
-        />
-        <label
-          *ngIf="isSubmitted && envForm.get('value')?.invalid"
-          id="value-error"
-          for="environment_value"
-          class="a-label a-label--help -error"
-        >
-          <span *ngIf="envForm.get('value')?.hasError('required')">{{ '@pry.admin.required' | i18n }}</span>
-          <ng-container *ngIf="envForm.get('value')?.hasError('pattern')">
-            <span *ngIf="envForm.value.type === 'DOUBLE'">{{ '@pry.admin.environment.formatDouble' | i18n }}</span>
-            <span *ngIf="envForm.value.type === 'INTEGER'">{{ '@pry.admin.environment.formatInt' | i18n }}</span>
-          </ng-container>
-        </label>
-      </ng-template>
+          />
+        @if (isSubmitted && envForm.get('value')?.invalid) {
+          <label
+            id="value-error"
+            for="environment_value"
+            class="a-label a-label--help -error"
+            >
+            @if (envForm.get('value')?.hasError('required')) {
+              <span>{{ '@pry.admin.required' | i18n }}</span>
+            }
+            @if (envForm.get('value')?.hasError('pattern')) {
+              @if (envForm.value.type === 'DOUBLE') {
+                <span>{{ '@pry.admin.environment.formatDouble' | i18n }}</span>
+              }
+              @if (envForm.value.type === 'INTEGER') {
+                <span>{{ '@pry.admin.environment.formatInt' | i18n }}</span>
+              }
+            }
+          </label>
+        }
+      }
+
     </div>
 
     <div class="m-btn-group -width-sm">

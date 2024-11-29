@@ -1,4 +1,4 @@
-<ng-container *ngIf="action">
+@if (action) {
   <ul>
     <li class="m-actions-list__item">
       <button
@@ -8,19 +8,23 @@
         [disabled]="action.disabled"
         cdkOverlayOrigin
         #origin="cdkOverlayOrigin"
-      >
-        <ng-container *ngIf="!iconAction; else iconActionTpl">
-          <pry-icon *ngIf="action.icon" [iconSvg]="action.icon" [height]="20" [width]="20"></pry-icon>
+        >
+        @if (!iconAction) {
+          @if (action.icon) {
+            <pry-icon [iconSvg]="action.icon" [height]="20" [width]="20"></pry-icon>
+          }
           {{ baseToolboxTranslation + action.label | i18n }}
-          <pry-icon *ngIf="action.actions" iconSvg="fleche_bas"></pry-icon>
-        </ng-container>
-        <ng-template #iconActionTpl>
-          <pry-icon
-            *ngIf="action.icon"
-            [iconSvg]="action.icon"
-            [title]="baseToolboxTranslation + action.label | i18n"
-          ></pry-icon>
-        </ng-template>
+          @if (action.actions) {
+            <pry-icon iconSvg="fleche_bas"></pry-icon>
+          }
+        } @else {
+          @if (action.icon) {
+            <pry-icon
+              [iconSvg]="action.icon"
+              [title]="baseToolboxTranslation + action.label | i18n"
+            ></pry-icon>
+          }
+        }
       </button>
     </li>
   </ul>
@@ -33,15 +37,15 @@
     [cdkConnectedOverlayOpen]="panelOpen"
     [cdkConnectedOverlayPositions]="connectedPositions"
     (backdropClick)="onClosePanel()"
-  >
+    >
     <div class="m-pry-overlay-panel-wrapper">
       <div class="m-pry-overlay-panel">
-        <ng-container *ngFor="let act of action.actions">
+        @for (act of action.actions; track act) {
           <button class="m-pry-overlay-panel-item" (click)="select(act)">
             {{ baseToolboxTranslation + act.label | i18n }}
           </button>
-        </ng-container>
+        }
       </div>
     </div>
   </ng-template>
-</ng-container>
+}

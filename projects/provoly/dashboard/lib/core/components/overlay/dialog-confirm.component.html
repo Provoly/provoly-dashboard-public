@@ -6,7 +6,7 @@
   (keydown.escape)="onClick()"
   cdkTrapFocus
   [cdkTrapFocusAutoCapture]="true"
->
+  >
   <div class="o-modal">
     <div class="o-modal__top">
       <div class="o-modal__top__title">
@@ -22,22 +22,28 @@
       </div>
     </div>
     <div>
-      <p *ngIf="data?.message as message" class="a-p">{{ message | i18n }}</p>
+      @if (data?.message; as message) {
+        <p class="a-p">{{ message | i18n }}</p>
+      }
     </div>
     <div class="m-btn-group">
-      <ng-container *ngFor="let action of data.actions" #buttonAction>
-        <button
-          (click)="onClick(action)"
-          class="a-btn"
-          type="button"
-          [class.a-btn--primary]="action.color === 'primary' || action.color === undefined"
-          [class.a-btn--secondary]="action.color === 'secondary'"
-          [ngClass]="{ 'a-btn--icon-text': action.icon }"
-        >
-          <pry-icon *ngIf="action.icon" [iconSvg]="action.icon"></pry-icon>
-          {{ action.label | i18n }}
-        </button>
-      </ng-container>
+      @for (action of data.actions; track action) {
+        <ng-container #buttonAction>
+          <button
+            (click)="onClick(action)"
+            class="a-btn"
+            type="button"
+            [class.a-btn--primary]="action.color === 'primary' || action.color === undefined"
+            [class.a-btn--secondary]="action.color === 'secondary'"
+            [ngClass]="{ 'a-btn--icon-text': action.icon }"
+            >
+            @if (action.icon) {
+              <pry-icon [iconSvg]="action.icon"></pry-icon>
+            }
+            {{ action.label | i18n }}
+          </button>
+        </ng-container>
+      }
     </div>
   </div>
 </div>

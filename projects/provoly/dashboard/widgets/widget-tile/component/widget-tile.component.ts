@@ -48,7 +48,7 @@ export class WidgetTileComponent extends DataWidgetComponent {
     this.options$ = this.manifest$.pipe(map((manifest) => manifest.options as TileWidgetOptions));
     this.subscriptions.add(
       this.options$.pipe(filter((opt) => !!opt)).subscribe((options) => {
-        this.optionsCopy = { ...(JSON.parse(JSON.stringify(options)) as TileWidgetOptions) };
+        this.optionsCopy = { ...(structuredClone(options) as TileWidgetOptions) };
       })
     );
     this.items$ = combineLatest([

@@ -28,7 +28,7 @@ export class WidgetTemplateComponent extends DataWidgetComponent {
 
     this.subscriptions.add(
       this.options$.pipe(filter((opt) => !!opt)).subscribe((options) => {
-        this.optionsCopy = { ...(JSON.parse(JSON.stringify(options)) as TemplateWidgetOptions) };
+        this.optionsCopy = { ...(structuredClone(options) as TemplateWidgetOptions) };
       })
     );
 

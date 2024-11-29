@@ -63,7 +63,7 @@ export class AdminClassesCustomizeTooltipComponent extends SubscriptionnerDirect
   @Input() set currentClass(clazz: Class | null | undefined) {
     this._currentClass$.next(clazz ?? ({} as Class));
     this.currentClassConfig = this.removeUnknown(
-      JSON.parse(JSON.stringify(this.defs[this.currentClass.id] ?? { type: 'default' }))
+      structuredClone(this.defs[this.currentClass.id] ?? { type: 'default' })
     );
   }
 
@@ -89,7 +89,7 @@ export class AdminClassesCustomizeTooltipComponent extends SubscriptionnerDirect
     this.subscriptions.add(
       this.store.select(ConfigSelectors.tooltipDefinitions).subscribe((defs) => {
         this.defs = defs;
-        this.currentClassConfig = JSON.parse(JSON.stringify(defs[this.currentClass.id] ?? { type: 'default' }));
+        this.currentClassConfig = structuredClone(defs[this.currentClass.id] ?? { type: 'default' });
       })
     );
     this.classes$ = this.store.select(ClassSelectors.classes);

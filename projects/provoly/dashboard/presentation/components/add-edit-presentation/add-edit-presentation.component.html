@@ -22,27 +22,31 @@
         <div class="m-form-label-field -width-full m-form-label-field--inline">
           <label class="a-label">{{ '@pry.presentation.form.grid' | i18n }}</label>
           <span class="a-label">{{ '@pry.toolbox.layout.' + this.chosenLayout | i18n }}</span>
-          <pry-select-grid-layout *ngIf="!edition"></pry-select-grid-layout>
+          @if (!edition) {
+            <pry-select-grid-layout></pry-select-grid-layout>
+          }
         </div>
       </div>
-      <ng-container *ngIf="mode === 'meta'">
-        <div class="o-presentation__metadata-editor" *ngIf="selectedPresentation$ | async as selectedPresentation">
-          <pry-metadata-editor
-            [targetId]="selectedPresentation.id"
-            [isModification]="true"
-            [metadata]="selectedPresentation.metadata ?? []"
-            (removeMeta)="removeMetadata($event)"
-            (addMeta)="addMetadata($event)"
-            [type]="'meta'"
-          ></pry-metadata-editor>
-        </div>
-      </ng-container>
+      @if (mode === 'meta') {
+        @if (selectedPresentation$ | async; as selectedPresentation) {
+          <div class="o-presentation__metadata-editor">
+            <pry-metadata-editor
+              [targetId]="selectedPresentation.id"
+              [isModification]="true"
+              [metadata]="selectedPresentation.metadata ?? []"
+              (removeMeta)="removeMetadata($event)"
+              (addMeta)="addMetadata($event)"
+              [type]="'meta'"
+            ></pry-metadata-editor>
+          </div>
+        }
+      }
     </div>
     <button
       class="a-btn a-btn--primary"
       (click)="configureDashboard(selectedPresentation$.value!)"
       [disabled]="!isFormValid"
-    >
+      >
       {{ '@pry.presentation.configuration' | i18n }}
     </button>
   </div>

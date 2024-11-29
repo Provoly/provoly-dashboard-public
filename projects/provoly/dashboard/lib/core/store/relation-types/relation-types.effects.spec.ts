@@ -15,7 +15,7 @@ import { RelationTypesService } from './relation-types.service';
 import { MockOverlay } from '@provoly/dashboard/mock/service/mock-overlay.service';
 
 const buildState = (state: Partial<RelationTypeState>) =>
-  Object.assign({}, { '@pry/admin': JSON.parse(JSON.stringify({ ...initialRelationTypeState, ...state })) });
+  Object.assign({}, { '@pry/admin': structuredClone({ ...initialRelationTypeState, ...state }) });
 
 describe('LinksEffects', () => {
   let actions$: Observable<any>;

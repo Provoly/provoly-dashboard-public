@@ -1,46 +1,46 @@
 <pry-widget-vega-css></pry-widget-vega-css>
 <div class="o-widget o-widget--chart">
-  <pry-widget-header
-    *ngIf="displayHeader$ | async"
-    [widgetIndex]="widgetIndex"
-    [manifest]="manifest"
-    (manifestModified)="manifestModified.emit($event)"
-    #header
-    [headerOptions]="(displayHeader$ | async) ?? {}"
-    [datasourceIds]="(datasourceIds$ | async) ?? []"
-  >
-    <pry-settings
-      (saveTriggered)="emitManifest()"
-      (changeTitle)="changeWidgetTitle($event)"
-      [headerPresent]="displayHeader$ | async"
+  @if (displayHeader$ | async) {
+    <pry-widget-header
       [widgetIndex]="widgetIndex"
-      [header]="header"
-      [open$]="open$"
-      class="o-settings"
-    >
-      <div class="o-settings__fields">
-        <div class="m-form-label-field">
-          <label class="a-label" for="placeData_src">{{ '@pry.widget.vega.placeData' | i18n }}</label>
-          <input
-            class="a-form-field"
-            id="placeData_src"
-            type="text"
-            [value]="(optionsCopy.placeData ?? []).join('.')"
-            (input)="changePlaceData($event)"
-          />
+      [manifest]="manifest"
+      (manifestModified)="manifestModified.emit($event)"
+      #header
+      [headerOptions]="(displayHeader$ | async) ?? {}"
+      [datasourceIds]="(datasourceIds$ | async) ?? []"
+      >
+      <pry-settings
+        (saveTriggered)="emitManifest()"
+        (changeTitle)="changeWidgetTitle($event)"
+        [headerPresent]="displayHeader$ | async"
+        [widgetIndex]="widgetIndex"
+        [header]="header"
+        [open$]="open$"
+        class="o-settings"
+        >
+        <div class="o-settings__fields">
+          <div class="m-form-label-field">
+            <label class="a-label" for="placeData_src">{{ '@pry.widget.vega.placeData' | i18n }}</label>
+            <input
+              class="a-form-field"
+              id="placeData_src"
+              type="text"
+              [value]="(optionsCopy.placeData ?? []).join('.')"
+              (input)="changePlaceData($event)"
+              />
+          </div>
+          <div class="m-form-label-field">
+            <label class="a-label" for="spec_src">{{ '@pry.widget.vega.spec' | i18n }}</label>
+            <textarea
+              class="a-form-field a-text-area"
+              id="spec_src"
+              [value]="formattedBaseSpec"
+              (input)="changeSpec($event)"
+            ></textarea>
+          </div>
         </div>
-
-        <div class="m-form-label-field">
-          <label class="a-label" for="spec_src">{{ '@pry.widget.vega.spec' | i18n }}</label>
-          <textarea
-            class="a-form-field a-text-area"
-            id="spec_src"
-            [value]="formattedBaseSpec"
-            (input)="changeSpec($event)"
-          ></textarea>
-        </div>
-      </div>
-    </pry-settings>
-  </pry-widget-header>
+      </pry-settings>
+    </pry-widget-header>
+  }
   <div class="o-widget--chart--chart" #vega></div>
 </div>

@@ -1,149 +1,172 @@
 <div class="o-widget__header">
   <div class="o-widget__header__content">
-    <h2 class="o-widget__header__content__title" *ngIf="(manifest$ | async)?.title; else querySelector">
-      {{ (manifest$ | async)?.title }}
-    </h2>
-    <ng-template #querySelector>
-      <div *ngFor="let ds of usedDatasources$ | async" class="o-widget__header__content__query">
-        <ng-container
-          *ngIf="ds.id | translateId: { type: 'datasource', output: 'icon', noDefault: true } | async as url"
+    @if ((manifest$ | async)?.title) {
+      <h2 class="o-widget__header__content__title">
+        {{ (manifest$ | async)?.title }}
+      </h2>
+    } @else {
+      @for (ds of usedDatasources$ | async; track ds) {
+        <div class="o-widget__header__content__query">
+          @if (ds.id | translateId: { type: 'datasource', output: 'icon', noDefault: true } | async; as url) {
+            <img [height]="20" [src]="url" [width]="20" alt="" class="o-widget__header__content__query__icon" />
+          }
+          <h3 class="o-widget__header__content__query__name">{{ ds.name }}</h3>
+          @if (displayCount && !isGeo(ds)) {
+            <h3 class="o-widget__header__content__query__name">
+              ({{ [ds.id] | resultSetSize | async }})
+            </h3>
+          }
+        </div>
+      }
+      @if (((usedDatasources$ | async) ?? []).length === 0) {
+        <div class="o-widget__header__content__no-data">
+          <h2 class="o-widget__header__content__title">{{ '@pry.widget.noData' | i18n }}</h2>
+        </div>
+      }
+    }
+  </div>
+  @if (displayContextMenu$ | async; as options) {
+    <div class="m-btn-group">
+      <button
+        type="button"
+        id="dialog_Menu"
+        aria-controls="menu"
+        [attr.aria-expanded]="this.menu"
+        #togglePanel
+        class="a-btn a-btn--more"
+        (click)="menuOpen($event)"
         >
-          <img [height]="20" [src]="url" [width]="20" alt="" class="o-widget__header__content__query__icon" />
-        </ng-container>
-        <h3 class="o-widget__header__content__query__name">{{ ds.name }}</h3>
-        <h3 class="o-widget__header__content__query__name" *ngIf="displayCount && !isGeo(ds)">
-          ({{ [ds.id] | resultSetSize | async }})
-        </h3>
-      </div>
-      <div *ngIf="((usedDatasources$ | async) ?? []).length === 0" class="o-widget__header__content__no-data">
-        <h2 class="o-widget__header__content__title">{{ '@pry.widget.noData' | i18n }}</h2>
-      </div>
-    </ng-template>
-  </div>
-  <div class="m-btn-group" *ngIf="displayContextMenu$ | async as options">
-    <button
-      type="button"
-      id="dialog_Menu"
-      aria-controls="menu"
-      [attr.aria-expanded]="this.menu"
-      #togglePanel
-      class="a-btn a-btn--more"
-      (click)="menuOpen($event)"
-    >
-      <pry-icon [height]="25" [width]="25" iconSvg="more_horiz"></pry-icon>
-      <span class="u-visually-hidden">{{ '@pry.action.openMenuWidget' | i18n }}</span>
-    </button>
-  </div>
+        <pry-icon [height]="25" [width]="25" iconSvg="more_horiz"></pry-icon>
+        <span class="u-visually-hidden">{{ '@pry.action.openMenuWidget' | i18n }}</span>
+      </button>
+    </div>
+  }
 </div>
 
 <ng-template #overlayMenu>
-  <div class="m-context-menu" *ngIf="displayContextMenu$ | async as options">
-    <ul
-      class="m-context-menu__list"
-      #menuList
-      id="menu"
-      role="menu"
-      aria-modal="true"
-      aria-labelledby="dialog_Menu"
-      (keydown.arrowDown)="onArrowDown()"
-      (keydown.arrowUp)="onArrowUp()"
-      (keydown.escape)="menuOpen()"
-    >
-      <li
-        class="m-context-menu__list__item"
-        role="none"
-        *ngIf="options === true || options['datasourceSelection'] === true"
-      >
-        <button
-          type="button"
-          role="menuitem"
-          tabindex="-1"
-          id="toggleActions"
-          (click)="toggleDatasourceSelection()"
-          *pryAccess="{ module: 'dashboard', page: 'widget', action: 'select_named_query' }"
-          class="a-btn"
+  @if (displayContextMenu$ | async; as options) {
+    <div class="m-context-menu">
+      <ul
+        class="m-context-menu__list"
+        #menuList
+        id="menu"
+        role="menu"
+        aria-modal="true"
+        aria-labelledby="dialog_Menu"
+        (keydown.arrowDown)="onArrowDown()"
+        (keydown.arrowUp)="onArrowUp()"
+        (keydown.escape)="menuOpen()"
         >
-          <pry-icon [height]="17" [width]="17" iconSvg="stack-fill"></pry-icon>
-          <span>{{ '@pry.widget.tooltip.readSearch' | i18n }}</span>
-        </button>
-      </li>
-      <li class="m-context-menu__list__item" role="none" *ngIf="options === true || options!['parameters'] === true">
-        <ng-content></ng-content>
-      </li>
-      <ng-container *ngIf="options === true || options!['window'] === true">
-        <li class="m-context-menu__list__item" role="none" *ngFor="let targetIndex of targetIndexes$ | async">
-          <button
-            type="button"
-            (click)="moveInNewWindow(_widgetIndex, targetIndex)"
-            class="a-btn"
-            role="menuitem"
-            tabindex="-1"
-          >
-            <pry-icon [height]="17" [width]="17" iconSvg="launch"></pry-icon>
-            {{
-              (targetIndex !== -1 ? '@pry.widget.target.existing' : '@pry.widget.target.new')
+        @if (options === true || options['datasourceSelection'] === true) {
+          <li
+            class="m-context-menu__list__item"
+            role="none"
+            >
+            <button
+              type="button"
+              role="menuitem"
+              tabindex="-1"
+              id="toggleActions"
+              (click)="toggleDatasourceSelection()"
+              *pryAccess="{ module: 'dashboard', page: 'widget', action: 'select_named_query' }"
+              class="a-btn"
+              >
+              <pry-icon [height]="17" [width]="17" iconSvg="stack-fill"></pry-icon>
+              <span>{{ '@pry.widget.tooltip.readSearch' | i18n }}</span>
+            </button>
+          </li>
+        }
+        @if (options === true || options!['parameters'] === true) {
+          <li class="m-context-menu__list__item" role="none">
+            <ng-content></ng-content>
+          </li>
+        }
+        @if (options === true || options!['window'] === true) {
+          @for (targetIndex of targetIndexes$ | async; track targetIndex) {
+            <li class="m-context-menu__list__item" role="none">
+              <button
+                type="button"
+                (click)="moveInNewWindow(_widgetIndex, targetIndex)"
+                class="a-btn"
+                role="menuitem"
+                tabindex="-1"
+                >
+                <pry-icon [height]="17" [width]="17" iconSvg="launch"></pry-icon>
+                {{
+                (targetIndex !== -1 ? '@pry.widget.target.existing' : '@pry.widget.target.new')
                 | i18n: { targetIndex: this.targetIndex + 1 }
-            }}
-          </button>
-        </li>
-      </ng-container>
-      <li
-        class="m-context-menu__list__item"
-        role="none"
-        *ngIf="hasGrid && (options === true || options!['changeSpot'] === true)"
-      >
-        <button type="button" role="menuitem" (click)="toggleChangeSpot()" class="a-btn" tabindex="-1">
-          <pry-icon [height]="17" [width]="17" iconSvg="move"></pry-icon>
-          <span>{{ '@pry.widget.tooltip.changeSpot' | i18n }}</span>
-        </button>
-      </li>
-      <li class="m-context-menu__list__item" role="none" *ngIf="options === true || options!['maximize'] === true">
-        <button
-          type="button"
-          role="menuitem"
-          tabindex="-1"
-          (click)="maximize(_widgetIndex)"
-          class="a-btn"
-          (keydown.escape)="menuOpen()"
-        >
-          <pry-icon [height]="17" [width]="17" iconSvg="fullscreen"></pry-icon>
-          {{ '@pry.widget.target.maximize' | i18n }}
-        </button>
-      </li>
-      <li class="m-context-menu__list__item" role="none" *ngIf="options === true || options!['addToCatalog'] === true">
-        <button type="button" role="menuitem" tabindex="-1" (click)="toggleCatalog()" class="a-btn">
-          <pry-icon [height]="17" [width]="17" iconSvg="library_add"></pry-icon>
-          <span>{{ '@pry.widget.tooltip.catalogWidget' | i18n }}</span>
-        </button>
-      </li>
-      <li class="m-context-menu__list__item" role="none" *ngIf="options === true || options!['delete'] === true">
-        <button
-          type="button"
-          role="menuitem"
-          tabindex="-1"
-          (click)="toggleRemoveConfirm($event)"
-          class="a-btn"
-          (keydown.tab)="menuOpen()"
-        >
-          <pry-icon [height]="17" [width]="17" iconSvg="delete"></pry-icon>
-          <span>{{ '@pry.widget.tooltip.deleteWidget' | i18n }}</span>
-        </button>
-      </li>
-      <li class="m-context-menu__list__item" role="none" *ngFor="let option of additionalOptions">
-        <button
-          type="button"
-          class="a-btn"
-          role="menuitem"
-          tabindex="-1"
-          (click)="executeAction(option)"
-          [disabled]="isActionDisabled(option)"
-        >
-          <pry-icon [height]="17" [width]="17" [iconSvg]="option.icon"></pry-icon>
-          {{ option.label | i18n }}
-        </button>
-      </li>
-    </ul>
-  </div>
+                }}
+              </button>
+            </li>
+          }
+        }
+        @if (hasGrid && (options === true || options!['changeSpot'] === true)) {
+          <li
+            class="m-context-menu__list__item"
+            role="none"
+            >
+            <button type="button" role="menuitem" (click)="toggleChangeSpot()" class="a-btn" tabindex="-1">
+              <pry-icon [height]="17" [width]="17" iconSvg="move"></pry-icon>
+              <span>{{ '@pry.widget.tooltip.changeSpot' | i18n }}</span>
+            </button>
+          </li>
+        }
+        @if (options === true || options!['maximize'] === true) {
+          <li class="m-context-menu__list__item" role="none">
+            <button
+              type="button"
+              role="menuitem"
+              tabindex="-1"
+              (click)="maximize(_widgetIndex)"
+              class="a-btn"
+              (keydown.escape)="menuOpen()"
+              >
+              <pry-icon [height]="17" [width]="17" iconSvg="fullscreen"></pry-icon>
+              {{ '@pry.widget.target.maximize' | i18n }}
+            </button>
+          </li>
+        }
+        @if (options === true || options!['addToCatalog'] === true) {
+          <li class="m-context-menu__list__item" role="none">
+            <button type="button" role="menuitem" tabindex="-1" (click)="toggleCatalog()" class="a-btn">
+              <pry-icon [height]="17" [width]="17" iconSvg="library_add"></pry-icon>
+              <span>{{ '@pry.widget.tooltip.catalogWidget' | i18n }}</span>
+            </button>
+          </li>
+        }
+        @if (options === true || options!['delete'] === true) {
+          <li class="m-context-menu__list__item" role="none">
+            <button
+              type="button"
+              role="menuitem"
+              tabindex="-1"
+              (click)="toggleRemoveConfirm($event)"
+              class="a-btn"
+              (keydown.tab)="menuOpen()"
+              >
+              <pry-icon [height]="17" [width]="17" iconSvg="delete"></pry-icon>
+              <span>{{ '@pry.widget.tooltip.deleteWidget' | i18n }}</span>
+            </button>
+          </li>
+        }
+        @for (option of additionalOptions; track option) {
+          <li class="m-context-menu__list__item" role="none">
+            <button
+              type="button"
+              class="a-btn"
+              role="menuitem"
+              tabindex="-1"
+              (click)="executeAction(option)"
+              [disabled]="isActionDisabled(option)"
+              >
+              <pry-icon [height]="17" [width]="17" [iconSvg]="option.icon"></pry-icon>
+              {{ option.label | i18n }}
+            </button>
+          </li>
+        }
+      </ul>
+    </div>
+  }
 </ng-template>
 
 <ng-template #templateModal>
@@ -153,7 +176,7 @@
     role="dialog"
     aria-modal="true"
     aria-labelledby="dialog confirm delete presentation"
-  >
+    >
     <div class="o-modal__top">
       <div class="o-modal__top__title">
         <h2 class="a-h2" id="dialog_title">
@@ -196,7 +219,7 @@
     aria-modal="true"
     aria-labelledby="dialog_Catalog"
     (keydown.escape)="toggleCatalog()"
-  >
+    >
     <div class="o-modal__top">
       <div class="o-modal__top__title">
         <h2 class="a-h2">
@@ -209,7 +232,7 @@
           (keydown.shift.tab)="focusValidation()"
           #crossCatalog
           (click)="toggleCatalog()"
-        >
+          >
           <pry-icon iconSvg="close" [height]="35" [width]="35"></pry-icon>
           <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
         </button>
@@ -237,7 +260,7 @@
         #cancel
         (keydown.tab)="disableValidation()"
         class="a-btn a-btn--secondary"
-      >
+        >
         {{ '@pry.toolbox.manifest.close' | i18n }}
       </button>
       <button
@@ -247,7 +270,7 @@
         [disabled]="!toolboxMenuService.isValidForCatalog(catalogInfo.name)"
         class="a-btn a-btn--primary"
         (keydown.tab)="focusCrossElement()"
-      >
+        >
         {{ '@pry.toolbox.manifest.validate' | i18n }}
       </button>
     </div>

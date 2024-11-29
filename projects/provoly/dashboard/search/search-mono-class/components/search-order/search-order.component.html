@@ -6,13 +6,14 @@
     bindLabel="name"
     bindValue="id"
   ></pry-select>
-  <pry-toggle
-    *ngIf="(order$ | async)?.attribute"
-    [ngModel]="(order$ | async)?.asc === 'asc'"
-    (ngModelChange)="changeProperty(undefined, $event ? 'asc' : 'desc')"
-    [alwaysActive]="true"
-    dir="ltr"
-  >
-    {{ ((order$ | async)?.asc === 'asc' ? '@pry.search.composed.orderA' : '@pry.search.composed.orderD') | i18n }}
-  </pry-toggle>
+  @if ((order$ | async)?.attribute) {
+    <pry-toggle
+      [ngModel]="(order$ | async)?.asc === 'asc'"
+      (ngModelChange)="changeProperty(undefined, $event ? 'asc' : 'desc')"
+      [alwaysActive]="true"
+      dir="ltr"
+      >
+      {{ ((order$ | async)?.asc === 'asc' ? '@pry.search.composed.orderA' : '@pry.search.composed.orderD') | i18n }}
+    </pry-toggle>
+  }
 </div>

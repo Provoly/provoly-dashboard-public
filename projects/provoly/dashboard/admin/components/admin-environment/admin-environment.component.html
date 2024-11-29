@@ -7,13 +7,13 @@
     prySortActive="name"
     prySortDirection="asc"
     (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
-  >
+    >
     <caption>
       {{
-        '@pry.admin.environment.list' | i18n
+      '@pry.admin.environment.list' | i18n
       }},
       {{
-        '@pry.action.sortableColumnHeader' | i18n
+      '@pry.action.sortableColumnHeader' | i18n
       }}
     </caption>
     <thead>
@@ -25,29 +25,30 @@
       </tr>
     </thead>
     <tbody>
-      <tr
-        *ngFor="let env of environments$ | async | prySortData: sortActive : sortDirection"
-        (click)="goToSelectEnv(env)"
-        [class.is-selected]="(currentEnvName$ | async) === env.name"
-      >
-        <td class="view-details">
-          <button
-            [id]="'button-env-' + env.name"
-            type="button"
-            class="a-btn a-btn--icon-only"
-            title="{{ '@pry.action.viewDetails' | i18n }}"
-            [attr.aria-expanded]="(currentEnvName$ | async) === env.name"
-            aria-haspopup
-            [attr.aria-controls]="'panel-env-' + env.name"
+      @for (env of environments$ | async | prySortData: sortActive : sortDirection; track env) {
+        <tr
+          (click)="goToSelectEnv(env)"
+          [class.is-selected]="(currentEnvName$ | async) === env.name"
           >
-            <span class="u-visually-hidden">{{ env.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
-            <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
-          </button>
-        </td>
-        <td>{{ env.name }}</td>
-        <td>{{ getTranslationType(env.type) | i18n }}</td>
-        <td>{{ env.value }}</td>
-      </tr>
+          <td class="view-details">
+            <button
+              [id]="'button-env-' + env.name"
+              type="button"
+              class="a-btn a-btn--icon-only"
+              title="{{ '@pry.action.viewDetails' | i18n }}"
+              [attr.aria-expanded]="(currentEnvName$ | async) === env.name"
+              aria-haspopup
+              [attr.aria-controls]="'panel-env-' + env.name"
+              >
+              <span class="u-visually-hidden">{{ env.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
+              <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
+            </button>
+          </td>
+          <td>{{ env.name }}</td>
+          <td>{{ getTranslationType(env.type) | i18n }}</td>
+          <td>{{ env.value }}</td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>

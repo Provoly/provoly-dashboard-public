@@ -5,13 +5,13 @@
   prySortActive="name"
   prySortDirection="asc"
   (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
->
+  >
   <caption>
     {{
-      '@pry.admin.userInfo.list' | i18n
+    '@pry.admin.userInfo.list' | i18n
     }},
     {{
-      '@pry.action.sortableColumnHeader' | i18n
+    '@pry.action.sortableColumnHeader' | i18n
     }}
   </caption>
   <thead>
@@ -23,28 +23,29 @@
     </tr>
   </thead>
   <tbody>
-    <tr
-      *ngFor="let user of users$ | async | prySortData: sortActive : sortDirection"
-      (click)="selectUser(user)"
-      [class.is-selected]="(selectedUser$ | async)?.id === user.id"
-    >
-      <td class="view-details">
-        <button
-          [id]="'button-user-' + user.id"
-          type="button"
-          class="a-btn a-btn--icon-only"
-          title="{{ '@pry.action.viewDetails' | i18n }}"
-          [attr.aria-expanded]="(selectedUser$ | async)?.id === user.id"
-          aria-haspopup
-          [attr.aria-controls]="'panel-user-' + user.id"
+    @for (user of users$ | async | prySortData: sortActive : sortDirection; track user) {
+      <tr
+        (click)="selectUser(user)"
+        [class.is-selected]="(selectedUser$ | async)?.id === user.id"
         >
-          <span class="u-visually-hidden">{{ user.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
-          <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
-        </button>
-      </td>
-      <td>{{ user.name }}</td>
-      <td>{{ user.familyName }}</td>
-      <td>{{ user.email }}</td>
-    </tr>
+        <td class="view-details">
+          <button
+            [id]="'button-user-' + user.id"
+            type="button"
+            class="a-btn a-btn--icon-only"
+            title="{{ '@pry.action.viewDetails' | i18n }}"
+            [attr.aria-expanded]="(selectedUser$ | async)?.id === user.id"
+            aria-haspopup
+            [attr.aria-controls]="'panel-user-' + user.id"
+            >
+            <span class="u-visually-hidden">{{ user.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
+            <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
+          </button>
+        </td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.familyName }}</td>
+        <td>{{ user.email }}</td>
+      </tr>
+    }
   </tbody>
 </table>

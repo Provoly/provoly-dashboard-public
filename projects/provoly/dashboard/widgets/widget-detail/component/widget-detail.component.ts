@@ -112,9 +112,7 @@ export class WidgetDetailComponent extends BaseWidgetComponent {
       )
     );
 
-    this.subscriptions.add(
-      this.options$.subscribe((options) => (this.optionsCopy = JSON.parse(JSON.stringify(options))))
-    );
+    this.subscriptions.add(this.options$.subscribe((options) => (this.optionsCopy = structuredClone(options))));
 
     this.subscriptions.add(
       this.itemsToDisplay$.subscribe((items) => (this.itemsForPin = items.map((item) => item.id)))
@@ -188,7 +186,13 @@ export class WidgetDetailComponent extends BaseWidgetComponent {
     if (this.manifest.contextMenu !== false) {
       $event.preventDefault();
       this.store.dispatch(
-        ContextMenuActions.open({ itemId: item.id, clientX: $event.clientX, clientY: $event.clientY, from: 'detail',allowObjectCreation: false })
+        ContextMenuActions.open({
+          itemId: item.id,
+          clientX: $event.clientX,
+          clientY: $event.clientY,
+          from: 'detail',
+          allowObjectCreation: false
+        })
       );
     }
   }

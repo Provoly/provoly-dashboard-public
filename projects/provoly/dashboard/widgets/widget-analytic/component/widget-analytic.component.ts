@@ -64,7 +64,7 @@ export class WidgetAnalyticComponent extends DataWidgetComponent {
     );
     this.subscriptions.add(
       this.options$.subscribe((options) => {
-        this.optionsCopy = JSON.parse(JSON.stringify(options));
+        this.optionsCopy = structuredClone(options);
       })
     );
     this.primaryProperty$ = combineLatest([this.options$, this.resultSet$]).pipe(

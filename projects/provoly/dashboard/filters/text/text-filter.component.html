@@ -1,25 +1,28 @@
-<div *ngIf="filter" class="m-filter">
-  <div class="m-filter__wrapper">
-    <div class="m-filter__input-wrapper">
-      <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
-      <input
-        class="m-filter__input"
-        [ngModel]="_value"
-        (ngModelChange)="valueChange($event)"
-        [id]="filter.name"
-        (keydown.enter)="enterPressed($event)"
-        type="text"
-        [placeholder]="filter.placeholder ?? '' | i18n: { warn: false }"
-      />
+@if (filter) {
+  <div class="m-filter">
+    <div class="m-filter__wrapper">
+      <div class="m-filter__input-wrapper">
+        <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
+        <input
+          class="m-filter__input"
+          [ngModel]="_value"
+          (ngModelChange)="valueChange($event)"
+          [id]="filter.name"
+          (keydown.enter)="enterPressed($event)"
+          type="text"
+          [placeholder]="filter.placeholder ?? '' | i18n: { warn: false }"
+          />
+      </div>
+      @if (!!_value) {
+        <span
+          class="m-filter__clear-wrapper m-filter__clear-wrapper--text"
+          (click)="clear()"
+          [title]="'@pry.filters.clear' | i18n"
+          >
+          <span class="m-filter__clear">×</span>
+          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+        </span>
+      }
     </div>
-    <span
-      *ngIf="!!_value"
-      class="m-filter__clear-wrapper m-filter__clear-wrapper--text"
-      (click)="clear()"
-      [title]="'@pry.filters.clear' | i18n"
-    >
-      <span class="m-filter__clear">×</span>
-      <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
-    </span>
   </div>
-</div>
+}

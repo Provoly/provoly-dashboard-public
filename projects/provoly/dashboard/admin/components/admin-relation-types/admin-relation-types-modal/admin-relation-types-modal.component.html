@@ -6,7 +6,7 @@
           class="a-h2"
           id="dialog_title"
           [innerHTML]="(selectedRelationType ? '@pry.admin.relationTypes.edit' : '@pry.admin.relationTypes.add') | i18n"
-        >
+          >
           {{ '@pry.toolbox.rename' | i18n }}
         </h2>
       </div>
@@ -22,20 +22,27 @@
       <div class="m-form-label-field">
         <label class="a-label" for="name"></label>
         <input type="text" class="a-form-field" id="name" formControlName="name" required />
-        <label
-          *ngIf="isSubmitted && (relationTypeForm.get('name')?.invalid || nameAlreadyExists)"
-          id="name-error"
-          for="name"
-          class="a-label a-label--help -error"
-        >
-          <span *ngIf="nameAlreadyExists">{{ '@pry.admin.exists' | i18n }}</span>
-          <span *ngIf="relationTypeForm.get('name')?.hasError('required')">
-            {{ '@pry.admin.required' | i18n }}
-          </span>
-          <span *ngIf="relationTypeForm.get('name')?.hasError('maxlength')">
-            {{ '@pry.admin.maxLength' | i18n: { len: '30' } }}
-          </span>
-        </label>
+        @if (isSubmitted && (relationTypeForm.get('name')?.invalid || nameAlreadyExists)) {
+          <label
+            id="name-error"
+            for="name"
+            class="a-label a-label--help -error"
+            >
+            @if (nameAlreadyExists) {
+              <span>{{ '@pry.admin.exists' | i18n }}</span>
+            }
+            @if (relationTypeForm.get('name')?.hasError('required')) {
+              <span>
+                {{ '@pry.admin.required' | i18n }}
+              </span>
+            }
+            @if (relationTypeForm.get('name')?.hasError('maxlength')) {
+              <span>
+                {{ '@pry.admin.maxLength' | i18n: { len: '30' } }}
+              </span>
+            }
+          </label>
+        }
       </div>
 
       <div class="m-btn-group">

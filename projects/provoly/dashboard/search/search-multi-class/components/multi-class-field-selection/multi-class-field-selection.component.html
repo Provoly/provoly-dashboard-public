@@ -13,17 +13,17 @@
         </button>
       </div>
     </div>
-    <ng-container *ngIf="availableFields$ | async as list">
-      <ng-container *ngIf="list.length > 7">
+    @if (availableFields$ | async; as list) {
+      @if (list.length > 7) {
         <div class="o-multi-class-field-selection__header__search">
           <input class="a-form-field" type="text" [(ngModel)]="fieldSearch" placeholder="Filtrer" />
         </div>
-      </ng-container>
-    </ng-container>
+      }
+    }
   </div>
   <div class="o-multi-class-field-selection__legend">{{ '@pry.search.multi.legend' | i18n }}</div>
   <ul class="o-multi-class-field-selection__fields">
-    <ng-container *ngFor="let field of availableFields$ | async | pryFilter: 'name' : fieldSearch">
+    @for (field of availableFields$ | async | pryFilter: 'name' : fieldSearch; track field.id) {
       <li class="o-multi-class-field-selection__fields__select" (click)="selectFieldChange.emit(field.id)">
         <button class="a-btn -link-like">
           {{ field.name }}
@@ -33,6 +33,6 @@
           </span>
         </button>
       </li>
-    </ng-container>
+    }
   </ul>
 </div>

@@ -6,15 +6,15 @@
       [title]="data.item.oClass | translateId: { type: 'class', output: 'name' } | async"
       width="32"
       aria-hidden="true"
-    />
+      />
     <span [title]="data.item.oClass | translateId: { type: 'class', output: 'name' } | async">{{
       data.item.oClass | translateId: { type: 'class', output: 'name' } | async
     }}</span>
   </h3>
-  <ng-container *ngFor="let attribute of attributes$ | async">
+  @for (attribute of attributes$ | async; track attribute) {
     <p [title]="getValue(attribute.technicalName) | async | dataFormat: attribute.field">
       <span>{{ attribute.name }}:</span>
       {{ getValue(attribute.technicalName, 40) | async | dataFormat: attribute.field }}
     </p>
-  </ng-container>
+  }
 </div>

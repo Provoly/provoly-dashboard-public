@@ -1,4 +1,4 @@
-<ng-container *ngIf="iconSvgUrl">
+@if (iconSvgUrl) {
   <span
     class="a-icon"
     [ngClass]="color!"
@@ -12,7 +12,7 @@
     aria-hidden="true"
     focusable="false"
   ></span>
-</ng-container>
-<ng-container *ngIf="iconImageUrl">
+}
+@if (iconImageUrl) {
   <img class="a-icon-img" [src]="iconImageUrl" [style.height.px]="height" [style.width.px]="width" [alt]="alt" />
-</ng-container>
+}

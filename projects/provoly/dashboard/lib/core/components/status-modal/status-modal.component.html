@@ -4,8 +4,8 @@
       <div class="o-modal__top__title">
         <h2 class="a-h2">
           {{
-            '@pry.dataset.error.modalTitle.' +
-              (_version?.state !== 'ERROR' && _version?.hasWarnings ? 'WARNING' : 'ERROR') | i18n
+          '@pry.dataset.error.modalTitle.' +
+          (_version?.state !== 'ERROR' && _version?.hasWarnings ? 'WARNING' : 'ERROR') | i18n
           }}
           ({{ messageCount$ | async }})
         </h2>
@@ -26,21 +26,23 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let preview of datasetPreviews$ | async | slice : 0 : 5">
-          <td>
-            {{ '@pry.dataset.error.level.' + preview.level | i18n }}
-          </td>
-          <td>
-            {{ preview.recordId }}
-          </td>
-          <td>
-            {{
+        @for (preview of datasetPreviews$ | async | slice : 0 : 5; track preview) {
+          <tr>
+            <td>
+              {{ '@pry.dataset.error.level.' + preview.level | i18n }}
+            </td>
+            <td>
+              {{ preview.recordId }}
+            </td>
+            <td>
+              {{
               '@pry.dataset.error.code.' + preview.extractMessageCode
-                | i18n
-                  : { plural: preview.name.includes(',') ? 's' : '', name: preview.name, recordId: preview.recordId }
-            }}
-          </td>
-        </tr>
+              | i18n
+              : { plural: preview.name.includes(',') ? 's' : '', name: preview.name, recordId: preview.recordId }
+              }}
+            </td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>

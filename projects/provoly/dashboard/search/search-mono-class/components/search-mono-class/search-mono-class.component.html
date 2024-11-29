@@ -9,28 +9,27 @@
         (ngModelChange)="onChangeClass($event)"
         [template]="optionTpl"
         id="composed_class"
-      >
+        >
       </pry-select>
     </div>
 
     <ng-template #optionTpl let-item="item">
       <div class="o-search-mono-class__header__selected search-class-selected__content">
-        <ng-container *ngIf="item.image; else noImg">
+        @if (item.image) {
           <img
             alt=""
             [height]="25"
             [width]="25"
             [src]="item.id | translateId : { type: 'class', output: 'icon' } | async"
-          />
-        </ng-container>
-        <ng-template #noImg>
+            />
+        } @else {
           <img
             alt=""
             [height]="25"
             [width]="25"
             [src]="item.id | translateId : { type: 'class', output: 'icon' } | async"
-          />
-        </ng-template>
+            />
+        }
         <span>{{ item.name }}</span>
       </div>
     </ng-template>
@@ -38,19 +37,20 @@
 
   <div class="o-search-mono-class__content-wrapper search-mono__content">
     <div class="o-search-mono-class__content search-mono__content__wrapper">
-      <ng-container *ngIf="monoClassMasterId$ | async as conditionId; else noCondition">
+      @if (monoClassMasterId$ | async; as conditionId) {
         <p class="o-search-mono-class__content__title search-mono__content__title">
           {{ '@pry.search.composed.title' | i18n }}
         </p>
-        <ng-container *ngIf="monoClass$ | async as clazz">
+        @if (monoClass$ | async; as clazz) {
           <pry-search-composed [id]="conditionId"></pry-search-composed>
           <p class="o-search-mono-class__content__title search-mono__content__title">
             {{ '@pry.search.composed.order' | i18n }}
           </p>
           <pry-search-order></pry-search-order>
-        </ng-container>
-      </ng-container>
+        }
+      } @else {
+        {{ '@pry.search.composed.shouldSelectClass' | i18n }}
+      }
     </div>
-    <ng-template #noCondition>{{ '@pry.search.composed.shouldSelectClass' | i18n }}</ng-template>
   </div>
 </div>

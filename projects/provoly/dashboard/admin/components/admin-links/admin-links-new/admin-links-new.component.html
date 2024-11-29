@@ -20,143 +20,154 @@
         "
         [attr.aria-invalid]="isSubmitted && linkForm.get('relationType')?.invalid"
         required
-      >
+        >
       </pry-select>
-      <label
-        *ngIf="isSubmitted && linkForm.get('relationType')?.invalid"
-        id="name-error"
-        for="link_name"
-        class="a-label a-label--help -error"
-      >
-        {{ '@pry.admin.required' | i18n }}
-      </label>
+      @if (isSubmitted && linkForm.get('relationType')?.invalid) {
+        <label
+          id="name-error"
+          for="link_name"
+          class="a-label a-label--help -error"
+          >
+          {{ '@pry.admin.required' | i18n }}
+        </label>
+      }
     </div>
 
-    <div class="m-form-label-field -width-sm" *ngIf="isSelectClass">
-      <label id="class-source-label" form="link_class-source" class="a-label">
-        {{ '@pry.admin.links.classSource' | i18n }} *
-        <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
-      </label>
-      <pry-select
-        id="link_class-source"
-        formControlName="classSource"
-        [items]="classes$ | async | prySortData : sortActive : sortDirection"
-        (ngModelChange)="onClassSourceChange($event)"
-        bindLabel="name"
+    @if (isSelectClass) {
+      <div class="m-form-label-field -width-sm">
+        <label id="class-source-label" form="link_class-source" class="a-label">
+          {{ '@pry.admin.links.classSource' | i18n }} *
+          <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+        </label>
+        <pry-select
+          id="link_class-source"
+          formControlName="classSource"
+          [items]="classes$ | async | prySortData : sortActive : sortDirection"
+          (ngModelChange)="onClassSourceChange($event)"
+          bindLabel="name"
         [attr.aria-labelledby]="
           isSubmitted && linkForm.get('classSource')?.invalid
             ? 'class-source-label class-source-error'
             : 'class-source-label'
         "
-        [attr.aria-invalid]="isSubmitted && linkForm.get('classSource')?.invalid"
-        required
-      >
-      </pry-select>
-      <label
-        *ngIf="isSubmitted && linkForm.get('classSource')?.invalid"
-        id="class-source-error"
-        for="link_class-source"
-        class="a-label a-label--help -error"
-      >
-        {{ '@pry.admin.required' | i18n }}
-      </label>
-    </div>
+          [attr.aria-invalid]="isSubmitted && linkForm.get('classSource')?.invalid"
+          required
+          >
+        </pry-select>
+        @if (isSubmitted && linkForm.get('classSource')?.invalid) {
+          <label
+            id="class-source-error"
+            for="link_class-source"
+            class="a-label a-label--help -error"
+            >
+            {{ '@pry.admin.required' | i18n }}
+          </label>
+        }
+      </div>
+    }
 
-    <div
-      *ngIf="attributesSource$ | async | prySortData : sortActive : sortDirection as attr"
-      class="m-form-label-field -width-sm"
-    >
-      <label id="attribute-source-label" for="link_attribute-source" class="a-label">
-        {{ '@pry.admin.links.attributeSource' | i18n }} *
-        <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
-      </label>
-      <pry-select
-        id="link_attribute-source"
-        formControlName="attributeSource"
-        [items]="attr"
-        [isForm]="true"
-        bindLabel="name"
+    @if (attributesSource$ | async | prySortData : sortActive : sortDirection; as attr) {
+      <div
+        class="m-form-label-field -width-sm"
+        >
+        <label id="attribute-source-label" for="link_attribute-source" class="a-label">
+          {{ '@pry.admin.links.attributeSource' | i18n }} *
+          <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+        </label>
+        <pry-select
+          id="link_attribute-source"
+          formControlName="attributeSource"
+          [items]="attr"
+          [isForm]="true"
+          bindLabel="name"
         [attr.aria-labelledby]="
           isSubmitted && linkForm.get('attributeSource')?.invalid
             ? 'attribute-source-label attribute-source-error'
             : 'attribute-source-label'
         "
-        [attr.aria-invalid]="isSubmitted && linkForm.get('attributeSource')?.invalid"
-        required
-      >
-      </pry-select>
-      <label
-        *ngIf="isSubmitted && linkForm.get('attributeSource')?.invalid"
-        id="attribute-source-error"
-        for="link_attribute-source"
-        class="a-label a-label--help -error"
-      >
-        {{ '@pry.admin.required' | i18n }}
-      </label>
-    </div>
+          [attr.aria-invalid]="isSubmitted && linkForm.get('attributeSource')?.invalid"
+          required
+          >
+        </pry-select>
+        @if (isSubmitted && linkForm.get('attributeSource')?.invalid) {
+          <label
+            id="attribute-source-error"
+            for="link_attribute-source"
+            class="a-label a-label--help -error"
+            >
+            {{ '@pry.admin.required' | i18n }}
+          </label>
+        }
+      </div>
+    }
 
-    <div *ngIf="classes$ | async | prySortData : sortActive : sortDirection as cd" class="m-form-label-field -width-sm">
-      <label id="class-destination-label" for="link_class-destination" class="a-label">
-        {{ '@pry.admin.links.classDestination' | i18n }} *
-        <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
-      </label>
-      <pry-select
-        id="link_class-destination"
-        formControlName="classDestination"
-        [items]="cd"
-        (ngModelChange)="onClassDestinationChange($event)"
-        bindLabel="name"
+    @if (classes$ | async | prySortData : sortActive : sortDirection; as cd) {
+      <div class="m-form-label-field -width-sm">
+        <label id="class-destination-label" for="link_class-destination" class="a-label">
+          {{ '@pry.admin.links.classDestination' | i18n }} *
+          <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+        </label>
+        <pry-select
+          id="link_class-destination"
+          formControlName="classDestination"
+          [items]="cd"
+          (ngModelChange)="onClassDestinationChange($event)"
+          bindLabel="name"
         [attr.aria-labelledby]="
           isSubmitted && linkForm.get('classDestination')?.invalid
             ? 'class-destination-label class-destination-error'
             : 'class-destination-label'
         "
-        [attr.aria-invalid]="isSubmitted && linkForm.get('classDestination')?.invalid"
-        required
-      >
-      </pry-select>
-      <label
-        *ngIf="isSubmitted && linkForm.get('classDestination')?.invalid"
-        id="class-destination-error"
-        for="link_class-destination"
-        class="text-error"
-      >
-        {{ '@pry.admin.required' | i18n }}
-      </label>
-    </div>
+          [attr.aria-invalid]="isSubmitted && linkForm.get('classDestination')?.invalid"
+          required
+          >
+        </pry-select>
+        @if (isSubmitted && linkForm.get('classDestination')?.invalid) {
+          <label
+            id="class-destination-error"
+            for="link_class-destination"
+            class="text-error"
+            >
+            {{ '@pry.admin.required' | i18n }}
+          </label>
+        }
+      </div>
+    }
 
-    <div
-      *ngIf="attributesDestination$ | async | prySortData : sortActive : sortDirection as attr"
-      class="m-form-label-field -width-sm"
-    >
-      <label id="attribute-destination-label" for="link_attribute-destination" class="a-label">
-        {{ '@pry.admin.links.attributeDestination' | i18n }} *
-        <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
-      </label>
-      <pry-select
-        id="link_attribute-destination"
-        formControlName="attributeDestination"
-        [items]="attr"
-        [isForm]="true"
-        bindLabel="name"
+    @if (attributesDestination$ | async | prySortData : sortActive : sortDirection; as attr) {
+      <div
+        class="m-form-label-field -width-sm"
+        >
+        <label id="attribute-destination-label" for="link_attribute-destination" class="a-label">
+          {{ '@pry.admin.links.attributeDestination' | i18n }} *
+          <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+        </label>
+        <pry-select
+          id="link_attribute-destination"
+          formControlName="attributeDestination"
+          [items]="attr"
+          [isForm]="true"
+          bindLabel="name"
         [attr.aria-labelledby]="
           isSubmitted && linkForm.get('attributeDestination')?.invalid
             ? 'attribute-destination-label attribute-destination-error'
             : 'attribute-destination-label'
         "
-        [attr.aria-invalid]="isSubmitted && linkForm.get('attributeDestination')?.invalid"
-        required
-      >
-      </pry-select>
-      <label
-        *ngIf="isSubmitted && linkForm.get('attributeDestination')?.invalid"
-        id="attribute-destination-error"
-        for="link_attribute-destination"
-        class="a-label a-label--help -error"
-      >
-        {{ '@pry.admin.required' | i18n }}
-      </label>
-    </div>
+          [attr.aria-invalid]="isSubmitted && linkForm.get('attributeDestination')?.invalid"
+          required
+          >
+        </pry-select>
+        @if (isSubmitted && linkForm.get('attributeDestination')?.invalid) {
+          <label
+            id="attribute-destination-error"
+            for="link_attribute-destination"
+            class="a-label a-label--help -error"
+            >
+            {{ '@pry.admin.required' | i18n }}
+          </label>
+        }
+      </div>
+    }
 
     <div class="m-btn-group -width-sm">
       <button

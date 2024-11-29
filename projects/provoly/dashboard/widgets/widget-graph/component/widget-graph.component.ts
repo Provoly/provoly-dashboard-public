@@ -115,7 +115,7 @@ export class WidgetGraphComponent extends DataWidgetComponent implements AfterVi
     this.subscriptions.add(
       this.options$.pipe(filter((opt) => !!opt)).subscribe((options) => {
         this.options = options;
-        this.optionsCopy = { ...(JSON.parse(JSON.stringify(options)) as GraphWidgetOptions) };
+        this.optionsCopy = { ...(structuredClone(options) as GraphWidgetOptions) };
       })
     );
 

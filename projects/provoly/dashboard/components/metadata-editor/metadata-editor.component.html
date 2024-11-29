@@ -4,7 +4,7 @@
     <div class="o-tabs__panel__content__actions__def">
       <span class="o-tabs__panel__content__actions__text__label">{{ groupedMetadatas.metadataDef.name }}</span>
       <div class="o-tabs__panel__content__actions__buttons">
-        <ng-container *ngIf="!groupedMetadatas.metadataDef.readOnly">
+        @if (!groupedMetadatas.metadataDef.readOnly) {
           <ng-container *pryAccess="{ module: 'admin', page: 'dataset', action: 'write' }">
             <button type="button" class="a-btn a-btn--icon-only" aria-pressed="false">
               <span class="u-visually-hidden">
@@ -19,7 +19,7 @@
               ></pry-icon>
             </button>
           </ng-container>
-        </ng-container>
+        }
       </div>
     </div>
     <ul>
@@ -29,7 +29,7 @@
             <span class="o-tabs__panel__content__actions__text__value">{{ metadata.value }}</span>
           </div>
           <div class="o-tabs__panel__content__actions__buttons">
-            <ng-container *ngIf="!metaDefinition(metadata).readOnly">
+            @if (!metaDefinition(metadata).readOnly) {
               <ng-container *pryAccess="{ module: 'admin', page: 'dataset', action: 'write' }">
                 <button type="button" class="a-btn a-btn--icon-only" aria-pressed="false">
                   <span class="u-visually-hidden">
@@ -48,17 +48,17 @@
                     <span class="u-visually-hidden">
                       {{ '@pry.action.delete' | i18n }} {{ groupedMetadatas.metadataDef.name }}
                     </span>
-                        <pry-icon
-                          class="delete-icon"
-                          iconSvg="delete"
-                          [width]="15"
-                          [height]="15"
-                          (click)="removeMetadataValue(metadata)"
-                        ></pry-icon>
+                    <pry-icon
+                      class="delete-icon"
+                      iconSvg="delete"
+                      [width]="15"
+                      [height]="15"
+                      (click)="removeMetadataValue(metadata)"
+                    ></pry-icon>
                   </button>
                 }
               </ng-container>
-            </ng-container>
+            }
           </div>
         </li>
       }
@@ -85,20 +85,21 @@
             isSubmitted && form.get('metadata')?.invalid ? 'metadata-label metadata-error' : 'metadata-label'
           "
           [attr.aria-invalid]="isSubmitted && form.get('metadata')?.invalid"
-        >
+          >
         </pry-select>
-        <label
-          *ngIf="isSubmitted && form.get('metadata')?.invalid"
-          id="metadata-error"
-          for="metadata"
-          class="a-label a-label--help -error"
-        >
-          {{ '@pry.admin.required' | i18n }}
-        </label>
+        @if (isSubmitted && form.get('metadata')?.invalid) {
+          <label
+            id="metadata-error"
+            for="metadata"
+            class="a-label a-label--help -error"
+            >
+            {{ '@pry.admin.required' | i18n }}
+          </label>
+        }
       </div>
 
-      <ng-container *ngIf="form.value.metadata">
-        <ng-container *ngIf="form.value['metadata']['type'] === 'DATE'; else inputList">
+      @if (form.value.metadata) {
+        @if (form.value['metadata']['type'] === 'DATE') {
           <div class="m-form-label-field o-metadata-editor__container">
             <label id="form_date-label" for="form_date" class="a-label">
               {{ '@pry.action.selectDate' | i18n }} *
@@ -114,20 +115,19 @@
               "
               [attr.aria-invalid]="isSubmitted && form.get('value')?.invalid"
               required
-            />
-            <label
-              *ngIf="isSubmitted && form.get('value')?.invalid"
-              id="form_date-error"
-              for="form_date"
-              class="a-label a-label--help -error"
-            >
-              {{ '@pry.admin.required' | i18n }}
-            </label>
+              />
+            @if (isSubmitted && form.get('value')?.invalid) {
+              <label
+                id="form_date-error"
+                for="form_date"
+                class="a-label a-label--help -error"
+                >
+                {{ '@pry.admin.required' | i18n }}
+              </label>
+            }
           </div>
-        </ng-container>
-
-        <ng-template #inputList>
-          <ng-container *ngIf="form.value['metadata']['type'] === 'LIST'; else inputText">
+        } @else {
+          @if (form.value['metadata']['type'] === 'LIST') {
             <div class="m-form-label-field o-metadata-editor__container">
               <label id="list-label" class="a-label" for="list">{{ '@pry.action.choiceInList' | i18n }}</label>
               <pry-select
@@ -139,45 +139,50 @@
                 aria-labelledby="list-label"
               ></pry-select>
             </div>
-          </ng-container>
-        </ng-template>
-
-        <ng-template #inputText>
-          <div class="m-form-label-field">
-            <label id="text-label" class="a-label" for="text">
-              {{ '@pry.action.text' | i18n }} *
-              <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
-            </label>
-            <input
-              id="text"
-              type="text"
-              class="a-form-field"
-              formControlName="value"
+          } @else {
+            <div class="m-form-label-field">
+              <label id="text-label" class="a-label" for="text">
+                {{ '@pry.action.text' | i18n }} *
+                <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+              </label>
+              <input
+                id="text"
+                type="text"
+                class="a-form-field"
+                formControlName="value"
               [attr.aria-labelledby]="
                 isSubmitted && form.get('value')?.invalid ? 'text-label text-error' : 'text-label'
               "
-              [attr.aria-invalid]="isSubmitted && form.get('value')?.invalid"
-              required
-            />
-            <label
-              *ngIf="isSubmitted && form.get('value')?.invalid"
-              id="test-error"
-              for="text"
-              class="a-label a-label--help -error"
-            >
-              <span *ngIf="form.get('value')?.hasError('required')">{{ '@pry.admin.required' | i18n }}</span>
-              <ng-container *ngIf="form.get('value')?.hasError('pattern')">
-                <span *ngIf="form.value['metadata']['type'] === 'DOUBLE'">
-                  {{ '@pry.admin.environment.formatDouble' | i18n }}
-                </span>
-                <span *ngIf="form.value['metadata']['type'] === 'INTEGER'">
-                  {{ '@pry.admin.environment.formatInt' | i18n }}
-                </span>
-              </ng-container>
-            </label>
-          </div>
-        </ng-template>
-      </ng-container>
+                [attr.aria-invalid]="isSubmitted && form.get('value')?.invalid"
+                required
+                />
+              @if (isSubmitted && form.get('value')?.invalid) {
+                <label
+                  id="test-error"
+                  for="text"
+                  class="a-label a-label--help -error"
+                  >
+                  @if (form.get('value')?.hasError('required')) {
+                    <span>{{ '@pry.admin.required' | i18n }}</span>
+                  }
+                  @if (form.get('value')?.hasError('pattern')) {
+                    @if (form.value['metadata']['type'] === 'DOUBLE') {
+                      <span>
+                        {{ '@pry.admin.environment.formatDouble' | i18n }}
+                      </span>
+                    }
+                    @if (form.value['metadata']['type'] === 'INTEGER') {
+                      <span>
+                        {{ '@pry.admin.environment.formatInt' | i18n }}
+                      </span>
+                    }
+                  }
+                </label>
+              }
+            </div>
+          }
+        }
+      }
     </fieldset>
 
     <div class="m-btn-group -end">

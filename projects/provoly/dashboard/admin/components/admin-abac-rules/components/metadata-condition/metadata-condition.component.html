@@ -1,5 +1,5 @@
-<ng-container *ngIf="condition$ | async as condition">
-  <ng-container *ngIf="metadata$ | async as metadata; else noMetadata">
+@if (condition$ | async; as condition) {
+  @if (metadata$ | async; as metadata) {
     <div class="o-pry-metadata-condition">
       <button
         type="button"
@@ -8,22 +8,21 @@
         (click)="deleteConditionOpen = true"
         [pryOverlay]="deleteConditionTpl"
         [(overlayOpen)]="deleteConditionOpen"
-      >
-        <pry-icon *ngIf="!readonly" iconSvg="drag_indicator"></pry-icon>
+        >
+        @if (!readonly) {
+          <pry-icon iconSvg="drag_indicator"></pry-icon>
+        }
         <span class="u-visually-hidden">???</span>
       </button>
-
       <ng-template #deleteConditionTpl>
         <button class="m-pry-overlay-item" (click)="onDeleteMetadataCondition(condition.id, condition.parentId)">
           {{ '@pry.admin.abac-rules.delete' | i18n }}
         </button>
       </ng-template>
-
       <div class="m-form-label-field">
         <label class="a-label u-visually-hidden" for="metadata_name">Name</label>
         <input id="metadata_name" class="a-form-field" type="text" [value]="metadata.name" readonly />
       </div>
-
       <div class="m-form-label-field">
         <label class="a-label u-visually-hidden" for="metadata_operator">???</label>
         <pry-select
@@ -37,7 +36,6 @@
           (ngModelChange)="onChangeOperator($event, condition.id)"
         ></pry-select>
       </div>
-
       <div class="m-form-label-field">
         <label class="a-label u-visually-hidden" for="condition_value">???</label>
         <input
@@ -48,31 +46,31 @@
           [style.width.px]="200"
           [value]="condition.value"
           (focusout)="onChangeValue($event, condition.id)"
-        />
+          />
       </div>
-
-      <button
-        type="button"
-        aria-pressed="false"
-        *ngIf="!readonly"
-        class="a-btn a-btn--select -size-sm"
-        [pryOverlay]="metadataUserTpl"
-        [(overlayOpen)]="metadataUserOpen"
-        (click)="metadataUserOpen = true"
-      >
-        {{ '@pry.admin.abac-rules.metadataUser' | i18n }}
-      </button>
-
+      @if (!readonly) {
+        <button
+          type="button"
+          aria-pressed="false"
+          class="a-btn a-btn--select -size-sm"
+          [pryOverlay]="metadataUserTpl"
+          [(overlayOpen)]="metadataUserOpen"
+          (click)="metadataUserOpen = true"
+          >
+          {{ '@pry.admin.abac-rules.metadataUser' | i18n }}
+        </button>
+      }
       <ng-template #metadataUserTpl>
         <div class="m-pry-overlay-wrapper">
-          <ng-container *ngFor="let metadataUser of metadataUsers$ | async">
+          @for (metadataUser of metadataUsers$ | async; track metadataUser) {
             <button class="m-pry-overlay-item" (click)="onSelectMetadataUser(condition.id, condition.operator, metadataUser)">
               {{ metadataUser.name }}
             </button>
-          </ng-container>
+          }
         </div>
       </ng-template>
     </div>
-  </ng-container>
-  <ng-template #noMetadata> Loading ...</ng-template>
-</ng-container>
+  } @else {
+    Loading ...
+  }
+}

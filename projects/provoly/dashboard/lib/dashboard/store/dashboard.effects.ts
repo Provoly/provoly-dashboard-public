@@ -583,7 +583,7 @@ export class DashboardEffects {
         this.store.select(DashboardSelectors.selectedItemIds)
       ),
       map(([action, layout, _globalManifest, rank, params, selectedIds]) => {
-        const manifestGlobal = JSON.parse(JSON.stringify(_globalManifest)) as GlobalManifest;
+        const manifestGlobal = structuredClone(_globalManifest) as GlobalManifest;
 
         // Create new configuration
         const newOptions = this.toolboxManifestService.get(action.widgetType) ?? {
@@ -679,7 +679,7 @@ export class DashboardEffects {
         this.store.select(DashboardSelectors.selectedItemIds)
       ),
       map(([action, layout, _globalManifest, rank, params, selectedIds]) => {
-        const manifestGlobal = JSON.parse(JSON.stringify(_globalManifest)) as GlobalManifest;
+        const manifestGlobal = structuredClone(_globalManifest) as GlobalManifest;
 
         const newWindows = [...manifestGlobal.windows];
 

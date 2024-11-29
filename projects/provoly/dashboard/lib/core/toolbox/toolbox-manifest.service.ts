@@ -270,7 +270,7 @@ export class ToolboxManifestService extends SubscriptionnerDirective {
     if (!manifest) {
       return manifest;
     }
-    const copy = JSON.parse(JSON.stringify(manifest));
+    const copy = structuredClone(manifest);
     if (instanciate && !!copy && copy.datasource === USE_CURRENT_RESULTSET) {
       copy.datasource = [];
     }
@@ -283,7 +283,7 @@ export class ToolboxManifestService extends SubscriptionnerDirective {
 
   setAllLayouts(layout: WidgetLayout): void {
     Object.keys(this.initialManifests$.getValue()).forEach(
-      (key) => (this.initialManifests$.getValue()[key].layout = JSON.parse(JSON.stringify(layout)))
+      (key) => (this.initialManifests$.getValue()[key].layout = structuredClone(layout))
     );
   }
 

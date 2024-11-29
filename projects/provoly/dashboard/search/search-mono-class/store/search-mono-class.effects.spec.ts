@@ -9,7 +9,7 @@ import { initialSearchMonoClassState, SearchMonoClassState } from './search-mono
 import { SearchMonoClassService } from './search-mono-class.service';
 
 const buildState = (state: Partial<SearchMonoClassState>) =>
-  Object.assign({}, { '@pry/search': JSON.parse(JSON.stringify({ ...initialSearchMonoClassState, ...state })) });
+  Object.assign({}, { '@pry/search': structuredClone({ ...initialSearchMonoClassState, ...state }) });
 
 describe('SearchMonoClassEffects', () => {
   let actions$: Observable<any>;

@@ -416,7 +416,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
     ]).pipe(
       map(([manifest, resultSet, classes, fields, mapStyles, geoLayers, capabilities, autoDatasetLayers]) => {
         // auto determine layers parameters to provide a working view
-        const autoOptions = JSON.parse(JSON.stringify(manifest.options ?? {})) as MapWidgetOptions;
+        const autoOptions = structuredClone(manifest.options ?? {}) as MapWidgetOptions;
         if (!autoOptions.tooltipMode) {
           autoOptions.tooltipMode = TooltipMode.CLICK;
         }
@@ -544,7 +544,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
 
     this.subscriptions.add(
       this.options$.pipe(filter((opt) => !!opt)).subscribe((options) => {
-        this.optionsCopy = JSON.parse(JSON.stringify(options));
+        this.optionsCopy = structuredClone(options);
         this.optionsCopy.layers?.forEach(
           (layer) => (this.layerSettingsExpandedState[layer.title ?? 'MISSING TITLE'] = false)
         );

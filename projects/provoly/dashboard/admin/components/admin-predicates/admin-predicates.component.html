@@ -6,13 +6,13 @@
     prySortActive="name"
     prySortDirection="asc"
     (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
-  >
+    >
     <caption>
       {{
-        '@pry.admin.predicates.list' | i18n
+      '@pry.admin.predicates.list' | i18n
       }},
       {{
-        '@pry.action.sortableColumnHeader' | i18n
+      '@pry.action.sortableColumnHeader' | i18n
       }}
     </caption>
     <thead>
@@ -22,27 +22,28 @@
       </tr>
     </thead>
     <tbody>
-      <tr
-        *ngFor="let predicate of predicates$ | async | prySortData: sortActive : sortDirection"
-        (click)="goToSelectPredicate(predicate.id)"
-        [class.is-selected]="(currentPredicateId$ | async) === predicate.id"
-      >
-        <td class="view-details">
-          <button
-            [id]="'button-pred-' + predicate.id"
-            type="button"
-            class="a-btn a-btn--icon-only"
-            title="{{ '@pry.action.viewDetails' | i18n }}"
-            [attr.aria-expanded]="false"
-            aria-haspopup
-            [attr.aria-controls]="'panel-pred-' + predicate.id"
+      @for (predicate of predicates$ | async | prySortData: sortActive : sortDirection; track predicate) {
+        <tr
+          (click)="goToSelectPredicate(predicate.id)"
+          [class.is-selected]="(currentPredicateId$ | async) === predicate.id"
           >
-            <span class="u-visually-hidden">{{ predicate.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
-            <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
-          </button>
-        </td>
-        <td>{{ predicate.name }}</td>
-      </tr>
+          <td class="view-details">
+            <button
+              [id]="'button-pred-' + predicate.id"
+              type="button"
+              class="a-btn a-btn--icon-only"
+              title="{{ '@pry.action.viewDetails' | i18n }}"
+              [attr.aria-expanded]="false"
+              aria-haspopup
+              [attr.aria-controls]="'panel-pred-' + predicate.id"
+              >
+              <span class="u-visually-hidden">{{ predicate.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
+              <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
+            </button>
+          </td>
+          <td>{{ predicate.name }}</td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>

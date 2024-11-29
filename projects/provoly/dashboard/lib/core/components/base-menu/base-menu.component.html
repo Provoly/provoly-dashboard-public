@@ -1,16 +1,16 @@
 <nav class="m-nav-links">
-  <ng-container *ngFor="let sub of subMenu$ | async">
+  @for (sub of subMenu$ | async; track sub) {
     <ul class="m-nav-links__list">
-      <ng-container *ngFor="let menu of sub.subMenus">
+      @for (menu of sub.subMenus; track menu) {
         <li
           *pryAccess="{ module: menu.module, page: menu.page, subMenu: menu.subMenu }"
           class="m-nav-links__list__item"
-        >
+          >
           <a [routerLink]="menu.menu" class="a-btn -width-full" [routerLinkActive]="'is-active'">
             {{ baseMenuTranslation + menu.menu | i18n }}
           </a>
         </li>
-      </ng-container>
+      }
     </ul>
-  </ng-container>
+  }
 </nav>

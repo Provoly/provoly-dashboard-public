@@ -6,13 +6,13 @@
     prySortActive="name"
     prySortDirection="asc"
     (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
-  >
+    >
     <caption>
       {{
-        '@pry.admin.relationTypes.list' | i18n
+      '@pry.admin.relationTypes.list' | i18n
       }},
       {{
-        '@pry.action.sortableColumnHeader' | i18n
+      '@pry.action.sortableColumnHeader' | i18n
       }}
     </caption>
     <thead>
@@ -23,28 +23,29 @@
       </tr>
     </thead>
     <tbody>
-      <tr
-        *ngFor="let relationType of relationTypes | async | prySortData: sortActive : sortDirection"
-        (click)="selectlink(relationType)"
-        [class.is-selected]="(selectedRelationType$ | async)?.id === relationType.id"
-      >
-        <td class="view-details">
-          <button
-            [id]="'button-rt-' + relationType.id"
-            type="button"
-            class="a-btn a-btn--icon-only"
-            title="{{ '@pry.action.viewDetails' | i18n }}"
-            [attr.aria-expanded]="(selectedRelationType$ | async)?.id === relationType.id"
-            aria-haspopup
-            [attr.aria-controls]="'panel-rt-' + relationType.id"
+      @for (relationType of relationTypes | async | prySortData: sortActive : sortDirection; track relationType) {
+        <tr
+          (click)="selectlink(relationType)"
+          [class.is-selected]="(selectedRelationType$ | async)?.id === relationType.id"
           >
-            <span class="u-visually-hidden">{{ relationType.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
-            <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
-          </button>
-        </td>
-        <td>{{ relationType.name }}</td>
-        <td>{{ relationType.nbLink }}</td>
-      </tr>
+          <td class="view-details">
+            <button
+              [id]="'button-rt-' + relationType.id"
+              type="button"
+              class="a-btn a-btn--icon-only"
+              title="{{ '@pry.action.viewDetails' | i18n }}"
+              [attr.aria-expanded]="(selectedRelationType$ | async)?.id === relationType.id"
+              aria-haspopup
+              [attr.aria-controls]="'panel-rt-' + relationType.id"
+              >
+              <span class="u-visually-hidden">{{ relationType.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
+              <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
+            </button>
+          </td>
+          <td>{{ relationType.name }}</td>
+          <td>{{ relationType.nbLink }}</td>
+        </tr>
+      }
     </tbody>
   </table>
 

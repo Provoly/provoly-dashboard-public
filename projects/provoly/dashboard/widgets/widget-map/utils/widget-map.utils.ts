@@ -262,7 +262,7 @@ export class WidgetMapUtils {
   }
 
   static assignLayersOrder(_layers: MapWidgetLayerOptions[]) {
-    const layers = JSON.parse(JSON.stringify(_layers)) as MapWidgetLayerOptions[];
+    const layers = structuredClone(_layers) as MapWidgetLayerOptions[];
 
     layers.sort((l1, l2) => (l2.background ? 0 : 1) - (l1.background ? 0 : 1));
 

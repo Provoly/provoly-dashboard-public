@@ -1,4 +1,6 @@
-<div *ngIf="currentClass$ | async as currentClass" class="o-base-container">
-  <h1 class="a-h1">{{ '@pry.admin.classes.rename' | i18n }}</h1>
-  <pry-admin-classes-form [currentClass]="currentClass"></pry-admin-classes-form>
-</div>
+@if (currentClass$ | async; as currentClass) {
+  <div class="o-base-container">
+    <h1 class="a-h1">{{ '@pry.admin.classes.rename' | i18n }}</h1>
+    <pry-admin-classes-form [currentClass]="currentClass"></pry-admin-classes-form>
+  </div>
+}

@@ -6,13 +6,13 @@
     prySortActive="name"
     prySortDirection="asc"
     (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
-  >
+    >
     <caption>
       {{
-        '@pry.admin.classes.list' | i18n
+      '@pry.admin.classes.list' | i18n
       }},
       {{
-        '@pry.action.sortableColumnHeader' | i18n
+      '@pry.action.sortableColumnHeader' | i18n
       }}
     </caption>
     <thead>
@@ -24,36 +24,37 @@
       </tr>
     </thead>
     <tbody>
-      <tr
-        *ngFor="let clazz of classesInputFlows$ | async | prySortData: sortActive : sortDirection"
-        (click)="selectClass(clazz)"
-        [class.is-selected]="(selectedClassId$ | async) === clazz.id"
-      >
-        <td class="view-details">
-          <button
-            id="button-class-{{ clazz.id }}"
-            type="button"
-            class="a-btn a-btn--icon-only"
-            title="{{ '@pry.action.viewDetails' | i18n }}"
-            [attr.aria-expanded]="(selectedClassId$ | async) === clazz.id"
-            aria-haspopup
-            [attr.aria-controls]="'panel-class-' + clazz.id"
+      @for (clazz of classesInputFlows$ | async | prySortData: sortActive : sortDirection; track clazz) {
+        <tr
+          (click)="selectClass(clazz)"
+          [class.is-selected]="(selectedClassId$ | async) === clazz.id"
           >
-            <span class="u-visually-hidden">{{ clazz.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
-            <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
-          </button>
-        </td>
-        <td>
-          <img
-            alt=""
-            [height]="25"
-            [width]="25"
-            [src]="clazz.id | translateId: { type: 'class', output: 'icon' } | async"
-          />
-        </td>
-        <td>{{ clazz.name }}</td>
-        <td>{{ clazz.count }}</td>
-      </tr>
+          <td class="view-details">
+            <button
+              id="button-class-{{ clazz.id }}"
+              type="button"
+              class="a-btn a-btn--icon-only"
+              title="{{ '@pry.action.viewDetails' | i18n }}"
+              [attr.aria-expanded]="(selectedClassId$ | async) === clazz.id"
+              aria-haspopup
+              [attr.aria-controls]="'panel-class-' + clazz.id"
+              >
+              <span class="u-visually-hidden">{{ clazz.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
+              <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
+            </button>
+          </td>
+          <td>
+            <img
+              alt=""
+              [height]="25"
+              [width]="25"
+              [src]="clazz.id | translateId: { type: 'class', output: 'icon' } | async"
+              />
+          </td>
+          <td>{{ clazz.name }}</td>
+          <td>{{ clazz.count }}</td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>

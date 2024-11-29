@@ -1,180 +1,184 @@
 <pry-presentation-css></pry-presentation-css>
-<div class="o-manifest-layout" [ngSwitch]="selectedMode">
-  <ng-container *ngSwitchDefault>
-    <div class="o-manifest-layout__toolbox" [class.-u-hidden]="hideToolbox">
-      <button
-        class="a-btn a-btn--primary"
-        type="button"
-        (click)="creation()"
-        *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'create' }"
-      >
-        <pry-icon iconSvg="add"></pry-icon>
-        {{ '@pry.presentation.create' | i18n }}
-      </button>
-      <div>
-        <div class="o-manifest-layout__toolbox__search">
-          <label id="catalog-search-label" for="catalog-search" class="u-visually-hidden">
-            <span>{{ '@pry.toolbox.catalog.filter.name' | i18n }}</span>
-          </label>
-          <input
-            id="catalog-search"
-            type="text"
-            class="a-form-field"
-            [placeholder]="'@pry.presentation.search' | i18n"
-            [ngModel]="search$ | async"
-            (ngModelChange)="this.search$.next($event)"
-          />
-          <pry-icon class="search-icon" iconSvg="search" [width]="17" [height]="17"></pry-icon>
+<div class="o-manifest-layout">
+  @switch (selectedMode) {
+    @default {
+      <div class="o-manifest-layout__toolbox" [class.-u-hidden]="hideToolbox">
+        <button
+          class="a-btn a-btn--primary"
+          type="button"
+          (click)="creation()"
+          *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'create' }"
+          >
+          <pry-icon iconSvg="add"></pry-icon>
+          {{ '@pry.presentation.create' | i18n }}
+        </button>
+        <div>
+          <div class="o-manifest-layout__toolbox__search">
+            <label id="catalog-search-label" for="catalog-search" class="u-visually-hidden">
+              <span>{{ '@pry.toolbox.catalog.filter.name' | i18n }}</span>
+            </label>
+            <input
+              id="catalog-search"
+              type="text"
+              class="a-form-field"
+              [placeholder]="'@pry.presentation.search' | i18n"
+              [ngModel]="search$ | async"
+              (ngModelChange)="this.search$.next($event)"
+              />
+            <pry-icon class="search-icon" iconSvg="search" [width]="17" [height]="17"></pry-icon>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="o-manifest-layout__content">
-      <h1 class="a-h1">{{ '@pry.presentation.title' | i18n }}</h1>
-      <div class="o-presentation-wrapper">
-        <ul class="o-presentation">
-          <li
-            class="o-presentation__item"
-            *ngFor="let presentation of filteredPresentations$ | async; let index = index"
-          >
-            <div class="o-presentation__item__header">
-              <ng-container *ngIf="isPrivate(presentation)">
-                <pry-icon
-                  iconSvg="private"
-                  class="is-private a-tooltip -tooltip-no-wrap"
-                  [attr.data-tooltip]="'@pry.presentation.private' | i18n"
-                  [height]="17"
-                  [width]="17"
-                ></pry-icon>
-              </ng-container>
-              <div
-                class="a-tooltip -tooltip-no-wrap"
-                (click)="fetch(presentation)"
-                [attr.data-tooltip]="'@pry.presentation.view' | i18n"
-              >
-                <div class="o-presentation__item__image">
-                  <img alt="" class="is-full-width" [src]="presentation.image | getSecuredImage | async" />
+      <div class="o-manifest-layout__content">
+        <h1 class="a-h1">{{ '@pry.presentation.title' | i18n }}</h1>
+        <div class="o-presentation-wrapper">
+          <ul class="o-presentation">
+            @for (presentation of filteredPresentations$ | async; track presentation; let index = $index) {
+              <li
+                class="o-presentation__item"
+                >
+                <div class="o-presentation__item__header">
+                  @if (isPrivate(presentation)) {
+                    <pry-icon
+                      iconSvg="private"
+                      class="is-private a-tooltip -tooltip-no-wrap"
+                      [attr.data-tooltip]="'@pry.presentation.private' | i18n"
+                      [height]="17"
+                      [width]="17"
+                    ></pry-icon>
+                  }
+                  <div
+                    class="a-tooltip -tooltip-no-wrap"
+                    (click)="fetch(presentation)"
+                    [attr.data-tooltip]="'@pry.presentation.view' | i18n"
+                    >
+                    <div class="o-presentation__item__image">
+                      <img alt="" class="is-full-width" [src]="presentation.image | getSecuredImage | async" />
+                    </div>
+                  </div>
+                  @if (this.canModify$(presentation) | async) {
+                    <div class="more-button" *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'share' }">
+                      <button
+                        type="button"
+                        class="a-btn a-btn--more a-tooltip -tooltip-no-wrap"
+                        [id]="'more-button-' + index"
+                        [attr.data-tooltip]="'@pry.presentation.more' | i18n"
+                        (click)="$event.stopPropagation(); toggleModalActions(presentation, button)"
+                        #button
+                        >
+                        <pry-icon [height]="25" [width]="25" iconSvg="more_horiz"></pry-icon>
+                      </button>
+                    </div>
+                  }
                 </div>
-              </div>
-              <ng-container *ngIf="this.canModify$(presentation) | async">
-                <div class="more-button" *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'share' }">
-                  <button
-                    type="button"
-                    class="a-btn a-btn--more a-tooltip -tooltip-no-wrap"
-                    [id]="'more-button-' + index"
-                    [attr.data-tooltip]="'@pry.presentation.more' | i18n"
-                    (click)="$event.stopPropagation(); toggleModalActions(presentation, button)"
-                    #button
+                <div class="o-presentation__item__txt" (click)="fetch(presentation)">
+                  <div class="o-presentation__item__title-container" ellipsis textElementSelector=".a-h3">
+                    <p class="a-h3">{{ presentation.name }}</p>
+                  </div>
+                  <div class="o-presentation__item__description-container" ellipsis textElementSelector=".a-p">
+                    <div class="o-presentation__item__description a-p">
+                      {{ presentation.description }}
+                    </div>
+                  </div>
+                  <div class="u-display-flex -justify-space-between -align-center">
+                    <p class="a-p -date">{{ presentation.modificationDate | sinceDate }}</p>
+                    @if (presentation.theme !== undefined) {
+                      <span class="a-chip -theme -md u-self-end" [class.-u-hidden]="!showTheme">
+                        {{ (themePrefix ?? '') + presentation.theme | i18n: { warn: false } }}
+                      </span>
+                    }
+                  </div>
+                </div>
+                <div
+                  class="o-presentation__item__footer a-tooltip -tooltip-no-wrap"
+                  (click)="fetch(presentation)"
+                  [attr.data-tooltip]="'@pry.presentation.view' | i18n"
                   >
-                    <pry-icon [height]="25" [width]="25" iconSvg="more_horiz"></pry-icon>
+                  <button class="a-btn">
+                    {{ '@pry.presentation.consult' | i18n }}
+                    <pry-icon [width]="20" [height]="20" iconSvg="arrow_right"></pry-icon>
                   </button>
                 </div>
-              </ng-container>
-            </div>
-            <div class="o-presentation__item__txt" (click)="fetch(presentation)">
-              <div class="o-presentation__item__title-container" ellipsis textElementSelector=".a-h3">
-                <p class="a-h3">{{ presentation.name }}</p>
-              </div>
-              <div class="o-presentation__item__description-container" ellipsis textElementSelector=".a-p">
-                <div class="o-presentation__item__description a-p">
-                  {{ presentation.description }}
-                </div>
-              </div>
-              <div class="u-display-flex -justify-space-between -align-center">
-                <p class="a-p -date">{{ presentation.modificationDate | sinceDate }}</p>
-                @if (presentation.theme !== undefined) {
-                  <span class="a-chip -theme -md u-self-end" [class.-u-hidden]="!showTheme">
-                    {{ (themePrefix ?? '') + presentation.theme | i18n: { warn: false } }}
-                  </span>
-                }
-              </div>
-            </div>
-            <div
-              class="o-presentation__item__footer a-tooltip -tooltip-no-wrap"
-              (click)="fetch(presentation)"
-              [attr.data-tooltip]="'@pry.presentation.view' | i18n"
-            >
-              <button class="a-btn">
-                {{ '@pry.presentation.consult' | i18n }}
-                <pry-icon [width]="20" [height]="20" iconSvg="arrow_right"></pry-icon>
-              </button>
-            </div>
-          </li>
-        </ul>
+              </li>
+            }
+          </ul>
+        </div>
       </div>
-    </div>
-  </ng-container>
-  <ng-container *ngSwitchCase="ViewMode.CREATION">
-    <pry-add-edit-presentation
-      [selectedPresentation]="(selectedPresentation$ | async) ?? undefined"
-      (goBack)="closeRestitution()"
-      [editionStartUrl]="editionStartUrl"
-      [edition]="false"
-      [mode]="mode"
-      [themePrefix]="themePrefix"
-    ></pry-add-edit-presentation>
-  </ng-container>
-  <ng-container *ngSwitchCase="ViewMode.EDITION">
-    <pry-add-edit-presentation
-      [selectedPresentation]="(selectedPresentation$ | async) ?? undefined"
-      (goBack)="closeRestitution()"
-      [editionStartUrl]="editionStartUrl"
-      [edition]="true"
-      [mode]="mode"
-      [themePrefix]="themePrefix"
-    ></pry-add-edit-presentation>
-  </ng-container>
+    }
+    @case (ViewMode.CREATION) {
+      <pry-add-edit-presentation
+        [selectedPresentation]="(selectedPresentation$ | async) ?? undefined"
+        (goBack)="closeRestitution()"
+        [editionStartUrl]="editionStartUrl"
+        [edition]="false"
+        [mode]="mode"
+        [themePrefix]="themePrefix"
+      ></pry-add-edit-presentation>
+    }
+    @case (ViewMode.EDITION) {
+      <pry-add-edit-presentation
+        [selectedPresentation]="(selectedPresentation$ | async) ?? undefined"
+        (goBack)="closeRestitution()"
+        [editionStartUrl]="editionStartUrl"
+        [edition]="true"
+        [mode]="mode"
+        [themePrefix]="themePrefix"
+      ></pry-add-edit-presentation>
+    }
+  }
 </div>
 <ng-template #modalActions>
   <div class="m-context-menu">
-    <ul
-      class="m-context-menu__list"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="dialog presentation options"
-      *ngIf="selectedPresentation$ | async as selectedPresentation"
-    >
-      <li class="m-context-menu__list__item">
-        <button
-          class="a-btn -link-like"
-          (click)="edit(selectedPresentation)"
-          [disabled]="!(this.canModify$(selectedPresentation) | async)"
-          *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'edit' }"
+    @if (selectedPresentation$ | async; as selectedPresentation) {
+      <ul
+        class="m-context-menu__list"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialog presentation options"
         >
-          {{ '@pry.presentation.edition' | i18n }}
-        </button>
-      </li>
-      <li class="m-context-menu__list__item">
-        <button
-          class="a-btn -link-like"
-          (click)="editContent(selectedPresentation)"
-          [disabled]="!(this.canModify$(selectedPresentation) | async)"
-          *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'edit' }"
-        >
-          {{ '@pry.presentation.editionContent' | i18n }}
-        </button>
-      </li>
-      <li class="m-context-menu__list__item">
-        <button
-          (click)="toggleModal(selectedPresentation)"
-          class="a-btn -link-like"
-          aria-haspopup="dialog"
-          [disabled]="!(this.canModify$(selectedPresentation) | async)"
-          *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'share' }"
-        >
-          {{ '@pry.presentation.share' | i18n }}
-        </button>
-      </li>
-      <li class="m-context-menu__list__item">
-        <button
-          class="a-btn -link-like"
-          #openModal
-          (click)="delete(selectedPresentation.id)"
-          [disabled]="!(this.canModify$(selectedPresentation) | async)"
-          *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'delete' }"
-        >
-          {{ '@pry.presentation.delete' | i18n }}
-        </button>
-      </li>
-    </ul>
+        <li class="m-context-menu__list__item">
+          <button
+            class="a-btn -link-like"
+            (click)="edit(selectedPresentation)"
+            [disabled]="!(this.canModify$(selectedPresentation) | async)"
+            *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'edit' }"
+            >
+            {{ '@pry.presentation.edition' | i18n }}
+          </button>
+        </li>
+        <li class="m-context-menu__list__item">
+          <button
+            class="a-btn -link-like"
+            (click)="editContent(selectedPresentation)"
+            [disabled]="!(this.canModify$(selectedPresentation) | async)"
+            *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'edit' }"
+            >
+            {{ '@pry.presentation.editionContent' | i18n }}
+          </button>
+        </li>
+        <li class="m-context-menu__list__item">
+          <button
+            (click)="toggleModal(selectedPresentation)"
+            class="a-btn -link-like"
+            aria-haspopup="dialog"
+            [disabled]="!(this.canModify$(selectedPresentation) | async)"
+            *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'share' }"
+            >
+            {{ '@pry.presentation.share' | i18n }}
+          </button>
+        </li>
+        <li class="m-context-menu__list__item">
+          <button
+            class="a-btn -link-like"
+            #openModal
+            (click)="delete(selectedPresentation.id)"
+            [disabled]="!(this.canModify$(selectedPresentation) | async)"
+            *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'delete' }"
+            >
+            {{ '@pry.presentation.delete' | i18n }}
+          </button>
+        </li>
+      </ul>
+    }
   </div>
 </ng-template>

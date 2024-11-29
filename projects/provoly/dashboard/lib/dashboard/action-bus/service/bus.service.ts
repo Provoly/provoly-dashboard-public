@@ -60,7 +60,7 @@ export class BusService {
     if (!action.sender) {
       // Send only non bus-received messages
       this.dataChannel.postMessage({
-        ...JSON.parse(JSON.stringify(action)),
+        ...structuredClone(action),
         sender: this.sender,
         target
       });

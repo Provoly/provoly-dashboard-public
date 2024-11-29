@@ -1,46 +1,44 @@
-<ng-container *ngIf="condition$ | async as condition">
-  <ng-container *ngIf="attribute$ | async as attr; else noAttribute">
-    <ng-container *ngIf="field$ | async as field; else noField">
+@if (condition$ | async; as condition) {
+  @if (attribute$ | async; as attr) {
+    @if (field$ | async; as field) {
       <div class="o-pry-attribute-condition">
-        <button
-          type="button"
-          class="a-btn a-btn--icon-only"
-          aria-pressed="false"
-          *ngIf="!readonly"
-          (click)="onOpenPanel()"
-          cdkOverlayOrigin
-          #origin="cdkOverlayOrigin"
-        >
-          <pry-icon iconSvg="drag_indicator"></pry-icon>
-          <span class="u-visually-hidden">{{ '@pry.admin.abac-rules.delete' | i18n }}</span>
-
-          <ng-template
-            cdkConnectedOverlay
-            cdkConnectedOverlayHasBackdrop
-            cdkConnectedOverlayLockPosition
-            cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
-            [cdkConnectedOverlayOrigin]="origin"
-            [cdkConnectedOverlayOpen]="panelOpen"
-            (backdropClick)="onClosePanel()"
-          >
-            <div class="m-pry-overlay-panel-wrapper">
-              <div class="m-pry-overlay-panel">
-                <button
-                  class="pry-condition-delete"
-                  (click)="onDeleteAttributeCondition(condition.id, condition.parentId)"
-                >
-                  {{ '@pry.admin.abac-rules.delete' | i18n }}
-                </button>
+        @if (!readonly) {
+          <button
+            type="button"
+            class="a-btn a-btn--icon-only"
+            aria-pressed="false"
+            (click)="onOpenPanel()"
+            cdkOverlayOrigin
+            #origin="cdkOverlayOrigin"
+            >
+            <pry-icon iconSvg="drag_indicator"></pry-icon>
+            <span class="u-visually-hidden">{{ '@pry.admin.abac-rules.delete' | i18n }}</span>
+            <ng-template
+              cdkConnectedOverlay
+              cdkConnectedOverlayHasBackdrop
+              cdkConnectedOverlayLockPosition
+              cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+              [cdkConnectedOverlayOrigin]="origin"
+              [cdkConnectedOverlayOpen]="panelOpen"
+              (backdropClick)="onClosePanel()"
+              >
+              <div class="m-pry-overlay-panel-wrapper">
+                <div class="m-pry-overlay-panel">
+                  <button
+                    class="pry-condition-delete"
+                    (click)="onDeleteAttributeCondition(condition.id, condition.parentId)"
+                    >
+                    {{ '@pry.admin.abac-rules.delete' | i18n }}
+                  </button>
+                </div>
               </div>
-            </div>
-          </ng-template>
-        </button>
-
+            </ng-template>
+          </button>
+        }
         <div class="m-form-label-field">
           <label class="a-label u-visually-hidden" for="attr_name">Name</label>
           <input id="attr_name" class="a-form-field" type="text" [value]="attr.name" readonly />
         </div>
-
         <div class="m-form-label-field">
           <label class="a-label u-visually-hidden" for="condition_operator">???</label>
           <pry-select
@@ -54,7 +52,6 @@
             [disabled]="readonly"
           ></pry-select>
         </div>
-
         <div class="m-form-label-field">
           <label class="a-label u-visually-hidden" for="condition_value">Name</label>
           <input
@@ -64,11 +61,13 @@
             class="a-form-field"
             [value]="condition.value"
             (focusout)="onChangeValue($event, condition.id)"
-          />
+            />
         </div>
       </div>
-    </ng-container>
-    <ng-template #noField> Loading field ...</ng-template>
-  </ng-container>
-  <ng-template #noAttribute> Loading attribute ...</ng-template>
-</ng-container>
+    } @else {
+      Loading field ...
+    }
+  } @else {
+    Loading attribute ...
+  }
+}

@@ -1,49 +1,46 @@
-<div
-  *ngIf="selectedUser$ | async as user"
-  [id]="'panel-user-' + user.id"
-  [attr.aria-labelledby]="'button-user-' + user.id"
-  class="o-panel"
->
-  <div class="o-panel__header">
-    <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
-      <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
-      <pry-icon iconSvg="close"></pry-icon>
-    </button>
-
-    <h3 [id]="'tab-title-' + compId" class="a-h3">
-      {{ '@pry.admin.userInfo.info' | i18n }}
-    </h3>
+@if (selectedUser$ | async; as user) {
+  <div
+    [id]="'panel-user-' + user.id"
+    [attr.aria-labelledby]="'button-user-' + user.id"
+    class="o-panel"
+    >
+    <div class="o-panel__header">
+      <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
+        <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
+        <pry-icon iconSvg="close"></pry-icon>
+      </button>
+      <h3 [id]="'tab-title-' + compId" class="a-h3">
+        {{ '@pry.admin.userInfo.info' | i18n }}
+      </h3>
+    </div>
+    <pry-tab-group translationStringBase="@pry.admin.">
+      <pry-tab [templateRef]="userProfile" name="userInfo.profile"></pry-tab>
+      <pry-tab [templateRef]="userDetails" name="details"></pry-tab>
+    </pry-tab-group>
+    <ng-template #userProfile>
+      <pry-metadata-editor
+        [targetId]="(selectedUser$ | async)?.id ?? ''"
+        [isModification]="(editable$ | async) ?? false"
+        [metadata]="(userMetadata$ | async) ?? []"
+        (removeMeta)="removeMetadata($event)"
+        (addMeta)="addMetadataUser($event)"
+        [type]="'user'"
+      ></pry-metadata-editor>
+    </ng-template>
+    <ng-template #userDetails>
+      <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
+      <p class="a-p">
+        {{ '@pry.admin.userInfo.name' | i18n }} :
+        <strong>{{ user?.name }}</strong>
+      </p>
+      <p class="a-p">
+        {{ '@pry.admin.userInfo.familyName' | i18n }} :
+        <strong>{{ user.familyName }}</strong>
+      </p>
+      <p class="a-p">
+        {{ '@pry.admin.userInfo.email' | i18n }} :
+        <strong>{{ user.email }}</strong>
+      </p>
+    </ng-template>
   </div>
-
-  <pry-tab-group translationStringBase="@pry.admin.">
-    <pry-tab [templateRef]="userProfile" name="userInfo.profile"></pry-tab>
-    <pry-tab [templateRef]="userDetails" name="details"></pry-tab>
-  </pry-tab-group>
-
-  <ng-template #userProfile>
-    <pry-metadata-editor
-      [targetId]="(selectedUser$ | async)?.id ?? ''"
-      [isModification]="(editable$ | async) ?? false"
-      [metadata]="(userMetadata$ | async) ?? []"
-      (removeMeta)="removeMetadata($event)"
-      (addMeta)="addMetadataUser($event)"
-      [type]="'user'"
-    ></pry-metadata-editor>
-  </ng-template>
-
-  <ng-template #userDetails>
-    <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
-    <p class="a-p">
-      {{ '@pry.admin.userInfo.name' | i18n }} :
-      <strong>{{ user?.name }}</strong>
-    </p>
-    <p class="a-p">
-      {{ '@pry.admin.userInfo.familyName' | i18n }} :
-      <strong>{{ user.familyName }}</strong>
-    </p>
-    <p class="a-p">
-      {{ '@pry.admin.userInfo.email' | i18n }} :
-      <strong>{{ user.email }}</strong>
-    </p>
-  </ng-template>
-</div>
+}

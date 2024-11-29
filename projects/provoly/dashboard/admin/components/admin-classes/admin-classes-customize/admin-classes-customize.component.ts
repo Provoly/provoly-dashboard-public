@@ -35,7 +35,11 @@ export class AdminClassesCustomizeComponent extends SubscriptionnerDirective imp
   maxTilesAttributes = 5;
   fields$: Observable<Field[]>;
 
-  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private store: Store<any>,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     super();
     this.subscriptions.add(
       this.route.params.subscribe((params) =>
@@ -59,7 +63,7 @@ export class AdminClassesCustomizeComponent extends SubscriptionnerDirective imp
     );
     this.subscriptions.add(
       this.currentPropertiesConfig$.pipe(combineLatestWith(this.currentClass$)).subscribe(([attrs, clazz]) => {
-        this.defaultAttributes = JSON.parse(JSON.stringify(attrs));
+        this.defaultAttributes = structuredClone(attrs);
         this.otherAttributes = (clazz ?? { attributes: [] }).attributes
           .filter((attr) => !attrs.includes(attr.name))
           .map((attr) => attr.name);
@@ -74,7 +78,7 @@ export class AdminClassesCustomizeComponent extends SubscriptionnerDirective imp
     );
     this.subscriptions.add(
       this.currentTilePropertiesConfig$.pipe(combineLatestWith(this.currentClass$)).subscribe(([attrs, clazz]) => {
-        this.defaultTileAttributes = JSON.parse(JSON.stringify(attrs));
+        this.defaultTileAttributes = structuredClone(attrs);
         this.otherTileAttributes = (clazz ?? { attributes: [] }).attributes
           .filter((attr) => !attrs.includes(attr.name))
           .map((attr) => attr.name);

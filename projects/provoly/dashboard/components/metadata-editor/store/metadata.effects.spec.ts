@@ -14,7 +14,7 @@ import { MetadataEffects } from './metadata.effects';
 import { initialMetadataState, MetadataState } from './metadata.reducer';
 
 const buildState = (state: Partial<MetadataState>) =>
-  Object.assign({}, { '@pry/admin': JSON.parse(JSON.stringify({ ...initialMetadataState, ...state })) });
+  Object.assign({}, { '@pry/admin': structuredClone({ ...initialMetadataState, ...state }) });
 
 const metadata: Array<IMetadata> = [
   {

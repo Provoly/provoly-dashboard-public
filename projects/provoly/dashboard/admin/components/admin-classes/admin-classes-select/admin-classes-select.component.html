@@ -1,46 +1,45 @@
-<div
-  *ngIf="currentClass$ | async as clazz"
-  [id]="'panel-class-' + clazz.id"
-  [attr.aria-labelledby]="'button-class-' + clazz.id"
-  class="o-panel"
->
-  <div class="o-panel__header">
-    <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
-      <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
-      <pry-icon iconSvg="close"></pry-icon>
-    </button>
-
-    <h3 class="a-h3">
-      {{ '@pry.admin.classes.info' | i18n }}
-    </h3>
-  </div>
-
-  <pry-tab-group translationStringBase="@pry.admin.">
-    <pry-tab [templateRef]="classDetails" name="details"></pry-tab>
-    <pry-tab [templateRef]="classAssociations" name="classes.associations"></pry-tab>
-  </pry-tab-group>
-
-  <ng-template #classDetails>
-    <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
-    <p class="a-p">
-      {{ '@pry.admin.classes.name' | i18n }} :
-      <strong>{{ clazz.name }}</strong>
-    </p>
-    <p class="a-p u-display-flex -align-center">
-      {{ '@pry.admin.classes.image' | i18n }} :
-      <img
-        alt=""
-        [height]="25"
-        [width]="25"
-        [src]="clazz.id | translateId : { type: 'class', output: 'icon' } | async"
-      />
-    </p>
-  </ng-template>
-
-  <ng-template #classAssociations>
-    <div *ngIf="associations$ | async as associations" class="o-tabs__panels__item__content">
-      <h4 class="a-h4">{{ '@pry.admin.classes.associations' | i18n }}</h4>
-      <pry-association [associations]="associations"></pry-association>
+@if (currentClass$ | async; as clazz) {
+  <div
+    [id]="'panel-class-' + clazz.id"
+    [attr.aria-labelledby]="'button-class-' + clazz.id"
+    class="o-panel"
+    >
+    <div class="o-panel__header">
+      <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
+        <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
+        <pry-icon iconSvg="close"></pry-icon>
+      </button>
+      <h3 class="a-h3">
+        {{ '@pry.admin.classes.info' | i18n }}
+      </h3>
     </div>
-  </ng-template>
-</div>
+    <pry-tab-group translationStringBase="@pry.admin.">
+      <pry-tab [templateRef]="classDetails" name="details"></pry-tab>
+      <pry-tab [templateRef]="classAssociations" name="classes.associations"></pry-tab>
+    </pry-tab-group>
+    <ng-template #classDetails>
+      <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
+      <p class="a-p">
+        {{ '@pry.admin.classes.name' | i18n }} :
+        <strong>{{ clazz.name }}</strong>
+      </p>
+      <p class="a-p u-display-flex -align-center">
+        {{ '@pry.admin.classes.image' | i18n }} :
+        <img
+          alt=""
+          [height]="25"
+          [width]="25"
+          [src]="clazz.id | translateId : { type: 'class', output: 'icon' } | async"
+          />
+      </p>
+    </ng-template>
+    <ng-template #classAssociations>
+      @if (associations$ | async; as associations) {
+        <div class="o-tabs__panels__item__content">
+          <h4 class="a-h4">{{ '@pry.admin.classes.associations' | i18n }}</h4>
+          <pry-association [associations]="associations"></pry-association>
+        </div>
+      }
+    </ng-template>
+  </div>
+}

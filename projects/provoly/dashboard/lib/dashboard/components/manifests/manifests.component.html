@@ -5,7 +5,7 @@
       type="button"
       (click)="triggerFileInput()"
       title="{{ '@pry.manifest.importAlt' | i18n }}"
-    >
+      >
       <pry-icon iconSvg="upload"></pry-icon>
       {{ '@pry.manifest.import' | i18n }}
     </button>
@@ -16,48 +16,47 @@
       #fileInput
       multiple="true"
       class="u-visually-hidden"
-    />
+      />
   </div>
 
   <div class="o-manifest-layout__content">
     <h1 class="a-h1">{{ '@pry.manifest.title' | i18n }}</h1>
 
-    <div class="o-card-manifest" *ngFor="let manifest of manifests$ | async">
-      <div class="o-card-manifest__content">
-        <p class="a-p">
-          <span class="a-p__title">{{ '@pry.manifest.name' | i18n }}</span>
-          {{ manifest.name }}
-        </p>
-        <p class="a-p">
-          <span class="a-p__title">{{ '@pry.manifest.description' | i18n }}</span>
-          {{ manifest.description }}
-        </p>
-        <p class="a-p">
-          <span class="a-p__title">{{ '@pry.manifest.modification' | i18n }}</span>
-          {{ manifest.modificationDate | date: ('@pry.format.datetime' | i18n) }}
-        </p>
-        <p class="a-p">
-          <span class="a-p__title">{{ '@pry.manifest.creation' | i18n }}</span>
-          {{ manifest.creationDate | date: ('@pry.format.datetime' | i18n) }}
-        </p>
+    @for (manifest of manifests$ | async; track manifest) {
+      <div class="o-card-manifest">
+        <div class="o-card-manifest__content">
+          <p class="a-p">
+            <span class="a-p__title">{{ '@pry.manifest.name' | i18n }}</span>
+            {{ manifest.name }}
+          </p>
+          <p class="a-p">
+            <span class="a-p__title">{{ '@pry.manifest.description' | i18n }}</span>
+            {{ manifest.description }}
+          </p>
+          <p class="a-p">
+            <span class="a-p__title">{{ '@pry.manifest.modification' | i18n }}</span>
+            {{ manifest.modificationDate | date: ('@pry.format.datetime' | i18n) }}
+          </p>
+          <p class="a-p">
+            <span class="a-p__title">{{ '@pry.manifest.creation' | i18n }}</span>
+            {{ manifest.creationDate | date: ('@pry.format.datetime' | i18n) }}
+          </p>
+        </div>
+        <div class="m-btn-group">
+          <button type="button" class="a-btn a-btn--icon-only" (click)="download(manifest.id, manifest.name)">
+            <pry-icon iconSvg="download"></pry-icon>
+            <span class="u-visually-hidden">TODO</span>
+          </button>
+          <button type="button" class="a-btn a-btn--icon-only" (click)="fetch(manifest.id)">
+            <pry-icon iconSvg="eye"></pry-icon>
+            <span class="u-visually-hidden">TODO</span>
+          </button>
+          <button type="button" class="a-btn a-btn--icon-only" (click)="delete(manifest.id)">
+            <pry-icon iconSvg="delete"></pry-icon>
+            <span class="u-visually-hidden">TODO</span>
+          </button>
+        </div>
       </div>
-
-      <div class="m-btn-group">
-        <button type="button" class="a-btn a-btn--icon-only" (click)="download(manifest.id, manifest.name)">
-          <pry-icon iconSvg="download"></pry-icon>
-          <span class="u-visually-hidden">TODO</span>
-        </button>
-
-        <button type="button" class="a-btn a-btn--icon-only" (click)="fetch(manifest.id)">
-          <pry-icon iconSvg="eye"></pry-icon>
-          <span class="u-visually-hidden">TODO</span>
-        </button>
-
-        <button type="button" class="a-btn a-btn--icon-only" (click)="delete(manifest.id)">
-          <pry-icon iconSvg="delete"></pry-icon>
-          <span class="u-visually-hidden">TODO</span>
-        </button>
-      </div>
-    </div>
+    }
   </div>
 </div>

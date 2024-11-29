@@ -1,4 +1,4 @@
-<ng-container *ngIf="mode !== 'action'">
+@if (mode !== 'action') {
   <label
     class="a-toggle a-tooltip"
     [for]="'toggle-' + _id"
@@ -11,7 +11,7 @@
     }"
     [attr.data-tooltip]="'@pry.toolbox.edit' | i18n"
     data-tooltip-position="bottom"
-  >
+    >
     <input
       #input
       type="checkbox"
@@ -22,11 +22,11 @@
       [disabled]="disabled"
       (change)="onChangeValue($event)"
       (click)="onInputClick($event)"
-    />
+      />
     <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
   </label>
-</ng-container>
-<ng-container *ngIf="mode === 'action'">
+}
+@if (mode === 'action') {
   <button
     type="button"
     class="a-toggle"
@@ -42,10 +42,10 @@
     (change)="onChangeValue($event)"
     (click)="onInputClick($event)"
     #button
-  >
+    >
     <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
   </button>
-</ng-container>
+}
 
 <ng-template #contentTpl>
   <span class="a-toggle__display" aria-hidden="true">

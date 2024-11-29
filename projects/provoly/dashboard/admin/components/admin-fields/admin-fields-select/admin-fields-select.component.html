@@ -1,97 +1,93 @@
-<div
-  *ngIf="currentField$ | async as field"
-  [id]="'panel-field-' + field.id"
-  [attr.aria-labelledby]="'button-field-' + field.id"
-  class="o-panel"
->
-  <div class="o-panel__header">
-    <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
-      <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
-      <pry-icon iconSvg="close"></pry-icon>
-    </button>
-
-    <h3 class="a-h3">
-      {{ '@pry.admin.fields.info' | i18n }}
-    </h3>
-  </div>
-
-  <pry-tab-group translationStringBase="@pry.admin.">
-    <pry-tab [templateRef]="fieldDetails" name="details"></pry-tab>
-    <pry-tab [templateRef]="fieldAssociations" name="classes.associations"></pry-tab>
-  </pry-tab-group>
-
-  <ng-template #fieldDetails>
-    <div class="u-display-flex -column -gap-20">
-      <div>
-        <h4 class="a-h4">{{ '@pry.admin.fields.name' | i18n }}</h4>
-        <span>{{ field.name }}</span>
-      </div>
-      <div>
-        <h4 class="a-h4">{{ '@pry.admin.fields.type' | i18n }}</h4>
-        <span>{{ FIELD_I18N.label + field.type | i18n }}</span>
-      </div>
-      @if ([FieldType.INTEGER, FieldType.LONG, FieldType.DECIMAL, FieldType.INSTANT].includes(field.type)) {
-        <div>
-          <h3 class="a-h3 -no-padding">{{ '@pry.admin.fields.formatOptions.title' | i18n }}</h3>
-          <div class="u-display-flex -column -gap-20">
-            @switch (field.type) {
-              @case (FieldType.INTEGER) {
-                <ng-container *ngTemplateOutlet="numberFormatOptions"></ng-container>
-              }
-              @case (FieldType.LONG) {
-                <ng-container *ngTemplateOutlet="numberFormatOptions"></ng-container>
-              }
-              @case (FieldType.DECIMAL) {
-                <ng-container *ngTemplateOutlet="numberFormatOptions"></ng-container>
-                <div>
-                  <h4 class="a-h4">{{ '@pry.admin.fields.formatOptions.decimalPrecision' | i18n }}</h4>
-                  @if (field.decimalPrecision) {
-                    <span>{{ field.decimalPrecision }}</span>
-                  } @else {
-                    <span class="-italic">{{ '@pry.admin.fields.formatOptions.noDecimalPrecision' | i18n }}</span>
-                  }
-                </div>
-              }
-              @case (FieldType.INSTANT) {
-                <div>
-                  <h4 class="a-h4">{{ '@pry.admin.fields.formatOptions.dateFormat' | i18n }}</h4>
-                  @if (field.format) {
-                    <span>{{ '@pry.admin.fields.formatOptions.dateFormatOptions.' + field.format | i18n }}</span>
-                  } @else {
-                    <span class="-italic">{{ '@pry.admin.fields.formatOptions.noDateFormat' | i18n }}</span>
-                  }
-                </div>
-              }
-            }
-          </div>
-        </div>
-      }
-      @if (field.crs) {
-        <div>
-          <h4 class="a-h4">{{ '@pry.admin.fields.crs' | i18n }}</h4>
-          <span>{{ field.crs }}</span>
-        </div>
-      }
+@if (currentField$ | async; as field) {
+  <div
+    [id]="'panel-field-' + field.id"
+    [attr.aria-labelledby]="'button-field-' + field.id"
+    class="o-panel"
+    >
+    <div class="o-panel__header">
+      <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
+        <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
+        <pry-icon iconSvg="close"></pry-icon>
+      </button>
+      <h3 class="a-h3">
+        {{ '@pry.admin.fields.info' | i18n }}
+      </h3>
     </div>
-
-    <ng-template #numberFormatOptions>
-      <div>
-        <h4 class="a-h4">{{ '@pry.admin.fields.formatOptions.unit' | i18n }}</h4>
-        @if (field.unit) {
-          <span>{{ field.unit }}</span>
-        } @else {
-          <span class="-italic">{{ '@pry.admin.fields.formatOptions.noUnit' | i18n }}</span>
+    <pry-tab-group translationStringBase="@pry.admin.">
+      <pry-tab [templateRef]="fieldDetails" name="details"></pry-tab>
+      <pry-tab [templateRef]="fieldAssociations" name="classes.associations"></pry-tab>
+    </pry-tab-group>
+    <ng-template #fieldDetails>
+      <div class="u-display-flex -column -gap-20">
+        <div>
+          <h4 class="a-h4">{{ '@pry.admin.fields.name' | i18n }}</h4>
+          <span>{{ field.name }}</span>
+        </div>
+        <div>
+          <h4 class="a-h4">{{ '@pry.admin.fields.type' | i18n }}</h4>
+          <span>{{ FIELD_I18N.label + field.type | i18n }}</span>
+        </div>
+        @if ([FieldType.INTEGER, FieldType.LONG, FieldType.DECIMAL, FieldType.INSTANT].includes(field.type)) {
+          <div>
+            <h3 class="a-h3 -no-padding">{{ '@pry.admin.fields.formatOptions.title' | i18n }}</h3>
+            <div class="u-display-flex -column -gap-20">
+              @switch (field.type) {
+                @case (FieldType.INTEGER) {
+                  <ng-container *ngTemplateOutlet="numberFormatOptions"></ng-container>
+                }
+                @case (FieldType.LONG) {
+                  <ng-container *ngTemplateOutlet="numberFormatOptions"></ng-container>
+                }
+                @case (FieldType.DECIMAL) {
+                  <ng-container *ngTemplateOutlet="numberFormatOptions"></ng-container>
+                  <div>
+                    <h4 class="a-h4">{{ '@pry.admin.fields.formatOptions.decimalPrecision' | i18n }}</h4>
+                    @if (field.decimalPrecision) {
+                      <span>{{ field.decimalPrecision }}</span>
+                    } @else {
+                      <span class="-italic">{{ '@pry.admin.fields.formatOptions.noDecimalPrecision' | i18n }}</span>
+                    }
+                  </div>
+                }
+                @case (FieldType.INSTANT) {
+                  <div>
+                    <h4 class="a-h4">{{ '@pry.admin.fields.formatOptions.dateFormat' | i18n }}</h4>
+                    @if (field.format) {
+                      <span>{{ '@pry.admin.fields.formatOptions.dateFormatOptions.' + field.format | i18n }}</span>
+                    } @else {
+                      <span class="-italic">{{ '@pry.admin.fields.formatOptions.noDateFormat' | i18n }}</span>
+                    }
+                  </div>
+                }
+              }
+            </div>
+          </div>
+        }
+        @if (field.crs) {
+          <div>
+            <h4 class="a-h4">{{ '@pry.admin.fields.crs' | i18n }}</h4>
+            <span>{{ field.crs }}</span>
+          </div>
         }
       </div>
-      <div>
-        <h4 class="a-h4">{{ '@pry.admin.fields.formatOptions.localeFormat' | i18n }}</h4>
-        <span>{{ (field.localeFormat ? '@pry.action.yes' : '@pry.action.no') | i18n }}</span>
-      </div>
+      <ng-template #numberFormatOptions>
+        <div>
+          <h4 class="a-h4">{{ '@pry.admin.fields.formatOptions.unit' | i18n }}</h4>
+          @if (field.unit) {
+            <span>{{ field.unit }}</span>
+          } @else {
+            <span class="-italic">{{ '@pry.admin.fields.formatOptions.noUnit' | i18n }}</span>
+          }
+        </div>
+        <div>
+          <h4 class="a-h4">{{ '@pry.admin.fields.formatOptions.localeFormat' | i18n }}</h4>
+          <span>{{ (field.localeFormat ? '@pry.action.yes' : '@pry.action.no') | i18n }}</span>
+        </div>
+      </ng-template>
     </ng-template>
-  </ng-template>
-
-  <ng-template #fieldAssociations>
-    <h4 class="a-h4">{{ '@pry.admin.classes.associations' | i18n }}</h4>
-    <pry-association [associations]="associations$ | async"></pry-association>
-  </ng-template>
-</div>
+    <ng-template #fieldAssociations>
+      <h4 class="a-h4">{{ '@pry.admin.classes.associations' | i18n }}</h4>
+      <pry-association [associations]="associations$ | async"></pry-association>
+    </ng-template>
+  </div>
+}

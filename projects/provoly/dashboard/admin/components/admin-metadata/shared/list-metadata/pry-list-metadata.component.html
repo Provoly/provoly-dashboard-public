@@ -4,42 +4,45 @@
   prySortActive="name"
   prySortDirection="asc"
   (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
->
+  >
   <caption>
     {{
-      '@pry.action.sortableColumnHeader' | i18n
+    '@pry.action.sortableColumnHeader' | i18n
     }}
   </caption>
 
   <thead>
     <tr>
       <th style="width: 30px"></th>
-      <th *ngFor="let conf of configHeader" [prySortHeader]="conf.label">{{ conf.label }}</th>
+      @for (conf of configHeader; track conf) {
+        <th [prySortHeader]="conf.label">{{ conf.label }}</th>
+      }
     </tr>
   </thead>
   <tbody>
-    <tr
-      *ngFor="let metadata of metadata | prySortData: sortActive : sortDirection"
-      (click)="goToDetails(metadata.id)"
-      [class.is-selected]="selectedMetadata === metadata.id"
-    >
-      <td class="view-details">
-        <button
-          [id]="'button-meta' + metadata.name"
-          type="button"
-          class="a-btn a-btn--icon-only"
-          title="{{ '@pry.action.viewDetails' | i18n }}"
-          [attr.aria-expanded]="selectedMetadata === metadata.id"
-          aria-haspopup
-          [attr.aria-controls]="'panel-meta-' + metadata.id"
+    @for (metadata of metadata | prySortData: sortActive : sortDirection; track metadata) {
+      <tr
+        (click)="goToDetails(metadata.id)"
+        [class.is-selected]="selectedMetadata === metadata.id"
         >
-          <span class="u-visually-hidden">{{ metadata.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
-          <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
-        </button>
-      </td>
-      <td>{{ metadata.name }}</td>
-      <td>{{ getTranslationType(metadata.type) | i18n }}</td>
-    </tr>
+        <td class="view-details">
+          <button
+            [id]="'button-meta' + metadata.name"
+            type="button"
+            class="a-btn a-btn--icon-only"
+            title="{{ '@pry.action.viewDetails' | i18n }}"
+            [attr.aria-expanded]="selectedMetadata === metadata.id"
+            aria-haspopup
+            [attr.aria-controls]="'panel-meta-' + metadata.id"
+            >
+            <span class="u-visually-hidden">{{ metadata.name }}, {{ '@pry.action.viewDetails' | i18n }}</span>
+            <pry-icon iconSvg="eye" [width]="15" [height]="15"></pry-icon>
+          </button>
+        </td>
+        <td>{{ metadata.name }}</td>
+        <td>{{ getTranslationType(metadata.type) | i18n }}</td>
+      </tr>
+    }
   </tbody>
 </table>
 
@@ -50,7 +53,7 @@
   [cancelLabel]="'@pry.toolbox.manifest.close' | i18n"
   [cancelAction]="cancelAction"
   [opened]="this.editOpened"
->
+  >
   <div class="field__input">
     <span>{{ '@pry.toolbox.manifest.name' | i18n }}</span>
     <input
@@ -59,6 +62,6 @@
       [ngModel]="labelMetadataSelected"
       (ngModelChange)="changeValue($event)"
       #input
-    />
+      />
   </div>
 </pry-modal>

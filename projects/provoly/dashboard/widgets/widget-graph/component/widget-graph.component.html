@@ -1,55 +1,57 @@
 <pry-widget-force-graph-css></pry-widget-force-graph-css>
 <div class="o-widget o-widget--graph" [class.-has-header]="displayHeader$ | async">
-  <pry-widget-header
-    [datasourceIds]="(datasourceIds$ | async) ?? []"
-    *ngIf="displayHeader$ | async"
-    [widgetIndex]="widgetIndex"
-    [manifest]="manifest"
-    (manifestModified)="manifestModified.emit($event)"
-    [headerOptions]="(displayHeader$ | async) ?? {}"
-    #header
-  >
-    <pry-settings
-      (saveTriggered)="emitManifest()"
-      (changeTitle)="changeWidgetTitle($event)"
-      [headerPresent]="displayHeader$ | async"
+  @if (displayHeader$ | async) {
+    <pry-widget-header
+      [datasourceIds]="(datasourceIds$ | async) ?? []"
       [widgetIndex]="widgetIndex"
-      [header]="header"
-      [open$]="open$"
-      class="o-settings"
-    >
-      <div class="m-form-label-field">
-        <label class="a-label" for="graph_layout">{{ '@pry.widget.graph.layout' | i18n }}</label>
-        <pry-select
-          (ngModelChange)="changeLayout($event)"
-          [items]="layouts"
-          [ngModel]="optionsCopy!.layout"
-          bindLabel="key"
-          bindValue="key"
-          id="graph_layout"
-        ></pry-select>
-      </div>
-
-      <div class="m-form-label-field">
-        <pry-range
-          [ngModel]="optionsCopy!.nodeRadius"
-          (ngModelChange)="changeNodeRadius($event)"
-          labelTranslate="@pry.widget.graph.nodeRadius"
-          min="10"
-          max="200"
-        ></pry-range>
-      </div>
-    </pry-settings>
-  </pry-widget-header>
-  <div class="no-result" *ngIf="(allItemsWithImages$ | async)?.length === 0">
-    <img
-      class="no-result__search"
-      src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
-      alt="{{ '@pry.widget.table.empty' | i18n }}"
-      aria-hidden="true"
-    />
-    <span class="no-result__text">{{ '@pry.widget.graph.empty' | i18n }}</span>
-  </div>
+      [manifest]="manifest"
+      (manifestModified)="manifestModified.emit($event)"
+      [headerOptions]="(displayHeader$ | async) ?? {}"
+      #header
+      >
+      <pry-settings
+        (saveTriggered)="emitManifest()"
+        (changeTitle)="changeWidgetTitle($event)"
+        [headerPresent]="displayHeader$ | async"
+        [widgetIndex]="widgetIndex"
+        [header]="header"
+        [open$]="open$"
+        class="o-settings"
+        >
+        <div class="m-form-label-field">
+          <label class="a-label" for="graph_layout">{{ '@pry.widget.graph.layout' | i18n }}</label>
+          <pry-select
+            (ngModelChange)="changeLayout($event)"
+            [items]="layouts"
+            [ngModel]="optionsCopy!.layout"
+            bindLabel="key"
+            bindValue="key"
+            id="graph_layout"
+          ></pry-select>
+        </div>
+        <div class="m-form-label-field">
+          <pry-range
+            [ngModel]="optionsCopy!.nodeRadius"
+            (ngModelChange)="changeNodeRadius($event)"
+            labelTranslate="@pry.widget.graph.nodeRadius"
+            min="10"
+            max="200"
+          ></pry-range>
+        </div>
+      </pry-settings>
+    </pry-widget-header>
+  }
+  @if ((allItemsWithImages$ | async)?.length === 0) {
+    <div class="no-result">
+      <img
+        class="no-result__search"
+        src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
+        alt="{{ '@pry.widget.table.empty' | i18n }}"
+        aria-hidden="true"
+        />
+      <span class="no-result__text">{{ '@pry.widget.graph.empty' | i18n }}</span>
+    </div>
+  }
   <div class="m-btn-group -selection-choice">
     <button
       type="button"
@@ -57,7 +59,7 @@
       (click)="changeMode('move')"
       [class.-selected]="mode === 'move'"
       [attr.data-tooltip]="'@pry.widget.graph.move' | i18n"
-    >
+      >
       <pry-icon iconSvg="move"></pry-icon>
       <span class="u-visually-hidden">{{ '@pry.widget.graph.move' | i18n }}</span>
     </button>
@@ -68,7 +70,7 @@
       (click)="changeMode('rectangle')"
       [class.-selected]="mode === 'rectangle'"
       [attr.data-tooltip]="'@pry.widget.graph.rectangle' | i18n"
-    >
+      >
       <pry-icon iconSvg="rectangle"></pry-icon>
       <span class="u-visually-hidden">{{ '@pry.widget.graph.rectangle' | i18n }}</span>
     </button>
@@ -91,7 +93,7 @@
     [style.display]="(tooltip$ | async)?.display ? 'block' : 'none'"
     [style.left.px]="((tooltip$ | async)?.x ?? 0) + 50"
     [style.top.px]="((tooltip$ | async)?.y ?? 0) + 50"
-  >
+    >
     <div #tooltip></div>
   </div>
 </div>

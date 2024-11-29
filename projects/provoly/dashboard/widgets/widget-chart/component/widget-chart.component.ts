@@ -283,7 +283,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
 
     this.subscriptions.add(
       this.options$.pipe(filter((opt) => !!opt)).subscribe((options) => {
-        this.optionsCopy = JSON.parse(JSON.stringify(options));
+        this.optionsCopy = structuredClone(options);
         this.updateAdvancedEdit(JSON.stringify(this.optionsCopy.specToMerge));
         this.optionsCopy.type = !this.markTypes.includes(this.optionsCopy.type)
           ? this.markTypes[0]
@@ -331,7 +331,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
             spec.scales[2].range.scheme = options.series?.scheme;
             break;
           case MarkType.CIRCLE_PACK:
-            spec.data[0].values = JSON.parse(JSON.stringify(data));
+            spec.data[0].values = structuredClone(data);
             spec.data[1].transform[0].key = 'attributes.' + options.packing?.id + '.value';
             spec.data[1].transform[0].parentKey = 'attributes.' + options.packing?.parentId + '.value';
             spec.data[1].transform[1].field = 'attributes.' + options.packing?.packField + '.value';
@@ -340,7 +340,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
             }.value + ' : ' + datum.attributes.${options.packing?.packField}.value`;
             break;
           default:
-            spec.data = { values: JSON.parse(JSON.stringify(data)) };
+            spec.data = { values: structuredClone(data) };
             spec.layer = [
               {
                 mark: {
@@ -399,7 +399,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
       combineLatest([this.vegaLiteSpec$, this.trigger$]).subscribe(([spec, _]) => {
         if (this.vega) {
           this.view?.finalize();
-          embed(this.vega.nativeElement, JSON.parse(JSON.stringify(spec)), {
+          embed(this.vega.nativeElement, structuredClone(spec), {
             actions: false,
             renderer: 'svg',
             formatLocale:
@@ -620,7 +620,7 @@ export class WidgetChartComponent extends DataWidgetComponent implements AfterVi
   }
 
   changeType(typeOptionsId: string) {
-    this.optionsCopy = JSON.parse(JSON.stringify(this.optionsCopy));
+    this.optionsCopy = structuredClone(this.optionsCopy);
     const [type, subType] = typeOptionsId.split('-');
     // @ts-ignore
     this.optionsCopy.type = type;

@@ -1,9 +1,10 @@
-<ng-container *ngFor="let class of classes$ | async">
-  <button
-    class="m-pry-overlay-item"
-    *ngFor="let attribute of class.attributes"
-    (click)="onSelectAttribute(class.id, attribute.id)"
-  >
-    {{ class.name }} - {{ attribute.name }}
-  </button>
-</ng-container>
+@for (class of classes$ | async; track class) {
+  @for (attribute of class.attributes; track attribute) {
+    <button
+      class="m-pry-overlay-item"
+      (click)="onSelectAttribute(class.id, attribute.id)"
+      >
+      {{ class.name }} - {{ attribute.name }}
+    </button>
+  }
+}

@@ -1,5 +1,7 @@
 <div class="m-form-label-field">
-  <label class="a-label" for="range-{{ id }}" *ngIf="labelTranslate">{{ labelTranslate | i18n }}</label>
+  @if (labelTranslate) {
+    <label class="a-label" for="range-{{ id }}">{{ labelTranslate | i18n }}</label>
+  }
   <div class="a-range-slider-wrapper">
     <span aria-hidden="true" class="a-range-slider__min">{{ min }}</span>
     <input
@@ -14,14 +16,14 @@
       id="range-{{ id }}"
       [style.background-size]="info.backgroundSize + '% 100%'"
       #input
-    />
+      />
     <output
       aria-hidden="true"
       for="range-{{ id }}"
       class="a-range-slider__selected-value"
       [style.left.px]="info.left"
       >{{ info.text }}</output
-    >
-    <span aria-hidden="true" class="a-range-slider__max">{{ max }}</span>
+      >
+      <span aria-hidden="true" class="a-range-slider__max">{{ max }}</span>
+    </div>
   </div>
-</div>

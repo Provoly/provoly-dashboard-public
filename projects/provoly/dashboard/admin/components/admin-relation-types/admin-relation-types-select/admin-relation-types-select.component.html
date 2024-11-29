@@ -1,36 +1,35 @@
-<div
-  *ngIf="currentRelationType$ | async as relationType"
-  [id]="'panel-rt-' + relationType.id"
-  [attr.aria-labelledby]="'button-rt-' + relationType.id"
-  class="o-panel"
->
-  <div class="o-panel__header">
-    <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
-      <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
-      <pry-icon iconSvg="close"></pry-icon>
-    </button>
-    <h3 class="a-h3">
-      {{ '@pry.admin.relationTypes.info' | i18n }}
-    </h3>
+@if (currentRelationType$ | async; as relationType) {
+  <div
+    [id]="'panel-rt-' + relationType.id"
+    [attr.aria-labelledby]="'button-rt-' + relationType.id"
+    class="o-panel"
+    >
+    <div class="o-panel__header">
+      <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
+        <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
+        <pry-icon iconSvg="close"></pry-icon>
+      </button>
+      <h3 class="a-h3">
+        {{ '@pry.admin.relationTypes.info' | i18n }}
+      </h3>
+    </div>
+    <pry-tab-group translationStringBase="@pry.admin.">
+      <pry-tab [templateRef]="relationTypeDetails" name="details"></pry-tab>
+    </pry-tab-group>
+    <ng-template #relationTypeDetails>
+      <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
+      <p class="a-p">
+        {{ '@pry.admin.relationTypes.name' | i18n }} :
+        <strong>{{ relationType.name }}</strong>
+      </p>
+      <p class="a-p">
+        {{ '@pry.admin.relationTypes.nbLink' | i18n }} :
+        <strong>{{ relationType.nbLink }}</strong>
+      </p>
+      <p class="a-p">
+        {{ '@pry.admin.relationTypes.dateModification' | i18n }} :
+        <strong>{{ relationType.modificationDate | date : 'dd-MM-yyyy, HH:mm:ss' }}</strong>
+      </p>
+    </ng-template>
   </div>
-
-  <pry-tab-group translationStringBase="@pry.admin.">
-    <pry-tab [templateRef]="relationTypeDetails" name="details"></pry-tab>
-  </pry-tab-group>
-
-  <ng-template #relationTypeDetails>
-    <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
-    <p class="a-p">
-      {{ '@pry.admin.relationTypes.name' | i18n }} :
-      <strong>{{ relationType.name }}</strong>
-    </p>
-    <p class="a-p">
-      {{ '@pry.admin.relationTypes.nbLink' | i18n }} :
-      <strong>{{ relationType.nbLink }}</strong>
-    </p>
-    <p class="a-p">
-      {{ '@pry.admin.relationTypes.dateModification' | i18n }} :
-      <strong>{{ relationType.modificationDate | date : 'dd-MM-yyyy, HH:mm:ss' }}</strong>
-    </p>
-  </ng-template>
-</div>
+}

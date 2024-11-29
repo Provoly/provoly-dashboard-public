@@ -93,7 +93,7 @@ const currentEdit = {
 };
 
 const buildState = (state: Partial<SearchMultiClassState>) =>
-  Object.assign({}, { '@pry/search/multi-class': JSON.parse(JSON.stringify({ ...initialSearchState, ...state })) });
+  Object.assign({}, { '@pry/search/multi-class': structuredClone({ ...initialSearchState, ...state }) });
 
 describe('effectsMultiSearch', () => {
   let store: MockStore<any>;

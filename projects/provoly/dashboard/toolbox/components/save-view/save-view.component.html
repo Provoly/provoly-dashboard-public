@@ -1,5 +1,5 @@
 <ng-container *pryAccess="{ module: 'dashboard', page: 'toolbox', action: 'save' }">
-  <ng-container *ngIf="mode === 'directSave'">
+  @if (mode === 'directSave') {
     <div [attr.aria-expanded]="saveTypeOpened" aria-controls="directiveSave" aria-describedby="infoTooltip_directSave">
       @if (canModify$ | async) {
         <button
@@ -8,28 +8,32 @@
           class="a-btn a-btn--primary"
           (click)="directSave()"
           [disabled]="!(isCurrentPresentationModified$ | async)"
-        >
-          <ng-container *ngIf="displayLabels">{{
+          >
+          @if (displayLabels) {
+            {{
             '@pry.toolbox.save' | i18n: { nbPages: '(' + nbPages + ')' }
-          }}</ng-container>
+            }}
+          }
         </button>
       }
     </div>
-  </ng-container>
-  <ng-container *ngIf="mode === 'saveAs'">
+  }
+  @if (mode === 'saveAs') {
     <div
       class="save-manifest-container"
       [attr.aria-expanded]="saveAsOpened"
       aria-controls="saveModal"
       aria-describedby="infoTooltip_saveAs"
-    >
+      >
       <button type="button" #saveAs class="a-btn a-btn--secondary" (click)="toggleSaveAs()" aria-haspopup="dialog">
-        <ng-container *ngIf="displayLabels">{{
+        @if (displayLabels) {
+          {{
           '@pry.toolbox.rename' | i18n: { nbPages: '(' + nbPages + ')' }
-        }}</ng-container>
+          }}
+        }
       </button>
     </div>
-  </ng-container>
+  }
 </ng-container>
 <ng-template #templateSaveAs>
   <div
@@ -40,7 +44,7 @@
     aria-modal="true"
     aria-labelledby="dialog_saveModal"
     (keydown.escape)="closeModals()"
-  >
+    >
     <div class="o-modal__top">
       <div class="o-modal__top__title">
         <h2 class="a-h2" id="dialog_title">{{ '@pry.toolbox.rename' | i18n }}</h2>
@@ -67,7 +71,7 @@
             #cancel
             (click)="toggleSaveAs()"
             (keydown.tab)="disableNextStep()"
-          >
+            >
             {{ '@pry.toolbox.manifest.close' | i18n }}
           </button>
           <button
@@ -76,7 +80,7 @@
             (click)="stepper.next()"
             [disabled]="!isFormValid"
             (keydown.tab)="focusCrossElement()"
-          >
+            >
             {{ '@pry.action.next' | i18n }}
           </button>
         </div>
@@ -98,7 +102,7 @@
             #confirm
             (click)="save()"
             (keydown.tab)="focusCrossElement()"
-          >
+            >
             {{ '@pry.restitution.share' | i18n }}
           </button>
         </div>
@@ -115,7 +119,7 @@
     role="dialog"
     aria-labelledby="dialog_title"
     (keydown.escape)="closeModals()"
-  >
+    >
     <div class="o-modal__top">
       <div class="o-modal__top__title">
         <h2 class="a-h2" id="dialog_title_">{{ '@pry.toolbox.save' | i18n }}</h2>

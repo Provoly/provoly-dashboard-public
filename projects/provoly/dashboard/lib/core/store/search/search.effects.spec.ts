@@ -16,7 +16,7 @@ import { DashboardSelectors, WidgetFactoryService, WidgetManifest } from '@provo
 import { TestScheduler } from 'rxjs/testing';
 
 const buildState = (state: Partial<SearchState>) =>
-  Object.assign({}, { '@pry/search': JSON.parse(JSON.stringify({ ...initialSearchState, ...state })) });
+  Object.assign({}, { '@pry/search': structuredClone({ ...initialSearchState, ...state }) });
 
 describe('SearchEffects', () => {
   let actions$: Observable<any>;

@@ -19,7 +19,7 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { clone, headers, mockHttpResponse } from '@provoly/dashboard/mock/data/mockHttp';
 
 const buildState = (state: Partial<DataSourceState>) =>
-  Object.assign({}, { '@pry/datasources': JSON.parse(JSON.stringify({ ...initialDataSourceState, ...state })) });
+  Object.assign({}, { '@pry/datasources': structuredClone({ ...initialDataSourceState, ...state }) });
 
 export const namedQueryList: NamedQuery[] = [
   {

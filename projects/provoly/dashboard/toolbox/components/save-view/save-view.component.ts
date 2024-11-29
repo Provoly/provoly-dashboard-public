@@ -63,7 +63,7 @@ export class SaveViewComponent extends ToolboxActionComponent {
     this.subscriptions.add(
       this.store.select(DashboardSelectors.presentation).subscribe((presentation) => {
         this.currentManifest = presentation.current
-          ? JSON.parse(JSON.stringify(presentation.current))
+          ? structuredClone(presentation.current)
           : ({ name: '', image: '', description: '' } as ManifestDescription);
         this.initialNbPages = presentation.initial?.windows.length ?? 0;
         this.hasInitial = !!presentation.initial;

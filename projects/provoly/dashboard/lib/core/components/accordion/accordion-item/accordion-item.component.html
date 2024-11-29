@@ -5,12 +5,14 @@
   [attr.aria-controls]="'panel_' + item"
   [attr.aria-selected]="accordionItem.expanded"
   [attr.aria-expanded]="accordionItem.expanded"
->
+  >
   <div class="o-accordion__title" [class.is-active]="accordionItem.expanded" [style.--border-color]="borderColor">
     <button type="button" class="o-accordion__title__btn" (click)="accordionItem.toggle()">
       <span>
         {{ translationStringBase + item | i18n }}
-        <ng-container *ngIf="length">&nbsp;({{ length }}) </ng-container>
+        @if (length) {
+          &nbsp;({{ length }})
+        }
       </span>
       <pry-icon
         [width]="15"
@@ -19,25 +21,28 @@
       ></pry-icon>
     </button>
   </div>
-  <div
-    *ngIf="accordionItem.expanded"
-    class="o-accordion__panel"
-    role="tabpanel"
-    [attr.aria-labelledby]="'button_' + item"
-    [id]="'panel_' + item"
-    [attr.aria-hidden]="!accordionItem.expanded"
-    [style.--border-color]="borderColor"
-  >
-    <div *ngIf="showSearchBar" class="o-accordion__panel__head">
-      <input
-        type="text"
-        class="a-form-field"
-        [placeholder]="'@pry.toolbox.catalog.filter.name' | i18n"
-        [ngModel]="(search$ | async)[item]"
-        (ngModelChange)="onSearch(item, $event)"
-      />
-      <pry-icon iconSvg="search" [width]="17" [height]="17"></pry-icon>
+  @if (accordionItem.expanded) {
+    <div
+      class="o-accordion__panel"
+      role="tabpanel"
+      [attr.aria-labelledby]="'button_' + item"
+      [id]="'panel_' + item"
+      [attr.aria-hidden]="!accordionItem.expanded"
+      [style.--border-color]="borderColor"
+      >
+      @if (showSearchBar) {
+        <div class="o-accordion__panel__head">
+          <input
+            type="text"
+            class="a-form-field"
+            [placeholder]="'@pry.toolbox.catalog.filter.name' | i18n"
+            [ngModel]="(search$ | async)[item]"
+            (ngModelChange)="onSearch(item, $event)"
+            />
+          <pry-icon iconSvg="search" [width]="17" [height]="17"></pry-icon>
+        </div>
+      }
+      <ng-content></ng-content>
     </div>
-    <ng-content></ng-content>
-  </div>
+  }
 </cdk-accordion-item>

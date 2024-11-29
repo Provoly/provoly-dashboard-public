@@ -12,7 +12,7 @@ import { LinksEffects } from './links.effects';
 import { initialLinkState, LinkState } from './links.reducer';
 
 const buildState = (state: Partial<LinkState>) =>
-  Object.assign({}, { '@pry/admin': JSON.parse(JSON.stringify({ ...initialLinkState, ...state })) });
+  Object.assign({}, { '@pry/admin': structuredClone({ ...initialLinkState, ...state }) });
 
 describe('LinksEffects', () => {
   let actions$: Observable<any>;

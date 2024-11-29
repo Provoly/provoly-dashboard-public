@@ -144,22 +144,22 @@ export class DataSourceEffects {
       ),
       filter(([action, fromWidget, currentEdit, windowManifest]) => fromWidget !== undefined),
       map(([action, fromWidget, currentEdit, windowManifest]) => {
-        const widgetManifestCopy = JSON.parse(JSON.stringify(windowManifest.widgets[fromWidget?.widgetIndex ?? 0]));
+        const widgetManifestCopy = structuredClone(windowManifest.widgets[fromWidget?.widgetIndex ?? 0]);
         // Replacing updated query id by new query id
-        const arrayOfNamedQuery = Array.isArray(widgetManifestCopy.namedQuery)
-          ? widgetManifestCopy.namedQuery
-          : [widgetManifestCopy.namedQuery];
+        const arrayOfdatasource = Array.isArray(widgetManifestCopy.datasource)
+          ? widgetManifestCopy.datasource
+          : ([widgetManifestCopy.datasource].filter((d) => d) as string[]);
 
         // @ts-ignore : we don't want to make core depending on search
         const newQueryId = action.id;
-        const previousNqIndex = arrayOfNamedQuery.indexOf(fromWidget?.editedQuery);
+        const previousNqIndex = arrayOfdatasource.indexOf(fromWidget?.editedQuery ?? '');
         if (previousNqIndex >= 0) {
-          arrayOfNamedQuery[previousNqIndex] = newQueryId;
+          arrayOfdatasource[previousNqIndex] = newQueryId;
         } else {
           // Editing a request that's not in the widget. Adding it
-          arrayOfNamedQuery.push(newQueryId);
+          arrayOfdatasource.push(newQueryId);
         }
-        widgetManifestCopy.namedQuery = arrayOfNamedQuery;
+        widgetManifestCopy.datasource = arrayOfdatasource;
 
         return DashboardActions.updateWidgetManifest({
           index: fromWidget?.widgetIndex ?? 0,

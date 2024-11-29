@@ -17,7 +17,7 @@
     (keydown.escape)="toggleGridChoiceModal()"
     cdkTrapFocus
     [cdkTrapFocusAutoCapture]="true"
-  >
+    >
     <div class="o-modal__top">
       <div class="o-modal__top__title">
         <h2 class="a-h2" id="dialog_title">{{ '@pry.toolbox.chooseGrid' | i18n }}</h2>
@@ -31,34 +31,36 @@
     </div>
     <div class="o-select-grid-layout-wrapper">
       <ul class="o-select-grid-layout">
-        <li *ngFor="let layout of availableLayouts$ | async" class="o-select-grid-layout__item">
-          <button
-            type="button"
-            #firstButton
-            class="a-btn"
-            [attr.aria-pressed]="chosenLayout === layout.type"
-            [class.selected]="chosenLayout === layout.type"
-            (click)="changeLayout(layout.type)"
-          >
-            <div class="o-select-grid-layout__item__preview">
-              <pry-dashboard
+        @for (layout of availableLayouts$ | async; track layout) {
+          <li class="o-select-grid-layout__item">
+            <button
+              type="button"
+              #firstButton
+              class="a-btn"
+              [attr.aria-pressed]="chosenLayout === layout.type"
+              [class.selected]="chosenLayout === layout.type"
+              (click)="changeLayout(layout.type)"
+              >
+              <div class="o-select-grid-layout__item__preview">
+                <pry-dashboard
                 [staticDashboard]="{
                   widgets: [],
                   grid: { layout: layout.type, rows: layout.rows, columns: layout.columns, gap: 3 }
                 }"
-                [breakpoint]="10"
-                [noBackground]="true"
-                [forceModeEdition]="false"
-              ></pry-dashboard>
-            </div>
-            <p class="a-p">
-              <strong>{{ layout.label ?? '' | i18n }}</strong>
-            </p>
-            <p class="a-p">
-              {{ layout.description ?? '' | i18n }}
-            </p>
-          </button>
-        </li>
+                  [breakpoint]="10"
+                  [noBackground]="true"
+                  [forceModeEdition]="false"
+                ></pry-dashboard>
+              </div>
+              <p class="a-p">
+                <strong>{{ layout.label ?? '' | i18n }}</strong>
+              </p>
+              <p class="a-p">
+                {{ layout.description ?? '' | i18n }}
+              </p>
+            </button>
+          </li>
+        }
       </ul>
     </div>
     <div class="m-btn-group -space-evenly">

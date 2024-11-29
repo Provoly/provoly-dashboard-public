@@ -2,93 +2,93 @@
   class="o-pry-search-tools"
   [class.is-close]="searchToolsClose"
   [class.is-mono]="isNewMono || (isEditMono$ | async)"
->
-  <button
-    type="button"
-    class="a-btn a-btn--icon-text -back a-tooltip"
-    (click)="onSearchTools()"
-    aria-pressed="false"
-    *ngIf="((editInProgress$ | async) && !(isRename$ | async)) || isSearchCriteria"
-    [attr.data-tooltip]="'@pry.search.button.backSearch' | i18n"
-    data-tooltip-position="bottom"
   >
-    <pry-icon iconSvg="arrow_back" [width]="24" [height]="24" [animation]="false"></pry-icon>
-    <span>{{ '@pry.search.button.backSearch' | i18n }}</span>
-  </button>
-  <div class="o-pry-search-tools__content" [class.is-close]="searchToolsClose">
+  @if (((editInProgress$ | async) && !(isRename$ | async)) || isSearchCriteria) {
     <button
-      *ngIf="((editInProgress$ | async) && !(isRename$ | async)) || isSearchCriteria"
-      class="a-btn a-btn--icon-text -link-like u-self-end"
-      (click)="reset()"
-      id="btn_reset"
-    >
-      <pry-icon iconSvg="reset" [width]="18" [height]="18"></pry-icon>
-      {{ '@pry.search.button.reset' | i18n }}
+      type="button"
+      class="a-btn a-btn--icon-text -back a-tooltip"
+      (click)="onSearchTools()"
+      aria-pressed="false"
+      [attr.data-tooltip]="'@pry.search.button.backSearch' | i18n"
+      data-tooltip-position="bottom"
+      >
+      <pry-icon iconSvg="arrow_back" [width]="24" [height]="24" [animation]="false"></pry-icon>
+      <span>{{ '@pry.search.button.backSearch' | i18n }}</span>
     </button>
-    <ng-container *ngIf="editInProgress$ | async">
+  }
+  <div class="o-pry-search-tools__content" [class.is-close]="searchToolsClose">
+    @if (((editInProgress$ | async) && !(isRename$ | async)) || isSearchCriteria) {
+      <button
+        class="a-btn a-btn--icon-text -link-like u-self-end"
+        (click)="reset()"
+        id="btn_reset"
+        >
+        <pry-icon iconSvg="reset" [width]="18" [height]="18"></pry-icon>
+        {{ '@pry.search.button.reset' | i18n }}
+      </button>
+    }
+    @if (editInProgress$ | async) {
       <pry-share [ngModel]="(currentEdit$ | async)?.visibility" (ngModelChange)="updateVisibility($event)"></pry-share>
-    </ng-container>
-    <ng-container *ngIf="(editInProgress$ | async) && !(isRename$ | async) && !(loading$ | async); else noEdit">
+    }
+    @if ((editInProgress$ | async) && !(isRename$ | async) && !(loading$ | async)) {
       <pry-edit-named-query
         (searchFulltextChange)="onSearchFulltextChange($event)"
         (cancelled)="onSearchTools()"
       ></pry-edit-named-query>
-    </ng-container>
-    <ng-template #noEdit>
-      <ng-container *ngIf="isSearchCriteria && !(loading$ | async); else noSearch">
+    } @else {
+      @if (isSearchCriteria && !(loading$ | async)) {
         <pry-toggle
           class="o-pry-search-tools__content__toggle"
           [ngModel]="isSearchMono"
           (ngModelChange)="onMonoSearch()"
           [alwaysActive]="true"
           mode="action"
-        >
+          >
           {{ (isSearchMono ? '@pry.search.button.mono' : '@pry.search.button.multi') | i18n }}
         </pry-toggle>
         <div class="o-pry-search-tools__content__full">
-          <ng-container *ngIf="isSearchMono; else isMultiSearch">
+          @if (isSearchMono) {
             <pry-search-mono-class></pry-search-mono-class>
-          </ng-container>
-          <ng-template #isMultiSearch>
+          } @else {
             <pry-search-multi-class></pry-search-multi-class>
-          </ng-template>
+          }
         </div>
-
         <div class="o-pry-search-tools__content__button-search">
-          <ng-container *ngIf="isSearchCriteria">
+          @if (isSearchCriteria) {
             <pry-choose-widget (selected)="selectWidget($event)"></pry-choose-widget>
-          </ng-container>
-          <button class="a-btn a-btn--primary" (click)="onSearchTools()" *ngIf="!isSearchCriteria">
-            {{ '@pry.search.button.cancel' | i18n }}
-          </button>
+          }
+          @if (!isSearchCriteria) {
+            <button class="a-btn a-btn--primary" (click)="onSearchTools()">
+              {{ '@pry.search.button.cancel' | i18n }}
+            </button>
+          }
           <button
             [disabled]="
               (!(searchMultiClassValid$ | async) && !isSearchMono) || (!(searchMonoClassValid$ | async) && isSearchMono)
             "
             class="a-btn a-btn--primary"
             (click)="onSearch()"
-          >
+            >
             <pry-icon iconSvg="search-line"></pry-icon>
             {{ '@pry.search.button.search' | i18n }}
           </button>
         </div>
-      </ng-container>
-    </ng-template>
+      } @else {
+        <div class="o-pry-search-tools__content__full">
+          <pry-search-home
+            class="o-pry-search-home"
+            [isMoreList]="isMoreList"
+            [searchFulltextTpl]="searchFulltextTpl"
+            (changeListView)="onChangeListView($event)"
+            (changeSearchCriteria)="onSearchCriteria()"
+          ></pry-search-home>
+          <ng-template #searchFulltextTpl>
+            <pry-search-fulltext mode="vertical" (searchChange)="onSearchFulltextChange($event)"></pry-search-fulltext>
+          </ng-template>
+        </div>
+      }
+    }
 
-    <ng-template #noSearch>
-      <div class="o-pry-search-tools__content__full">
-        <pry-search-home
-          class="o-pry-search-home"
-          [isMoreList]="isMoreList"
-          [searchFulltextTpl]="searchFulltextTpl"
-          (changeListView)="onChangeListView($event)"
-          (changeSearchCriteria)="onSearchCriteria()"
-        ></pry-search-home>
-        <ng-template #searchFulltextTpl>
-          <pry-search-fulltext mode="vertical" (searchChange)="onSearchFulltextChange($event)"></pry-search-fulltext>
-        </ng-template>
-      </div>
-    </ng-template>
   </div>
   <div class="o-pry-search-tools__footer" [class.is-close]="searchToolsClose">
     <pry-save-query-button

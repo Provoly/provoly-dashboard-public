@@ -1,72 +1,78 @@
-<div *ngIf="filter" class="m-filter">
-  <div *ngIf="!filter?.hasDateRange; else dateRange">
-    <div class="m-filter__wrapper">
-      <div class="m-filter__input-wrapper">
-        <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
-        <input
-          class="m-filter__input m-filter__input__date"
-          [ngModel]="dates[0]"
-          (ngModelChange)="onDateChange(0, $event)"
-          type="date"
-          [id]="filter.name"
-          [placeholder]="filter.placeholder ?? '' | i18n: { warn: false }"
-        />
-        <span
-          *ngIf="!!dates[0]"
-          class="m-filter__clear-wrapper m-filter__clear-wrapper--date"
-          (click)="clearDate(0)"
-          [title]="'@pry.filters.clear' | i18n"
-        >
-          <span class="m-filter__clear">×</span>
-          <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
-        </span>
+@if (filter) {
+  <div class="m-filter">
+    @if (!filter?.hasDateRange) {
+      <div>
+        <div class="m-filter__wrapper">
+          <div class="m-filter__input-wrapper">
+            <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
+            <input
+              class="m-filter__input m-filter__input__date"
+              [ngModel]="dates[0]"
+              (ngModelChange)="onDateChange(0, $event)"
+              type="date"
+              [id]="filter.name"
+              [placeholder]="filter.placeholder ?? '' | i18n: { warn: false }"
+              />
+            @if (!!dates[0]) {
+              <span
+                class="m-filter__clear-wrapper m-filter__clear-wrapper--date"
+                (click)="clearDate(0)"
+                [title]="'@pry.filters.clear' | i18n"
+                >
+                <span class="m-filter__clear">×</span>
+                <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+              </span>
+            }
+          </div>
+        </div>
       </div>
-    </div>
+    } @else {
+      <div class="m-filter__wrapper">
+        <div class="m-filter__input-wrapper">
+          <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
+          <div class="m-filter__wrapper">
+            <input
+              class="m-filter__input m-filter__input__date"
+              [ngModel]="dates[0]"
+              (ngModelChange)="onDateChange(0, $event)"
+              type="date"
+              [id]="filter.name + '1'"
+              [placeholder]="filter.placeholder ?? '' | i18n: { warn: false }"
+              />
+            @if (!!dates[0]) {
+              <span
+                class="m-filter__clear-wrapper m-filter__clear-wrapper--two-dates"
+                (click)="clearDate(0)"
+                [title]="'@pry.filters.clear' | i18n"
+                >
+                <span class="m-filter__clear">×</span>
+                <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+              </span>
+            }
+          </div>
+          <span class="m-filter__date-input-separator">&nbsp;-&nbsp;</span>
+          <div class="m-filter__wrapper">
+            <input
+              class="m-filter__input m-filter__input__date"
+              [ngModel]="dates[1]"
+              (ngModelChange)="onDateChange(1, $event)"
+              type="date"
+              [id]="filter.name + '2'"
+              [placeholder]="filter.placeholder ?? '' | i18n: { warn: false }"
+              />
+            @if (!!dates[1]) {
+              <span
+                class="m-filter__clear-wrapper m-filter__clear-wrapper--two-dates"
+                (click)="clearDate(1)"
+                [title]="'@pry.filters.clear' | i18n"
+                >
+                <span class="m-filter__clear">×</span>
+                <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
+              </span>
+            }
+          </div>
+        </div>
+      </div>
+    }
   </div>
-  <ng-template #dateRange>
-    <div class="m-filter__wrapper">
-      <div class="m-filter__input-wrapper">
-        <label class="a-label m-filter__label" for="{{ filter.name }}">{{ filter.name }}&nbsp;:&nbsp;</label>
-        <div class="m-filter__wrapper">
-          <input
-            class="m-filter__input m-filter__input__date"
-            [ngModel]="dates[0]"
-            (ngModelChange)="onDateChange(0, $event)"
-            type="date"
-            [id]="filter.name + '1'"
-            [placeholder]="filter.placeholder ?? '' | i18n: { warn: false }"
-          />
-          <span
-            *ngIf="!!dates[0]"
-            class="m-filter__clear-wrapper m-filter__clear-wrapper--two-dates"
-            (click)="clearDate(0)"
-            [title]="'@pry.filters.clear' | i18n"
-          >
-            <span class="m-filter__clear">×</span>
-            <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
-          </span>
-        </div>
-        <span class="m-filter__date-input-separator">&nbsp;-&nbsp;</span>
-        <div class="m-filter__wrapper">
-          <input
-            class="m-filter__input m-filter__input__date"
-            [ngModel]="dates[1]"
-            (ngModelChange)="onDateChange(1, $event)"
-            type="date"
-            [id]="filter.name + '2'"
-            [placeholder]="filter.placeholder ?? '' | i18n: { warn: false }"
-          />
-          <span
-            *ngIf="!!dates[1]"
-            class="m-filter__clear-wrapper m-filter__clear-wrapper--two-dates"
-            (click)="clearDate(1)"
-            [title]="'@pry.filters.clear' | i18n"
-          >
-            <span class="m-filter__clear">×</span>
-            <span class="u-visually-hidden">{{ '@pry.toolbox.close' | i18n }}</span>
-          </span>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-</div>
+}

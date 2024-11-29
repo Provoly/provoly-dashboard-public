@@ -10,7 +10,7 @@
       maxlength="50"
       required
       #input
-    />
+      />
     @if (name.touched && name.errors?.['required']) {
       <label for="presentation_name" class="a-label a-label--help -error">
         {{ '@pry.presentation.required' | i18n }}
@@ -40,16 +40,18 @@
       </label>
     }
   </div>
-  <div class="m-form-label-field -width-full" *ngIf="mode === 'theme'">
-    <label class="a-label" for="presentation_theme">{{ '@pry.presentation.form.theme' | i18n }}</label>
-    <pry-select
-      id="presentation_theme"
-      [items]="possibleThemes"
-      formControlName="theme"
-      [clearable]="true"
-      [i18nPrefix]="themePrefix"
-    ></pry-select>
-  </div>
+  @if (mode === 'theme') {
+    <div class="m-form-label-field -width-full">
+      <label class="a-label" for="presentation_theme">{{ '@pry.presentation.form.theme' | i18n }}</label>
+      <pry-select
+        id="presentation_theme"
+        [items]="possibleThemes"
+        formControlName="theme"
+        [clearable]="true"
+        [i18nPrefix]="themePrefix"
+      ></pry-select>
+    </div>
+  }
   <div class="m-form-label-field -width-full">
     <label class="a-label" for="presentation_image">{{ '@pry.presentation.form.image' | i18n }}</label>
     <div class="o-file-input">

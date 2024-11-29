@@ -37,9 +37,7 @@ export class WidgetIframeComponent extends BaseWidgetComponent {
       delay(10)
     );
 
-    this.subscriptions.add(
-      this.options$.subscribe((options) => (this.optionsCopy = JSON.parse(JSON.stringify(options))))
-    );
+    this.subscriptions.add(this.options$.subscribe((options) => (this.optionsCopy = structuredClone(options))));
 
     this.subscriptions.add(
       combineLatest([fromEvent(window, 'message'), this.options$]).subscribe(([$event, options]) => {

@@ -197,7 +197,7 @@ const internalReducer = createReducer<DashboardState>(
   }),
   on(DashboardActions.updateWidgetManifest, (state, action) => {
     const myRank = state.manifests.tenants.indexOf(state.manifests.sender);
-    const newWindows = JSON.parse(JSON.stringify(state.manifests.manifest.windows));
+    const newWindows = structuredClone(state.manifests.manifest.windows);
     (newWindows[myRank] ?? { widgets: [] }).widgets[action.index] = action.manifest;
 
     return {
@@ -229,7 +229,7 @@ const internalReducer = createReducer<DashboardState>(
   })),
   on(DashboardActions.maximizeWidget, (state, action) => {
     const myRank = state.manifests.tenants.indexOf(state.manifests.sender);
-    const newWindows = JSON.parse(JSON.stringify(state.manifests.manifest.windows));
+    const newWindows = structuredClone(state.manifests.manifest.windows);
     newWindows[myRank].widgets[action.widgetIndex].layout = {
       x: 1,
       y: 1,
@@ -441,7 +441,7 @@ const internalReducer = createReducer<DashboardState>(
     };
   }),
   on(DashboardActions.addRelationsToResultSets, (state, action) => {
-    const updatedResultSets = JSON.parse(JSON.stringify(state.results.resultSets));
+    const updatedResultSets = structuredClone(state.results.resultSets);
     action.relations.forEach((relation) => {
       Object.keys(updatedResultSets).forEach((rsId) => {
         const isConcerned = Object.keys(updatedResultSets[rsId].items).map((classId) => {
@@ -463,7 +463,7 @@ const internalReducer = createReducer<DashboardState>(
     };
   }),
   on(DashboardActions.removeRelationsFromResultSets, (state, action) => {
-    const updatedResultSets = JSON.parse(JSON.stringify(state.results.resultSets));
+    const updatedResultSets = structuredClone(state.results.resultSets);
 
     Object.keys(updatedResultSets).forEach((rsId) => {
       const isConcerned = Object.keys(updatedResultSets[rsId].items).map((classId) => {
@@ -489,7 +489,7 @@ const internalReducer = createReducer<DashboardState>(
     };
   }),
   on(DashboardActions.addItemToResultSets, (state, action) => {
-    const updatedResultSets = JSON.parse(JSON.stringify(state.results.resultSets));
+    const updatedResultSets = structuredClone(state.results.resultSets);
 
     if (!!action.resultSet) {
       if (!updatedResultSets[action.resultSet].items[action.item.oClass]) {
@@ -541,7 +541,7 @@ const internalReducer = createReducer<DashboardState>(
   }),
   on(DashboardActions.setGridLayout, (state, action) => {
     const myRank = state.manifests.tenants.indexOf(state.manifests.sender);
-    const newWindows = JSON.parse(JSON.stringify(state.manifests.manifest.windows ?? []));
+    const newWindows = structuredClone(state.manifests.manifest.windows ?? []);
     if (!newWindows[myRank]) {
       newWindows[myRank] = { widgets: [] };
     }
@@ -586,7 +586,7 @@ const internalReducer = createReducer<DashboardState>(
   on(DashboardActions.createTab, (state, action) => {
     const myRank = state.manifests.tenants.indexOf(state.manifests.sender);
     const myLayout = state.manifests.manifest.windows[myRank].grid?.layout ?? DashboardGridLayout.MANUAL;
-    const newWindows = JSON.parse(JSON.stringify(state.manifests.manifest.windows));
+    const newWindows = structuredClone(state.manifests.manifest.windows);
     newWindows.push({ grid: { layout: myLayout }, widgets: [] });
     return {
       ...state,
@@ -604,12 +604,12 @@ const internalReducer = createReducer<DashboardState>(
       ...state,
       manifests: {
         ...state.manifests,
-        manifest: JSON.parse(JSON.stringify(state.presentation.initial))
+        manifest: structuredClone(state.presentation.initial) as GlobalManifest
       }
     };
   }),
   on(DashboardActions.propagateGridLayout, (state, action) => {
-    const newWindows = JSON.parse(JSON.stringify(state.manifests.manifest.windows));
+    const newWindows = structuredClone(state.manifests.manifest.windows);
     newWindows[action.rank] = action.manifest;
 
     return {
@@ -679,7 +679,7 @@ const internalReducer = createReducer<DashboardState>(
     }
   })),
   on(DashboardActions.updateFilterValue, (state, action) => {
-    const filters = JSON.parse(JSON.stringify(state.manifests.manifest.filters ?? [])) as Filter[];
+    const filters = structuredClone(state.manifests.manifest.filters ?? []) as Filter[];
 
     const filterToUpdate = filters.find((filter) => filter.id === action.id);
     if (filterToUpdate) {

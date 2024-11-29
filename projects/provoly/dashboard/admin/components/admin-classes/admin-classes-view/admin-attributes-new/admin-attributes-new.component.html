@@ -1,14 +1,18 @@
-<div class="o-base-container" *ngIf="selectedClass$ | async as selectedClass">
-  <h1 class="a-h1">
-    {{ '@pry.admin.classes.title' | i18n: { class: selectedClass.name } }}
-  </h1>
-  <h2>
-    {{ '@pry.admin.classes.attributes.add' | i18n }}
-  </h2>
-  <pry-admin-attributes-form [selectedClass]="selectedClass"></pry-admin-attributes-form>
-</div>
+@if (selectedClass$ | async; as selectedClass) {
+  <div class="o-base-container">
+    <h1 class="a-h1">
+      {{ '@pry.admin.classes.title' | i18n: { class: selectedClass.name } }}
+    </h1>
+    <h2>
+      {{ '@pry.admin.classes.attributes.add' | i18n }}
+    </h2>
+    <pry-admin-attributes-form [selectedClass]="selectedClass"></pry-admin-attributes-form>
+  </div>
+}
 
-<div class="o-base-container" *ngIf="interClass$ | async as selectedClass">
-  <h1 class="a-h1" [innerHTML]="'@pry.admin.classes.attributes.add' | i18n: { class: selectedClass.name }"></h1>
-  <pry-admin-attributes-form [interClass]="selectedClass"></pry-admin-attributes-form>
-</div>
+@if (interClass$ | async; as selectedClass) {
+  <div class="o-base-container">
+    <h1 class="a-h1" [innerHTML]="'@pry.admin.classes.attributes.add' | i18n: { class: selectedClass.name }"></h1>
+    <pry-admin-attributes-form [interClass]="selectedClass"></pry-admin-attributes-form>
+  </div>
+}

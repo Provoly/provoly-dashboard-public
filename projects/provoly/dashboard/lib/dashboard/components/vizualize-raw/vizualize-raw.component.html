@@ -1,13 +1,15 @@
-<ng-container *ngIf="rawDatas[item?.id + '@' + propertyName] as rawData">
-  <ng-container *ngIf="rawData.type.includes('image')">
+@if (rawDatas[item?.id + '@' + propertyName]; as rawData) {
+  @if (rawData.type.includes('image')) {
     <img [src]="rawData.url" [alt]="altValue" />
-  </ng-container>
-  <ng-container *ngIf="rawData.type.includes('video')">
+  }
+  @if (rawData.type.includes('video')) {
     <video [preload]="true" class="preview" controls>
       <source [src]="rawData.url" [type]="rawData.type" />
     </video>
-  </ng-container>
-</ng-container>
-<ng-container *ngIf="!rawDatas[item?.id + '@' + propertyName]">
-  <ng-container *ngIf="getRawData(item?.id ?? '', propertyName) | async"> Downloading...</ng-container>
-</ng-container>
+  }
+}
+@if (!rawDatas[item?.id + '@' + propertyName]) {
+  @if (getRawData(item?.id ?? '', propertyName) | async) {
+    Downloading...
+  }
+}

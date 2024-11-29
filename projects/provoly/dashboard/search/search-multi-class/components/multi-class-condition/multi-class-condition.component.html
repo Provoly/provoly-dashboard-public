@@ -1,4 +1,4 @@
-<ng-container *ngIf="condition$ | async as condition">
+@if (condition$ | async; as condition) {
   <div class="o-multi-class-condition">
     <div class="o-multi-class-condition__content">
       <div class="o-multi-class-condition__content__action">
@@ -7,14 +7,14 @@
           class="a-btn a-btn--primary -size-sm -width-full"
           aria-label="selection button"
           (click)="toggleFieldSelection()"
-        >
-          <ng-container *ngIf="field$ | async as field; else noFieldTpl">
+          >
+          @if (field$ | async; as field) {
             {{ field.name }}
-          </ng-container>
-          <ng-template #noFieldTpl>{{ '@pry.search.multi.selectField' | i18n }}</ng-template>
+          } @else {
+            {{ '@pry.search.multi.selectField' | i18n }}
+          }
         </button>
-
-        <ng-container *ngIf="classesLinked$ | async as classesLinked">
+        @if (classesLinked$ | async; as classesLinked) {
           <pry-icon
             iconSvg="links_line"
             [width]="15"
@@ -22,9 +22,8 @@
             style="color: black"
             [attr.data-tooltip]="('@pry.search.multi.in' | i18n) + ' ' + join(classesLinked)"
           ></pry-icon>
-        </ng-container>
+        }
       </div>
-
       <ng-container [formGroup]="form">
         <div class="m-form-label-field">
           <pry-select
@@ -36,7 +35,7 @@
           ></pry-select>
         </div>
         <div class="m-form-label-field">
-          <ng-container *ngIf="condition.isDate; else classicInput">
+          @if (condition.isDate) {
             <pry-date-picker
               formControlName="value"
               (click)="onUpdateValue(condition)"
@@ -44,8 +43,7 @@
               [roundSelection]="true"
               [timePicker]="true"
             ></pry-date-picker>
-          </ng-container>
-          <ng-template #classicInput>
+          } @else {
             <input
               type="text"
               class="a-form-field"
@@ -54,27 +52,27 @@
               "
               formControlName="value"
               (focusout)="onUpdateValue(condition)"
-            />
-            <ng-container *ngIf="hasTwoFields">
+              />
+            @if (hasTwoFields) {
               <input
                 type="text"
                 class="a-form-field"
                 [placeholder]="'@pry.search.placeholder.maxValue' | i18n"
                 formControlName="upperValue"
                 (focusout)="onUpdateValue(condition)"
-              />
-            </ng-container>
-          </ng-template>
-
-          <label class="a-label a-label--help -error" *ngIf="formValue?.errors?.['required'] && formValue?.touched">
-            {{ '@pry.search.multi.requiredError' | i18n }}
-          </label>
+                />
+            }
+          }
+          @if (formValue?.errors?.['required'] && formValue?.touched) {
+            <label class="a-label a-label--help -error">
+              {{ '@pry.search.multi.requiredError' | i18n }}
+            </label>
+          }
         </div>
       </ng-container>
     </div>
-
     <div class="o-multi-class-condition__delete-content">
-      <ng-container *ngIf="notLastCondition$ | async; else cannotDelete">
+      @if (notLastCondition$ | async) {
         <button type="button" class="a-btn a-btn--icon-only">
           <pry-icon
             iconSvg="delete"
@@ -85,16 +83,14 @@
           ></pry-icon>
           <span class="u-visually-hidden">{{ '@pry.action.delete' | i18n }}</span>
         </button>
-      </ng-container>
+      } @else {
+        <button type="button" class="a-btn a-btn--icon-only" disabled>
+          <pry-icon [height]="20" [width]="20" iconSvg="delete"></pry-icon>
+          <span class="u-visually-hidden">{{ '@pry.action.delete' | i18n }}</span>
+        </button>
+      }
     </div>
-    <ng-template #cannotDelete>
-      <button type="button" class="a-btn a-btn--icon-only" disabled>
-        <pry-icon [height]="20" [width]="20" iconSvg="delete"></pry-icon>
-        <span class="u-visually-hidden">{{ '@pry.action.delete' | i18n }}</span>
-      </button>
-    </ng-template>
   </div>
-
   <ng-template #fieldSelectionTpl>
     <pry-multi-class-field-selection
       [conditionId]="condition.id"
@@ -102,4 +98,4 @@
       (selectFieldChange)="onChangeField(condition, $event)"
     ></pry-multi-class-field-selection>
   </ng-template>
-</ng-container>
+}

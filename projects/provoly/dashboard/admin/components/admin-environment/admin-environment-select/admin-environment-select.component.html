@@ -1,37 +1,35 @@
-<div
-  *ngIf="currentEnv$ | async as env"
-  [id]="'panel-env-' + env.name"
-  [attr.aria-labelledby]="'button-env-' + env.name"
-  class="o-panel"
->
-  <div class="o-panel__header">
-    <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
-      <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
-      <pry-icon iconSvg="close"></pry-icon>
-    </button>
-
-    <h3 class="a-h3">
-      {{ '@pry.admin.environment.info' | i18n }}
-    </h3>
+@if (currentEnv$ | async; as env) {
+  <div
+    [id]="'panel-env-' + env.name"
+    [attr.aria-labelledby]="'button-env-' + env.name"
+    class="o-panel"
+    >
+    <div class="o-panel__header">
+      <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
+        <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
+        <pry-icon iconSvg="close"></pry-icon>
+      </button>
+      <h3 class="a-h3">
+        {{ '@pry.admin.environment.info' | i18n }}
+      </h3>
+    </div>
+    <pry-tab-group translationStringBase="@pry.admin.">
+      <pry-tab [templateRef]="environmentDetails" name="details"></pry-tab>
+    </pry-tab-group>
+    <ng-template #environmentDetails>
+      <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
+      <p class="a-p">
+        {{ '@pry.admin.environment.name' | i18n }} :
+        <strong>{{ env.name }}</strong>
+      </p>
+      <p class="a-p">
+        {{ '@pry.admin.environment.type' | i18n }} :
+        <strong>{{ currentTypeTranslation | i18n }}</strong>
+      </p>
+      <p class="a-p">
+        {{ '@pry.admin.environment.value' | i18n }} :
+        <strong>{{ env.value }}</strong>
+      </p>
+    </ng-template>
   </div>
-
-  <pry-tab-group translationStringBase="@pry.admin.">
-    <pry-tab [templateRef]="environmentDetails" name="details"></pry-tab>
-  </pry-tab-group>
-
-  <ng-template #environmentDetails>
-    <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
-    <p class="a-p">
-      {{ '@pry.admin.environment.name' | i18n }} :
-      <strong>{{ env.name }}</strong>
-    </p>
-    <p class="a-p">
-      {{ '@pry.admin.environment.type' | i18n }} :
-      <strong>{{ currentTypeTranslation | i18n }}</strong>
-    </p>
-    <p class="a-p">
-      {{ '@pry.admin.environment.value' | i18n }} :
-      <strong>{{ env.value }}</strong>
-    </p>
-  </ng-template>
-</div>
+}

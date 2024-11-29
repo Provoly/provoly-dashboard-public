@@ -14,7 +14,7 @@ import { AdminState, initialAdminState } from './admin.reducer';
 import { AdminService } from './admin.service';
 
 const buildState = (state: Partial<AdminState>) =>
-  Object.assign({}, { '@pry/admin': JSON.parse(JSON.stringify({ ...initialAdminState, ...state })) });
+  Object.assign({}, { '@pry/admin': structuredClone({ ...initialAdminState, ...state }) });
 
 const predicates: Predicate[] = [
   {

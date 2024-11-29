@@ -3,10 +3,7 @@ import { dashboardInitialState, DashboardState } from './dashboard.reducers';
 import { DashboardSelectors } from './dashboard.selectors';
 
 const buildState = (state: Partial<DashboardState>) =>
-  Object.assign(
-    {},
-    { '@pry/dashboard': JSON.parse(JSON.stringify({ ...dashboardInitialState, ...state })) as DashboardState }
-  );
+  Object.assign({}, { '@pry/dashboard': structuredClone({ ...dashboardInitialState, ...state }) as DashboardState });
 
 const initial = buildState({})['@pry/dashboard'];
 

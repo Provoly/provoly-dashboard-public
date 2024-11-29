@@ -1,53 +1,52 @@
-<div
-  *ngIf="selectedAttribute$ | async as attribute"
-  [id]="'panel-attr-' + attribute.id"
-  [attr.aria-labelledby]="'button-attr-' + attribute.id"
-  class="o-panel"
->
-  <div class="o-panel__header">
-    <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
-      <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
-      <pry-icon iconSvg="close"></pry-icon>
-    </button>
-
-    <h3 class="a-h3">
-      {{ '@pry.admin.classes.attributes.info' | i18n }}
-    </h3>
-  </div>
-
-  <pry-tab-group translationStringBase="@pry.admin.">
-    <pry-tab [templateRef]="attributeDetails" name="details"></pry-tab>
-    <pry-tab [templateRef]="attributeAssociations" name="classes.associations"></pry-tab>
-  </pry-tab-group>
-
-  <ng-template #attributeDetails>
-    <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
-    <p class="a-p">
-      {{ '@pry.admin.classes.attributes.technicalName' | i18n }} :
-      <strong>{{ attribute.technicalName }}</strong>
-    </p>
-    <p class="a-p">
-      {{ '@pry.admin.classes.attributes.name' | i18n }} :
-      <strong>{{ attribute.name }}</strong>
-    </p>
-    <p class="a-p">
-      {{ '@pry.admin.classes.attributes.field' | i18n }} :
-      <strong>{{ attribute.fieldName }}</strong>
-    </p>
-    <p class="a-p">
-      {{ '@pry.admin.classes.attributes.category' | i18n }} :
-      <strong>{{ attribute.categoryName }}</strong>
-    </p>
-    <p class="a-p">
-      {{ '@pry.admin.classes.attributes.multiValued' | i18n }} :
-      <strong>{{ attribute.multiValued }}</strong>
-    </p>
-  </ng-template>
-
-  <ng-template #attributeAssociations>
-    <div *ngIf="associations$ | async as associations" class="o-tabs__panels__item__content">
-      <h4 class="a-h4">{{ '@pry.admin.classes.associations' | i18n }}</h4>
-      <pry-association [associations]="associations"></pry-association>
+@if (selectedAttribute$ | async; as attribute) {
+  <div
+    [id]="'panel-attr-' + attribute.id"
+    [attr.aria-labelledby]="'button-attr-' + attribute.id"
+    class="o-panel"
+    >
+    <div class="o-panel__header">
+      <button type="button" class="a-btn a-btn--icon-only" (click)="closePanel()">
+        <span class="u-visually-hidden">{{ '@pry.action.closePanel' | i18n }}</span>
+        <pry-icon iconSvg="close"></pry-icon>
+      </button>
+      <h3 class="a-h3">
+        {{ '@pry.admin.classes.attributes.info' | i18n }}
+      </h3>
     </div>
-  </ng-template>
-</div>
+    <pry-tab-group translationStringBase="@pry.admin.">
+      <pry-tab [templateRef]="attributeDetails" name="details"></pry-tab>
+      <pry-tab [templateRef]="attributeAssociations" name="classes.associations"></pry-tab>
+    </pry-tab-group>
+    <ng-template #attributeDetails>
+      <h4 class="a-h4">{{ '@pry.admin.properties' | i18n }}</h4>
+      <p class="a-p">
+        {{ '@pry.admin.classes.attributes.technicalName' | i18n }} :
+        <strong>{{ attribute.technicalName }}</strong>
+      </p>
+      <p class="a-p">
+        {{ '@pry.admin.classes.attributes.name' | i18n }} :
+        <strong>{{ attribute.name }}</strong>
+      </p>
+      <p class="a-p">
+        {{ '@pry.admin.classes.attributes.field' | i18n }} :
+        <strong>{{ attribute.fieldName }}</strong>
+      </p>
+      <p class="a-p">
+        {{ '@pry.admin.classes.attributes.category' | i18n }} :
+        <strong>{{ attribute.categoryName }}</strong>
+      </p>
+      <p class="a-p">
+        {{ '@pry.admin.classes.attributes.multiValued' | i18n }} :
+        <strong>{{ attribute.multiValued }}</strong>
+      </p>
+    </ng-template>
+    <ng-template #attributeAssociations>
+      @if (associations$ | async; as associations) {
+        <div class="o-tabs__panels__item__content">
+          <h4 class="a-h4">{{ '@pry.admin.classes.associations' | i18n }}</h4>
+          <pry-association [associations]="associations"></pry-association>
+        </div>
+      }
+    </ng-template>
+  </div>
+}

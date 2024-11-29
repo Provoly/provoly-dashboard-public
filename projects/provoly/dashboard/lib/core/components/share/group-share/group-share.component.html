@@ -1,19 +1,21 @@
 @if (templateData$ | async; as data) {
   <div class="m-form-radio-group">
-    <div *ngFor="let shareMode of shareModes" class="m-form-radio-group__item">
-      <input
-        type="radio"
-        name="visibility"
-        [id]="'radio_share_' + shareMode"
-        [value]="shareMode"
-        [ngModel]="radioValue"
-        (ngModelChange)="onRadioValueChange($event)"
-        [disabled]="data.disableRadios[shareMode]"
-      />
-      <label [for]="'radio_share_' + shareMode" class="a-label" [class.a-label--disabled]="data.disableRadios[shareMode]">
-        {{ '@pry.share.radioLabel.' + shareMode | i18n }}
-      </label>
-    </div>
+    @for (shareMode of shareModes; track shareMode) {
+      <div class="m-form-radio-group__item">
+        <input
+          type="radio"
+          name="visibility"
+          [id]="'radio_share_' + shareMode"
+          [value]="shareMode"
+          [ngModel]="radioValue"
+          (ngModelChange)="onRadioValueChange($event)"
+          [disabled]="data.disableRadios[shareMode]"
+          />
+        <label [for]="'radio_share_' + shareMode" class="a-label" [class.a-label--disabled]="data.disableRadios[shareMode]">
+          {{ '@pry.share.radioLabel.' + shareMode | i18n }}
+        </label>
+      </div>
+    }
   </div>
   @if (radioValue === PryShareMode.GROUPS) {
     <pry-chips-selector

@@ -8,7 +8,7 @@
       formControlName="productionDate"
       id="productionDate"
       [attr.aria-invalid]="productionDate?.invalid"
-    />
+      />
     @if (productionDate?.invalid) {
       <label id="productionDate-error" for="productionDate" class="a-label a-label--help -error">
         @if (productionDate?.errors?.['required']) {
@@ -27,10 +27,14 @@
       formControlName="producer"
       id="producer"
       [attr.aria-invalid]="producer?.invalid"
-    />
-    <label *ngIf="producer?.invalid" id="producer-error" for="producer" class="a-label a-label--help -error">
-      <span *ngIf="producer?.errors?.['required'] ?? false">{{ '@pry.dataset.form.obligatory' | i18n }}</span>
-    </label>
+      />
+    @if (producer?.invalid) {
+      <label id="producer-error" for="producer" class="a-label a-label--help -error">
+        @if (producer?.errors?.['required'] ?? false) {
+          <span>{{ '@pry.dataset.form.obligatory' | i18n }}</span>
+        }
+      </label>
+    }
   </div>
   <div class="m-form-label-field">
     <label class="a-label">{{ '@pry.dataset.version.additionalInformation' | i18n }}</label>

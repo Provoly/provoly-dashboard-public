@@ -1,44 +1,48 @@
 <pry-widget-template-css></pry-widget-template-css>
-<pry-widget-header
-  *ngIf="displayHeader$ | async"
-  [widgetIndex]="widgetIndex"
-  [manifest]="manifest"
-  (manifestModified)="manifestModified.emit($event)"
-  #header
-  [headerOptions]="(displayHeader$ | async) ?? {}"
-  [datasourceIds]="(datasourceIds$ | async) ?? []"
->
-  <pry-settings
-    (saveTriggered)="emitManifest()"
-    (changeTitle)="changeWidgetTitle($event)"
-    [headerPresent]="displayHeader$ | async"
+@if (displayHeader$ | async) {
+  <pry-widget-header
     [widgetIndex]="widgetIndex"
-    [header]="header"
-    [open$]="open$"
-    class="o-settings"
-  >
-    <div class="o-settings__fields">
-      <div class="m-form-label-field">
-        <label class="a-label" for="html_src">{{ '@pry.widget.template.html' | i18n }}</label>
-        <textarea
-          class="a-form-field a-text-area -overflow"
-          id="html_src"
-          [value]="optionsCopy.html"
-          (input)="changeHtml($event)"
-        ></textarea>
+    [manifest]="manifest"
+    (manifestModified)="manifestModified.emit($event)"
+    #header
+    [headerOptions]="(displayHeader$ | async) ?? {}"
+    [datasourceIds]="(datasourceIds$ | async) ?? []"
+    >
+    <pry-settings
+      (saveTriggered)="emitManifest()"
+      (changeTitle)="changeWidgetTitle($event)"
+      [headerPresent]="displayHeader$ | async"
+      [widgetIndex]="widgetIndex"
+      [header]="header"
+      [open$]="open$"
+      class="o-settings"
+      >
+      <div class="o-settings__fields">
+        <div class="m-form-label-field">
+          <label class="a-label" for="html_src">{{ '@pry.widget.template.html' | i18n }}</label>
+          <textarea
+            class="a-form-field a-text-area -overflow"
+            id="html_src"
+            [value]="optionsCopy.html"
+            (input)="changeHtml($event)"
+          ></textarea>
+        </div>
+        <div class="m-form-label-field">
+          <label class="a-label" for="css_src">{{ '@pry.widget.template.css' | i18n }}</label>
+          <textarea
+            class="a-form-field a-text-area -overflow"
+            id="css_src"
+            [value]="optionsCopy.css"
+            (input)="changeCss($event)"
+          ></textarea>
+        </div>
       </div>
-
-      <div class="m-form-label-field">
-        <label class="a-label" for="css_src">{{ '@pry.widget.template.css' | i18n }}</label>
-        <textarea
-          class="a-form-field a-text-area -overflow"
-          id="css_src"
-          [value]="optionsCopy.css"
-          (input)="changeCss($event)"
-        ></textarea>
-      </div>
-    </div>
-  </pry-settings>
-</pry-widget-header>
-<div *ngIf="css$ | async as css" [innerHtml]="css"></div>
-<div *ngIf="template$ | async as template" [class]="'pry-template-' + id" [innerHtml]="template"></div>
+    </pry-settings>
+  </pry-widget-header>
+}
+@if (css$ | async; as css) {
+  <div [innerHtml]="css"></div>
+}
+@if (template$ | async; as template) {
+  <div [class]="'pry-template-' + id" [innerHtml]="template"></div>
+}

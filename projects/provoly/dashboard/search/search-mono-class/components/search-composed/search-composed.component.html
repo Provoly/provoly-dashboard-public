@@ -1,11 +1,10 @@
 <div class="o-pry-search-composed" [ngClass]="{ 'pry-search-composed-hover': hover }">
-  <ng-container *ngIf="condition$ | async as cond">
-    <ng-container *ngIf="cond.type === 'ATTRIBUTE'; else composedBlock">
-      <ng-container *ngIf="cond.attribute">
+  @if (condition$ | async; as cond) {
+    @if (cond.type === 'ATTRIBUTE') {
+      @if (cond.attribute) {
         <pry-search-condition [attributeId]="cond.attribute" [id]="cond.id"></pry-search-condition>
-      </ng-container>
-    </ng-container>
-    <ng-template #composedBlock>
+      }
+    } @else {
       <div class="o-pry-search-composed__condition">
         <div class="o-pry-search-composed__condition__type -vertical-bar">
           <div class="o-pry-search-composed__condition__type__content">
@@ -19,10 +18,9 @@
           </div>
         </div>
         <div class="o-pry-search-composed__condition__content">
-          <ng-container *ngFor="let composedId of cond.composed">
+          @for (composedId of cond.composed; track composedId) {
             <pry-search-composed [id]="composedId"></pry-search-composed>
-          </ng-container>
-
+          }
           <div class="o-pry-search-composed__condition__content__footer">
             <button
               type="button"
@@ -33,7 +31,7 @@
               (overlayOpenChange)="onClosePanel()"
               pryOverlayPosition="start-bottom"
               [pryOverlayNoPadding]="true"
-            >
+              >
               <pry-icon iconSvg="add" [width]="15" [height]="15"></pry-icon>
               <span>{{ '@pry.search.composed.addCondition' | i18n }}</span>
             </button>
@@ -41,19 +39,19 @@
               <pry-icon iconSvg="picture-in-picture" [width]="16" [height]="16"></pry-icon>
               <span>{{ '@pry.search.composed.addGroup' | i18n }}</span>
             </button>
-            <ng-container *ngIf="masterId$ | async as masterId">
-              <button
-                type="button"
-                class="a-btn a-btn--icon-only -circle -size-sm o-pry-search-composed__condition__content__footer__remove"
-                *ngIf="masterId !== cond.id"
-                (click)="onDeleteNestedCondition(cond.id)"
-              >
-                <pry-icon iconSvg="close" [width]="16" [height]="16"></pry-icon>
-                <span class="u-visually-hidden">{{ '@pry.search.composed.remove' | i18n }}</span>
-              </button>
-            </ng-container>
+            @if (masterId$ | async; as masterId) {
+              @if (masterId !== cond.id) {
+                <button
+                  type="button"
+                  class="a-btn a-btn--icon-only -circle -size-sm o-pry-search-composed__condition__content__footer__remove"
+                  (click)="onDeleteNestedCondition(cond.id)"
+                  >
+                  <pry-icon iconSvg="close" [width]="16" [height]="16"></pry-icon>
+                  <span class="u-visually-hidden">{{ '@pry.search.composed.remove' | i18n }}</span>
+                </button>
+              }
+            }
           </div>
-
           <ng-template #selectAttribute>
             <pry-search-select-attribute
               [id]="cond.id"
@@ -62,6 +60,6 @@
           </ng-template>
         </div>
       </div>
-    </ng-template>
-  </ng-container>
+    }
+  }
 </div>

@@ -1,39 +1,40 @@
 <pry-widget-iframe-css></pry-widget-iframe-css>
 <div class="o-widget o-widget--iframe">
-  <pry-widget-header
-    *ngIf="displayHeader$ | async"
-    [widgetIndex]="widgetIndex"
-    [manifest]="manifest"
-    (manifestModified)="manifestModified.emit($event)"
-    #header
-    [headerOptions]="(displayHeader$ | async) ?? {}"
-  >
-    <pry-settings
-      (saveTriggered)="emitManifest()"
-      (changeTitle)="changeWidgetTitle($event)"
-      [headerPresent]="displayHeader$ | async"
+  @if (displayHeader$ | async) {
+    <pry-widget-header
       [widgetIndex]="widgetIndex"
-      [header]="header"
-      [open$]="open$"
-      class="o-settings"
-    >
-      <div class="o-settings__fields">
-        <div class="m-form-label-field">
-          <label class="a-label" for="iframe_src">{{ '@pry.widget.iframe.label' | i18n }}</label>
-          <input
-            class="a-form-field"
-            id="iframe_src"
-            type="text"
-            [value]="optionsCopy.src"
-            (input)="changeSrc($event)"
-          />
+      [manifest]="manifest"
+      (manifestModified)="manifestModified.emit($event)"
+      #header
+      [headerOptions]="(displayHeader$ | async) ?? {}"
+      >
+      <pry-settings
+        (saveTriggered)="emitManifest()"
+        (changeTitle)="changeWidgetTitle($event)"
+        [headerPresent]="displayHeader$ | async"
+        [widgetIndex]="widgetIndex"
+        [header]="header"
+        [open$]="open$"
+        class="o-settings"
+        >
+        <div class="o-settings__fields">
+          <div class="m-form-label-field">
+            <label class="a-label" for="iframe_src">{{ '@pry.widget.iframe.label' | i18n }}</label>
+            <input
+              class="a-form-field"
+              id="iframe_src"
+              type="text"
+              [value]="optionsCopy.src"
+              (input)="changeSrc($event)"
+              />
+          </div>
         </div>
-      </div>
-    </pry-settings>
-  </pry-widget-header>
-  <ng-container *ngIf="src$ | async as src">
+      </pry-settings>
+    </pry-widget-header>
+  }
+  @if (src$ | async; as src) {
     <div [style.height.px]="height$ | async">
       <iframe [src]="src" title="Provoly iframe" #iframe></iframe>
     </div>
-  </ng-container>
+  }
 </div>

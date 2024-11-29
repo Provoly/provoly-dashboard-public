@@ -48,12 +48,10 @@ export class AdminClassesCustomizeSymbolComponent extends SubscriptionnerDirecti
 
   @Input() set currentClass(clazz: Class | null | undefined) {
     this._currentClass = clazz ?? ({} as Class);
-    this.definitions = !!this.baseDefs
-      ? JSON.parse(JSON.stringify(this.baseDefs[clazz?.id ?? ''] ?? [DEFAULT_RULE]))
-      : [];
+    this.definitions = !!this.baseDefs ? structuredClone(this.baseDefs[clazz?.id ?? ''] ?? [DEFAULT_RULE]) : [];
     this.definitions.sort((def1, def2) => (def1.isDefault ? -1 : 1) - (def2.isDefault ? -1 : 1));
     if (!this.initialDefinitions && !!this.baseDefs) {
-      this.initialDefinitions = JSON.parse(JSON.stringify(this.definitions));
+      this.initialDefinitions = structuredClone(this.definitions);
     }
     this.fieldsForClass = [...(clazz ?? { attributes: [] }).attributes].sort((attr1, attr2) =>
       attr1.name.localeCompare(attr2.name)
@@ -75,12 +73,10 @@ export class AdminClassesCustomizeSymbolComponent extends SubscriptionnerDirecti
         .pipe(distinctUntilChanged((a, b) => equal(a, b)))
         .subscribe((defs) => {
           this.baseDefs = defs;
-          this.definitions = !!defs
-            ? JSON.parse(JSON.stringify(defs[this.currentClass?.id ?? ''] ?? [DEFAULT_RULE]))
-            : [];
+          this.definitions = !!defs ? structuredClone(defs[this.currentClass?.id ?? ''] ?? [DEFAULT_RULE]) : [];
           this.definitions.sort((def1, def2) => (def1.isDefault ? -1 : 1) - (def2.isDefault ? -1 : 1));
           if (!this.initialDefinitions && !!defs) {
-            this.initialDefinitions = JSON.parse(JSON.stringify(this.definitions));
+            this.initialDefinitions = structuredClone(this.definitions);
           }
         })
     );
@@ -140,7 +136,7 @@ export class AdminClassesCustomizeSymbolComponent extends SubscriptionnerDirecti
 
   valid() {
     this.store.dispatch(ConfigActions.saveIcons({ definitions: { [this.currentClass?.id ?? '']: this.definitions } }));
-    this.initialDefinitions = JSON.parse(JSON.stringify(this.definitions));
+    this.initialDefinitions = structuredClone(this.definitions);
     this.goBack();
   }
 

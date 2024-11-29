@@ -1,4 +1,6 @@
-<div *ngIf="currentField$ | async as currentField" class="o-base-container">
-  <h1 class="a-h1">{{ '@pry.admin.fields.edit' | i18n }}</h1>
-  <pry-admin-fields-form [currentField]="currentField"></pry-admin-fields-form>
-</div>
+@if (currentField$ | async; as currentField) {
+  <div class="o-base-container">
+    <h1 class="a-h1">{{ '@pry.admin.fields.edit' | i18n }}</h1>
+    <pry-admin-fields-form [currentField]="currentField"></pry-admin-fields-form>
+  </div>
+}

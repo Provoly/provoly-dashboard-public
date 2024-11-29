@@ -1,206 +1,209 @@
 <pry-search-css></pry-search-css>
 <div class="o-pry-search-home__named-query">
-  <ng-container *ngIf="namedQueryList$ | async as namedQuery">
-    <ng-container *ngIf="namedQuery.length > 0; else noNamedQuery">
+  @if (namedQueryList$ | async; as namedQuery) {
+    @if (namedQuery.length > 0) {
       <div class="o-pry-search-home__named-query__card">
         <pry-expand-panel [open]="true">
           <pry-expand-panel-title>{{ '@pry.search.home.title' | i18n }}</pry-expand-panel-title>
-
-          <pry-card *ngFor="let nq of namedQuery.length > 1 && !isMoreList ? namedQuery.slice(0, 2) : namedQuery">
-            <pry-card-header [marker]="true">
-              <pry-card-icon>
-                <pry-nq-color-selector [datasource]="nq" [disabled]="true"></pry-nq-color-selector>
-                <img
-                  [alt]="nq.id | translateId : { type: 'datasource', output: 'name' } | async"
-                  [height]="22"
-                  [width]="22"
-                  [src]="nq.id | translateId : { type: 'datasource', output: 'icon' } | async"
-                />
-              </pry-card-icon>
-
-              <pry-card-title>
-                <div class="o-pry-card-title__text" aria-describedby="infoTooltip_searchHome">
-                  <div class="a-p o-pry-card-title__text__title">{{ nq.name }}</div>
-                  <div class="a-p o-pry-card-title__text__description" *ngIf="nq.description">{{ nq.description }}</div>
-                </div>
-                <ng-template #infoTooltip>
-                  <div class="m-tooltip" role="tooltip" id="infoTooltip_searchHome">
-                    <span class="m-tooltip__text">
-                      {{ nq.name }}
-                    </span>
-                    <span class="m-tooltip__description" *ngIf="nq.description">
-                      {{ nq.description }}
-                    </span>
+          @for (nq of namedQuery.length > 1 && !isMoreList ? namedQuery.slice(0, 2) : namedQuery; track nq) {
+            <pry-card>
+              <pry-card-header [marker]="true">
+                <pry-card-icon>
+                  <pry-nq-color-selector [datasource]="nq" [disabled]="true"></pry-nq-color-selector>
+                  <img
+                    [alt]="nq.id | translateId : { type: 'datasource', output: 'name' } | async"
+                    [height]="22"
+                    [width]="22"
+                    [src]="nq.id | translateId : { type: 'datasource', output: 'icon' } | async"
+                    />
+                </pry-card-icon>
+                <pry-card-title>
+                  <div class="o-pry-card-title__text" aria-describedby="infoTooltip_searchHome">
+                    <div class="a-p o-pry-card-title__text__title">{{ nq.name }}</div>
+                    @if (nq.description) {
+                      <div class="a-p o-pry-card-title__text__description">{{ nq.description }}</div>
+                    }
                   </div>
-                </ng-template>
-                <pry-icon
-                  class="o-pry-card-title__pin"
-                  *ngIf="nq.favorite"
-                  [width]="18"
-                  [height]="18"
-                  aria-label="favorite"
-                  iconSvg="epingle"
-                ></pry-icon>
-
-                <button
-                  [attr.data-tooltip]="'@pry.search.home.showAssociatedWidget' | i18n"
-                  data-tooltip-position="bottom"
-                  class="a-tooltip a-btn a-btn--secondary -size-sm -override-tooltip-position"
-                  (click)="onSearchNamedQuery(nq.id)"
-                  *ngIf="(layout$ | async) !== DashboardGridLayout.MANUAL"
-                >
-                  {{ '@pry.search.namedQuery.display' | i18n }}
-                  <span class="u-visually-hidden">{{ '@pry.search.home.associatedWidget' | i18n }}</span>
-                </button>
-              </pry-card-title>
-
-              <pry-card-menu>
-                <div class="o-pry-card-menu__nav">
-                  <button
-                    type="button"
-                    class="a-btn a-btn--icon-text o-pry-card-menu__nav__item"
-                    (click)="onFavorite(nq.id, nq.favorite)"
-                  >
-                    <pry-icon iconSvg="epingle"></pry-icon>
-                    {{ (nq.favorite ? '@pry.search.namedQuery.noFavorite' : '@pry.search.namedQuery.favorite') | i18n }}
-                  </button>
-                  <pry-card-menu (click)="refresh(nq.id)" class="refreshbt">
-                    <button type="button" class="a-btn a-btn--icon-text o-pry-card-menu__nav__item">
-                      <pry-icon iconSvg="synchro"></pry-icon>
-                      {{ '@pry.search.namedQuery.refreshData' | i18n }}
+                  <ng-template #infoTooltip>
+                    <div class="m-tooltip" role="tooltip" id="infoTooltip_searchHome">
+                      <span class="m-tooltip__text">
+                        {{ nq.name }}
+                      </span>
+                      @if (nq.description) {
+                        <span class="m-tooltip__description">
+                          {{ nq.description }}
+                        </span>
+                      }
+                    </div>
+                  </ng-template>
+                  @if (nq.favorite) {
+                    <pry-icon
+                      class="o-pry-card-title__pin"
+                      [width]="18"
+                      [height]="18"
+                      aria-label="favorite"
+                      iconSvg="epingle"
+                    ></pry-icon>
+                  }
+                  @if ((layout$ | async) !== DashboardGridLayout.MANUAL) {
+                    <button
+                      [attr.data-tooltip]="'@pry.search.home.showAssociatedWidget' | i18n"
+                      data-tooltip-position="bottom"
+                      class="a-tooltip a-btn a-btn--secondary -size-sm -override-tooltip-position"
+                      (click)="onSearchNamedQuery(nq.id)"
+                      >
+                      {{ '@pry.search.namedQuery.display' | i18n }}
+                      <span class="u-visually-hidden">{{ '@pry.search.home.associatedWidget' | i18n }}</span>
                     </button>
-                  </pry-card-menu>
-                  <pry-card-menu *ngIf="(layout$ | async) !== DashboardGridLayout.MANUAL">
+                  }
+                </pry-card-title>
+                <pry-card-menu>
+                  <div class="o-pry-card-menu__nav">
                     <button
                       type="button"
                       class="a-btn a-btn--icon-text o-pry-card-menu__nav__item"
-                      (click)="loadOpened = nq.id; $event.stopPropagation()"
-                      cdkOverlayOrigin
-                      #triggerLoad="cdkOverlayOrigin"
-                    >
-                      <pry-icon iconSvg="file_download"></pry-icon>
-                      {{ '@pry.search.namedQuery.display' | i18n }}
-                      <pry-icon
-                        iconSvg="fleche_haut"
-                        [ngStyle]="{ transform: 'rotate(90deg)', marginLeft: 'auto' }"
-                      ></pry-icon>
+                      (click)="onFavorite(nq.id, nq.favorite)"
+                      >
+                      <pry-icon iconSvg="epingle"></pry-icon>
+                      {{ (nq.favorite ? '@pry.search.namedQuery.noFavorite' : '@pry.search.namedQuery.favorite') | i18n }}
                     </button>
-
-                    <ng-template
-                      cdkConnectedOverlay
-                      [cdkConnectedOverlayOrigin]="triggerLoad"
-                      [cdkConnectedOverlayOpen]="loadOpened === nq.id"
-                      [cdkConnectedOverlayHasBackdrop]="true"
-                      [cdkConnectedOverlayPositions]="[connectedPosition]"
-                      cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
-                      (backdropClick)="loadOpened = undefined"
-                    >
-                      <div class="o-draggable-menu -search-home">
-                        <ul class="o-draggable-menu__list">
-                          <ng-container *ngFor="let menu of structure">
-                            <li class="o-draggable-menu__list__item">
-                              <button class="a-btn" aria-haspopup="true" aria-expanded="false">
-                                <pry-icon [iconSvg]="menu.icon"></pry-icon>
-                                {{ menu.label | i18n }}
-                              </button>
-
-                              <ul class="o-draggable-menu__list__submenu">
-                                <ng-container *ngFor="let sub of menu.sub">
-                                  <li class="o-draggable-menu__list__submenu__item">
-                                    <button class="a-btn" (click)="loadWidget(nq.id, sub)">
-                                      <pry-icon [iconSvg]="sub.icon"></pry-icon>
-                                      {{ sub.label | i18n }}
-                                    </button>
-                                  </li>
-                                </ng-container>
-                              </ul>
-                            </li>
-                          </ng-container>
-                        </ul>
-                      </div>
-                    </ng-template>
-                  </pry-card-menu>
-
-                  <pry-card-menu class="o-pry-card-menu__nav__item">
-                    <pry-nq-color-selector [ngStyle]="{ width: '100%' }" [datasource]="nq"></pry-nq-color-selector>
-                  </pry-card-menu>
-
-                  <pry-card-menu (click)="onSpot(nq.id, $event)">
-                    <button type="button" class="a-btn a-btn--icon-text o-pry-card-menu__nav__item">
-                      <pry-icon iconSvg="mode_clic"></pry-icon>
-                      {{ '@pry.search.namedQuery.spot' | i18n }}
-                      <pry-icon
-                        iconSvg="fleche_haut"
-                        [ngStyle]="{ transform: 'rotate(90deg)', marginLeft: 'auto' }"
-                      ></pry-icon>
+                    <pry-card-menu (click)="refresh(nq.id)" class="refreshbt">
+                      <button type="button" class="a-btn a-btn--icon-text o-pry-card-menu__nav__item">
+                        <pry-icon iconSvg="synchro"></pry-icon>
+                        {{ '@pry.search.namedQuery.refreshData' | i18n }}
+                      </button>
+                    </pry-card-menu>
+                    @if ((layout$ | async) !== DashboardGridLayout.MANUAL) {
+                      <pry-card-menu>
+                        <button
+                          type="button"
+                          class="a-btn a-btn--icon-text o-pry-card-menu__nav__item"
+                          (click)="loadOpened = nq.id; $event.stopPropagation()"
+                          cdkOverlayOrigin
+                          #triggerLoad="cdkOverlayOrigin"
+                          >
+                          <pry-icon iconSvg="file_download"></pry-icon>
+                          {{ '@pry.search.namedQuery.display' | i18n }}
+                          <pry-icon
+                            iconSvg="fleche_haut"
+                            [ngStyle]="{ transform: 'rotate(90deg)', marginLeft: 'auto' }"
+                          ></pry-icon>
+                        </button>
+                        <ng-template
+                          cdkConnectedOverlay
+                          [cdkConnectedOverlayOrigin]="triggerLoad"
+                          [cdkConnectedOverlayOpen]="loadOpened === nq.id"
+                          [cdkConnectedOverlayHasBackdrop]="true"
+                          [cdkConnectedOverlayPositions]="[connectedPosition]"
+                          cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+                          (backdropClick)="loadOpened = undefined"
+                          >
+                          <div class="o-draggable-menu -search-home">
+                            <ul class="o-draggable-menu__list">
+                              @for (menu of structure; track menu) {
+                                <li class="o-draggable-menu__list__item">
+                                  <button class="a-btn" aria-haspopup="true" aria-expanded="false">
+                                    <pry-icon [iconSvg]="menu.icon"></pry-icon>
+                                    {{ menu.label | i18n }}
+                                  </button>
+                                  <ul class="o-draggable-menu__list__submenu">
+                                    @for (sub of menu.sub; track sub) {
+                                      <li class="o-draggable-menu__list__submenu__item">
+                                        <button class="a-btn" (click)="loadWidget(nq.id, sub)">
+                                          <pry-icon [iconSvg]="sub.icon"></pry-icon>
+                                          {{ sub.label | i18n }}
+                                        </button>
+                                      </li>
+                                    }
+                                  </ul>
+                                </li>
+                              }
+                            </ul>
+                          </div>
+                        </ng-template>
+                      </pry-card-menu>
+                    }
+                    <pry-card-menu class="o-pry-card-menu__nav__item">
+                      <pry-nq-color-selector [ngStyle]="{ width: '100%' }" [datasource]="nq"></pry-nq-color-selector>
+                    </pry-card-menu>
+                    <pry-card-menu (click)="onSpot(nq.id, $event)">
+                      <button type="button" class="a-btn a-btn--icon-text o-pry-card-menu__nav__item">
+                        <pry-icon iconSvg="mode_clic"></pry-icon>
+                        {{ '@pry.search.namedQuery.spot' | i18n }}
+                        <pry-icon
+                          iconSvg="fleche_haut"
+                          [ngStyle]="{ transform: 'rotate(90deg)', marginLeft: 'auto' }"
+                        ></pry-icon>
+                      </button>
+                    </pry-card-menu>
+                    <pry-card-menu (click)="onRefresh(nq.id, $event)">
+                      <button type="button" class="a-btn a-btn--icon-text o-pry-card-menu__nav__item">
+                        <pry-icon iconSvg="history-line"></pry-icon>
+                        {{ '@pry.search.namedQuery.refresh.title' | i18n }}
+                        <pry-icon
+                          iconSvg="fleche_haut"
+                          [ngStyle]="{ transform: 'rotate(90deg)', marginLeft: 'auto' }"
+                        ></pry-icon>
+                      </button>
+                    </pry-card-menu>
+                    @if (nq.owner) {
+                      <button
+                        type="button"
+                        class="a-btn a-btn--icon-text o-pry-card-menu__nav__item"
+                        (click)="onDelete(nq)"
+                        >
+                        <pry-icon iconSvg="delete"></pry-icon>
+                        {{ '@pry.search.namedQuery.delete' | i18n }}
+                      </button>
+                    }
+                    @if (nq.owner) {
+                      <button
+                        type="button"
+                        class="a-btn a-btn--icon-text o-pry-card-menu__nav__item"
+                        (click)="onRename(nq)"
+                        >
+                        <pry-icon iconSvg="renamed"></pry-icon>
+                        {{ '@pry.search.namedQuery.rename' | i18n }}
+                      </button>
+                    }
+                    <button
+                      type="button"
+                      class="a-btn a-btn--icon-text o-pry-card-menu__nav__item"
+                      (click)="onEdit(nq)"
+                      (keydown.tab)="hideSpot()"
+                      >
+                      <pry-icon iconSvg="edit"></pry-icon>
+                      {{ '@pry.search.namedQuery.edit' | i18n }}
                     </button>
-                  </pry-card-menu>
-                  <pry-card-menu (click)="onRefresh(nq.id, $event)">
-                    <button type="button" class="a-btn a-btn--icon-text o-pry-card-menu__nav__item">
-                      <pry-icon iconSvg="history-line"></pry-icon>
-                      {{ '@pry.search.namedQuery.refresh.title' | i18n }}
-                      <pry-icon
-                        iconSvg="fleche_haut"
-                        [ngStyle]="{ transform: 'rotate(90deg)', marginLeft: 'auto' }"
-                      ></pry-icon>
-                    </button>
-                  </pry-card-menu>
-                  <button
-                    type="button"
-                    class="a-btn a-btn--icon-text o-pry-card-menu__nav__item"
-                    (click)="onDelete(nq)"
-                    *ngIf="nq.owner"
-                  >
-                    <pry-icon iconSvg="delete"></pry-icon>
-                    {{ '@pry.search.namedQuery.delete' | i18n }}
-                  </button>
-                  <button
-                    type="button"
-                    class="a-btn a-btn--icon-text o-pry-card-menu__nav__item"
-                    (click)="onRename(nq)"
-                    *ngIf="nq.owner"
-                  >
-                    <pry-icon iconSvg="renamed"></pry-icon>
-                    {{ '@pry.search.namedQuery.rename' | i18n }}
-                  </button>
-                  <button
-                    type="button"
-                    class="a-btn a-btn--icon-text o-pry-card-menu__nav__item"
-                    (click)="onEdit(nq)"
-                    (keydown.tab)="hideSpot()"
-                  >
-                    <pry-icon iconSvg="edit"></pry-icon>
-                    {{ '@pry.search.namedQuery.edit' | i18n }}
-                  </button>
-                </div>
-              </pry-card-menu>
-            </pry-card-header>
-          </pry-card>
+                  </div>
+                </pry-card-menu>
+              </pry-card-header>
+            </pry-card>
+          }
         </pry-expand-panel>
       </div>
-      <button
-        class="a-btn -link-like"
-        aria-pressed="false"
-        id="btn_view_more"
-        *ngIf="namedQuery.length > 2"
-        (click)="onChangeListView(isMoreList)"
-      >
-        {{ isMoreList ? ('@pry.search.namedQuery.seeLess' | i18n) : ('@pry.search.namedQuery.seeMore' | i18n) }}
-      </button>
-    </ng-container>
-
-    <ng-template #noNamedQuery>
+      @if (namedQuery.length > 2) {
+        <button
+          class="a-btn -link-like"
+          aria-pressed="false"
+          id="btn_view_more"
+          (click)="onChangeListView(isMoreList)"
+          >
+          {{ isMoreList ? ('@pry.search.namedQuery.seeLess' | i18n) : ('@pry.search.namedQuery.seeMore' | i18n) }}
+        </button>
+      }
+    } @else {
       <p class="search-home__container-search">{{ '@pry.search.namedQuery.emptyNamedQuery' | i18n }}</p>
-    </ng-template>
-  </ng-container>
+    }
+  }
 </div>
 
 <div class="o-pry-search-home__search">
   <h3 class="a-h3">{{ '@pry.search.home.ssTitle' | i18n }}</h3>
-  <ng-container *ngIf="searchFulltextTpl">
+  @if (searchFulltextTpl) {
     <ng-container [ngTemplateOutlet]="searchFulltextTpl"></ng-container>
     <p class="a-p o-pry-search-home__search__or">{{ '@pry.search.home.or' | i18n }}</p>
-  </ng-container>
+  }
   <button class="a-btn a-btn--primary -width-full" (click)="onSearchCriteria()">
     <pry-icon [width]="20" [height]="20" iconSvg="search-criteria"></pry-icon>
     {{ '@pry.search.home.searchByCriteria' | i18n }}
@@ -211,32 +214,36 @@
 <ng-template #templateSpot>
   <div (mouseleave)="hideSpot()">
     {{
-      ((spottingWidget$ | async)?.length ?? 0 > 0
-        ? '@pry.search.namedQuery.spotTitle'
-        : '@pry.search.namedQuery.noSpot'
-      ) | i18n : { length: (spottingWidget$ | async)?.length }
+    ((spottingWidget$ | async)?.length ?? 0 > 0
+    ? '@pry.search.namedQuery.spotTitle'
+    : '@pry.search.namedQuery.noSpot'
+    ) | i18n : { length: (spottingWidget$ | async)?.length }
     }}
-    <div *ngFor="let use of spottingWidget$ | async" class="spot-line">
-      <pry-icon [width]="20" [height]="20" [iconSvg]="icons[use.type]"></pry-icon>
-      {{ '@pry.search.namedQuery.type.' + use.type | i18n }} - {{ '@pry.search.namedQuery.use' | i18n : use }}
-    </div>
+    @for (use of spottingWidget$ | async; track use) {
+      <div class="spot-line">
+        <pry-icon [width]="20" [height]="20" [iconSvg]="icons[use.type]"></pry-icon>
+        {{ '@pry.search.namedQuery.type.' + use.type | i18n }} - {{ '@pry.search.namedQuery.use' | i18n : use }}
+      </div>
+    }
   </div>
 </ng-template>
 
 <ng-template #templateRefresh>
   <div>
-    <button
-      *ngFor="let option of refreshOptions"
-      class="refresh-line a-btn a-btn--icon-text -size-sm"
-      (click)="selectRefresh(option)"
-    >
-      <pry-icon
-        [width]="20"
-        [height]="20"
-        iconSvg="check"
-        *ngIf="(((refreshRates$ | async) ?? {})[refreshId] ?? 0) === option"
-      ></pry-icon>
-      {{ '@pry.search.namedQuery.refresh.' + option | i18n }}
-    </button>
+    @for (option of refreshOptions; track option) {
+      <button
+        class="refresh-line a-btn a-btn--icon-text -size-sm"
+        (click)="selectRefresh(option)"
+        >
+        @if ((((refreshRates$ | async) ?? {})[refreshId] ?? 0) === option) {
+          <pry-icon
+            [width]="20"
+            [height]="20"
+            iconSvg="check"
+          ></pry-icon>
+        }
+        {{ '@pry.search.namedQuery.refresh.' + option | i18n }}
+      </button>
+    }
   </div>
 </ng-template>

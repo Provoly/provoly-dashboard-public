@@ -8,29 +8,30 @@
   tabindex="-1"
   [title]="widget.description ?? widget.label | i18n : { warn: false }"
   (dragstart)="dragStart($event, widget.type)"
->
-  <ng-container *ngIf="automaticGridMode$ | async">
+  >
+  @if (automaticGridMode$ | async) {
     <button
       type="button"
       class="a-btn a-btn--icon-only"
       (click)="viewInDashboard(widget)"
       [title]="'@pry.restitution.add_icon' | i18n"
-    >
+      >
       <pry-icon [width]="25" [height]="25" iconSvg="add_column" class="o-catalog__list__icon"></pry-icon>
       <span class="u-visually-hidden">{{ '@pry.restitution.add_icon' | i18n }}</span>
     </button>
-  </ng-container>
+  }
   <img
     [alt]="widget.label | i18n : { warn: false }"
     [src]="widget.icon | getSecuredImage : [53, 53] | async"
     [height]="53"
     [width]="53"
-  />
-  <p class="o-catalog__list__item__libelle" *ngIf="widget.isCustom; else translate">{{ widget.label }}</p>
-  <ng-template #translate>
+    />
+  @if (widget.isCustom) {
+    <p class="o-catalog__list__item__libelle">{{ widget.label }}</p>
+  } @else {
     <p class="o-catalog__list__item__libelle">{{ widget.label | i18n : { warn: false } }}</p>
-  </ng-template>
-  <ng-container *ngIf="widget.groups?.length === 0">
+  }
+  @if (widget.groups?.length === 0) {
     <pry-icon
       iconSvg="private"
       class="is-private a-tooltip"
@@ -38,5 +39,5 @@
       [height]="17"
       [width]="17"
     ></pry-icon>
-  </ng-container>
+  }
 </li>

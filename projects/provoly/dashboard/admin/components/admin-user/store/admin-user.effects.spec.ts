@@ -10,7 +10,7 @@ import { AdminUserEffects } from './admin-user.effects';
 import { AdminUserState, initialAdminUserState } from './admin-user.reducer';
 
 const buildState = (state: Partial<AdminUserState>) =>
-  Object.assign({}, { '@pry/admin': JSON.parse(JSON.stringify({ ...initialAdminUserState, ...state })) });
+  Object.assign({}, { '@pry/admin': structuredClone({ ...initialAdminUserState, ...state }) });
 
 describe('AdminUserEffects', () => {
   let actions$: Observable<any>;

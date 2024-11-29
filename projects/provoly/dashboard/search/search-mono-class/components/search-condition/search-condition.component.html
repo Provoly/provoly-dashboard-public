@@ -10,7 +10,7 @@
       [ngModel]="operatorSelectedValue"
       (ngModelChange)="onSelectedOperator($event)"
     ></pry-select>
-    <ng-container *ngIf="isDate && !textDateInputs; else textInput">
+    @if (isDate && !textDateInputs) {
       <pry-date-picker
         class="o-pry-search-condition__date-picker"
         [(ngModel)]="dateConditionValue"
@@ -20,43 +20,42 @@
         [timePicker]="true"
         required
       ></pry-date-picker>
-    </ng-container>
-  </div>
-  <ng-template #textInput>
-    <input
-      class="a-form-field"
-      type="text"
-      [placeholder]="(twoValues ? '@pry.search.placeholder.minValue' : '@pry.search.placeholder.search') | i18n"
-      [ngClass]="{ '-half': twoValues }"
-      [class.pry-search-condition-input-pattern]="firstValue.touched && firstValueInvalid"
-      [class.pry-search-condition-input-required]="firstValue.touched && firstValue.invalid"
-      name="value"
-      [type]="isDate ? 'date' : 'text'"
-      required
-      #firstValue="ngModel"
-      [(ngModel)]="conditionValue"
-      (input)="onCheckValidity($event, true)"
-      (focusout)="updateFirstValue()"
-    />
-    <ng-container *ngIf="twoValues">
+    } @else {
       <input
         class="a-form-field"
         type="text"
-        [placeholder]="'@pry.search.placeholder.maxValue' | i18n"
-        required
+        [placeholder]="(twoValues ? '@pry.search.placeholder.minValue' : '@pry.search.placeholder.search') | i18n"
+        [ngClass]="{ '-half': twoValues }"
+        [class.pry-search-condition-input-pattern]="firstValue.touched && firstValueInvalid"
+        [class.pry-search-condition-input-required]="firstValue.touched && firstValue.invalid"
+        name="value"
         [type]="isDate ? 'date' : 'text'"
-        [(ngModel)]="secondConditionValue"
-        (input)="onCheckValidity($event, false)"
-        (focusout)="updateSecondValue()"
-      />
-    </ng-container>
-  </ng-template>
+        required
+        #firstValue="ngModel"
+        [(ngModel)]="conditionValue"
+        (input)="onCheckValidity($event, true)"
+        (focusout)="updateFirstValue()"
+        />
+      @if (twoValues) {
+        <input
+          class="a-form-field"
+          type="text"
+          [placeholder]="'@pry.search.placeholder.maxValue' | i18n"
+          required
+          [type]="isDate ? 'date' : 'text'"
+          [(ngModel)]="secondConditionValue"
+          (input)="onCheckValidity($event, false)"
+          (focusout)="updateSecondValue()"
+          />
+      }
+    }
+  </div>
   <button
     type="button"
     class="a-btn a-btn--icon-only -circle -size-xs delete"
     (click)="onDeleteAttributeCondition()"
     [title]="'@pry.search.attribute.remove' | i18n"
-  >
+    >
     <pry-icon iconSvg="close" [width]="22" [height]="22"></pry-icon>
     <span class="u-visually-hidden">{{ '@pry.search.attribute.remove' | i18n }}</span>
   </button>

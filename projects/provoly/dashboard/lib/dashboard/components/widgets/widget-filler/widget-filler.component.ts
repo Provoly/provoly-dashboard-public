@@ -26,7 +26,7 @@ export class WidgetFillerComponent extends BaseWidgetComponent {
     // @ts-ignore
     if (startLayout && targetLayout && this.manifest.options?.windowManifest && this.index !== '-') {
       // @ts-ignore
-      const newWindowManifest = JSON.parse(JSON.stringify(this.manifest.options?.windowManifest)) as DashboardManifest;
+      const newWindowManifest = structuredClone(this.manifest.options?.windowManifest) as DashboardManifest;
       const targetWidgetIndex = newWindowManifest.widgets.findIndex(
         (w) =>
           w.layout.x === targetLayout.x &&

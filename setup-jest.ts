@@ -23,4 +23,6 @@ Object.defineProperty(window, 'ResizeObserver', {
   }))
 });
 
+Object.defineProperty(window, 'structuredClone', { value: (obj: any) => JSON.parse(JSON.stringify(obj)) });
+
 jest.retryTimes(2, { logErrorsBeforeRetry: true });

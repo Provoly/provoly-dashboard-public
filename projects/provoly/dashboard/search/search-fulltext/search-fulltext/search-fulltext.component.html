@@ -12,21 +12,23 @@
       [pryOverlaySticky]="true"
       [pryOverlayNoPadding]="true"
       (click)="panelClassesOpen = true"
-    >
+      >
       <span
         class="o-search-fulltext__classes__content a-tooltip"
         [attr.data-tooltip]="'@pry.search.fulltext.selectClass' | i18n"
         data-tooltip-position="bottom"
-      >
+        >
         <pry-icon
           [iconSvg]="classesSelected.length === 0 ? 'apps' : 'detail'"
           [height]="20"
           [width]="20"
           [animation]="false"
         ></pry-icon>
-        <span class="o-search-fulltext__classes__content__label" *ngIf="mode === 'inline'">
-          {{ classesSelectedLabel | i18n : { nb: classesSelected.length } }}
-        </span>
+        @if (mode === 'inline') {
+          <span class="o-search-fulltext__classes__content__label">
+            {{ classesSelectedLabel | i18n : { nb: classesSelected.length } }}
+          </span>
+        }
       </span>
 
       <span class="o-search-fulltext__classes__arrow">
@@ -47,44 +49,49 @@
       [panelOpen]="panelSearchOpen"
       [width]="searchPanelWidth ?? 200"
       (selected)="onSelectWidget($event)"
-    >
+      >
       <input
         #searchInput
         [(ngModel)]="search"
         (input)="onChangeSearch($event)"
         (focusin)="onOpenSearchPanel()"
         (focusout)="onFocusOut()"
-      />
-      <div *ngIf="!searchDisabled" class="o-search-fulltext__input__clear">
-        <div class="o-search-fulltext__input__clear__wrapper" (click)="onClearSearch($event)">
-          <div
-            class="a-tooltip"
-            [attr.data-tooltip]="'@pry.search.fulltext.clear' | i18n"
-            data-tooltip-position="bottom"
-          >
-            <pry-icon iconSvg="close" [height]="16" [width]="16" [animation]="false"></pry-icon>
-            <span class="u-visually-hidden">{{ '@pry.search.fulltext.clear' | i18n }}</span>
+        />
+      @if (!searchDisabled) {
+        <div class="o-search-fulltext__input__clear">
+          <div class="o-search-fulltext__input__clear__wrapper" (click)="onClearSearch($event)">
+            <div
+              class="a-tooltip"
+              [attr.data-tooltip]="'@pry.search.fulltext.clear' | i18n"
+              data-tooltip-position="bottom"
+              >
+              <pry-icon iconSvg="close" [height]="16" [width]="16" [animation]="false"></pry-icon>
+              <span class="u-visually-hidden">{{ '@pry.search.fulltext.clear' | i18n }}</span>
+            </div>
           </div>
         </div>
-      </div>
+      }
     </pry-choose-widget>
   </div>
 
-  <button
-    #searchButton
-    class="a-btn a-btn--primary a-tooltip"
-    (click)="onSearch()"
-    [class.o-search-fulltext__button__inline]="mode === 'inline'"
-    [ngClass]="{ ' -width-full': mode === 'vertical' }"
-    [disabled]="searchDisabled"
-    *ngIf="launchButton"
-    [attr.data-tooltip]="'@pry.search.fulltext.search' | i18n"
-    data-tooltip-position="bottom"
-  >
-    <pry-icon iconSvg="search-line" [animation]="false"></pry-icon>
-    <span *ngIf="mode === 'vertical'">{{ '@pry.search.fulltext.search' | i18n }}</span>
-    <span class="u-visually-hidden">{{ '@pry.search.fulltext.search' | i18n }}</span>
-  </button>
+  @if (launchButton) {
+    <button
+      #searchButton
+      class="a-btn a-btn--primary a-tooltip"
+      (click)="onSearch()"
+      [class.o-search-fulltext__button__inline]="mode === 'inline'"
+      [ngClass]="{ ' -width-full': mode === 'vertical' }"
+      [disabled]="searchDisabled"
+      [attr.data-tooltip]="'@pry.search.fulltext.search' | i18n"
+      data-tooltip-position="bottom"
+      >
+      <pry-icon iconSvg="search-line" [animation]="false"></pry-icon>
+      @if (mode === 'vertical') {
+        <span>{{ '@pry.search.fulltext.search' | i18n }}</span>
+      }
+      <span class="u-visually-hidden">{{ '@pry.search.fulltext.search' | i18n }}</span>
+    </button>
+  }
 </div>
 
 <ng-template #classesOverlay>
@@ -94,29 +101,29 @@
     (keydown.escape)="closeFocus()"
     (keydown.arrowDown)="onArrowDown()"
     (keydown.arrowUp)="onArrowUp()"
-  >
+    >
     <button class="o-search-fulltext__classes-overlay__item" (click)="onSelectAllClasses()">
       <pry-icon iconSvg="apps" [width]="20" [height]="20"></pry-icon>
       <span class="o-search-fulltext__classes-overlay__item__label">{{
         '@pry.search.fulltext.allClasses' | i18n
       }}</span>
     </button>
-    <ng-container *ngFor="let clazz of classes$ | async; let last = last">
+    @for (clazz of classes$ | async; track clazz; let last = $last) {
       <button
         type="button"
         class="o-search-fulltext__classes-overlay__item"
         (click)="onSelectClass(clazz)"
         [class.o-search-fulltext__classes-overlay__item__selected]="classesSelected.includes(clazz.id)"
         (keydown.tab)="last ? closeFocus() : null"
-      >
+        >
         <img
           alt="class"
           [height]="20"
           [width]="20"
           [src]="clazz.id | translateId : { type: 'class', output: 'icon' } | async"
-        />
+          />
         <span class="o-search-fulltext__classes-overlay__item__label">{{ clazz.name }}</span>
       </button>
-    </ng-container>
+    }
   </div>
 </ng-template>

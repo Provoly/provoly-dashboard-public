@@ -15,17 +15,24 @@
         [required]="!metadata"
         [attr.aria-labelledby]="isSubmitted && metaForm.get('name')?.invalid ? 'name-label name-error' : 'name-label'"
         [attr.aria-invalid]="isSubmitted && metaForm.get('name')?.invalid"
-      />
-      <label
-        *ngIf="isSubmitted && metaForm.get('name')?.invalid"
-        id="name-error"
-        for="metadata-name"
-        class="a-label a-label--help -error"
-      >
-        <span *ngIf="metaForm.get('name')?.hasError('same-name')">{{ '@pry.admin.exists' | i18n }}</span>
-        <span *ngIf="metaForm.get('name')?.hasError('required')">{{ '@pry.admin.required' | i18n }}</span>
-        <span *ngIf="metaForm.get('name')?.hasError('pattern')">{{ '@pry.admin.classes.formatName' | i18n }}</span>
-      </label>
+        />
+      @if (isSubmitted && metaForm.get('name')?.invalid) {
+        <label
+          id="name-error"
+          for="metadata-name"
+          class="a-label a-label--help -error"
+          >
+          @if (metaForm.get('name')?.hasError('same-name')) {
+            <span>{{ '@pry.admin.exists' | i18n }}</span>
+          }
+          @if (metaForm.get('name')?.hasError('required')) {
+            <span>{{ '@pry.admin.required' | i18n }}</span>
+          }
+          @if (metaForm.get('name')?.hasError('pattern')) {
+            <span>{{ '@pry.admin.classes.formatName' | i18n }}</span>
+          }
+        </label>
+      }
     </div>
 
     <div class="m-form-label-field -width-md">
@@ -56,63 +63,68 @@
       ></pry-select>
     </div>
 
-    <ng-container *ngIf="metaForm.value.type === 'LIST'">
-      <div class="o-datas-list-wrapper" formArrayName="allowedValues" *ngIf="metadataList.controls.length > 0">
-        <fieldset>
-          <legend class="u-visually-hidden">{{ '@pry.admin.varType.list' | i18n }}</legend>
-
-          <div class="o-datas-list metadata-list" *ngFor="let control of metadataList.controls; let i = index">
-            <div class="o-datas-list__fields metadata-input">
-              <div class="m-form-label-field -width-sm">
-                <label id="metadata-list-label" for="metadata-list" class="a-label">
-                  {{ '@pry.admin.metadata.listLabel' | i18n }} *
-                  <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
-                </label>
-                <input
-                  class="a-form-field"
-                  id="metadata-list"
-                  formControlName="{{ i }}"
-                  [required]="!control.value"
-                  [attr.aria-invalid]="isSubmitted && control?.invalid"
+    @if (metaForm.value.type === 'LIST') {
+      @if (metadataList.controls.length > 0) {
+        <div class="o-datas-list-wrapper" formArrayName="allowedValues">
+          <fieldset>
+            <legend class="u-visually-hidden">{{ '@pry.admin.varType.list' | i18n }}</legend>
+            @for (control of metadataList.controls; track control; let i = $index) {
+              <div class="o-datas-list metadata-list">
+                <div class="o-datas-list__fields metadata-input">
+                  <div class="m-form-label-field -width-sm">
+                    <label id="metadata-list-label" for="metadata-list" class="a-label">
+                      {{ '@pry.admin.metadata.listLabel' | i18n }} *
+                      <span class="u-visually-hidden">({{ '@pry.admin.required' | i18n }})</span>
+                    </label>
+                    <input
+                      class="a-form-field"
+                      id="metadata-list"
+                      formControlName="{{ i }}"
+                      [required]="!control.value"
+                      [attr.aria-invalid]="isSubmitted && control?.invalid"
                   [attr.aria-labelledby]="
                     isSubmitted && control?.invalid ? 'metadata-list-label metadata-list-error' : 'metadata-list-label'
                   "
-                />
-                <label
-                  *ngIf="isSubmitted && control.invalid"
-                  id="metadata-list-error"
-                  for="metadata-list"
-                  class="a-label a-label--help -error"
-                >
-                  {{ '@pry.admin.required' | i18n }}
-                </label>
+                      />
+                    @if (isSubmitted && control.invalid) {
+                      <label
+                        id="metadata-list-error"
+                        for="metadata-list"
+                        class="a-label a-label--help -error"
+                        >
+                        {{ '@pry.admin.required' | i18n }}
+                      </label>
+                    }
+                  </div>
+                  <div class="m-btn-group m-btn-group--input-actions">
+                    @if (i === metadataList.controls.length - 1) {
+                      <button
+                        type="button"
+                        class="a-btn a-btn--input-action"
+                        (click)="control.value.trim() !== '' ? addItemList() : undefined"
+                        >
+                        <span class="u-visually-hidden">{{ '@pry.admin.metadata.addValue' | i18n }}</span>
+                        <pry-icon iconSvg="add" [width]="20" [height]="20"></pry-icon>
+                      </button>
+                    }
+                    @if (i !== 0 && !metadataList.controls[i].disabled) {
+                      <button
+                        type="button"
+                        class="a-btn a-btn--input-action"
+                        (click)="removeItemList(i)"
+                        >
+                        <span class="u-visually-hidden">{{ '@pry.admin.metadata.removeValue' | i18n }}</span>
+                        <pry-icon iconSvg="delete" [width]="20" [height]="20"></pry-icon>
+                      </button>
+                    }
+                  </div>
+                </div>
               </div>
-
-              <div class="m-btn-group m-btn-group--input-actions">
-                <button
-                  type="button"
-                  class="a-btn a-btn--input-action"
-                  *ngIf="i === metadataList.controls.length - 1"
-                  (click)="control.value.trim() !== '' ? addItemList() : undefined"
-                >
-                  <span class="u-visually-hidden">{{ '@pry.admin.metadata.addValue' | i18n }}</span>
-                  <pry-icon iconSvg="add" [width]="20" [height]="20"></pry-icon>
-                </button>
-                <button
-                  type="button"
-                  class="a-btn a-btn--input-action"
-                  *ngIf="i !== 0 && !metadataList.controls[i].disabled"
-                  (click)="removeItemList(i)"
-                >
-                  <span class="u-visually-hidden">{{ '@pry.admin.metadata.removeValue' | i18n }}</span>
-                  <pry-icon iconSvg="delete" [width]="20" [height]="20"></pry-icon>
-                </button>
-              </div>
-            </div>
-          </div>
-        </fieldset>
-      </div>
-    </ng-container>
+            }
+          </fieldset>
+        </div>
+      }
+    }
 
     <div class="m-btn-group -width-sm">
       <button

@@ -5,13 +5,21 @@
   aria-hidden="false"
   #caret
   (keydown.escape)="closeToEscape()"
->
+  >
   <span class="caret-top" [style.left.px]="left"></span>
   <div class="m-notifications-list__header">
     <h2 class="a-h2">{{ '@pry.notif.label' | i18n }}</h2>
-    <p class="a-p none" *ngIf="(notifications$ | async)?.length === 0; else notification">
-      {{ '@pry.notif.noNotifications' | i18n }}
-    </p>
+    @if ((notifications$ | async)?.length === 0) {
+      <p class="a-p none">
+        {{ '@pry.notif.noNotifications' | i18n }}
+      </p>
+    } @else {
+      <div class="m-btn-group">
+        <button type="button" #button class="a-btn a-btn--primary" (click)="deleteAll()">
+          {{ '@pry.notif.deleteAll' | i18n: { count: (notifications$ | async)?.length } }}
+        </button>
+      </div>
+    }
     <ng-template #notification>
       <div class="m-btn-group">
         <button type="button" #button class="a-btn a-btn--primary" (click)="deleteAll()">
@@ -22,37 +30,41 @@
   </div>
   <div class="m-notifications-list__content">
     <ul class="m-notifications-list__items">
-      <li class="m-notifications-list__items__li" *ngFor="let notification of notifications$ | async; let last = last">
-        <div class="m-notifications-list__items__li__txt">
-          <h3 class="a-h3">
-            {{
+      @for (notification of notifications$ | async; track notification; let last = $last) {
+        <li class="m-notifications-list__items__li">
+          <div class="m-notifications-list__items__li__txt">
+            <h3 class="a-h3">
+              {{
               hasTranslation(notification.text.code, '@pry.notif.title.')
-                ? ('@pry.notif.title.' + notification.text.code | i18n: notification.text.param)
-                : notification.text.title
-            }}
-            <span>{{ notification.creationDate | date: "dd/MM'&nbsp;&nbsp;&nbsp;'H':'mm" }}</span>
-          </h3>
-          <p class="a-p desc">
-            {{
+              ? ('@pry.notif.title.' + notification.text.code | i18n: notification.text.param)
+              : notification.text.title
+              }}
+              <span>{{ notification.creationDate | date: "dd/MM'&nbsp;&nbsp;&nbsp;'H':'mm" }}</span>
+            </h3>
+            <p class="a-p desc">
+              {{
               hasTranslation(notification.text.code, '@pry.notif.title.')
-                ? ('@pry.notif.message.' + notification.text.code | i18n: notification.text.param)
-                : notification.text.code
-            }}
-          </p>
-          <a *ngIf="!!notification.link" (click)="goTo(notification)">
-            {{ '@pry.notif.link' | i18n }}
-          </a>
-        </div>
-        <button
-          class="a-btn a-btn--delete"
-          (click)="delete(notification)"
-          (keydown.tab)="last ? closeToEscape() : null"
-          title="{{ '@pry.notif.delete' | i18n }}"
-        >
-          <pry-icon [height]="20" [width]="20" iconSvg="close"></pry-icon>
-          <span class="u-visually-hidden">{{ '@pry.notif.delete' | i18n }}</span>
-        </button>
-      </li>
+              ? ('@pry.notif.message.' + notification.text.code | i18n: notification.text.param)
+              : notification.text.code
+              }}
+            </p>
+            @if (!!notification.link) {
+              <a (click)="goTo(notification)">
+                {{ '@pry.notif.link' | i18n }}
+              </a>
+            }
+          </div>
+          <button
+            class="a-btn a-btn--delete"
+            (click)="delete(notification)"
+            (keydown.tab)="last ? closeToEscape() : null"
+            title="{{ '@pry.notif.delete' | i18n }}"
+            >
+            <pry-icon [height]="20" [width]="20" iconSvg="close"></pry-icon>
+            <span class="u-visually-hidden">{{ '@pry.notif.delete' | i18n }}</span>
+          </button>
+        </li>
+      }
     </ul>
   </div>
 </div>

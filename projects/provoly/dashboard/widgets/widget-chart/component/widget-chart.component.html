@@ -1,366 +1,360 @@
 <pry-widget-chart-css></pry-widget-chart-css>
 <div class="o-widget o-widget--chart">
-  <pry-widget-header
-    [datasourceIds]="(datasourceIds$ | async) ?? []"
-    *ngIf="displayHeader$ | async"
-    [widgetIndex]="widgetIndex"
-    [manifest]="manifest"
-    (manifestModified)="manifestModified.emit($event)"
-    #header
-    [headerOptions]="(displayHeader$ | async) ?? {}"
-  >
-    <pry-settings
-      (saveTriggered)="emitManifest()"
-      (changeTitle)="changeWidgetTitle($event)"
-      [headerPresent]="displayHeader$ | async"
-      [isDisable]="(filterDataForOptionsCopy$ | async)?.length === 0 || hasNoType(optionsCopy)"
+  @if (displayHeader$ | async) {
+    <pry-widget-header
+      [datasourceIds]="(datasourceIds$ | async) ?? []"
       [widgetIndex]="widgetIndex"
-      [open$]="open$"
-      [header]="header"
-      class="o-settings"
-    >
-      <div class="o-settings__popup__content__fields -condensed">
-        <pry-edit-input
-          label="@pry.widget.chart.title"
-          (ngModelChange)="changeChartTitle($event)"
-          [ngModel]="optionsCopy.customTitle ?? optionsCopy.title"
-        ></pry-edit-input>
-
-        <div class="m-form-label-field">
-          <ng-container *ngIf="(filterDataForOptionsCopy$ | async)?.length === 0; else data">
-            <p class="a-label a-label--help -error">{{ '@pry.widget.chart.params.noParams' | i18n }}</p>
-          </ng-container>
-          <ng-template #data>
-            <div *ngIf="optionsCopy?.type !== MarkType.RADAR">
-              {{ '@pry.widget.chart.params.multipleParams' | i18n }}{{ (filterDataForOptionsCopy$ | async)?.length }}
-            </div>
-          </ng-template>
-        </div>
-
-        <div *ngIf="optionsCopy" class="m-form-label-field">
-          <label class="a-label" for="chart_type">{{ '@pry.widget.chart.type' | i18n }}</label>
-          <pry-select
-            (ngModelChange)="changeType($event)"
-            [items]="typeOptions"
-            [ngModel]="optionsCopy.type + '-' + optionsCopy.subType"
-            i18nPrefix="@pry.widget.chart.markType."
-            bindLabel="label"
-            bindValue="id"
-            id="chart_type"
-          ></pry-select>
-        </div>
-      </div>
-
-      <ng-container *ngIf="optionsCopy?.type !== MarkType.RADAR && optionsCopy?.type !== MarkType.CIRCLE_PACK">
-        <ng-container *ngIf="optionsCopy?.subType === MarkSubType.DONUT">
-          <pry-range
-            [ngModel]="optionsCopy.innerRadius"
-            (ngModelChange)="changeInnerRadius($event)"
-            labelTranslate="@pry.widget.chart.innerRadius"
-            min="1"
-            max="500"
-          ></pry-range>
-        </ng-container>
-
-        <div
-          *ngFor="let variableDef of optionsCopy?.selectedVariables; let i = index"
-          class="o-settings__popup__content__fields -condensed"
+      [manifest]="manifest"
+      (manifestModified)="manifestModified.emit($event)"
+      #header
+      [headerOptions]="(displayHeader$ | async) ?? {}"
+      >
+      <pry-settings
+        (saveTriggered)="emitManifest()"
+        (changeTitle)="changeWidgetTitle($event)"
+        [headerPresent]="displayHeader$ | async"
+        [isDisable]="(filterDataForOptionsCopy$ | async)?.length === 0 || hasNoType(optionsCopy)"
+        [widgetIndex]="widgetIndex"
+        [open$]="open$"
+        [header]="header"
+        class="o-settings"
         >
-          <div class="m-form-label-field" *ngIf="i === 1">
-            <label class="a-label" for="aggregations">{{ '@pry.widget.chart.encoding.group' | i18n }}</label>
-            <pry-select
-              (ngModelChange)="changeAggregation($event)"
-              *ngIf="i === 1"
-              [items]="aggregations"
-              [ngModel]="optionsCopy.aggregation"
-              id="aggregations"
-              i18nPrefix="@pry.widget.chart.aggregation."
-            ></pry-select>
-          </div>
-
-          <div class="m-form-label-field" *ngIf="i !== 1 || optionsCopy.aggregation !== 'count'">
-            <label class="a-label" for="aggregation_property">
-              {{ axeLabel(i, optionsCopy) | i18n }}
-            </label>
-            <pry-select
-              (ngModelChange)="changeProperty($event, i)"
-              [items]="(i !== 1 ? variableAttributes$ : possibleSecondaryAttributes$) | async"
-              [ngModel]="variableDef.name"
-              bindLabel="name"
-              bindValue="technicalName"
-              id="aggregation_property"
-            ></pry-select>
-          </div>
-
-          <pry-edit-input
-            label="@pry.widget.chart.dataLabel"
-            (ngModelChange)="changeLabel($event, i)"
-            [ngModel]="variableDef.label"
-          ></pry-edit-input>
-
-          <div *ngIf="variableDef.type === 'temporal'" class="m-form-label-field">
-            <label class="a-label" for="chart_timeUnit">{{ '@pry.widget.chart.timeUnit' | i18n }}</label>
-            <pry-select
-              (ngModelChange)="changeTimeUnit($event, variableDef)"
-              [items]="timeUnits"
-              [ngModel]="variableDef.timeUnit"
-              i18nPrefix="@pry.widget.chart.timeUnitList."
-              id="chart_timeUnit"
-            ></pry-select>
-          </div>
-
-          <div *ngIf="variableDef.type === 'quantitative' && optionsCopy?.type !== 'arc'" class="m-form-label-field">
-            <pry-checkbox (ngModelChange)="toggleOriginAtZero(variableDef, $event)" [ngModel]="variableDef.origin0"
-              >{{ '@pry.widget.chart.origin' | i18n }}
-            </pry-checkbox>
-          </div>
-        </div>
-
         <div class="o-settings__popup__content__fields -condensed">
+          <pry-edit-input
+            label="@pry.widget.chart.title"
+            (ngModelChange)="changeChartTitle($event)"
+            [ngModel]="optionsCopy.customTitle ?? optionsCopy.title"
+          ></pry-edit-input>
           <div class="m-form-label-field">
-            <pry-checkbox
-              (ngModelChange)="toggleSeries($event)"
-              [ngModel]="!!optionsCopy.series"
-              *ngIf="optionsCopy?.type !== MarkType.ARC && optionsCopy?.type !== MarkType.RADAR"
+            @if ((filterDataForOptionsCopy$ | async)?.length === 0) {
+              <p class="a-label a-label--help -error">{{ '@pry.widget.chart.params.noParams' | i18n }}</p>
+            } @else {
+              @if (optionsCopy?.type !== MarkType.RADAR) {
+                <div>
+                  {{ '@pry.widget.chart.params.multipleParams' | i18n }}{{ (filterDataForOptionsCopy$ | async)?.length }}
+                </div>
+              }
+            }
+          </div>
+          @if (optionsCopy) {
+            <div class="m-form-label-field">
+              <label class="a-label" for="chart_type">{{ '@pry.widget.chart.type' | i18n }}</label>
+              <pry-select
+                (ngModelChange)="changeType($event)"
+                [items]="typeOptions"
+                [ngModel]="optionsCopy.type + '-' + optionsCopy.subType"
+                i18nPrefix="@pry.widget.chart.markType."
+                bindLabel="label"
+                bindValue="id"
+                id="chart_type"
+              ></pry-select>
+            </div>
+          }
+        </div>
+        @if (optionsCopy?.type !== MarkType.RADAR && optionsCopy?.type !== MarkType.CIRCLE_PACK) {
+          @if (optionsCopy?.subType === MarkSubType.DONUT) {
+            <pry-range
+              [ngModel]="optionsCopy.innerRadius"
+              (ngModelChange)="changeInnerRadius($event)"
+              labelTranslate="@pry.widget.chart.innerRadius"
+              min="1"
+              max="500"
+            ></pry-range>
+          }
+          @for (variableDef of optionsCopy?.selectedVariables; track variableDef; let i = $index) {
+            <div
+              class="o-settings__popup__content__fields -condensed"
+              >
+              @if (i === 1) {
+                <div class="m-form-label-field">
+                  <label class="a-label" for="aggregations">{{ '@pry.widget.chart.encoding.group' | i18n }}</label>
+                  @if (i === 1) {
+                    <pry-select
+                      (ngModelChange)="changeAggregation($event)"
+                      [items]="aggregations"
+                      [ngModel]="optionsCopy.aggregation"
+                      id="aggregations"
+                      i18nPrefix="@pry.widget.chart.aggregation."
+                    ></pry-select>
+                  }
+                </div>
+              }
+              @if (i !== 1 || optionsCopy.aggregation !== 'count') {
+                <div class="m-form-label-field">
+                  <label class="a-label" for="aggregation_property">
+                    {{ axeLabel(i, optionsCopy) | i18n }}
+                  </label>
+                  <pry-select
+                    (ngModelChange)="changeProperty($event, i)"
+                    [items]="(i !== 1 ? variableAttributes$ : possibleSecondaryAttributes$) | async"
+                    [ngModel]="variableDef.name"
+                    bindLabel="name"
+                    bindValue="technicalName"
+                    id="aggregation_property"
+                  ></pry-select>
+                </div>
+              }
+              <pry-edit-input
+                label="@pry.widget.chart.dataLabel"
+                (ngModelChange)="changeLabel($event, i)"
+                [ngModel]="variableDef.label"
+              ></pry-edit-input>
+              @if (variableDef.type === 'temporal') {
+                <div class="m-form-label-field">
+                  <label class="a-label" for="chart_timeUnit">{{ '@pry.widget.chart.timeUnit' | i18n }}</label>
+                  <pry-select
+                    (ngModelChange)="changeTimeUnit($event, variableDef)"
+                    [items]="timeUnits"
+                    [ngModel]="variableDef.timeUnit"
+                    i18nPrefix="@pry.widget.chart.timeUnitList."
+                    id="chart_timeUnit"
+                  ></pry-select>
+                </div>
+              }
+              @if (variableDef.type === 'quantitative' && optionsCopy?.type !== 'arc') {
+                <div class="m-form-label-field">
+                  <pry-checkbox (ngModelChange)="toggleOriginAtZero(variableDef, $event)" [ngModel]="variableDef.origin0"
+                    >{{ '@pry.widget.chart.origin' | i18n }}
+                  </pry-checkbox>
+                </div>
+              }
+            </div>
+          }
+          <div class="o-settings__popup__content__fields -condensed">
+            <div class="m-form-label-field">
+              @if (optionsCopy?.type !== MarkType.ARC && optionsCopy?.type !== MarkType.RADAR) {
+                <pry-checkbox
+                  (ngModelChange)="toggleSeries($event)"
+                  [ngModel]="!!optionsCopy.series"
               [disabled]="
                 this.optionsCopy.subType === MarkSubType.AREASTACKED ||
                 this.optionsCopy.subType === MarkSubType.HISTOSTACKED
               "
-              >{{ '@pry.widget.chart.series' | i18n }}
-            </pry-checkbox>
-          </div>
-
-          <div
-            class="m-form-label-field"
-            *ngIf="optionsCopy?.type !== MarkType.ARC && optionsCopy?.type !== MarkType.RADAR && !!optionsCopy.series"
-          >
-            <label class="a-label" for="chart_seriesAttr">{{ '@pry.widget.chart.seriesAttr' | i18n }}</label>
-            <pry-select
-              (ngModelChange)="changeSeries($event)"
-              [ngModel]="optionsCopy.series.groupBy!"
-              [items]="variableAttributes$ | async"
-              bindLabel="name"
-              bindValue="name"
-              id="chart_seriesAttr"
-            ></pry-select>
-          </div>
-
-          <div
-            class="m-form-label-field"
-            *ngIf="
+                  >{{ '@pry.widget.chart.series' | i18n }}
+                </pry-checkbox>
+              }
+            </div>
+            @if (optionsCopy?.type !== MarkType.ARC && optionsCopy?.type !== MarkType.RADAR && !!optionsCopy.series) {
+              <div
+                class="m-form-label-field"
+                >
+                <label class="a-label" for="chart_seriesAttr">{{ '@pry.widget.chart.seriesAttr' | i18n }}</label>
+                <pry-select
+                  (ngModelChange)="changeSeries($event)"
+                  [ngModel]="optionsCopy.series.groupBy!"
+                  [items]="variableAttributes$ | async"
+                  bindLabel="name"
+                  bindValue="name"
+                  id="chart_seriesAttr"
+                ></pry-select>
+              </div>
+            }
+            @if (
               (optionsCopy?.type === MarkType.ARC || optionsCopy?.type === MarkType.RADAR || !!optionsCopy.series) &&
               schemes
-            "
-          >
-            <label class="a-label" for="chart_seriesScheme" [title]="'@pry.widget.chart.seriesSchemeAlt' | i18n">{{
-              '@pry.widget.chart.seriesScheme' | i18n
-            }}</label>
-            <pry-select
-              (ngModelChange)="changeSeriesScheme($event)"
-              [ngModel]="optionsCopy.series?.scheme!"
-              [items]="schemes"
-              id="chart_seriesScheme"
-              i18nPrefix="@pry.widget.chart.scheme."
-              bindValue="id"
-              bindLabel="id"
-            ></pry-select>
+              ) {
+              <div
+                class="m-form-label-field"
+                >
+                <label class="a-label" for="chart_seriesScheme" [title]="'@pry.widget.chart.seriesSchemeAlt' | i18n">{{
+                  '@pry.widget.chart.seriesScheme' | i18n
+                }}</label>
+                <pry-select
+                  (ngModelChange)="changeSeriesScheme($event)"
+                  [ngModel]="optionsCopy.series?.scheme!"
+                  [items]="schemes"
+                  id="chart_seriesScheme"
+                  i18nPrefix="@pry.widget.chart.scheme."
+                  bindValue="id"
+                  bindLabel="id"
+                ></pry-select>
+              </div>
+            }
+            <div class="o-widget--chart-color-thumb">
+              @for (schemeColor of scheme(); track schemeColor) {
+                <div
+                  class="o-widget--chart-color-thumb-item"
+                  [title]="schemeColor"
+                  [style.background-color]="schemeColor"
+                ></div>
+              }
+            </div>
+            <div class="m-form-label-field">
+              @if (optionsCopy?.type !== MarkType.RADAR || !!optionsCopy.series) {
+                <pry-checkbox
+                  (ngModelChange)="toggleSeriesLegend($event)"
+                  [ngModel]="!!optionsCopy.legend!"
+                  >{{ '@pry.widget.chart.seriesLegend' | i18n }}
+                </pry-checkbox>
+              }
+            </div>
+            <div class="m-form-label-field">
+              <pry-checkbox (ngModelChange)="toggleTooltip($event)" [ngModel]="!!optionsCopy.tooltip!"
+                >{{ '@pry.widget.chart.tooltip' | i18n }}
+              </pry-checkbox>
+            </div>
           </div>
-
-          <div class="o-widget--chart-color-thumb">
-            <div
-              *ngFor="let schemeColor of scheme()"
-              class="o-widget--chart-color-thumb-item"
-              [title]="schemeColor"
-              [style.background-color]="schemeColor"
-            ></div>
-          </div>
-
-          <div class="m-form-label-field">
-            <pry-checkbox
-              (ngModelChange)="toggleSeriesLegend($event)"
-              [ngModel]="!!optionsCopy.legend!"
-              *ngIf="optionsCopy?.type !== MarkType.RADAR || !!optionsCopy.series"
-              >{{ '@pry.widget.chart.seriesLegend' | i18n }}
+        }
+        @if (optionsCopy?.type === MarkType.RADAR && optionsCopy.radar !== undefined) {
+          <div class="o-settings__popup__content__fields -condensed">
+            <div class="m-form-label-field">
+              <pry-select
+                (ngModelChange)="trigger(); proposeTitle()"
+                [(ngModel)]="optionsCopy.radar.compare"
+                [items]="comparisons"
+                bindLabel="name"
+                bindValue="id"
+              ></pry-select>
+            </div>
+            @if (optionsCopy.radar.compare === 'item') {
+              <div class="m-form-label-field">
+                <pry-select
+                  (ngModelChange)="trigger(); proposeTitle()"
+                  [(ngModel)]="optionsCopy.radar.props"
+                  [items]="numericProperties$ | async"
+                  [multiple]="true"
+                  [closeOnSelect]="false"
+                  bindLabel="name"
+                  bindValue="name"
+                ></pry-select>
+              </div>
+            }
+            @if (optionsCopy.radar.compare === 'value') {
+              <div class="m-form-label-field">
+                <label class="a-label" for="comparison_key">{{ '@pry.widget.chart.comparison.key' | i18n }}</label>
+                <pry-select
+                  (ngModelChange)="trigger(); proposeTitle()"
+                  [(ngModel)]="optionsCopy.radar.keyProp"
+                  [items]="textProperties$ | async"
+                  bindLabel="name"
+                  bindValue="name"
+                  id="comparison_key"
+                ></pry-select>
+              </div>
+              <div class="m-form-label-field">
+                <label class="a-label" for="comparison_values">{{ '@pry.widget.chart.comparison.values' | i18n }}</label>
+                <pry-select
+                  (ngModelChange)="trigger(); proposeTitle()"
+                  [(ngModel)]="optionsCopy.radar.valueProp"
+                  [items]="numericProperties$ | async"
+                  bindLabel="name"
+                  bindValue="name"
+                  id="comparison_values"
+                ></pry-select>
+              </div>
+              <div class="m-form-label-field">
+                <label class="a-label" for="comparison_category">{{
+                  '@pry.widget.chart.comparison.category' | i18n
+                }}</label>
+                <pry-select
+                  (ngModelChange)="trigger(); proposeTitle()"
+                  [(ngModel)]="optionsCopy.radar.categoryProp"
+                  [items]="textProperties$ | async"
+                  bindLabel="name"
+                  bindValue="name"
+                  id="comparison_category"
+                ></pry-select>
+              </div>
+            }
+            @if (schemes) {
+              <label
+                class="a-label"
+                for="chart_seriesScheme_radar"
+                [title]="'@pry.widget.chart.seriesSchemeAlt' | i18n"
+                >{{ '@pry.widget.chart.seriesScheme' | i18n }}</label
+                >
+                <pry-select
+                  (ngModelChange)="changeSeriesScheme($event)"
+                  [ngModel]="optionsCopy.series?.scheme!"
+                  [items]="schemes"
+                  id="chart_seriesScheme_radar"
+                ></pry-select>
+              }
+            </div>
+          }
+          @if (optionsCopy?.type === MarkType.CIRCLE_PACK && optionsCopy.packing !== undefined) {
+            <div class="o-settings__popup__content__fields -condensed">
+              <div class="m-form-label-field">
+                <label class="a-label" for="chart_circle_id">{{ '@pry.widget.chart.circle.id' | i18n }}</label>
+                <pry-select
+                  (ngModelChange)="trigger(); proposeTitle()"
+                  [(ngModel)]="optionsCopy.packing.id"
+                  [items]="variableAttributes$ | async"
+                  bindLabel="name"
+                  bindValue="name"
+                  id="chart_circle_id"
+                ></pry-select>
+              </div>
+              <div class="m-form-label-field">
+                <label class="a-label" for="chart_circle_pid">{{ '@pry.widget.chart.circle.pid' | i18n }}</label>
+                <pry-select
+                  (ngModelChange)="trigger(); proposeTitle()"
+                  [(ngModel)]="optionsCopy.packing.parentId"
+                  [items]="variableAttributes$ | async"
+                  bindLabel="name"
+                  bindValue="name"
+                  id="chart_circle_pid"
+                ></pry-select>
+              </div>
+              <div class="m-form-label-field">
+                <label class="a-label" for="chart_circle_field">{{ '@pry.widget.chart.circle.field' | i18n }}</label>
+                <pry-select
+                  (ngModelChange)="trigger(); proposeTitle()"
+                  [(ngModel)]="optionsCopy.packing.packField"
+                  [items]="numericProperties$ | async"
+                  bindLabel="name"
+                  bindValue="name"
+                  id="chart_circle_field"
+                ></pry-select>
+              </div>
+              <div class="m-form-label-field">
+                <label class="a-label" for="chart_circle_tooltip">{{ '@pry.widget.chart.circle.tooltip' | i18n }}</label>
+                <pry-select
+                  (ngModelChange)="trigger(); proposeTitle()"
+                  [(ngModel)]="optionsCopy.packing.tooltip"
+                  [items]="variableAttributes$ | async"
+                  bindLabel="name"
+                  bindValue="name"
+                  id="chart_circle_tooltip"
+                ></pry-select>
+              </div>
+            </div>
+          }
+          <div class="o-settings__popup__content__fields -condensed">
+            <pry-checkbox (ngModelChange)="toggleSpecToMerge($event)" [ngModel]="!!optionsCopy.specToMerge"
+              >{{ '@pry.widget.chart.moreOptions' | i18n }}
             </pry-checkbox>
+            @if (!!optionsCopy.specToMerge) {
+              <textarea
+                [ngModel]="advancedEdit"
+                (focusout)="updateAdvancedEdit($event)"
+                class="o-settings__popup__content__area"
+                [class.-invalid]="invalidJson"
+              ></textarea>
+            }
           </div>
-
-          <div class="m-form-label-field">
-            <pry-checkbox (ngModelChange)="toggleTooltip($event)" [ngModel]="!!optionsCopy.tooltip!"
-              >{{ '@pry.widget.chart.tooltip' | i18n }}
-            </pry-checkbox>
-          </div>
-        </div>
-      </ng-container>
-
-      <ng-container *ngIf="optionsCopy?.type === MarkType.RADAR && optionsCopy.radar !== undefined">
-        <div class="o-settings__popup__content__fields -condensed">
-          <div class="m-form-label-field">
-            <pry-select
-              (ngModelChange)="trigger(); proposeTitle()"
-              [(ngModel)]="optionsCopy.radar.compare"
-              [items]="comparisons"
-              bindLabel="name"
-              bindValue="id"
-            ></pry-select>
-          </div>
-
-          <ng-container *ngIf="optionsCopy.radar.compare === 'item'">
-            <div class="m-form-label-field">
-              <pry-select
-                (ngModelChange)="trigger(); proposeTitle()"
-                [(ngModel)]="optionsCopy.radar.props"
-                [items]="numericProperties$ | async"
-                [multiple]="true"
-                [closeOnSelect]="false"
-                bindLabel="name"
-                bindValue="name"
-              ></pry-select>
-            </div>
-          </ng-container>
-
-          <ng-container *ngIf="optionsCopy.radar.compare === 'value'">
-            <div class="m-form-label-field">
-              <label class="a-label" for="comparison_key">{{ '@pry.widget.chart.comparison.key' | i18n }}</label>
-              <pry-select
-                (ngModelChange)="trigger(); proposeTitle()"
-                [(ngModel)]="optionsCopy.radar.keyProp"
-                [items]="textProperties$ | async"
-                bindLabel="name"
-                bindValue="name"
-                id="comparison_key"
-              ></pry-select>
-            </div>
-
-            <div class="m-form-label-field">
-              <label class="a-label" for="comparison_values">{{ '@pry.widget.chart.comparison.values' | i18n }}</label>
-              <pry-select
-                (ngModelChange)="trigger(); proposeTitle()"
-                [(ngModel)]="optionsCopy.radar.valueProp"
-                [items]="numericProperties$ | async"
-                bindLabel="name"
-                bindValue="name"
-                id="comparison_values"
-              ></pry-select>
-            </div>
-
-            <div class="m-form-label-field">
-              <label class="a-label" for="comparison_category">{{
-                '@pry.widget.chart.comparison.category' | i18n
-              }}</label>
-              <pry-select
-                (ngModelChange)="trigger(); proposeTitle()"
-                [(ngModel)]="optionsCopy.radar.categoryProp"
-                [items]="textProperties$ | async"
-                bindLabel="name"
-                bindValue="name"
-                id="comparison_category"
-              ></pry-select>
-            </div>
-          </ng-container>
-          <ng-container *ngIf="schemes">
-            <label
-              class="a-label"
-              for="chart_seriesScheme_radar"
-              [title]="'@pry.widget.chart.seriesSchemeAlt' | i18n"
-              >{{ '@pry.widget.chart.seriesScheme' | i18n }}</label
-            >
-            <pry-select
-              (ngModelChange)="changeSeriesScheme($event)"
-              [ngModel]="optionsCopy.series?.scheme!"
-              [items]="schemes"
-              id="chart_seriesScheme_radar"
-            ></pry-select>
-          </ng-container>
-        </div>
-      </ng-container>
-
-      <ng-container *ngIf="optionsCopy?.type === MarkType.CIRCLE_PACK && optionsCopy.packing !== undefined">
-        <div class="o-settings__popup__content__fields -condensed">
-          <div class="m-form-label-field">
-            <label class="a-label" for="chart_circle_id">{{ '@pry.widget.chart.circle.id' | i18n }}</label>
-            <pry-select
-              (ngModelChange)="trigger(); proposeTitle()"
-              [(ngModel)]="optionsCopy.packing.id"
-              [items]="variableAttributes$ | async"
-              bindLabel="name"
-              bindValue="name"
-              id="chart_circle_id"
-            ></pry-select>
-          </div>
-
-          <div class="m-form-label-field">
-            <label class="a-label" for="chart_circle_pid">{{ '@pry.widget.chart.circle.pid' | i18n }}</label>
-            <pry-select
-              (ngModelChange)="trigger(); proposeTitle()"
-              [(ngModel)]="optionsCopy.packing.parentId"
-              [items]="variableAttributes$ | async"
-              bindLabel="name"
-              bindValue="name"
-              id="chart_circle_pid"
-            ></pry-select>
-          </div>
-
-          <div class="m-form-label-field">
-            <label class="a-label" for="chart_circle_field">{{ '@pry.widget.chart.circle.field' | i18n }}</label>
-            <pry-select
-              (ngModelChange)="trigger(); proposeTitle()"
-              [(ngModel)]="optionsCopy.packing.packField"
-              [items]="numericProperties$ | async"
-              bindLabel="name"
-              bindValue="name"
-              id="chart_circle_field"
-            ></pry-select>
-          </div>
-
-          <div class="m-form-label-field">
-            <label class="a-label" for="chart_circle_tooltip">{{ '@pry.widget.chart.circle.tooltip' | i18n }}</label>
-            <pry-select
-              (ngModelChange)="trigger(); proposeTitle()"
-              [(ngModel)]="optionsCopy.packing.tooltip"
-              [items]="variableAttributes$ | async"
-              bindLabel="name"
-              bindValue="name"
-              id="chart_circle_tooltip"
-            ></pry-select>
-          </div>
-        </div>
-      </ng-container>
-
-      <div class="o-settings__popup__content__fields -condensed">
-        <pry-checkbox (ngModelChange)="toggleSpecToMerge($event)" [ngModel]="!!optionsCopy.specToMerge"
-          >{{ '@pry.widget.chart.moreOptions' | i18n }}
-        </pry-checkbox>
-
-        <ng-container *ngIf="!!optionsCopy.specToMerge">
-          <textarea
-            [ngModel]="advancedEdit"
-            (focusout)="updateAdvancedEdit($event)"
-            class="o-settings__popup__content__area"
-            [class.-invalid]="invalidJson"
-          ></textarea>
-        </ng-container>
-      </div>
-    </pry-settings>
-  </pry-widget-header>
-  <ng-container *ngIf="isChartValid$ | async">
-    <div
-      #vega
+        </pry-settings>
+      </pry-widget-header>
+    }
+    @if (isChartValid$ | async) {
+      <div
+        #vega
       [style.height.px]="
         ((widgetSize$ | async)?.height ?? 0) - ((displayHeader$ | async) ? 1 : 0) * WIDGET_HEADER_HEIGHT
       "
-      [style.width.px]="(widgetSize$ | async)?.width"
-    ></div>
-  </ng-container>
+        [style.width.px]="(widgetSize$ | async)?.width"
+      ></div>
+    }
 
-  <ng-container *ngIf="!(isChartValid$ | async)">
-    <div class="o-widget__choose-parameters">
-      <p class="a-p">
-        {{ '@pry.widget.chart.chooseParameters' | i18n }}
-      </p>
-      <button type="button" (click)="openSettings()" class="a-btn a-btn--primary">
-        <pry-icon [height]="20" [width]="20" iconSvg="control"></pry-icon>
-        <span>{{ '@pry.widget.settings.title' | i18n }}</span>
-      </button>
-    </div>
-  </ng-container>
-</div>
+    @if (!(isChartValid$ | async)) {
+      <div class="o-widget__choose-parameters">
+        <p class="a-p">
+          {{ '@pry.widget.chart.chooseParameters' | i18n }}
+        </p>
+        <button type="button" (click)="openSettings()" class="a-btn a-btn--primary">
+          <pry-icon [height]="20" [width]="20" iconSvg="control"></pry-icon>
+          <span>{{ '@pry.widget.settings.title' | i18n }}</span>
+        </button>
+      </div>
+    }
+  </div>

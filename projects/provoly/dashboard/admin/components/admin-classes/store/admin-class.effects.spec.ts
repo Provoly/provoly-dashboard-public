@@ -14,7 +14,7 @@ import { AdminClassEffects } from './admin-class.effects';
 import { AdminClassState, initialClassState } from './admin-class.reducer';
 
 const buildState = (state: Partial<AdminClassState>) =>
-  Object.assign({}, { '@pry/admin': JSON.parse(JSON.stringify({ ...initialClassState, ...state })) });
+  Object.assign({}, { '@pry/admin': structuredClone({ ...initialClassState, ...state }) });
 
 describe('ClassesEffects', () => {
   let actions$: Observable<any>;

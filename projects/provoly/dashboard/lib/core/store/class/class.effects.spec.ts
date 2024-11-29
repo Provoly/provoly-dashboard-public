@@ -10,7 +10,7 @@ import { classesFeatureKey, ClassState, initialClassState } from './class.reduce
 import { ClassService } from './class.service';
 
 const buildState = (state: Partial<ClassState>) =>
-  Object.assign({}, { [classesFeatureKey]: JSON.parse(JSON.stringify({ ...initialClassState, ...state })) });
+  Object.assign({}, { [classesFeatureKey]: structuredClone({ ...initialClassState, ...state }) });
 
 describe('ClassEffects', () => {
   let actions$: Observable<any>;

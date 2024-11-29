@@ -1,4 +1,6 @@
-<div *ngIf="currentPredicate$ | async as currentPred" class="o-base-container">
-  <h1 class="a-h1">{{ '@pry.admin.predicates.edit' | i18n }}</h1>
-  <pry-admin-predicates-form [currentPred]="currentPred"></pry-admin-predicates-form>
-</div>
+@if (currentPredicate$ | async; as currentPred) {
+  <div class="o-base-container">
+    <h1 class="a-h1">{{ '@pry.admin.predicates.edit' | i18n }}</h1>
+    <pry-admin-predicates-form [currentPred]="currentPred"></pry-admin-predicates-form>
+  </div>
+}

@@ -1,8 +1,9 @@
-<pry-form-metadata
-  *ngIf="metadata$ | async as metadata"
-  [metadata]="metadata"
-  (submitMetadata$)="submit($event)"
-  [titleForm]="'@pry.admin.user.edit' | i18n"
-  [isMetaUser]="true"
->
-</pry-form-metadata>
+@if (metadata$ | async; as metadata) {
+  <pry-form-metadata
+    [metadata]="metadata"
+    (submitMetadata$)="submit($event)"
+    [titleForm]="'@pry.admin.user.edit' | i18n"
+    [isMetaUser]="true"
+    >
+  </pry-form-metadata>
+}

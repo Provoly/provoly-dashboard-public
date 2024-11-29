@@ -1,87 +1,97 @@
 <div class="o-date-picker-wrapper">
-  <div
-    class="o-date-picker"
-    *ngIf="{
-      month: currentMonth | async,
-      year: currentYear | async,
-      firstDay: firstDay | async,
-      count: dayCount | async
-    } as data"
-  >
-    <div class="o-date-picker__header">
-      <div>
-        <select
-          class="o-date-picker__header__dropdown"
-          name="months"
-          id="months"
-          [ngModel]="data.month"
-          (ngModelChange)="changeMonth($event)"
-        >
-          <option *ngFor="let month of MONTHS" [ngValue]="month" [selected]="month === data.month">
-            {{ '@pry.theme.months.' + month | i18n }}
-          </option>
-        </select>
-        <select
-          class="o-date-picker__header__dropdown"
-          name="year"
-          id="year"
-          [ngModel]="data.year"
-          (ngModelChange)="changeYear($event)"
-        >
-          <option *ngFor="let year of YEARS" [ngValue]="year" [selected]="data.year === year">
-            {{ year }}
-          </option>
-        </select>
+  @if ({
+    month: currentMonth | async,
+    year: currentYear | async,
+    firstDay: firstDay | async,
+    count: dayCount | async
+    }; as data) {
+    <div
+      class="o-date-picker"
+      >
+      <div class="o-date-picker__header">
+        <div>
+          <select
+            class="o-date-picker__header__dropdown"
+            name="months"
+            id="months"
+            [ngModel]="data.month"
+            (ngModelChange)="changeMonth($event)"
+            >
+            @for (month of MONTHS; track month) {
+              <option [ngValue]="month" [selected]="month === data.month">
+                {{ '@pry.theme.months.' + month | i18n }}
+              </option>
+            }
+          </select>
+          <select
+            class="o-date-picker__header__dropdown"
+            name="year"
+            id="year"
+            [ngModel]="data.year"
+            (ngModelChange)="changeYear($event)"
+            >
+            @for (year of YEARS; track year) {
+              <option [ngValue]="year" [selected]="data.year === year">
+                {{ year }}
+              </option>
+            }
+          </select>
+        </div>
+        <div>
+          <button
+            type="button"
+            class="a-arrow a-arrow--left"
+            (click)="goBack()"
+            [disabled]="data.year === minYear && data.month === 0"
+            [class.disabled]="disabled"
+            >
+            <pry-icon iconSvg="fleche_bas" [width]="15" [height]="15"></pry-icon>
+            <span class="u-visually-hidden">{{ '@pry.theme.previousMonth' | i18n }}</span>
+          </button>
+          <button
+            type="button"
+            class="a-arrow a-arrow--right"
+            (click)="goForward()"
+            [disabled]="data.year === maxYear && data.month === 11"
+            [class.disabled]="disabled"
+            >
+            <pry-icon iconSvg="fleche_bas" [width]="15" [height]="15"></pry-icon>
+            <span class="u-visually-hidden">{{ '@pry.theme.nextMonth' | i18n }}</span>
+          </button>
+        </div>
       </div>
-      <div>
-        <button
-          type="button"
-          class="a-arrow a-arrow--left"
-          (click)="goBack()"
-          [disabled]="data.year === minYear && data.month === 0"
-          [class.disabled]="disabled"
-        >
-          <pry-icon iconSvg="fleche_bas" [width]="15" [height]="15"></pry-icon>
-          <span class="u-visually-hidden">{{ '@pry.theme.previousMonth' | i18n }}</span>
-        </button>
-        <button
-          type="button"
-          class="a-arrow a-arrow--right"
-          (click)="goForward()"
-          [disabled]="data.year === maxYear && data.month === 11"
-          [class.disabled]="disabled"
-        >
-          <pry-icon iconSvg="fleche_bas" [width]="15" [height]="15"></pry-icon>
-          <span class="u-visually-hidden">{{ '@pry.theme.nextMonth' | i18n }}</span>
-        </button>
-      </div>
-    </div>
-
-    <ul class="o-date-picker__weekdays">
-      <li *ngFor="let weekday of WEEKDAYS" class="o-date-picker__weekdays__item">
-        <span>{{ '@pry.theme.shortWeekdays.' + weekday | i18n }}</span>
-      </li>
-    </ul>
-
-    <div class="o-date-picker__days-grid" *ngIf="data.month !== null && data.year !== null">
-      <button
-        *ngFor="let day of DAY$ | async; first as first"
-        (click)="setDateRange(day + 1); onClick()"
-        class="o-date-picker__days-grid__item"
+      <ul class="o-date-picker__weekdays">
+        @for (weekday of WEEKDAYS; track weekday) {
+          <li class="o-date-picker__weekdays__item">
+            <span>{{ '@pry.theme.shortWeekdays.' + weekday | i18n }}</span>
+          </li>
+        }
+      </ul>
+      @if (data.month !== null && data.year !== null) {
+        <div class="o-date-picker__days-grid">
+          @for (day of DAY$ | async; track day; let first = $first) {
+            <button
+              (click)="setDateRange(day + 1); onClick()"
+              class="o-date-picker__days-grid__item"
         [ngClass]="[
           roundSelection ? 'round' : '',
           first ? 'start-' + data.firstDay : '',
           day | dateRangeHighlight: data.month : data.year : dateRangeStart : dateRangeEnd
         ]"
-      >
-        <time class="a-time" [dateTime]="data.year + '-' + addLeadingZero(data.year) + '-' + addLeadingZero(day)">{{
-          day + 1
-        }}</time>
-      </button>
+              >
+              <time class="a-time" [dateTime]="data.year + '-' + addLeadingZero(data.year) + '-' + addLeadingZero(day)">{{
+                day + 1
+              }}</time>
+            </button>
+          }
+        </div>
+      }
     </div>
-  </div>
+  }
 
-  <div class="m-time-picker-wrapper" *ngIf="timePicker && !rangePicker">
-    <pry-time-picker (click)="onClick()" [ngModel]="time | async" (ngModelChange)="setTime($event)"></pry-time-picker>
-  </div>
+  @if (timePicker && !rangePicker) {
+    <div class="m-time-picker-wrapper">
+      <pry-time-picker (click)="onClick()" [ngModel]="time | async" (ngModelChange)="setTime($event)"></pry-time-picker>
+    </div>
+  }
 </div>

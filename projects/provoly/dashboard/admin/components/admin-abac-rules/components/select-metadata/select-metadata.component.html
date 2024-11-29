@@ -1,5 +1,5 @@
-<ng-container *ngFor="let metadata of metadata$ | async">
+@for (metadata of metadata$ | async; track metadata) {
   <button class="m-pry-overlay-item" (click)="onSelectMetadata(metadata.id)">
     {{ metadata.name }}
   </button>
-</ng-container>
+}

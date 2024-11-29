@@ -13,66 +13,71 @@
       [attr.aria-labelledby]="isSubmitted && form.get('name')?.invalid ? 'name-label name-error' : 'name-label'"
       [attr.aria-invalid]="isSubmitted && form.get('name')?.invalid"
       required
-    />
-    <label
-      class="a-label a-label--help -error"
-      id="name-error"
-      for="name"
-      *ngIf="isSubmitted && form.get('name')?.invalid"
-      >{{ '@pry.admin.required' | i18n }}</label
-    >
-  </div>
+      />
+    @if (isSubmitted && form.get('name')?.invalid) {
+      <label
+        class="a-label a-label--help -error"
+        id="name-error"
+        for="name"
+        >{{ '@pry.admin.required' | i18n }}</label
+        >
+      }
+    </div>
 
-  <div class="m-form-label-field -width-sm">
-    <label class="a-label" id="item-label" for="item">{{
-      '@pry.admin.metadata-rules.metadata-item.name' | i18n
-    }}</label>
-    <pry-select
-      id="item"
-      formControlName="metadataItem"
-      [items]="metadataList"
-      bindValue="id"
-      bindLabel="name"
-      [isForm]="true"
-      (ngModelChange)="selectMetadataItem($event)"
-      aria-labelledby="item-label"
-    ></pry-select>
-  </div>
+    <div class="m-form-label-field -width-sm">
+      <label class="a-label" id="item-label" for="item">{{
+        '@pry.admin.metadata-rules.metadata-item.name' | i18n
+      }}</label>
+      <pry-select
+        id="item"
+        formControlName="metadataItem"
+        [items]="metadataList"
+        bindValue="id"
+        bindLabel="name"
+        [isForm]="true"
+        (ngModelChange)="selectMetadataItem($event)"
+        aria-labelledby="item-label"
+      ></pry-select>
+    </div>
 
-  <div class="m-form-label-field -width-sm">
-    <label class="a-label" id="user-label" for="user">{{
-      '@pry.admin.metadata-rules.metadata-user.name' | i18n
-    }}</label>
-    <pry-select
-      id="user"
-      formControlName="metadataUser"
-      [items]="metadataUserListFilter"
-      bindValue="id"
-      bindLabel="name"
-      [isForm]="true"
-      (ngModelChange)="selectMetadataUser($event)"
-      aria-labelledby="user-label"
-    ></pry-select>
-  </div>
+    <div class="m-form-label-field -width-sm">
+      <label class="a-label" id="user-label" for="user">{{
+        '@pry.admin.metadata-rules.metadata-user.name' | i18n
+      }}</label>
+      <pry-select
+        id="user"
+        formControlName="metadataUser"
+        [items]="metadataUserListFilter"
+        bindValue="id"
+        bindLabel="name"
+        [isForm]="true"
+        (ngModelChange)="selectMetadataUser($event)"
+        aria-labelledby="user-label"
+      ></pry-select>
+    </div>
 
-  <label class="a-label a-label--help -error" *ngIf="isSameName">{{
-    '@pry.admin.metadata-rules.is-same-name' | i18n
-  }}</label>
-  <label class="a-label a-label--help -error" *ngIf="isSameRules">{{
-    '@pry.admin.metadata-rules.is-same-rules' | i18n
-  }}</label>
+    @if (isSameName) {
+      <label class="a-label a-label--help -error">{{
+        '@pry.admin.metadata-rules.is-same-name' | i18n
+      }}</label>
+    }
+    @if (isSameRules) {
+      <label class="a-label a-label--help -error">{{
+        '@pry.admin.metadata-rules.is-same-rules' | i18n
+      }}</label>
+    }
 
-  <div class="m-btn-group -width-sm">
-    <button
-      type="button"
-      class="a-btn a-btn--secondary"
-      (click)="goBack()"
-      [innerHTML]="'@pry.admin.cancel' | i18n"
-    ></button>
-    <button
-      class="a-btn a-btn--primary"
-      type="submit"
-      [innerHTML]="(metadataRules ? '@pry.admin.edit' : '@pry.admin.create') | i18n"
-    ></button>
-  </div>
-</form>
+    <div class="m-btn-group -width-sm">
+      <button
+        type="button"
+        class="a-btn a-btn--secondary"
+        (click)="goBack()"
+        [innerHTML]="'@pry.admin.cancel' | i18n"
+      ></button>
+      <button
+        class="a-btn a-btn--primary"
+        type="submit"
+        [innerHTML]="(metadataRules ? '@pry.admin.edit' : '@pry.admin.create') | i18n"
+      ></button>
+    </div>
+  </form>

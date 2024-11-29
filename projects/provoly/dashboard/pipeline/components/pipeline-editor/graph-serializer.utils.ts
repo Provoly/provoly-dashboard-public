@@ -10,7 +10,7 @@ export class GraphSerializerUtils {
     } as PrySerializedPipeline;
 
     if (!!lgraph) {
-      const baseLiteGraph = JSON.parse(JSON.stringify(lgraph.serialize()));
+      const baseLiteGraph = structuredClone(lgraph.serialize());
       const translated = GraphSerializerUtils.translateFromSerializedLGraphToPryModel(baseLiteGraph);
       output.nodes = translated.nodes;
       output.links = translated.links;

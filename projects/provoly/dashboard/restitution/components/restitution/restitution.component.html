@@ -8,7 +8,7 @@
     [isConsultMode]="consultMode"
     (lastStepCompleted)="lastStepCompleted()"
     (activeIndexChange)="activeStepIndex = $event"
-  >
+    >
     <pry-step>
       <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.configure' | i18n }}</h4>
       <div class="m-form-label-field">
@@ -22,10 +22,10 @@
           bindIcon="icon"
           bindLabel="label"
           bindValue="type"
-        >
+          >
         </pry-select>
       </div>
-      <ng-container *ngIf="form.selectedWidget !== ''">
+      @if (form.selectedWidget !== '') {
         <div class="m-form-label-field">
           <label for="graphTitle" class="a-label">{{ '@pry.restitution.graph_title' | i18n }}</label>
           <input
@@ -37,7 +37,7 @@
             [disabled]="consultMode"
             maxlength="30"
             ngDefaultControl
-          />
+            />
         </div>
         <div class="m-form-label-field">
           <label for="description" class="a-label">{{ '@pry.restitution.description' | i18n }}</label>
@@ -50,7 +50,7 @@
             [disabled]="consultMode"
             maxlength="255"
             ngDefaultControl
-          >
+            >
           </textarea>
         </div>
         <div class="m-form-label-field -width-full">
@@ -67,11 +67,11 @@
             (click)="goNext(stepper)"
             [disabled]="form.selectedWidget === '' || form.title.trim().length === 0"
             class="a-btn a-btn--primary"
-          >
+            >
             {{ '@pry.restitution.validate' | i18n }}
           </button>
         </div>
-      </ng-container>
+      }
     </pry-step>
     <pry-step>
       <h4 class="m-stepper-item__title" *stepTitle>{{ '@pry.restitution.dataSource' | i18n }}</h4>

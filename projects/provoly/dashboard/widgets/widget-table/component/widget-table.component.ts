@@ -116,7 +116,7 @@ export class WidgetTableComponent extends DataWidgetComponent {
 
     this.subscriptions.add(
       this.options$.pipe(filter((opt) => !!opt)).subscribe((options) => {
-        this.optionsCopy = { ...(JSON.parse(JSON.stringify(options)) as TableWidgetOptions) };
+        this.optionsCopy = { ...(structuredClone(options) as TableWidgetOptions) };
         this.refresh();
       })
     );

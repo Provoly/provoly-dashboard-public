@@ -1,38 +1,39 @@
 <pry-widget-tile-css></pry-widget-tile-css>
 <div class="o-widget o-widget--tile">
-  <pry-widget-header
-    [datasourceIds]="(datasourceIds$ | async) ?? []"
-    *ngIf="displayHeader$ | async"
-    [widgetIndex]="widgetIndex"
-    [manifest]="manifest"
-    (manifestModified)="manifestModified.emit($event)"
-    [headerOptions]="(displayHeader$ | async) ?? {}"
-    #header
-  >
-    <pry-settings
-      (saveTriggered)="emitManifest()"
-      (changeTitle)="changeWidgetTitle($event)"
-      [headerPresent]="displayHeader$ | async"
+  @if (displayHeader$ | async) {
+    <pry-widget-header
+      [datasourceIds]="(datasourceIds$ | async) ?? []"
       [widgetIndex]="widgetIndex"
-      [header]="header"
-      [open$]="open$"
-      class="o-settings"
-    >
-      <div class="m-form-label-field">
-        <label class="a-label" for="tile_classes">{{ '@pry.widget.tile.classes' | i18n }}</label>
-        <pry-select
-          (ngModelChange)="changeClasses($event)"
-          [items]="classes$ | async"
-          [multiple]="true"
-          [closeOnSelect]="false"
-          [ngModel]="optionsCopy.classes"
-          bindLabel="name"
-          bindValue="id"
-          id="tile_classes"
-        ></pry-select>
-      </div>
-    </pry-settings>
-  </pry-widget-header>
+      [manifest]="manifest"
+      (manifestModified)="manifestModified.emit($event)"
+      [headerOptions]="(displayHeader$ | async) ?? {}"
+      #header
+      >
+      <pry-settings
+        (saveTriggered)="emitManifest()"
+        (changeTitle)="changeWidgetTitle($event)"
+        [headerPresent]="displayHeader$ | async"
+        [widgetIndex]="widgetIndex"
+        [header]="header"
+        [open$]="open$"
+        class="o-settings"
+        >
+        <div class="m-form-label-field">
+          <label class="a-label" for="tile_classes">{{ '@pry.widget.tile.classes' | i18n }}</label>
+          <pry-select
+            (ngModelChange)="changeClasses($event)"
+            [items]="classes$ | async"
+            [multiple]="true"
+            [closeOnSelect]="false"
+            [ngModel]="optionsCopy.classes"
+            bindLabel="name"
+            bindValue="id"
+            id="tile_classes"
+          ></pry-select>
+        </div>
+      </pry-settings>
+    </pry-widget-header>
+  }
   <div class="o-widget--tile-wrapper" [style.top]="(displayHeader$ | async) ? WIDGET_HEADER_HEIGHT + 'px' : 0">
     @if ((items$ | async)?.length === 0) {
       <div class="no-result">
@@ -41,7 +42,7 @@
           src="../../../assets/svgs/pry_recherche_pas_de_resultat.svg"
           alt="{{ '@pry.widget.tile.empty' | i18n }}"
           aria-hidden="true"
-        />
+          />
         <span class="no-result__text">{{ '@pry.widget.tile.empty' | i18n }}</span>
       </div>
     }
@@ -54,30 +55,30 @@
               [width]="25"
               [src]="item | translateItemToSymbol | async"
               [alt]="item.oClass | translateId: { type: 'class', output: 'name' } | async"
-            />
+              />
             <h3 class="o-widget--tile__list__item__header__title">
               {{
-                item.oClass
-                  | translateId
-                    : {
-                        type: 'class',
-                        output: 'name'
-                      }
-                  | async
-              }}
-            </h3>
-            <pry-checkbox
-              [ngModel]="(selectedIds$ | async).includes(item.id)"
-              (click)="select($event, item)"
-            ></pry-checkbox>
-          </div>
-          <div class="o-properties">
-            <ul class="o-properties__list">
-              @for (property of (propertiesToDisplay$ | async)![item.oClass]; track property.prop) {
+              item.oClass
+              | translateId
+              : {
+              type: 'class',
+              output: 'name'
+            }
+            | async
+            }}
+          </h3>
+          <pry-checkbox
+            [ngModel]="(selectedIds$ | async).includes(item.id)"
+            (click)="select($event, item)"
+          ></pry-checkbox>
+        </div>
+        <div class="o-properties">
+          <ul class="o-properties__list">
+            @for (property of (propertiesToDisplay$ | async)![item.oClass]; track property.prop) {
+              @for (value of getValue(item, property.prop); track value; let i = $index; let c = $count) {
                 <li
-                  *ngFor="let value of getValue(item, property.prop); let i = index; let c = count"
                   class="o-properties__list__item"
-                >
+                  >
                   @if (i === 0) {
                     <p class="o-properties__list__item__label">{{ property.label }}:</p>
                   }
@@ -95,25 +96,26 @@
                   }
                 </li>
               }
-            </ul>
-          </div>
-          <div (click)="toggleMap(index, item)" class="o-widget--tile__list__item__footer">
-            <button
-              type="button"
-              class="a-btn a-btn--icon-text -link-like"
-              aria-controls="tile-map-xxx"
-              aria-expanded="false"
+            }
+          </ul>
+        </div>
+        <div (click)="toggleMap(index, item)" class="o-widget--tile__list__item__footer">
+          <button
+            type="button"
+            class="a-btn a-btn--icon-text -link-like"
+            aria-controls="tile-map-xxx"
+            aria-expanded="false"
             >
-              {{ '@pry.widget.tile.map' | i18n }}
-            </button>
+            {{ '@pry.widget.tile.map' | i18n }}
+          </button>
+        </div>
+        @if (maps[index]) {
+          <div class="o-widget--tile__list__item__map" id="tile-map-xxx">
+            <pry-widget-map [staticManifest]="mapManifest" [staticResultSet]="maps[index]!"></pry-widget-map>
           </div>
-          @if (maps[index]) {
-            <div class="o-widget--tile__list__item__map" id="tile-map-xxx">
-              <pry-widget-map [staticManifest]="mapManifest" [staticResultSet]="maps[index]!"></pry-widget-map>
-            </div>
-          }
-        </li>
-      }
-    </ul>
-  </div>
+        }
+      </li>
+    }
+  </ul>
+</div>
 </div>

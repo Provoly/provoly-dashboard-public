@@ -6,9 +6,9 @@ const arrayOf = (item: any, num: number) => {
 };
 
 export const createPlacedWidgetCopy = (widget: WidgetManifest, position: WidgetLayout) => {
-  const tmp = JSON.parse(JSON.stringify(widget));
+  const tmp = structuredClone(widget) as WidgetManifest;
   if (!tmp.layout) {
-    tmp.layout = {};
+    tmp.layout = {} as WidgetManifest['layout'];
   }
   tmp.layout.x = position.x;
   tmp.layout.y = position.y;

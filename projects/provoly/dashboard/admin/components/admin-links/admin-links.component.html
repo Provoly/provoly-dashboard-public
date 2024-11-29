@@ -6,13 +6,13 @@
     prySortActive="name"
     prySortDirection="asc"
     (prySortChange)="sortActive = $event.active; sortDirection = $event.direction"
-  >
+    >
     <caption>
       {{
-        '@pry.admin.links.list' | i18n
+      '@pry.admin.links.list' | i18n
       }},
       {{
-        '@pry.action.sortableColumnHeader' | i18n
+      '@pry.action.sortableColumnHeader' | i18n
       }}
     </caption>
     <thead>
@@ -25,13 +25,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let link of linksExtended$ | async | prySortData: sortActive : sortDirection">
-        <td>{{ link.classSource }}</td>
-        <td>{{ link.attributeSource }}</td>
-        <td>{{ link.classDestination }}</td>
-        <td>{{ link.attributeDestination }}</td>
-        <td>{{ link.relationType }}</td>
-      </tr>
+      @for (link of linksExtended$ | async | prySortData: sortActive : sortDirection; track link) {
+        <tr>
+          <td>{{ link.classSource }}</td>
+          <td>{{ link.attributeSource }}</td>
+          <td>{{ link.classDestination }}</td>
+          <td>{{ link.attributeDestination }}</td>
+          <td>{{ link.relationType }}</td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>

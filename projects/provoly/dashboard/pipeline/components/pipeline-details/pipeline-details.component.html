@@ -4,17 +4,19 @@
     type="button"
     [disabled]="!(isSaved$ | async) || !pipeline.active"
     (click)="executeConfirm.emit()"
-  >
+    >
     {{ '@pry.pipeline.execute' | i18n }}
   </button>
   <button class="a-btn a-btn--secondary a-btn--icon-text" type="button" (click)="goToList.emit()">
     {{ '@pry.pipeline.goBack' | i18n }}
   </button>
-  <div class="" *ngIf="isSaved$ | async">
-    <pry-toggle [ngModel]="pipeline.active" (ngModelChange)="toggleActivation()" dir="ltr" mode="action">{{
-      '@pry.pipeline.activated' | i18n
-    }}</pry-toggle>
-  </div>
+  @if (isSaved$ | async) {
+    <div class="">
+      <pry-toggle [ngModel]="pipeline.active" (ngModelChange)="toggleActivation()" dir="ltr" mode="action">{{
+        '@pry.pipeline.activated' | i18n
+      }}</pry-toggle>
+    </div>
+  }
 </div>
 <div class="o-pipeline-layout__details">
   <h2>{{ '@pry.pipeline.details.transformation' | i18n }} {{ pipeline.title }}</h2>
@@ -22,41 +24,47 @@
     <form id="detailForm" [formGroup]="form" (ngSubmit)="save()">
       <label for="title" class="a-label">{{ '@pry.pipeline.details.title' | i18n }}</label>
       <input type="text" id="title" name="title" class="a-form-field" formControlName="title" />
-      <label
-        for="title"
-        *ngIf="form.get('title')?.touched && form.get('title')?.hasError('required')"
-        class="a-label a-label--help -error"
-      >
-        {{ '@pry.pipeline.details.required' | i18n }}
-      </label>
-      <label for="title" *ngIf="form.get('title')?.hasError('maxlength')" class="a-label a-label--help -error">
-        {{ '@pry.pipeline.details.maxLength' | i18n: { len: '30' } }}
-      </label>
+      @if (form.get('title')?.touched && form.get('title')?.hasError('required')) {
+        <label
+          for="title"
+          class="a-label a-label--help -error"
+          >
+          {{ '@pry.pipeline.details.required' | i18n }}
+        </label>
+      }
+      @if (form.get('title')?.hasError('maxlength')) {
+        <label for="title" class="a-label a-label--help -error">
+          {{ '@pry.pipeline.details.maxLength' | i18n: { len: '30' } }}
+        </label>
+      }
       <label for="description" class="a-label">{{ '@pry.pipeline.details.description' | i18n }}</label>
       <textarea id="description" name="description" class="a-form-field" formControlName="description"></textarea>
-      <label
-        for="description"
-        *ngIf="form.get('description')?.hasError('maxlength')"
-        class="a-label a-label--help -error"
-      >
-        {{ '@pry.pipeline.details.maxLength' | i18n: { len: '200' } }}
-      </label>
+      @if (form.get('description')?.hasError('maxlength')) {
+        <label
+          for="description"
+          class="a-label a-label--help -error"
+          >
+          {{ '@pry.pipeline.details.maxLength' | i18n: { len: '200' } }}
+        </label>
+      }
     </form>
     <div>
       <h4 class="a-h4">
         {{ '@pry.pipeline.details.creation_date' | i18n }} :
         <span class="property-value"> {{ pipeline.creationDate | sinceDate }}</span>
       </h4>
-      <div *ngIf="pipeline.lastJobExecution">
-        <h4 class="a-h4">
-          {{ '@pry.pipeline.details.execution_status' | i18n }} :
-          <span class="property-value"> {{ '@pry.pipeline.status.' + pipeline.lastJobExecution.status | i18n }}</span>
-        </h4>
-        <h4 class="a-h4">
-          {{ '@pry.pipeline.details.last_execution_date' | i18n }} :
-          <span class="property-value"> {{ pipeline.lastJobExecution.executionDate | sinceDate }}</span>
-        </h4>
-      </div>
+      @if (pipeline.lastJobExecution) {
+        <div>
+          <h4 class="a-h4">
+            {{ '@pry.pipeline.details.execution_status' | i18n }} :
+            <span class="property-value"> {{ '@pry.pipeline.status.' + pipeline.lastJobExecution.status | i18n }}</span>
+          </h4>
+          <h4 class="a-h4">
+            {{ '@pry.pipeline.details.last_execution_date' | i18n }} :
+            <span class="property-value"> {{ pipeline.lastJobExecution.executionDate | sinceDate }}</span>
+          </h4>
+        </div>
+      }
     </div>
   </div>
 </div>
@@ -66,7 +74,7 @@
     form="detailForm"
     [disabled]="form.invalid || (isSavingDisabled$ | async)"
     class="a-btn a-btn--primary a-btn--icon-text"
-  >
+    >
     {{ '@pry.pipeline.save' | i18n }}
   </button>
   <button (click)="openEditor()" [disabled]="form.invalid" class="a-btn a-btn--secondary">

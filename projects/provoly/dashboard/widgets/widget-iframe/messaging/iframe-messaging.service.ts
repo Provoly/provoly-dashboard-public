@@ -15,7 +15,7 @@ export class IframeMessagingService {
 
   post(target: Window, message: any, origin?: string) {
     const msg = {
-      data: JSON.parse(JSON.stringify(message)),
+      data: structuredClone(message),
       source: '@pry'
     };
     if (!!target) {

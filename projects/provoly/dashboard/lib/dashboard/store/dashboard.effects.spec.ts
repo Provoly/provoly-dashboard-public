@@ -30,7 +30,7 @@ import { PryTitleService } from './title.service';
 import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
 
 const buildState = (state: Partial<DashboardState>) =>
-  Object.assign({}, { '@pry/dashboard': JSON.parse(JSON.stringify({ ...dashboardInitialState, ...state })) });
+  Object.assign({}, { '@pry/dashboard': structuredClone({ ...dashboardInitialState, ...state }) });
 
 const type = 'placeholder';
 const layout = { x: 1, y: 1, width: 1, height: 1 };

@@ -37,7 +37,7 @@
             <span class="a-label">{{ '@pry.dataset.version.productionDate' | i18n }}</span>
             <span>{{
               (selectedVersion?.productionDate | date: 'dd-MM-yyyy, HH:mm') ??
-                ('@pry.dataset.version.notProvided' | i18n)
+              ('@pry.dataset.version.notProvided' | i18n)
             }}</span>
           </div>
           <div>
@@ -58,7 +58,7 @@
             role="button"
             class="a-btn a-btn--primary u-self-end"
             (click)="editVersion()"
-          >
+            >
             {{ '@pry.action.edit' | i18n }}
           </button>
         } @else {
@@ -83,7 +83,7 @@
         <span class="a-label">{{ '@pry.dataset.version.productionDate' | i18n }}</span>
         <span>{{
           (dataset.activeVersion.productionDate | date: 'dd-MM-yyyy, HH:mm') ??
-            ('@pry.dataset.version.notProvided' | i18n)
+          ('@pry.dataset.version.notProvided' | i18n)
         }}</span>
       </div>
       <div>
@@ -130,10 +130,10 @@
     <table class="a-table">
       <caption>
         {{
-          '@pry.admin.dataset.title' | i18n
+        '@pry.admin.dataset.title' | i18n
         }},
         {{
-          '@pry.action.sortableColumnHeader' | i18n
+        '@pry.action.sortableColumnHeader' | i18n
         }}
       </caption>
       <thead>
@@ -147,116 +147,113 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          *ngFor="let version of datasetVersions$ | async"
-          (click)="togglePanel(version)"
-          [class.-selected]="version.id === selectedVersion?.id"
-        >
-          <td>
-            {{ version.version }}
-            <pry-icon
-              *ngIf="(currentDataset$ | async)?.activeVersion?.id === version.id"
-              iconSvg="check"
-              class="check"
-            ></pry-icon>
-          </td>
-          <td>
-            <div
-              class="a-tooltip"
-              [attr.data-tooltip]="version.lastModified | sinceDate: { onlyLocale: true }"
-              data-tooltip-position="right"
+        @for (version of datasetVersions$ | async; track version) {
+          <tr
+            (click)="togglePanel(version)"
+            [class.-selected]="version.id === selectedVersion?.id"
             >
-              {{ version.lastModified | sinceDate: { onlyLocale: true } }}
-            </div>
-          </td>
-          <td>
-            {{
+            <td>
+              {{ version.version }}
+              @if ((currentDataset$ | async)?.activeVersion?.id === version.id) {
+                <pry-icon
+                  iconSvg="check"
+                  class="check"
+                ></pry-icon>
+              }
+            </td>
+            <td>
+              <div
+                class="a-tooltip"
+                [attr.data-tooltip]="version.lastModified | sinceDate: { onlyLocale: true }"
+                data-tooltip-position="right"
+                >
+                {{ version.lastModified | sinceDate: { onlyLocale: true } }}
+              </div>
+            </td>
+            <td>
+              {{
               (version.id === (currentDataset$ | async)?.activeVersion?.id
-                ? '@pry.dataset.version.state.currentlyActive'
-                : '@pry.dataset.version.state.' + version.state
+              ? '@pry.dataset.version.state.currentlyActive'
+              : '@pry.dataset.version.state.' + version.state
               ) | i18n
-            }}
-            <div
-              *ngIf="version.state !== 'DELETING'"
-              class="m-info-icon a-tooltip -tooltip-width-md"
+              }}
+              @if (version.state !== 'DELETING') {
+                <div
+                  class="m-info-icon a-tooltip -tooltip-width-md"
               [attr.data-tooltip]="
                 '@pry.dataset.tooltip.' +
                   getVersionTooltipContent(version, (currentDataset$ | async)?.activeVersion?.id) | i18n
               "
-              data-tooltip-position="right"
-            >
-              <span>i</span>
-            </div>
-          </td>
-          <td>
-            <ng-container
-              *ngIf="
+                  data-tooltip-position="right"
+                  >
+                  <span>i</span>
+                </div>
+              }
+            </td>
+            <td>
+              @if (
                 version.state !== 'LOADING' &&
                 version.state !== 'INDEXING' &&
                 version.state !== 'ERROR' &&
                 version.state !== 'DELETING'
-              "
-            >
-              <ng-container
-                *ngIf="(canModify$ | async) && (version.state === 'ACTIVE' || version.state === 'INACTIVE')"
-              >
-                <ng-container *pryAccess="{ module: 'dashboard', page: 'list-dataset', action: 'activate' }">
-                  <button
-                    type="button"
-                    class="a-btn a-btn--primary a-btn--icon-text ng-star-inserted"
-                    (click)="handleButtonAction($event, version)"
-                  >
-                    {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
-                  </button>
-                  <ng-container *ngIf="version.state === 'ACTIVE' || version.state === 'INACTIVE'">
-                    <div
-                      class="m-info-icon a-tooltip -tooltip-width-lg"
+                ) {
+                @if ((canModify$ | async) && (version.state === 'ACTIVE' || version.state === 'INACTIVE')) {
+                  <ng-container *pryAccess="{ module: 'dashboard', page: 'list-dataset', action: 'activate' }">
+                    <button
+                      type="button"
+                      class="a-btn a-btn--primary a-btn--icon-text ng-star-inserted"
+                      (click)="handleButtonAction($event, version)"
+                      >
+                      {{ '@pry.dataset.buttonAction.' + version.state | i18n }}
+                    </button>
+                    @if (version.state === 'ACTIVE' || version.state === 'INACTIVE') {
+                      <div
+                        class="m-info-icon a-tooltip -tooltip-width-lg"
                       [attr.data-tooltip]="
                         (version.state === 'ACTIVE'
                           ? '@pry.dataset.tooltip.invalidateButton'
                           : '@pry.dataset.tooltip.validateButton'
                         ) | i18n
                       "
-                      data-tooltip-position="right"
-                    >
-                      <span>i</span>
-                    </div>
+                        data-tooltip-position="right"
+                        >
+                        <span>i</span>
+                      </div>
+                    }
                   </ng-container>
-                </ng-container>
-              </ng-container>
-            </ng-container>
-          </td>
-          <td>
-            <ng-container *ngIf="version.hasWarnings || version.state === 'ERROR'">
-              <button
-                type="button"
-                class="a-btn a-btn--secondary a-btn--icon-text ng-star-inserted"
-                (click)="consultErrors($event, version)"
-              >
-                {{
+                }
+              }
+            </td>
+            <td>
+              @if (version.hasWarnings || version.state === 'ERROR') {
+                <button
+                  type="button"
+                  class="a-btn a-btn--secondary a-btn--icon-text ng-star-inserted"
+                  (click)="consultErrors($event, version)"
+                  >
+                  {{
                   (version.state === 'ERROR' ? '@pry.dataset.buttonAction.ERROR' : '@pry.dataset.buttonAction.WARNING')
-                    | i18n
-                }}
-              </button>
-            </ng-container>
-          </td>
-          <td>
-            <ng-container
-              *ngIf="
+                  | i18n
+                  }}
+                </button>
+              }
+            </td>
+            <td>
+              @if (
                 (canModify$ | async) &&
                 (version.state === 'ACTIVE' || version.state === 'ERROR' || version.state === 'INACTIVE')
-              "
-            >
-              <button
-                type="button"
-                class="a-btn a-btn--secondary a-btn--icon-text ng-star-inserted"
-                (click)="askDelete(version, $event)"
-              >
-                {{ '@pry.dataset.buttonAction.delete' | i18n }}
-              </button>
-            </ng-container>
-          </td>
-        </tr>
+                ) {
+                <button
+                  type="button"
+                  class="a-btn a-btn--secondary a-btn--icon-text ng-star-inserted"
+                  (click)="askDelete(version, $event)"
+                  >
+                  {{ '@pry.dataset.buttonAction.delete' | i18n }}
+                </button>
+              }
+            </td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>

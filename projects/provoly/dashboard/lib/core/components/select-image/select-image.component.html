@@ -14,13 +14,17 @@
 </div>
 
 <ng-template #template>
-  <ul class="overlay overlay--icons" *ngIf="images$ | async as images">
-    <ng-container *ngIf="!(loading$ | async)?.loading">
-      <li class="overlay__point" *ngFor="let image of images">
-        <button class="a-btn a-btn--icon-only" type="button" (click)="changeForImage(image.image)">
-          <img [alt]="image.image" [height]="size" [width]="size" [src]="image.image | getSecuredImage | async" />
-        </button>
-      </li>
-    </ng-container>
-  </ul>
+  @if (images$ | async; as images) {
+    <ul class="overlay overlay--icons">
+      @if (!(loading$ | async)?.loading) {
+        @for (image of images; track image) {
+          <li class="overlay__point">
+            <button class="a-btn a-btn--icon-only" type="button" (click)="changeForImage(image.image)">
+              <img [alt]="image.image" [height]="size" [width]="size" [src]="image.image | getSecuredImage | async" />
+            </button>
+          </li>
+        }
+      }
+    </ul>
+  }
 </ng-template>

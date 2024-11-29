@@ -13,7 +13,7 @@ import { AdminMetadataUserState, initialAdminUserState } from './admin-metadata-
 import { AdminMetadataUserSelectors } from './admin-metadata-user.selector';
 
 const buildState = (state: Partial<AdminMetadataUserState>) =>
-  Object.assign({}, { '@pry/admin': JSON.parse(JSON.stringify({ ...initialAdminUserState, ...state })) });
+  Object.assign({}, { '@pry/admin': structuredClone({ ...initialAdminUserState, ...state }) });
 
 describe('MetadataEffects', () => {
   let actions$: Observable<any>;

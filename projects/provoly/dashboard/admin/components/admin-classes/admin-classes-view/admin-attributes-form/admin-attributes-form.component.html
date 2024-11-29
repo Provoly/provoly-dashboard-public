@@ -2,51 +2,70 @@
   <div class="m-form-label-field -width-sm">
     <label class="a-label" for="attr_technicalName">{{ '@pry.admin.classes.attributes.technicalName' | i18n }}</label>
     <input id="attr_technicalName" type="text" class="a-form-field" formControlName="technicalName" required />
-    <label class="a-label a-label--help -error" for="attr_technicalName" *ngIf="technicalNameAlreadyExists$ | async">{{
-      '@pry.admin.exists' | i18n
-    }}</label>
-    <div *ngIf="attrForm.get('technicalName')?.invalid">
-      <div *ngIf="attrForm.get('technicalName')?.dirty && attrForm.get('technicalName')?.hasError('required')">
-        <label class="a-label a-label--help -error" for="attr_technicalName">{{ '@pry.admin.required' | i18n }}</label>
-      </div>
-      <div *ngIf="attrForm.get('technicalName')?.hasError('minlength')">
-        <label class="a-label a-label--help -error" for="attr_technicalName">{{
-          '@pry.admin.minLength' | i18n: { len: 2 }
-        }}</label>
-      </div>
-      <div *ngIf="attrForm.get('technicalName')?.hasError('maxlength')">
-        <label class="a-label a-label--help -error" for="attr_technicalName">{{
-          '@pry.admin.maxLength' | i18n: { len: 100 }
-        }}</label>
-      </div>
-      <div
-        *ngIf="
+    @if (technicalNameAlreadyExists$ | async) {
+      <label class="a-label a-label--help -error" for="attr_technicalName">{{
+        '@pry.admin.exists' | i18n
+      }}</label>
+    }
+    @if (attrForm.get('technicalName')?.invalid) {
+      <div>
+        @if (attrForm.get('technicalName')?.dirty && attrForm.get('technicalName')?.hasError('required')) {
+          <div>
+            <label class="a-label a-label--help -error" for="attr_technicalName">{{ '@pry.admin.required' | i18n }}</label>
+          </div>
+        }
+        @if (attrForm.get('technicalName')?.hasError('minlength')) {
+          <div>
+            <label class="a-label a-label--help -error" for="attr_technicalName">{{
+              '@pry.admin.minLength' | i18n: { len: 2 }
+            }}</label>
+          </div>
+        }
+        @if (attrForm.get('technicalName')?.hasError('maxlength')) {
+          <div>
+            <label class="a-label a-label--help -error" for="attr_technicalName">{{
+              '@pry.admin.maxLength' | i18n: { len: 100 }
+            }}</label>
+          </div>
+        }
+        @if (
           attrForm.get('technicalName')?.hasError('whitespace') && !attrForm.get('technicalName')?.hasError('minlength')
-        "
-      >
-        <label class="a-label a-label--help -error" for="attr_technicalName">{{
-          '@pry.admin.noWhitespace' | i18n
-        }}</label>
+          ) {
+          <div
+            >
+            <label class="a-label a-label--help -error" for="attr_technicalName">{{
+              '@pry.admin.noWhitespace' | i18n
+            }}</label>
+          </div>
+        }
       </div>
-    </div>
+    }
   </div>
 
   <div class="m-form-label-field -width-sm">
     <label class="a-label" for="attr_name">{{ '@pry.admin.classes.attributes.name' | i18n }}</label>
     <input id="attr_name" type="text" class="a-form-field" formControlName="name" />
-    <label class="a-label a-label--help -error" for="attr_name" *ngIf="nameAlreadyExists$ | async">{{
-      '@pry.admin.exists' | i18n
-    }}</label>
-    <div *ngIf="attrForm.get('name')?.invalid">
-      <div *ngIf="attrForm.get('name')?.hasError('maxlength')">
-        <label class="a-label a-label--help -error" for="attr_name">{{
-          '@pry.admin.maxLength' | i18n: { len: 50 }
-        }}</label>
+    @if (nameAlreadyExists$ | async) {
+      <label class="a-label a-label--help -error" for="attr_name">{{
+        '@pry.admin.exists' | i18n
+      }}</label>
+    }
+    @if (attrForm.get('name')?.invalid) {
+      <div>
+        @if (attrForm.get('name')?.hasError('maxlength')) {
+          <div>
+            <label class="a-label a-label--help -error" for="attr_name">{{
+              '@pry.admin.maxLength' | i18n: { len: 50 }
+            }}</label>
+          </div>
+        }
+        @if (attrForm.get('name')?.hasError('whitespace')) {
+          <div>
+            <label class="a-label a-label--help -error" for="attr_name">{{ '@pry.admin.noWhitespace' | i18n }}</label>
+          </div>
+        }
       </div>
-      <div *ngIf="attrForm.get('name')?.hasError('whitespace')">
-        <label class="a-label a-label--help -error" for="attr_name">{{ '@pry.admin.noWhitespace' | i18n }}</label>
-      </div>
-    </div>
+    }
   </div>
 
   <div class="m-form-label-field -width-sm">
@@ -65,22 +84,28 @@
       <ng-template #templateOption let-item="item">
         <div class="aligned-option">
           <p>{{ item.name }}</p>
-          <div class="a-chip" *ngIf="item.crs">{{ item.crs }}</div>
+          @if (item.crs) {
+            <div class="a-chip">{{ item.crs }}</div>
+          }
         </div>
       </ng-template>
       <div
         class="m-info-icon a-tooltip -tooltip-width-lg u-self-center u-flex-shrink-0"
         [attr.data-tooltip]="(selectedFieldTypeDescription$ | async) ?? '' | i18n"
         data-tooltip-position="right"
-      >
+        >
         <span>i</span>
       </div>
     </div>
-    <div *ngIf="attrForm.get('field')?.invalid">
-      <div *ngIf="attrForm.get('field')?.dirty && attrForm.get('field')?.hasError('required')">
-        <label class="a-label a-label--help -error" for="type">{{ '@pry.admin.required' | i18n }}</label>
+    @if (attrForm.get('field')?.invalid) {
+      <div>
+        @if (attrForm.get('field')?.dirty && attrForm.get('field')?.hasError('required')) {
+          <div>
+            <label class="a-label a-label--help -error" for="type">{{ '@pry.admin.required' | i18n }}</label>
+          </div>
+        }
       </div>
-    </div>
+    }
   </div>
 
   <div class="m-form-label-field -width-sm">

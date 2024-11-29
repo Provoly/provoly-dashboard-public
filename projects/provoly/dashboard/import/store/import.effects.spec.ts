@@ -12,7 +12,7 @@ import { ImportService } from './import.service';
 import { mockImportData } from '@provoly/dashboard/mock/data/mockImport';
 
 const buildState = (state: Partial<ImportState>) =>
-  Object.assign({}, { '@pry/import': JSON.parse(JSON.stringify({ ...initialImportState, ...state })) });
+  Object.assign({}, { '@pry/import': structuredClone({ ...initialImportState, ...state }) });
 
 describe('ImportEffects', () => {
   let actions$: Observable<any>;
