@@ -870,7 +870,7 @@ export class DashboardEffects {
             coordinates: action.coordinates,
             properties: Object.keys(feature.properties)
               .map((property) => ({ key: property, value: feature.properties[property] }))
-              .filter((prop) => !!prop.value)
+              .filter((prop) => prop.value !== undefined)
           })),
           componentId: action.componentId
         })
