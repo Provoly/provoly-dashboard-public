@@ -55,7 +55,7 @@ describe('Item Effects', () => {
     let item: Item = { id: 'id', oClass: 'test', attributes: {} };
 
     actions$ = hot('a', {
-      a: ItemActions.create({ item: item })
+      a: ItemActions.create({ item: item, datasetVersionId: 'my-ds-v-id' })
     });
 
     const expected$ = hot('(ab)', {
@@ -78,7 +78,7 @@ describe('Item Effects', () => {
     let item: Item = { id: 'id', oClass: 'test', attributes: {} };
 
     actions$ = hot('a', {
-      a: ItemActions.create({ item: item })
+      a: ItemActions.create({ item: item, datasetVersionId: 'my-ds-v-id' })
     });
 
     const expected$ = hot('(a)', {

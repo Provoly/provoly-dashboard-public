@@ -38,7 +38,7 @@ describe('Item Service', () => {
     let response!: Item;
     service.get('test-id').subscribe((item) => (response = item));
 
-    const req = httpTestingController.expectOne('data/items/test-id');
+    const req = httpTestingController.expectOne('data/items/id/test-id');
     req.flush(item);
 
     expect(item.id).toBe('test-id');
@@ -60,9 +60,9 @@ describe('Item Service', () => {
 
   it('should create an item', () => {
     let response!: Item[];
-    service.create(item).subscribe((items) => (response = items));
+    service.create(item, 'my-datasource-version-id').subscribe((items) => (response = items));
 
-    const req = httpTestingController.expectOne('data/items');
+    const req = httpTestingController.expectOne('data/items?updateMode=MERGE');
     req.flush([item]);
 
     expect(response[0].oClass).toBe('test-class');

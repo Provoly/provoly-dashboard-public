@@ -4,12 +4,14 @@
     <div class="o-container__filters">
       <div class="o-container__filter-container" (click)="openSelect()">
         @for (filterDescription of manifest.filters; track filterDescription.id) {
-          <pry-filter-instanciator
-            [filter]="filterDescription"
-            [applyFilter$]="apply$"
-            (pressedEnter)="enterPressed()"
-            (cleared)="cleared()"
-          ></pry-filter-instanciator>
+          @if (filterDescription.type !== 'invisible') {
+            <pry-filter-instanciator
+              [filter]="filterDescription"
+              [applyFilter$]="apply$"
+              (pressedEnter)="enterPressed()"
+              (cleared)="cleared()"
+            ></pry-filter-instanciator>
+          }
         }
       </div>
       <div class="o-container__filter-actions">

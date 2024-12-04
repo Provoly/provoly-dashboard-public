@@ -16,9 +16,9 @@ export class ItemEffects {
       ofType(ItemActions.create),
       withLatestFrom(this.store.select(ContextMenuSelectors.resultSet)),
       mergeMap(([action, resultSet]) =>
-        this.service.create(action.item).pipe(
+        this.service.create(action.item, action.datasetVersionId, action.mode).pipe(
           mergeMap((items) =>
-            items
+            (items ?? (action.item ? [action.item] : []))
               .map((item) => [
                 ItemActions.createSuccess({ id: item.id }),
                 DashboardActions.addItemToResultSets({ item, resultSet })

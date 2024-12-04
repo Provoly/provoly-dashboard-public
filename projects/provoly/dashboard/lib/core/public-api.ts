@@ -18,6 +18,8 @@ export * from './store/image/image.actions';
 export * from './store/image/image.selectors';
 export * from './store/image/image.service';
 export * from './store/image/image.reducer';
+export * from './store/item/item.service';
+export * from './store/item/item.actions';
 export * from './store/search/search.actions';
 export * from './store/search/search.constants';
 export * from './store/search/search.selectors';

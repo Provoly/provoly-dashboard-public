@@ -23,7 +23,7 @@ export class ItemService {
   get(id: string): Observable<Item> {
     return this.store
       .select(ConfigSelectors.dataUrl)
-      .pipe(mergeMap((url) => this.httpClient.get<Item>(encodeURI(`${url}/items/${id}`))));
+      .pipe(mergeMap((url) => this.httpClient.get<Item>(encodeURI(`${url}/items/id/${id}`))));
   }
 
   /**
@@ -36,14 +36,15 @@ export class ItemService {
       .pipe(mergeMap((url) => this.httpClient.get<ResultSet>(encodeURI(`${url}/items/id/${id}/relations`))));
   }
 
-  /**
-   * Allows to create an item
-   * @param item
-   */
-  create(item: Item): Observable<Item[]> {
-    const toSendItem = ItemUtils.ensureItemIdHasCorrectFormat(item);
+  create(item: Item, datasetVersionId: string, mode = 'MERGE'): Observable<Item[]> {
+    const toSendItem = {
+      ...ItemUtils.ensureItemIdHasCorrectFormat(item),
+      datasetVersionId
+    };
     return this.store
       .select(ConfigSelectors.dataUrl)
-      .pipe(mergeMap((url) => this.httpClient.post<Item[]>(`${url}/items`, [toSendItem])));
+      .pipe(
+        mergeMap((url) => this.httpClient.post<Item[]>(`${url}/items`, [toSendItem], { params: { updateMode: mode } }))
+      );
   }
 }

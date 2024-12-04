@@ -2,7 +2,7 @@
 
 import { NamedQueryTypes } from '../store/data-source/named-query-types.model';
 
-export type ConditionType = 'AND' | 'OR' | 'ATTRIBUTE';
+export type ConditionType = 'AND' | 'OR' | 'ATTRIBUTE' | 'METADATA';
 export type ValueDataType = string | number;
 export type OperatorType =
   | 'EQUALS'
@@ -12,12 +12,15 @@ export type OperatorType =
   | 'GREATER_THAN'
   | 'LOWER_THAN'
   | 'INSIDE'
-  | 'OUTSIDE';
+  | 'OUTSIDE'
+  | 'IN';
 
 export interface Condition {
   type: ConditionType;
   attribute?: string;
+  metadata?: string;
   value?: ValueDataType;
+  values?: ValueDataType[];
   upperValue?: ValueDataType;
   operator?: OperatorType;
   composed?: Array<Condition>;

@@ -125,7 +125,9 @@ export class PryObjectEditionComponent extends SubscriptionnerDirective {
     };
     if (this.object) {
       this.tmpObject = ItemUtils.ensureItemIdHasCorrectFormat(this.tmpObject);
-      this.store.dispatch(ItemActions.create({ item: this.tmpObject }));
+      this.store.dispatch(
+        ItemActions.create({ item: this.tmpObject, datasetVersionId: '----TODO PROCIDE DATASET ID FROM USER ----' })
+      );
       if (this.link) {
         relation.from = [this.tmpObject.id];
         this.store.dispatch(RelationTypesActions.createRelation(relation));
@@ -262,7 +264,9 @@ export class PryObjectEditionComponent extends SubscriptionnerDirective {
     }
     if ($event === this.UPLOAD_METHOD) {
       // @ts-ignore
-      delete (this.tmpObject.attributes[attribute.technicalName] as AttributeSimpleValue).metadata[HTTP_ORIGIN_METADATA];
+      delete (this.tmpObject.attributes[attribute.technicalName] as AttributeSimpleValue).metadata[
+        HTTP_ORIGIN_METADATA
+      ];
     }
   }
 
