@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { FieldActions, FieldService, PryDialogService } from '@provoly/dashboard';
@@ -21,11 +20,10 @@ describe('FieldsEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       providers: [
         FieldsEffects,
-        provideMockActions(() => actions$),
         provideMockStore({}),
+        provideMockActions(() => actions$),
         {
           provide: PryDialogService,
           useValue: {
@@ -91,7 +89,7 @@ describe('FieldsEffects', () => {
         a: FieldsActions.saveFieldSuccess({ route: '/' })
       });
 
-      const expected$ = hot('--a-', {
+      const expected$ = hot('--(a)-', {
         a: AdminActions.routeTo({ path: '/' })
       });
       expect(effects.saveFieldSuccess$).toBeObservable(expected$);
@@ -135,7 +133,7 @@ describe('FieldsEffects', () => {
       });
 
       const expected$ = hot('a', {
-        a: FieldActions.load()
+        a: FieldActions.load({ force: true })
       });
 
       expect(effects.deleteFieldSuccess$).toBeObservable(expected$);
@@ -149,7 +147,7 @@ describe('FieldsEffects', () => {
       });
 
       const expected$ = hot('--(ab)-', {
-        a: FieldActions.load(),
+        a: FieldActions.load({ force: true }),
         b: AdminActions.selectComponentType({ componentType: null })
       });
       expect(effects.updateToolbox$).toBeObservable(expected$);

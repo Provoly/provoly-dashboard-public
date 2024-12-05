@@ -7,8 +7,7 @@ import {
   PryDialogConfirmData,
   PryDialogService
 } from '@provoly/dashboard';
-import { tap } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, tap } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminService } from '../../../store/admin.service';
 import { AdminClassActions } from './admin-class.actions';
@@ -19,7 +18,7 @@ export class AdminClassEffects {
     this.actions$.pipe(
       ofType(AdminClassActions.updateToolbox),
       mergeMap((action) => {
-        return [ClassActions.load(), AdminActions.selectComponentType({ componentType: null })];
+        return [ClassActions.load({ force: true }), AdminActions.selectComponentType({ componentType: null })];
       })
     )
   );
@@ -49,8 +48,8 @@ export class AdminClassEffects {
   saveInterClass$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AdminClassActions.saveInterClass),
-      map((action) => {
-        return AdminActions.routeTo({ path: action.route });
+      mergeMap((action) => {
+        return [AdminActions.routeTo({ path: action.route }), ClassActions.load({ force: true })];
       })
     )
   );
@@ -58,8 +57,8 @@ export class AdminClassEffects {
   saveClassSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AdminClassActions.saveClassSuccess),
-      map((action) => {
-        return AdminActions.routeTo({ path: action.route });
+      mergeMap((action) => {
+        return [AdminActions.routeTo({ path: action.route }), ClassActions.load({ force: true })];
       })
     )
   );
@@ -79,8 +78,8 @@ export class AdminClassEffects {
   saveAttributeForClassSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AdminClassActions.saveAttributeForClassSuccess),
-      map((action) => {
-        return AdminActions.routeTo({ path: action.route });
+      mergeMap((action) => {
+        return [AdminActions.routeTo({ path: action.route }), ClassActions.load({ force: true })];
       })
     )
   );
@@ -114,7 +113,8 @@ export class AdminClassEffects {
                 actionAccess: 'write'
               }
             ]
-          })
+          }),
+          ClassActions.load({ force: true })
         ];
       })
     )
@@ -160,7 +160,8 @@ export class AdminClassEffects {
                 actionAccess: 'write'
               }
             ]
-          })
+          }),
+          ClassActions.load({ force: true })
         ];
       })
     )
@@ -182,7 +183,7 @@ export class AdminClassEffects {
     this.actions$.pipe(
       ofType(AdminClassActions.saveCategorySuccess),
       map((action) => {
-        return CategoryActions.load();
+        return CategoryActions.load({ force: true });
       })
     )
   );

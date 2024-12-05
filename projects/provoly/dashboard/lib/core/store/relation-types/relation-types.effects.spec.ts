@@ -120,7 +120,7 @@ describe('LinksEffects', () => {
       });
 
       const expected$ = hot('--a-', {
-        a: RelationTypesActions.load()
+        a: RelationTypesActions.load({ force: true })
       });
       expect(effects.saveRelationTypeSuccess$).toBeObservable(expected$);
     });

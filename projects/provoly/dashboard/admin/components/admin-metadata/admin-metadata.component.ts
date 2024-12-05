@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { IMetadata, PryI18nService } from '@provoly/dashboard';
 import { MetadataActions, MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter } from 'rxjs';
 import { AdminActions } from '../../store/admin.actions';
 import { IConfigHeader } from './shared/list-metadata/pry-list-metadata.component';
 

@@ -12,8 +12,7 @@ import {
 import { Store } from '@ngrx/store';
 import { DataSourceActions, PryI18nService, SubscriptionnerDirective } from '@provoly/dashboard';
 import { LGraph, LGraphCanvas, LGraphNode, LiteGraph } from 'litegraph.js';
-import { auditTime, BehaviorSubject, combineLatest, combineLatestWith, fromEvent, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { auditTime, BehaviorSubject, combineLatest, combineLatestWith, fromEvent, map, Observable } from 'rxjs';
 import {
   PipelineComponentDefinition,
   PipelineComponentFactoryService
@@ -60,8 +59,7 @@ export class PryPipelineEditorComponent extends SubscriptionnerDirective impleme
     BaseNode.store = store;
     BaseNode.check = () => this.check();
 
-    this.store.dispatch(DataSourceActions.namedQuery.load());
-    this.store.dispatch(DataSourceActions.dataset.loadDataset());
+    this.store.dispatch(DataSourceActions.load({}));
 
     this.types$ = combineLatest([pipelineComponentFactoryService.typesByCategories$, this.search$]).pipe(
       map(([typesByCategory, search]) => {

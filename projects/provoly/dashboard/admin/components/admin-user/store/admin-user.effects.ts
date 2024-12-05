@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs';
 import { AdminService } from '../../../store/admin.service';
 import { AdminUserActions } from './admin-user.action';
 
@@ -18,5 +18,8 @@ export class AdminUserEffects {
     )
   );
 
-  constructor(private actions$: Actions, private adminService: AdminService) {}
+  constructor(
+    private actions$: Actions,
+    private adminService: AdminService
+  ) {}
 }

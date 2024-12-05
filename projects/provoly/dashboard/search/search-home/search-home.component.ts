@@ -30,8 +30,17 @@ import {
   SearchActions,
   WidgetLayout
 } from '@provoly/dashboard';
-import { BehaviorSubject, combineLatest, combineLatestWith, filter, Observable, Subscription, take } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import {
+  BehaviorSubject,
+  combineLatest,
+  combineLatestWith,
+  debounceTime,
+  filter,
+  map,
+  Observable,
+  Subscription,
+  take
+} from 'rxjs';
 import { PrySaveQueryComponent } from '../components/save-query/save-query.component';
 import { SearchFulltextChange } from '../search-fulltext/search-fulltext/search-fulltext.component';
 
@@ -93,7 +102,7 @@ export class PrySearchHomeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.store.dispatch(DataSourceActions.load());
+    this.store.dispatch(DataSourceActions.load({}));
     this.namedQueryList$ = this.store.select(DataSourceSelectors.getNamedQuerySorted);
     this.namedQueriesUses$ = this.store.select(DashboardSelectors.namedQueriesUses);
     this.spottingWidget$ = combineLatest([this.namedQueriesUses$, this.spotting$]).pipe(

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminService } from '../../../store/admin.service';
 import { LinksActions } from './links.actions';

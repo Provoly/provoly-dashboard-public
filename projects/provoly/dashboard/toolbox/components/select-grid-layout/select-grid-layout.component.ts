@@ -13,7 +13,7 @@ import {
   WidgetPlacementUtils
 } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { ToolboxActionComponent } from '../../shared/toolbox-action/toolbox-action.component';
 
 @Component({

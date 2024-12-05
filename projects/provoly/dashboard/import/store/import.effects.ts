@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { PryI18nService, PrySnackbarService } from '@provoly/dashboard';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs';
 import { ImportActions } from './import.actions';
 import { ImportService } from './import.service';
 

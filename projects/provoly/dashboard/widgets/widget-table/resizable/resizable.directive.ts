@@ -1,7 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Directive, ElementRef, Inject, Output } from '@angular/core';
 import { fromEvent } from 'rxjs';
-import { distinctUntilChanged, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, takeUntil, tap } from 'rxjs';
 
 @Directive({
   selector: '[resizable]'

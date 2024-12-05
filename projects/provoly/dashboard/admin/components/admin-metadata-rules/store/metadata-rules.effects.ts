@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { MetadataRules, MetadataRulesCreate } from '@provoly/dashboard';
 import { catchError, switchMap } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminService } from '../../../store/admin.service';
 import { AdminMetadataRulesActions } from './metadata-rules.actions';

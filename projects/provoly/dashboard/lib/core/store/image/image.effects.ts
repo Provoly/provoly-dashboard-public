@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
+import { catchError, debounceTime, map, mergeMap } from 'rxjs';
 import { ImageActions } from './image.actions';
 import { ImageService } from './image.service';
 

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Class, ClassSelectors, ClassState, SearchState } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
-import { filter, switchMap, take } from 'rxjs/operators';
+import { filter, switchMap, take } from 'rxjs';
 import { SearchMonoClassActions } from '../../store/search-mono-class.actions';
 import { SearchMonoClassSelectors } from '../../store/search-mono-class.selectors';
 

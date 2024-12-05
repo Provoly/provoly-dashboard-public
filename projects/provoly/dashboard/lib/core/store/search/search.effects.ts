@@ -11,6 +11,7 @@ import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from './search.constan
 import { SearchService } from './search.service';
 import { WidgetFactoryService } from '../../../dashboard/components/widgets/widget-instanciator/widget-factory.service';
 import { WidgetManifest } from '../../model/manifest.interface';
+import { SearchSelectors } from './search.selectors';
 
 @Injectable()
 export class SearchEffects {
@@ -125,7 +126,12 @@ export class SearchEffects {
   getPossibleFilterValues$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SearchActions.getPossibleFilterValues),
-      mergeMap((action) =>
+      withLatestFrom(this.store.select(SearchSelectors.filterValues), this.store.select(DashboardSelectors.rank)),
+      filter(
+        ([action, filterValues, rank]) =>
+          (action.force || !filterValues[action.filterId] || filterValues[action.filterId].length === 0) && rank === 0
+      ),
+      mergeMap(([action]) =>
         this.searchService
           .autocomplete(action.attributes, '', action.limit)
           .pipe(map((values) => SearchActions.setPossibleFilterValues({ filterId: action.filterId, values })))

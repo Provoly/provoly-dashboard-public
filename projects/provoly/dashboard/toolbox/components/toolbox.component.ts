@@ -11,7 +11,7 @@ import {
 import { BehaviorSubject, combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { ACTIONS, ToolboxAction } from '../toolbox.model';
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { withLatestFrom } from 'rxjs/operators';
+import { withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'pry-toolbox',

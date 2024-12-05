@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs';
 import { MetadataActions } from './metadata.action';
 import { MetadataService } from './metadata.service';
 

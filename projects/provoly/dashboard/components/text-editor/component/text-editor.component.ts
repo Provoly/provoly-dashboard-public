@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { listStyles, MdStyle, TextEditorService } from '../service/text-editor.service';
 import { distinctUntilChanged, Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'pry-text-editor',

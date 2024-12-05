@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BaseFilterComponent } from '@provoly/dashboard';
 import { debounceTime, Subject } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'pry-text-filter',

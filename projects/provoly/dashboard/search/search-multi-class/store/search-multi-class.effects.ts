@@ -12,7 +12,7 @@ import {
   SearchActions
 } from '@provoly/dashboard';
 import { combineLatest } from 'rxjs';
-import { filter, first, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { filter, first, map, mergeMap, withLatestFrom } from 'rxjs';
 import { SearchMultiClassActions } from './search-multi-class.actions';
 import { SearchMultiClassSelectors } from './search-multi-class.selectors';
 import { SearchMultiClassService } from './search-multi-class.service';

@@ -51,7 +51,7 @@ export class AdminClassesFormComponent extends SubscriptionnerDirective implemen
   }
 
   ngOnInit(): void {
-    this.store.dispatch(ClassActions.load());
+    this.store.dispatch(ClassActions.load({}));
     this.classNames$ = this.store
       .select(ClassSelectors.classes)
       .pipe(map((classes: Class[]) => classes.map((clazz: Class) => clazz.name.toLowerCase())));

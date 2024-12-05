@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { filter, interval, Subscription } from 'rxjs';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { map, withLatestFrom } from 'rxjs';
 import { SearchActions } from '../../core/store/search/search.actions';
 import { WidgetFactoryService } from '../components/widgets/widget-instanciator/widget-factory.service';
 import { DashboardSelectors } from './dashboard.selectors';
@@ -12,7 +12,10 @@ import { DashboardSelectors } from './dashboard.selectors';
 export class RefreshService {
   subscription?: Subscription;
 
-  constructor(private store: Store, private widgetFactoryService: WidgetFactoryService) {}
+  constructor(
+    private store: Store,
+    private widgetFactoryService: WidgetFactoryService
+  ) {}
 
   stop() {
     this.subscription?.unsubscribe();

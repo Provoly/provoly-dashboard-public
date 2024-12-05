@@ -57,9 +57,9 @@ export class AdminClassesViewComponent implements OnInit, OnDestroy {
     private viewContainerRef: ViewContainerRef,
     private i18n: PryI18nService
   ) {
-    this.store.dispatch(ClassActions.load());
-    this.store.dispatch(FieldActions.load());
-    this.store.dispatch(CategoryActions.load());
+    this.store.dispatch(ClassActions.load({}));
+    this.store.dispatch(FieldActions.load({}));
+    this.store.dispatch(CategoryActions.load({}));
     this.store.dispatch(AdminClassActions.unselectAttribute());
 
     this.fields$ = this.store.select(FieldSelectors.fields);

@@ -3,7 +3,7 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { Component, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { combineLatest, map, Observable } from 'rxjs';
-import { withLatestFrom } from 'rxjs/operators';
+import { withLatestFrom } from 'rxjs';
 import { ConfigActions } from '../../../core/store/config/config.actions';
 import { ContextMenuActions } from '../../../core/store/context-menu/context-menu.actions';
 import { ContextMenuSelectors } from '../../../core/store/context-menu/context-menu.selectors';

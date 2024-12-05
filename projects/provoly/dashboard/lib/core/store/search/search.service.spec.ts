@@ -67,7 +67,7 @@ describe('SearchService', () => {
         }
       ]
     };
-    let params = service.getItemsFilter('datasourceid', undefined, false);
+    let params = service.getItemsFilter('datasourceid', undefined);
 
     expect(params.toString()).toBe(
       'filter=attributeId,CONTAINS,AAA,BBB,CC%5C%2CC' +
@@ -117,7 +117,7 @@ describe('SearchService', () => {
     };
     let previousHttpParams = new HttpParams({ encoder: new FilterParamEncoder() });
     previousHttpParams = previousHttpParams.set('previousParam', 'previousValue');
-    previousHttpParams = service.getItemsFilter('datasourceid', previousHttpParams, false);
+    previousHttpParams = service.getItemsFilter('datasourceid', previousHttpParams);
 
     expect(previousHttpParams.toString()).toBe(
       'previousParam=previousValue' +

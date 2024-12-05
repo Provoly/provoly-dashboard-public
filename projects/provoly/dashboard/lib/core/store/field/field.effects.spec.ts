@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 
 import { FieldEffects } from './field.effects';
 import { FieldService } from './field.service';
+import { provideMockStore } from '@ngrx/store/testing';
 
-describe('FieldEffects', () => {
+describe('AdminFieldEffects', () => {
   let actions$: Observable<any>;
   let effects: FieldEffects;
 
@@ -13,6 +14,7 @@ describe('FieldEffects', () => {
     TestBed.configureTestingModule({
       providers: [
         FieldEffects,
+        provideMockStore({}),
         provideMockActions(() => actions$),
         {
           provide: FieldService,

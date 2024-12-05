@@ -16,7 +16,7 @@ export class AdminClassesEditComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.store.dispatch(ClassActions.load());
+    this.store.dispatch(ClassActions.load({}));
   }
 
   ngOnInit(): void {

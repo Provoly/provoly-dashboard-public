@@ -7,12 +7,9 @@ import {
   PryDialogConfirmData,
   PryDialogService
 } from '@provoly/dashboard';
-import { tap } from 'rxjs';
-import { catchError, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, mergeMap, tap } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { FieldsActions } from './fields.actions';
-import { MetadataSelectors } from '@provoly/dashboard/components/metadata-editor';
-import { Store } from '@ngrx/store';
 
 @Injectable()
 export class FieldsEffects {
@@ -20,7 +17,7 @@ export class FieldsEffects {
     this.actions$.pipe(
       ofType(FieldsActions.updateToolbox),
       mergeMap((action) => {
-        return [FieldActions.load(), AdminActions.selectComponentType({ componentType: null })];
+        return [FieldActions.load({ force: true }), AdminActions.selectComponentType({ componentType: null })];
       })
     )
   );
@@ -109,7 +106,7 @@ export class FieldsEffects {
     this.actions$.pipe(
       ofType(FieldsActions.deleteFieldSuccess),
       map((action) => {
-        return FieldActions.load();
+        return FieldActions.load({ force: true });
       })
     )
   );
@@ -126,7 +123,6 @@ export class FieldsEffects {
   constructor(
     private actions$: Actions,
     private fieldService: FieldService,
-    private pryDialog: PryDialogService,
-    private store: Store<any>
+    private pryDialog: PryDialogService
   ) {}
 }

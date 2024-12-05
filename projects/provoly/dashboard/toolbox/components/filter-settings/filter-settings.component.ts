@@ -23,7 +23,7 @@ import {
   PryI18nService
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
-import { withLatestFrom } from 'rxjs/operators';
+import { withLatestFrom } from 'rxjs';
 import { v4 } from 'uuid';
 import { ToolboxActionComponent } from '../../shared/toolbox-action/toolbox-action.component';
 

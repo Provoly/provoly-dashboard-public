@@ -13,7 +13,7 @@ export class NamedQueryComponent {
   namedQueries$: Observable<string[]>;
 
   constructor(private store: Store<any>) {
-    this.store.dispatch(DataSourceActions.load());
+    this.store.dispatch(DataSourceActions.load({}));
     this.namedQueries$ = this.store.select(DashboardSelectors.availableNamedQueries);
   }
 

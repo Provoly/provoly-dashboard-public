@@ -13,8 +13,7 @@ export class InputDatasourceComponent extends PipelinePropertiesPanelComponent {
 
   constructor(private store: Store) {
     super();
-    this.store.dispatch(DataSourceActions.dataset.loadDataset());
-    this.store.dispatch(DataSourceActions.namedQuery.load());
+    this.store.dispatch(DataSourceActions.load({}));
     this.dataSources$ = this.store.select(DataSourceSelectors.getDataSources);
   }
 

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map, mergeMap, Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter } from 'rxjs';
 import { ConfigSelectors } from './config.selectors';
 
 @Injectable({

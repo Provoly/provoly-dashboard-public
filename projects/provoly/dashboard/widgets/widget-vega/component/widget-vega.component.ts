@@ -13,7 +13,7 @@ import {
   WIDGET_HEADER_HEIGHT
 } from '@provoly/dashboard';
 import { combineLatest, filter, Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { View } from 'vega';
 import embed, { VisualizationSpec } from 'vega-embed';
 

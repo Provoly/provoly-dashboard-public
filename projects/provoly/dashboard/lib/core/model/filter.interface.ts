@@ -9,6 +9,7 @@ export interface Filter {
   hasDateRange?: boolean;
   limit?: number;
   placeholder?: string;
+  preventRefreshes?: boolean;
 }
 
 export interface FilterContext {

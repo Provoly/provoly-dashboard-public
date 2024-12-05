@@ -8,7 +8,6 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import {
   Class,
@@ -19,7 +18,6 @@ import {
   DataWidgetComponent,
   GraphWidgetOptions,
   Item,
-  PryI18nService,
   RelationType,
   RelationTypesActions,
   RelationTypesSelectors,
@@ -40,7 +38,7 @@ import {
   Observable,
   Subject
 } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 import { PryLink, PryNode } from '../layout/node.interface';
 import { simpleSimulation } from '../layout/simple.function';
 
@@ -83,9 +81,7 @@ export class WidgetGraphComponent extends DataWidgetComponent implements AfterVi
   constructor(
     store: Store<any>,
     private tooltipFactoryService: TooltipFactoryService,
-    private translateService: PryI18nService,
     private symbolService: SymbolService,
-    private sanitizer: DomSanitizer,
     el: ElementRef,
     private _injector: Injector
   ) {
@@ -93,7 +89,7 @@ export class WidgetGraphComponent extends DataWidgetComponent implements AfterVi
 
     this.classes$ = this.store.select(ClassSelectors.classes);
     this.selectedIds$ = this.store.select(DashboardSelectors.selectedItemIds);
-    this.store.dispatch(RelationTypesActions.load());
+    this.store.dispatch(RelationTypesActions.load({}));
     this.options$ = this.manifest$.pipe(
       map(
         (manifest) =>

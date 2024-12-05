@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, mergeMap, tap, withLatestFrom } from 'rxjs';
 import { DashboardActions } from '../../../dashboard/store/dashboard.actions';
 import { PrySnackbarService } from '../../components/snackbar/snackbar.service';
 import { PryI18nService } from '../../i18n/i18n.service';

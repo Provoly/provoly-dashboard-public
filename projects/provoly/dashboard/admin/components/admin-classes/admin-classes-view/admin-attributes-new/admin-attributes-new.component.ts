@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Class, ClassActions, ClassSelectors } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
@@ -13,8 +13,11 @@ export class AdminAttributesNewComponent implements OnInit {
   selectedClass$?: Observable<Class>;
   interClass$?: Observable<Class | undefined>;
 
-  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
-    this.store.dispatch(ClassActions.load());
+  constructor(
+    private store: Store<any>,
+    private route: ActivatedRoute
+  ) {
+    this.store.dispatch(ClassActions.load({}));
   }
 
   ngOnInit(): void {

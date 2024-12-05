@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { PryI18nService, PrySnackbarService } from '@provoly/dashboard';
 import { of } from 'rxjs';
-import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
+import { catchError, debounceTime, map, mergeMap } from 'rxjs';
 import { PryTransfo } from '../components/pipeline-editor/pipeline.interface';
 import { PipelineActions } from './pipeline.actions';
 import { PipelineService } from './pipeline.service';

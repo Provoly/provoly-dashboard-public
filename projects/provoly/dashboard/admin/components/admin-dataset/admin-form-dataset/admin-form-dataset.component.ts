@@ -47,8 +47,8 @@ export class AdminFormDatasetComponent extends SubscriptionnerDirective implemen
     private dialog: PryDialogService
   ) {
     super();
-    this.store.dispatch(ClassActions.load());
-    this.store.dispatch(DataSourceActions.dataset.loadDataset());
+    this.store.dispatch(ClassActions.load({}));
+    this.store.dispatch(DataSourceActions.dataset.loadDataset({}));
     this.store.dispatch(DataSourceActions.dataset.getCategories());
     this.datasetList$ = this.store.select(DataSourceSelectors.datasets);
     this.classes$ = this.store.select(ClassSelectors.classes);

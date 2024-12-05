@@ -67,10 +67,10 @@ export class PryRestitutionComponent extends SubscriptionnerDirective implements
     private toolboxMenuService: ToolboxMenuService
   ) {
     super();
-    this.store.dispatch(DataSourceActions.load());
-    this.store.dispatch(ClassActions.load());
-    this.store.dispatch(ConfigActions.loadCustomization());
-    this.store.dispatch(FieldActions.load());
+    this.store.dispatch(DataSourceActions.load({}));
+    this.store.dispatch(ClassActions.load({}));
+    this.store.dispatch(ConfigActions.loadCustomization({}));
+    this.store.dispatch(FieldActions.load({}));
 
     this.types$ = this.toolboxMenuService.types$.pipe(
       map((type) => type.filter((filteredType) => filteredType.type !== 'detail'))

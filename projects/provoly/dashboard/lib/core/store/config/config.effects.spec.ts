@@ -151,7 +151,7 @@ describe('ConfigEffects', () => {
     });
 
     const expected$ = hot('a', {
-      a: ConfigActions.loadCustomization()
+      a: ConfigActions.loadCustomization({ force: true })
     });
 
     expect(effects.saveIconDefinitions$).toBeObservable(expected$);
@@ -172,7 +172,7 @@ describe('ConfigEffects', () => {
     });
 
     const expected$ = hot('a', {
-      a: ConfigActions.loadCustomization()
+      a: ConfigActions.loadCustomization({ force: true })
     });
 
     expect(effects.saveTableAttributes$).toBeObservable(expected$);
@@ -193,7 +193,7 @@ describe('ConfigEffects', () => {
     });
 
     const expected$ = hot('a', {
-      a: ConfigActions.loadCustomization()
+      a: ConfigActions.loadCustomization({ force: true })
     });
 
     expect(effects.saveTileAttributes$).toBeObservable(expected$);
@@ -216,7 +216,7 @@ describe('ConfigEffects', () => {
     });
 
     const expected$ = hot('a', {
-      a: ConfigActions.loadCustomization()
+      a: ConfigActions.loadCustomization({ force: true })
     });
 
     expect(effects.saveTemplates$).toBeObservable(expected$);
@@ -224,61 +224,6 @@ describe('ConfigEffects', () => {
       expect(spy).toHaveBeenCalled();
     });
   });
-
-  /* it('should get customization', () => {
-    const spy = jest.spyOn(configService, 'getAllClassParams');
-
-    actions$ = hot('a', {
-      a: ConfigActions.loadCustomization()
-    });
-
-    const expected$ = hot('a', {
-      a: ConfigActions.loadedCustomization({
-        icons: {
-          'class-1': [
-            {
-              iconUrl: 'test.png',
-              iconSize: [25, 25]
-            }
-          ]
-        },
-        tooltips: {
-          'class-3': {
-            type: 'default'
-          }
-        },
-        filters: {},
-        tableAttributes: {
-          'class-2': ['test 2']
-        },
-        tileAttributes: {
-          'class-4': ['test 4']
-        }
-      })
-    });
-
-    expect(effects.getCustomization$).toBeObservable(expected$);
-    expect(effects.getCustomization$).toSatisfyOnFlush(() => {
-      expect(spy).toHaveBeenCalled();
-    });
-  });
-
-  it('should save widget in catalog', () => {
-    const spy = jest.spyOn(configService, 'saveWidget');
-
-    actions$ = hot('a', {
-      a: ConfigActions.saveWidget({ widget: { ...widget, id: '3' } })
-    });
-
-    const expected$ = hot('a', {
-      a: ConfigActions.loadWidgets()
-    });
-
-    expect(effects.saveWidget$).toBeObservable(expected$);
-    expect(effects.saveWidget$).toSatisfyOnFlush(() => {
-      expect(spy).toHaveBeenCalled();
-    });
-  }); */
 
   it('should delete widget from catalog', () => {
     const spy = jest.spyOn(configService, 'deleteRestitution');

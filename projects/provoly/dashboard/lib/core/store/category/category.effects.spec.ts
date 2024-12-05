@@ -3,6 +3,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Observable } from 'rxjs';
 import { CategoryEffects } from './category.effects';
 import { CategoryService } from './category.service';
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('CategoryEffects', () => {
   let actions$: Observable<any>;
@@ -12,6 +13,7 @@ describe('CategoryEffects', () => {
     TestBed.configureTestingModule({
       providers: [
         CategoryEffects,
+        provideMockStore({}),
         provideMockActions(() => actions$),
         {
           provide: CategoryService,

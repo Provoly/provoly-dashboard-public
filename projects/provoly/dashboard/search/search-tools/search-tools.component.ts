@@ -13,8 +13,7 @@ import {
   NamedQuery,
   NamedQueryTypes
 } from '@provoly/dashboard';
-import { combineLatest, map, Observable, of, Subscription } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { combineLatest, delay, map, Observable, of, Subscription } from 'rxjs';
 import { v4 } from 'uuid';
 import { SearchFulltextChange } from '../search-fulltext/search-fulltext/search-fulltext.component';
 import { SearchMonoClassActions } from '../search-mono-class/store/search-mono-class.actions';
@@ -80,9 +79,9 @@ export class PrySearchToolsComponent implements OnDestroy {
 
   constructor(private store: Store<DataSourceState | SearchMultiClassState | FieldState | ClassState>) {
     this.loading$ = this.store.select(DataSourceSelectors.isLoading);
-    this.store.dispatch(DataSourceActions.load());
-    this.store.dispatch(FieldActions.load());
-    this.store.dispatch(ClassActions.load());
+    this.store.dispatch(DataSourceActions.load({}));
+    this.store.dispatch(FieldActions.load({}));
+    this.store.dispatch(ClassActions.load({}));
     this.searchMultiClassValid$ = this.store.select(SearchMultiClassSelectors.searchMultiClassValid).pipe(delay(100));
     this.searchMonoClassValid$ = this.store.select(SearchMonoClassSelectors.searchMonoClassValid).pipe(delay(100));
     this.editInProgress$ = this.store.select(DataSourceSelectors.editInProgress);

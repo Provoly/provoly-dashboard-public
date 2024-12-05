@@ -84,7 +84,7 @@ export class PryImportFormComponent extends SubscriptionnerDirective implements 
     private i18nService: PryI18nService
   ) {
     super();
-    store.dispatch(DataSourceActions.dataset.loadDataset());
+    store.dispatch(DataSourceActions.dataset.loadDataset({}));
     this.store.dispatch(DataSourceActions.dataset.listVersions({}));
     this.datasets$ = store
       .select(DataSourceSelectors.datasets)

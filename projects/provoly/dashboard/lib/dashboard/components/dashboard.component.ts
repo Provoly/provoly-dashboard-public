@@ -21,12 +21,15 @@ import {
   BehaviorSubject,
   combineLatest,
   combineLatestWith,
+  delay,
+  distinctUntilChanged,
+  filter,
   fromEvent,
+  map,
   Observable,
   of,
   switchMap
 } from 'rxjs';
-import { delay, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { DisplayOptions } from '../../core/model/display-options.interface';
 import {
   DashboardGridLayout,
@@ -223,13 +226,13 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
       )
     );
 
-    this.store.dispatch(FieldActions.load());
-    this.store.dispatch(ClassActions.load());
-    this.store.dispatch(CategoryActions.load());
+    this.store.dispatch(FieldActions.load({}));
+    this.store.dispatch(ClassActions.load({}));
+    this.store.dispatch(CategoryActions.load({}));
     this.store.dispatch(ConfigActions.getMapStyles());
-    this.store.dispatch(DataSourceActions.load());
-    this.store.dispatch(RelationTypesActions.load());
-    this.store.dispatch(ConfigActions.loadCustomization());
+    this.store.dispatch(DataSourceActions.load({}));
+    this.store.dispatch(RelationTypesActions.load({}));
+    this.store.dispatch(ConfigActions.loadCustomization({}));
 
     this.subscriptions.add(
       fromEvent(window, 'resize')

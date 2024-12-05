@@ -15,7 +15,7 @@ export const ConfigActions = {
   ),
   updateIcons: createAction('[Config] (bus) updating icons', props<{ definitions: IconDefinitions }>()),
   saveIcons: createAction('[Config] (bus) saving icons', props<{ definitions: IconDefinitions }>()),
-  loadCustomization: createAction('[Config] (bus) load all class customization'),
+  loadCustomization: createAction('[Config] (bus) load all class customization', props<{ force?: boolean }>()),
   loadedCustomization: createAction(
     '[Config] (bus) customization loaded',
     props<{

@@ -20,7 +20,7 @@ import {
   WidgetManifest
 } from '@provoly/dashboard';
 import { combineLatest, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs';
 
 @Component({
   selector: 'pry-widget-detail',

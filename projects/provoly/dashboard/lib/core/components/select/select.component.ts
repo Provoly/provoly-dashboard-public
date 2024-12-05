@@ -17,7 +17,7 @@ import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import equal from 'fast-deep-equal/es6';
 import { SubscriptionnerDirective } from '../../../dashboard/components/subscriptionner.directive';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 import { SelectA11yService } from './select-a11y.service';
 import { FocusOrigin } from '@angular/cdk/a11y';
 

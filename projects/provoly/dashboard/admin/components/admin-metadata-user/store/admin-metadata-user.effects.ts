@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { MetadataActions } from '@provoly/dashboard/components/metadata-editor';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs';
 import { AdminActions } from '../../../store/admin.actions';
 import { AdminService } from '../../../store/admin.service';
 import { AdminMetadataUserActions } from './admin-metadata-user.action';

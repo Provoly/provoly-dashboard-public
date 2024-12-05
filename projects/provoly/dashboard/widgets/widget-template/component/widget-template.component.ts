@@ -3,7 +3,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { DataWidgetComponent, TemplateWidgetOptions } from '@provoly/dashboard';
 import { combineLatestWith, Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map } from 'rxjs';
 
 @Component({
   selector: 'pry-widget-template',

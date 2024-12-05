@@ -3,7 +3,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { Injectable, ViewContainerRef } from '@angular/core';
 import equal from 'fast-deep-equal/es6';
 import { Observable, Subject, switchMap, windowTime } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs';
 import { PryI18nService } from '../../i18n/i18n.service';
 import { PrySnackMessage } from './snack.interface';
 import { PrySnackbarComponent } from './snackbar/snackbar.component';

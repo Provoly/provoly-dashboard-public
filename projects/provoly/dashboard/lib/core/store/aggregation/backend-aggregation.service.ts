@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { map, Observable, of, share } from 'rxjs';
+import { debounceTime, map, Observable, of, share } from 'rxjs';
 import { DashboardSelectors } from '../../../dashboard/store/dashboard.selectors';
 import { PrySnackbarService } from '../../components/snackbar/snackbar.service';
 import { PryI18nService } from '../../i18n/i18n.service';
@@ -16,7 +16,6 @@ import { FieldSelectors } from '../field/field.selectors';
 import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from '../search/search.constants';
 import { SearchService } from '../search/search.service';
 import { AggregationResult, PryAggregationService } from './base-aggregation.service';
-import { debounceTime } from 'rxjs/operators';
 import { FilterParamEncoder } from '../search/filter-param-encoder';
 
 @Injectable({
@@ -106,7 +105,7 @@ export class PryBackendAggregationService extends PryAggregationService {
     if (options.abscissa && options.abscissa.limit) {
       params = params.set('limit', `${options.abscissa.limit}`);
     }
-    params = this.searchService.getItemsFilter(targetDatasource, params, false);
+    params = this.searchService.getItemsFilter(targetDatasource, params);
 
     const key = `${this.dataUrl}_${targetDatasource}_${params.toString()}`;
     if (!this.cache[key] || this.cache[key].time + 1000 < new Date().getTime()) {

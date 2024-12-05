@@ -174,7 +174,7 @@ describe('AdminEffects', () => {
       });
 
       const expected$ = hot('--(abc)-', {
-        a: RelationTypesActions.load(),
+        a: RelationTypesActions.load({ force: true }),
         b: AdminActions.selectComponentType({ componentType: null }),
         c: AdminActions.mainActions({
           actions: [

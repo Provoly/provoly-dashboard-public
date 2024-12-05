@@ -13,7 +13,7 @@ import {
 } from '@provoly/dashboard';
 import { combineLatest, map, Observable, startWith } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { filter } from 'rxjs/operators';
+import { filter } from 'rxjs';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({

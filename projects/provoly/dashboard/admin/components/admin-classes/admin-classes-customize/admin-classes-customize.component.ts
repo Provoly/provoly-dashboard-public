@@ -46,9 +46,9 @@ export class AdminClassesCustomizeComponent extends SubscriptionnerDirective imp
         this.store.dispatch(AdminClassActions.selectClass({ clazz: { id: params['id'] } as Class }))
       )
     );
-    this.store.dispatch(ClassActions.load());
-    this.store.dispatch(FieldActions.load());
-    this.store.dispatch(ConfigActions.loadCustomization());
+    this.store.dispatch(ClassActions.load({}));
+    this.store.dispatch(FieldActions.load({}));
+    this.store.dispatch(ConfigActions.loadCustomization({}));
     this.fields$ = this.store.select(FieldSelectors.fields);
     this.currentClass$ = combineLatest([
       this.store.select(AdminClassSelectors.selectedClass),

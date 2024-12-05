@@ -20,12 +20,16 @@ export class AdminClassesComponent implements OnInit, OnDestroy {
   sortDirection? = 'asc';
   sub = new Subscription();
 
-  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private store: Store<any>,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.store.dispatch(ClassActions.loadDatasetCount());
-    this.store.dispatch(ClassActions.load());
+    this.store.dispatch(ClassActions.load({}));
     this.store.dispatch(AdminClassActions.unselectClass());
     this.store.dispatch(AdminClassActions.resetInterClass());
-    this.store.dispatch(ConfigActions.loadCustomization());
+    this.store.dispatch(ConfigActions.loadCustomization({}));
     this.classes$ = this.store.select(ClassSelectors.classes);
     this.selectedClassId$ = this.store.select(AdminClassSelectors.selectedClassId);
     this.datasetCounts$ = this.store.select(ClassSelectors.datasetCounts);

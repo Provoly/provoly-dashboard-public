@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs';
 import { PrySnackbarService } from '../components/snackbar/snackbar.service';
 import { PryI18nService } from '../i18n/i18n.service';
 

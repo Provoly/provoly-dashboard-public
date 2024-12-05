@@ -48,8 +48,8 @@ export class AdminLinksNewComponent {
     private route: ActivatedRoute,
     private formBuilder: UntypedFormBuilder
   ) {
-    this.store.dispatch(ClassActions.load());
-    this.store.dispatch(RelationTypesActions.load());
+    this.store.dispatch(ClassActions.load({}));
+    this.store.dispatch(RelationTypesActions.load({}));
     this.store.dispatch(LinksActions.loadLinks());
     this.classes$ = this.store.select(ClassSelectors.classes);
     this.relationTypes$ = this.store.select(RelationTypesSelectors.relationsTypes);
@@ -100,13 +100,12 @@ export class AdminLinksNewComponent {
     );
 
     this.attributesDestination$ = combineLatest([this.classes$, this.attrIdTofilter$]).pipe(
-      map(
-        ([classes, attrIds]) =>
-          classes
-            .find((c) => c.id === event.id)
-            ?.attributes.filter(
-              (attr) => !attrIds.includes(attr.id) && this.linkForm.value.attributeSource.id !== attr.id
-            )
+      map(([classes, attrIds]) =>
+        classes
+          .find((c) => c.id === event.id)
+          ?.attributes.filter(
+            (attr) => !attrIds.includes(attr.id) && this.linkForm.value.attributeSource.id !== attr.id
+          )
       )
     );
   }

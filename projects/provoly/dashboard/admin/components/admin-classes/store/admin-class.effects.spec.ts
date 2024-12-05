@@ -111,8 +111,9 @@ describe('ClassesEffects', () => {
         a: AdminClassActions.saveClassSuccess({ route: '/' })
       });
 
-      const expected$ = hot('--a-', {
-        a: AdminActions.routeTo({ path: '/' })
+      const expected$ = hot('--(ab)-', {
+        a: AdminActions.routeTo({ path: '/' }),
+        b: ClassActions.load({ force: true })
       });
       expect(effects.saveClassSuccess$).toBeObservable(expected$);
     });
@@ -124,8 +125,9 @@ describe('ClassesEffects', () => {
         a: AdminClassActions.saveInterClass({ class: classes[0], route: '/' })
       });
 
-      const expected$ = hot('--a-', {
-        a: AdminActions.routeTo({ path: '/' })
+      const expected$ = hot('--(ab)-', {
+        a: AdminActions.routeTo({ path: '/' }),
+        b: ClassActions.load({ force: true })
       });
       expect(effects.saveInterClass$).toBeObservable(expected$);
     });
@@ -181,8 +183,9 @@ describe('ClassesEffects', () => {
         a: AdminClassActions.saveAttributeForClassSuccess({ route: '/' })
       });
 
-      const expected$ = hot('--a-', {
-        a: AdminActions.routeTo({ path: '/' })
+      const expected$ = hot('--(ab)-', {
+        a: AdminActions.routeTo({ path: '/' }),
+        b: ClassActions.load({ force: true })
       });
       expect(effects.saveAttributeForClassSuccess$).toBeObservable(expected$);
     });
@@ -255,7 +258,7 @@ describe('ClassesEffects', () => {
         a: AdminClassActions.deleteClassSuccess({ route: '/' })
       });
 
-      const expected$ = hot('--(ab)-', {
+      const expected$ = hot('--(abc)-', {
         a: AdminClassActions.updateToolbox(),
         b: AdminActions.mainActions({
           actions: [
@@ -268,7 +271,8 @@ describe('ClassesEffects', () => {
               actionAccess: 'write'
             }
           ]
-        })
+        }),
+        c: ClassActions.load({ force: true })
       });
       expect(effects.deleteClassSuccess$).toBeObservable(expected$);
     });
@@ -343,7 +347,7 @@ describe('ClassesEffects', () => {
         })
       });
 
-      const expected$ = hot('--(ab)-', {
+      const expected$ = hot('--(abc)-', {
         a: AdminClassActions.updateToolbox(),
         b: AdminActions.mainActions({
           actions: [
@@ -361,7 +365,8 @@ describe('ClassesEffects', () => {
               actionAccess: 'write'
             }
           ]
-        })
+        }),
+        c: ClassActions.load({ force: true })
       });
       expect(effects.deleteAttributeForClassSuccess$).toBeObservable(expected$);
     });
@@ -374,7 +379,7 @@ describe('ClassesEffects', () => {
       });
 
       const expected$ = hot('--(ab)-', {
-        a: ClassActions.load(),
+        a: ClassActions.load({ force: true }),
         b: AdminActions.selectComponentType({ componentType: null })
       });
       expect(effects.updateToolbox$).toBeObservable(expected$);
@@ -430,7 +435,7 @@ describe('ClassesEffects', () => {
       });
 
       const expected$ = hot('--a-', {
-        a: CategoryActions.load()
+        a: CategoryActions.load({ force: true })
       });
       expect(effects.saveCategorySuccess$).toBeObservable(expected$);
     });

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { BaseMenuComponent } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { AdminActions } from '../../store/admin.actions';
 import { AdminSelectors } from '../../store/admin.selectors';
 

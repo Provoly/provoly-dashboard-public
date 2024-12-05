@@ -21,7 +21,7 @@ describe('Dataset Reducer', () => {
           {
             ...initialState
           },
-          DataSourceActions.dataset.loadDataset()
+          DataSourceActions.dataset.loadDataset({})
         )
       ).toEqual({
         ...initialState,

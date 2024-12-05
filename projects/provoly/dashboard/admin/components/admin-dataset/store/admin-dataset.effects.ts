@@ -8,8 +8,7 @@ import {
   PryDialogService,
   ShareConflict
 } from '@provoly/dashboard';
-import { map, mergeMap, switchMap, tap } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, tap } from 'rxjs';
 import { AdminDatasetActions } from './admin-dataset.actions';
 import { Action } from '@ngrx/store';
 import { AdminActions } from '../../../store/admin.actions';
@@ -32,7 +31,7 @@ export class AdminDatasetEffects {
           .addDataset(props.dataset)
           .pipe(
             mergeMap(() => [
-              DataSourceActions.dataset.loadDataset(),
+              DataSourceActions.dataset.loadDataset({ force: true }),
               AdminDatasetActions.unselectDataset(),
               AdminActions.routeTo({ path: props.route })
             ])
@@ -77,7 +76,7 @@ export class AdminDatasetEffects {
       switchMap((action) =>
         this.datasetService.deleteDataset(action.name).pipe(
           mergeMap(() => [
-            DataSourceActions.dataset.loadDataset(),
+            DataSourceActions.dataset.loadDataset({ force: true }),
             AdminDatasetActions.unselectDataset(),
             AdminDatasetActions.deleted({ addRoute: action.addRoute })
           ]),
@@ -139,7 +138,7 @@ export class AdminDatasetEffects {
           mergeMap((conflict?: ShareConflict) => {
             let actions: Action[] = [
               AdminDatasetActions.setMissingGroups({ missingGroups: conflict?.missingGroupsByEntity }),
-              DataSourceActions.dataset.loadDataset()
+              DataSourceActions.dataset.loadDataset({ force: true })
             ];
             if (action.route)
               actions.push(AdminDatasetActions.unselectDataset(), AdminActions.routeTo({ path: action.route }));
@@ -170,7 +169,7 @@ export class AdminDatasetEffects {
         return [
           AdminDatasetActions.getDatasetById({ id: action.datasetId }),
           MetadataActions.isEditable({ editable: false }),
-          DataSourceActions.dataset.loadDataset()
+          DataSourceActions.dataset.loadDataset({ force: true })
         ];
       })
     )
@@ -195,7 +194,7 @@ export class AdminDatasetEffects {
         return [
           AdminDatasetActions.getDatasetById({ id: action.datasetId }),
           MetadataActions.isEditable({ editable: false }),
-          DataSourceActions.dataset.loadDataset()
+          DataSourceActions.dataset.loadDataset({ force: true })
         ];
       })
     )

@@ -14,7 +14,7 @@ import {
   SubscriptionnerDirective
 } from '@provoly/dashboard';
 import equal from 'fast-deep-equal/es6';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs';
 
 const DEFAULT_RULE = {
   isDefault: true,

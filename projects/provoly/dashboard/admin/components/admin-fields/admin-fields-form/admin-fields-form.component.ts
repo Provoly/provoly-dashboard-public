@@ -3,8 +3,8 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
-  FIELD_I18N,
   Field,
+  FIELD_I18N,
   FieldActions,
   FieldSelectors,
   FieldType,
@@ -62,7 +62,7 @@ export class AdminFieldsFormComponent extends SubscriptionnerDirective implement
     private i18n: PryI18nService
   ) {
     super();
-    this.store.dispatch(FieldActions.load());
+    this.store.dispatch(FieldActions.load({}));
 
     this.fieldNames$ = this.store
       .select(FieldSelectors.fields)

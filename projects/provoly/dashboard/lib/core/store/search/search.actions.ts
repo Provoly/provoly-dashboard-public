@@ -40,6 +40,7 @@ export const SearchActions = {
       filterId: string;
       attributes: { id: string; datasource: string }[];
       limit: number;
+      force?: boolean;
     }>()
   ),
   setPossibleFilterValues: createAction(

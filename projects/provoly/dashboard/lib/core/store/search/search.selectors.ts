@@ -8,9 +8,11 @@ const possibleFilterValues = (filterId?: string) =>
   createSelector(feature, (state) =>
     filterId && state.possibleFilterValues[filterId] ? state.possibleFilterValues[filterId] : []
   );
+const filterValues = createSelector(feature, (state) => state.possibleFilterValues);
 
 export const SearchSelectors = {
   feature,
   searchLoading,
+  filterValues,
   possibleFilterValues
 };

@@ -1,15 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {
-  Class,
-  ClassActions,
-  ClassSelectors,
-  FIELD_I18N,
-  FieldActions,
-  FieldSelectors
-} from '@provoly/dashboard';
-import { map, Observable, combineLatest } from 'rxjs';
+import { Class, ClassActions, ClassSelectors, FIELD_I18N, FieldActions, FieldSelectors } from '@provoly/dashboard';
+import { combineLatest, map, Observable } from 'rxjs';
 import { AdminActions } from '../../store/admin.actions';
 import { FieldExtended } from './store/admin-fields.model';
 import { FieldsActions } from './store/fields.actions';
@@ -31,8 +24,8 @@ export class AdminFieldsComponent {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.store.dispatch(ClassActions.load());
-    this.store.dispatch(FieldActions.load());
+    this.store.dispatch(ClassActions.load({}));
+    this.store.dispatch(FieldActions.load({}));
     this.store.dispatch(FieldsActions.unselectField());
     this.currentFieldId$ = this.store.select(FieldsSelectors.selectedFieldId);
 

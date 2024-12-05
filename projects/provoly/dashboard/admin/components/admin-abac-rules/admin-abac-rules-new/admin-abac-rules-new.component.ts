@@ -11,9 +11,12 @@ import { AbacRulesService } from '../store/abac-rules.service';
   templateUrl: './admin-abac-rules-new.component.html'
 })
 export class AdminAbacRulesNewComponent implements OnDestroy {
-  constructor(private store: Store<any>, private abacRuleService: AbacRulesService) {
-    this.store.dispatch(ClassActions.load());
-    this.store.dispatch(FieldActions.load());
+  constructor(
+    private store: Store<any>,
+    private abacRuleService: AbacRulesService
+  ) {
+    this.store.dispatch(ClassActions.load({}));
+    this.store.dispatch(FieldActions.load({}));
     this.store.dispatch(PredicatesActions.loadPredicates());
     this.store.dispatch(MetadataActions.loadMetadata());
     this.store.dispatch(MetadataActions.loadUserProfile());

@@ -19,7 +19,7 @@ import {
   WIDGET_HEADER_HEIGHT
 } from '@provoly/dashboard';
 import { combineLatest, Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map } from 'rxjs';
 
 @Component({
   selector: 'pry-widget-tile',

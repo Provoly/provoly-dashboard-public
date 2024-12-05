@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, debounceTime, throwError } from 'rxjs';
-import { filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, debounceTime, filter, map, mergeMap, tap, throwError, withLatestFrom } from 'rxjs';
 import { PryDialogConfirmComponent, PryDialogConfirmData } from '../../components/overlay/dialog-confirm.component';
 import { PryDialogService } from '../../components/overlay/dialog.service';
 import { PrySnackbarService } from '../../components/snackbar/snackbar.service';
@@ -21,6 +20,7 @@ import { ChartOptionDefault } from './config.widget.constants';
 import { OpenMapTilesService } from './open-map-tiles.service';
 import { Versions } from './versions.interface';
 import { Group } from '../../components/share/share.model';
+import { DashboardSelectors } from '../../../dashboard/store/dashboard.selectors';
 
 @Injectable()
 export class ConfigEffects {
@@ -41,7 +41,7 @@ export class ConfigEffects {
       mergeMap((action) =>
         this.configService
           .saveDefinitions(action.definitions, SYMBOL_DOMAIN)
-          .pipe(map(() => ConfigActions.loadCustomization()))
+          .pipe(map(() => ConfigActions.loadCustomization({ force: true })))
       )
     )
   );
@@ -52,7 +52,7 @@ export class ConfigEffects {
       mergeMap((action) =>
         this.configService
           .saveDefinitions(action.definitions, TABLE_ATTR_DOMAIN)
-          .pipe(map(() => ConfigActions.loadCustomization()))
+          .pipe(map(() => ConfigActions.loadCustomization({ force: true })))
       )
     )
   );
@@ -63,7 +63,7 @@ export class ConfigEffects {
       mergeMap((action) =>
         this.configService
           .saveDefinitions(action.definitions, TILE_ATTR_DOMAIN)
-          .pipe(map(() => ConfigActions.loadCustomization()))
+          .pipe(map(() => ConfigActions.loadCustomization({ force: true })))
       )
     )
   );
@@ -74,7 +74,7 @@ export class ConfigEffects {
       mergeMap((action) =>
         this.configService
           .saveDefinitions(action.definitions, TOOLTIPS_DOMAIN)
-          .pipe(map(() => ConfigActions.loadCustomization()))
+          .pipe(map(() => ConfigActions.loadCustomization({ force: true })))
       )
     )
   );
@@ -82,7 +82,23 @@ export class ConfigEffects {
   getCustomization$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ConfigActions.loadCustomization),
-      debounceTime(100),
+      withLatestFrom(
+        this.store.select(ConfigSelectors.iconDefinitions),
+        this.store.select(ConfigSelectors.tableDefaultAttributesDefinitions),
+        this.store.select(ConfigSelectors.tooltipDefinitions),
+        this.store.select(ConfigSelectors.tileAttributesDefinitions),
+        this.store.select(DashboardSelectors.rank)
+      ),
+      debounceTime(200),
+      filter(
+        ([action, iconsDef, tableDef, tooltipDef, tileDef, rank]) =>
+          (action.force ||
+            (Object.keys(iconsDef).length === 0 &&
+              Object.keys(tableDef).length === 0 &&
+              Object.keys(tooltipDef).length === 1 &&
+              Object.keys(tileDef).length === 0)) &&
+          rank === 0
+      ),
       mergeMap((action) =>
         this.configService.getAllClassParams().pipe(
           mergeMap((allDefinitions) => {

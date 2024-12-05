@@ -40,7 +40,7 @@ export class PryPipelineInputDatasetModule {
     this.pryTranslateService.addLangObject('fr', 'pipeline-inputdsdef', frTranslations);
     this.pryTranslateService.addLangObject('en', 'pipeline-inputdsdef', enTranslations);
 
-    this.store.dispatch(DataSourceActions.dataset.loadDataset());
+    this.store.dispatch(DataSourceActions.dataset.loadDataset({}));
     this.store.select(DataSourceSelectors.getDataSources).subscribe((datasources) => {
       datasources.forEach((datasource) => {
         pipelineComponentFactoryService.addType(

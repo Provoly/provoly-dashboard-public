@@ -6,7 +6,7 @@ import { DashboardActions } from '../../../../dashboard/store/dashboard.actions'
 import { DataSourceSelectors } from '../../../store/data-source/data-source.selectors';
 import { getCommonDatasourceGroupsForManifest } from '../share.utils';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, map, Observable, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import equal from 'fast-deep-equal/es6';
 import { DataSourceActions } from '../../../store/data-source/data-source.actions';
 import { DashboardSelectors } from '../../../../dashboard/store/dashboard.selectors';
@@ -37,7 +37,7 @@ export class PryAccessRightsShareModalComponent {
       manifest: ManifestDescription;
     }
   ) {
-    this.store.dispatch(DataSourceActions.dataset.loadDataset());
+    this.store.dispatch(DataSourceActions.dataset.loadDataset({}));
     this.store.dispatch(ConfigActions.loadAccessGroups());
     this.manifest = this.data.manifest;
     this.accessRightsByGroup = { ...this.manifest.accessRightsByGroup };

@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { PryI18nService, PryNotification } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { NotificationActions } from '../../../store/notification.actions';
 import { NotificationSelectors } from '../../../store/notification.selectors';
 

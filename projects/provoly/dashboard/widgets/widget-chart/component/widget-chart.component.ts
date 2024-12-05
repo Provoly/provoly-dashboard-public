@@ -27,7 +27,7 @@ import {
 } from '@provoly/dashboard';
 import equal from 'fast-deep-equal/es6';
 import { BehaviorSubject, combineLatest, delay, Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map } from 'rxjs';
 import { TimeUnit, View } from 'vega';
 import embed, { vega } from 'vega-embed';
 import { mergeDeep, TopLevelSpec } from 'vega-lite';

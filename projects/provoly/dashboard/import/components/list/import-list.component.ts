@@ -42,7 +42,7 @@ export class PryImportListComponent extends SubscriptionnerDirective implements 
   ) {
     super();
     this.loading$ = this.store.select(DataSourceSelectors.isLoading);
-    this.store.dispatch(DataSourceActions.dataset.loadDataset());
+    this.store.dispatch(DataSourceActions.dataset.loadDataset({}));
     this.datasets$ = this.store.select(DataSourceSelectors.datasets);
     this.datasetVersions$ = this.store.select(DataSourceSelectors.datasetVersions);
     this.totalVersionCount$ = this.store.select(DataSourceSelectors.totalVersionCount);

@@ -20,8 +20,7 @@ import {
   WidgetFactoryService,
   WidgetManifest
 } from '@provoly/dashboard';
-import { map, Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, Observable, of, tap } from 'rxjs';
 
 let nextCompId = 0;
 
@@ -132,7 +131,7 @@ export class PryDatasetDetailComponent extends SubscriptionnerDirective implemen
         from: 'PryDatasetDetailComponent.refresh()'
       })
     );
-    this.store.dispatch(DataSourceActions.dataset.loadDataset());
+    this.store.dispatch(DataSourceActions.dataset.loadDataset({ force: true }));
     this.store.dispatch(DataSourceActions.dataset.listVersionsByDatasetId({ id: this.dataset.id }));
   }
 

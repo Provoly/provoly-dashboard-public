@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Attribute, BaseTooltipComponent, ClassSelectors, Field, TranslateIdPipe } from '@provoly/dashboard';
 import { map, Observable, of } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { withLatestFrom } from 'rxjs/operators';
+import { withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'pry-attribute-tooltip',

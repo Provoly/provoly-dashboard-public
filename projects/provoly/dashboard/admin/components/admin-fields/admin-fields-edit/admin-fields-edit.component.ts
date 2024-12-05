@@ -15,7 +15,7 @@ export class AdminFieldsEditComponent implements OnInit {
     private store: Store<any>,
     private route: ActivatedRoute
   ) {
-    this.store.dispatch(FieldActions.load());
+    this.store.dispatch(FieldActions.load({}));
   }
 
   ngOnInit(): void {

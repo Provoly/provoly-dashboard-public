@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { combineLatest, delay, merge, of, startWith, throwError } from 'rxjs';
-import { catchError, debounceTime, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, debounceTime, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs';
 import {
   PryDialogConfirmComponent,
   PryDialogConfirmData

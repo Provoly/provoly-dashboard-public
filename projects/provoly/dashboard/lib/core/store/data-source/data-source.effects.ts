@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
-import { debounceTime, filter, map, mergeMap, switchMap, tap } from 'rxjs';
-import { catchError, withLatestFrom } from 'rxjs/operators';
+import { catchError, debounceTime, filter, map, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs';
 import { DashboardActions } from '../../../dashboard/store/dashboard.actions';
 import { DashboardSelectors } from '../../../dashboard/store/dashboard.selectors';
 import { PryDialogConfirmComponent, PryDialogConfirmData } from '../../components/overlay/dialog-confirm.component';
@@ -11,7 +10,6 @@ import { PrySnackbarService } from '../../components/snackbar/snackbar.service';
 import { PryI18nService } from '../../i18n/i18n.service';
 import { ConfigSelectors } from '../config/config.selectors';
 import { SearchActions } from '../search/search.actions';
-import { SearchService } from '../search/search.service';
 import { DataSourceActions } from './data-source.actions';
 import { NamedQuery } from './data-source.model';
 import { DataSourceSelectors } from './data-source.selectors';
@@ -23,7 +21,6 @@ export class DataSourceEffects {
 
   constructor(
     private actions$: Actions,
-    private searchService: SearchService,
     private dataSourceService: DataSourceService,
     private snackBar: PrySnackbarService,
     private translate: PryI18nService,
@@ -58,7 +55,7 @@ export class DataSourceEffects {
           );
         }
         this.idNamedQuery = undefined;
-        actions.push(DataSourceActions.namedQuery.load());
+        actions.push(DataSourceActions.namedQuery.load({ force: true }));
         return actions;
       }),
       catchError((error) => [DataSourceActions.namedQuery.failure({ error })])
@@ -68,7 +65,12 @@ export class DataSourceEffects {
   getNamedQuery$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DataSourceActions.namedQuery.load),
-      debounceTime(100),
+      withLatestFrom(
+        this.store.select(DataSourceSelectors.getAllNamedQuery),
+        this.store.select(DashboardSelectors.rank)
+      ),
+      debounceTime(200),
+      filter(([action, nq, rank]) => (action.force || nq.length === 0) && rank === 0),
       switchMap(() => this.dataSourceService.get()),
       map((namedQueryList: NamedQuery[]) => DataSourceActions.namedQuery.loaded({ list: namedQueryList })),
       catchError((error) => [DataSourceActions.namedQuery.failure({ error })])
@@ -89,7 +91,7 @@ export class DataSourceEffects {
       ofType(DataSourceActions.namedQuery.delete),
       switchMap((props: { id: string }) =>
         this.dataSourceService.delete(props.id).pipe(
-          mergeMap(() => [DataSourceActions.namedQuery.load()]),
+          mergeMap(() => [DataSourceActions.namedQuery.load({ force: true })]),
           catchError((error) => [DataSourceActions.namedQuery.failure({ error })])
         )
       )
@@ -100,7 +102,7 @@ export class DataSourceEffects {
     this.actions$.pipe(
       ofType(DataSourceActions.namedQuery.addFavorite),
       switchMap((props: { id: string }) => this.dataSourceService.addFavorite(props.id)),
-      mergeMap(() => [DataSourceActions.namedQuery.load()]),
+      mergeMap(() => [DataSourceActions.namedQuery.load({ force: true })]),
       catchError((error) => [DataSourceActions.namedQuery.failure({ error })])
     )
   );
@@ -109,7 +111,7 @@ export class DataSourceEffects {
     this.actions$.pipe(
       ofType(DataSourceActions.namedQuery.deleteFavorite),
       switchMap((props: { id: string }) => this.dataSourceService.deleteFavorite(props.id)),
-      mergeMap(() => [DataSourceActions.namedQuery.load()]),
+      mergeMap(() => [DataSourceActions.namedQuery.load({ force: true })]),
       catchError((error) => [DataSourceActions.namedQuery.failure({ error })])
     )
   );
@@ -172,7 +174,10 @@ export class DataSourceEffects {
   loadedDataset$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DataSourceActions.dataset.loadDataset),
-      mergeMap((action) =>
+      withLatestFrom(this.store.select(DataSourceSelectors.datasets), this.store.select(DashboardSelectors.rank)),
+      debounceTime(200),
+      filter(([action, dss, rank]) => (action.force || dss.length === 0) && rank === 0),
+      mergeMap(() =>
         this.dataSourceService
           .getDatasets()
           .pipe(map((dsd) => DataSourceActions.dataset.loadedDataset({ datasets: dsd })))
@@ -184,7 +189,10 @@ export class DataSourceEffects {
     this.actions$.pipe(
       ofType(DataSourceActions.load),
       debounceTime(100),
-      mergeMap((action) => [DataSourceActions.namedQuery.load(), DataSourceActions.dataset.loadDataset()])
+      mergeMap((action) => [
+        DataSourceActions.namedQuery.load({ force: action.force }),
+        DataSourceActions.dataset.loadDataset({ force: action.force })
+      ])
     )
   );
 
@@ -248,7 +256,7 @@ export class DataSourceEffects {
         DataSourceActions.dataset.deactivateDatasetVersionSuccess
       ),
       map((action) => {
-        this.store.dispatch(DataSourceActions.dataset.loadDataset());
+        this.store.dispatch(DataSourceActions.dataset.loadDataset({ force: true }));
         return DataSourceActions.dataset.listVersionsByDatasetId({ id: action.datasetId });
       })
     )

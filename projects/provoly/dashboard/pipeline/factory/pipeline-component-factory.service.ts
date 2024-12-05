@@ -1,7 +1,7 @@
 import { Injectable, Type } from '@angular/core';
 import { LiteGraph } from 'litegraph.js';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { PipelinePropertiesPanelComponent } from '../components/pipeline-properties-panel.component';
 import { BaseNode } from '../node-class/base-node.class';
 

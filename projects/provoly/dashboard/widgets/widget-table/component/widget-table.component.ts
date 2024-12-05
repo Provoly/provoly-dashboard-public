@@ -26,7 +26,7 @@ import {
 } from '@provoly/dashboard';
 import equal from 'fast-deep-equal/es6';
 import { auditTime, BehaviorSubject, combineLatest, debounceTime, Observable, take } from 'rxjs';
-import { delay, filter, map, tap, withLatestFrom } from 'rxjs/operators';
+import { delay, filter, map, tap, withLatestFrom } from 'rxjs';
 import { v4 } from 'uuid';
 
 export interface Pagination {
@@ -214,7 +214,7 @@ export class WidgetTableComponent extends DataWidgetComponent {
 
     this.subscriptions.add(this.selectedIds$.subscribe((selectedIds) => this.selectedIds === selectedIds));
 
-    this.store.dispatch(ClassActions.load());
+    this.store.dispatch(ClassActions.load({}));
 
     this.properties$ = combineLatest([this.resultSet$, this.classes$, this.fields$]).pipe(
       map(([rs, classes, fields]) => [

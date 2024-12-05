@@ -18,7 +18,7 @@ import {
   SearchService
 } from '@provoly/dashboard';
 import { combineLatest, of } from 'rxjs';
-import { catchError, first, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, first, map, mergeMap, switchMap, withLatestFrom } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { SearchMultiClassActions } from '../../../search/search-multi-class/store/search-multi-class.actions';
 import { SearchMonoClassActions } from './search-mono-class.actions';

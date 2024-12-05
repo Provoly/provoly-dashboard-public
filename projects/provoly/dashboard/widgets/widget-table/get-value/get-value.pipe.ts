@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ClassSelectors, FieldSelectors, FieldType, Item, ItemUtils } from '@provoly/dashboard';
 import { combineLatestWith } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map } from 'rxjs';
 
 @Pipe({ name: 'getValue' })
 export class GetValuePipe implements PipeTransform {

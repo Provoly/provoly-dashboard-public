@@ -43,8 +43,8 @@ export class AdminDatasetComponent {
     private route: ActivatedRoute
   ) {
     this.loading$ = this.store.select(ClassSelectors.loading);
-    this.store.dispatch(DataSourceActions.dataset.loadDataset());
-    this.store.dispatch(ClassActions.load());
+    this.store.dispatch(DataSourceActions.dataset.loadDataset({}));
+    this.store.dispatch(ClassActions.load({}));
     this.validateAction = () => this.validateName(this.labelDatasetSelected);
     this.cancelAction = () => this.cancelEdition();
     this.configHeader = [

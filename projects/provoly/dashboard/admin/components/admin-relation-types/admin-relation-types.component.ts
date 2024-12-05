@@ -16,7 +16,7 @@ export class AdminRelationTypesComponent {
   sortDirection? = 'asc';
 
   constructor(private store: Store<AdminRelationTypesComponent>) {
-    this.store.dispatch(RelationTypesActions.load());
+    this.store.dispatch(RelationTypesActions.load({}));
     this.store.dispatch(RelationTypesActions.unSelectRelationType());
     this.relationTypes = this.store.select(RelationTypesSelectors.relationsTypes);
     this.selectedRelationType$ = this.store.select(RelationTypesSelectors.selectedRelationType);

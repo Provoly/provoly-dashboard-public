@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { DataSourceActions, DataSourceSelectors, DEFAULT_NAMED_QUERY_ID, SearchActions } from '@provoly/dashboard';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { map, withLatestFrom } from 'rxjs';
 import { searchFulltextActions } from './search-fulltext.actions';
 import { SearchFulltextService } from './search-fulltext.service';
 

@@ -41,7 +41,7 @@ export class PryPipelineOutputDatasetModule {
     this.pryTranslateService.addLangObject('fr', 'pipeline-outputdsdef', frTranslations);
     this.pryTranslateService.addLangObject('en', 'pipeline-outputdsdef', enTranslations);
 
-    this.store.dispatch(DataSourceActions.dataset.loadDataset());
+    this.store.dispatch(DataSourceActions.dataset.loadDataset({}));
     this.store.select(DataSourceSelectors.datasets).subscribe((datasources) => {
       const closedDatasources = datasources.filter((def) => def.type === PryDatasetType.CLOSED);
       closedDatasources.forEach((datasource) => {

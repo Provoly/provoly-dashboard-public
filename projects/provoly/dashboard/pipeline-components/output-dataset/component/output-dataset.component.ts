@@ -13,7 +13,7 @@ export class OutputDatasetComponent extends PipelinePropertiesPanelComponent {
 
   constructor(private store: Store) {
     super();
-    this.store.dispatch(DataSourceActions.dataset.loadDataset());
+    this.store.dispatch(DataSourceActions.dataset.loadDataset({}));
     this.datasets$ = this.store
       .select(DataSourceSelectors.datasets)
       .pipe(map((datasets: Dataset[]) => datasets.filter((dataset) => dataset.type === PryDatasetType.CLOSED)));

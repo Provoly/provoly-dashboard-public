@@ -10,12 +10,12 @@ import { PryI18nService } from '../../i18n/i18n.service';
 import { SearchService } from '../search/search.service';
 import { DataSourceActions } from './data-source.actions';
 import { DataSourceEffects } from './data-source.effects';
-import { DatasetVersion, NamedQuery } from './data-source.model';
+import { NamedQuery } from './data-source.model';
 import { DataSourceState, initialDataSourceState } from './data-source.reducer';
 import { DataSourceService } from './data-source.service';
 import { NamedQueryTypes } from './named-query-types.model';
 import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { clone, headers, mockHttpResponse } from '@provoly/dashboard/mock/data/mockHttp';
 
 const buildState = (state: Partial<DataSourceState>) =>
@@ -117,52 +117,6 @@ describe('DataSourceEffects', () => {
 
   describe('postNameQuery$', function () {});
 
-  describe('getNamedQuery$', function () {
-    /* jest-marbles and debounceTime are not great buddies
-    it('should return namedQueries', () => {
-      const getSpy = jest.spyOn(namedQueryService, 'get');
-      store.setState(
-        buildState({
-          ...initialState
-        })
-      );
-
-      actions$ = hot('--a-', {
-        a: DataSourceActions.namedQuery.load()
-      });
-
-      const expected$ = hot('--a-', {
-        a: DataSourceActions.namedQuery.loaded({ list: namedQueryList })
-      });
-      expect(effects.getNamedQuery$).toBeObservable(expected$);
-      expect(effects.getNamedQuery$).toSatisfyOnFlush(() => {
-        expect(getSpy).toHaveBeenCalled();
-      });
-    });
-    it('should call to failure on error', () => {
-      const getSpy = jest.spyOn(namedQueryService, 'get').mockImplementation(() => {
-        throw new Error('fake message');
-      });
-      store.setState(
-        buildState({
-          ...initialState
-        })
-      );
-
-      actions$ = hot('--a', {
-        a: DataSourceActions.namedQuery.load()
-      });
-
-      const expected$ = hot('--(a|)', {
-        a: DataSourceActions.namedQuery.failure({ error: Error('fake message') })
-      });
-      expect(effects.getNamedQuery$).toBeObservable(expected$);
-      expect(effects.getNamedQuery$).toSatisfyOnFlush(() => {
-        expect(getSpy).toHaveBeenCalled();
-      });
-    });*/
-  });
-
   describe('deleteNamedQuery$', function () {
     it('should call to load after delete completed', () => {
       const getSpy = jest.spyOn(dsService, 'delete').mockReturnValue(of({ data: { success: true } }));
@@ -177,7 +131,7 @@ describe('DataSourceEffects', () => {
       });
 
       const expected$ = hot('--a-', {
-        a: DataSourceActions.namedQuery.load()
+        a: DataSourceActions.namedQuery.load({ force: true })
       });
       expect(effects.deleteNamedQuery$).toBeObservable(expected$);
       expect(effects.deleteNamedQuery$).toSatisfyOnFlush(() => {

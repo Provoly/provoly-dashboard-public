@@ -6,11 +6,11 @@ import { Dataset, DatasetVersion, NamedQuery, PryVisibilityType } from './data-s
 import { Category } from '../category/category.interface';
 
 export const DataSourceActions = {
-  load: createAction('[Datasource] load'),
+  load: createAction('[Datasource] load', props<{ force?: true }>()),
   namedQuery: {
-    load: createAction('[NamedQuery] load'),
-    loaded: createAction('[NamedQuery] loaded', props<{ list: NamedQuery[] }>()),
-    failure: createAction('[NamedQuery] failure', props<{ error: Error }>()),
+    load: createAction('[NamedQuery] (bus) load', props<{ force?: true }>()),
+    loaded: createAction('[NamedQuery] (bus) loaded', props<{ list: NamedQuery[] }>()),
+    failure: createAction('[NamedQuery] (bus) failure', props<{ error: Error }>()),
     post: createAction(
       '[NamedQuery] post',
       props<{
@@ -38,9 +38,9 @@ export const DataSourceActions = {
     stopRename: createAction('[NamedQuery] stop rename')
   },
   dataset: {
-    loadDataset: createAction('[Dataset] load datasets'),
-    loadedDataset: createAction('[Dataset] loaded datasets', props<{ datasets: Dataset[] }>()),
-    failure: createAction('[Dataset] failure effect Dataset', props<{ error: any }>()),
+    loadDataset: createAction('[Dataset] (bus) load datasets', props<{ force?: true }>()),
+    loadedDataset: createAction('[Dataset] (bus) loaded datasets', props<{ datasets: Dataset[] }>()),
+    failure: createAction('[Dataset] (bus) failure effect Dataset', props<{ error: any }>()),
 
     listVersions: createAction(
       '[Dataset] Get Dataset versions',

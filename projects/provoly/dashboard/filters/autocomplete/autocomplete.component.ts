@@ -19,10 +19,10 @@ import {
   skipUntil,
   startWith,
   Subject,
-  switchMap
+  switchMap,
+  tap
 } from 'rxjs';
 import equal from 'fast-deep-equal/es6';
-import { tap } from 'rxjs/operators';
 import { Attribute } from '@provoly/dashboard/toolbox';
 
 @Component({
@@ -59,7 +59,8 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
           attributes: (this.filter?.attributes as Omit<Attribute, 'customId'>[]).filter(
             (a) => !!a.datasource && !!a.id
           ),
-          limit: this.filter?.limit ?? 10
+          limit: this.filter?.limit ?? 10,
+          force: !this.filter.preventRefreshes
         })
       );
     }

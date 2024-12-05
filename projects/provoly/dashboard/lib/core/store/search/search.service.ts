@@ -66,7 +66,8 @@ export class SearchService {
             type: ds?.sourceType === 'namedQuery' ? ds.request.type : NamedQueryTypes.MONO_CLASS,
             excludeGeo: excludeGeo ?? false,
             searchAfter: searchAfter ?? undefined,
-            linkedItems
+            linkedItems,
+            limit: this.limits[id] || this.limits['default']
           },
           { params }
         );
@@ -79,7 +80,7 @@ export class SearchService {
     return '|' + this.getItemsFilter(id, this.getOrder(quickOrder[id])).toString() + '|';
   }
 
-  getItemsFilter(id: string, cumulative?: HttpParams, includeLimit = true): HttpParams {
+  getItemsFilter(id: string, cumulative?: HttpParams): HttpParams {
     let params = cumulative ?? new HttpParams({ encoder: new FilterParamEncoder() });
     if (this.filters[id]) {
       this.filters[id]
@@ -103,12 +104,6 @@ export class SearchService {
             : encodeURIComponent(valuesToAddToParams!.toString().replace(/,/g, '\\,'));
           params = params.append('filter', `${filter.attribute},${filter.operator},${value}`);
         });
-    }
-    if (includeLimit) {
-      const limit = this.limits[id];
-      if (limit) {
-        params = params.append('limit', limit);
-      }
     }
     return params;
   }

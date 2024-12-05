@@ -34,7 +34,7 @@ export class AdminEffects {
       ofType(RelationTypesActions.deleteRelationTypeSuccess),
       mergeMap((action) => {
         return [
-          RelationTypesActions.load(),
+          RelationTypesActions.load({ force: true }),
           AdminActions.selectComponentType({ componentType: null }),
           AdminActions.mainActions({
             actions: [

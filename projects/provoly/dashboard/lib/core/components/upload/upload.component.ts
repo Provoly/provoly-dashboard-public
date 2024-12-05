@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { filter } from 'rxjs/operators';
+import { filter } from 'rxjs';
 import { ImageActions } from '../../store/image/image.actions';
 import { ImagesSelectors } from '../../store/image/image.selectors';
 import { LibraryTypes } from '../../store/image/image.service';
@@ -18,7 +18,10 @@ export class PryUploadComponent {
   @Output() uploadedFile = new EventEmitter<File>();
   @ViewChild('fileInput') fileInput!: ElementRef;
 
-  constructor(private store: Store, private rawService: RawService) {}
+  constructor(
+    private store: Store,
+    private rawService: RawService
+  ) {}
 
   onFileSelect($event: Event) {
     // @ts-ignore

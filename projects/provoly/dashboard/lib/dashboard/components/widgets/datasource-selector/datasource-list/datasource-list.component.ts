@@ -1,4 +1,4 @@
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, debounceTime, map, Observable } from 'rxjs';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Dataset, DataSource } from '../../../../../core/store/data-source/data-source.model';
@@ -8,7 +8,6 @@ import { Category } from '../../../../../core/store/category/category.interface'
 import { DashboardActions } from '../../../../store/dashboard.actions';
 import { SubscriptionnerDirective } from '../../../subscriptionner.directive';
 import { DatasourceUtils } from '../../../../../core/store/data-source/datasource-utils';
-import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'pry-datasource-list',
@@ -38,7 +37,7 @@ export class PryDatasourceListComponent extends SubscriptionnerDirective impleme
 
   constructor(protected store: Store<any>) {
     super();
-    this.store.dispatch(DataSourceActions.load());
+    this.store.dispatch(DataSourceActions.load({}));
     this.datasources$ = combineLatest([
       this.store.select(DataSourceSelectors.getDataSourcesSorted),
       this.selectedDatasources$

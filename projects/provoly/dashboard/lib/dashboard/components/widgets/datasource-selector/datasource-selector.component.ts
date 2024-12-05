@@ -6,7 +6,7 @@ import { WidgetManifest } from '../../../../core/model/manifest.interface';
 import { SubscriptionnerDirective } from '../../subscriptionner.directive';
 import { DatasourceUtils } from '../../../../core/store/data-source/datasource-utils';
 import { DataSourceSelectors } from '../../../../core/store/data-source/data-source.selectors';
-import { delay } from 'rxjs/operators';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'pry-datasource-selector',

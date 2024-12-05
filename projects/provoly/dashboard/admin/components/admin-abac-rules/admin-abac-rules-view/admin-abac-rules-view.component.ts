@@ -12,9 +12,13 @@ import { AbacRulesActions } from '../store/abac-rules.actions';
   templateUrl: './admin-abac-rules-view.component.html'
 })
 export class AdminAbacRulesViewComponent implements OnInit {
-  constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute) {
-    this.store.dispatch(ClassActions.load());
-    this.store.dispatch(FieldActions.load());
+  constructor(
+    private store: Store<any>,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    this.store.dispatch(ClassActions.load({}));
+    this.store.dispatch(FieldActions.load({}));
     this.store.dispatch(PredicatesActions.loadPredicates());
     this.store.dispatch(MetadataActions.loadMetadata());
   }

@@ -2,9 +2,12 @@ import { createAction, props } from '@ngrx/store';
 import { RelationType } from './relation-types.interface';
 
 export const RelationTypesActions = {
-  load: createAction('[Relation Types] Load Relation Types'),
-  loadSuccess: createAction('[Relation Types Api] Load Relation Types Success', props<{ datas: RelationType[] }>()),
-  loadFailure: createAction('[Relation Types Api] Load Relation Types Failure', props<{ error: any }>()),
+  load: createAction('[Relation Types] (bus) Load Relation Types', props<{ force?: boolean }>()),
+  loadSuccess: createAction(
+    '[Relation Types Api] (bus) Load Relation Types Success',
+    props<{ datas: RelationType[] }>()
+  ),
+  loadFailure: createAction('[Relation Types Api] (bus) Load Relation Types Failure', props<{ error: any }>()),
 
   saveRelationType: createAction('[Relation Types] Save Relation Types', props<{ id: string; name: string }>()),
   saveRelationTypeSuccess: createAction('[Relation Types Api] Save Relation Types Success'),

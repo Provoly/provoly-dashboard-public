@@ -35,8 +35,8 @@ export class AdminLinksComponent {
     private route: ActivatedRoute
   ) {
     this.store.dispatch(LinksActions.loadLinks());
-    this.store.dispatch(ClassActions.load());
-    this.store.dispatch(RelationTypesActions.load());
+    this.store.dispatch(ClassActions.load({}));
+    this.store.dispatch(RelationTypesActions.load({}));
     this.links$ = this.store.select(LinksSelectors.links);
     this.classes$ = this.store.select(ClassSelectors.classes);
 

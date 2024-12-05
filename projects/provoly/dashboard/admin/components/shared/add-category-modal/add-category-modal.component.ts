@@ -8,7 +8,6 @@ import {
   DataSourceSelectors
 } from '@provoly/dashboard';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
-import { AdminDatasetSelectors } from '../../admin-dataset/store/admin-dataset.selectors';
 import { Store } from '@ngrx/store';
 import { v4 as uuid } from 'uuid';
 import { AdminClassActions } from '../../admin-classes/store/admin-class.actions';
@@ -32,7 +31,7 @@ export class AddCategoryModalComponent implements OnInit {
 
   actions = {
     attribute: {
-      load: () => this.store.dispatch(CategoryActions.load()),
+      load: () => this.store.dispatch(CategoryActions.load({})),
       select: () => this.store.select(CategorySelectors.categories),
       add: (category: Category) => this.store.dispatch(AdminClassActions.saveCategory({ category }))
     },

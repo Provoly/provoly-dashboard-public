@@ -1,20 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { debounceTime } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, debounceTime, filter, map, mergeMap, withLatestFrom } from 'rxjs';
 import { DashboardActions } from '../../../dashboard/store/dashboard.actions';
 import { PryDialogConfirmComponent, PryDialogConfirmData } from '../../components/overlay/dialog-confirm.component';
 import { PryDialogService } from '../../components/overlay/dialog.service';
 import { RelationTypesActions } from './relation-types.actions';
 import { RelationTypesService } from './relation-types.service';
+import { RelationTypesSelectors } from './relation-types.selectors';
+import { Store } from '@ngrx/store';
+import { DashboardSelectors } from '../../../dashboard/store/dashboard.selectors';
 
 @Injectable()
 export class RelationTypesEffects {
   loadRelationsTypes$ = createEffect(() =>
     this.actions$.pipe(
       ofType(RelationTypesActions.load),
-      debounceTime(100),
+      withLatestFrom(
+        this.store.select(RelationTypesSelectors.relationsTypes),
+        this.store.select(DashboardSelectors.rank)
+      ),
+      debounceTime(200),
+      filter(([action, relationTypes, rank]) => (action.force || relationTypes.length === 0) && rank === 0),
       mergeMap((action) =>
         this.service.getRelationsTypes().pipe(
           map((datas) => RelationTypesActions.loadSuccess({ datas })),
@@ -40,7 +46,7 @@ export class RelationTypesEffects {
     this.actions$.pipe(
       ofType(RelationTypesActions.saveRelationTypeSuccess),
       map((action) => {
-        return RelationTypesActions.load();
+        return RelationTypesActions.load({ force: true });
       })
     )
   );
@@ -97,7 +103,7 @@ export class RelationTypesEffects {
   constructor(
     private actions$: Actions,
     private service: RelationTypesService,
-    private router: Router,
+    private store: Store,
     private pryDialog: PryDialogService
   ) {}
 }

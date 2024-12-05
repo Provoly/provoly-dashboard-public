@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { Store } from '@ngrx/store';
 import { Attribute, Class, ClassSelectors, FieldSelectors, FieldType } from '@provoly/dashboard';
 import { filter, map, Observable, switchMap } from 'rxjs';
-import { withLatestFrom } from 'rxjs/operators';
+import { withLatestFrom } from 'rxjs';
 import { SearchMonoClassSelectors } from '../../store/search-mono-class.selectors';
 
 @Component({

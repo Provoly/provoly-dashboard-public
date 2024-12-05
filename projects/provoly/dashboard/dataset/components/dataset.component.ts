@@ -12,9 +12,9 @@ export class PryDatasetComponent {
   ViewMode = ViewMode;
 
   constructor(protected store: Store<any>) {
-    this.store.dispatch(ClassActions.load());
-    this.store.dispatch(FieldActions.load());
-    this.store.dispatch(ConfigActions.loadCustomization());
+    this.store.dispatch(ClassActions.load({}));
+    this.store.dispatch(FieldActions.load({}));
+    this.store.dispatch(ConfigActions.loadCustomization({}));
   }
 
   consult(dataset: Dataset) {

@@ -24,7 +24,7 @@ import {
   Subscription,
   switchMap
 } from 'rxjs';
-import { withLatestFrom } from 'rxjs/operators';
+import { withLatestFrom } from 'rxjs';
 import { WidgetManifest } from '../../../../core/model/manifest.interface';
 import { DashboardActions } from '../../../store/dashboard.actions';
 import { DashboardSelectors } from '../../../store/dashboard.selectors';

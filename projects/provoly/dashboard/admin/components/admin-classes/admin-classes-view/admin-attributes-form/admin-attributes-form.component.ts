@@ -55,9 +55,9 @@ export class AdminAttributesFormComponent extends SubscriptionnerDirective imple
     private dialog: PryDialogService
   ) {
     super();
-    this.store.dispatch(FieldActions.load());
+    this.store.dispatch(FieldActions.load({}));
     this.fields$ = this.store.select(FieldSelectors.fields);
-    this.store.dispatch(CategoryActions.load());
+    this.store.dispatch(CategoryActions.load({}));
     this.categories$ = this.store.select(CategorySelectors.categories);
 
     this.attrForm = this.formBuilder.group({

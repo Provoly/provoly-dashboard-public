@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { mergeMap, Observable, of } from 'rxjs';
-import { catchError, map, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, withLatestFrom } from 'rxjs';
 import { PrySnackbarService } from '../../core/components/snackbar/snackbar.service';
 import { PryI18nService } from '../../core/i18n/i18n.service';
 import { GlobalManifest, ManifestDescription } from '../../core/model/manifest.interface';

@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BaseWidgetComponent, ImageWidgetOptions } from '@provoly/dashboard';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'pry-widget-image',

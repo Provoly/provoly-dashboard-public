@@ -13,7 +13,7 @@ import {
 } from '@provoly/dashboard';
 import equal from 'fast-deep-equal/es6';
 import { combineLatest, Observable } from 'rxjs';
-import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, map, withLatestFrom } from 'rxjs';
 import { SearchMonoClassActions } from '../../store/search-mono-class.actions';
 import { SearchMonoClassSelectors } from '../../store/search-mono-class.selectors';
 
