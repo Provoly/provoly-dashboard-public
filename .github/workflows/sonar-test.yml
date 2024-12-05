@@ -37,7 +37,7 @@ jobs:
       - name: Setup SonarQube
         uses: warchant/setup-sonar-scanner@v7
       - name: Download coverage files
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: code-coverage-report
           path: coverage/
