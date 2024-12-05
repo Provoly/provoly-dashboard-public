@@ -28,17 +28,19 @@
     (dragover)="dragMove($event)"
     (dragleave)="dragLeave($event)"
     (dragenter)="dragEnter($event)"
-    >
+  >
     @for (
-      widgetManifest of (windowManifest$ | async)?.widgets || []; track trackWidgets(widgetIndex,
-      widgetManifest); let widgetIndex = $index) {
+      widgetManifest of (windowManifest$ | async)?.widgets || [];
+      track trackWidgets(widgetIndex, widgetManifest);
+      let widgetIndex = $index
+    ) {
       <div
         class="o-dashboard-widget"
         [class.-edited]="modeEdition"
         [style.gridColumn]="gridColumn(widgetManifest.layout)"
         [style.gridRow]="gridRow(widgetManifest.layout)"
         (drop)="droppingInWidget($event, widgetIndex)"
-        >
+      >
         @if (modeEdition) {
           <div class="resize nw-resize" (mousedown)="startResize($event, widgetIndex, 'resize-nw')">
             <pry-icon iconSvg="north_west" [animation]="false"></pry-icon>
@@ -71,17 +73,17 @@
     }
 
     @if (!noBackground) {
-      @if ({
-        noWidgets: (nonFillerWidgets$ | async) === 0,
-        globalLoading: loading$ | async,
-        fetchLoading: (dataFetching$ | async)?.length ?? 1 > 0
-        }; as data) {
+      @if (
+        {
+          noWidgets: (nonFillerWidgets$ | async) === 0,
+          globalLoading: loading$ | async,
+          fetchLoading: (dataFetching$ | async)?.length ?? 1 > 0
+        };
+        as data
+      ) {
         @if (data.noWidgets) {
           @if (data.globalLoading) {
-            <div
-              class="no-widget"
-              [style.grid-area]="backgroundArea$ | async"
-              >
+            <div class="no-widget" [style.grid-area]="backgroundArea$ | async">
               <pry-page-loader></pry-page-loader>
               <span class="no-widget__text">{{ '@pry.widget.target.loading' | i18n }}...</span>
             </div>
@@ -96,11 +98,11 @@
                     : '@pry.widget.target.none_auto'
                   ) | i18n
                 }}"
-                />
+              />
               <span class="no-widget__text">{{
                 (layout === DashboardGridLayout.MANUAL
-                ? '@pry.widget.target.none_manual'
-                : '@pry.widget.target.none_auto'
+                  ? '@pry.widget.target.none_manual'
+                  : '@pry.widget.target.none_auto'
                 ) | i18n
               }}</span>
             </div>
@@ -109,9 +111,9 @@
         <div
           class="a-page-loader backdrop"
           [style.display]="data.fetchLoading && !data.globalLoading ? 'flex' : 'none'"
-          [style.width.px]="params.gridWidth"
-          [style.height.px]="params.gridHeight"
-          >
+          [style.width.px]="width()"
+          [style.height.px]="height()"
+        >
           <pry-page-loader></pry-page-loader>
           <p>{{ '@pry.widget.target.loading' | i18n }}...</p>
         </div>

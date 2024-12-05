@@ -9,6 +9,7 @@ import {
   OnInit,
   Output,
   QueryList,
+  signal,
   TemplateRef,
   ViewChild,
   ViewChildren,
@@ -59,7 +60,6 @@ import { SubscriptionnerDirective } from './subscriptionner.directive';
 import { WidgetInstanciatorComponent } from './widgets/widget-instanciator/widget-instanciator.component';
 import { SearchSelectors } from '../../core/store/search/search.selectors';
 import { DataSourceSelectors } from '../../core/store/data-source/data-source.selectors';
-import { WidgetFactoryService } from './widgets/widget-instanciator/widget-factory.service';
 
 export const MIME_TYPE_WIDGET_MANIFEST = 'application/widget-manifest';
 export const MIME_TYPE_WIDGET_TYPE = 'application/widget-type-';
@@ -86,6 +86,8 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
   dataFetching$: Observable<string[]>;
   params: DashboardCellParams = {} as DashboardCellParams;
   forceModeEdition$ = new BehaviorSubject<boolean | undefined>(undefined);
+  width = signal(10);
+  height = signal(10);
 
   get widgetsInstances() {
     return this.instanciators?.map((instanciator) => instanciator.instanciatedComponent.instance) ?? [];
@@ -146,7 +148,7 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
     private store: Store<any>,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
-    private widgetFactoryService: WidgetFactoryService
+    private el: ElementRef
   ) {
     super();
     this.loading$ = this.store.select(DashboardSelectors.loading);
@@ -321,16 +323,22 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
       this.store.dispatch(
         DashboardActions.updateDisplayOptions({ mode: ViewMode.CUSTOM, customDisplay: this.displayOptions })
       );
+    this.updateSelfSize();
   }
 
   ngAfterViewInit() {
     this.canCalculateView = true;
+    this.updateSelfSize();
+  }
+
+  updateSelfSize() {
+    this.width.set(this.el.nativeElement.clientWidth);
+    this.height.set(this.el.nativeElement.clientHeight);
   }
 
   /***
    * Manage display
    */
-
   calculateView() {
     if (this.canCalculateView) {
       let element = this.gridRef.nativeElement;
