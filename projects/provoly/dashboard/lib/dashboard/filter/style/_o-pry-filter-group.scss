@@ -14,6 +14,33 @@
       margin-bottom: toRem(-5);
       padding: toRem(4) 0;
       overflow-x: auto;
+
+      pry-filter-instanciator {
+        min-width: 0;
+
+        pry-select {
+          min-width: 0;
+
+          .a-pry-select__value {
+            min-width: 0;
+
+            div.u-display-flex {
+              min-width: 0;
+
+              span {
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+            }
+          }
+        }
+
+        input {
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
     }
 
     &__filter-actions {

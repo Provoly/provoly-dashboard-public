@@ -12,7 +12,7 @@
   cdkMonitorElementFocus
   (cdkFocusChange)="onFocusChange($event)"
   (keydown)="onKeydownSelect($event)"
-  >
+>
   <div class="a-pry-select__content">
     @if (autocomplete) {
       <input
@@ -28,7 +28,8 @@
         [placeholder]="placeholder ?? ''"
         (keydown.enter)="enterPressed($event)"
         #input
-        />
+        [title]="search$.getValue()"
+      />
     } @else if ((valueItems$ | async).length === 0) {
       <span class="a-pry-select__placeholder">{{ placeholder }}</span>
       <div class="a-pry-select__filler"></div>
@@ -39,110 +40,101 @@
           [class.pry-select-form]="isForm"
           [class.-multiple]="multiple"
           [ngClass]="item ? item[bindClasses ?? ''] ?? {} : {}"
-          >
+        >
           @if (template) {
             <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
           } @else {
             @if (bindIcon) {
-              <pry-icon
-                [iconSvg]="item[bindIcon]"
-                [width]="iconSize[0]"
-                [height]="iconSize[1]"
-              ></pry-icon>
+              <pry-icon [iconSvg]="item[bindIcon]" [width]="iconSize[0]" [height]="iconSize[1]"></pry-icon>
             }
             @if (bindLabel ? item?.[bindLabel] : item; as value) {
               {{ (i18nPrefix ?? '') + value | i18n: { warn: false } }}
               @if (multiple && clearable) {
-                <span
-                  class="a-pry-select__clear"
-                  (click)="clear($event, item)"
-                  aria-hidden="true"
-                  >×</span
-                  >
-                }
+                <span class="a-pry-select__clear" (click)="clear($event, item)" aria-hidden="true">×</span>
               }
             }
-          </div>
-        }
-        <div class="a-pry-select__filler"></div>
-      }
-    </div>
-    <div class="a-pry-select__actions">
-      <div class="a-pry-select__actions__clear-button">
-        @if (clearable && (search$ | async)) {
-          <span class="a-pry-select__clear" (click)="clearAll($event)" aria-hidden="true">×</span>
-        }
-      </div>
-      <pry-icon
-        class="a-pry-select__toggle"
-        [iconSvg]="open ? 'chevron_top' : 'chevron_bottom'"
-        [width]="iconSize[0]"
-        [height]="iconSize[1]"
-      ></pry-icon>
-    </div>
-  </div>
-  <ng-template #optionsModal>
-    <div
-      role="listbox"
-      [attr.aria-label]="'@pry.select.label' | i18n"
-      [id]="modalId"
-      [attr.aria-activedescendant]="'select-option-' + activeDescendant"
-      [attr.aria-multiselectable]="multiple"
-      [attr.required]="required"
-      [attr.aria-readonly]="disabled"
-      cdkTrapFocus="!autocomplete"
-      [cdkTrapFocusAutoCapture]="!autocomplete"
-      >
-      @if (loading) {
-        <div class="a-pry-select__options__option -hint" [style.width.px]="modalWidth">
-          <div class="no-widget no-widget__loader">
-            <pry-page-loader></pry-page-loader>
-          </div>
-          <p>{{ '@pry.select.loading' | i18n }}...</p>
+          }
         </div>
-      } @else {
-        @for (
-          item of matchingItems$ | async;
-          track !!item && !!item.id ? item.id : item;
-          let index = $index;
-          let first = $first;
-          let last = $last
-          ) {
-          <div
-            class="a-pry-select__options__option"
-            [attr.aria-selected]="(valueItems$ | async).includes(item)"
-            [attr.aria-checked]="(valueItems$ | async).includes(item)"
-            [attr.aria-disabled]="disabled"
-            (click)="select($event, item, index)"
-            (keydown)="onKeydownOption($event, item, index, optionDivRef, first, last)"
-            [style.width.px]="modalWidth"
-            role="option"
-            [id]="'select-option-' + index"
-            tabindex="0"
-            #optionDivRef
-            >
-            @if (template) {
-              <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
-            } @else {
-              @if (multiple) {
-                <pry-checkbox
-                  (click)="$event.preventDefault()"
-                  [ngModel]="(valueItems$ | async).includes(item)"
-                ></pry-checkbox>
-              }
-              @if (bindIcon) {
-                <pry-icon [iconSvg]="item[bindIcon]" [width]="iconSize[0]" [height]="iconSize[1]"></pry-icon>
-              }
-              @if (bindLabel ? item?.[bindLabel] : item; as value) {
-                {{ (i18nPrefix ? i18nPrefix : '') + value | i18n: { warn: false } }}
-              }
-            }
-          </div>
-          } @empty {
-          <div class="a-pry-select__options__option -hint" [style.width.px]="modalWidth">
-            <p>{{ '@pry.select.empty' | i18n }}</p>
-          </div>
-        }
+      }
+      <div class="a-pry-select__filler"></div>
+    }
+  </div>
+  <div class="a-pry-select__actions">
+    <div class="a-pry-select__actions__clear-button">
+      @if (clearable && (search$ | async)) {
+        <span class="a-pry-select__clear" (click)="clearAll($event)" aria-hidden="true">×</span>
       }
     </div>
-  </ng-template>
+    <pry-icon
+      class="a-pry-select__toggle"
+      [iconSvg]="open ? 'chevron_top' : 'chevron_bottom'"
+      [width]="iconSize[0]"
+      [height]="iconSize[1]"
+    ></pry-icon>
+  </div>
+</div>
+<ng-template #optionsModal>
+  <div
+    role="listbox"
+    [attr.aria-label]="'@pry.select.label' | i18n"
+    [id]="modalId"
+    [attr.aria-activedescendant]="'select-option-' + activeDescendant"
+    [attr.aria-multiselectable]="multiple"
+    [attr.required]="required"
+    [attr.aria-readonly]="disabled"
+    cdkTrapFocus="!autocomplete"
+    [cdkTrapFocusAutoCapture]="!autocomplete"
+  >
+    @if (loading) {
+      <div class="a-pry-select__options__option -hint" [style.width.px]="modalWidth">
+        <div class="no-widget no-widget__loader">
+          <pry-page-loader></pry-page-loader>
+        </div>
+        <p>{{ '@pry.select.loading' | i18n }}...</p>
+      </div>
+    } @else {
+      @for (
+        item of matchingItems$ | async;
+        track !!item && !!item.id ? item.id : item;
+        let index = $index;
+        let first = $first;
+        let last = $last
+      ) {
+        <div
+          class="a-pry-select__options__option"
+          [attr.aria-selected]="(valueItems$ | async).includes(item)"
+          [attr.aria-checked]="(valueItems$ | async).includes(item)"
+          [attr.aria-disabled]="disabled"
+          (click)="select($event, item, index)"
+          (keydown)="onKeydownOption($event, item, index, optionDivRef, first, last)"
+          [style.width.px]="modalWidth"
+          role="option"
+          [id]="'select-option-' + index"
+          tabindex="0"
+          #optionDivRef
+        >
+          @if (template) {
+            <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item, clear }"></ng-container>
+          } @else {
+            @if (multiple) {
+              <pry-checkbox
+                (click)="$event.preventDefault()"
+                [ngModel]="(valueItems$ | async).includes(item)"
+              ></pry-checkbox>
+            }
+            @if (bindIcon) {
+              <pry-icon [iconSvg]="item[bindIcon]" [width]="iconSize[0]" [height]="iconSize[1]"></pry-icon>
+            }
+            @if (bindLabel ? item?.[bindLabel] : item; as value) {
+              {{ (i18nPrefix ? i18nPrefix : '') + value | i18n: { warn: false } }}
+            }
+          }
+        </div>
+      } @empty {
+        <div class="a-pry-select__options__option -hint" [style.width.px]="modalWidth">
+          <p>{{ '@pry.select.empty' | i18n }}</p>
+        </div>
+      }
+    }
+  </div>
+</ng-template>
