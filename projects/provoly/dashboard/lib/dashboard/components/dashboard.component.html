@@ -111,8 +111,8 @@
         <div
           class="a-page-loader backdrop"
           [style.display]="data.fetchLoading && !data.globalLoading ? 'flex' : 'none'"
-          [style.width.px]="width()"
-          [style.height.px]="height()"
+          [style.width.px]="(dashboardSize$ | async)?.width"
+          [style.height.px]="(dashboardSize$ | async)?.height"
         >
           <pry-page-loader></pry-page-loader>
           <p>{{ '@pry.widget.target.loading' | i18n }}...</p>

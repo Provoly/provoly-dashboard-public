@@ -1,6 +1,7 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
+  AfterViewChecked,
   AfterViewInit,
   Component,
   ElementRef,
@@ -9,7 +10,6 @@ import {
   OnInit,
   Output,
   QueryList,
-  signal,
   TemplateRef,
   ViewChild,
   ViewChildren,
@@ -22,6 +22,7 @@ import {
   BehaviorSubject,
   combineLatest,
   combineLatestWith,
+  debounceTime,
   delay,
   distinctUntilChanged,
   filter,
@@ -29,6 +30,7 @@ import {
   map,
   Observable,
   of,
+  startWith,
   switchMap
 } from 'rxjs';
 import { DisplayOptions } from '../../core/model/display-options.interface';
@@ -69,7 +71,7 @@ export const MIME_TYPE_WIDGET_SIZE = 'application/widget-size-';
   selector: 'pry-dashboard',
   templateUrl: './dashboard.component.html'
 })
-export class DashboardComponent extends SubscriptionnerDirective implements OnInit, AfterViewInit {
+export class DashboardComponent extends SubscriptionnerDirective implements OnInit, AfterViewInit, AfterViewChecked {
   manifest: DashboardManifest | null = null;
   windowManifest$: Observable<DashboardManifest>;
   modeEdition = false;
@@ -86,8 +88,8 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
   dataFetching$: Observable<string[]>;
   params: DashboardCellParams = {} as DashboardCellParams;
   forceModeEdition$ = new BehaviorSubject<boolean | undefined>(undefined);
-  width = signal(10);
-  height = signal(10);
+  private _dashboardSize$ = new BehaviorSubject<{ width: number; height: number }>({ width: 300, height: 300 });
+  dashboardSize$: Observable<{ width: number; height: number }>;
 
   get widgetsInstances() {
     return this.instanciators?.map((instanciator) => instanciator.instanciatedComponent.instance) ?? [];
@@ -316,6 +318,20 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
           layout === DashboardGridLayout.MANUAL ? [] : WidgetPlacementUtils.getLayout(layout)?.places ?? []
         )
       );
+
+    this.dashboardSize$ = this._dashboardSize$.pipe(
+      startWith({
+        width: 300,
+        height: 300
+      }),
+      distinctUntilChanged((p, c) => p.width === c.width && p.height === c.height),
+      debounceTime(100),
+      distinctUntilChanged((p, c) => p.width === c.width && p.height === c.height)
+    );
+  }
+
+  ngAfterViewChecked(): void {
+    this.updateSelfSize();
   }
 
   ngOnInit() {
@@ -323,17 +339,15 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
       this.store.dispatch(
         DashboardActions.updateDisplayOptions({ mode: ViewMode.CUSTOM, customDisplay: this.displayOptions })
       );
-    this.updateSelfSize();
   }
 
   ngAfterViewInit() {
     this.canCalculateView = true;
-    this.updateSelfSize();
   }
 
   updateSelfSize() {
-    this.width.set(this.el.nativeElement.clientWidth);
-    this.height.set(this.el.nativeElement.clientHeight);
+    const boundingRect = this.el.nativeElement.getBoundingClientRect();
+    this._dashboardSize$.next({ width: boundingRect.width, height: boundingRect.height });
   }
 
   /***
