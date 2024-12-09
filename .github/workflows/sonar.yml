@@ -41,8 +41,6 @@ jobs:
         with:
           name: code-coverage-report
           path: coverage/
-      - run: ls -ail coverage/
-      - run: ls -ail
       - name: Analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
