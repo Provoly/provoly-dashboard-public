@@ -8,14 +8,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  sonar:
-    runs-on: provoly-arc-runner-on-rancher
+  generate-coverage:
+    runs-on: provoly-runner
     container: "${{ vars.REGISTRY_URL }}/docker-mirror/library/node:18-bullseye"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Setup SonarQube
-        uses: warchant/setup-sonar-scanner@v7
       - uses: actions/setup-node@v4
         with:
           node-version: '18.18.2'
@@ -24,13 +22,29 @@ jobs:
         run: npm ci
       - name: Running Tests & coverage
         run: npm run test:lib:coverage:ci
-      - name: Analysis
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_URL: ${{ secrets.SONAR_URL }}
-        run: sonar-scanner -Dsonar.token=${{ env.SONAR_TOKEN }} -Dsonar.host.url=${{ env.SONAR_URL }} -Dsonar.projectKey=provoly-dashboard
       - name: Upload coverage
         uses: actions/upload-artifact@v4
         with:
           name: code-coverage-report
           path: coverage/**
+  sonar:
+    needs:
+      - generate-coverage
+    runs-on: provoly-arc-runner-on-rancher
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup SonarQube
+        uses: warchant/setup-sonar-scanner@v7
+      - name: Download coverage files
+        uses: actions/download-artifact@v4
+        with:
+          name: code-coverage-report
+          path: coverage/
+      - run: ls -ail coverage/
+      - run: ls -ail
+      - name: Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_URL: ${{ secrets.SONAR_URL }}
+        run: sonar-scanner -Dsonar.token=${{ env.SONAR_TOKEN }} -Dsonar.host.url=${{ env.SONAR_URL }} -Dsonar.projectKey=provoly-dashboard
