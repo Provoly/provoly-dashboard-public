@@ -31,7 +31,8 @@ import {
   Observable,
   of,
   startWith,
-  switchMap
+  switchMap,
+  withLatestFrom
 } from 'rxjs';
 import { DisplayOptions } from '../../core/model/display-options.interface';
 import {
@@ -146,6 +147,13 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
   private confirmRemoveRef?: OverlayRef;
   Array: any;
 
+  @Input() set linkedItems(linkedItems: ('destination' | 'source')[]) {
+    this.linkedItems$.next(linkedItems);
+  }
+  linkedItems$: BehaviorSubject<('destination' | 'source')[] | undefined> = new BehaviorSubject<
+    ('destination' | 'source')[] | undefined
+  >(undefined);
+
   constructor(
     private store: Store<any>,
     private overlay: Overlay,
@@ -209,11 +217,12 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
     );
 
     this.subscriptions.add(
-      this.staticDashboard$.subscribe((manifest) => {
+      this.staticDashboard$.pipe(withLatestFrom(this.linkedItems$)).subscribe(([manifest, linkedItems]) => {
         if (!!manifest) {
           this.store.dispatch(
             DashboardActions.assertResultSets({
-              staticManifest: manifest
+              staticManifest: manifest,
+              linkedItems
             })
           );
         }
@@ -221,13 +230,15 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
     );
 
     this.subscriptions.add(
-      combineLatest([this.windowManifest$, this.store.select(DataSourceSelectors.getDataSources)]).subscribe(
-        ([manifest, datasets]) => {
-          if (datasets.length > 0) {
-            this.store.dispatch(DashboardActions.assertResultSets({}));
-          }
+      combineLatest([
+        this.windowManifest$,
+        this.store.select(DataSourceSelectors.getDataSources),
+        this.linkedItems$
+      ]).subscribe(([manifest, datasets, linkedItems]) => {
+        if (datasets.length > 0) {
+          this.store.dispatch(DashboardActions.assertResultSets({ linkedItems }));
         }
-      )
+      })
     );
 
     this.store.dispatch(FieldActions.load({}));
@@ -723,7 +734,11 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
 
         this.movingMouse($event, false);
 
-        this.store.dispatch(DashboardActions.assertResultSets({}));
+        this.store.dispatch(
+          DashboardActions.assertResultSets({
+            linkedItems: this.linkedItems
+          })
+        );
       }
 
       this.clearActions();
@@ -770,7 +785,11 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
             }
           })
         );
-        this.store.dispatch(DashboardActions.assertResultSets({}));
+        this.store.dispatch(
+          DashboardActions.assertResultSets({
+            linkedItems: this.linkedItems
+          })
+        );
         $event.preventDefault();
         $event.stopPropagation();
       }

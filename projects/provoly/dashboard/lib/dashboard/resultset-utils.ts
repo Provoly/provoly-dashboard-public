@@ -6,20 +6,13 @@ export class ResultsetUtils {
   static mergeResultSets(rs1: ResultSet, rs2: ResultSet): ResultSet {
     if (!rs1) return rs2;
     if (!rs2) return rs1;
-    const rs1Copy = structuredClone(rs1) as ResultSet;
-    Object.keys(rs2.items ?? {}).forEach((key) => {
-      if (!rs1Copy.items[key]) {
-        rs1Copy.items[key] = [];
-      }
-      rs1Copy.items[key].push(...rs2.items[key]);
-    });
+    const rs1Copy = structuredClone(rs1);
+
+    this.mergeItems(rs1Copy, rs2, (rs) => rs.items);
+    this.mergeItems(rs1Copy, rs2, (rs) => rs.sourceItems ?? {});
+    this.mergeItems(rs1Copy, rs2, (rs) => rs.destinationItems ?? {});
 
     /* Make items and relations unique in resulted dataset */
-    Object.keys(rs1Copy.items).forEach((key) => {
-      const uniqueList = [...new Set(rs1Copy.items[key].map((it) => it.id))];
-      rs1Copy.items[key] = uniqueList.map((id) => rs1Copy.items[key].find((it) => it.id === id)) as Item[];
-    });
-
     rs1Copy.relations = [
       ...new Set([
         ...([...(rs1Copy.relations ?? []), ...(rs2.relations ?? [])] ?? []).map(
@@ -48,5 +41,28 @@ export class ResultsetUtils {
     rs1Copy.searchAfter = rs2.searchAfter ?? rs1Copy.searchAfter;
 
     return rs1Copy;
+  }
+
+  private static mergeItems(
+    rs1: ResultSet,
+    rs2: ResultSet,
+    getItemsToMerge: (rs: ResultSet) => {
+      [key: string]: Item[];
+    }
+  ): void {
+    const rs1Items = getItemsToMerge(rs1);
+    const rs2Items = getItemsToMerge(rs2);
+
+    Object.keys(rs2Items).forEach((key) => {
+      if (!rs1Items[key]) {
+        rs1Items[key] = [];
+      }
+      rs1Items[key].push(...rs2Items[key]);
+    });
+
+    Object.keys(rs1Items).forEach((key) => {
+      const uniqueList = [...new Set(rs1Items[key].map((it) => it.id))];
+      rs1Items[key] = uniqueList.map((id) => (rs1Items ? rs1Items[key].find((it) => it.id === id) : [])) as Item[];
+    });
   }
 }

@@ -150,13 +150,13 @@ describe('SearchEffects', () => {
           a: SearchActions.searchSuccess({
             resultSet,
             id: 'ds2',
-            params: searchService.getItemsSerializedParams('ds1'),
+            params: searchService.getItemsSerializedParams('ds1', undefined, false, undefined),
             next: false
           }),
           b: SearchActions.searchSuccess({
             resultSet,
             id: 'ds1',
-            params: searchService.getItemsSerializedParams('ds2'),
+            params: searchService.getItemsSerializedParams('ds2', undefined, false, undefined),
             next: false
           })
         });

@@ -50,7 +50,12 @@ export class SearchEffects {
                   SearchActions.searchSuccess({
                     resultSet,
                     id: props.id,
-                    params: this.searchService.getItemsSerializedParams(props.id, quickOrder),
+                    params: this.searchService.getItemsSerializedParams(
+                      props.id,
+                      quickOrder,
+                      props.excludeGeo,
+                      props.linkedItems
+                    ),
                     next: props.next
                   })
                 ),

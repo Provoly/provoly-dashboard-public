@@ -60,14 +60,25 @@ export class SearchService {
     return this.store.select(ConfigSelectors.dataUrl).pipe(
       mergeMap((url) => {
         const ds = this.datasources.find((d) => d.id === id);
+
+        const otherParams: { [key: string]: string } = {};
+        if (linkedItems.length > 0) {
+          if (linkedItems.includes('destination')) {
+            otherParams['withDestinationItems'] = 'true';
+          }
+          if (linkedItems.includes('source')) {
+            otherParams['withSourceItems'] = 'true';
+          }
+        }
+
         return this.httpClient.post<ResultSet>(
           encodeURI(`${url}/data-sources/id/${id}/items`),
           {
             type: ds?.sourceType === 'namedQuery' ? ds.request.type : NamedQueryTypes.MONO_CLASS,
             excludeGeo: excludeGeo ?? false,
             searchAfter: searchAfter ?? undefined,
-            linkedItems,
-            limit: this.limits[id] || this.limits['default']
+            limit: this.limits[id] || this.limits['default'],
+            ...otherParams
           },
           { params }
         );
@@ -76,8 +87,15 @@ export class SearchService {
     );
   }
 
-  getItemsSerializedParams(id: string, quickOrder: { [id: string]: ResultOrder | undefined } = {}): string {
-    return '|' + this.getItemsFilter(id, this.getOrder(quickOrder[id])).toString() + '|';
+  getItemsSerializedParams(
+    id: string,
+    quickOrder: {
+      [id: string]: ResultOrder | undefined;
+    } = {},
+    excludeGeo: boolean,
+    linkedItems?: ('destination' | 'source')[]
+  ): string {
+    return `|${this.getItemsFilter(id, this.getOrder(quickOrder[id])).toString()}|${excludeGeo ? 'excludeGeo' : ''}|${linkedItems?.join(',')}|`;
   }
 
   getItemsFilter(id: string, cumulative?: HttpParams): HttpParams {

@@ -74,7 +74,9 @@ export class DataWidgetComponent extends BaseWidgetComponent {
         return resultSetArray.reduce((rs1, rs2) => ResultsetUtils.mergeResultSets(rs1, rs2), {
           items: {},
           relations: [],
-          merged: resultSetArray.length
+          merged: resultSetArray.length,
+          sourceItems: {},
+          destinationItems: {}
         });
       }),
       distinctUntilChanged((p, v) => equal(p, v))

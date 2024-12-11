@@ -262,13 +262,19 @@ export class DashboardEffects {
               resultSet.datasetId !== '' &&
               (!resultSets[resultSet.datasetId] ||
                 resultSetsParams[resultSet.datasetId] !==
-                  this.searchService.getItemsSerializedParams(resultSet.datasetId, quickOrder))
+                  this.searchService.getItemsSerializedParams(
+                    resultSet.datasetId,
+                    quickOrder,
+                    resultSet.excludeGeo,
+                    action.linkedItems
+                  ))
           )
           .map((resultSet) =>
             SearchActions.getDatasourceItems({
               id: resultSet.datasetId,
               excludeGeo: resultSet.excludeGeo,
-              from: 'DashboardEffects.assertResultSets$-1'
+              from: 'DashboardEffects.assertResultSets$-1',
+              linkedItems: action.linkedItems
             })
           );
 
@@ -777,7 +783,8 @@ export class DashboardEffects {
         SearchActions.getDatasourceItems({
           id: action.datasourceId,
           excludeGeo: true,
-          from: 'DashboardEffects.relaunchAfterOrder$'
+          from: 'DashboardEffects.relaunchAfterOrder$',
+          linkedItems: action.linkedItems
         })
       )
     )

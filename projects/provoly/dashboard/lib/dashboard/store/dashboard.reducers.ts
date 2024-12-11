@@ -708,7 +708,10 @@ const internalReducer = createReducer<DashboardState>(
         ...state.manifests,
         manifest: {
           ...state.manifests.manifest,
-          filters: state.manifests.manifest.filters?.map((filter) => ({ ...filter, value: undefined }))
+          filters: state.manifests.manifest.filters?.map((filter) => ({
+            ...filter,
+            value: filter.type === 'invisible' ? filter.value : undefined
+          }))
         }
       }
     };

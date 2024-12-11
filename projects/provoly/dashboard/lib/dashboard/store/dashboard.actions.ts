@@ -166,7 +166,13 @@ export const DashboardActions = {
   followManifestRoute: createAction('[Dashboard] (bus) follow manifest route'),
   moveWidget: createAction('[Dashboard] moving widget', props<{ widgetIndex: number; targetIndex: number }>()),
   maximizeWidget: createAction('[Dashboard] maximize widget', props<{ widgetIndex: number }>()),
-  assertResultSets: createAction('[Dashboard] assert resultSet', props<{ staticManifest?: DashboardManifest }>()),
+  assertResultSets: createAction(
+    '[Dashboard] assert resultSet',
+    props<{
+      staticManifest?: DashboardManifest;
+      linkedItems?: ('destination' | 'source')[];
+    }>()
+  ),
   updateResultSet: createAction(
     '[Dashboard] (bus) received named resultSet (not-active-action)',
     props<{ id: string; resultSet: ResultSet; params?: string; next?: boolean }>()
@@ -205,7 +211,12 @@ export const DashboardActions = {
   multiSnackBar: createAction('[Dashboard] (bus) display snack message', props<{ message: PrySnackMessage }>()),
   quickOrder: createAction(
     '[Dashboard] (bus) quick order',
-    props<{ datasourceId: string; attribute: string; asc: OrderValue }>()
+    props<{
+      datasourceId: string;
+      attribute: string;
+      asc: OrderValue;
+      linkedItems?: ('destination' | 'source')[];
+    }>()
   ),
   setGridLayout: createAction('[Dashboard] set grid layout', props<{ layout: string }>()),
   propagateGridLayout: createAction(
@@ -222,10 +233,18 @@ export const DashboardActions = {
     '[Dashboard] (bus) update filter value',
     props<{ id: string; value: any; datasourceId: string }>()
   ),
-  clearAllFilterValues: createAction('[Dashboard] (bus) clear all filter values'),
+  clearAllFilterValues: createAction(
+    '[Dashboard] (bus) clear all filter values',
+    props<{
+      linkedItems?: ('destination' | 'source')[];
+    }>()
+  ),
   dispatchFilters: createAction(
     '[Dashboard] (bus) apply filters to presentation datasources',
-    props<{ staticManifest?: DashboardManifest }>()
+    props<{
+      staticManifest?: DashboardManifest;
+      linkedItems?: ('destination' | 'source')[];
+    }>()
   ),
   resetWmsFeatures: createAction('[Widget map] Reset Wms layer features', props<{ componentId: string }>()),
   getWmsFeatures: createAction(
