@@ -6,6 +6,7 @@ import { Item } from '../../core/model/item.interface';
 import {
   DashboardManifest,
   GlobalManifest,
+  LinkedItemsOptions,
   ManifestDescription,
   WidgetManifest
 } from '../../core/model/manifest.interface';
@@ -169,8 +170,7 @@ export const DashboardActions = {
   assertResultSets: createAction(
     '[Dashboard] assert resultSet',
     props<{
-      staticManifest?: DashboardManifest;
-      linkedItems?: ('destination' | 'source')[];
+      staticManifest?: DashboardManifest | null;
     }>()
   ),
   updateResultSet: createAction(
@@ -215,7 +215,7 @@ export const DashboardActions = {
       datasourceId: string;
       attribute: string;
       asc: OrderValue;
-      linkedItems?: ('destination' | 'source')[];
+      linkedItems?: LinkedItemsOptions;
     }>()
   ),
   setGridLayout: createAction('[Dashboard] set grid layout', props<{ layout: string }>()),
@@ -233,17 +233,11 @@ export const DashboardActions = {
     '[Dashboard] (bus) update filter value',
     props<{ id: string; value: any; datasourceId: string }>()
   ),
-  clearAllFilterValues: createAction(
-    '[Dashboard] (bus) clear all filter values',
-    props<{
-      linkedItems?: ('destination' | 'source')[];
-    }>()
-  ),
+  clearAllFilterValues: createAction('[Dashboard] (bus) clear all filter values'),
   dispatchFilters: createAction(
     '[Dashboard] (bus) apply filters to presentation datasources',
     props<{
       staticManifest?: DashboardManifest;
-      linkedItems?: ('destination' | 'source')[];
     }>()
   ),
   resetWmsFeatures: createAction('[Widget map] Reset Wms layer features', props<{ componentId: string }>()),

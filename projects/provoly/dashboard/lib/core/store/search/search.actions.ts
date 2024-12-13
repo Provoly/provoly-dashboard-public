@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { ResultSet } from '../../model/result-set.interface';
 import { MonoClassSearchPayload } from '../../model/search-mono-class.model';
 import { FullTextSearchPayload, MultiClassSearchPayload } from '../../model/search-multi-class.model';
+import { LinkedItemsOptions } from '../../model/manifest.interface';
 
 export const SearchActions = {
   search: createAction(
@@ -9,7 +10,7 @@ export const SearchActions = {
     props<{
       payload: MonoClassSearchPayload | MultiClassSearchPayload | FullTextSearchPayload;
       id?: string;
-      linkedItems?: ('destination' | 'source')[];
+      linkedItems?: LinkedItemsOptions;
     }>()
   ),
   getDatasourceItems: createAction(
@@ -19,7 +20,7 @@ export const SearchActions = {
       excludeGeo: boolean;
       from: string;
       next?: boolean;
-      linkedItems?: ('destination' | 'source')[];
+      linkedItems?: LinkedItemsOptions;
     }>()
   ),
 

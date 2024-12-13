@@ -2,8 +2,21 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { combineLatest, delay, merge, of, startWith, throwError } from 'rxjs';
-import { catchError, debounceTime, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs';
+import {
+  catchError,
+  combineLatest,
+  debounceTime,
+  delay,
+  filter,
+  map,
+  merge,
+  mergeMap,
+  of,
+  startWith,
+  tap,
+  throwError,
+  withLatestFrom
+} from 'rxjs';
 import {
   PryDialogConfirmComponent,
   PryDialogConfirmData
@@ -31,6 +44,7 @@ import { PryTitleService } from './title.service';
 import { WmsService } from './wms.service';
 import { WidgetFactoryService } from '../components/widgets/widget-instanciator/widget-factory.service';
 import { DataSourceSelectors } from '../../core/store/data-source/data-source.selectors';
+import { ManifestUtils } from './manifest-utils.class';
 
 @Injectable()
 export class DashboardEffects {
@@ -238,23 +252,10 @@ export class DashboardEffects {
           ] as string[]
         ).map((ds) => DashboardActions.triggerAggregate({ id: ds }));
 
-        const toItemsActions = Object.values(
+        const toItemsActions = ManifestUtils.mergeDatasourceRequests(
           manifestToCheck.windows
-            .map((winManifest) => (winManifest ?? {}).widgets ?? [])
-            .reduce((p, c) => [...p, ...c], [])
-            .map((widManifest) => this.widgetFactoryService.datasourcesToAutoLoad(widManifest))
+            .map((winManifest) => this.widgetFactoryService.datasourcesToAutoLoad(winManifest))
             .flat()
-            .reduce(
-              (p, c) => ({
-                ...p,
-                [c.datasetId]: {
-                  ...p[c.datasetId],
-                  ...c,
-                  excludeGeo: p[c.datasetId]?.excludeGeo === false ? p[c.datasetId].excludeGeo : c.excludeGeo
-                }
-              }),
-              {} as { [key: string]: { datasetId: string; excludeGeo: boolean } }
-            )
         )
           .filter(
             (resultSet) =>
@@ -266,7 +267,7 @@ export class DashboardEffects {
                     resultSet.datasetId,
                     quickOrder,
                     resultSet.excludeGeo,
-                    action.linkedItems
+                    resultSet.linkedItems
                   ))
           )
           .map((resultSet) =>
@@ -274,7 +275,7 @@ export class DashboardEffects {
               id: resultSet.datasetId,
               excludeGeo: resultSet.excludeGeo,
               from: 'DashboardEffects.assertResultSets$-1',
-              linkedItems: action.linkedItems
+              linkedItems: resultSet.linkedItems
             })
           );
 

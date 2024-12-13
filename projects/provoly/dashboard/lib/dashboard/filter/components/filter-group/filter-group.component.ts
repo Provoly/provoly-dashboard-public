@@ -16,7 +16,6 @@ export class FilterGroupComponent {
   isSelectOpen = false;
   @Input() enterTriggerFilter = false;
   @Input() clearTriggerFilter = false;
-  @Input() linkedItems?: ('destination' | 'source')[];
 
   constructor(
     protected store: Store,
@@ -27,11 +26,11 @@ export class FilterGroupComponent {
 
   filter() {
     this.apply$.next();
-    this.store.dispatch(DashboardActions.dispatchFilters({ linkedItems: this.linkedItems }));
+    this.store.dispatch(DashboardActions.dispatchFilters({}));
   }
 
   clearFilters() {
-    this.store.dispatch(DashboardActions.clearAllFilterValues({ linkedItems: this.linkedItems }));
+    this.store.dispatch(DashboardActions.clearAllFilterValues());
   }
 
   openSelect() {

@@ -1,4 +1,9 @@
-import { DashboardGridLayout, DashboardManifest, GlobalManifest } from '../../core/model/manifest.interface';
+import {
+  DashboardGridLayout,
+  DashboardManifest,
+  DatasourceRequest,
+  GlobalManifest
+} from '../../core/model/manifest.interface';
 import { DEFAULT_COLUMNS_NUMBER, DEFAULT_GAP_PX, DEFAULT_ROWS_NUMBER } from './dashboard.contants';
 
 export class ManifestUtils {
@@ -42,5 +47,25 @@ export class ManifestUtils {
       },
       widgets: window.widgets ?? []
     } as DashboardManifest;
+  }
+
+  static mergeDatasourceRequests(datasourceRequests: DatasourceRequest[]): DatasourceRequest[] {
+    const uniqueDatasourceRequestIds = [...new Set((datasourceRequests ?? []).map((ds) => ds.datasetId))];
+
+    // We keep the most inclusive request for multiple requests for the same dataset
+    return uniqueDatasourceRequestIds.map((id) => ({
+      datasetId: id,
+      // If at least one request must include geo data, then keep request with geo data
+      excludeGeo: !datasourceRequests.some((ds) => ds.datasetId === id && !ds.excludeGeo),
+      // If at least one request must include source or destination items, then create request with everything needed
+      linkedItems: [
+        ...new Set(
+          datasourceRequests
+            .filter((ds) => ds.datasetId === id)
+            .map((ds) => ds.linkedItems ?? [])
+            .flat()
+        )
+      ]
+    }));
   }
 }

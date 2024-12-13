@@ -10,7 +10,7 @@ import { SearchActions } from './search.actions';
 import { DEFAULT_NAMED_QUERY_ID, EXPLORE_NAMED_QUERY_ID } from './search.constants';
 import { SearchService } from './search.service';
 import { WidgetFactoryService } from '../../../dashboard/components/widgets/widget-instanciator/widget-factory.service';
-import { WidgetManifest } from '../../model/manifest.interface';
+import { DashboardManifest, LinkedItemsOptions } from '../../model/manifest.interface';
 import { SearchSelectors } from './search.selectors';
 
 @Injectable()
@@ -75,9 +75,13 @@ export class SearchEffects {
       debounceTime(300),
       mergeMap(([props]) => {
         const ds = this.widgetFactoryService.datasourcesToAutoLoad({
-          type: props.widgetType,
-          datasource: [props.id]
-        } as WidgetManifest)[0];
+          widgets: [
+            {
+              type: props.widgetType,
+              datasource: [props.id]
+            }
+          ]
+        } as DashboardManifest)[0];
 
         if (!!ds) {
           return of(
@@ -85,7 +89,8 @@ export class SearchEffects {
               id: ds.datasetId,
               excludeGeo: ds.excludeGeo,
               from: 'fetchMore',
-              next: true
+              next: true,
+              linkedItems: ds.linkedItems
             })
           );
         } else {
@@ -102,7 +107,7 @@ export class SearchEffects {
         (props: {
           payload: MonoClassSearchPayload | MultiClassSearchPayload | FullTextSearchPayload;
           id?: string;
-          linkedItems?: ('destination' | 'source')[];
+          linkedItems?: LinkedItemsOptions;
         }) =>
           this.searchService.search(props.payload, props.id, props.linkedItems).pipe(
             map((resultSet) => {

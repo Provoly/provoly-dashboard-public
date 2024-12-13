@@ -17,6 +17,7 @@ import { DateUtils } from '../../../dashboard/date-utils';
 import { NamedQueryTypes } from '../data-source/named-query-types.model';
 import { DataSourceSelectors } from '../data-source/data-source.selectors';
 import { DataSource } from '../data-source/data-source.model';
+import { LinkedItemsOptions } from '../../model/manifest.interface';
 
 export type ResultsetTransformation = (id: string, result: ResultSet) => ResultSet;
 
@@ -49,7 +50,7 @@ export class SearchService {
     quickOrder?: ResultOrder,
     excludeGeo?: boolean,
     searchAfter?: string,
-    linkedItems: ('destination' | 'source')[] = []
+    linkedItems: LinkedItemsOptions = []
   ): Observable<ResultSet> {
     const params = this.getItemsFilter(id, this.getOrder(quickOrder));
     if (!id) {
@@ -93,7 +94,7 @@ export class SearchService {
       [id: string]: ResultOrder | undefined;
     } = {},
     excludeGeo: boolean,
-    linkedItems?: ('destination' | 'source')[]
+    linkedItems?: LinkedItemsOptions
   ): string {
     return `|${this.getItemsFilter(id, this.getOrder(quickOrder[id])).toString()}|${excludeGeo ? 'excludeGeo' : ''}|${linkedItems?.join(',')}|`;
   }

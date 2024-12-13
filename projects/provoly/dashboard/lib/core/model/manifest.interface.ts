@@ -55,6 +55,7 @@ export interface DashboardManifest {
   route?: string;
   grid?: GridLayout;
   widgets: WidgetManifest[];
+  linkedItems?: LinkedItemsOptions;
 }
 
 export interface GlobalManifest {
@@ -91,3 +92,11 @@ export type WidgetOptions =
   | TileWidgetOptions
   | VegaWidgetOptions
   | CustomWidgetOptions;
+
+export type LinkedItemsOptions = ('source' | 'destination')[];
+
+export type DatasourceRequest = {
+  datasetId: string;
+  excludeGeo: boolean;
+  linkedItems?: LinkedItemsOptions;
+};

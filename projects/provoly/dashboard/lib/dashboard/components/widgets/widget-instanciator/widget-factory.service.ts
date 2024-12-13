@@ -1,6 +1,11 @@
 import { Inject, Injectable, InjectionToken, Injector, Type } from '@angular/core';
 import { BehaviorSubject, from, map, Observable, of } from 'rxjs';
-import { GlobalManifest, WidgetManifest } from '../../../../core/model/manifest.interface';
+import {
+  DashboardManifest,
+  DatasourceRequest,
+  GlobalManifest,
+  WidgetManifest
+} from '../../../../core/model/manifest.interface';
 import { BaseWidgetComponent } from '../base-widget.component';
 import { WidgetFillerComponent } from '../widget-filler/widget-filler.component';
 import { WidgetPlaceholderComponent } from '../widget-placeholder/widget-placeholder.component';
@@ -9,6 +14,7 @@ import { DatasourceUtils } from '../../../../core/store/data-source/datasource-u
 import { DataSourceSelectors } from '../../../../core/store/data-source/data-source.selectors';
 import { Store } from '@ngrx/store';
 import { Dataset, DataSource, NamedQuery } from '../../../../core/store/data-source/data-source.model';
+import { ManifestUtils } from '../../../store/manifest-utils.class';
 
 export const WIDGET_DEFINITION = new InjectionToken<string>('Widgets definition');
 
@@ -74,26 +80,37 @@ export class WidgetFactoryService {
     return this.reference$.pipe(map((componentDefs) => !!componentDefs[type]));
   }
 
-  datasourcesToAutoLoad(manifest: WidgetManifest) {
-    const widgetDefinition = this.reference$.getValue()[manifest.type];
-    const datasourcesArray: string[] = Array.isArray(manifest.datasource ?? [])
-      ? ((manifest.datasource ?? []) as string[])
-      : ([manifest.datasource] as string[]);
-    return datasourcesArray
-      .filter((datasource) => {
-        const matching = this.datasources.find((ds) => ds.id === datasource)!;
-        return (
-          !!matching &&
-          (widgetDefinition.autoLoadDatasource === undefined ||
-            widgetDefinition.autoLoadDatasource === 'all' ||
-            (widgetDefinition.autoLoadDatasource === 'geo' && DatasourceUtils.isGeo(matching)) ||
-            (widgetDefinition.autoLoadDatasource === 'not-geo' && !DatasourceUtils.isGeo(matching)))
-        );
-      })
-      .map((datasetId) => {
-        const matching = this.datasources.find((ds) => ds.id === datasetId)!;
-        return { datasetId: datasetId, excludeGeo: this.calculateExcludeGeo(manifest, matching) };
-      });
+  datasourcesToAutoLoad(manifest: DashboardManifest) {
+    return ManifestUtils.mergeDatasourceRequests(
+      manifest.widgets
+        .map((widgetManifest) => {
+          const widgetDefinition = this.reference$.getValue()[widgetManifest.type];
+          const datasourcesArray: string[] = Array.isArray(widgetManifest.datasource ?? [])
+            ? ((widgetManifest.datasource ?? []) as string[])
+            : ([widgetManifest.datasource] as string[]);
+
+          return datasourcesArray
+            .filter((datasource) => {
+              const matching = this.datasources.find((ds) => ds.id === datasource)!;
+              return (
+                !!matching &&
+                (widgetDefinition.autoLoadDatasource === undefined ||
+                  widgetDefinition.autoLoadDatasource === 'all' ||
+                  (widgetDefinition.autoLoadDatasource === 'geo' && DatasourceUtils.isGeo(matching)) ||
+                  (widgetDefinition.autoLoadDatasource === 'not-geo' && !DatasourceUtils.isGeo(matching)))
+              );
+            })
+            .map((datasetId) => {
+              const matching = this.datasources.find((ds) => ds.id === datasetId)!;
+              return {
+                datasetId: datasetId,
+                excludeGeo: this.calculateExcludeGeo(widgetManifest, matching),
+                linkedItems: manifest.linkedItems
+              };
+            });
+        })
+        .flat()
+    );
   }
 
   private calculateExcludeGeo(manifest: WidgetManifest, matching: NamedQuery | Dataset) {
@@ -123,21 +140,21 @@ export class WidgetFactoryService {
   }
 
   getObjectsToAutoLoad(manifest: GlobalManifest) {
-    const datasources: { datasetId: string; excludeGeo: boolean }[] = [];
+    const datasources: DatasourceRequest[] = [];
     const aggregates: string[] = [];
 
     manifest.windows.forEach((windowManifest) => {
-      (windowManifest.widgets ?? []).forEach((widgetManifest) => {
-        this.datasourcesToAutoLoad(widgetManifest).forEach((res: { datasetId: string; excludeGeo: boolean }) => {
-          if (res.datasetId) {
-            datasources.push(res);
-          }
-        });
+      this.datasourcesToAutoLoad(windowManifest).forEach((res: { datasetId: string; excludeGeo: boolean }) => {
+        if (res.datasetId) {
+          datasources.push(res);
+        }
+      });
 
+      (windowManifest.widgets ?? []).forEach((widgetManifest) => {
         this.aggregatesToAutoLoad(widgetManifest).forEach((ds: string) => aggregates.push(ds));
       });
     });
 
-    return { datasources, aggregates };
+    return { datasources: ManifestUtils.mergeDatasourceRequests(datasources), aggregates };
   }
 }

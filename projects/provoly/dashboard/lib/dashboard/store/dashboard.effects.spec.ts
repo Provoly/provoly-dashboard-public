@@ -5,7 +5,9 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import {
   ConfigSelectors,
   DashboardGridLayout,
+  DashboardManifest,
   DataSourceSelectors,
+  SearchActions,
   SearchService,
   WidgetFactoryService,
   WidgetManifest,
@@ -19,7 +21,6 @@ import { Item } from '../../core/model/item.interface';
 import { ResultSet } from '../../core/model/result-set.interface';
 import { DataSourceService } from '../../core/store/data-source/data-source.service';
 import { ItemService } from '../../core/store/item/item.service';
-import { SearchActions } from '../../core/store/search/search.actions';
 import { DashboardInitService } from './dashboard-init.service';
 import { DashboardActions } from './dashboard.actions';
 import { DashboardEffects } from './dashboard.effects';
@@ -28,6 +29,7 @@ import { DashboardSelectors } from './dashboard.selectors';
 import { ManifestService } from './manifest.service';
 import { PryTitleService } from './title.service';
 import { MockPryI18nService } from '@provoly/dashboard/mock/service/mock-i18n.service';
+import { TestScheduler } from 'rxjs/testing';
 
 const buildState = (state: Partial<DashboardState>) =>
   Object.assign({}, { '@pry/dashboard': structuredClone({ ...dashboardInitialState, ...state }) });
@@ -48,6 +50,12 @@ describe('DashboardEffects', () => {
   let store: MockStore<any>;
   let router: Router;
   const initialState = dashboardInitialState;
+
+  let testScheduler: TestScheduler;
+
+  beforeEach(() => {
+    testScheduler = new TestScheduler((actual, expected) => expect(actual).toEqual(expected));
+  });
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -71,11 +79,17 @@ describe('DashboardEffects', () => {
         {
           provide: WidgetFactoryService,
           useValue: {
-            datasourcesToAutoLoad: (manifest: WidgetManifest) =>
-              (Array.isArray(manifest.datasource ?? [])
-                ? ((manifest.datasource ?? []) as string[])
-                : ([manifest.datasource] as string[])
-              ).map((ds) => ({ datasetId: ds, excludeGeo: manifest.type !== 'map' })),
+            datasourcesToAutoLoad: (manifest: DashboardManifest) =>
+              manifest.widgets
+                .map((wm) =>
+                  ((Array.isArray(wm.datasource ?? []) ? wm.datasource ?? [] : [wm.datasource]) as string[]).map(
+                    (ds) => ({
+                      datasetId: ds,
+                      excludeGeo: wm.type !== 'map'
+                    })
+                  )
+                )
+                .flat(),
             aggregatesToAutoLoad: (manifest: WidgetManifest) =>
               Array.isArray(manifest.datasource ?? [])
                 ? ((manifest.datasource ?? []) as string[])
@@ -393,100 +407,107 @@ describe('DashboardEffects', () => {
 
   describe('assertResultSets$', () => {
     it('should send as many named queries as necessary, but not already available ones', () => {
-      store.setState(
-        buildState({
-          ...initialState,
-          manifests: {
-            ...initialState.manifests,
-            manifest: {
-              ...initialState.manifests.manifest,
-              windows: [
-                {
-                  route: 'a',
-                  widgets: [
-                    { type, layout, datasource: 'a' },
-                    { type, layout, datasource: 'b' },
-                    {
-                      type,
-                      layout,
-                      datasource: 'already'
-                    },
-                    {
-                      type,
-                      layout,
-                      datasource: 'already-but-wrong-filter'
-                    },
-                    {
-                      type,
-                      layout,
-                      datasource: 'already-but-no-previous-filter'
-                    },
-                    {
-                      type: 'map',
-                      layout,
-                      datasource: 'excludedGeo'
-                    }
-                  ]
-                },
-                { route: 'b', widgets: [{ type, layout, datasource: 'c' }] }
-              ]
+      testScheduler.run(({ expectObservable, hot }) => {
+        store.setState(
+          buildState({
+            ...initialState,
+            manifests: {
+              ...initialState.manifests,
+              manifest: {
+                ...initialState.manifests.manifest,
+                windows: [
+                  {
+                    route: 'a',
+                    widgets: [
+                      { type, layout, datasource: 'a' },
+                      { type, layout, datasource: 'b' },
+                      {
+                        type,
+                        layout,
+                        datasource: 'already'
+                      },
+                      {
+                        type,
+                        layout,
+                        datasource: 'already-but-wrong-filter'
+                      },
+                      {
+                        type,
+                        layout,
+                        datasource: 'already-but-no-previous-filter'
+                      },
+                      {
+                        type: 'map',
+                        layout,
+                        datasource: 'excludedGeo'
+                      }
+                    ]
+                  },
+                  { route: 'b', widgets: [{ type, layout, datasource: 'c' }] }
+                ]
+              }
+            },
+            results: {
+              ...initialState.results,
+              resultSets: { already: { items: {}, relations: [] } },
+              resultSetsParams: {
+                already: 'filter=someFilter',
+                'already-but-wrong-filter': 'filter=wrong'
+              }
             }
-          },
-          results: {
-            ...initialState.results,
-            resultSets: { already: { items: {}, relations: [] } },
-            resultSetsParams: {
-              already: 'filter=someFilter',
-              'already-but-wrong-filter': 'filter=wrong'
-            }
-          }
-        })
-      );
+          })
+        );
 
-      actions$ = hot('--a-', {
-        a: DashboardActions.assertResultSets({})
-      });
+        actions$ = hot('--a-', {
+          a: DashboardActions.assertResultSets({})
+        });
 
-      const expected$ = hot('--(abcdefghijklm)-', {
-        a: SearchActions.getDatasourceItems({
-          id: 'a',
-          excludeGeo: true,
-          from: 'DashboardEffects.assertResultSets$-1'
-        }),
-        b: SearchActions.getDatasourceItems({
-          id: 'b',
-          excludeGeo: true,
-          from: 'DashboardEffects.assertResultSets$-1'
-        }),
-        c: SearchActions.getDatasourceItems({
-          id: 'already-but-wrong-filter',
-          excludeGeo: true,
-          from: 'DashboardEffects.assertResultSets$-1'
-        }),
-        d: SearchActions.getDatasourceItems({
-          id: 'already-but-no-previous-filter',
-          excludeGeo: true,
-          from: 'DashboardEffects.assertResultSets$-1'
-        }),
-        e: SearchActions.getDatasourceItems({
-          id: 'excludedGeo',
-          excludeGeo: false,
-          from: 'DashboardEffects.assertResultSets$-1'
-        }),
-        f: SearchActions.getDatasourceItems({
-          id: 'c',
-          excludeGeo: true,
-          from: 'DashboardEffects.assertResultSets$-1'
-        }),
-        g: DashboardActions.triggerAggregate({ id: 'a' }),
-        h: DashboardActions.triggerAggregate({ id: 'b' }),
-        i: DashboardActions.triggerAggregate({ id: 'already' }),
-        j: DashboardActions.triggerAggregate({ id: 'already-but-wrong-filter' }),
-        k: DashboardActions.triggerAggregate({ id: 'already-but-no-previous-filter' }),
-        l: DashboardActions.triggerAggregate({ id: 'excludedGeo' }),
-        m: DashboardActions.triggerAggregate({ id: 'c' })
+        expectObservable(effects.assertResultSets$).toBe('--(abcdefghijklm)-', {
+          a: SearchActions.getDatasourceItems({
+            id: 'a',
+            excludeGeo: true,
+            from: 'DashboardEffects.assertResultSets$-1',
+            linkedItems: []
+          }),
+          b: SearchActions.getDatasourceItems({
+            id: 'b',
+            excludeGeo: true,
+            from: 'DashboardEffects.assertResultSets$-1',
+            linkedItems: []
+          }),
+          c: SearchActions.getDatasourceItems({
+            id: 'already-but-wrong-filter',
+            excludeGeo: true,
+            from: 'DashboardEffects.assertResultSets$-1',
+            linkedItems: []
+          }),
+          d: SearchActions.getDatasourceItems({
+            id: 'already-but-no-previous-filter',
+            excludeGeo: true,
+            from: 'DashboardEffects.assertResultSets$-1',
+            linkedItems: []
+          }),
+          e: SearchActions.getDatasourceItems({
+            id: 'excludedGeo',
+            excludeGeo: false,
+            from: 'DashboardEffects.assertResultSets$-1',
+            linkedItems: []
+          }),
+          f: SearchActions.getDatasourceItems({
+            id: 'c',
+            excludeGeo: true,
+            from: 'DashboardEffects.assertResultSets$-1',
+            linkedItems: []
+          }),
+          g: DashboardActions.triggerAggregate({ id: 'a' }),
+          h: DashboardActions.triggerAggregate({ id: 'b' }),
+          i: DashboardActions.triggerAggregate({ id: 'already' }),
+          j: DashboardActions.triggerAggregate({ id: 'already-but-wrong-filter' }),
+          k: DashboardActions.triggerAggregate({ id: 'already-but-no-previous-filter' }),
+          l: DashboardActions.triggerAggregate({ id: 'excludedGeo' }),
+          m: DashboardActions.triggerAggregate({ id: 'c' })
+        });
       });
-      expect(effects.assertResultSets$).toBeObservable(expected$);
     });
   });
 
@@ -677,43 +698,43 @@ describe('DashboardEffects', () => {
 
   describe('listManifest$', () => {
     /* FIXME: commented because debounce don't let us test effect
-    it('should send an update action if main rank', (done) => {
-      store.setState(
-        buildState({
-          ...initialState,
-          manifests: {
-            ...initialState.manifests,
-            sender: 'me',
-            tenants: ['me', 'old-challenger'],
-            manifest: {
-              windows: []
+      it('should send an update action if main rank', (done) => {
+        store.setState(
+          buildState({
+            ...initialState,
+            manifests: {
+              ...initialState.manifests,
+              sender: 'me',
+              tenants: ['me', 'old-challenger'],
+              manifest: {
+                windows: []
+              }
             }
-          }
-        })
-      );
-
-      const serviceSpy = jest.spyOn(manifestService, 'list').mockReturnValue(
-        of([
-          { name: 'a', manifestUrl: 'a' },
-          { name: 'b', manifestUrl: 'b' }
-        ] as ManifestDescription[])
-      );
-
-      actions$ = hot('--a-', {
-        a: DashboardActions.fetchManifestsList()
-      });
-
-      effects.listManifests$.subscribe((action) => {
-        expect(serviceSpy).toHaveBeenCalledWith();
-        expect(action).toEqual(
-          DashboardActions.updateManifestsList({
-            manifests: [{ name: 'a', manifestUrl: 'a' } as any, { name: 'b', manifestUrl: 'b' }]
           })
         );
-        done();
-        console.log('DONE', action);
-      });
-    });*/
+
+        const serviceSpy = jest.spyOn(manifestService, 'list').mockReturnValue(
+          of([
+            { name: 'a', manifestUrl: 'a' },
+            { name: 'b', manifestUrl: 'b' }
+          ] as ManifestDescription[])
+        );
+
+        actions$ = hot('--a-', {
+          a: DashboardActions.fetchManifestsList()
+        });
+
+        effects.listManifests$.subscribe((action) => {
+          expect(serviceSpy).toHaveBeenCalledWith();
+          expect(action).toEqual(
+            DashboardActions.updateManifestsList({
+              manifests: [{ name: 'a', manifestUrl: 'a' } as any, { name: 'b', manifestUrl: 'b' }]
+            })
+          );
+          done();
+          console.log('DONE', action);
+        });
+      });*/
   });
 
   describe('listManifest$', () => {
