@@ -212,7 +212,8 @@ export class TooltipManager {
         .getFeatureInfoUrl(pixel, this.map.getView().getResolution(), this.map.getView().getProjection(), {
           INFO_FORMAT: 'application/json',
           FEATURE_COUNT: 10,
-          ...layer.getProperties()['getFeatureInfoAdditionalParameters']
+          ...layer.getProperties()['getFeatureInfoAdditionalParameters'],
+          cql_filter: layer.getProperties()['cql_filter']
         });
       if (
         (
