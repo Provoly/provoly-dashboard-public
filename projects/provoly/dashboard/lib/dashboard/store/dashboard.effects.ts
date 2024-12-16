@@ -864,7 +864,7 @@ export class DashboardEffects {
             parseFloat(m[0])
           );
           return this.wmsService
-            .getWfsFeatures(action.url, envBBOXCoords)
+            .getWfsFeatures(action.url, envBBOXCoords, action.geomPropName ?? wmsJson.features[0]['geometry_name'])
             .pipe(map((wfsJson) => ({ action, json: wfsJson })));
         }
         // if data is not a stack just add features without calling wfs service

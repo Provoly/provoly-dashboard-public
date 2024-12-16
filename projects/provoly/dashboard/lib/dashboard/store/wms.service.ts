@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
-import { catchError } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 
 export type GetCapabilitiesResponse = { url: string; doc?: Document };
 
@@ -53,14 +52,14 @@ export class WmsService {
     return this.httpClient.get(url).pipe(map((json: any) => json));
   }
 
-  getWfsFeatures(wmsUrl: string, bbox: number[]): Observable<{ features: any[] }> {
-    const url = wfsUrlBuilder(wmsUrl, bbox);
+  getWfsFeatures(wmsUrl: string, bbox: number[], geomPropName: string): Observable<{ features: any[] }> {
+    const url = wfsUrlBuilder(wmsUrl, bbox, geomPropName);
     return this.httpClient.get(url).pipe(map((json: any) => json));
   }
 }
 
 const BBOX_ENHANCE_DISTANCE = 0.0001;
-const wfsUrlBuilder = (wmsUrl: string, bbox: number[], params?: string[]) => {
+const wfsUrlBuilder = (wmsUrl: string, bbox: number[], geomPropName: string, params?: string[]) => {
   const enhancedBbox = [
     bbox[0] - BBOX_ENHANCE_DISTANCE,
     bbox[1] - BBOX_ENHANCE_DISTANCE,
@@ -79,9 +78,17 @@ const wfsUrlBuilder = (wmsUrl: string, bbox: number[], params?: string[]) => {
   };
   const base = wmsUrl.split('?')[0].replace('wms', 'wfs');
   const wmsUrlFragments = wmsUrl.split('&');
-  wfsFragments['typeNames'] = wmsUrlFragments.find((param) => param.includes('LAYERS'))?.split('=')[1];
+  wfsFragments['typeNames'] = wmsUrlFragments.find((param) => param.toUpperCase().includes('LAYERS'))?.split('=')[1];
   wfsFragments['srsName'] = wmsUrlFragments.find((param) => param.toUpperCase().includes('CRS'))?.split('=')[1];
-  wfsFragments['cql_filter'] = wmsUrlFragments.find((param) => param.includes('CQL_FILTER'))?.split('=')[1];
+
+  const cqlFilterFragment = wmsUrlFragments.find((param) => param.toUpperCase().includes('CQL_FILTER'));
+  if (cqlFilterFragment) {
+    const previousFragment = cqlFilterFragment.split('=')[1];
+    // cql_filter and bbox are mutually exclusive so we need to replace bbox with a cql filter on the bbox
+    wfsFragments['cql_filter'] =
+      previousFragment + ` AND BBOX(${geomPropName}, ${enhancedBbox.join(',')}, 'EPSG:4326')`;
+    wfsFragments['bbox'] = undefined;
+  }
 
   return (
     base +

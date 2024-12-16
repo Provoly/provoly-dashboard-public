@@ -213,7 +213,7 @@ export class TooltipManager {
           INFO_FORMAT: 'application/json',
           FEATURE_COUNT: 10,
           ...layer.getProperties()['getFeatureInfoAdditionalParameters'],
-          cql_filter: layer.getProperties()['cql_filter']
+          cql_filter: layer.getSource().getParams()['cql_filter']
         });
       if (
         (
@@ -227,7 +227,8 @@ export class TooltipManager {
             url,
             oClass: layer.getProperties()['oClass'] ?? '',
             coordinates: pixel,
-            componentId: this.parent.id
+            componentId: this.parent.id,
+            geomPropName: layer.getProperties()['geomPropName']
           })
         );
       } else {
