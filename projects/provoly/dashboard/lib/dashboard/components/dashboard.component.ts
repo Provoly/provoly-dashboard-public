@@ -208,18 +208,6 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
       map((wManifest) => (wManifest.widgets ?? []).filter((w) => w.type !== 'filler').length)
     );
 
-    this.subscriptions.add(
-      combineLatest([
-        this.windowManifest$,
-        this.store.select(DataSourceSelectors.getDataSources),
-        this.staticDashboard$
-      ]).subscribe(([manifest, datasets, staticManifest]) => {
-        if (datasets.length > 0) {
-          this.store.dispatch(DashboardActions.assertResultSets({ staticManifest }));
-        }
-      })
-    );
-
     this.store.dispatch(FieldActions.load({}));
     this.store.dispatch(ClassActions.load({}));
     this.store.dispatch(CategoryActions.load({}));
@@ -325,6 +313,18 @@ export class DashboardComponent extends SubscriptionnerDirective implements OnIn
   }
 
   ngOnInit() {
+    this.subscriptions.add(
+      combineLatest([
+        this.windowManifest$,
+        this.store.select(DataSourceSelectors.getDataSources),
+        this.staticDashboard$
+      ]).subscribe(([manifest, datasets, staticManifest]) => {
+        if (datasets.length > 0) {
+          this.store.dispatch(DashboardActions.assertResultSets({ staticManifest }));
+        }
+      })
+    );
+
     if (this.displayOptions)
       this.store.dispatch(
         DashboardActions.updateDisplayOptions({ mode: ViewMode.CUSTOM, customDisplay: this.displayOptions })
