@@ -17,8 +17,13 @@
       >
       <pry-icon iconSvg="notifications"></pry-icon>
       @if (notifications.length > 0) {
-        <span class="a-pastille -unread"
-          >{{ notifications.length }} <span class="u-visually-hidden">{{ '@pry.notif.label' | i18n | lowercase }}</span>
+        <span class="a-pastille -unread">
+          @if(notifications.length < 100 ) {
+            {{ notifications.length }}
+          } @else {
+            99<sup>+</sup>
+          }
+          <span class="u-visually-hidden">{{ '@pry.notif.label' | i18n | lowercase }}</span>
         </span>
       }
     </button>
