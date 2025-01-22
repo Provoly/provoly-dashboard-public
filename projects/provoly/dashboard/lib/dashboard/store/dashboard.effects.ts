@@ -853,13 +853,14 @@ export class DashboardEffects {
       ofType(DashboardActions.getWfsFeaturesForPointStackTooltips),
       mergeMap((action) => combineLatest([of(action), this.wmsService.getWmsFeatures(action.url)])),
       mergeMap(([action, wmsJson]) => {
-        // check if data is actually a stack of points
-        if (
-          wmsJson.features[0] &&
-          wmsJson.features[0].properties.count &&
-          wmsJson.features[0].properties.countunique &&
-          wmsJson.features[0].properties.count > 1
-        ) {
+        // check if data is at least a stack of points
+        const isStack = wmsJson.features
+          .map(
+            (feature) =>
+              !!feature && !!feature.properties.count && feature.properties.countunique && feature.properties.count > 1
+          )
+          .reduce((p, c) => p || c, false);
+        if (isStack) {
           let envBBOXCoords = [...wmsJson.features[0].properties.envBBOX.matchAll(/\d+.\d+/g)].map((m) =>
             parseFloat(m[0])
           );
