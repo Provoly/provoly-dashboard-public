@@ -39,12 +39,12 @@ import { DashboardInitService } from './dashboard-init.service';
 import { DashboardActions, ViewMode } from './dashboard.actions';
 import { DashboardSelectors } from './dashboard.selectors';
 import { ManifestService } from './manifest.service';
-import { RefreshService } from './refresh.service';
 import { PryTitleService } from './title.service';
 import { WmsService } from './wms.service';
 import { WidgetFactoryService } from '../components/widgets/widget-instanciator/widget-factory.service';
 import { DataSourceSelectors } from '../../core/store/data-source/data-source.selectors';
 import { ManifestUtils } from './manifest-utils.class';
+import { RefreshService } from './refresh.service';
 
 @Injectable()
 export class DashboardEffects {
@@ -983,7 +983,7 @@ export class DashboardEffects {
     private widgetFactoryService: WidgetFactoryService,
     private i18nService: PryI18nService
   ) {
-    dashboardInitService.init();
-    refreshService.start();
+    this.dashboardInitService.init();
+    this.refreshService.start();
   }
 }
