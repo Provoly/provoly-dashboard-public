@@ -103,6 +103,7 @@ import { Attribution, defaults } from 'ol/control';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { TooltipManager } from '../interaction/tooltip-manager.class';
+import ImageLayer from 'ol/layer/Image';
 
 export const TOOLTIP_PADDING = 15;
 export const NON_MANDATORY_FIT_LAYER_TYPES = ['wms', 'geoserver'];
@@ -992,7 +993,7 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
           if (!refreshEvent.detail) {
             this.map
               .getAllLayers()
-              .filter((l) => l instanceof TileLayer)
+              .filter((l) => l instanceof TileLayer || l instanceof ImageLayer)
               .forEach((l) => {
                 l.getSource()!.refresh();
               });
