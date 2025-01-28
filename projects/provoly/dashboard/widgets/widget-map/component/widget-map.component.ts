@@ -81,6 +81,7 @@ import {
   distinctUntilChanged,
   filter,
   from,
+  fromEvent,
   map,
   mergeMap,
   Observable,
@@ -977,14 +978,26 @@ export class WidgetMapComponent extends DataWidgetComponent implements AfterView
         this.layers$,
         this.selectedIds$.pipe(distinctUntilChanged((p, c) => equal(p, c))),
         this.fitExtents$,
-        this.datasourceFilters$
-      ]).subscribe(([mapStyleLayer, layers, selectedIds, extents, filters]) => {
+        this.datasourceFilters$,
+        fromEvent<CustomEvent>(window, 'wms-layer-refresh').pipe(
+          startWith(new CustomEvent(`wms-layer-refresh`, { detail: true }))
+        ) as Observable<CustomEvent>
+      ]).subscribe(([mapStyleLayer, layers, selectedIds, extents, filters, refreshEvent]) => {
         const neededCalculatedExtents = layers.filter(
           (layer) => ['geoserver', 'wms'].includes(layer.get('type')) && layer.get('fit')
         ).length;
         const nbCalculatedExtents = extents.filter((extent) => !extent.error).length;
 
         if (nbCalculatedExtents >= neededCalculatedExtents) {
+          if (!refreshEvent.detail) {
+            this.map
+              .getAllLayers()
+              .filter((l) => l instanceof TileLayer)
+              .forEach((l) => {
+                l.getSource()!.refresh();
+              });
+          }
+
           setTimeout(() => {
             const toApplyLayers = [...layers, ...mapStyleLayer];
             this.map.setLayers(toApplyLayers);
