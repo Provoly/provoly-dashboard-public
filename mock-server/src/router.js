@@ -567,9 +567,13 @@ router.on(['OPTIONS', 'GET', 'POST'], '/data/data-sources/id/:id/items', (req, r
             const nq = dataModule.namedQueries.find((nq) => nq.id === params.id);
             const number = fieldGeneratorModule.generateNumberOfItems();
             const classes = nq.request.oClasses;
-            tableOfClasses = [...new Array(number)].map(
-              () => classes[Math.round(Math.random() * 100) % classes.length]
-            );
+            if (classes) {
+              tableOfClasses = [...new Array(number)].map(
+                () => classes[Math.round(Math.random() * 100) % classes.length]
+              );
+            } else {
+              tableOfClasses = [];
+            }
           }
           const results = fieldGeneratorModule.generateItems(tableOfClasses, payload.excludeGeo);
           makeResponseOk(res, dataModule.itemsAsResultSet(results));

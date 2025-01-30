@@ -102,28 +102,34 @@ export class SearchService {
   getItemsFilter(id: string, cumulative?: HttpParams): HttpParams {
     let params = cumulative ?? new HttpParams({ encoder: new FilterParamEncoder() });
     if (this.filters[id]) {
-      this.filters[id]
-        .filter((filter) => filter.value !== null && filter.value !== undefined)
-        .forEach((filter) => {
-          let valuesToAddToParams = filter.value;
-          // INSIDE and OUTSIDE operators uses 2 values but not sent in an array, values are separated by a coma
-          // wich must not be encoded (as if values were in an array)
-          const isMultiValued = ['INSIDE', 'OUTSIDE'].find((val) => val === filter.operator) !== undefined;
-          if (isMultiValued) {
-            valuesToAddToParams = (filter.value as string).split(',');
-          }
-          // date filter value must be send in ISO-8601 format
-          if (filter.type === 'date') {
-            valuesToAddToParams = isMultiValued
-              ? (valuesToAddToParams as string[]).map((value) => DateUtils.parseToIsoString(value))
-              : DateUtils.parseToIsoString(valuesToAddToParams as string);
-          }
-          const value = Array.isArray(valuesToAddToParams)
-            ? valuesToAddToParams.map((v) => encodeURIComponent(v.toString().split(',').join('\\,'))).join(',')
-            : encodeURIComponent(valuesToAddToParams!.toString().replace(/,/g, '\\,'));
-          params = params.append('filter', `${filter.attribute},${filter.operator},${value}`);
-        });
+      const filtersToAppendToParams = this.filters[id].filter(
+        (filter) => filter.value !== null && filter.value !== undefined
+      );
+      params = this.appendItemFilter(filtersToAppendToParams, params);
     }
+    return params;
+  }
+
+  private appendItemFilter(filters: FilterContext[], params: HttpParams) {
+    filters.forEach((filter) => {
+      let valuesToAddToParams = filter.value;
+      // INSIDE and OUTSIDE operators uses 2 values but not sent in an array, values are separated by a coma
+      // wich must not be encoded (as if values were in an array)
+      const isMultiValued = ['INSIDE', 'OUTSIDE'].find((val) => val === filter.operator) !== undefined;
+      if (isMultiValued) {
+        valuesToAddToParams = (filter.value as string).split(',');
+      }
+      // date filter value must be send in ISO-8601 format
+      if (filter.type === 'date') {
+        valuesToAddToParams = isMultiValued
+          ? (valuesToAddToParams as string[]).map((value) => DateUtils.parseToIsoString(value))
+          : DateUtils.parseToIsoString(valuesToAddToParams as string);
+      }
+      const value = Array.isArray(valuesToAddToParams)
+        ? valuesToAddToParams.map((v) => encodeURIComponent(v.toString().split(',').join('\\,'))).join(',')
+        : encodeURIComponent(valuesToAddToParams!.toString().replace(/,/g, '\\,'));
+      params = params.append('filter', `${filter.attribute},${filter.operator},${value}`);
+    });
     return params;
   }
 
@@ -200,15 +206,24 @@ export class SearchService {
         }[]
       | undefined,
     search: string = '',
+    filters: FilterContext[] = [],
     limit?: number
   ) {
+    const params = this.appendItemFilter(filters, new HttpParams({ encoder: new FilterParamEncoder() }));
     return this.store.select(ConfigSelectors.dataUrl).pipe(
       switchMap((url) =>
-        this.httpClient.post<string[]>(encodeURI(`${url}/data-sources/values`), {
-          attributes: (attributes ?? []).map((attr) => ({ datasource: attr.datasource, attribute: attr.id })),
-          value: search,
-          limit
-        })
+        this.httpClient.post<string[]>(
+          encodeURI(`${url}/data-sources/values`),
+          {
+            attributes: (attributes ?? []).map((attr) => ({
+              datasource: attr.datasource,
+              attribute: attr.id
+            })),
+            value: search,
+            limit
+          },
+          { params }
+        )
       )
     );
   }

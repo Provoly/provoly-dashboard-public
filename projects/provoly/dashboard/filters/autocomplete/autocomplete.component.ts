@@ -60,7 +60,8 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
             (a) => !!a.datasource && !!a.id
           ),
           limit: this.filter?.limit ?? 10,
-          force: !this.filter.preventRefreshes
+          force: !this.filter.preventRefreshes,
+          valuesFilters: this.filter.valuesFilters
         })
       );
     }
@@ -74,14 +75,16 @@ export class AutocompleteComponent extends BaseFilterComponent implements OnInit
         if (!!search && search.length > 1) {
           this.loader = true;
           this.items$.next([]);
-          return this.searchService.autocomplete(this.filter?.attributes, search, this.filter?.limit).pipe(
-            tap(() => (this.loader = false)),
-            catchError((err) => {
-              this.loader = false;
-              console.error('Autocomplete failed', err);
-              return [];
-            })
-          );
+          return this.searchService
+            .autocomplete(this.filter?.attributes, search, this.filter?.valuesFilters, this.filter?.limit)
+            .pipe(
+              tap(() => (this.loader = false)),
+              catchError((err) => {
+                this.loader = false;
+                console.error('Autocomplete failed', err);
+                return [];
+              })
+            );
         }
         return of([] as string[]);
       })

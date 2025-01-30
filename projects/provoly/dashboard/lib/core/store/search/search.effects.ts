@@ -143,7 +143,7 @@ export class SearchEffects {
       ),
       mergeMap(([action]) =>
         this.searchService
-          .autocomplete(action.attributes, '', action.limit)
+          .autocomplete(action.attributes, '', action.valuesFilters, action.limit)
           .pipe(map((values) => SearchActions.setPossibleFilterValues({ filterId: action.filterId, values })))
       )
     )

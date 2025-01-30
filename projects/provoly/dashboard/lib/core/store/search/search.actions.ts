@@ -3,6 +3,7 @@ import { ResultSet } from '../../model/result-set.interface';
 import { MonoClassSearchPayload } from '../../model/search-mono-class.model';
 import { FullTextSearchPayload, MultiClassSearchPayload } from '../../model/search-multi-class.model';
 import { LinkedItemsOptions } from '../../model/manifest.interface';
+import { FilterContext } from '../../model/filter.interface';
 
 export const SearchActions = {
   search: createAction(
@@ -42,6 +43,7 @@ export const SearchActions = {
       attributes: { id: string; datasource: string }[];
       limit: number;
       force?: boolean;
+      valuesFilters?: FilterContext[];
     }>()
   ),
   setPossibleFilterValues: createAction(

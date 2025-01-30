@@ -6,6 +6,7 @@ export interface Filter {
   operator?: string;
   value?: string | number | string[] | number[];
   possibleValues?: string; // only used in list-filter
+  valuesFilters?: FilterContext[]; // only used in autocomplete
   hasDateRange?: boolean;
   limit?: number;
   placeholder?: string;

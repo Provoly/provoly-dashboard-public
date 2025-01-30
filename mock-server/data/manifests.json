@@ -654,6 +654,14 @@
               "type": "keyword"
             }
           ],
+          "valuesFilters": [
+            {
+              "attribute": "3c84e66a-461b-4857-ad55-64863b0a2354",
+              "operator": "START_WITH",
+              "value": "1",
+              "type": "keyword"
+            }
+          ],
           "operator": "EQUALS",
           "limit": 3,
           "value": 12234
