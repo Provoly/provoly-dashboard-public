@@ -44,8 +44,7 @@ export class WidgetTemplateComponent extends DataWidgetComponent {
       map((options) => `<style>${WidgetTemplateComponent.limitScope(options.css ?? '', this.id + '')}</style>`),
       combineLatestWith(this.resultSet$),
       map(
-        ([template, rs]) =>
-          this.sanitizer.sanitize(SecurityContext.STYLE, WidgetTemplateComponent.evaluate(template, rs)) ?? ''
+        ([template, rs]) => this.sanitizer.bypassSecurityTrustHtml(WidgetTemplateComponent.evaluate(template, rs)) ?? ''
       )
     );
   }
