@@ -1,9 +1,8 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { DataWidgetComponent, TemplateWidgetOptions } from '@provoly/dashboard';
-import { combineLatestWith, Observable } from 'rxjs';
-import { filter, map } from 'rxjs';
+import { combineLatestWith, filter, map, Observable } from 'rxjs';
 
 @Component({
   selector: 'pry-widget-template',
@@ -35,13 +34,19 @@ export class WidgetTemplateComponent extends DataWidgetComponent {
     this.template$ = this.options$.pipe(
       map((options) => (!!options.svg ? options.svg : options.html ?? '')),
       combineLatestWith(this.resultSet$),
-      map(([template, rs]) => this.evaluate(template, rs))
+      map(
+        ([template, rs]) =>
+          this.sanitizer.sanitize(SecurityContext.HTML, WidgetTemplateComponent.evaluate(template, rs)) ?? ''
+      )
     );
 
     this.css$ = this.options$.pipe(
-      map((options) => `<style>${this.limitScope(options.css ?? '')}</style>`),
+      map((options) => `<style>${WidgetTemplateComponent.limitScope(options.css ?? '', this.id + '')}</style>`),
       combineLatestWith(this.resultSet$),
-      map(([template, rs]) => this.evaluate(template, rs))
+      map(
+        ([template, rs]) =>
+          this.sanitizer.sanitize(SecurityContext.STYLE, WidgetTemplateComponent.evaluate(template, rs)) ?? ''
+      )
     );
   }
 
@@ -52,54 +57,41 @@ export class WidgetTemplateComponent extends DataWidgetComponent {
     });
   }
 
-  evaluate(template: string, rs: any): SafeHtml {
+  static evaluate(template: string, rs: any): string {
     const regexp = new RegExp('{{(.*?)}}', 'g');
     const toReplace = template.match(regexp);
     let result = template;
 
     if (!!toReplace) {
       toReplace.forEach((extracted) => {
-        const expr = extracted.substring(2, extracted.length - 2);
-        const splitted = expr.split(/[.\]]/).filter((extr) => extr !== '');
+        const expr = extracted.substring(2, extracted.length - 2).trim();
         let evaluation: any = null;
 
-        splitted.forEach((_splitPart) => {
-          const splitPart = _splitPart.trim();
-          if (splitPart.startsWith('rs')) {
-            const classId = (expr.match(/rs\['(.)*?'/) ?? ['no-class-id-detected'])[0]
-              .replace("rs['", '')
-              .replace("'", '');
-            evaluation = rs.items[classId];
-          } else if (splitPart.startsWith('[')) {
-            if (!!evaluation) {
-              evaluation = evaluation[parseInt(splitPart.substring(1), 10)];
-            }
-          } else {
-            if (!!evaluation) {
-              const indexOfCaret = splitPart.indexOf('[');
-              if (indexOfCaret === -1) {
-                evaluation = evaluation[splitPart];
-              } else {
-                const prop = splitPart.substring(0, indexOfCaret);
-                const subProp = splitPart.substring(indexOfCaret + 1);
-                evaluation = evaluation[prop].values[subProp];
-              }
-              if (!!evaluation && evaluation.type === 'VALUE') {
-                evaluation = evaluation.value;
-              }
-            }
+        try {
+          // Replace rs references with actual values from the rs object
+          const replacedExpr = expr.replace(/rs\['(.*?)'\]\[(\d+)\]\.attributes\.(\w+)/g, (match, p1, p2, p3) => {
+            return rs.items[p1][parseInt(p2, 10)].attributes[p3].value;
+          });
+
+          // Evaluate the arithmetic expression
+          try {
+            evaluation = new Function('return ' + replacedExpr)();
+          } catch (error) {
+            evaluation = replacedExpr;
           }
-        });
+        } catch (error) {
+          console.error('Error evaluating expression:', expr, error);
+        }
 
         result = result.replace(extracted, evaluation);
       });
     }
 
-    return this.sanitizer.bypassSecurityTrustHtml(result);
+    return result;
   }
 
-  private limitScope(css: string): string {
-    const scope = `.pry-template-${this.id}`;
+  static limitScope(css: string, id: string): string {
+    const scope = `.pry-template-${id}`;
 
     const scoped = css.replace(/([},] ?)/g, `$1${scope} `).replace(new RegExp(scope + ' $'), '');
 
