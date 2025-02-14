@@ -2381,5 +2381,55 @@
         }
       ]
     }
+  },
+  {
+    "name": "filtre invisible",
+    "manifest": {
+      "windows": [
+        {
+          "grid": {
+            "rows": 10,
+            "layout": "1"
+          },
+          "widgets": [
+            {
+              "type": "table",
+              "layout": {
+                "x": 1,
+                "y": 1,
+                "width": 12,
+                "height": 10
+              },
+              "options": {
+                "columns": []
+              },
+              "datasource": [
+                "15061554-298f-4f56-8cd2-52ccec998307"
+              ]
+            }
+          ],
+          "route": "/"
+        }
+      ],
+      "filters": [
+        {
+          "id": "bc5a3b63-6774-4d0a-9f80-a2313d5074cf",
+          "name": "seriesName",
+          "type": "invisible",
+          "attributes": [
+            {
+              "id": "3c84e66a-461b-4857-ad55-64863b0a2354",
+              "name": "velos_disponibles",
+              "label": "seriesname / data-parking",
+              "datasource": "15061554-298f-4f56-8cd2-52ccec998307",
+              "type": "keyword"
+            }
+          ],
+          "operator": "EQUALS",
+          "limit": 3,
+          "value": 12234
+        }
+      ]
+    }
   }
 ]
