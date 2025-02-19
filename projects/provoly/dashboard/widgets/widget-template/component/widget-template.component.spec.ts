@@ -12,6 +12,24 @@ const rs = {
           dec: { value: 0.12, type: 'VALUE', visible: true },
           string: { value: 'une valeur', type: 'VALUE', visible: true }
         }
+      },
+      {
+        id: '6',
+        oClass: 'classe',
+        attributes: {
+          num: { value: 10, type: 'VALUE', visible: true },
+          dec: { value: 0.12, type: 'VALUE', visible: true },
+          string: { value: 'recherche', type: 'VALUE', visible: true }
+        }
+      },
+      {
+        id: '7',
+        oClass: 'classe',
+        attributes: {
+          num: { value: 20, type: 'VALUE', visible: true },
+          dec: { value: 0.14, type: 'VALUE', visible: true },
+          string: { value: 'recherche', type: 'VALUE', visible: true }
+        }
       }
     ]
   },
@@ -76,5 +94,30 @@ describe('WidgetTemplateComponent', () => {
     expect(WidgetTemplateComponent.evaluate(template, rs)).toEqual(
       "<div class='visible-true'>Visible if positive</div>"
     );
+  });
+
+  it('should allow search using id', () => {
+    const template = "{{rs['classe'][id='7'].attributes.num }}";
+    expect(WidgetTemplateComponent.evaluate(template, rs)).toEqual('20');
+  });
+
+  it('should allow search using attributes', () => {
+    const template = "{{rs['classe'][string='recherche'].attributes.num }}";
+    expect(WidgetTemplateComponent.evaluate(template, rs)).toEqual('10');
+  });
+
+  it('should allow search using 2 attributes', () => {
+    const template = "{{rs['classe'][string='recherche'&dec=0.14].attributes.num }}";
+    expect(WidgetTemplateComponent.evaluate(template, rs)).toEqual('20');
+  });
+
+  it('should allow search using 3 attributes', () => {
+    const template = "{{rs['classe'][string='recherche'&dec=0.14&num=20].attributes.num }}";
+    expect(WidgetTemplateComponent.evaluate(template, rs)).toEqual('20');
+  });
+
+  it('should manage failing search', () => {
+    const template = "{{rs['classe'][string='recherche'&dec=0.14&num=300].attributes.num }}";
+    expect(WidgetTemplateComponent.evaluate(template, rs)).toEqual('undefined');
   });
 });

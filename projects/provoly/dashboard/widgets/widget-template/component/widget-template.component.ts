@@ -68,8 +68,22 @@ export class WidgetTemplateComponent extends DataWidgetComponent {
 
         try {
           // Replace rs references with actual values from the rs object
-          const replacedExpr = expr.replace(/rs\['(.*?)'\]\[(\d+)\]\.attributes\.(\w+)/g, (match, p1, p2, p3) => {
-            return rs.items[p1][parseInt(p2, 10)].attributes[p3].value;
+          const replacedExpr = expr.replace(/rs\['(.*?)'\]\[(.*?)\]\.attributes\.(\w+)/g, (match, p1, p2, p3) => {
+            if (p2.startsWith('id=')) {
+              const id = p2.split('=')[1].replace(/['"]/g, '');
+              const item = rs.items[p1].find((item: any) => item.id === id);
+              return item ? item.attributes[p3].value : '';
+            } else if (p2.includes('=')) {
+              const conditions = p2.split('&').map((cond: any) => cond.split('='));
+              const item = rs.items[p1].find((item: any) =>
+                conditions.every(
+                  ([attr, value]: [any, any]) => item.attributes[attr].value == value.replace(/['"]/g, '')
+                )
+              );
+              return item ? item.attributes[p3].value : '';
+            } else {
+              return rs.items[p1][parseInt(p2, 10)].attributes[p3].value;
+            }
           });
 
           // Evaluate the arithmetic expression
