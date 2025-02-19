@@ -120,4 +120,9 @@ describe('WidgetTemplateComponent', () => {
     const template = "{{rs['classe'][string='recherche'&dec=0.14&num=300].attributes.num }}";
     expect(WidgetTemplateComponent.evaluate(template, rs)).toEqual('undefined');
   });
+
+  it('should allow search using 3 attributes, combined with arithmetic operations', () => {
+    const template = "{{rs['classe'][string='recherche'&dec=0.14&num=20].attributes.num * 100 }}";
+    expect(WidgetTemplateComponent.evaluate(template, rs)).toEqual('2000');
+  });
 });
