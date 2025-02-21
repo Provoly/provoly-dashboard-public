@@ -848,24 +848,38 @@ export class DashboardEffects {
     )
   );
 
+  private distance(a: number[], b: number[]) {
+    return Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2));
+  }
+
   getWfsFeaturesForPointStack = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.getWfsFeaturesForPointStackTooltips),
       mergeMap((action) => combineLatest([of(action), this.wmsService.getWmsFeatures(action.url)])),
       mergeMap(([action, wmsJson]) => {
+        // Search the one that is closest from the click
+        const closestFeature = wmsJson.features
+          .map((feature) => ({
+            original: feature,
+            center: feature.geometry.coordinates
+          }))
+          .map((tmp) => ({
+            ...tmp,
+            distance: this.distance(tmp.center, action.coordinates)
+          }))
+          .sort((a, b) => a.distance - b.distance)[0]?.original;
+
         // check if data is at least a stack of points
-        const isStack = wmsJson.features
-          .map(
-            (feature) =>
-              !!feature && !!feature.properties.count && feature.properties.countunique && feature.properties.count > 1
-          )
-          .reduce((p, c) => p || c, false);
+        const isStack =
+          !!closestFeature &&
+          !!closestFeature.properties.count &&
+          closestFeature.properties.countunique &&
+          closestFeature.properties.count > 1;
+
         if (isStack) {
-          let envBBOXCoords = [...wmsJson.features[0].properties.envBBOX.matchAll(/\d+.\d+/g)].map((m) =>
-            parseFloat(m[0])
-          );
+          let envBBOXCoords = [...closestFeature.properties.envBBOX.matchAll(/\d+.\d+/g)].map((m) => parseFloat(m[0]));
           return this.wmsService
-            .getWfsFeatures(action.url, envBBOXCoords, action.geomPropName ?? wmsJson.features[0]['geometry_name'])
+            .getWfsFeatures(action.url, envBBOXCoords, action.geomPropName ?? closestFeature['geometry_name'])
             .pipe(map((wfsJson) => ({ action, json: wfsJson })));
         }
         // if data is not a stack just add features without calling wfs service
