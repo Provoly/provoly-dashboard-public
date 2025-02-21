@@ -8,7 +8,7 @@
           type="button"
           (click)="creation()"
           *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'create' }"
-          >
+        >
           <pry-icon iconSvg="add"></pry-icon>
           {{ '@pry.presentation.create' | i18n }}
         </button>
@@ -24,7 +24,7 @@
               [placeholder]="'@pry.presentation.search' | i18n"
               [ngModel]="search$ | async"
               (ngModelChange)="this.search$.next($event)"
-              />
+            />
             <pry-icon class="search-icon" iconSvg="search" [width]="17" [height]="17"></pry-icon>
           </div>
         </div>
@@ -33,10 +33,8 @@
         <h1 class="a-h1">{{ '@pry.presentation.title' | i18n }}</h1>
         <div class="o-presentation-wrapper">
           <ul class="o-presentation">
-            @for (presentation of filteredPresentations$ | async; track presentation; let index = $index) {
-              <li
-                class="o-presentation__item"
-                >
+            @for (presentation of filteredPresentations$ | async; track presentation.id; let index = $index) {
+              <li class="o-presentation__item">
                 <div class="o-presentation__item__header">
                   @if (isPrivate(presentation)) {
                     <pry-icon
@@ -51,7 +49,7 @@
                     class="a-tooltip -tooltip-no-wrap"
                     (click)="fetch(presentation)"
                     [attr.data-tooltip]="'@pry.presentation.view' | i18n"
-                    >
+                  >
                     <div class="o-presentation__item__image">
                       <img alt="" class="is-full-width" [src]="presentation.image | getSecuredImage | async" />
                     </div>
@@ -65,7 +63,7 @@
                         [attr.data-tooltip]="'@pry.presentation.more' | i18n"
                         (click)="$event.stopPropagation(); toggleModalActions(presentation, button)"
                         #button
-                        >
+                      >
                         <pry-icon [height]="25" [width]="25" iconSvg="more_horiz"></pry-icon>
                       </button>
                     </div>
@@ -93,7 +91,7 @@
                   class="o-presentation__item__footer a-tooltip -tooltip-no-wrap"
                   (click)="fetch(presentation)"
                   [attr.data-tooltip]="'@pry.presentation.view' | i18n"
-                  >
+                >
                   <button class="a-btn">
                     {{ '@pry.presentation.consult' | i18n }}
                     <pry-icon [width]="20" [height]="20" iconSvg="arrow_right"></pry-icon>
@@ -130,19 +128,14 @@
 <ng-template #modalActions>
   <div class="m-context-menu">
     @if (selectedPresentation$ | async; as selectedPresentation) {
-      <ul
-        class="m-context-menu__list"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="dialog presentation options"
-        >
+      <ul class="m-context-menu__list" role="dialog" aria-modal="true" aria-labelledby="dialog presentation options">
         <li class="m-context-menu__list__item">
           <button
             class="a-btn -link-like"
             (click)="edit(selectedPresentation)"
             [disabled]="!(this.canModify$(selectedPresentation) | async)"
             *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'edit' }"
-            >
+          >
             {{ '@pry.presentation.edition' | i18n }}
           </button>
         </li>
@@ -152,7 +145,7 @@
             (click)="editContent(selectedPresentation)"
             [disabled]="!(this.canModify$(selectedPresentation) | async)"
             *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'edit' }"
-            >
+          >
             {{ '@pry.presentation.editionContent' | i18n }}
           </button>
         </li>
@@ -163,7 +156,7 @@
             aria-haspopup="dialog"
             [disabled]="!(this.canModify$(selectedPresentation) | async)"
             *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'share' }"
-            >
+          >
             {{ '@pry.presentation.share' | i18n }}
           </button>
         </li>
@@ -174,7 +167,7 @@
             (click)="delete(selectedPresentation.id)"
             [disabled]="!(this.canModify$(selectedPresentation) | async)"
             *pryAccess="{ module: 'dashboard', page: 'manifest', action: 'delete' }"
-            >
+          >
             {{ '@pry.presentation.delete' | i18n }}
           </button>
         </li>
