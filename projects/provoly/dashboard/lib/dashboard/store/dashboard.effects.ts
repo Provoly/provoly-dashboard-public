@@ -883,7 +883,7 @@ export class DashboardEffects {
             .pipe(map((wfsJson) => ({ action, json: wfsJson })));
         }
         // if data is not a stack just add features without calling wfs service
-        return of({ action, json: wmsJson });
+        return of({ action, json: { ...wmsJson, features: [closestFeature] } });
       }),
       map(({ action, json }) =>
         DashboardActions.addWmsFeatures({
