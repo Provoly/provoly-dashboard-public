@@ -831,17 +831,19 @@ export class DashboardEffects {
       mergeMap((action) => combineLatest([of(action), this.wmsService.getWmsFeatures(action.url)])),
       map(([action, json]) => {
         return DashboardActions.addWmsFeatures({
-          features: json.features.map((feature: any) => {
-            const result: any = {
-              id: feature.id,
-              oClass: action.oClass,
-              coordinates: action.coordinates,
-              properties: Object.keys(feature.properties)
-                .map((property) => ({ key: property, value: feature.properties[property] }))
-                .filter((prop) => prop.value !== undefined)
-            };
-            return result;
-          }),
+          features: json.features
+            .filter((f) => !!f)
+            .map((feature: any) => {
+              const result: any = {
+                id: feature.id,
+                oClass: action.oClass,
+                coordinates: action.coordinates,
+                properties: Object.keys(feature.properties)
+                  .map((property) => ({ key: property, value: feature.properties[property] }))
+                  .filter((prop) => prop.value !== undefined)
+              };
+              return result;
+            }),
           componentId: action.componentId
         });
       })
@@ -887,14 +889,16 @@ export class DashboardEffects {
       }),
       map(({ action, json }) =>
         DashboardActions.addWmsFeatures({
-          features: json.features.map((feature: any) => ({
-            id: feature.id,
-            oClass: action.oClass,
-            coordinates: action.coordinates,
-            properties: Object.keys(feature.properties)
-              .map((property) => ({ key: property, value: feature.properties[property] }))
-              .filter((prop) => prop.value !== undefined)
-          })),
+          features: json.features
+            .filter((f) => !!f)
+            .map((feature: any) => ({
+              id: feature.id,
+              oClass: action.oClass,
+              coordinates: action.coordinates,
+              properties: Object.keys(feature.properties)
+                .map((property) => ({ key: property, value: feature.properties[property] }))
+                .filter((prop) => prop.value !== undefined)
+            })),
           componentId: action.componentId
         })
       ),
