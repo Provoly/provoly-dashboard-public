@@ -1,10 +1,10 @@
 {
   "name": "provoly-dashboard",
   "version": "0.0.0",
-  "homepage": "",
+  "homepage": "https://documentation.provoly.com/provoly-dashboard/main/index.html",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/Provoly/provoly-dashboard-public.git"
   },
   "keywords": [
     "pry",

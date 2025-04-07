@@ -6,6 +6,13 @@
     "build": "tsc --module commonjs -p tsconfig.schematics.json",
     "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json schematics/migration.json ../../../dist/@provoly/dashboard/"
   },
+  "homepage": "https://documentation.provoly.com/provoly-dashboard/main/index.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Provoly/provoly-dashboard-public.git"
+  },
+  "license": "Apache-2.0",
+  "author": "onepoint <contact@groupeonepoint.com> (https://www.groupeonepoint.com/fr/)",
   "peerDependencies": {
     "@angular/cdk": "17.x || 18.x",
     "@angular/common": "17.x || 18.x",
