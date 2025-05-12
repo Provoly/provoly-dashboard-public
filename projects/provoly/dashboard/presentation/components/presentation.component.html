@@ -32,6 +32,11 @@
       <div class="o-manifest-layout__content">
         <h1 class="a-h1">{{ '@pry.presentation.title' | i18n }}</h1>
         <div class="o-presentation-wrapper">
+          <div class="no-data-dashboard">
+            @if ((filteredPresentations$ | async)?.length === 0 || !(filteredPresentations$ | async)) {
+              {{ '@pry.presentation.noData' | i18n }}
+            }
+          </div>
           <ul class="o-presentation">
             @for (presentation of filteredPresentations$ | async; track presentation.id; let index = $index) {
               <li class="o-presentation__item">

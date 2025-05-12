@@ -21,6 +21,7 @@ export const frTranslations = {
         grid: 'Grille actuelle: ',
         theme: 'Thématique'
       },
+      noData: 'Aucun tableau de bord',
       share: 'Partager',
       options: 'Options du tableau de bord',
       consult: 'Consulter',

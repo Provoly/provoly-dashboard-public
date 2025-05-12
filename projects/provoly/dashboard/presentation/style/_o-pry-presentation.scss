@@ -33,6 +33,10 @@
   }
 }
 
+.no-data-dashboard{
+  text-align: center;
+}
+
 .o-presentation {
   @extend %list-unstyled;
   display: grid;

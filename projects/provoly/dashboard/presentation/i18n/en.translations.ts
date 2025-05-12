@@ -21,6 +21,7 @@ export const enTranslations = {
         cover: 'Image will cover the whole presentation card',
         theme: 'Theme'
       },
+      noData: 'No presentations',
       share: 'Share',
       options: 'Presentation options',
       consult: 'Consult',
