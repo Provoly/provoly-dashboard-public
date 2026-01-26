@@ -83,7 +83,7 @@
     "@angular-eslint/template-parser": "~18.3.1",
     "@angular/cli": "~18.2.6",
     "@angular/compiler-cli": "~18.2.6",
-    "@babel/core": "~7.25.2",
+    "@babel/core": "~7.28.0",
     "@compodoc/compodoc": "~1.1.21",
     "@peculiar/webcrypto": "~1.5.0",
     "@types/d3-dispatch": "~3.0.1",
